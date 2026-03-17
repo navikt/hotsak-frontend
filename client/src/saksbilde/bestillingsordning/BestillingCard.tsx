@@ -25,23 +25,12 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   const innloggetAnsatt = useInnloggetAnsatt()
   const sakActions = useSakActions()
   const { behovsmelding } = useBehovsmelding()
-  const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
-  const [harLagretBeskjed, setHarLagretBeskjed] = useState(false)
   const [ferdigstillBestillingAttempt, setFerdigstillBestillingAttempt] = useState(false)
-  const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
 
-  const lagreUtleveringMerknad = (merknad: string) => {
-    setSubmitAttempt(false)
-    setUtleveringMerknad(merknad)
-    setHarLagretBeskjed(true)
-  }
-
-  const godkjennBestilling = async () => {
-    setSubmitAttempt(true)
-    if (utleveringMerknad && !harLagretBeskjed) return
-    await sakActions.godkjennBestilling(utleveringMerknad)
+  const godkjennBestilling = async (merknad?: string) => {
+    await sakActions.godkjennBestilling(merknad)
     setVisOpprettOrdreModal(false)
   }
 
@@ -155,14 +144,10 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
         */
         <BekreftAutomatiskOrdre
           open={visOpprettOrdreModal}
-          onBekreft={() => godkjennBestilling()}
+          onBekreft={(merknad) => godkjennBestilling(merknad)}
           loading={sakActions.state.loading}
           onClose={() => setVisOpprettOrdreModal(false)}
-          error={submitAttempt && !harLagretBeskjed}
-          harLagretBeskjed={harLagretBeskjed}
-          leveringsmerknad={utleveringMerknad}
-          onLagre={lagreUtleveringMerknad}
-          onEndre={() => setHarLagretBeskjed(false)}
+          leveringsmerknad={behovsmelding?.levering.utleveringMerknad}
         />
       }
       <AvvisBestillingModal

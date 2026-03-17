@@ -12,9 +12,11 @@ export interface BehandlingActions extends Actions {
   ferdigstillBehandling({
     problemsammendrag,
     postbegrunnelse,
+    utleveringMerknad,
   }: {
     problemsammendrag?: string
     postbegrunnelse?: string
+    utleveringMerknad?: string
   }): Promise<void>
 }
 
@@ -46,14 +48,16 @@ export function useBehandlingActions(): BehandlingActions {
     async ferdigstillBehandling({
       problemsammendrag,
       postbegrunnelse,
+      utleveringMerknad,
     }: {
       problemsammendrag?: string
       postbegrunnelse?: string
+      utleveringMerknad?: string
     }) {
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
-          { problemsammendrag, postbegrunnelse },
+          { problemsammendrag, postbegrunnelse, utleveringMerknad },
           { versjon }
         )
         await mutateBehandling()

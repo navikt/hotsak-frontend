@@ -98,6 +98,20 @@
                   "begrepsforklaring": null
                 }
               ]
+            },
+            {
+              "key": { "id": "LAVERE_RANGERING_BEGRUNNELSE", "versjon": 1 },
+              "ledetekst": {
+                "nb": "Begrunnelse for lavere rangering",
+                "nn": "Grunngjeving for lågare rangering"
+              },
+              "innhold": [
+                {
+                  "fritekst": "Begrunnelse for lavere rangering",
+                  "forhåndsdefinertTekst": null,
+                  "begrepsforklaring": null
+                }
+              ]
             }
           ],
           "varsler": []
@@ -134,7 +148,7 @@
       "annenUtleveringsbydel": { "navn": "Alna", "nummer": "030112" },
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,
-      "utleveringMerknad": null,
+      "utleveringMerknad": "Dette er en merknad til utlevering som skal på 5.17 på SF",
       "hast": {
         "hasteårsaker": [
           "UTVIKLING_AV_TRYKKSÅR",

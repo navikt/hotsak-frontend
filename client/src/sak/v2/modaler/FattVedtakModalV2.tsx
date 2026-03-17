@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
+import { useBehovsmelding } from '../../../saksbilde/useBehovsmelding'
 import { Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
 import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
@@ -30,6 +31,8 @@ export function FattVedtakModalV2({
   const { showSuccessToast } = useToast()
   const formRef = useRef<VedtakFormHandle>(null)
   const closePanel = useClosePanel('brevpanel')
+  const { behovsmelding } = useBehovsmelding()
+  const utleveringMerknad = behovsmelding?.levering.utleveringMerknad
 
   const erAvslag = vedtaksResultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
@@ -40,9 +43,16 @@ export function FattVedtakModalV2({
     setVedtakLoader(true)
 
     if (erInnvilget) {
-      await ferdigstillBehandling({ problemsammendrag: data.problemsammendrag, postbegrunnelse: data.postbegrunnelse })
+      await ferdigstillBehandling({
+        problemsammendrag: data.problemsammendrag,
+        postbegrunnelse: data.postbegrunnelse,
+        utleveringMerknad: data.utleveringMerknad,
+      })
     } else if (erDelvisInnvilget) {
-      await ferdigstillBehandling({ problemsammendrag: data.problemsammendrag })
+      await ferdigstillBehandling({
+        problemsammendrag: data.problemsammendrag,
+        utleveringMerknad: data.utleveringMerknad,
+      })
     }
     if (erInnvilget) {
       //lukker brevpanelet hvis det er åpent og det ikke finnes et brev og det innvilges
@@ -116,7 +126,13 @@ export function FattVedtakModalV2({
           </Tekst>
 
           {(erInnvilget || erDelvisInnvilget) && (
-            <VedtakForm sak={sak} ref={formRef} onVedtak={fattVedtak} postbegrunnelsePåkrevd={erInnvilget} />
+            <VedtakForm
+              sak={sak}
+              ref={formRef}
+              onVedtak={fattVedtak}
+              postbegrunnelsePåkrevd={erInnvilget}
+              utleveringMerknad={utleveringMerknad}
+            />
           )}
         </VStack>
       )}

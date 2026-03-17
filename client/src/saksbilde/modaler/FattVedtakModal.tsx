@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { VedtakFormValues } from '../../sak/felles/useVedtak'
 import { VedtakForm, VedtakFormHandle } from '../../sak/felles/VedtakForm'
+import { useBehovsmelding } from '../useBehovsmelding'
 import { Sak } from '../../types/types.internal'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { useSakActions } from '../useSakActions'
@@ -9,9 +10,11 @@ import { useSakActions } from '../useSakActions'
 export function FattVedtakModal({ sak, open, onClose }: { sak: Sak; open: boolean; onClose: () => void }) {
   const sakActions = useSakActions()
   const formRef = useRef<VedtakFormHandle>(null)
+  const { behovsmelding } = useBehovsmelding()
+  const utleveringMerknad = behovsmelding?.levering.utleveringMerknad
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
+    await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse, data.utleveringMerknad)
     onClose()
   }
 
@@ -30,7 +33,7 @@ export function FattVedtakModal({ sak, open, onClose }: { sak: Sak; open: boolea
         Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på
         innlogget side på nav.no neste virkedag.
       </Tekst>
-      <VedtakForm sak={sak} ref={formRef} onVedtak={fattVedtak} />
+      <VedtakForm sak={sak} ref={formRef} onVedtak={fattVedtak} utleveringMerknad={utleveringMerknad} />
     </BekreftelseModal>
   )
 }

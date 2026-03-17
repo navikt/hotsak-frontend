@@ -3,12 +3,15 @@ import { forwardRef, useImperativeHandle, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Sak } from '../../types/types.internal'
+import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 
 interface VedtakFormProps {
   sak: Sak
   onVedtak: (data: VedtakFormValues) => void
   postbegrunnelsePåkrevd?: boolean
+  utleveringMerknad?: string | null
 }
 
 export interface VedtakFormHandle {
@@ -16,7 +19,7 @@ export interface VedtakFormHandle {
 }
 
 export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
-  ({ sak, onVedtak, postbegrunnelsePåkrevd = true }: VedtakFormProps, ref) => {
+  ({ sak, onVedtak, postbegrunnelsePåkrevd = true, utleveringMerknad }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
 
     const { form, sammendragMedLavere, logTilUmami } = useVedtak(sak)
@@ -159,6 +162,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 </HStack>
               </VStack>
             )}
+            <Eksperiment>{utleveringMerknad && <FritekstPanel />}</Eksperiment>
           </VStack>
           <button type="submit" style={{ display: 'none' }} />
         </form>

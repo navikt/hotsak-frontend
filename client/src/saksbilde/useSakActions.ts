@@ -7,7 +7,7 @@ import { mutateSak } from './mutateSak.ts'
 
 export interface SakActions extends Actions {
   overførSakTilGosys(tilbakemelding: ISvar[]): Promise<void>
-  fattVedtak(problemsammendrag: string, postbegrunnelse?: string): Promise<void>
+  fattVedtak(problemsammendrag: string, postbegrunnelse?: string, utleveringMerknad?: string): Promise<void>
 
   godkjennBestilling(beskjed?: string): Promise<void>
   avvisBestilling(tilbakemelding: AvvisBestilling): Promise<void>
@@ -36,9 +36,13 @@ export function useSakActions(): SakActions {
       })
     },
 
-    async fattVedtak(problemsammendrag, postbegrunnelse) {
+    async fattVedtak(problemsammendrag, postbegrunnelse, utleveringMerknad) {
       return execute(async () => {
-        await http.put(`/api/sak/${sakId}/vedtak`, { oppgaveId, problemsammendrag, postbegrunnelse }, { versjon })
+        await http.put(
+          `/api/sak/${sakId}/vedtak`,
+          { oppgaveId, problemsammendrag, postbegrunnelse, utleveringMerknad },
+          { versjon }
+        )
         await mutateOppgaveOgSak()
       })
     },

@@ -26,7 +26,7 @@
     "vedlegg": [],
     "levering": {
       "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
-      "utleveringMerknad": "",
+      "utleveringMerknad": "Merknad til utlevering som skal på 5.17 på SF",
       "hjelpemiddelformidler": {
         "navn": {
           "fornavn": "Berømt",

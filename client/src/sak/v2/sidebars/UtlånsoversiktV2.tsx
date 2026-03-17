@@ -9,9 +9,11 @@ import { Tekst, TextContainer } from '../../../felleskomponenter/typografi'
 import { formaterDato } from '../../../utils/dato'
 import { Skillelinje } from '../../../felleskomponenter/Strek'
 import { useHøreapparatVedtak } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHøreapparatVedtak'
+import { useMiljø } from '../../../utils/useMiljø'
 
 export function UtlånsoversiktV2() {
   const { sak } = useSak()
+  const { erProd } = useMiljø()
   const {
     hjelpemiddelArtikler: artikler,
     error: errorHjmOversikt,
@@ -28,7 +30,7 @@ export function UtlånsoversiktV2() {
     isLoading: isLoadingHaVedtak,
     isFromVedtak: isFromVedtakHaVedtak,
   } = useHøreapparatVedtak(sak?.data.bruker.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
-  const harHøreapparatVedtak = !!høreapparatVedtak?.harVedtak && !!høreapparatVedtak?.vedtaksdato
+  const harHøreapparatVedtak = !erProd && !!høreapparatVedtak?.harVedtak && !!høreapparatVedtak?.vedtaksdato
 
   return (
     <>

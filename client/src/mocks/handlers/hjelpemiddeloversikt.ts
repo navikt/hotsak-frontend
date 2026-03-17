@@ -21,4 +21,18 @@ export const hjelpemiddeloversiktHandlers: StoreHandlersFactory = () => [
       return HttpResponse.json(hjelpemiddeloversikt[2])
     }
   }),
+  http.post<never, { fnr: string }>(`/api/ha-vedtak`, async ({ request }) => {
+    const { fnr } = await request.json()
+    if (fnr === '06115559891') {
+      return HttpResponse.json({
+        harVedtak: false,
+        vedtaksdato: undefined,
+      })
+    } else {
+      return HttpResponse.json({
+        harVedtak: true,
+        vedtaksdato: '2024-01-01',
+      })
+    }
+  }),
 ]

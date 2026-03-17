@@ -13,7 +13,11 @@ export interface EndreOppgavetildelingRequest {
    * Angis hvis en spesifikk ansatt skal bli saksbehandler.
    */
   saksbehandlerId?: NavIdent | null
-  melding?: string | null
+  melding?: string | null // todo -> rename til kommentar
+}
+
+export interface FjernOppgavetildelingRequest {
+  kommentar?: string | null
 }
 
 export interface EndreOppgaveRequest {
@@ -38,7 +42,7 @@ export interface OppgaveActions extends Actions {
   /**
    * Fjern tildeling av oppgave/sak. Setter behandlende saksbehandler til `null`.
    */
-  fjernOppgavetildeling(): Promise<void>
+  fjernOppgavetildeling(request?: FjernOppgavetildelingRequest): Promise<void>
 
   /**
    *

@@ -2,7 +2,12 @@ import useSwr from 'swr'
 
 import { http } from '../../../io/HttpClient.ts'
 import type { HttpError } from '../../../io/HttpError.ts'
-import { HjelpemiddelArtikkel, Vedtaksgrunnlag, VedtaksgrunnlagType } from '../../../types/types.internal'
+import {
+  HjelpemiddelArtikkel,
+  VedtaksgrunnlagBase,
+  VedtaksgrunnlagType,
+  VedtaksgrunnlagUtlånsoversikt,
+} from '../../../types/types.internal'
 
 export interface UseHjelpemiddeloversiktResponse {
   hjelpemiddelArtikler: HjelpemiddelArtikkel[]
@@ -13,9 +18,9 @@ export interface UseHjelpemiddeloversiktResponse {
 
 export function useHjelpemiddeloversikt(
   fnr?: string,
-  vedtaksgrunnlag?: Vedtaksgrunnlag[]
+  vedtaksgrunnlag?: VedtaksgrunnlagBase[]
 ): UseHjelpemiddeloversiktResponse {
-  const utlånshistorikkFraVedtak = vedtaksgrunnlag?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
+  const utlånshistorikkFraVedtak = vedtaksgrunnlag?.find(erUtlånshistorikk)?.data
   const harUtlånshistorikkFraVedtak = utlånshistorikkFraVedtak !== null && utlånshistorikkFraVedtak !== undefined
 
   const {
@@ -41,4 +46,8 @@ export function useHjelpemiddeloversikt(
     isLoading,
     isFromVedtak: false,
   }
+}
+
+function erUtlånshistorikk(vedtaksgrunnlag: VedtaksgrunnlagBase): vedtaksgrunnlag is VedtaksgrunnlagUtlånsoversikt {
+  return vedtaksgrunnlag.type === VedtaksgrunnlagType.UTLAANSHISTORIKK
 }

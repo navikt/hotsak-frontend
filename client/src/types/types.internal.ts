@@ -314,6 +314,7 @@ export interface Bydel {
 
 export enum VedtaksgrunnlagType {
   UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',
+  HØREAPPARAT_VEDTAK = 'HØREAPPARAT_VEDTAK',
 }
 
 export interface VedtakPayload {
@@ -321,9 +322,23 @@ export interface VedtakPayload {
   //status: VedtakStatusType
 }
 
-export interface Vedtaksgrunnlag {
+export interface VedtaksgrunnlagBase {
   type: VedtaksgrunnlagType
-  data: any[] | undefined
+}
+
+export interface VedtaksgrunnlagUtlånsoversikt extends VedtaksgrunnlagBase {
+  type: VedtaksgrunnlagType.UTLAANSHISTORIKK
+  data?: HjelpemiddelArtikkel[]
+}
+
+export interface VedtaksgrunnlagHøreapparatvedtak extends VedtaksgrunnlagBase {
+  type: VedtaksgrunnlagType.HØREAPPARAT_VEDTAK
+  data?: HøreapparatVedtak
+}
+
+export interface HøreapparatVedtak {
+  harVedtak: boolean
+  vedtaksdato?: string
 }
 
 export interface Hendelse {
@@ -421,7 +436,7 @@ export interface VedtakType {
   saksbehandlerRef: string
   saksbehandlerNavn: string
   soknadUuid: string
-  vedtaksgrunnlag?: Vedtaksgrunnlag[]
+  vedtaksgrunnlag?: VedtaksgrunnlagBase[]
 }
 
 export interface Enhet {

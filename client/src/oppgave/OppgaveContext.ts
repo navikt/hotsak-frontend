@@ -57,7 +57,7 @@ export function useOppgaveLukkModalHandler() {
 }
 
 export interface OppgaveBaseAction {
-  type: 'åpneModal' | 'lukkModal'
+  type: 'åpneModal' | 'lukkModal' | 'versjonEndret'
 }
 
 export interface OppgaveÅpneModalAction extends OppgaveBaseAction {
@@ -69,4 +69,9 @@ export interface OppgaveLukkModalAction extends OppgaveBaseAction {
   type: 'lukkModal'
 }
 
-export type OppgaveAction = OppgaveÅpneModalAction | OppgaveLukkModalAction
+export interface OppgaveVersjonEndretAction extends OppgaveBaseAction {
+  type: 'versjonEndret'
+  versjon: number
+}
+
+export type OppgaveAction = OppgaveÅpneModalAction | OppgaveLukkModalAction | OppgaveVersjonEndretAction

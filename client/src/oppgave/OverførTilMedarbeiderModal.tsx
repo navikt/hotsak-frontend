@@ -6,9 +6,9 @@ import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { Tekst } from '../felleskomponenter/typografi.tsx'
+import { http } from '../io/HttpClient.ts'
 import { useNotater } from '../saksbilde/høyrekolonne/notat/useNotater.tsx'
 import { InfoModal } from '../saksbilde/komponenter/InfoModal.tsx'
-import { mutateSak } from '../saksbilde/mutateSak.ts'
 import { useUmami } from '../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { isNotBlank } from '../utils/type.ts'
@@ -59,15 +59,12 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
 
   const handleSubmit = form.handleSubmit(async (data) => {
     //fjerner ferdigstilling av brev
-    await fetch(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
-      method: 'delete',
-    })
+    await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
 
     await endreOppgavetildeling({
       saksbehandlerId: data.valgtSaksbehandler,
       melding: isNotBlank(data.kommentar) ? data.kommentar : null,
     })
-    await mutateSak(sakId)
 
     logOverføringMedarbeider()
     showSuccessToast('Oppgaven ble overført')

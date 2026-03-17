@@ -22,6 +22,7 @@ import { Brevstatus } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
 import { useBrevutkast } from './useBrevutkast.ts'
+import { http } from '../io/HttpClient.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -148,9 +149,11 @@ export const Brev = () => {
       return
     }
     setPlaceholderFeil([])
-    await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
-      method: klart ? 'post' : 'delete',
-    })
+    if (klart) {
+      await http.post(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
+    } else {
+      await http.delete(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
+    }
     brevutkast.mutate()
 
     await mutateGjeldendeBehandling()

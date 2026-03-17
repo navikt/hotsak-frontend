@@ -323,7 +323,12 @@ export interface VedtakPayload {
 
 export interface Vedtaksgrunnlag {
   type: VedtaksgrunnlagType
-  data: any[] | undefined
+  data: never[] | undefined
+}
+
+export interface HaVedtak {
+  harVedtak: boolean
+  vedtaksdato: string | undefined
 }
 
 export interface Hendelse {

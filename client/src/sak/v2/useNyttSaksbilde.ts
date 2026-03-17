@@ -8,13 +8,8 @@ export function useNyttSaksbilde(): [boolean, (verdi: boolean) => void] {
   const erNyttSaksbildePilot = useErPilot('nyttSaksbilde')
 
   if (erProd) {
-    console.log(
-      `Bryr oss ikke om localStorage,sjekker om nytt saksbilde skal vises. Er bruker er i pilot: ',
-      ${erNyttSaksbildePilot}`
-    )
     return [erNyttSaksbildePilot, () => {}]
   } else {
-    console.log(`Sjekker om nytt saksbilde skal vises basert på toogle i local storage: ${nyttSaksbildeToggle}`)
     return [nyttSaksbildeToggle, setNyttSaksbildeToggle]
   }
 }

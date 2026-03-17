@@ -12,7 +12,7 @@ import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
 import type { History } from '@platejs/slate'
 import { KEYS, type Value } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './Breveditor.less'
 import { BreveditorContext } from './BreveditorContext.ts'
 import { useBeforeUnload, useRefSize } from './hooks.ts'
@@ -349,6 +349,23 @@ const Breveditor = ({
     },
     [metadata, byggHeaderHtml, byggFooterHtml]
   )
+
+  // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
+  useEffect(() => {
+    if (initialState?.value && onLagreBrev) {
+      const ferskHtml = byggFullHtml(initialState.value)
+      if (initialState.valueAsHtml !== ferskHtml) {
+        const oppdatertState: StateMangement = {
+          value: initialState.value,
+          valueAsHtml: ferskHtml,
+          history: initialState.history,
+        }
+        state.current = oppdatertState
+        onStateChange?.(oppdatertState)
+        kallOnLagreBrevMedDebounceOgRetry(oppdatertState)
+      }
+    }
+  }, [])
 
   return (
     <BreveditorContext

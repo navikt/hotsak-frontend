@@ -244,6 +244,9 @@ const Breveditor = ({
         await onLagreBrev(constructedState)
           .catch((e) => {
             setEndringsstatus({ erEndret: true, lagrerNå: false, error: e.toString() }) // Vis at vi feilet
+            if (e?.status === 403) {
+              return
+            }
             debounceLagring.current = setTimeout(
               () => kallOnLagreBrevMedDebounceOgRetry(constructedState), // Try, try again...
               2000

@@ -2,7 +2,6 @@ import { Skeleton, Textarea, VStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { useBrevutkast } from '../brev/useBrevutkast.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
@@ -16,8 +15,6 @@ import { isNotBlank } from '../utils/type.ts'
 import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
-import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
-import { useBrevMetadata } from '../brev/useBrevMetadata.ts'
 
 export interface OverførTilMedarbeiderModalProps {
   sakId: string
@@ -44,9 +41,6 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { endreOppgavetildeling } = useOppgaveActions()
   const { showSuccessToast } = useToast()
   const { logOverføringMedarbeider } = useUmami()
-  const { brevutkast } = useBrevutkast()
-  const { mutate: mutateGjeldendeBehandling } = useBehandling()
-  const { mutate: mutateBrevMetadata } = useBrevMetadata()
 
   useEffect(() => {
     if (open) {
@@ -73,10 +67,6 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
       saksbehandlerId: data.valgtSaksbehandler,
       melding: isNotBlank(data.kommentar) ? data.kommentar : null,
     })
-    brevutkast.mutate()
-
-    await mutateGjeldendeBehandling()
-    await mutateBrevMetadata()
     await mutateSak(sakId)
 
     logOverføringMedarbeider()

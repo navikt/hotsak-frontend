@@ -68,15 +68,15 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
     await fetch(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
       method: 'delete',
     })
-    brevutkast.mutate()
-
-    await mutateGjeldendeBehandling()
-    await mutateBrevMetadata()
 
     await endreOppgavetildeling({
       saksbehandlerId: data.valgtSaksbehandler,
       melding: isNotBlank(data.kommentar) ? data.kommentar : null,
     })
+    brevutkast.mutate()
+
+    await mutateGjeldendeBehandling()
+    await mutateBrevMetadata()
     await mutateSak(sakId)
 
     logOverføringMedarbeider()

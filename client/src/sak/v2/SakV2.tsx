@@ -19,7 +19,7 @@ import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
-import { OeBSPanel } from './OeBsPanel.tsx'
+import { OeBSPanel } from './OeBSPanel.tsx'
 
 function AvrundetPanel({ children }: { children: React.ReactNode }) {
   return (

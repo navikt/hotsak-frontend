@@ -68,3 +68,5 @@ spec:
       value: ""
     - name: UMAMI_ENABLED
       value: "false"
+    - name: GOSYS_OPPGAVEBEHANDLING_URL
+      value: https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling

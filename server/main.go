@@ -58,6 +58,8 @@ func main() {
 			"USE_MSW_ALTERNATIVPRODUKTER",
 
 			"GIT_COMMIT",
+
+			"GOSYS_OPPGAVEBEHANDLING_URL",
 		},
 	}
 	hotbff.Start(opts)

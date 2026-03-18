@@ -1,4 +1,4 @@
-import { ReactNode, useReducer } from 'react'
+import { ReactNode, useEffect, useReducer } from 'react'
 
 import { type OppgaveAction, OppgaveContext, OppgaveDispatch, type OppgaveState } from './OppgaveContext.ts'
 import type { Oppgave } from './oppgaveTypes.ts'
@@ -18,6 +18,11 @@ export function OppgaveProvider({ oppgave, children }: OppgaveProviderProps) {
     sakId: oppgave.sakId,
     isOppgaveContext: true,
   })
+  useEffect(() => {
+    if (oppgave.versjon !== state.versjon) {
+      dispatch({ type: 'versjonEndret', versjon: oppgave.versjon })
+    }
+  }, [oppgave.versjon, state.versjon])
   return (
     <OppgaveContext value={state}>
       <OppgaveDispatch value={dispatch}>{children}</OppgaveDispatch>
@@ -31,6 +36,8 @@ function reducer(state: OppgaveState, action: OppgaveAction): OppgaveState {
       return { ...state, åpenModal: action.åpenModal }
     case 'lukkModal':
       return { ...state, åpenModal: undefined }
+    case 'versjonEndret':
+      return { ...state, versjon: action.versjon }
     default:
       return state
   }

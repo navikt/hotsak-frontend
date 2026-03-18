@@ -1,12 +1,13 @@
 import { ActionMenu } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 
-import { Oppgave, Oppgavetype } from './oppgaveTypes.ts'
+import { type Oppgave, type OppgaveId, Oppgavetype } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useSakActions } from '../saksbilde/useSakActions.ts'
+import { useOppgaveUrl } from './useOppgaveUrl.ts'
 
 export interface OppgaveMenuProps {
   oppgave?: Oppgave
@@ -40,6 +41,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
         >
           {oppgaveErKlarTilBehandling ? 'Ta oppgaven' : 'Overta oppgaven'}
         </ActionMenu.Item>
+        <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
       </OppgaveMenuGroup>
     )
   }
@@ -84,6 +86,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       >
         {`Legg tilbake til ${gjeldendeEnhet?.navn}`}
       </ActionMenu.Item>
+      <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
     </ActionMenu.Group>
   )
 }
@@ -96,4 +99,13 @@ function OppgaveModalActionMenuItem({ modal, children }: { modal: OppgaveModalTy
   const åpneModal = useOppgaveÅpneModalHandler()
   const handleSelect = () => åpneModal(modal)
   return <ActionMenu.Item onSelect={handleSelect}>{children}</ActionMenu.Item>
+}
+
+function GosysLinkItem({ oppgaveId }: { oppgaveId: OppgaveId }) {
+  const href = useOppgaveUrl(oppgaveId)
+  return (
+    <ActionMenu.Item as="a" href={href} target="_blank">
+      Åpne oppgaven i Gosys
+    </ActionMenu.Item>
+  )
 }

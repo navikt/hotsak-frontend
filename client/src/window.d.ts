@@ -3,7 +3,7 @@ import type { InnloggetAnsatt } from './tilgang/Ansatt.ts'
 
 declare global {
   interface Window {
-    msw?: any
+    msw?: unknown
     appSettings: {
       NAIS_CLUSTER_NAME?: 'local' | 'dev-gcp' | 'prod-gcp' | string
 
@@ -18,12 +18,14 @@ declare global {
       USE_MSW_ALTERNATIVPRODUKTER?: boolean
 
       GIT_COMMIT?: string
+
+      GOSYS_OPPGAVEBEHANDLING_URL?: string
     }
     faro?: Faro
     store: {
       saksbehandlere(): Promise<InnloggetAnsatt[]>
       byttInnloggetSaksbehandler(id: string): void
-      delete(): Promise<any>
+      delete(): Promise<unknown>
     }
   }
 }

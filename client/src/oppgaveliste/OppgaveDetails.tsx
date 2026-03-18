@@ -6,10 +6,10 @@ import { Strek } from '../felleskomponenter/Strek.tsx'
 import { type Oppgave, type OppgaveBruker, oppgaveIdUtenPrefix, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { Sakstype } from '../types/types.internal.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
+import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 
 export interface OppgaveDetailsProps {
   oppgave: Oppgave
@@ -63,15 +63,4 @@ function OppgaveDetailsBruker({ bruker }: { bruker?: OppgaveBruker }) {
       </HStack>
     </OppgaveDetailsItem>
   )
-}
-
-function useOppgaveUrl(oppgaveId: string) {
-  const { erProd } = useMiljø()
-  let host: string
-  if (erProd) {
-    host = 'gosys.intern.nav.no'
-  } else {
-    host = 'gosys-q2.dev.intern.nav.no'
-  }
-  return `https://${host}/gosys/oppgavebehandling/oppgave/${oppgaveId}`
 }

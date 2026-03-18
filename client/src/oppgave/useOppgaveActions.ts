@@ -8,16 +8,16 @@ import { useOppgaveContext } from './OppgaveContext.ts'
 import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
 
 export interface EndreOppgavetildelingRequest {
-  oppgaveId?: OppgaveId | null
+  oppgaveId?: OppgaveId
   /**
    * Angis hvis en spesifikk ansatt skal bli saksbehandler.
    */
-  saksbehandlerId?: NavIdent | null
-  melding?: string | null // todo -> rename til kommentar
+  saksbehandlerId?: NavIdent
+  kommentar?: string
 }
 
 export interface FjernOppgavetildelingRequest {
-  kommentar?: string | null
+  kommentar?: string
 }
 
 export interface EndreOppgaveRequest {

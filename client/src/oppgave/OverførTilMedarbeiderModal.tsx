@@ -15,6 +15,7 @@ import { isNotBlank } from '../utils/type.ts'
 import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
+import { mutateSak } from '../saksbilde/mutateSak.ts'
 
 export interface OverførTilMedarbeiderModalProps {
   sakId: string
@@ -65,6 +66,7 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
       saksbehandlerId: data.valgtSaksbehandler,
       melding: isNotBlank(data.kommentar) ? data.kommentar : null,
     })
+    await mutateSak(sakId)
 
     logOverføringMedarbeider()
     showSuccessToast('Oppgaven ble overført')

@@ -179,7 +179,7 @@
         }
       ],
       "funksjonsbeskrivelse": {
-        "beskrivelse": "ad",
+        "beskrivelse": "Beskrivelse av funksjonsnedsettelsen til brukeren oppgitt av formidler",
         "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
       },
       "funksjonsnedsettelser": ["BEVEGELSE"]

@@ -59,12 +59,12 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    //fjerner ferdigstilling av brev
+    // fjerner ferdigstilling av brev
     await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
 
     await endreOppgavetildeling({
       saksbehandlerId: data.valgtSaksbehandler,
-      melding: isNotBlank(data.kommentar) ? data.kommentar : null,
+      kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,
     })
     await mutateSak(sakId)
 

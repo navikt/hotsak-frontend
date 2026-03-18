@@ -19,7 +19,7 @@ import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
-import { OeBSPanel } from './OeBSPanel.tsx'
+import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 
 function AvrundetPanel({ children }: { children: React.ReactNode }) {
   return (
@@ -61,7 +61,7 @@ export function SakV2() {
 
   const bahandlingsPanel = panels.behandlingspanel
   const behovsmeldingsPanel = panels.behovsmeldingspanel
-  const oebsPanel = panels.oebspanel
+  const kontaktinformasjonPanel = panels.kontaktinformasjonpanel
   const sidePanel = panels.sidebarpanel
   const brevPanel = panels.brevpanel
 
@@ -140,17 +140,17 @@ export function SakV2() {
               </Panel>
             </>
           )}
-          {oebsPanel.visible && (
+          {kontaktinformasjonPanel.visible && (
             <>
               {harFlerePanelerÅpne && <ResizeHandle />}
 
               <Panel
-                id="oebspanel"
-                defaultSize={oebsPanel.defaultSize}
-                minSize={`${oebsPanel.minWidth}${oebsPanel.minWidthUnit}`}
+                id="kontaktinformasjonpanel"
+                defaultSize={kontaktinformasjonPanel.defaultSize}
+                minSize={`${kontaktinformasjonPanel.minWidth}${kontaktinformasjonPanel.minWidthUnit}`}
               >
                 <AvrundetPanel>
-                  <OeBSPanel sak={sak.data} behovsmelding={behovsmelding} />
+                  <KontaktinformasjonPanel sak={sak.data} behovsmelding={behovsmelding} />
                 </AvrundetPanel>
               </Panel>
             </>

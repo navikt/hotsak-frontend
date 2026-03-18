@@ -1,9 +1,8 @@
-import { Box, HStack, Label, ReadMore, VStack } from '@navikt/ds-react'
+import { Box, Label, ReadMore, VStack } from '@navikt/ds-react'
 import { ReactNode } from 'react'
-import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { PanelTittel } from '../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
-import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
+import { Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { lagKontaktpersonTekst } from '../../saksbilde/bruker/lagKontaktpersonTekst.ts'
 import { lagLeveringsmåteTekst } from '../../saksbilde/venstremeny/lagLeveringsmåteTekst.ts'
 import { Brukerkilde, Innsenderbehovsmelding, Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes.ts'
@@ -16,11 +15,12 @@ import {
   storForbokstavIAlleOrd,
 } from '../../utils/formater.ts'
 import { WarningTag } from '../felles/AlertTag.tsx'
+import { KopierbarFelt } from '../felles/KopierbartFelt.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
 
-export function OeBSPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
-  const lukkPanel = useClosePanel('oebspanel')
+export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
+  const lukkPanel = useClosePanel('kontaktinformasjonpanel')
   const { hjelpemiddelformidler: formidler } = behovsmelding.levering
   const levering = behovsmelding.levering
   const bruker = behovsmelding.bruker
@@ -38,21 +38,30 @@ export function OeBSPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsende
       paddingInline="space-12 space-0"
       style={{ height: '100%' }}
     >
-      <PanelTittel tittel="Behandling i OeBS" lukkPanel={lukkPanel} />
+      <PanelTittel tittel="Kontaktinformasjon" lukkPanel={lukkPanel} />
       <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-4 space-0">
         <TextContainer>
           <VStack gap="space-32">
             <section className={classes.panel}>
               <Tittel spacing={true}>FORMIDLER</Tittel>
-              <TextContainer>
-                <Tekst textColor="subtle">{`${formaterNavn(formidler.navn)} - ${formidler.stilling} - ${formidler.arbeidssted} - Tlf: ${formaterTelefonnummer(formidler.telefon)}`}</Tekst>
-              </TextContainer>
+              <KopierbarFelt
+                etikett="Formidler navn og telefon"
+                tekst={`${formaterNavn(formidler.navn)} - Tlf: ${formidler.telefon}`}
+                skjulEtikett={true}
+                textColor="subtle"
+              />
+              <KopierbarFelt
+                etikett="Stilling og arbeidssted"
+                tekst={`${formidler.stilling} - ${formidler.arbeidssted}`}
+                skjulEtikett={true}
+                textColor="subtle"
+              />
 
               <ReadMore size="small" header="Mer om formidler">
                 <VStack gap="space-4">
                   <KopierbarFelt etikett="Navn" tekst={formaterNavn(formidler.navn)} />
-                  <KopierbarFelt etikett="Arbeidssted" tekst={storForbokstavIAlleOrd(formidler.arbeidssted)} />
-                  <KopierbarFelt etikett="Stilling" tekst={storForbokstavIAlleOrd(formidler.stilling)} />
+                  <KopierbarFelt etikett="Arbeidssted" tekst={formidler.arbeidssted} />
+                  <KopierbarFelt etikett="Stilling" tekst={formidler.stilling} />
                   <KopierbarFelt etikett="Postadresse" tekst={storForbokstavIAlleOrd(formidler.adresse.poststed)} />
                   <KopierbarFelt
                     etikett="Telefon"
@@ -76,8 +85,8 @@ export function OeBSPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsende
               <ReadMore size="small" header="Mer om oppfølgingsansvarlig">
                 <VStack gap="space-4">
                   <KopierbarFelt etikett="Navn" tekst={formaterNavn(oppfølging.navn)} />
-                  <KopierbarFelt etikett="Arbeidssted" tekst={storForbokstavIAlleOrd(oppfølging.arbeidssted)} />
-                  <KopierbarFelt etikett="Stilling" tekst={storForbokstavIAlleOrd(oppfølging.stilling)} />
+                  <KopierbarFelt etikett="Arbeidssted" tekst={oppfølging.arbeidssted} />
+                  <KopierbarFelt etikett="Stilling" tekst={oppfølging.stilling} />
                   <KopierbarFelt
                     etikett="Telefon"
                     tekst={formaterTelefonnummer(oppfølging.telefon)}
@@ -154,22 +163,4 @@ function Tittel({ children, spacing = true }: { children: ReactNode; spacing?: b
       {children}
     </Label>
   )
-}
-
-function KopierbarFelt({ etikett, tekst, copyText }: KopierbarFeltProps) {
-  return (
-    <HStack gap="space-8" align="start" wrap={false}>
-      <Kopiknapp tooltip={`Kopier ${etikett.toLowerCase()}`} copyText={copyText ?? tekst} placement="bottom" />
-      <VStack>
-        <Etikett>{etikett}</Etikett>
-        <Tekst>{tekst}</Tekst>
-      </VStack>
-    </HStack>
-  )
-}
-
-interface KopierbarFeltProps {
-  etikett: string
-  tekst: string
-  copyText?: string
 }

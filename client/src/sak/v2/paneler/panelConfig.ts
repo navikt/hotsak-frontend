@@ -30,7 +30,7 @@ export const PANELS = [
     minWidthUnit: 'px',
     defaultSize: 34,
   },
-  { id: 'oebspanel', defaultVisible: true, minWidth: 220, minWidthUnit: 'px', defaultSize: 20 },
+  { id: 'kontaktinformasjonpanel', defaultVisible: true, minWidth: 220, minWidthUnit: 'px', defaultSize: 20 },
   {
     id: 'sidebarpanel',
     defaultVisible: true,

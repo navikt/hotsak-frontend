@@ -15,12 +15,12 @@ export const SakKontrollPanel = () => {
   const behandlingPanel = usePanel('behandlingspanel')
   const brevKolonne = usePanel('brevpanel')
   const søknadPanel = usePanel('behovsmeldingspanel')
-  const oebsPanel = usePanel('oebspanel')
+  const oebsPanel = usePanel('kontaktinformasjonpanel')
   const sidePanel = usePanel('sidebarpanel')
   const toggleBehandlingPanel = useTogglePanel('behandlingspanel')
   const toggleBrevKolonne = useTogglePanel('brevpanel')
   const toggleSøknadPanel = useTogglePanel('behovsmeldingspanel')
-  const toggleOebsPanel = useTogglePanel('oebspanel')
+  const toggleOebsPanel = useTogglePanel('kontaktinformasjonpanel')
   const toggleSidePanel = useTogglePanel('sidebarpanel')
   const { isOppgaveContext } = useOppgaveContext()
   const { gjeldendeBehandling } = useBehandling()
@@ -45,7 +45,7 @@ export const SakKontrollPanel = () => {
           Søknad
         </ToggleKnapp>
         <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
-          Behandling i OeBS
+          Kontaktinformasjon
         </ToggleKnapp>
         <ToggleKnapp selected={sidePanel.visible} onToggle={() => toggleSidePanel()}>
           Utlån, notater og historikk

@@ -1,4 +1,5 @@
-import { InlineMessage, VStack } from '@navikt/ds-react'
+import { VStack } from '@navikt/ds-react'
+import { InfoTag, WarningTag } from '../../sak/felles/AlertTag'
 import { Varsel, Varseltype } from '../../types/BehovsmeldingTypes'
 
 export function Varsler({ varsler }: { varsler?: Varsel[] }) {
@@ -8,10 +9,10 @@ export function Varsler({ varsler }: { varsler?: Varsel[] }) {
   return (
     <VStack gap="space-6" paddingBlock="space-6 space-0">
       {varsler.map((varsel) => {
-        return (
-          <InlineMessage status={varsel.type === Varseltype.WARNING ? 'warning' : 'info'} size="small">
-            {varsel.tekst.nb}
-          </InlineMessage>
+        return varsel.type === Varseltype.WARNING ? (
+          <WarningTag>{varsel.tekst.nb}</WarningTag>
+        ) : (
+          <InfoTag>{varsel.tekst.nb}</InfoTag>
         )
       })}
     </VStack>

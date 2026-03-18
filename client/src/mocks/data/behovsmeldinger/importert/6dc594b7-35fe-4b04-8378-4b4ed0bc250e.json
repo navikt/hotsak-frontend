@@ -104,7 +104,13 @@
             "delkontrakttittel": "18. Krykker til voksne avansert",
             "sortimentkategori": "Ganghjelpemidler"
           },
-          "varsler": [],
+          "varsler": [
+            { "type": "WARNING", "tekst": { "nb": "Dette er en advarsel.", "nn": "Dette er ein åtvaring." } },
+            {
+              "type": "INFO",
+              "tekst": { "nb": "Dette er en informasjonsmelding.", "nn": "Dette er ein informasjonsmelding." }
+            }
+          ],
           "tilbehør": [],
           "bruksarenaer": ["EGET_HJEM"],
           "opplysninger": [

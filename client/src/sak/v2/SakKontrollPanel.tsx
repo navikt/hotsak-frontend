@@ -15,10 +15,12 @@ export const SakKontrollPanel = () => {
   const behandlingPanel = usePanel('behandlingspanel')
   const brevKolonne = usePanel('brevpanel')
   const søknadPanel = usePanel('behovsmeldingspanel')
+  const oebsPanel = usePanel('oebspanel')
   const sidePanel = usePanel('sidebarpanel')
   const toggleBehandlingPanel = useTogglePanel('behandlingspanel')
   const toggleBrevKolonne = useTogglePanel('brevpanel')
   const toggleSøknadPanel = useTogglePanel('behovsmeldingspanel')
+  const toggleOebsPanel = useTogglePanel('oebspanel')
   const toggleSidePanel = useTogglePanel('sidebarpanel')
   const { isOppgaveContext } = useOppgaveContext()
   const { gjeldendeBehandling } = useBehandling()
@@ -34,13 +36,16 @@ export const SakKontrollPanel = () => {
     <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
       <Chips size="small">
         <ToggleKnapp selected={behandlingPanel.visible} onToggle={() => toggleBehandlingPanel()}>
-          Behandle
+          Behandle sak
         </ToggleKnapp>
         <ToggleKnapp selected={brevKolonne.visible} onToggle={() => toggleBrevKolonne()}>
           Brev
         </ToggleKnapp>
         <ToggleKnapp selected={søknadPanel.visible} onToggle={() => toggleSøknadPanel()}>
           Søknad
+        </ToggleKnapp>
+        <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
+          Behandling i OeBS
         </ToggleKnapp>
         <ToggleKnapp selected={sidePanel.visible} onToggle={() => toggleSidePanel()}>
           Utlån, notater og historikk

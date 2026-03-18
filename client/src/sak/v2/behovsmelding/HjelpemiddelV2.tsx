@@ -95,7 +95,7 @@ export function HjelpemiddelV2({
               )}
               <HStack gap="space-4" align={'center'}>
                 <Tag
-                  data-color={hjelpemiddel.produkt.rangering === 1 ? 'info' : 'warning'}
+                  data-color={hjelpemiddel.produkt.rangering === 1 ? 'neutral' : 'warning'}
                   size="small"
                   variant="moderate"
                 >
@@ -104,12 +104,12 @@ export function HjelpemiddelV2({
 
                 <AntallTag antall={hjelpemiddel.antall} />
                 {minmaxStyrt && (
-                  <Tag data-color="info" size="small" variant="moderate">
+                  <Tag data-color="neutral" size="small" variant="moderate">
                     Min/max lagervare
                   </Tag>
                 )}
                 {harAlternativeProdukter && (
-                  <Tag data-color="info" size="small" variant="moderate">
+                  <Tag data-color="neutral" size="small" variant="moderate">
                     Har alternativliste
                   </Tag>
                 )}

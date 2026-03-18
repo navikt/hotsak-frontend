@@ -1,52 +1,25 @@
-export type PanelId = 'behandlingspanel' | 'brevpanel' | 'behovsmeldingspanel' | 'sidebarpanel'
+import { PANELS, PanelDefinition } from './panelConfig'
 
-export interface PanelConfig {
-  id: PanelId
+export type { PanelId, WidthUnit } from './panelConfig'
+export type { PanelDefinition }
+
+export interface PanelConfig extends Omit<PanelDefinition, 'defaultVisible'> {
+  id: string
   visible: boolean
-  minWidth: number
-  minWidthUnit: 'px' | '%' | 'rem' | 'em' | 'vw' | 'vh'
-  defaultSize: number
 }
 
 export interface PanelState {
-  panels: Record<PanelId, PanelConfig>
+  panels: Record<string, PanelConfig>
 }
 
 export type PanelAction =
-  | { type: 'TOGGLE_PANEL'; panelId: PanelId }
-  | { type: 'SET_PANEL_VISIBILITY'; panelId: PanelId; visible: boolean }
+  | { type: 'TOGGLE_PANEL'; panelId: string }
+  | { type: 'SET_PANEL_VISIBILITY'; panelId: string; visible: boolean }
 
 export const initialPanelState: PanelState = {
-  panels: {
-    behandlingspanel: {
-      id: 'behandlingspanel',
-      visible: true,
-      minWidth: 220,
-      minWidthUnit: 'px',
-      defaultSize: 15,
-    },
-    brevpanel: {
-      id: 'brevpanel',
-      visible: false,
-      minWidth: 320,
-      minWidthUnit: 'px',
-      defaultSize: 40,
-    },
-    behovsmeldingspanel: {
-      id: 'behovsmeldingspanel',
-      visible: true,
-      minWidth: 300,
-      minWidthUnit: 'px',
-      defaultSize: 34,
-    },
-    sidebarpanel: {
-      id: 'sidebarpanel',
-      visible: true,
-      minWidth: 230,
-      minWidthUnit: 'px',
-      defaultSize: 20,
-    },
-  },
+  panels: Object.fromEntries(
+    PANELS.map(({ defaultVisible, ...rest }) => [rest.id, { ...rest, visible: defaultVisible }])
+  ),
 }
 
 export function panelReducer(state: PanelState, action: PanelAction): PanelState {

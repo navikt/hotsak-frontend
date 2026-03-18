@@ -2,7 +2,7 @@ import { Tag } from '@navikt/ds-react'
 
 export function AntallTag({ antall }: { antall: number }) {
   return (
-    <Tag size="xsmall" variant={antall > 1 ? 'warning-moderate' : 'info-moderate'}>
+    <Tag size="small" data-color={antall > 1 ? 'warning' : 'neutral'} variant="moderate">
       {`${antall} stk`}
     </Tag>
   )

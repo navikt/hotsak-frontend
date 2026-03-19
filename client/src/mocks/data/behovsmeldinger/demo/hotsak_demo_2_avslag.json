@@ -360,9 +360,9 @@
         "adresse": { "adresse": "Kaffegata 1", "postnummer": "0001", "poststed": "Oslo" },
         "epost": "e@post.com"
       },
-      "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
-      "annenUtleveringsadresse": null,
-      "annenUtleveringskommune": null,
+      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
+      "annenUtleveringsadresse": { "adresse": "Andre veien 13", "postnummer": "0001", "poststed": "Oslo" },
+      "annenUtleveringskommune": { "navn": "Bømlo", "nummer": "1337" },
       "annenUtleveringsbydel": null,
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,

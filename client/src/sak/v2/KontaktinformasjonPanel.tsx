@@ -5,7 +5,12 @@ import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { lagKontaktpersonTekst } from '../../saksbilde/bruker/lagKontaktpersonTekst.ts'
 import { lagLeveringsmåteTekst } from '../../saksbilde/venstremeny/lagLeveringsmåteTekst.ts'
-import { Brukerkilde, Innsenderbehovsmelding, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes.ts'
+import {
+  Brukerkilde,
+  Innsenderbehovsmelding,
+  Oppfølgingsansvarlig,
+  Utleveringsmåte,
+} from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import {
   formaterAdresse,
@@ -108,6 +113,7 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
             </section>
             <section className={classes.panel}>
               <Tittel spacing={true}>LEVERING</Tittel>
+              <LeveringsmåteVarsel utleveringsmåte={levering.utleveringsmåte} />
               <VStack gap="space-4">
                 {leveringsmåteTekst.copyText && (
                   <KopierbarFelt etikett={leveringsmåteTekst.label} tekst={leveringsmåteTekst.copyText} />
@@ -157,4 +163,14 @@ function Tittel({ children, spacing = true }: { children: ReactNode; spacing?: b
       {children}
     </Label>
   )
+}
+
+function LeveringsmåteVarsel({ utleveringsmåte }: { utleveringsmåte?: Utleveringsmåte }) {
+  if (utleveringsmåte === Utleveringsmåte.HJELPEMIDDELSENTRALEN) {
+    return <WarningTag>Hentes på hjelpemiddelsentralen</WarningTag>
+  }
+  if (utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE) {
+    return <WarningTag>Leveres til annen adresse</WarningTag>
+  }
+  return null
 }

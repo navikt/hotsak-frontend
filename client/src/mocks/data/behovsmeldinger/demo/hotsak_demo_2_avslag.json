@@ -351,8 +351,15 @@
         "kommunenavn": "STAD",
         "kommunenummer": "4649"
       },
-      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
-      "annenOppfølgingsansvarlig": null,
+      "oppfølgingsansvarlig": "ANNEN_OPPFØLGINGSANSVARLIG",
+      "annenOppfølgingsansvarlig": {
+        "navn": { "fornavn": "Koffee", "mellomnavn": null, "etternavn": "Annen" },
+        "arbeidssted": "ISS",
+        "stilling": "Astronaut",
+        "telefon": "55 55 55 55",
+        "adresse": { "adresse": "Kaffegata 1", "postnummer": "0001", "poststed": "Oslo" },
+        "epost": "e@post.com"
+      },
       "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "annenUtleveringsadresse": null,
       "annenUtleveringskommune": null,

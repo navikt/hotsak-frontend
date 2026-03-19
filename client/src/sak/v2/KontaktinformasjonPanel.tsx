@@ -5,7 +5,7 @@ import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { lagKontaktpersonTekst } from '../../saksbilde/bruker/lagKontaktpersonTekst.ts'
 import { lagLeveringsmåteTekst } from '../../saksbilde/venstremeny/lagLeveringsmåteTekst.ts'
-import { Brukerkilde, Innsenderbehovsmelding, Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes.ts'
+import { Brukerkilde, Innsenderbehovsmelding, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import {
   formaterAdresse,
@@ -24,7 +24,7 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
   const { hjelpemiddelformidler: formidler } = behovsmelding.levering
   const levering = behovsmelding.levering
   const bruker = behovsmelding.bruker
-  const oppfølging = utledOppfølging(levering)
+  const oppfølgingsansvarlig = behovsmelding.levering.annenOppfølgingsansvarlig
   const adresseBruker = formaterAdresse(behovsmelding.bruker.veiadresse)
   const leveringsmåteTekst = lagLeveringsmåteTekst(levering, adresseBruker)
   const formatertNavn = formaterNavn(bruker)
@@ -78,25 +78,33 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
             </section>
             <section className={classes.panel}>
               <Tittel spacing={true}>OPPFØLGING OG OPPLÆRING</Tittel>
-              {behovsmelding.levering.oppfølgingsansvarlig === Oppfølgingsansvarlig.ANNEN_OPPFØLGINGSANSVARLIG && (
-                <WarningTag>Annen oppfølgingsansvarlig</WarningTag>
-              )}
-              <Tekst textColor="subtle">{`${formaterNavn(oppfølging.navn)} - ${oppfølging.stilling} - ${oppfølging.arbeidssted} - Tlf: ${formaterTelefonnummer(oppfølging.telefon)}`}</Tekst>
-              <ReadMore size="small" header="Mer om oppfølgingsansvarlig">
-                <VStack gap="space-4">
-                  <KopierbarFelt etikett="Navn" tekst={formaterNavn(oppfølging.navn)} />
-                  <KopierbarFelt etikett="Arbeidssted" tekst={oppfølging.arbeidssted} />
-                  <KopierbarFelt etikett="Stilling" tekst={oppfølging.stilling} />
-                  <KopierbarFelt
-                    etikett="Telefon"
-                    tekst={formaterTelefonnummer(oppfølging.telefon)}
-                    copyText={oppfølging.telefon}
-                  />
-                  {oppfølging.ansvarFor && (
-                    <KopierbarFelt etikett="Ansvar" tekst={storForbokstavIAlleOrd(oppfølging.ansvarFor)} />
-                  )}
+              {behovsmelding.levering.oppfølgingsansvarlig === Oppfølgingsansvarlig.ANNEN_OPPFØLGINGSANSVARLIG &&
+              oppfølgingsansvarlig ? (
+                <VStack gap="space-12">
+                  <WarningTag>Annen oppfølgingsansvarlig</WarningTag>
+                  <Tekst textColor="subtle">{`${formaterNavn(oppfølgingsansvarlig.navn)} - ${oppfølgingsansvarlig.stilling} - ${oppfølgingsansvarlig.arbeidssted} - Tlf: ${formaterTelefonnummer(oppfølgingsansvarlig.telefon)}`}</Tekst>
+                  <ReadMore size="small" header="Mer om oppfølgingsansvarlig">
+                    <VStack gap="space-4">
+                      <KopierbarFelt etikett="Navn" tekst={formaterNavn(oppfølgingsansvarlig.navn)} />
+                      <KopierbarFelt etikett="Arbeidssted" tekst={oppfølgingsansvarlig.arbeidssted} />
+                      <KopierbarFelt etikett="Stilling" tekst={oppfølgingsansvarlig.stilling} />
+                      <KopierbarFelt
+                        etikett="Telefon"
+                        tekst={formaterTelefonnummer(oppfølgingsansvarlig.telefon)}
+                        copyText={oppfølgingsansvarlig.telefon}
+                      />
+                      {oppfølgingsansvarlig.ansvarFor && (
+                        <KopierbarFelt
+                          etikett="Ansvar"
+                          tekst={storForbokstavIAlleOrd(oppfølgingsansvarlig.ansvarFor)}
+                        />
+                      )}
+                    </VStack>
+                  </ReadMore>
                 </VStack>
-              </ReadMore>
+              ) : (
+                <Tekst>Formidler</Tekst>
+              )}
             </section>
             <section className={classes.panel}>
               <Tittel spacing={true}>LEVERING</Tittel>
@@ -141,20 +149,6 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
       </ScrollablePanel>
     </Box>
   )
-}
-
-function utledOppfølging(levering: Levering) {
-  const { hjelpemiddelformidler: formidler, oppfølgingsansvarlig, annenOppfølgingsansvarlig } = levering
-  if (oppfølgingsansvarlig === Oppfølgingsansvarlig.HJELPEMIDDELFORMIDLER) {
-    return {
-      navn: formidler.navn,
-      arbeidssted: formidler.arbeidssted,
-      stilling: formidler.stilling,
-      telefon: formidler.telefon,
-      ansvarFor: '',
-    }
-  }
-  return { ...annenOppfølgingsansvarlig! }
 }
 
 function Tittel({ children, spacing = true }: { children: ReactNode; spacing?: boolean }) {

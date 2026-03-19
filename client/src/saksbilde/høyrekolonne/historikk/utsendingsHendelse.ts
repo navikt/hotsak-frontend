@@ -25,7 +25,9 @@ export function lagUtsendingsHendelser(utsendingsinfo: UtsendingsInfo, datoEkspe
           type: UtsendingsHendelseType.VARSEL_SENDT,
           opprettet: varsel.tidspunkt,
           hendelse: `Varsel til bruker`,
-          detaljer: `${varsel.type}: «${varsel.tittel}» sendt til ${varsel.adresse}`,
+          detaljer: varsel.tittel
+            ? `${varsel.type}: «${varsel.tittel}» sendt til ${varsel.adresse}`
+            : `${varsel.type} sendt til ${varsel.adresse}`,
         })
       }
     })

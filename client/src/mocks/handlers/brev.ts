@@ -38,7 +38,7 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
           },
           {
             type: 'SMS',
-            tittel: 'Vedtak fra Nav',
+            tittel: null,
             adresse: '12345678',
             tidspunkt: new Date(Date.now() + 4 * 60 * 1000).toISOString(),
           },

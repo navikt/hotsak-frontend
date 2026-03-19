@@ -1,0 +1,13 @@
+.root {
+}
+
+.headerButton {
+  border-right: 1px solid var(--ax-border-neutral-subtleA);
+  text-decoration: none;
+}
+
+.headerButtonActive {
+  box-shadow: 0 4px 0 0 var(--ax-border-strong);
+  margin-bottom: -1px;
+  padding-bottom: 1px;
+}

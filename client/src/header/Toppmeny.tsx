@@ -1,6 +1,9 @@
 import { MenuGridIcon, ThemeIcon } from '@navikt/aksel-icons'
-import { ActionMenu, InternalHeader } from '@navikt/ds-react'
-import { useNavigate } from 'react-router-dom'
+import { ActionMenu, HStack, InternalHeader } from '@navikt/ds-react'
+import { Link, type To, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router'
+import clsx from 'clsx'
+import { type ReactNode } from 'react'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
@@ -11,6 +14,7 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
+import classes from './Toppmeny.module.css'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
@@ -21,35 +25,29 @@ export function Toppmeny() {
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
 
+  const handleSearch = (value: string) => {
+    const fnrEllerSakId = fjernMellomrom(value)
+    if (fnrEllerSakId.length === 11) {
+      setFodselsnummer(fnrEllerSakId)
+      navigate('/personoversikt/saker')
+    } else {
+      navigate(`/sak/${fnrEllerSakId}`)
+    }
+  }
+
   return (
-    <InternalHeader>
+    <InternalHeader className={classes.root}>
       <InternalHeader.Title as="a" href="/">
         {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
       </InternalHeader.Title>
-
-      <InternalHeader.Button
-        style={{
-          marginRight: 'auto',
-          borderRight: '1px solid var(--ax-border-neutral-subtleA)',
-          borderLeft: 'none',
-          textDecoration: 'none',
-        }}
-        as="a"
-        href="/enhetens"
-      >
-        Enhetens oppgaver
-      </InternalHeader.Button>
-      <Søk
-        onSearch={(value: string) => {
-          const fnrEllerSakId = fjernMellomrom(value)
-          if (fnrEllerSakId.length === 11) {
-            setFodselsnummer(fnrEllerSakId)
-            navigate('/personoversikt/saker')
-          } else {
-            navigate(`/sak/${fnrEllerSakId}`)
-          }
-        }}
-      />
+      <HStack justify="space-between" wrap={false} style={{ flex: 1 }}>
+        <HStack wrap={false}>
+          <ToppmenyLinkButton to="/mine">Mine oppgaver</ToppmenyLinkButton>
+          <ToppmenyLinkButton to="/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
+          <ToppmenyLinkButton to="/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
+        </HStack>
+        <Søk onSearch={handleSearch} />
+      </HStack>
       <ActionMenu>
         <ActionMenu.Trigger>
           <InternalHeader.Button>
@@ -79,7 +77,7 @@ export function Toppmeny() {
                 })
 
                 setDarkmode(!darkmode)
-                //gi umami litt tid til å sende før reload
+                // gi umami litt tid til å sende før reload
                 await new Promise((resolve) => setTimeout(resolve, 150))
                 window.location.href = '/'
               }}
@@ -87,7 +85,6 @@ export function Toppmeny() {
               {`Endre til ${darkmodeLabel(!darkmode)}`}
             </ActionMenu.Item>
           </ActionMenu.Group>
-
           <Eksperiment>
             <ActionMenu.Divider />
             <ActionMenu.Group label="Eksperimenter">
@@ -131,6 +128,23 @@ export function Toppmeny() {
         </ActionMenu.Content>
       </ActionMenu>
     </InternalHeader>
+  )
+}
+
+function ToppmenyLinkButton({ to, children }: { to: To; children: ReactNode }) {
+  const location = useLocation()
+  const pathname = location.pathname
+  const valgt = pathname === to || (pathname === '/' && to === '/mine')
+  return (
+    <InternalHeader.Button
+      as={Link}
+      to={to}
+      className={clsx(classes.headerButton, {
+        [classes.headerButtonActive]: valgt,
+      })}
+    >
+      {children}
+    </InternalHeader.Button>
   )
 }
 

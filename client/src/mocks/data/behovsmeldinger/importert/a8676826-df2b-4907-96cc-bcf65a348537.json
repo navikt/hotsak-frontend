@@ -1,0 +1,170 @@
+{
+  "behovsmeldingId": "a8676826-df2b-4907-96cc-bcf65a348537",
+  "beskrivelse": "importert",
+  "behovsmelding": {
+    "bruker": {
+      "fnr": "13820599335",
+      "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+      "signaturtype": "FULLMAKT",
+      "telefon": "13820599",
+      "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
+      "kommunenummer": "4649",
+      "brukernummer": "1670299",
+      "kilde": "PDL",
+      "legacyopplysninger": []
+    },
+    "brukersituasjon": {
+      "vilkår": [
+        {
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          }
+        },
+        {
+          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1",
+          "tekst": {
+            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
+            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+          }
+        },
+        {
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",
+          "tekst": {
+            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+          }
+        },
+        {
+          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+          "tekst": {
+            "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+          }
+        }
+      ],
+      "funksjonsnedsettelser": ["BEVEGELSE"],
+      "funksjonsbeskrivelse": null
+    },
+    "hjelpemidler": {
+      "hjelpemidler": [
+        {
+          "hjelpemiddelId": "4ce71f61-f261-45b4-bdea-6f84e2475d49",
+          "antall": 1,
+          "produkt": {
+            "hmsArtNr": "267912",
+            "artikkelnavn": "Classic Soft",
+            "iso8": "12030601",
+            "iso8Tittel": "Albuekrykker",
+            "iso8KortTittel": "Krykker",
+            "delkontrakttittel": "17. Krykker til voksne enkel",
+            "sortimentkategori": "Ganghjelpemidler",
+            "delkontraktId": "HMDB-1348",
+            "rangering": 1
+          },
+          "tilbehør": [],
+          "bytter": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false,
+            "utleverttype": null,
+            "overførtFraBruker": null,
+            "annenKommentar": null
+          },
+          "opplysninger": [
+            {
+              "key": { "id": "BRUKSARENA", "versjon": 1 },
+              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "varsler": [],
+          "saksbehandlingvarsel": []
+        }
+      ],
+      "tilbehør": [],
+      "totaltAntall": 1
+    },
+    "levering": {
+      "hjelpemiddelformidler": {
+        "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+        "arbeidssted": "Østby Dans og Fysioterapi",
+        "stilling": "CEO",
+        "telefon": "11223344",
+        "adresse": { "adresse": "Svanseveien 3", "postnummer": "6770", "poststed": "NORDFJORDEID" },
+        "epost": "kvadratisk.faktura@tull.kommune.no",
+        "treffesEnklest": "På telefon fra hjemmekontor.",
+        "kommunenavn": "STAD",
+        "kommunenummer": "4649"
+      },
+      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+      "annenOppfølgingsansvarlig": null,
+      "utleveringsmåte": "HJELPEMIDDELSENTRALEN",
+      "annenUtleveringsadresse": null,
+      "annenUtleveringskommune": null,
+      "annenUtleveringsbydel": null,
+      "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
+      "annenKontaktperson": null,
+      "utleveringMerknad": "",
+      "hast": { "hasteårsaker": ["UTVIKLING_AV_TRYKKSÅR", "ANNET"], "hastBegrunnelse": "asfsdfas dfasdf asdf" },
+      "automatiskUtledetTilleggsinfo": []
+    },
+    "innsender": {
+      "rolle": "FORMIDLER",
+      "erKommunaltAnsatt": true,
+      "kurs": [{ "id": 4, "title": "Bestilling", "kilde": "kunnskapsbanken" }],
+      "sjekketUtlånsoversiktForKategorier": []
+    },
+    "vedlegg": [],
+    "metadata": {
+      "bestillingsordningsjekk": {
+        "kanVæreBestilling": false,
+        "kriterier": {
+          "alleHovedProdukterPåBestillingsOrdning": true,
+          "alleTilbehørPåBestillingsOrdning": true,
+          "brukerHarHjelpemidlerFraFør": null,
+          "brukerHarInfotrygdVedtakFraFør": null,
+          "brukerHarHotsakVedtakFraFør": true,
+          "leveringTilFolkeregistrertAdresse": false,
+          "brukersAdresseErSatt": true,
+          "brukerBorIkkeIUtlandet": true,
+          "brukerErIkkeSkjermetPerson": true,
+          "inneholderIkkeFritekst": true,
+          "kildeErPdl": true,
+          "harIkkeForMangeOrdrelinjer": true,
+          "ingenProdukterErAlleredeUtlevert": true,
+          "brukerErTilknyttetBydelIOslo": null,
+          "harIngenBytter": true,
+          "brukerHarAdresseIOeBS": true
+        },
+        "metaInfo": {
+          "hovedProdukter": ["267912"],
+          "hovedProdukterIkkePåBestillingsordning": [],
+          "tilbehør": [],
+          "tilbehørIkkePåBestillingsordning": []
+        },
+        "version": "b3500279f56dcef4de0891626f0480ac7eaec7ea"
+      }
+    },
+    "saksbehandlingvarsel": [],
+    "id": "a8676826-df2b-4907-96cc-bcf65a348537",
+    "type": "SØKNAD",
+    "innsendingsdato": "2026-01-20",
+    "innsendingstidspunkt": "2026-01-20T09:30:02.774686129Z",
+    "skjemaversjon": 2,
+    "hjmBrukersFnr": "13820599335",
+    "prioritet": "HAST"
+  },
+  "behovsmeldingGjelder": "Søknad om hjelpemidler",
+  "fnrBruker": "13820599335",
+  "fnrInnsender": "13820599335",
+  "opprettet": "2025-11-14T11:44:26.416Z",
+  "sakId": "9010"
+}

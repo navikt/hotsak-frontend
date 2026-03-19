@@ -27,21 +27,21 @@ type OppgaveColumns = {
 export const oppgaveColumns = {
   åpneOppgave: {
     field: 'åpneOppgave',
-    width: 100,
+    width: 85,
     renderCell(row) {
       return <ÅpneOppgave oppgave={row} />
     },
   },
   taOppgave: {
     field: 'taOppgave',
-    width: 100,
+    width: 85,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },
   },
   overtaOppgave: {
     field: 'overtaOppgave',
-    width: 100,
+    width: 85,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },

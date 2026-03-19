@@ -86,3 +86,7 @@ export function naturalBy<T>(selector: (item: T) => string | number | undefined)
 }
 
 const none: Comparator<unknown> = () => 0
+
+export function hasAny<T>(set: ReadonlySet<T>, values: T[]) {
+  return values.some((it) => set.has(it))
+}

@@ -13,7 +13,7 @@ const ANTALL_DAGER_FERDIGSTILTE = 10
 export function MineOppgaver() {
   const [visFerdigstilte, setVisFerdigstilte] = useState(false)
   const iDag = useMemo(() => new Date(), [])
-  const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver({
+  const { oppgaver, isLoading, totalElements, filterOptions, antallHastesaker } = useClientSideOppgaver({
     statuskategori: visFerdigstilte ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEG,
     ferdigstiltIntervall: visFerdigstilte ? intervalString({ days: ANTALL_DAGER_FERDIGSTILTE }, iDag) : undefined,
@@ -21,7 +21,7 @@ export function MineOppgaver() {
   useOppgavemetrikker('Mine', oppgaver.length, totalElements)
   return (
     <Box marginInline="space-20">
-      <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`}>
+      <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} antallHastesaker={antallHastesaker}>
         <Switch
           checked={visFerdigstilte}
           onChange={(event) => {

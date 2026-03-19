@@ -12,6 +12,7 @@ import {
   selectBehandlingstypeTerm,
   selectBrukerKommuneNavn,
   selectInnsenderNavn,
+  selectIsHastesak,
   selectMappenavn,
   selectOppgavetype,
   selectPrioritet,
@@ -32,6 +33,7 @@ export interface UseClientSideOppgaverResponse {
   isLoading: boolean
   isValidating: boolean
   filterOptions: OppgaveFilterOptions
+  antallHastesaker: number
 }
 
 export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}): UseClientSideOppgaverResponse {
@@ -73,5 +75,6 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
     isLoading: response.isLoading,
     isValidating: response.isValidating,
     filterOptions,
+    antallHastesaker: alleOppgaver.filter(selectIsHastesak).length,
   }
 }

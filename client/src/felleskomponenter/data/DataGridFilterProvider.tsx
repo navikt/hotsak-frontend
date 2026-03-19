@@ -37,24 +37,31 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
   }
   let current = state[action.field]
   switch (action.type) {
-    case 'addValue':
+    case 'addValue': {
       if (!current) {
         current = filterValuesOf([action.value])
       } else {
         current = filterValuesOf([...current.values, action.value])
       }
       return { ...state, [action.field]: current }
-    case 'removeValue':
+    }
+    case 'removeValue': {
       if (!current) {
         current = emptyFilterValues()
       } else {
         current = filterValuesOf([...current.values].filter((value) => value !== action.value))
       }
       return { ...state, [action.field]: current }
-    case 'reset':
+    }
+    case 'singleField': {
+      return { [action.field]: filterValuesOf(action.values) }
+    }
+    case 'reset': {
       return { ...state, [action.field]: emptyFilterValues() }
-    default:
+    }
+    default: {
       return state
+    }
   }
 }
 

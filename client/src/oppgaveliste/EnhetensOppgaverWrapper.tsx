@@ -1,20 +1,12 @@
-import { DataGridFilterProvider } from '../felleskomponenter/data/DataGridFilterProvider.tsx'
 import { EnhetensOppgaver } from './EnhetensOppgaver.tsx'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
-import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
-import { OppgavePaginationProvider } from './OppgavePaginationProvider.tsx'
-
-const SUFFIX = 'Enhetens'
+import { OppgavelisteProvider } from './OppgavelisteProvider.tsx'
 
 export default function EnhetensOppgaverWrapper() {
   return (
-    <OppgaveColumnsProvider suffix={SUFFIX} defaultColumns={defaultColumns}>
-      <OppgavePaginationProvider suffix={SUFFIX}>
-        <DataGridFilterProvider suffix={SUFFIX}>
-          <EnhetensOppgaver />
-        </DataGridFilterProvider>
-      </OppgavePaginationProvider>
-    </OppgaveColumnsProvider>
+    <OppgavelisteProvider suffix="Enhetens" defaultColumns={defaultColumns}>
+      <EnhetensOppgaver />
+    </OppgavelisteProvider>
   )
 }
 

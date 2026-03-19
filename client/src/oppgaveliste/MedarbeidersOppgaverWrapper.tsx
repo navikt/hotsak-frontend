@@ -1,20 +1,12 @@
-import { DataGridFilterProvider } from '../felleskomponenter/data/DataGridFilterProvider.tsx'
 import { MedarbeidersOppgaver } from './MedarbeidersOppgaver.tsx'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
-import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
-import { OppgavePaginationProvider } from './OppgavePaginationProvider.tsx'
-
-const SUFFIX = 'Medarbeiders'
+import { OppgavelisteProvider } from './OppgavelisteProvider.tsx'
 
 export default function MineOppgaverWrapper() {
   return (
-    <OppgaveColumnsProvider suffix={SUFFIX} defaultColumns={defaultColumns}>
-      <OppgavePaginationProvider suffix={SUFFIX}>
-        <DataGridFilterProvider suffix={SUFFIX}>
-          <MedarbeidersOppgaver />
-        </DataGridFilterProvider>
-      </OppgavePaginationProvider>
-    </OppgaveColumnsProvider>
+    <OppgavelisteProvider suffix="Medarbeiders" defaultColumns={defaultColumns}>
+      <MedarbeidersOppgaver />
+    </OppgavelisteProvider>
   )
 }
 

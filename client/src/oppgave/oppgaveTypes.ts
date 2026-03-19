@@ -79,12 +79,14 @@ export enum Statuskategori {
 }
 
 export enum Oppgaveprioritet {
+  KRITISK = 'KRITISK',
   HØY = 'HØY',
   NORMAL = 'NORMAL',
   LAV = 'LAV',
 }
 
 export const OppgaveprioritetLabel: Record<Oppgaveprioritet, string> = {
+  KRITISK: 'Kritisk',
   HØY: 'Høy',
   NORMAL: 'Normal',
   LAV: 'Lav',

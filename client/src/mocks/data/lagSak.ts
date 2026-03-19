@@ -45,7 +45,7 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
 ): InsertHjelpemiddelsak {
   const { behovsmelding, behovsmeldingGjelder, fnrBruker, fnrInnsender, opprettet } = behovsmeldingCase
   let sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
-  const { type: behovsmeldingstype, bruker } = behovsmelding
+  const { type: behovsmeldingstype, bruker, levering } = behovsmelding
   switch (behovsmeldingstype) {
     case BehovsmeldingType.BESTILLING:
       sakstype = Sakstype.BESTILLING
@@ -95,7 +95,12 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
     saksbehandler: undefined,
     vedtak: undefined,
     greitÅViteFaktum: [],
-    hast: undefined,
+    hast: levering.hast
+      ? {
+          årsaker: levering.hast.hasteårsaker,
+          begrunnelse: levering.hast.hastBegrunnelse,
+        }
+      : undefined,
   }
 }
 

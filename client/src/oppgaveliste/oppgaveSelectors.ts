@@ -1,6 +1,6 @@
 import { parseISO } from 'date-fns'
 
-import { type Oppgave, type OppgaveId, type Oppgaveprioritet, type Oppgavetype } from '../oppgave/oppgaveTypes.ts'
+import { type Oppgave, type OppgaveId, Oppgaveprioritet, type Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { type OppgaveStatusType } from '../types/types.internal.ts'
 import { OPPGAVE_FILTER_OPTION_TOMME } from './useOppgaveFilterOptions.ts'
 
@@ -30,6 +30,10 @@ export function selectMappenavn(it: Oppgave): string {
 
 export function selectPrioritet(it: Oppgave): Oppgaveprioritet {
   return it.prioritet
+}
+
+export function selectIsHastesak(it: Oppgave): boolean {
+  return it.prioritet === Oppgaveprioritet.KRITISK || it.prioritet === Oppgaveprioritet.HØY
 }
 
 export function selectInnsenderNavn(it: Oppgave): string {

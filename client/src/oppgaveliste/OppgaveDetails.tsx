@@ -43,7 +43,7 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
         <OppgaveSisteKommentar oppgaveId={visible ? oppgave.oppgaveId : null} />
         <div>
           <Strek />
-          <BodyShort as={Link} href={oppgaveUrl} size="small" target="_blank" variant="subtle" spacing>
+          <BodyShort as={Link} href={oppgaveUrl} size="small" target="_blank" spacing>
             Åpne i Gosys
           </BodyShort>
         </div>

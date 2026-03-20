@@ -1,13 +1,25 @@
 .root {
 }
 
-.headerButton {
+.title,
+.userButton,
+.toppmenyLinkButton {
+  white-space: nowrap;
+}
+
+.toppmenyLinkButton {
+  position: relative;
+  border-left: none;
   border-right: 1px solid var(--ax-border-neutral-subtleA);
   text-decoration: none;
 }
 
-.headerButtonActive {
-  box-shadow: 0 4px 0 0 var(--ax-border-strong);
-  margin-bottom: -1px;
-  padding-bottom: 1px;
+.toppmenyLinkButtonActive::after {
+  position: absolute;
+  content: '';
+  background-color: var(--ax-border-strong);
+  height: 4px;
+  bottom: -1px;
+  left: 0;
+  right: 0;
 }

@@ -28,26 +28,28 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
       <HGrid columns="1fr 1fr" align="center" className={classes.grid}>
         <HStack gap="space-12" align="center" justify="start" wrap={false}>
           <BodyShort size="small">{text}</BodyShort>
-          {antallHastesaker > 0 && !loading ? (
+          {!loading && (
             <>
-              <Button
-                size="xsmall"
-                type="button"
-                variant="primary"
-                data-color="warning"
-                onClick={() => {
-                  dispatch({
-                    type: 'singleField',
-                    field: 'prioritet',
-                    values: hastesakValues,
-                  })
-                }}
-              >{`Vis hastesaker (${antallHastesaker})`}</Button>
+              {antallHastesaker > 0 ? (
+                <Button
+                  size="xsmall"
+                  type="button"
+                  variant="primary"
+                  data-color="warning"
+                  onClick={() => {
+                    dispatch({
+                      type: 'singleField',
+                      field: 'prioritet',
+                      values: hastesakValues,
+                    })
+                  }}
+                >{`Vis hastesaker (${antallHastesaker})`}</Button>
+              ) : (
+                <Tag variant="success" size="small">
+                  Ingen hastesaker.
+                </Tag>
+              )}
             </>
-          ) : (
-            <Tag variant="success" size="small">
-              Ingen hastesaker.
-            </Tag>
           )}
         </HStack>
         <HStack gap="space-12" align="center" justify="end" wrap={false}>

@@ -96,7 +96,6 @@ export function SakV2() {
         style={{
           flex: 1,
           minHeight: 0,
-          //minWidth: `${totalVisibleMinWidth}px`,
         }}
       >
         <Group orientation="horizontal" defaultLayout={defaultLayout} onLayoutChange={onLayoutChanged}>
@@ -105,6 +104,7 @@ export function SakV2() {
               id="behandlingspanel"
               defaultSize={bahandlingsPanel.defaultSize}
               minSize={`${bahandlingsPanel.minWidth}${bahandlingsPanel.minWidthUnit}`}
+              groupResizeBehavior="preserve-pixel-size"
             >
               <AvrundetPanel>
                 <BehandlingPanel sak={sak.data} behovsmelding={behovsmelding} />
@@ -148,6 +148,7 @@ export function SakV2() {
                 id="kontaktinformasjonpanel"
                 defaultSize={kontaktinformasjonPanel.defaultSize}
                 minSize={`${kontaktinformasjonPanel.minWidth}${kontaktinformasjonPanel.minWidthUnit}`}
+                groupResizeBehavior="preserve-pixel-size"
               >
                 <AvrundetPanel>
                   <KontaktinformasjonPanel sak={sak.data} behovsmelding={behovsmelding} />

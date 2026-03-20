@@ -5,7 +5,7 @@ export interface PanelDefinition {
   defaultVisible: boolean
   minWidth: number
   minWidthUnit: WidthUnit
-  defaultSize: number
+  defaultSize: string
 }
 
 export const PANELS = [
@@ -14,29 +14,29 @@ export const PANELS = [
     defaultVisible: true,
     minWidth: 220,
     minWidthUnit: 'px',
-    defaultSize: 15,
+    defaultSize: '290px',
   },
   {
     id: 'brevpanel',
     defaultVisible: false,
     minWidth: 320,
     minWidthUnit: 'px',
-    defaultSize: 40,
+    defaultSize: '40%',
   },
   {
     id: 'behovsmeldingspanel',
     defaultVisible: true,
     minWidth: 300,
     minWidthUnit: 'px',
-    defaultSize: 34,
+    defaultSize: '34%',
   },
-  { id: 'kontaktinformasjonpanel', defaultVisible: true, minWidth: 220, minWidthUnit: 'px', defaultSize: 20 },
+  { id: 'kontaktinformasjonpanel', defaultVisible: true, minWidth: 220, minWidthUnit: 'px', defaultSize: '300px' },
   {
     id: 'sidebarpanel',
     defaultVisible: true,
     minWidth: 230,
     minWidthUnit: 'px',
-    defaultSize: 20,
+    defaultSize: '20%',
   },
 ] as const satisfies PanelDefinition[]
 

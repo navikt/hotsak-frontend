@@ -1,33 +1,36 @@
-import { Tag } from '@navikt/ds-react'
-import styled from 'styled-components'
+import { Tag, type TagProps } from '@navikt/ds-react'
 
 import { OppgaveStatusLabel, OppgaveStatusType, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
+import classes from './StatusTag.module.css'
 
-export const StatusTag = ({
-  sakStatus,
-  vedtakStatus,
+export function StatusTag({
+  saksstatus,
+  vedtaksstatus,
 }: {
-  sakStatus: OppgaveStatusType
-  vedtakStatus?: VedtakStatusType
-}) => {
+  saksstatus: OppgaveStatusType
+  vedtaksstatus?: VedtakStatusType
+}) {
   return (
-    <TagWrapper>
-      <Tag data-testid="tag-sak-status" size="small" variant={tagVariant(sakStatus, vedtakStatus)}>
-        {sakStatus === OppgaveStatusType.VEDTAK_FATTET && vedtakStatus
-          ? VedtakStatusLabel.get(vedtakStatus)
-          : OppgaveStatusLabel.get(sakStatus)}
-      </Tag>
-    </TagWrapper>
+    <Tag
+      className={classes.root}
+      data-testid="tag-sak-status"
+      size="small"
+      variant={tagVariant(saksstatus, vedtaksstatus)}
+    >
+      {saksstatus === OppgaveStatusType.VEDTAK_FATTET && vedtaksstatus
+        ? VedtakStatusLabel.get(vedtaksstatus)
+        : OppgaveStatusLabel.get(saksstatus)}
+    </Tag>
   )
 }
 
-const tagVariant = (status: OppgaveStatusType, vedtakStatus?: VedtakStatusType) => {
-  switch (status) {
+function tagVariant(saksstatus: OppgaveStatusType, vedtaksstatus?: VedtakStatusType): TagProps['variant'] {
+  switch (saksstatus) {
     case OppgaveStatusType.AVVENTER_DOKUMENTASJON:
       return 'warning'
     case OppgaveStatusType.VEDTAK_FATTET:
-      if (vedtakStatus && vedtakStatus === VedtakStatusType.INNVILGET) return 'success'
-      if (vedtakStatus && vedtakStatus === VedtakStatusType.AVSLÅTT) return 'error'
+      if (vedtaksstatus === VedtakStatusType.INNVILGET) return 'success'
+      if (vedtaksstatus === VedtakStatusType.AVSLÅTT) return 'error'
       else return 'info'
     case OppgaveStatusType.AVVIST:
       return 'error'
@@ -35,7 +38,3 @@ const tagVariant = (status: OppgaveStatusType, vedtakStatus?: VedtakStatusType) 
       return 'info'
   }
 }
-
-const TagWrapper = styled.div`
-  white-space: nowrap;
-`

@@ -19,6 +19,8 @@ import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
+import { useOppgave } from '../../oppgave/useOppgave.ts'
+import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 
 const BarnebrillesakContainer = styled.div`
   display: flex;
@@ -35,6 +37,7 @@ const Header = styled(HStack)`
 `
 
 const BarnebrillesakContent = memo(() => {
+  const { oppgave } = useOppgave()
   const { sak, error } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
@@ -51,19 +54,22 @@ const BarnebrillesakContent = memo(() => {
     )
   }
 
-  if (!sak) return <div>Fant ikke saken</div>
+  if (!oppgave || !sak) return null
 
+  const { saksstatus, vedtak } = sak.data
+  const visStatusTag = !oppgave.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
   return (
     <div>
       <Header wrap={false} align={'baseline'}>
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack justify="center" align="center" gap="space-16">
-          <StatusTag sakStatus={sak.data.saksstatus} vedtakStatus={sak.data.vedtak?.status} />
+          {visStatusTag && <StatusTag saksstatus={saksstatus} vedtaksstatus={vedtak?.status} />}
+          <OppgavePåVentTag oppgave={oppgave} variant="outline" />
           {harSkrivetilgang && <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />}
         </HStack>
       </Header>
-      {sak.data.saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
+      {saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
         <AlertContainerMedium>
           <Alert variant="info" size="small">
             Saken avventer opplysninger, og er satt på vent. Fortsett behandlingen av saken via menyen til høyre.

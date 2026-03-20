@@ -1,0 +1,5 @@
+.root {
+  align-self: center;
+  padding: 0 var(--ax-space-12);
+  min-width: 200px;
+}

@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { Search } from '@navikt/ds-react'
 
-export function Søk({ onSearch }: { onSearch: (...args: any[]) => any }) {
+import classes from './Søk.module.css'
+
+export function Søk({ onSearch }: { onSearch: (value: string) => void }) {
   const [søketekst, setSøketekst] = useState<string>('')
 
   return (
     <form
-      style={{ paddingTop: '0.5rem', marginRight: '1rem' }}
       role="search"
+      className={classes.root}
       onSubmit={(e) => {
         e.preventDefault()
         onSearch(søketekst)

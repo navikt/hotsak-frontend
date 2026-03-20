@@ -539,7 +539,7 @@ export enum JournalpostStatusType {
 /**
  * Kombinert saks- og oppgavetype.
  *
- * todo -> rename til `Sakstype`
+ * todo -> rename til `Saksstatus`
  */
 export enum OppgaveStatusType {
   AVVENTER_JOURNALFORING = 'AVVENTER_JOURNALFORING',

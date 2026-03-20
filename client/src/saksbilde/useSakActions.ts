@@ -2,7 +2,7 @@ import { type Actions, useActionState } from '../action/Actions.ts'
 import type { ISvar } from '../innsikt/Besvarelse.ts'
 import { http } from '../io/HttpClient.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
-import { type AvvisBestilling, OppgaveStatusType, type TotrinnskontrollData } from '../types/types.internal.ts'
+import { type AvvisBestilling, type TotrinnskontrollData } from '../types/types.internal.ts'
 import { mutateSak } from './mutateSak.ts'
 
 export interface SakActions extends Actions {
@@ -14,11 +14,6 @@ export interface SakActions extends Actions {
 
   opprettTotrinnskontroll(): Promise<void>
   fullførTotrinnskontroll(data: TotrinnskontrollData): Promise<void>
-
-  /**
-   * På sikt blir nok dette noe man gjør på oppgavenivå.
-   */
-  fortsettBehandling(): Promise<void>
 }
 
 export function useSakActions(): SakActions {
@@ -71,13 +66,6 @@ export function useSakActions(): SakActions {
     async fullførTotrinnskontroll(data: TotrinnskontrollData): Promise<void> {
       return execute(async () => {
         await http.put(`/api/sak/${sakId}/kontroll`, { oppgaveId, ...data }, { versjon }) // totrinnskontroll
-        await mutateOppgaveOgSak()
-      })
-    },
-
-    async fortsettBehandling(): Promise<void> {
-      return execute(async () => {
-        await http.put(`/api/sak/${sakId}/status`, { status: OppgaveStatusType.TILDELT_SAKSBEHANDLER })
         await mutateOppgaveOgSak()
       })
     },

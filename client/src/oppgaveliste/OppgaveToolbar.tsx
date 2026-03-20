@@ -14,11 +14,12 @@ import type { OppgaveColumnField } from './oppgaveColumns.tsx'
 export interface OppgaveToolbarProps {
   text: string
   antallHastesaker?: number
+  loading?: boolean
   children?: ReactNode
 }
 
 export function OppgaveToolbar(props: OppgaveToolbarProps) {
-  const { text, antallHastesaker = 0, children } = props
+  const { text, antallHastesaker = 0, loading, children } = props
   const dispatch = useDataGridFilterDispatch<OppgaveColumnField>()
   const isDataGridFiltered = useIsDataGridFiltered()
   const handleFilterResetAll = useDataGridFilterResetAllHandler()
@@ -27,26 +28,28 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
       <HGrid columns="1fr 1fr" align="center" className={classes.grid}>
         <HStack gap="space-12" align="center" justify="start" wrap={false}>
           <BodyShort size="small">{text}</BodyShort>
-          {antallHastesaker > 0 ? (
+          {!loading && (
             <>
-              <Button
-                size="xsmall"
-                type="button"
-                variant="primary"
-                data-color="warning"
-                onClick={() => {
-                  dispatch({
-                    type: 'singleField',
-                    field: 'prioritet',
-                    values: hastesakValues,
-                  })
-                }}
-              >{`Vis hastesaker (${antallHastesaker})`}</Button>
+              {antallHastesaker > 0 ? (
+                <Button
+                  size="xsmall"
+                  type="button"
+                  variant="primary"
+                  data-color="warning"
+                  onClick={() => {
+                    dispatch({
+                      type: 'singleField',
+                      field: 'prioritet',
+                      values: hastesakValues,
+                    })
+                  }}
+                >{`Vis hastesaker (${antallHastesaker})`}</Button>
+              ) : (
+                <Tag variant="success" size="small">
+                  Ingen hastesaker.
+                </Tag>
+              )}
             </>
-          ) : (
-            <Tag variant="success" size="small">
-              Ingen hastesaker.
-            </Tag>
           )}
         </HStack>
         <HStack gap="space-12" align="center" justify="end" wrap={false}>

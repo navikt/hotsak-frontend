@@ -124,6 +124,7 @@ export const Brev = () => {
         'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify({
+        oppgaveId: oppgave?.oppgaveId,
         brevtype: 'BREVEDITOR_VEDTAKSBREV',
         målform: 'BOKMÅL',
         data: data,

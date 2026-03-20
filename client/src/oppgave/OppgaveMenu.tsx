@@ -5,8 +5,6 @@ import { type Oppgave, type OppgaveId, Oppgavetype } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
-import { useSakActions } from '../saksbilde/useSakActions.ts'
 import { useOppgaveUrl } from './useOppgaveUrl.ts'
 
 export interface OppgaveMenuProps {
@@ -24,7 +22,6 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
     gjeldendeEnhet,
   } = useOppgaveregler(oppgave)
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
-  const { fortsettBehandling } = useSakActions()
 
   if (!oppgave || oppgaveErAvsluttet) {
     return null
@@ -49,27 +46,15 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   const isJournalføring = oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
   return (
     <ActionMenu.Group label="Oppgave">
-      {!isJournalføring && oppgaveErPåVent && (
-        <ActionMenu.Item
-          onSelect={async () => {
-            await fortsettBehandling()
-            if (onAction) return onAction()
-          }}
-        >
+      {oppgaveErPåVent ? (
+        <OppgaveModalActionMenuItem modal={OppgaveModalType.FORTSETT_BEHANDLING}>
           Fortsett behandling
-        </ActionMenu.Item>
+        </OppgaveModalActionMenuItem>
+      ) : (
+        <OppgaveModalActionMenuItem modal={OppgaveModalType.SETT_PÅ_VENT}>
+          Sett oppgaven på vent
+        </OppgaveModalActionMenuItem>
       )}
-      <Eksperiment>
-        {oppgaveErPåVent ? (
-          <OppgaveModalActionMenuItem modal={OppgaveModalType.FORTSETT_BEHANDLING}>
-            Fortsett behandling (ny)
-          </OppgaveModalActionMenuItem>
-        ) : (
-          <OppgaveModalActionMenuItem modal={OppgaveModalType.SETT_PÅ_VENT}>
-            Sett oppgaven på vent
-          </OppgaveModalActionMenuItem>
-        )}
-      </Eksperiment>
       {!isJournalføring && (
         <OppgaveModalActionMenuItem modal={OppgaveModalType.ENDRE_BEHANDLINGSTEMA}>
           Endre behandlingstema

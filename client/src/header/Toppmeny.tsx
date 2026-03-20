@@ -37,7 +37,7 @@ export function Toppmeny() {
 
   return (
     <InternalHeader className={classes.root}>
-      <InternalHeader.Title as="a" href="/">
+      <InternalHeader.Title as="a" href="/" className={classes.title}>
         {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
       </InternalHeader.Title>
       <HStack justify="space-between" wrap={false} style={{ flex: 1 }}>
@@ -104,7 +104,11 @@ export function Toppmeny() {
       </ActionMenu>
       <ActionMenu>
         <ActionMenu.Trigger>
-          <InternalHeader.UserButton name={innloggetAnsatt.navn} description={valgtEnhet?.navn} />
+          <InternalHeader.UserButton
+            name={innloggetAnsatt.navn}
+            description={valgtEnhet?.navn}
+            className={classes.userButton}
+          />
         </ActionMenu.Trigger>
         <ActionMenu.Content>
           <ActionMenu.Group label="Andre enheter">
@@ -139,8 +143,8 @@ function ToppmenyLinkButton({ to, children }: { to: To; children: ReactNode }) {
     <InternalHeader.Button
       as={Link}
       to={to}
-      className={clsx(classes.headerButton, {
-        [classes.headerButtonActive]: valgt,
+      className={clsx(classes.toppmenyLinkButton, {
+        [classes.toppmenyLinkButtonActive]: valgt,
       })}
     >
       {children}

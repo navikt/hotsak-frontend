@@ -18,7 +18,7 @@
   position: absolute;
   content: '';
   background-color: var(--ax-border-strong);
-  height: 4px;
+  height: 8px;
   bottom: -1px;
   left: 0;
   right: 0;

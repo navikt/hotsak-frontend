@@ -21,7 +21,11 @@ export function MineOppgaver() {
   useOppgavemetrikker('Mine', oppgaver.length, totalElements)
   return (
     <Box marginInline="space-20">
-      <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} antallHastesaker={antallHastesaker}>
+      <OppgaveToolbar
+        text={`${oppgaver.length} av ${totalElements} oppgaver`}
+        antallHastesaker={antallHastesaker}
+        loading={isLoading}
+      >
         <Switch
           checked={visFerdigstilte}
           onChange={(event) => {

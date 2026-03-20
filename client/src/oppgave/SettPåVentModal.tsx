@@ -9,6 +9,7 @@ import { useOppgaveActions } from './useOppgaveActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { isNotBlank } from '../utils/type.ts'
 import { tilLocalDateString } from '../utils/dato.ts'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 export function SettPåVentModal() {
   const { gjeldendeEnhet } = useInnloggetAnsatt()
@@ -68,7 +69,9 @@ export function SettPåVentModal() {
           <DatePicker {...datepickerPropsFristFerdigstillelse}>
             <DatePicker.Input {...inputPropsFristFerdigstillelse} label="Frist" size="small" />
           </DatePicker>
-          <Checkbox size="small">{`Legg tilbake til ${gjeldendeEnhet.navn}`}</Checkbox>
+          <Eksperiment>
+            <Checkbox size="small">{`Legg tilbake til ${gjeldendeEnhet.navn}`}</Checkbox>
+          </Eksperiment>
           <Textarea
             size="small"
             label="Kommentar (valgfri)"

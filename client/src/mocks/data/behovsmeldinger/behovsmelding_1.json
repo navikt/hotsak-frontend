@@ -53,11 +53,7 @@
         }
       ],
       "funksjonsnedsettelser": ["BEVEGELSE"],
-      "funksjonsbeskrivelse": {
-        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE",
-        "diagnose": "Kneartrose",
-        "beskrivelse": "Test av \"Det er uavklart om innbygger har en varig sykdom, skade eller lyte.\" Det er uavklart om innbygger har en varig sykdom, skade eller lyte. Det er uavklart om innbygger har en varig sykdom, skade eller lyte. Det er uavklart om innbygger har en varig sykdom, skade eller lyte. Det er uavklart om innbygger har en varig sykdom, skade eller lyte. Det er uavklart om innbygger har en varig sykdom, skade eller lyte. Det er uavklart om innbygger har en varig sykdom, skade eller lyte. hajkdfhjsadhfjksadhfkjhsdjkfhsakjdfhjksadhfjksadhfkjshadjkfhasdkjfhsakjdfhjksadhfkjsadhfjksadhfkjsahdfkjsahdjkhsadkfhasdkjfhsakjdhfsajkdhfjksadhfjkashdfksadhfkjahsdfkjhasdfhsadkjfhaskdjfhaksjdhfkjasdhfkjsadfhkjasdh"
-      }
+      "funksjonsbeskrivelse": null
     },
     "hjelpemidler": {
       "hjelpemidler": [

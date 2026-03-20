@@ -39,9 +39,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
           {behovsmelding.levering.hast && <Hast hast={behovsmelding.levering.hast} />}
           <section className={classes.panel}>
             <CompactExpandableCard tittel="Om brukeren">
-              {funksjonsbeskrivelse && (
-                <FunksjonsbeskrivelseV2 funksjonsbeskrivelse={funksjonsbeskrivelse} skjulHeading={true} />
-              )}
+              <FunksjonsbeskrivelseV2 funksjonsbeskrivelse={funksjonsbeskrivelse} skjulHeading={true} />
             </CompactExpandableCard>
           </section>
           <section className={classes.søknadContainer}>

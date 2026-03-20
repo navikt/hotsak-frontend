@@ -1,10 +1,27 @@
-import { Box, Label, VStack } from '@navikt/ds-react'
+import { Box, Heading, Label, VStack } from '@navikt/ds-react'
 import { Skillelinje } from '../../../felleskomponenter/Strek'
 import { BrytbarBrødtekst, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
-import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../../types/BehovsmeldingTypes'
+import { Funksjonsbeskrivelse } from '../../../types/BehovsmeldingTypes'
+import { tekstByFunksjonsnedsettelse } from './tilbehør/funksjonsnedsettelser'
 
-export function FunksjonsbeskrivelseV2(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse; skjulHeading?: boolean }) {
+export function FunksjonsbeskrivelseV2(props: { funksjonsbeskrivelse?: Funksjonsbeskrivelse; skjulHeading?: boolean }) {
   const { funksjonsbeskrivelse } = props
+
+  if (!funksjonsbeskrivelse) {
+    return (
+      <Box paddingInline={'space-12 space-8'} paddingBlock="space-8">
+        <Heading size="xsmall" spacing>
+          Funksjonsbeskrivelse mangler
+        </Heading>
+        <Tekst>
+          Behovsmeldingen ble automatisk gjort om fra bestilling til søknad, da Hotsak av tekniske årsaker ikke kan
+          opprette en ordre i denne saken. Søknaden oppfyller kravene til bestillingsordningen. Derfor har ikke søknaden
+          en funksjonsbeskrivelse.
+        </Tekst>
+      </Box>
+    )
+  }
+
   const { beskrivelse } = funksjonsbeskrivelse
 
   return (
@@ -30,17 +47,4 @@ export function FunksjonsbeskrivelseV2(props: { funksjonsbeskrivelse: Funksjonsb
       </VStack>
     </Box>
   )
-}
-
-export const tekstByFunksjonsnedsettelse = (brukerFunksjon: Funksjonsbeskrivelse) => {
-  const tekst: Record<keyof typeof InnbyggersVarigeFunksjonsnedsettelse, string> = {
-    [InnbyggersVarigeFunksjonsnedsettelse.ALDERDOMSSVEKKELSE]: 'Innbygger har alderdomssvekkelse.',
-    [InnbyggersVarigeFunksjonsnedsettelse.ANNEN_VARIG_DIAGNOSE]: `Innbygger har en varig diagnose: ${brukerFunksjon.diagnose}`,
-    [InnbyggersVarigeFunksjonsnedsettelse.ANNEN_DIAGNOSE]: `Innbygger har en diagnose: ${brukerFunksjon.diagnose}`,
-    [InnbyggersVarigeFunksjonsnedsettelse.UAVKLART]:
-      'Det er uavklart om innbygger har en varig sykdom, skade eller lyte.',
-    [InnbyggersVarigeFunksjonsnedsettelse.UAVKLART_V2]:
-      'Det er uavklart om personen har en sykdom, skade eller lyte som har ført til varig og vesentlig nedsatt funksjonsevne.',
-  }
-  return tekst[brukerFunksjon.innbyggersVarigeFunksjonsnedsettelse]
 }

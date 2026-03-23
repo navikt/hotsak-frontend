@@ -1,5 +1,8 @@
 import { replacer } from './serde.ts'
 
+const STORAGE_VERSION_KEY = 'storageVersion'
+const CURRENT_STORAGE_VERSION = 1
+
 export const storageKeys = new Set([
   'darkmode',
   'dataGridFilterEnhetens',
@@ -18,6 +21,7 @@ export const storageKeys = new Set([
   'sakBrukerinnstillinger',
   'sortState',
   'userTrackingId',
+  'storageVersion',
 ])
 
 /**
@@ -29,6 +33,18 @@ export function cleanupStorage(storage: Storage = window.localStorage) {
     if (key != null && !storageKeys.has(key)) {
       storage.removeItem(key)
     }
+  }
+}
+
+/**
+ * Fjern kolonnenøkler hvis storage-versjon er utdatert. For å tvinge brukere til å få nye defaultversjoner av en key i storageKeys
+ * For å ta i bruk: Bump CURRENT_STORAGE_VERSION og legg til keys i migrerLocalStorage som ønskes bustet
+ */
+export function migrerLocalStorage(storage: Storage = window.localStorage) {
+  const version = storage.getItem(STORAGE_VERSION_KEY)
+  if (version !== String(CURRENT_STORAGE_VERSION)) {
+    //storage.removeItem('key ønsket bustet')
+    storage.setItem(STORAGE_VERSION_KEY, String(CURRENT_STORAGE_VERSION))
   }
 }
 

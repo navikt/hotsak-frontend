@@ -34,7 +34,7 @@ export const oppgaveColumns = {
   },
   taOppgave: {
     field: 'taOppgave',
-    width: 85,
+    width: 105,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },

@@ -31,7 +31,7 @@ export function TaEllerÅpneOppgave(props: TaEllerÅpneOppgaveProps) {
   const tildeltSaksbehandlerId = oppgave.tildeltSaksbehandler?.id
   return (
     <TaOppgaveButton oppgave={oppgave} variant="tertiary" size="xsmall" onOppgavetildeling={handleOppgavetildeling}>
-      {tildeltSaksbehandlerId != null && tildeltSaksbehandlerId !== saksbehandlerId ? 'Overta' : 'Plukk'}
+      {tildeltSaksbehandlerId != null && tildeltSaksbehandlerId !== saksbehandlerId ? 'Overta' : 'Ta oppgaven'}
     </TaOppgaveButton>
   )
 }

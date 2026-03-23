@@ -30,7 +30,7 @@ export function useHøreapparatVedtak(
     error,
     isLoading,
   } = useSwr<HøreapparatVedtak, HttpError, [string, string] | null>(
-    fnr && !erProd && !harHøreapparatVedtakFraVedtak ? ['/api/ha-vedtak', fnr] : null,
+    fnr && !erProd && !harHøreapparatVedtakFraVedtak ? ['/api/person/ha-vedtak', fnr] : null,
     ([url, fnr]) => http.post<{ fnr: string }, HøreapparatVedtak>(url, { fnr })
   )
 

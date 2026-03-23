@@ -7,6 +7,7 @@ import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { usePerson } from '../personoversikt/usePerson'
 import { useBehandling } from '../sak/v2/behandling/useBehandling'
 import { SakProvider } from '../sak/v2/SakProvider'
+import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakV2 } from '../sak/v2/SakV2'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde'
 import { OppgaveStatusType, SakBase, Sakstype } from '../types/types.internal'
@@ -49,7 +50,9 @@ const SaksbildeContent = memo(() => {
   if (nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD && !sakErFerdigBehandletIHotsakClassic) {
     return (
       <SakProvider>
-        <SakV2 />
+        <SakbrukerinnstillingerProvider>
+          <SakV2 />
+        </SakbrukerinnstillingerProvider>
       </SakProvider>
     )
   }

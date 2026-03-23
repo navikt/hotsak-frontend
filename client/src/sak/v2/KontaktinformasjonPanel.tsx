@@ -23,9 +23,13 @@ import { WarningTag } from '../felles/AlertTag.tsx'
 import { KopierbarFelt } from '../felles/KopierbartFelt.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
+import { useExpandedSection } from './SakbrukerinnstillingerContext.ts'
 
 export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('kontaktinformasjonpanel')
+  const [merOmFormidlerÅpen, setMerOmFormidlerÅpen] = useExpandedSection('merOmFormidler')
+  const [merOmOppfølgingsansvarligÅpen, setMerOmOppfølgingsansvarligÅpen] =
+    useExpandedSection('merOmOppfølgingsansvarlig')
   const { hjelpemiddelformidler: formidler } = behovsmelding.levering
   const levering = behovsmelding.levering
   const bruker = behovsmelding.bruker
@@ -62,7 +66,12 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
                 textColor="subtle"
               />
 
-              <ReadMore size="small" header="Mer om formidler">
+              <ReadMore
+                size="small"
+                header="Mer om formidler"
+                open={merOmFormidlerÅpen}
+                onOpenChange={setMerOmFormidlerÅpen}
+              >
                 <VStack gap="space-4">
                   <KopierbarFelt etikett="Navn" tekst={formaterNavn(formidler.navn)} />
                   <KopierbarFelt etikett="Arbeidssted" tekst={formidler.arbeidssted} />
@@ -88,7 +97,12 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
                 <VStack gap="space-12">
                   <WarningTag>Annen oppfølgingsansvarlig</WarningTag>
                   <Tekst textColor="subtle">{`${formaterNavn(oppfølgingsansvarlig.navn)} - ${oppfølgingsansvarlig.stilling} - ${oppfølgingsansvarlig.arbeidssted} - Tlf: ${formaterTelefonnummer(oppfølgingsansvarlig.telefon)}`}</Tekst>
-                  <ReadMore size="small" header="Mer om oppfølgingsansvarlig">
+                  <ReadMore
+                    size="small"
+                    header="Mer om oppfølgingsansvarlig"
+                    open={merOmOppfølgingsansvarligÅpen}
+                    onOpenChange={setMerOmOppfølgingsansvarligÅpen}
+                  >
                     <VStack gap="space-4">
                       <KopierbarFelt etikett="Navn" tekst={formaterNavn(oppfølgingsansvarlig.navn)} />
                       <KopierbarFelt etikett="Arbeidssted" tekst={oppfølgingsansvarlig.arbeidssted} />

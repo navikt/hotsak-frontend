@@ -136,8 +136,23 @@
         "treffesEnklest": "Dagtid i to/halv ett-tiden",
         "kommunenavn": "TRYSIL"
       },
-      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
-      "annenOppfølgingsansvarlig": null,
+      "oppfølgingsansvarlig": "ANNEN_OPPFØLGINGSANSVARLIG",
+      "annenOppfølgingsansvarlig": {
+        "navn": {
+          "fornavn": "Kvadratisk",
+          "mellomnavn": null,
+          "etternavn": "Faktura"
+        },
+        "arbeidssted": "Østby Dans og Fysioterapi",
+        "stilling": "Fysioterapetut",
+        "telefon": "24252525",
+        "adresse": {
+          "adresse": "Veste Østby 27",
+          "postnummer": "2424",
+          "poststed": "ØSTBY"
+        },
+        "epost": "a@b.com"
+      },
       "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "annenUtleveringsadresse": null,
       "annenUtleveringskommune": { "navn": "OSLO", "nummer": "0301" },

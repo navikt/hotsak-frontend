@@ -4,6 +4,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
+import { useUmami } from '../sporing/useUmami.ts'
+import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 
 export function LeggTilbakeModal() {
   const { åpenModal } = useOppgaveContext()
@@ -16,8 +18,12 @@ export function LeggTilbakeModal() {
   })
 
   const { fjernOppgavetildeling } = useOppgaveActions()
+  const { logOppgaveLagtTilbake } = useUmami()
+  const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async () => {
     await fjernOppgavetildeling()
+    logOppgaveLagtTilbake()
+    showSuccessToast('Oppgaven ble lagt tilbake til felles oppgavekø')
     lukkModal()
   })
 

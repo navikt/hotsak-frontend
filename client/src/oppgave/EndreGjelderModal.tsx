@@ -9,6 +9,7 @@ import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
+import { useUmami } from '../sporing/useUmami.ts'
 
 export interface EndreGjelderModalProps {
   oppgave: Oppgave
@@ -30,16 +31,20 @@ export function EndreGjelderModal(props: EndreGjelderModalProps) {
     [kodeverkGjelder]
   )
 
+  const gjeldendeBehandlingstema = oppgave.kategorisering.behandlingstema
   const form = useForm<{ behandlingstema: string }>({
     defaultValues: {
-      behandlingstema: oppgave.kategorisering.behandlingstema?.kode ?? '',
+      behandlingstema: gjeldendeBehandlingstema?.kode ?? '',
     },
   })
 
   const { endreOppgave } = useOppgaveActions()
+  const { logOppgaveGjelderEndret } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
     await endreOppgave({ behandlingstema: data.behandlingstema })
+    const nyttBehandlingstema = behandlingstemaer.find((it) => it.kode === data.behandlingstema)
+    logOppgaveGjelderEndret({ fra: gjeldendeBehandlingstema?.term, til: nyttBehandlingstema?.term })
     showSuccessToast('Endringene ble lagret')
     lukkModal()
   })

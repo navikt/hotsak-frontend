@@ -4,9 +4,9 @@ import { useInnloggetAnsatt } from '../tilgang/useTilgang'
 import { logDebug } from '../utvikling/logDebug.ts'
 import { UmamiTaksonomi } from './UmamiTaksonomi.ts'
 
-export type LogRecord = Record<string, boolean | number | string>
+export type UmamiLogRecord = Record<string, boolean | number | string>
 
-type Logger<T = LogRecord> = (data?: T) => void
+export type UmamiLogger<T = UmamiLogRecord> = (data?: T) => void
 
 export function useUmami() {
   const [isReady, setIsReady] = useState(false)
@@ -24,7 +24,7 @@ export function useUmami() {
 
   const { gjeldendeEnhet } = useInnloggetAnsatt()
   const logUmamiHendelse = useCallback(
-    (navn: UmamiTaksonomi, data?: LogRecord) => {
+    (navn: UmamiTaksonomi, data?: UmamiLogRecord) => {
       const { nummer: enhetsnummer, navn: enhetsnavn } = gjeldendeEnhet
       if (typeof window !== 'undefined' && window.umami) {
         window.umami.track(navn, {
@@ -40,15 +40,15 @@ export function useUmami() {
     [gjeldendeEnhet]
   )
 
-  const logKnappKlikket: Logger = (data) => {
+  const logKnappKlikket: UmamiLogger = (data) => {
     logUmamiHendelse(UmamiTaksonomi.KNAPP_KLIKKET, data)
   }
 
-  const logSkjemaFullført: Logger = (data) => {
+  const logSkjemaFullført: UmamiLogger = (data) => {
     logUmamiHendelse(UmamiTaksonomi.SKJEMA_FULLFØRT, data)
   }
 
-  const logVinduStørrelse: Logger = (data) => {
+  const logVinduStørrelse: UmamiLogger = (data) => {
     const { innerWidth: width, innerHeight: height } = window
     logUmamiHendelse(UmamiTaksonomi.CLIENT_INFO, {
       vinduBredde: width,
@@ -57,43 +57,19 @@ export function useUmami() {
     })
   }
 
-  const logTemaByttet: Logger = (data) => {
+  const logTemaByttet: UmamiLogger = (data) => {
     logUmamiHendelse(UmamiTaksonomi.TEMA_BYTTET, data)
   }
 
-  const logOverføringMedarbeider: Logger = () => {
-    logUmamiHendelse(UmamiTaksonomi.OVERFØRING_MEDARBEIDER)
-  }
-
-  const logNyOppgavelisteValgt: Logger = (data) => {
-    logUmamiHendelse(UmamiTaksonomi.NY_OPPGAVELISTE_VALGT, data)
-  }
-
-  const logGammelOppgavelisteValgt: Logger = (data) => {
-    logUmamiHendelse(UmamiTaksonomi.GAMMEL_OPPGAVELISTE_VALGT, data)
-  }
-
-  const logOppgavelisteFiltrert: Logger = (data) => {
-    logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_FILTRERT, data)
-  }
-
-  const logOppgavelisteSortert: Logger = (data) => {
-    logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_SORTERT, data)
-  }
-
-  const logOppgavelisteTilpasset: Logger = (data) => {
-    logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_TILPASSET, data)
-  }
-
-  const logUtfallLavereRangert: Logger = (data) => {
+  const logUtfallLavereRangert: UmamiLogger = (data) => {
     logUmamiHendelse(UmamiTaksonomi.UTFALL_LAVERE_RANGERT, data)
   }
 
-  const logPostbegrunnelseEndret: Logger = (data) => {
+  const logPostbegrunnelseEndret: UmamiLogger = (data) => {
     logUmamiHendelse(UmamiTaksonomi.POSTBEGRUNNELSE_ENDRET, data)
   }
 
-  const logProblemsammendragEndret: Logger = (data) => {
+  const logProblemsammendragEndret: UmamiLogger = (data) => {
     logUmamiHendelse(UmamiTaksonomi.PROBLEMSAMMENDRAG_ENDRET, data)
   }
 
@@ -103,14 +79,37 @@ export function useUmami() {
     logSkjemaFullført,
     logVinduStørrelse,
     logTemaByttet,
-    logOverføringMedarbeider,
+
+    // oppgave
+    logOppgaveSattPåVent() {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVE_SATT_PÅ_VENT)
+    },
+    logOppgaveGjenopptatt() {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVE_GJENOPPTATT)
+    },
+    logOppgaveGjelderEndret(data: { fra?: string; til?: string }) {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVE_GJELDER_ENDRET, data)
+    },
+    logOppgaveOverførtTilMedarbeider() {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVE_OVERFØRT_TIL_MEDARBEIDER)
+    },
+    logOppgaveLagtTilbake() {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVE_LAGT_TILBAKE)
+    },
+    logOppgaveÅpnetIGosys() {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVE_ÅPNET_I_GOSYS)
+    },
 
     // oppgaveliste
-    logNyOppgavelisteValgt,
-    logGammelOppgavelisteValgt,
-    logOppgavelisteFiltrert,
-    logOppgavelisteSortert,
-    logOppgavelisteTilpasset,
+    logOppgavelisteFiltrert(data: UmamiLogRecord) {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_FILTRERT, data)
+    },
+    logOppgavelisteSortert(data: UmamiLogRecord) {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_SORTERT, data)
+    },
+    logOppgavelisteTilpasset(data: UmamiLogRecord) {
+      logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_TILPASSET, data)
+    },
 
     logUtfallLavereRangert,
     logPostbegrunnelseEndret,

@@ -5,7 +5,7 @@ import type { OppgaveBase } from './oppgaveTypes.ts'
 export enum OppgaveModalType {
   SETT_PÅ_VENT,
   FORTSETT_BEHANDLING,
-  ENDRE_BEHANDLINGSTEMA,
+  ENDRE_GJELDER,
   OVERFØR_TIL_MEDARBEIDER,
   LEGG_TILBAKE,
 }

@@ -10,11 +10,11 @@ import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 
-export interface EndreBehandlingstemaModalProps {
+export interface EndreGjelderModalProps {
   oppgave: Oppgave
 }
 
-export function EndreBehandlingstemaModal(props: EndreBehandlingstemaModalProps) {
+export function EndreGjelderModal(props: EndreGjelderModalProps) {
   const { oppgave } = props
 
   const { åpenModal } = useOppgaveContext()
@@ -40,14 +40,14 @@ export function EndreBehandlingstemaModal(props: EndreBehandlingstemaModalProps)
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
     await endreOppgave({ behandlingstema: data.behandlingstema })
-    showSuccessToast('Behandlingstema ble endret')
+    showSuccessToast('Endringene ble lagret')
     lukkModal()
   })
 
   return (
     <FormProvider {...form}>
       <FormModal
-        open={åpenModal === OppgaveModalType.ENDRE_BEHANDLINGSTEMA}
+        open={åpenModal === OppgaveModalType.ENDRE_GJELDER}
         onClose={lukkModal}
         heading="Endre hva oppgaven gjelder"
         submitButtonLabel="Lagre endringer"

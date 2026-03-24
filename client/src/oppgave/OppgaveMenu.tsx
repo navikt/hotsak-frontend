@@ -56,7 +56,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
         </OppgaveModalActionMenuItem>
       )}
       {!isJournalføring && (
-        <OppgaveModalActionMenuItem modal={OppgaveModalType.ENDRE_BEHANDLINGSTEMA}>
+        <OppgaveModalActionMenuItem modal={OppgaveModalType.ENDRE_GJELDER}>
           Endre hva oppgaven gjelder
         </OppgaveModalActionMenuItem>
       )}

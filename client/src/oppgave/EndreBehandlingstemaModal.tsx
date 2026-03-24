@@ -49,7 +49,7 @@ export function EndreBehandlingstemaModal(props: EndreBehandlingstemaModalProps)
       <FormModal
         open={åpenModal === OppgaveModalType.ENDRE_BEHANDLINGSTEMA}
         onClose={lukkModal}
-        heading="Endre behandlingstema"
+        heading="Endre hva oppgaven gjelder"
         submitButtonLabel="Lagre endringer"
         onSubmit={handleSubmit}
       >
@@ -57,7 +57,7 @@ export function EndreBehandlingstemaModal(props: EndreBehandlingstemaModalProps)
           control={form.control}
           id="behandlingstema"
           name="behandlingstema"
-          label="Velg nytt behandlingstema"
+          label="Velg hva oppgaven gjelder"
           size="small"
         >
           {behandlingstemaer.map((behandlingstema) => (

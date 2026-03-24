@@ -55,7 +55,7 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
         <HStack gap="space-12" align="center" justify="end" wrap={false}>
           {children}
           <Button
-            data-color="neutral"
+            data-color="danger"
             type="button"
             size="xsmall"
             variant="tertiary"

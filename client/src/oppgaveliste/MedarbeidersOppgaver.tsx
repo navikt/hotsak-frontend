@@ -4,14 +4,12 @@ import { OppgaveTildelt, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { MedarbeidersOppgaverTable } from './MedarbeidersOppgaverTable.tsx'
 import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
-import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 
 export function MedarbeidersOppgaver() {
   const { oppgaver, isLoading, totalElements, filterOptions, antallHastesaker } = useClientSideOppgaver({
     statuskategori: Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEDARBEIDER,
   })
-  useOppgavemetrikker('Medarbeiders', oppgaver.length, totalElements)
   return (
     <Box marginInline="space-20">
       <OppgaveToolbar

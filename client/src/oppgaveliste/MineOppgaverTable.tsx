@@ -5,6 +5,7 @@ import { useOppgavePaginationContext, useOppgavePaginationSortChangeHandler } fr
 import { selectOppgaveId } from './oppgaveSelectors.ts'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
+import { useOppgavelisteFiltrertHandler } from './useOppgavemetrikker.ts'
 
 export interface MineOppgaverTableProps {
   oppgaver: ReadonlyArray<Oppgave>
@@ -17,6 +18,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
   const columns = useOppgaveColumns(filterOptions)
   const { sort } = useOppgavePaginationContext()
   const handleSortChange = useOppgavePaginationSortChangeHandler()
+  const handleFilterChange = useOppgavelisteFiltrertHandler()
   return (
     <DataGrid
       rows={oppgaver}
@@ -30,6 +32,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       loading={loading}
       sort={sort}
       onSortChange={handleSortChange}
+      onFilterChange={handleFilterChange}
       zebraStripes
     />
   )

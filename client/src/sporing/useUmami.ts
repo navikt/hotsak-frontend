@@ -84,7 +84,7 @@ export function useUmami() {
       },
 
       // oppgaveliste
-      logOppgavelisteFiltrert(data: UmamiLogData) {
+      logOppgavelisteFiltrert(data: { kolonne: string; verdi: string }) {
         logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_FILTRERT, data)
       },
       logOppgavelisteSortert(data: { kolonne: string; rekkefølge: string }) {

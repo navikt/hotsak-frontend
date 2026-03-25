@@ -1,16 +1,15 @@
 import { Alert, InfoCard, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
+import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
-import { useBehovsmelding } from '../../../saksbilde/useBehovsmelding'
 import { Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
+import { VedtakFormValues } from '../../felles/useVedtak'
 import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
-import { VedtakFormValues } from '../../felles/useVedtak'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { useClosePanel } from '../paneler/usePanelHooks'
 
 type FattbartVedtaksresultat = Exclude<VedtaksResultat, VedtaksResultat.GOSYS | VedtaksResultat.BRUKER_ER_DØD>
@@ -31,8 +30,6 @@ export function FattVedtakModalV2({
   const { showSuccessToast } = useToast()
   const formRef = useRef<VedtakFormHandle>(null)
   const closePanel = useClosePanel('brevpanel')
-  const { behovsmelding } = useBehovsmelding()
-  const utleveringMerknad = behovsmelding?.levering.utleveringMerknad
 
   const erAvslag = vedtaksResultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
@@ -51,7 +48,6 @@ export function FattVedtakModalV2({
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({
         problemsammendrag: data.problemsammendrag,
-        utleveringMerknad: data.utleveringMerknad,
       })
     }
     if (erInnvilget) {
@@ -132,7 +128,7 @@ export function FattVedtakModalV2({
               ref={formRef}
               onVedtak={fattVedtak}
               postbegrunnelsePåkrevd={erInnvilget}
-              utleveringMerknad={utleveringMerknad}
+              vedtaksresultat={vedtaksResultat}
             />
           )}
         </VStack>

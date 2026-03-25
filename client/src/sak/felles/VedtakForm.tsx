@@ -1,17 +1,18 @@
 import { Button, HelpText, HStack, InlineMessage, Textarea, TextField, VStack } from '@navikt/ds-react'
 import { forwardRef, useImperativeHandle, useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Sak } from '../../types/types.internal'
 import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment'
+import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
 
 interface VedtakFormProps {
   sak: Sak
   onVedtak: (data: VedtakFormValues) => void
   postbegrunnelsePåkrevd?: boolean
-  utleveringMerknad?: string | null
+  vedtaksresultat?: VedtaksResultat
 }
 
 export interface VedtakFormHandle {
@@ -19,10 +20,10 @@ export interface VedtakFormHandle {
 }
 
 export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
-  ({ sak, onVedtak, postbegrunnelsePåkrevd = true, utleveringMerknad }: VedtakFormProps, ref) => {
+  ({ sak, onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
 
-    const { form, sammendragMedLavere, logTilUmami } = useVedtak(sak)
+    const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami } = useVedtak(sak)
 
     const validerProblemsammendrag = (value: string | undefined) => {
       if (!sammendragMedLavere) {
@@ -162,7 +163,9 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 </HStack>
               </VStack>
             )}
-            <Eksperiment>{utleveringMerknad && <FritekstPanel />}</Eksperiment>
+            <Eksperiment>
+              {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
+            </Eksperiment>
           </VStack>
           <button type="submit" style={{ display: 'none' }} />
         </form>
@@ -170,8 +173,3 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
     )
   }
 )
-
-export function useVedtakFormSubmit() {
-  const form = useForm<VedtakFormValues>()
-  return () => form.handleSubmit((data) => data)()
-}

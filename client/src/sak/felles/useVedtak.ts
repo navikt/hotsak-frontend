@@ -30,6 +30,7 @@ export function useVedtak(sak: Sak) {
   const { erIkkeProd } = useMiljø()
   const { problemsammendrag, sammendragMedLavere } = useProblemsammendrag()
   const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
+  const utleveringsmerknad = erIkkeProd ? behovsmelding.behovsmelding?.levering.utleveringMerknad : undefined
 
   const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
@@ -52,7 +53,7 @@ export function useVedtak(sak: Sak) {
     values: {
       problemsammendrag: problemsammendrag,
       postbegrunnelse: lavereRangertBegrunnelse,
-      utleveringMerknad: erIkkeProd ? behovsmelding.behovsmelding?.levering.utleveringMerknad : undefined,
+      utleveringMerknad: utleveringsmerknad,
     },
   })
 
@@ -85,6 +86,7 @@ export function useVedtak(sak: Sak) {
     lavereRangertHjelpemiddel,
     sammendragMedLavere,
     lavereRangertBegrunnelse,
+    utleveringsmerknad,
     harEndretPostbegrunnelse,
     harEndretProblemsammendrag,
     logTilUmami,

@@ -75,6 +75,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
               <VStack gap="space-12" paddingInline="space-2" paddingBlock="space-8 space-0">
                 {hjelpemidler.map((hjelpemiddel) => (
                   <HjelpemiddelV2
+                    key={hjelpemiddel.hjelpemiddelId}
                     sak={sak}
                     hjelpemiddel={hjelpemiddel}
                     produkter={hjelpemiddelprodukter}

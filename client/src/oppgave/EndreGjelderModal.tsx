@@ -22,14 +22,14 @@ export function EndreGjelderModal(props: EndreGjelderModalProps) {
   const lukkModal = useOppgaveLukkModalHandler()
 
   const kodeverkGjelder = useKodeverkGjelder(oppgave.kategorisering.behandlingstype?.kode)
-  const behandlingstemaer = useMemo(
-    () =>
+  const behandlingstemaTermByKode = useMemo(() => {
+    return new Map(
       kodeverkGjelder
         .filter(harBehandlingstema)
-        .map((it) => it.behandlingstema)
-        .sort(naturalBy((it) => it?.term)),
-    [kodeverkGjelder]
-  )
+        .map<[string, string]>(({ behandlingstema: { kode, term } }) => [kode, term])
+        .sort(naturalBy(([, term]) => term))
+    )
+  }, [kodeverkGjelder])
 
   const gjeldendeBehandlingstema = oppgave.kategorisering.behandlingstema
   const form = useForm<{ behandlingstema: string }>({
@@ -42,9 +42,12 @@ export function EndreGjelderModal(props: EndreGjelderModalProps) {
   const { logOppgaveGjelderEndret } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
-    await endreOppgave({ behandlingstema: data.behandlingstema })
-    const nyttBehandlingstema = behandlingstemaer.find((it) => it.kode === data.behandlingstema)
-    logOppgaveGjelderEndret({ fra: gjeldendeBehandlingstema?.term, til: nyttBehandlingstema?.term })
+    const { behandlingstema: nyBehandlingstemaKode } = data
+    await endreOppgave({ behandlingstema: nyBehandlingstemaKode })
+    logOppgaveGjelderEndret({
+      fra: gjeldendeBehandlingstema?.term,
+      til: behandlingstemaTermByKode.get(nyBehandlingstemaKode),
+    })
     showSuccessToast('Endringene ble lagret')
     lukkModal()
   })
@@ -65,9 +68,9 @@ export function EndreGjelderModal(props: EndreGjelderModalProps) {
           label="Velg hva oppgaven gjelder"
           size="small"
         >
-          {behandlingstemaer.map((behandlingstema) => (
-            <option key={behandlingstema.kode} value={behandlingstema.kode}>
-              {behandlingstema.term}
+          {Array.from(behandlingstemaTermByKode).map(([kode, term]) => (
+            <option key={kode} value={kode}>
+              {term}
             </option>
           ))}
         </SelectController>

@@ -6,6 +6,7 @@ import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
 import { useOppgaveUrl } from './useOppgaveUrl.ts'
+import { useUmami } from '../sporing/useUmami.ts'
 
 export interface OppgaveMenuProps {
   oppgave?: Oppgave
@@ -22,6 +23,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
     gjeldendeEnhet,
   } = useOppgaveregler(oppgave)
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
+  const { logOppgaveLagtTilbake } = useUmami()
 
   if (!oppgave || oppgaveErAvsluttet) {
     return null
@@ -66,6 +68,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       <ActionMenu.Item
         onSelect={async () => {
           await fjernOppgavetildeling()
+          logOppgaveLagtTilbake()
           if (onAction) return onAction()
         }}
       >
@@ -88,8 +91,9 @@ function OppgaveModalActionMenuItem({ modal, children }: { modal: OppgaveModalTy
 
 function GosysLinkItem({ oppgaveId }: { oppgaveId: OppgaveId }) {
   const href = useOppgaveUrl(oppgaveId)
+  const { logOppgaveÅpnetIGosys } = useUmami()
   return (
-    <ActionMenu.Item as="a" href={href} target="_blank">
+    <ActionMenu.Item as="a" href={href} target="_blank" onClick={logOppgaveÅpnetIGosys}>
       Åpne oppgaven i Gosys
     </ActionMenu.Item>
   )

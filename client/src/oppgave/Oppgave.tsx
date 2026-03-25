@@ -4,6 +4,7 @@ import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
 import { type Oppgave, Oppgavetype } from './oppgaveTypes.ts'
 import { useOppgave } from './useOppgave.ts'
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
 const Saksbehandling = lazy(() => import('../saksbilde/Saksbilde.tsx'))
@@ -14,9 +15,12 @@ export default function Oppgave() {
     return null
   }
   return (
-    <OppgaveProvider oppgave={oppgave}>
-      <OppgavetypeSwitch oppgave={oppgave} />
-    </OppgaveProvider>
+    <>
+      <Sidetittel tittel={`Oppgave ${oppgave.oppgaveId}`} />
+      <OppgaveProvider oppgave={oppgave}>
+        <OppgavetypeSwitch oppgave={oppgave} />
+      </OppgaveProvider>
+    </>
   )
 }
 

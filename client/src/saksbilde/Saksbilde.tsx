@@ -17,6 +17,7 @@ import { SakLoader } from './SakLoader'
 import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()
@@ -49,16 +50,20 @@ const SaksbildeContent = memo(() => {
 
   if (nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD && !sakErFerdigBehandletIHotsakClassic) {
     return (
-      <SakProvider>
-        <SakbrukerinnstillingerProvider>
-          <SakV2 />
-        </SakbrukerinnstillingerProvider>
-      </SakProvider>
+      <>
+        <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
+        <SakProvider>
+          <SakbrukerinnstillingerProvider>
+            <SakV2 />
+          </SakbrukerinnstillingerProvider>
+        </SakProvider>
+      </>
     )
   }
 
   return (
     <>
+      <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
       <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
       <SakstypeSwitch sak={sak.data} />
     </>

@@ -20,6 +20,7 @@ import { PersonoversiktTabs } from './PersonoversiktTabs.tsx'
 import { usePerson } from './usePerson'
 import { useSaksoversikt } from './useSaksoversikt.ts'
 import { OppgaveoversiktPerson } from './OppgaveoversiktPerson.tsx'
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -42,13 +43,11 @@ function PersonoversiktContent() {
 
   const hjelpemidler =
     hjelpemiddelArtikler?.sort((a, b) => sorterKronologiskStigende(a.datoUtsendelse, b.datoUtsendelse)) || []
-  const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
-    return (antall += artikkel.antall)
-  }, 0)
+  const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
     <>
-      <title>{`Hotsak - Personoversikt`}</title>
+      <Sidetittel tittel="Personoversikt" />
       <Skjermlesertittel>Personoversikt</Skjermlesertittel>
       {personInfoLoading ? (
         <LasterPersonoversikt />

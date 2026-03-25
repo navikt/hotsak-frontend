@@ -1,12 +1,16 @@
 import { MineOppgaver } from './MineOppgaver.tsx'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgavelisteProvider } from './OppgavelisteProvider.tsx'
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 
 export default function MineOppgaverWrapper() {
   return (
-    <OppgavelisteProvider suffix="Mine" defaultColumns={defaultColumns}>
-      <MineOppgaver />
-    </OppgavelisteProvider>
+    <>
+      <Sidetittel tittel="Mine oppgaver" />
+      <OppgavelisteProvider suffix="Mine" defaultColumns={defaultColumns}>
+        <MineOppgaver />
+      </OppgavelisteProvider>
+    </>
   )
 }
 

@@ -98,8 +98,8 @@ export function useUmami() {
       logUtfallLavereRangert(data: UmamiLogData) {
         logUmamiHendelse(UmamiTaksonomi.UTFALL_LAVERE_RANGERT, data)
       },
-      logPostbegrunnelseEndret(data: UmamiLogData) {
-        logUmamiHendelse(UmamiTaksonomi.POSTBEGRUNNELSE_ENDRET, data)
+      logPostbegrunnelseEndret() {
+        logUmamiHendelse(UmamiTaksonomi.POSTBEGRUNNELSE_ENDRET)
       },
       logProblemsammendragEndret(data: UmamiLogData) {
         logUmamiHendelse(UmamiTaksonomi.PROBLEMSAMMENDRAG_ENDRET, data)

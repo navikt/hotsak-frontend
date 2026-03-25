@@ -314,7 +314,7 @@ export interface Bydel {
 
 export enum VedtaksgrunnlagType {
   UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',
-  HØREAPPARAT_VEDTAK = 'HØREAPPARAT_VEDTAK',
+  HØREAPPARATVEDTAK = 'HØREAPPARATVEDTAK',
 }
 
 export interface VedtakPayload {
@@ -332,7 +332,7 @@ export interface VedtaksgrunnlagUtlånsoversikt extends VedtaksgrunnlagBase {
 }
 
 export interface VedtaksgrunnlagHøreapparatvedtak extends VedtaksgrunnlagBase {
-  type: VedtaksgrunnlagType.HØREAPPARAT_VEDTAK
+  type: VedtaksgrunnlagType.HØREAPPARATVEDTAK
   data?: HøreapparatVedtak
 }
 

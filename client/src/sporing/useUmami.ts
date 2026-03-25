@@ -87,7 +87,7 @@ export function useUmami() {
       logOppgavelisteFiltrert(data: UmamiLogData) {
         logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_FILTRERT, data)
       },
-      logOppgavelisteSortert(data: UmamiLogData) {
+      logOppgavelisteSortert(data: { kolonne: string; rekkefølge: string }) {
         logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_SORTERT, data)
       },
       logOppgavelisteTilpasset(data: UmamiLogData) {

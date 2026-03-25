@@ -9,6 +9,7 @@ import {
   VedtaksgrunnlagHøreapparatvedtak,
   VedtaksgrunnlagType,
 } from '../../../types/types.internal.ts'
+import { useErPilot } from '../../../tilgang/useTilgang.ts'
 
 export interface UseHøreapparatVedtakResponse {
   høreapparatVedtak: HøreapparatVedtak | undefined
@@ -22,6 +23,7 @@ export function useHøreapparatVedtak(
   vedtaksgrunnlag?: VedtaksgrunnlagBase[]
 ): UseHøreapparatVedtakResponse {
   const { erProd } = useMiljø()
+  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || !erProd
   const høreapparatvedtakFraVedtak = vedtaksgrunnlag?.find(erHøreapparatVedtak)?.data
   const harHøreapparatVedtakFraVedtak = !!høreapparatvedtakFraVedtak
 
@@ -30,7 +32,9 @@ export function useHøreapparatVedtak(
     error,
     isLoading,
   } = useSwr<HøreapparatVedtak, HttpError, [string, string] | null>(
-    fnr && !erProd && !harHøreapparatVedtakFraVedtak ? ['/api/ha-vedtak', fnr] : null,
+    fnr && erHørselshjelpemiddelPilot && !erProd && !harHøreapparatVedtakFraVedtak
+      ? ['/api/person/ha-vedtak', fnr]
+      : null,
     ([url, fnr]) => http.post<{ fnr: string }, HøreapparatVedtak>(url, { fnr })
   )
 
@@ -61,5 +65,5 @@ export function useHøreapparatVedtak(
 function erHøreapparatVedtak(
   vedtaksgrunnlag: VedtaksgrunnlagBase
 ): vedtaksgrunnlag is VedtaksgrunnlagHøreapparatvedtak {
-  return vedtaksgrunnlag.type === VedtaksgrunnlagType.HØREAPPARAT_VEDTAK
+  return vedtaksgrunnlag.type === VedtaksgrunnlagType.HØREAPPARATVEDTAK
 }

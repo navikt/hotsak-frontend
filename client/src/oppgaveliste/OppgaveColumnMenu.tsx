@@ -39,7 +39,7 @@ export function OppgaveColumnMenu() {
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
-        <Button data-color="neutral" variant="tertiary" icon={<CogIcon />} size="xsmall">
+        <Button variant="tertiary" icon={<CogIcon />} size="xsmall">
           Tilpass tabell
         </Button>
       </ActionMenu.Trigger>
@@ -52,7 +52,7 @@ export function OppgaveColumnMenu() {
             onDragEnd={handleMoveColumn}
           >
             <div>
-              <SortableContext items={columnsState as any} strategy={verticalListSortingStrategy}>
+              <SortableContext items={columnsState.map((col) => col.id)} strategy={verticalListSortingStrategy}>
                 {columnsState.map((columnState) => (
                   <OppgaveColumnMenuItem key={columnState.id} columnState={columnState} />
                 ))}

@@ -9,47 +9,55 @@ import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
+import { useUmami } from '../sporing/useUmami.ts'
 
-export interface EndreBehandlingstemaModalProps {
+export interface EndreGjelderModalProps {
   oppgave: Oppgave
 }
 
-export function EndreBehandlingstemaModal(props: EndreBehandlingstemaModalProps) {
+export function EndreGjelderModal(props: EndreGjelderModalProps) {
   const { oppgave } = props
 
   const { åpenModal } = useOppgaveContext()
   const lukkModal = useOppgaveLukkModalHandler()
 
   const kodeverkGjelder = useKodeverkGjelder(oppgave.kategorisering.behandlingstype?.kode)
-  const behandlingstemaer = useMemo(
-    () =>
+  const behandlingstemaTermByKode = useMemo(() => {
+    return new Map(
       kodeverkGjelder
         .filter(harBehandlingstema)
-        .map((it) => it.behandlingstema)
-        .sort(naturalBy((it) => it?.term)),
-    [kodeverkGjelder]
-  )
+        .map<[string, string]>(({ behandlingstema: { kode, term } }) => [kode, term])
+        .sort(naturalBy(([, term]) => term))
+    )
+  }, [kodeverkGjelder])
 
+  const gjeldendeBehandlingstema = oppgave.kategorisering.behandlingstema
   const form = useForm<{ behandlingstema: string }>({
     defaultValues: {
-      behandlingstema: oppgave.kategorisering.behandlingstema?.kode ?? '',
+      behandlingstema: gjeldendeBehandlingstema?.kode ?? '',
     },
   })
 
   const { endreOppgave } = useOppgaveActions()
+  const { logOppgaveGjelderEndret } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
-    await endreOppgave({ behandlingstema: data.behandlingstema })
-    showSuccessToast('Behandlingstema ble endret')
+    const { behandlingstema: nyBehandlingstemaKode } = data
+    await endreOppgave({ behandlingstema: nyBehandlingstemaKode })
+    logOppgaveGjelderEndret({
+      fra: gjeldendeBehandlingstema?.term,
+      til: behandlingstemaTermByKode.get(nyBehandlingstemaKode),
+    })
+    showSuccessToast('Endringene ble lagret')
     lukkModal()
   })
 
   return (
     <FormProvider {...form}>
       <FormModal
-        open={åpenModal === OppgaveModalType.ENDRE_BEHANDLINGSTEMA}
+        open={åpenModal === OppgaveModalType.ENDRE_GJELDER}
         onClose={lukkModal}
-        heading="Endre behandlingstema"
+        heading="Endre hva oppgaven gjelder"
         submitButtonLabel="Lagre endringer"
         onSubmit={handleSubmit}
       >
@@ -57,12 +65,12 @@ export function EndreBehandlingstemaModal(props: EndreBehandlingstemaModalProps)
           control={form.control}
           id="behandlingstema"
           name="behandlingstema"
-          label="Velg nytt behandlingstema"
+          label="Velg hva oppgaven gjelder"
           size="small"
         >
-          {behandlingstemaer.map((behandlingstema) => (
-            <option key={behandlingstema.kode} value={behandlingstema.kode}>
-              {behandlingstema.term}
+          {Array.from(behandlingstemaTermByKode).map(([kode, term]) => (
+            <option key={kode} value={kode}>
+              {term}
             </option>
           ))}
         </SelectController>

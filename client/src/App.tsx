@@ -11,21 +11,29 @@ import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
 import { useDarkmode } from './header/useDarkmode.ts'
 import { http } from './io/HttpClient.ts'
-import { OppgaveTitle } from './OppgaveTitle.tsx'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { RequireAuth } from './RequireAuth.tsx'
-import { SakTitle } from './SakTitle.tsx'
 import { useLogBruker } from './sporing/useLogBruker.ts'
 import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { useInnloggetAnsatt } from './tilgang/useTilgang.ts'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
+// fixme -> fiks eslint-feil
+// eslint-disable-next-line react-refresh/only-export-components
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
+// fixme -> fiks eslint-feil
+// eslint-disable-next-line react-refresh/only-export-components
 const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste.tsx'))
+// fixme -> fiks eslint-feil
+// eslint-disable-next-line react-refresh/only-export-components
 const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
+// fixme -> fiks eslint-feil
+// eslint-disable-next-line react-refresh/only-export-components
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
+// fixme -> fiks eslint-feil
+// eslint-disable-next-line react-refresh/only-export-components
 function App() {
   const [darkmode] = useDarkmode()
 
@@ -55,7 +63,6 @@ function App() {
                         path="/sak/:sakId/*"
                         element={
                           <RequireAuth>
-                            <SakTitle />
                             <Saksbilde />
                           </RequireAuth>
                         }
@@ -64,7 +71,6 @@ function App() {
                         path="/oppgave/:oppgaveId/*"
                         element={
                           <RequireAuth>
-                            <OppgaveTitle />
                             <Oppgave />
                           </RequireAuth>
                         }
@@ -85,7 +91,6 @@ function App() {
                         path="/personoversikt/*"
                         element={
                           <RequireAuth>
-                            <title>Hotsak - Personoversikt</title>
                             <Personoversikt />
                           </RequireAuth>
                         }
@@ -104,6 +109,8 @@ function App() {
 }
 
 // TODO slå sammen PanelLayout og ScrollableLayout til en komponent som tar inn en prop for om den skal være scrollable eller ikke, så slipper vi å duplisere Outlet og Routes
+// fixme -> fiks eslint-feil
+// eslint-disable-next-line react-refresh/only-export-components
 function PanelLayout() {
   return (
     <main className={classes.panelLayout}>
@@ -112,6 +119,8 @@ function PanelLayout() {
   )
 }
 
+// fixme -> fiks eslint-feil
+// eslint-disable-next-line react-refresh/only-export-components
 function SideLayout() {
   return (
     <main className={classes.sideLayout}>

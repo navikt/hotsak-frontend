@@ -1,56 +1,26 @@
-import { useEffect } from 'react'
+import { useUmami } from '../sporing/useUmami.ts'
+import { useCallback } from 'react'
+import { DataGridFilterAction } from '../felleskomponenter/data/DataGridFilterContext.ts'
+import { OppgaveColumnField } from './oppgaveColumns.tsx'
 
-import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
-import { type LogRecord, useUmami } from '../sporing/useUmami.ts'
-import { entriesOf } from '../utils/array.ts'
-import { type OppgaveColumnField } from './oppgaveColumns.tsx'
-import { useOppgaveColumnsContext } from './OppgaveColumnsContext.ts'
-import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
-
-export function useOppgavemetrikker(
-  oppgaveliste: string,
-  antallOppgaver: number = 0,
-  totaltAntallOppgaver: number = 0
-) {
-  const { logOppgavelisteFiltrert, logOppgavelisteSortert, logOppgavelisteTilpasset } = useUmami()
-  const filterState = useDataGridFilterContext<OppgaveColumnField>()
-  useEffect(() => {
-    const entries = entriesOf(filterState).filter(([, { values }]) => values.size > 0)
-    if (entries.length === 0) return
-    const data = entries.reduce<LogRecord>(
-      (result, [field, { values }]) => {
-        if (field === 'saksbehandler') {
-          result[field] = true
-        } else {
-          result[field] = [...values].sort().join(' ELLER ')
-        }
-        return result
-      },
-      { oppgaveliste, antallOppgaver, totaltAntallOppgaver }
-    )
-    logOppgavelisteFiltrert(data)
-  }, [filterState])
-  const { sort } = useOppgavePaginationContext()
-  useEffect(() => {
-    logOppgavelisteSortert({
-      oppgaveliste,
-      antallOppgaver,
-      totaltAntallOppgaver,
-      sorteringsfelt: sort.orderBy,
-      sorteringsrekkefølge: sort.direction,
-    })
-  }, [sort])
-  const columns = useOppgaveColumnsContext()
-  useEffect(() => {
-    const data = columns.reduce<LogRecord>(
-      (result, column) => {
-        result[`${column.id}_checked`] = column.checked
-        result[`${column.id}_order`] = column.order
-        result[`${column.id}_defaultOrder`] = column.defaultOrder
-        return result
-      },
-      { oppgaveliste, antallOppgaver, totaltAntallOppgaver }
-    )
-    logOppgavelisteTilpasset(data)
-  }, [columns])
+export function useOppgavelisteFiltrertHandler() {
+  const { logOppgavelisteFiltrert } = useUmami()
+  return useCallback(
+    (action: DataGridFilterAction<OppgaveColumnField>) => {
+      if (action.type !== 'addValue') return
+      const verdi = redacted.has(action.field) ? '' : action.value
+      logOppgavelisteFiltrert({ kolonne: action.field, verdi })
+    },
+    [logOppgavelisteFiltrert]
+  )
 }
+
+const redacted: ReadonlySet<OppgaveColumnField> = new Set<OppgaveColumnField>([
+  'beskrivelse',
+  'brukerAlder',
+  'brukerFnr',
+  'brukerFødselsdato',
+  'brukerNavn',
+  'innsenderNavn',
+  'saksbehandler',
+])

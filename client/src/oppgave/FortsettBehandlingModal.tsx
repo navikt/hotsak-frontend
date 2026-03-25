@@ -6,6 +6,8 @@ import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from 
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { tilLocalDateString } from '../utils/dato.ts'
+import { useUmami } from '../sporing/useUmami.ts'
+import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 
 export function FortsettBehandlingModal() {
   const { åpenModal } = useOppgaveContext()
@@ -26,11 +28,15 @@ export function FortsettBehandlingModal() {
     })
 
   const { endreOppgave } = useOppgaveActions()
+  const { logOppgaveGjenopptatt } = useUmami()
+  const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
     await endreOppgave({
       aktivDato: tilLocalDateString(today),
       fristFerdigstillelse: tilLocalDateString(data.fristFerdigstillelse),
     })
+    logOppgaveGjenopptatt()
+    showSuccessToast('Oppgaven ble gjenopptatt')
     lukkModal()
   })
 

@@ -5,7 +5,7 @@ import { initUmami } from './sporing/umami'
 import '@navikt/ds-css'
 import './styles/global.css'
 import App from './App'
-import { cleanupStorage } from './state/storage.ts'
+import { cleanupStorage, migrerLocalStorage } from './state/storage.ts'
 
 async function main(): Promise<void> {
   await initMsw()
@@ -13,6 +13,7 @@ async function main(): Promise<void> {
   await initUmami()
 
   cleanupStorage()
+  migrerLocalStorage()
 
   const container = document.getElementById('root')!
   createRoot(container).render(<App />)

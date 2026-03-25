@@ -1,6 +1,7 @@
 import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
 import { type OppgaveSortState } from '../oppgave/oppgaveTypes.ts'
+import { useUmami } from '../sporing/useUmami.ts'
 
 export interface OppgavePaginationState {
   currentPage: number
@@ -30,15 +31,21 @@ export function useOppgavePaginationDispatch(): Dispatch<OppgavePaginationAction
 }
 
 export function useOppgavePaginationSortChangeHandler(): (sortKey: string) => void {
+  const {
+    sort: { direction },
+  } = useOppgavePaginationContext()
   const dispatch = useOppgavePaginationDispatch()
+  const { logOppgavelisteSortert } = useUmami()
   return useCallback(
     (sortKey) => {
+      // NB! rekkefølgen her er den reducer vil sette
+      logOppgavelisteSortert({ kolonne: sortKey, rekkefølge: direction === 'descending' ? 'stigende' : 'synkende' })
       dispatch({
         type: 'sort',
         orderBy: sortKey || 'fristFerdigstillelse',
       })
     },
-    [dispatch]
+    [logOppgavelisteSortert, direction, dispatch]
   )
 }
 

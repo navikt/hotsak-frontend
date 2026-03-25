@@ -39,8 +39,19 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { formState, register } = form
 
   const { endreOppgavetildeling } = useOppgaveActions()
+  const { logOppgaveOverførtTilMedarbeider } = useUmami()
   const { showSuccessToast } = useToast()
-  const { logOverføringMedarbeider } = useUmami()
+  const handleSubmit = form.handleSubmit(async (data) => {
+    // fjerner ferdigstilling av brev
+    await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
+    await endreOppgavetildeling({
+      saksbehandlerId: data.valgtSaksbehandler,
+      kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,
+    })
+    logOppgaveOverførtTilMedarbeider()
+    showSuccessToast('Oppgaven ble overført til medarbeider')
+    lukkModal()
+  })
 
   useEffect(() => {
     if (open) {
@@ -56,20 +67,6 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
       </InfoModal>
     )
   }
-
-  const handleSubmit = form.handleSubmit(async (data) => {
-    // fjerner ferdigstilling av brev
-    await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
-
-    await endreOppgavetildeling({
-      saksbehandlerId: data.valgtSaksbehandler,
-      kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,
-    })
-
-    logOverføringMedarbeider()
-    showSuccessToast('Oppgaven ble overført')
-    lukkModal()
-  })
 
   return (
     <FormProvider {...form}>

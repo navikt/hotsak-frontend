@@ -10,6 +10,8 @@ import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { isNotBlank } from '../utils/type.ts'
 import { tilLocalDateString } from '../utils/dato.ts'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { useUmami } from '../sporing/useUmami.ts'
+import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 
 export function SettPåVentModal() {
   const { gjeldendeEnhet } = useInnloggetAnsatt()
@@ -41,6 +43,8 @@ export function SettPåVentModal() {
     })
 
   const { endreOppgave } = useOppgaveActions()
+  const { logOppgaveSattPåVent } = useUmami()
+  const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
     await endreOppgave({
       aktivDato: tilLocalDateString(data.aktivDato),
@@ -48,8 +52,10 @@ export function SettPåVentModal() {
       kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,
     })
     if (data.leggTilbake) {
-      // todo
+      // todo -> foreløpig er dette valget skjult i produksjon
     }
+    logOppgaveSattPåVent()
+    showSuccessToast(`Oppgaven ble satt på vent`)
     lukkModal()
   })
 

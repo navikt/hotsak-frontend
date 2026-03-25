@@ -4,18 +4,20 @@ import { useMemo } from 'react'
 
 import { type DataGridFilter, type DataGridFilterOption, emptyDataGridFilterValues } from './DataGridFilter.ts'
 import {
+  type DataGridFilterAction,
   useDataGridFilterContext,
   useDataGridFilterDispatch,
   useDataGridFilterResetHandler,
 } from './DataGridFilterContext.ts'
 
-export interface DataGridFilterMenuProps {
-  field: string
-  filter: DataGridFilter
+export interface DataGridFilterMenuProps<K extends string = string> {
+  field: K
+  filter: DataGridFilter<K>
+  onFilterChange?(action: DataGridFilterAction<K>): void
 }
 
-export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
-  const { field, filter } = props
+export function DataGridFilterMenu<K extends string = string>(props: DataGridFilterMenuProps<K>) {
+  const { field, filter, onFilterChange } = props
   const state = useDataGridFilterContext()
   const current = state[field] ?? emptyDataGridFilterValues
   const options = useMemo(() => {
@@ -49,11 +51,15 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
               key={value}
               checked={current.values.has(value)}
               onCheckedChange={(checked) => {
-                dispatch({
+                const action: DataGridFilterAction<K> = {
                   type: checked ? 'addValue' : 'removeValue',
                   field,
                   value,
-                })
+                }
+                dispatch(action)
+                if (onFilterChange) {
+                  onFilterChange(action)
+                }
               }}
             >
               {label}

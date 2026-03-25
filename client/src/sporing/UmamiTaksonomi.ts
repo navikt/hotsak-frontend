@@ -1,16 +1,21 @@
 export const enum UmamiTaksonomi {
   CLIENT_INFO = 'client info',
   KNAPP_KLIKKET = 'knapp klikket',
-  OVERFØRING_MEDARBEIDER = 'overføring til annen medarbeider',
   SKJEMA_FULLFØRT = 'skjema fullført',
   TEMA_BYTTET = 'tema byttet',
 
-  NY_OPPGAVELISTE_VALGT = 'ny oppgaveliste valgt',
-  GAMMEL_OPPGAVELISTE_VALGT = 'gammel oppgaveliste valgt',
+  // oppgave
+  OPPGAVE_SATT_PÅ_VENT = 'oppgave satt på vent',
+  OPPGAVE_GJENOPPTATT = 'oppgave gjenopptatt',
+  OPPGAVE_GJELDER_ENDRET = 'oppgave gjelder endret',
+  OPPGAVE_OVERFØRT_TIL_MEDARBEIDER = 'oppgave overført til medarbeider',
+  OPPGAVE_LAGT_TILBAKE = 'oppgave lagt tilbake',
+  OPPGAVE_ÅPNET_I_GOSYS = 'oppgave åpnet i gosys',
+
+  // oppgaveliste
   OPPGAVELISTE_FILTRERT = 'oppgaveliste filtrert',
   OPPGAVELISTE_SORTERT = 'oppgaveliste sortert',
   OPPGAVELISTE_TILPASSET = 'oppgaveliste tilpasset',
-  OPPGAVE_GJELDER_ENDRET = 'oppgave gjelder endret',
 
   UTFALL_LAVERE_RANGERT = 'utfall lavere rangert',
   POSTBEGRUNNELSE_ENDRET = 'postbegrunnelse endret',

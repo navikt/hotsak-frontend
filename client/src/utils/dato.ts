@@ -21,17 +21,19 @@ import { isNumber } from './type.ts'
 
 setDefaultOptions({ locale: nb })
 
-export function formaterDato(dato?: string): string {
+type Dato = DateArg<Date>
+
+export function formaterDato(dato?: Dato): string {
   if (!dato) return ''
   return format(dato, 'P')
 }
 
-export function formaterDatoKort(dato?: string): string {
+export function formaterDatoKort(dato?: Dato): string {
   if (!dato) return ''
   return format(dato, 'dd.MM.yy')
 }
 
-export function formaterDatoLang(dato?: string): string {
+export function formaterDatoLang(dato?: Dato): string {
   if (!dato) return ''
   return format(dato, 'PPP')
 }
@@ -61,13 +63,13 @@ export function formaterRelativTid(dato?: string): string {
   return formatDistance(parsedDate, now, { addSuffix: true, locale: nb }).replace('omtrent', '')
 }
 
-export function tilDato(verdi?: Date | number | string): Date | undefined {
-  if (!verdi) return
-  return toDate(verdi)
+export function tilDato(dato?: Dato): Date | undefined {
+  if (!dato) return
+  return toDate(dato)
 }
 
-export function tilLocalDateString(date: DateArg<Date> = new Date()): string {
-  return formatISO(date, { representation: 'date' })
+export function tilLocalDateString(dato: Dato = new Date()): string {
+  return formatISO(dato, { representation: 'date' })
 }
 
 export function sorterKronologiskStigende(a: string, b: string): number {
@@ -78,7 +80,7 @@ export function sorterKronologiskSynkende(a: string, b: string): number {
   return compareDesc(parseISO(a), parseISO(b))
 }
 
-export function beregnAlder(fødselsdato: Date | number | string) {
+export function beregnAlder(fødselsdato: Dato) {
   return differenceInYears(new Date(), fødselsdato)
 }
 

@@ -7,6 +7,7 @@ import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
+import { useNyttSaksbilde } from '../v2/useNyttSaksbilde'
 
 interface VedtakFormProps {
   sak: Sak
@@ -22,6 +23,7 @@ export interface VedtakFormHandle {
 export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
   ({ sak, onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
+    const [nyttSaksbilde] = useNyttSaksbilde()
 
     const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami } = useVedtak(sak)
 
@@ -164,7 +166,9 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
               </VStack>
             )}
             <Eksperiment>
-              {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
+              {utleveringsmerknad && (!nyttSaksbilde || vedtaksresultat === VedtaksResultat.INNVILGET) && (
+                <FritekstPanel />
+              )}
             </Eksperiment>
           </VStack>
           <button type="submit" style={{ display: 'none' }} />

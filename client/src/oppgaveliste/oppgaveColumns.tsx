@@ -1,5 +1,5 @@
 import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, Tag, Tooltip } from '@navikt/ds-react'
+import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
 import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
@@ -146,14 +146,15 @@ export const oppgaveColumns = {
     },
     renderCell(row) {
       const prioritet = OppgaveprioritetLabel[row.prioritet]
-      if (row.prioritet === Oppgaveprioritet.HØY) {
-        return (
-          <Tag data-color="warning" size="small" variant="warning-moderate" className={classes.tag}>
-            {prioritet}
-          </Tag>
-        )
+      const tagProps: TagProps = { children: prioritet, className: classes.tag, size: 'small' }
+      switch (row.prioritet) {
+        case Oppgaveprioritet.HØY:
+          return <Tag {...tagProps} data-color="warning" variant="moderate" />
+        case Oppgaveprioritet.KRITISK:
+          return <Tag {...tagProps} data-color="danger" variant="strong" />
+        default:
+          return prioritet
       }
-      return prioritet
     },
   },
   innsenderNavn: {

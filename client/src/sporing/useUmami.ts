@@ -90,7 +90,7 @@ export function useUmami() {
       logOppgavelisteSortert(data: { kolonne: string; rekkefølge: string }) {
         logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_SORTERT, data)
       },
-      logOppgavelisteTilpasset(data: UmamiLogData) {
+      logOppgavelisteTilpasset(data: { kolonner: string }) {
         logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_TILPASSET, data)
       },
 

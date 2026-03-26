@@ -10,6 +10,7 @@ import {
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
 import classes from './OppgaveToolbar.module.css'
 import type { OppgaveColumnField } from './oppgaveColumns.tsx'
+import { Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
 
 export interface OppgaveToolbarProps {
   text: string
@@ -73,4 +74,4 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
   )
 }
 
-const hastesakValues = ['HØY']
+const hastesakValues = [Oppgaveprioritet.HØY, Oppgaveprioritet.KRITISK]

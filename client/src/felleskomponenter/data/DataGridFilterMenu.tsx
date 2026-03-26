@@ -28,8 +28,12 @@ export function DataGridFilterMenu<K extends string = string>(props: DataGridFil
         result.set(value, value)
       }
     })
-    return [...result.entries()].sort(sortOptions)
-  }, [filter.options, current.values])
+    if (filter.sortOptions) {
+      return [...result.entries()].sort(sortOptions)
+    } else {
+      return [...result.entries()]
+    }
+  }, [filter.options, filter.sortOptions, current.values])
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
   const handleFilterReset = useDataGridFilterResetHandler(field)

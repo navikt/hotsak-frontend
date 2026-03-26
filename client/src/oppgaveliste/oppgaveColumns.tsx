@@ -1,5 +1,5 @@
 import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, Tag, Tooltip } from '@navikt/ds-react'
+import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
 import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
@@ -52,6 +52,7 @@ export const oppgaveColumns = {
     width: 250,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       return (
@@ -67,6 +68,7 @@ export const oppgaveColumns = {
     width: 175,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
@@ -78,6 +80,7 @@ export const oppgaveColumns = {
     width: 250,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       const behandlingstema = row.kategorisering.behandlingstema
@@ -93,6 +96,7 @@ export const oppgaveColumns = {
     width: 195,
     filter: {
       options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad', 'Søknad']), // fixme -> kun agder
+      sortOptions: true,
     },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
@@ -123,6 +127,7 @@ export const oppgaveColumns = {
     width: 200,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
   },
   prioritet: {
@@ -134,19 +139,22 @@ export const oppgaveColumns = {
         OppgaveprioritetLabel,
         Oppgaveprioritet.LAV,
         Oppgaveprioritet.NORMAL,
-        Oppgaveprioritet.HØY
+        Oppgaveprioritet.HØY,
+        Oppgaveprioritet.KRITISK
       ),
+      sortOptions: false,
     },
     renderCell(row) {
       const prioritet = OppgaveprioritetLabel[row.prioritet]
-      if (row.prioritet === Oppgaveprioritet.HØY) {
-        return (
-          <Tag data-color="warning" size="small" variant="warning-moderate" className={classes.tag}>
-            {prioritet}
-          </Tag>
-        )
+      const tagProps: TagProps = { children: prioritet, className: classes.tag, size: 'small' }
+      switch (row.prioritet) {
+        case Oppgaveprioritet.HØY:
+          return <Tag {...tagProps} data-color="warning" variant="moderate" />
+        case Oppgaveprioritet.KRITISK:
+          return <Tag {...tagProps} data-color="danger" variant="strong" />
+        default:
+          return prioritet
       }
-      return prioritet
     },
   },
   innsenderNavn: {
@@ -155,6 +163,7 @@ export const oppgaveColumns = {
     width: 150,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       const innsender = row.innsender
@@ -221,6 +230,7 @@ export const oppgaveColumns = {
     width: 200,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       const bydel = row.bruker?.bydel
@@ -255,6 +265,7 @@ export const oppgaveColumns = {
         [OppgaveStatusType.ANNULERT, 'Annulert'],
         */
       ]),
+      sortOptions: false,
     },
     renderCell(row) {
       const sak = row.sak

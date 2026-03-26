@@ -5,7 +5,7 @@ import { useOppgavePaginationContext, useOppgavePaginationSortChangeHandler } fr
 import { selectOppgaveId } from './oppgaveSelectors.ts'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
-import { useOppgavelisteFiltrertHandler } from './useOppgavemetrikker.ts'
+import { useOppgavelisteFiltrertHandler } from './useOppgavelistemetrikker.ts'
 
 export interface MineOppgaverTableProps {
   oppgaver: ReadonlyArray<Oppgave>

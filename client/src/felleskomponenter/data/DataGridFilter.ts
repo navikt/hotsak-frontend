@@ -1,5 +1,6 @@
 export interface DataGridFilter<T extends string = string> {
   options: ReadonlySet<T> | ReadonlyMap<T, string>
+  sortOptions?: boolean
 }
 
 export type DataGridFilterOption<T extends string = string> = [T, string]

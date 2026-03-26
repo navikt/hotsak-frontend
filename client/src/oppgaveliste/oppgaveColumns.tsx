@@ -52,6 +52,7 @@ export const oppgaveColumns = {
     width: 250,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       return (
@@ -67,6 +68,7 @@ export const oppgaveColumns = {
     width: 175,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
@@ -78,6 +80,7 @@ export const oppgaveColumns = {
     width: 250,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       const behandlingstema = row.kategorisering.behandlingstema
@@ -93,6 +96,7 @@ export const oppgaveColumns = {
     width: 195,
     filter: {
       options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad', 'Søknad']), // fixme -> kun agder
+      sortOptions: true,
     },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
@@ -123,6 +127,7 @@ export const oppgaveColumns = {
     width: 200,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
   },
   prioritet: {
@@ -134,8 +139,10 @@ export const oppgaveColumns = {
         OppgaveprioritetLabel,
         Oppgaveprioritet.LAV,
         Oppgaveprioritet.NORMAL,
-        Oppgaveprioritet.HØY
+        Oppgaveprioritet.HØY,
+        Oppgaveprioritet.KRITISK
       ),
+      sortOptions: false,
     },
     renderCell(row) {
       const prioritet = OppgaveprioritetLabel[row.prioritet]
@@ -155,6 +162,7 @@ export const oppgaveColumns = {
     width: 150,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       const innsender = row.innsender
@@ -221,6 +229,7 @@ export const oppgaveColumns = {
     width: 200,
     filter: {
       options: new Set(),
+      sortOptions: true,
     },
     renderCell(row) {
       const bydel = row.bruker?.bydel
@@ -255,6 +264,7 @@ export const oppgaveColumns = {
         [OppgaveStatusType.ANNULERT, 'Annulert'],
         */
       ]),
+      sortOptions: false,
     },
     renderCell(row) {
       const sak = row.sak

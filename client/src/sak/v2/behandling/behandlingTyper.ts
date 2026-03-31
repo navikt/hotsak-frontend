@@ -27,6 +27,7 @@ export interface Operasjoner {
   //vedtak:
   overfør: { gjenstående: GjenståendeOverfør[] }
   //endreUtfall:
+  angreVedtak: { angringLåst: AngringLåst[] }
 }
 
 export enum GjenståendeOverfør {
@@ -73,4 +74,9 @@ export enum Gjenstående {
 export enum UtfallLåst {
   FERDIGSTILT = 'FERDIGSTILT',
   HAR_VEDTAKSBREV = 'HAR_VEDTAKSBREV',
+  MIDLERTIDIG_FERDIGSTILT = 'MIDLERTIDIG_FERDIGSTILT',
+}
+
+export enum AngringLåst {
+  ANGRE_TID_UTLØPT = 'ANGRE_TID_UTLØPT',
 }

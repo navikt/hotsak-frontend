@@ -96,10 +96,10 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     }
 
     /*
-      Hvis ingen type er angitt som query param, bruker vi gammel oppførsel som henter journalposter fra sak.
-      Ligger her for å bevare bakoverkompatibilitet
-      På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra Joark.
-    */
+        Hvis ingen type er angitt som query param, bruker vi gammel oppførsel som henter journalposter fra sak.
+        Ligger her for å bevare bakoverkompatibilitet
+        På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra Joark.
+      */
     if (!dokumentType) {
       const sak = await sakStore.hent(sakId)
       if (!sak) {
@@ -260,5 +260,15 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   http.get<SakParams, never, BehandlingerResponse>('/api/sak/:sakId/behandling', async ({ params }) => {
     const behandlinger = await sakStore.hentBehandlinger(params.sakId)
     return HttpResponse.json({ behandlinger })
+  }),
+  http.post<BehandlingParams>('/api/sak/:sakId/behandling/:behandlingId/angre', async ({ params }) => {
+    const sakId = params.sakId
+
+    const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
+    const gjeldendeBehandling = behandlingerForSak[0]!
+    // TODO: Implement angre vedtak logic
+    console.log(`Angrer vedtak for behandling ${gjeldendeBehandling.behandlingId} på sak ${sakId}`)
+
+    return HttpResponse.json({})
   }),
 ]

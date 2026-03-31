@@ -69,6 +69,9 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
               GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES,
             ],
           },
+          angreVedtak: {
+            angringLåst: [],
+          },
         },
       })
     }
@@ -103,6 +106,7 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
         .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES)
         .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES)
 
+      const angringLåst = gjeldendeBehandling.operasjoner.angreVedtak.angringLåst || []
       console.log('Gjenstende ved slett av brev ', gjenståendeOverfør)
 
       if (gjeldendeBehandling.utfall?.utfall === VedtaksResultat.INNVILGET) {
@@ -112,14 +116,14 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
           ...gjeldendeBehandling,
           gjenstående: [],
           utfallLåst: [],
-          operasjoner: { overfør: { gjenstående: gjenståendeOverfør } },
+          operasjoner: { overfør: { gjenstående: gjenståendeOverfør }, angreVedtak: { angringLåst } },
         })
       } else {
         await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
           ...gjeldendeBehandling,
           gjenstående: [Gjenstående.BREV_MANGLER],
           utfallLåst: [],
-          operasjoner: { overfør: { gjenstående: gjenståendeOverfør } },
+          operasjoner: { overfør: { gjenstående: gjenståendeOverfør }, angreVedtak: { angringLåst } },
         })
       }
     }

@@ -1,6 +1,6 @@
 import { createContext, type Dispatch, useCallback, useContext, useMemo } from 'react'
 
-import { type DataGridFilterValues } from './DataGridFilter.ts'
+import { type DataGridFilterValues, type DataGridFilterValue } from './DataGridFilter.ts'
 
 export type DataGridFilterState<K extends string = string> = Record<K, DataGridFilterValues>
 
@@ -19,7 +19,7 @@ export function useDataGridFilterResetHandler(field: string): () => void {
   const dispatch = useDataGridFilterDispatch()
   return useCallback(() => {
     dispatch({
-      type: 'reset',
+      type: 'resetField',
       field,
     })
   }, [dispatch, field])
@@ -36,37 +36,40 @@ export function useDataGridFilterResetAllHandler(): () => void {
 
 export function useIsDataGridFiltered(): boolean {
   const filterState = useDataGridFilterContext()
-  return useMemo(() => {
-    const entries = Object.values(filterState).filter(({ values }) => values.size > 0)
-    return entries.length > 0
-  }, [filterState])
+  return useMemo(() => isDataGridFiltered(filterState), [filterState])
+}
+
+export function isDataGridFiltered(state: DataGridFilterState): boolean {
+  const entries = Object.values(state).filter(({ values }) => values.size > 0)
+  return entries.length > 0
 }
 
 interface DataGridFilterBaseAction {
-  type: 'addValue' | 'removeValue' | 'singleField' | 'reset' | 'resetAll'
+  type: 'addFieldValue' | 'removeFieldValue' | 'setFieldValues' | 'resetField' | 'resetAll'
 }
 
 interface DataGridFilterFieldAction<K extends string = string> extends DataGridFilterBaseAction {
   field: K
 }
 
-export interface DataGridFilterAddValueAction<K extends string = string> extends DataGridFilterFieldAction<K> {
-  type: 'addValue'
-  value: string
+export interface DataGridFilterAddFieldValueAction<K extends string = string> extends DataGridFilterFieldAction<K> {
+  type: 'addFieldValue'
+  value: DataGridFilterValue
 }
 
-export interface DataGridFilterRemoveValueAction<K extends string = string> extends DataGridFilterFieldAction<K> {
-  type: 'removeValue'
-  value: string
+export interface DataGridFilterRemoveFieldValueAction<K extends string = string> extends DataGridFilterFieldAction<K> {
+  type: 'removeFieldValue'
+  value: DataGridFilterValue
 }
 
-export interface DataGridFilterSingleFieldAction<K extends string = string> extends DataGridFilterFieldAction<K> {
-  type: 'singleField'
-  values: string[]
+export interface DataGridFilterSetFieldValueAction<K extends string = string> extends DataGridFilterFieldAction<K> {
+  type: 'setFieldValues'
+  values: Iterable<DataGridFilterValue>
+  resetOthers?: boolean
 }
 
-export interface DataGridFilterResetAction<K extends string = string> extends DataGridFilterFieldAction<K> {
-  type: 'reset'
+export interface DataGridFilterResetFieldAction<K extends string = string> extends DataGridFilterFieldAction<K> {
+  type: 'resetField'
 }
 
 export interface DataGridFilterResetAllAction extends DataGridFilterBaseAction {
@@ -74,8 +77,30 @@ export interface DataGridFilterResetAllAction extends DataGridFilterBaseAction {
 }
 
 export type DataGridFilterAction<K extends string = string> =
-  | DataGridFilterAddValueAction<K>
-  | DataGridFilterRemoveValueAction<K>
-  | DataGridFilterSingleFieldAction<K>
-  | DataGridFilterResetAction<K>
+  | DataGridFilterAddFieldValueAction<K>
+  | DataGridFilterRemoveFieldValueAction<K>
+  | DataGridFilterSetFieldValueAction<K>
+  | DataGridFilterResetFieldAction<K>
   | DataGridFilterResetAllAction
+
+export function addFieldValueAction<K extends string = string>(
+  field: K,
+  value: DataGridFilterValue
+): DataGridFilterAction<K> {
+  return {
+    type: 'addFieldValue',
+    field,
+    value,
+  }
+}
+
+export function removeFieldValueAction<K extends string = string>(
+  field: K,
+  value: DataGridFilterValue
+): DataGridFilterAction<K> {
+  return {
+    type: 'removeFieldValue',
+    field,
+    value,
+  }
+}

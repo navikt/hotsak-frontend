@@ -1,11 +1,13 @@
-export interface DataGridFilter<T extends string = string> {
+export type DataGridFilterValue = string | number | boolean
+
+export interface DataGridFilter<T extends DataGridFilterValue = DataGridFilterValue> {
   options: ReadonlySet<T> | ReadonlyMap<T, string>
   sortOptions?: boolean
 }
 
-export type DataGridFilterOption<T extends string = string> = [T, string]
+export type DataGridFilterOption<T extends DataGridFilterValue = DataGridFilterValue> = [T, string]
 
-export interface DataGridFilterValues<T extends string = string> {
+export interface DataGridFilterValues<T extends DataGridFilterValue = DataGridFilterValue> {
   values: ReadonlySet<T>
 }
 

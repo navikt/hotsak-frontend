@@ -8,7 +8,7 @@ export function useOppgavelisteFiltrertHandler() {
   const { logOppgavelisteFiltrert } = useUmami()
   return useCallback(
     (action: DataGridFilterAction<OppgaveColumnField>) => {
-      if (action.type !== 'addValue') return
+      if (action.type !== 'addFieldValue') return
       const verdi = redacted.has(action.field) ? '' : action.value
       logOppgavelisteFiltrert({ kolonne: action.field, verdi })
     },

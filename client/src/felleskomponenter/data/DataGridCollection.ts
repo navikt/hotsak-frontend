@@ -1,5 +1,5 @@
 import { type Comparator } from '../../utils/array.ts'
-import { type DataGridFilterValues } from './DataGridFilter.ts'
+import { type DataGridFilterValue, type DataGridFilterValues } from './DataGridFilter.ts'
 
 export class DataGridCollection<T extends object> {
   private readonly items: ReadonlyArray<T>
@@ -8,7 +8,10 @@ export class DataGridCollection<T extends object> {
     this.items = items
   }
 
-  filterBy<R extends string>(selector: (item: T) => R, filter?: DataGridFilterValues<R>): DataGridCollection<T> {
+  filterBy<R extends DataGridFilterValue>(
+    selector: (item: T) => R,
+    filter?: DataGridFilterValues<R>
+  ): DataGridCollection<T> {
     if (filter == null || filter.values == null || !filter.values.size) return this
     return new DataGridCollection(this.items.filter((item) => filter.values.has(selector(item))))
   }

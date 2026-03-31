@@ -1,4 +1,4 @@
-import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, TimerPauseIcon } from '@navikt/aksel-icons'
 import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
@@ -294,8 +294,13 @@ export const oppgaveColumns = {
         <HStack align="center" gap="space-8" wrap={false}>
           <FormatDate date={fristFerdigstillelse} />
           {!ferdigstiltTidspunkt && isBefore(fristFerdigstillelse, Date.now()) && (
-            <Tooltip content="Fristen har gått ut">
-              <HourglassBottomFilledIcon color="var(--ax-text-danger-decoration)" width={20} height={20} />
+            <Tooltip content="Fristen er passert">
+              <ClockDashedIcon color="var(--ax-text-danger-decoration)" width={20} height={20} />
+            </Tooltip>
+          )}
+          {row.isPåVent && (
+            <Tooltip content="Satt på vent">
+              <TimerPauseIcon width={20} height={20} />
             </Tooltip>
           )}
         </HStack>

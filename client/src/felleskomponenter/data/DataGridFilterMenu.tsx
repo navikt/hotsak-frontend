@@ -2,7 +2,12 @@ import { FunnelFillIcon, FunnelIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
-import { type DataGridFilter, type DataGridFilterOption, emptyDataGridFilterValues } from './DataGridFilter.ts'
+import {
+  type DataGridFilter,
+  type DataGridFilterOption,
+  type DataGridFilterValue,
+  emptyDataGridFilterValues,
+} from './DataGridFilter.ts'
 import {
   type DataGridFilterAction,
   useDataGridFilterContext,
@@ -10,13 +15,18 @@ import {
   useDataGridFilterResetHandler,
 } from './DataGridFilterContext.ts'
 
-export interface DataGridFilterMenuProps<K extends string = string> {
+export interface DataGridFilterMenuProps<
+  K extends string = string,
+  V extends DataGridFilterValue = DataGridFilterValue,
+> {
   field: K
-  filter: DataGridFilter<K>
+  filter: DataGridFilter<V>
   onFilterChange?(action: DataGridFilterAction<K>): void
 }
 
-export function DataGridFilterMenu<K extends string = string>(props: DataGridFilterMenuProps<K>) {
+export function DataGridFilterMenu<K extends string = string, V extends DataGridFilterValue = DataGridFilterValue>(
+  props: DataGridFilterMenuProps<K, V>
+) {
   const { field, filter, onFilterChange } = props
   const state = useDataGridFilterContext()
   const current = state[field] ?? emptyDataGridFilterValues
@@ -25,7 +35,7 @@ export function DataGridFilterMenu<K extends string = string>(props: DataGridFil
     // legg til lagrede filterverdier som ikke lenger ligger i filter.options
     current.values.forEach((value) => {
       if (!result.has(value)) {
-        result.set(value, value)
+        result.set(value, value.toString())
       }
     })
     if (filter.sortOptions) {
@@ -52,11 +62,11 @@ export function DataGridFilterMenu<K extends string = string>(props: DataGridFil
         <ActionMenu.Group label="Inkluder følgende">
           {options.map(([value, label]) => (
             <ActionMenu.CheckboxItem
-              key={value}
+              key={value.toString()}
               checked={current.values.has(value)}
               onCheckedChange={(checked) => {
                 const action: DataGridFilterAction<K> = {
-                  type: checked ? 'addValue' : 'removeValue',
+                  type: checked ? 'addFieldValue' : 'removeFieldValue',
                   field,
                   value,
                 }
@@ -80,12 +90,12 @@ export function DataGridFilterMenu<K extends string = string>(props: DataGridFil
   )
 }
 
-function mapOf(options: DataGridFilter['options']): Map<string, string> {
-  const result = new Map<string, string>()
+function mapOf(options: DataGridFilter['options']): Map<DataGridFilterValue, string> {
+  const result = new Map<DataGridFilterValue, string>()
   for (const option of options) {
     const [value, label] = Array.isArray(option) ? option : [option, option]
     if (value && label) {
-      result.set(value, label)
+      result.set(value, label.toString())
     }
   }
   return result

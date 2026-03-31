@@ -4,7 +4,7 @@ import { useInnloggetAnsatt } from '../tilgang/useTilgang'
 import { logDebug } from '../utvikling/logDebug.ts'
 import { UmamiTaksonomi } from './UmamiTaksonomi.ts'
 
-export type UmamiLogData = Record<string, boolean | number | string>
+export type UmamiLogData = Record<string, string | number | boolean>
 
 export function useUmami() {
   const [isReady, setIsReady] = useState(false)
@@ -84,7 +84,7 @@ export function useUmami() {
       },
 
       // oppgaveliste
-      logOppgavelisteFiltrert(data: { kolonne: string; verdi: string }) {
+      logOppgavelisteFiltrert(data: { kolonne: string; verdi: string | number | boolean }) {
         logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_FILTRERT, data)
       },
       logOppgavelisteSortert(data: { kolonne: string; rekkefølge: string }) {

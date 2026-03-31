@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 
 import { useLocalReducer } from '../../state/useLocalReducer.ts'
-import { type DataGridFilterValues } from './DataGridFilter.ts'
+import { DataGridFilterValue, type DataGridFilterValues } from './DataGridFilter.ts'
 import {
   type DataGridFilterAction,
   DataGridFilterContext,
@@ -37,7 +37,7 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
   }
   let current = state[action.field]
   switch (action.type) {
-    case 'addValue': {
+    case 'addFieldValue': {
       if (!current) {
         current = filterValuesOf([action.value])
       } else {
@@ -45,7 +45,7 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
       }
       return { ...state, [action.field]: current }
     }
-    case 'removeValue': {
+    case 'removeFieldValue': {
       if (!current) {
         current = emptyFilterValues()
       } else {
@@ -53,10 +53,15 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
       }
       return { ...state, [action.field]: current }
     }
-    case 'singleField': {
-      return { [action.field]: filterValuesOf(action.values) }
+    case 'setFieldValues': {
+      const values = filterValuesOf(action.values)
+      if (action.resetOthers) {
+        return { [action.field]: values }
+      } else {
+        return { ...state, [action.field]: values }
+      }
     }
-    case 'reset': {
+    case 'resetField': {
       return { ...state, [action.field]: emptyFilterValues() }
     }
     default: {
@@ -65,10 +70,10 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
   }
 }
 
-function emptyFilterValues<T extends string = string>(): DataGridFilterValues<T> {
+function emptyFilterValues<T extends DataGridFilterValue>(): DataGridFilterValues<T> {
   return { values: new Set() }
 }
 
-function filterValuesOf<T extends string = string>(values: Iterable<T>): DataGridFilterValues<T> {
+function filterValuesOf<T extends DataGridFilterValue>(values: Iterable<T>): DataGridFilterValues<T> {
   return { values: new Set([...values]) }
 }

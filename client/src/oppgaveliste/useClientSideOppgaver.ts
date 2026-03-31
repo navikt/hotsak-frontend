@@ -13,6 +13,7 @@ import {
   selectBrukerKommuneNavn,
   selectInnsenderNavn,
   selectIsHastesak,
+  selectIsPåVent,
   selectMappenavn,
   selectOppgavetype,
   selectPrioritet,
@@ -33,7 +34,9 @@ export interface UseClientSideOppgaverResponse {
   isLoading: boolean
   isValidating: boolean
   filterOptions: OppgaveFilterOptions
+  antallOppgaver: string
   antallHastesaker: number
+  antallPåVent: number
 }
 
 export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}): UseClientSideOppgaverResponse {
@@ -50,7 +53,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
   })
   const alleOppgaver = response.data?.oppgaver ?? ingenOppgaver
 
-  const filterState = useDataGridFilterContext<OppgaveColumnField>()
+  const filterState = useDataGridFilterContext<OppgaveColumnField | 'isPåVent'>()
   const comparator = useOppgaveComparator()
   const filtrerteOppgaver = useMemo(() => {
     return DataGridCollection.from(alleOppgaver)
@@ -63,18 +66,24 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
       .filterBy(selectInnsenderNavn, filterState.innsenderNavn)
       .filterBy(selectBrukerKommuneNavn, filterState.kommune)
       .filterBy(selectSaksstatus, filterState.saksstatus)
+      .filterBy(selectIsPåVent, filterState.isPåVent)
       .toSorted(comparator)
       .toArray()
   }, [alleOppgaver, filterState, comparator])
 
   const filterOptions = useOppgaveFilterOptions(alleOppgaver)
+  const totalElements = response.data ? response.data.totalElements : 0
+  const antallHastesaker = useMemo(() => alleOppgaver.filter(selectIsHastesak).length, [alleOppgaver])
+  const antallPåVent = useMemo(() => alleOppgaver.filter(selectIsPåVent).length, [alleOppgaver])
   return {
     oppgaver: filtrerteOppgaver,
-    totalElements: response.data ? response.data.totalElements : 0,
+    totalElements,
     error: response.error,
     isLoading: response.isLoading,
     isValidating: response.isValidating,
     filterOptions,
-    antallHastesaker: alleOppgaver.filter(selectIsHastesak).length,
+    antallOppgaver: `${filtrerteOppgaver.length} av ${totalElements} oppgaver`,
+    antallHastesaker,
+    antallPåVent,
   }
 }

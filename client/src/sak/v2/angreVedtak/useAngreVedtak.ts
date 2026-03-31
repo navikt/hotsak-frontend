@@ -18,7 +18,7 @@ export function useAngreVedtak(): AngreActions {
     async angreVedtak() {
       if (!sakId || !gjeldendeBehandling) return
       return execute(async () => {
-        await http.post(`/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angre`, { versjon })
+        await http.post(`/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angring`, { versjon })
         await mutateBehandling()
         await mutateSak(sakId)
       })

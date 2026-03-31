@@ -2,7 +2,6 @@ import { MenuGridIcon, ThemeIcon } from '@navikt/aksel-icons'
 import { ActionMenu, HStack, InternalHeader } from '@navikt/ds-react'
 import { Link, type To, useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router'
-import clsx from 'clsx'
 import { type ReactNode } from 'react'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
@@ -140,13 +139,7 @@ function ToppmenyLinkButton({ to, children }: { to: To; children: ReactNode }) {
   const pathname = location.pathname
   const valgt = pathname === to || (pathname === '/' && to === '/mine')
   return (
-    <InternalHeader.Button
-      as={Link}
-      to={to}
-      className={clsx(classes.toppmenyLinkButton, {
-        [classes.toppmenyLinkButtonActive]: valgt,
-      })}
-    >
+    <InternalHeader.Button as={Link} to={to} isActive={valgt}>
       {children}
     </InternalHeader.Button>
   )

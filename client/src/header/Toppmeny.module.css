@@ -2,24 +2,6 @@
 }
 
 .title,
-.userButton,
-.toppmenyLinkButton {
+.userButton {
   white-space: nowrap;
-}
-
-.toppmenyLinkButton {
-  position: relative;
-  border-left: none;
-  border-right: 1px solid var(--ax-border-neutral-subtleA);
-  text-decoration: none;
-}
-
-.toppmenyLinkButtonActive::after {
-  position: absolute;
-  content: '';
-  background-color: var(--ax-border-strong);
-  height: 8px;
-  bottom: -1px;
-  left: 0;
-  right: 0;
 }

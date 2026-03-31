@@ -4,12 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  brace-expansion@>=2.0.0 <2.0.3: '>=2.0.3'
-  brace-expansion@>=4.0.0 <5.0.5: '>=5.0.5'
-  picomatch@<2.3.2: '>=2.3.2'
-  yaml@>=2.0.0 <2.8.3: '>=2.8.3'
-
 importers:
 
   .:
@@ -1382,6 +1376,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tokens@8.9.0':
     resolution: {integrity: sha512-dIdV405Nxa5YsIOG51DjAhU5kDM3HE00VitV59RlujEJk92I4hSMpA9ysdetLEBEWlmpjXFgue9Tgg8bIorttA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.9.0/c7f62f91df5fb35b063add5aad4636a7cfc4b802}
@@ -2516,6 +2513,9 @@ packages:
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
 
+  balanced-match@1.0.2:
+    resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+
   balanced-match@4.0.4:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
@@ -2539,6 +2539,9 @@ packages:
 
   bluebird@3.7.2:
     resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
+
+  brace-expansion@2.0.3:
+    resolution: {integrity: sha512-MCV/fYJEbqx68aE58kv2cA/kiky1G8vux3OR6/jbS+jIMe/6fJWa0DTzJU7dqijOWYwHi1t29FlfYI9uytqlpA==}
 
   brace-expansion@5.0.5:
     resolution: {integrity: sha512-VZznLgtwhn+Mact9tfiwx64fA9erHH/MCXEUfB/0bX/6Fz6ny5EGTXYltMocqg4xFAQZtnO3DHWWXi8RiuN7cQ==}
@@ -4258,6 +4261,10 @@ packages:
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
+  picomatch@2.3.2:
+    resolution: {integrity: sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==}
+    engines: {node: '>=8.6'}
+
   picomatch@4.0.4:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
@@ -5147,7 +5154,7 @@ packages:
       sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
-      yaml: '>=2.8.3'
+      yaml: ^2.4.2
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -7001,11 +7008,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@navikt/aksel-icons': 8.9.0
       '@navikt/ds-tokens': 8.9.0
-      '@types/react': 19.2.14
       date-fns: 4.1.0
       react: 19.2.4
       react-day-picker: 9.7.0(react@19.2.4)
       react-dom: 19.2.4(react@19.2.4)
+    optionalDependencies:
+      '@types/react': 19.2.14
 
   '@navikt/ds-tokens@8.9.0': {}
 
@@ -8166,6 +8174,8 @@ snapshots:
 
   bail@2.0.2: {}
 
+  balanced-match@1.0.2: {}
+
   balanced-match@4.0.4: {}
 
   base64-js@1.5.1: {}
@@ -8183,6 +8193,10 @@ snapshots:
   blob-util@2.0.2: {}
 
   bluebird@3.7.2: {}
+
+  brace-expansion@2.0.3:
+    dependencies:
+      balanced-match: 1.0.2
 
   brace-expansion@5.0.5:
     dependencies:
@@ -9970,7 +9984,7 @@ snapshots:
   micromatch@4.0.8:
     dependencies:
       braces: 3.0.3
-      picomatch: 4.0.4
+      picomatch: 2.3.2
 
   mime-db@1.52.0: {}
 
@@ -9995,7 +10009,7 @@ snapshots:
 
   minimatch@9.0.9:
     dependencies:
-      brace-expansion: 5.0.5
+      brace-expansion: 2.0.3
 
   minimist@1.2.8: {}
 
@@ -10202,6 +10216,8 @@ snapshots:
   performance-now@2.1.0: {}
 
   picocolors@1.1.1: {}
+
+  picomatch@2.3.2: {}
 
   picomatch@4.0.4: {}
 

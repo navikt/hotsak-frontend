@@ -1,5 +1,5 @@
-import { HStack, Loader, Table, type TableProps } from '@navikt/ds-react'
-import { type Key, type ReactNode, useState } from 'react'
+import { HStack, Loader, Pagination, Table, type TableProps } from '@navikt/ds-react'
+import { type Key, type ReactNode, useMemo, useState } from 'react'
 
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
@@ -33,8 +33,12 @@ export interface DataGridProps<T extends object, K extends string = string> exte
   emptyMessage?: string
   loading?: boolean
 
+  pagination?: boolean
+  pageNumber?: number
+  pageSize?: number
+
   keyFactory(row: T): Exclude<Key, bigint>
-  renderContent?(row: T, visible: boolean): ReactNode
+  renderContent?(props: DataGridContentProps<T>): ReactNode
 
   onFilterChange?(action: DataGridFilterAction<K>): void
 }
@@ -46,18 +50,23 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     textSize,
     emptyMessage = 'Ingen data funnet',
     loading,
+    pagination,
+    pageNumber = 1,
+    // pageSize = 50,
     keyFactory,
     renderContent,
     onFilterChange,
     ...tableProps
   } = props
-  const colSpan = renderContent ? columns.length + 1 : columns.length
+  const visibleColumns = useMemo(() => columns.filter(notHidden), [columns])
+  const expandable = typeof renderContent === 'function'
+  const colSpan = expandable ? visibleColumns.length + 1 : visibleColumns.length
   return (
     <Table {...tableProps}>
       <Table.Header>
         <Table.Row>
           {renderContent ? <Table.HeaderCell style={{ width: 48 }} /> : null}
-          {columns.filter(notHidden).map((column) => {
+          {visibleColumns.map((column) => {
             const key = column.field
 
             let header: ReactNode
@@ -108,7 +117,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         {rows.map((row) => {
           const key = keyFactory(row)
 
-          const cells = columns.filter(notHidden).map((column) => {
+          const cells = visibleColumns.map((column) => {
             let value: ReactNode
             if (column.renderCell) {
               value = column.renderCell(row)
@@ -140,6 +149,15 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
           }
         })}
       </Table.Body>
+      {pagination && (
+        <tfoot>
+          <Table.Row>
+            <Table.DataCell colSpan={colSpan} textSize={textSize}>
+              <Pagination page={pageNumber} count={20} size="xsmall" prevNextTexts />
+            </Table.DataCell>
+          </Table.Row>
+        </tfoot>
+      )}
     </Table>
   )
 }
@@ -166,6 +184,10 @@ function PlaceholderRow({
   )
 }
 
+export interface DataGridContentProps<T extends object> {
+  row: T
+}
+
 function ExpandableRow<T extends object>({
   renderContent,
   row,
@@ -175,9 +197,9 @@ function ExpandableRow<T extends object>({
   row: T
   children: ReactNode
 }) {
-  const [visible, setVisible] = useState<boolean>(false)
+  const [visible, setVisible] = useState(false)
   return (
-    <Table.ExpandableRow content={renderContent(row, visible)} open={visible} onOpenChange={setVisible}>
+    <Table.ExpandableRow open={visible} onOpenChange={setVisible} content={visible ? renderContent({ row }) : null}>
       {children}
     </Table.ExpandableRow>
   )

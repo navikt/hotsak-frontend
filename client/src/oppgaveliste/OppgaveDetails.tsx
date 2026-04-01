@@ -10,13 +10,9 @@ import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
 import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
+import { type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
 
-export interface OppgaveDetailsProps {
-  oppgave: Oppgave
-  visible?: boolean
-}
-
-export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
+export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) {
   const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
   const { kategorisering, bruker, sak } = oppgave
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
@@ -39,8 +35,8 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
       <VStack gap="space-12">
         {isTildeltSaksbehandler && <OppgaveDetailsBruker bruker={bruker} />}
         {sak?.søknadGjelder && <OppgaveDetailsItem label="Beskrivelse" value={sak?.søknadGjelder} />}
-        {sak?.sakstype !== Sakstype.BARNEBRILLER && <OppgaveHjelpemidler sakId={visible ? oppgave.sakId : null} />}
-        <OppgaveSisteKommentar oppgaveId={visible ? oppgave.oppgaveId : null} />
+        {sak?.sakstype !== Sakstype.BARNEBRILLER && <OppgaveHjelpemidler sakId={oppgave.sakId} />}
+        <OppgaveSisteKommentar oppgaveId={oppgave.oppgaveId} />
         <div>
           <Strek />
           <BodyShort as={Link} href={oppgaveUrl} size="small" target="_blank" spacing>

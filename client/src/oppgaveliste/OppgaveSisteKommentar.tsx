@@ -8,7 +8,7 @@ import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { useOppgavekommentarer } from './useOppgavekommentarer.ts'
 
 export interface OppgaveSisteKommentarProps {
-  oppgaveId?: Nullable<OppgaveId>
+  oppgaveId: OppgaveId
 }
 
 export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {

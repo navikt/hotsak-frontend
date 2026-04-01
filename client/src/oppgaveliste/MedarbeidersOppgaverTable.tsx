@@ -24,7 +24,7 @@ export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps)
       rows={oppgaver}
       columns={columns}
       keyFactory={selectOppgaveId}
-      renderContent={renderContent}
+      renderContent={OppgaveDetails}
       size="small"
       stickyHeader
       textSize="small"
@@ -36,8 +36,4 @@ export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps)
       zebraStripes
     />
   )
-}
-
-function renderContent(oppgave: Oppgave, visible: boolean) {
-  return <OppgaveDetails oppgave={oppgave} visible={visible} />
 }

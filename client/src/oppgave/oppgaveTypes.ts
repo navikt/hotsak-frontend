@@ -99,7 +99,7 @@ export interface OppgaveBase {
   /**
    * NB! Journalføringsoppgaver har ikke `sakId`.
    */
-  sakId?: string | number
+  sakId?: ID
 }
 
 export interface Oppgave extends OppgaveBase {

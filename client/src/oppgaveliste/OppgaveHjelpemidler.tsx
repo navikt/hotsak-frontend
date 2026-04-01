@@ -9,7 +9,7 @@ import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import classes from './OppgaveHjelpemidler.module.css'
 
 export interface OppgaveHjelpemidlerProps {
-  sakId?: Nullable<ID>
+  sakId?: ID
 }
 
 export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {

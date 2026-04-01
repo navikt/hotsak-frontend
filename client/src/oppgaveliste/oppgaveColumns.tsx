@@ -279,14 +279,14 @@ export const oppgaveColumns = {
     field: 'opprettetTidspunkt',
     header: 'Opprettet',
     sortKey: 'opprettetTidspunkt',
-    width: 125,
+    width: 120,
     formatDateTime: true,
   },
   fristFerdigstillelse: {
     field: 'fristFerdigstillelse',
     header: 'Frist',
     sortKey: 'fristFerdigstillelse',
-    width: 125,
+    width: 130,
     renderCell(row) {
       const { fristFerdigstillelse, ferdigstiltTidspunkt } = row
       if (!fristFerdigstillelse) return null

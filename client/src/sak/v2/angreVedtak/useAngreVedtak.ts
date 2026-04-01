@@ -20,10 +20,11 @@ export function useAngreVedtak(): AngreActions {
     async angreVedtak() {
       if (!sakId || !gjeldendeBehandling) return
       return execute(async () => {
+        await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
         await http.post(`/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angring`, { versjon })
         await mutateBehandling()
         await mutateSak(sakId)
-        showSuccessToast('Vedtaket er angre og ny oppgave ligger i din liste')
+        showSuccessToast('Vedtaket er angret og ny oppgave ligger i din liste')
       })
     },
     state,

@@ -112,12 +112,7 @@ export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
     },
 
     async merkSomLest() {
-      return execute(async () => {
-        await http.put(`/api/oppgaver/${oppgaveId}/leste`)
-        if (isOppgaveContext) {
-          await mutateOppgaveOgSak()
-        }
-      })
+      return execute(() => http.put(`/api/oppgaver/${oppgaveId}/leste`))
     },
 
     state,

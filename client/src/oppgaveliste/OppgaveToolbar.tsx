@@ -68,7 +68,7 @@ function HastesakerToggle({ antallHastesaker = 0 }: { antallHastesaker?: number 
   if (antallHastesaker > 0) {
     return (
       <ChipsToggle
-        title="Vis alle oppgaver med høy eller kritisk prioritet."
+        title="Vis alle oppgaver med høy eller kritisk prioritet"
         selected={selected}
         data-color="warning"
         onClick={() => {
@@ -91,20 +91,23 @@ function HastesakerToggle({ antallHastesaker = 0 }: { antallHastesaker?: number 
   )
 }
 
+const hastesakValues = new Set([Oppgaveprioritet.HØY, Oppgaveprioritet.KRITISK])
+
 function PåVentToggle({ antallPåVent = 0 }: { antallPåVent?: number }) {
-  const { isPåVent = emptyDataGridFilterValues } = useDataGridFilterContext<'isPåVent'>()
+  const { isPåVent = emptyDataGridFilterValues, ...rest } = useDataGridFilterContext<'isPåVent'>()
   const dispatch = useDataGridFilterDispatch<'isPåVent'>()
-  const selected = isPåVent.values.size > 0
+  const selected = isPåVentValues.symmetricDifference(isPåVent.values).size === 0 && !isDataGridFiltered(rest)
   return (
     <ChipsToggle
       title="Vi alle oppgaver som er satt på vent"
       selected={selected}
       onClick={() => {
-        const type = selected ? 'removeFieldValue' : 'addFieldValue'
+        const values = selected ? emptyDataGridFilterValues.values : isPåVentValues
         dispatch({
-          type,
+          type: 'setFieldValues',
           field: 'isPåVent',
-          value: true,
+          values,
+          resetOthers: true,
         })
       }}
     >
@@ -113,4 +116,4 @@ function PåVentToggle({ antallPåVent = 0 }: { antallPåVent?: number }) {
   )
 }
 
-const hastesakValues = new Set([Oppgaveprioritet.HØY, Oppgaveprioritet.KRITISK])
+const isPåVentValues = new Set([true])

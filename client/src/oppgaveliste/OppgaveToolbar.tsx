@@ -3,15 +3,14 @@ import { BodyShort, Box, Button, Chips, HGrid, HStack } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 
 import {
-  isDataGridFiltered,
-  useDataGridFilterContext,
   useDataGridFilterDispatch,
   useDataGridFilterResetAllHandler,
   useIsDataGridFiltered,
+  useIsDataGridOnlyFilteredBy,
 } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
 import classes from './OppgaveToolbar.module.css'
-import type { OppgaveColumnField } from './oppgaveColumns.tsx'
+import { OppgaveColumnFilter } from './oppgaveColumns.tsx'
 import { Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
 import { ChipsToggle } from '@navikt/ds-react/Chips'
 import { emptyDataGridFilterValues } from '../felleskomponenter/data/DataGridFilter.ts'
@@ -62,9 +61,8 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
 }
 
 function HastesakerToggle({ antallHastesaker = 0 }: { antallHastesaker?: number }) {
-  const { prioritet = emptyDataGridFilterValues, ...rest } = useDataGridFilterContext<OppgaveColumnField>()
-  const dispatch = useDataGridFilterDispatch<OppgaveColumnField>()
-  const selected = hastesakValues.symmetricDifference(prioritet.values).size === 0 && !isDataGridFiltered(rest)
+  const dispatch = useDataGridFilterDispatch<OppgaveColumnFilter>()
+  const selected = useIsDataGridOnlyFilteredBy<OppgaveColumnFilter>('prioritet', hastesakValues)
   if (antallHastesaker > 0) {
     return (
       <ChipsToggle
@@ -94,9 +92,8 @@ function HastesakerToggle({ antallHastesaker = 0 }: { antallHastesaker?: number 
 const hastesakValues = new Set([Oppgaveprioritet.HØY, Oppgaveprioritet.KRITISK])
 
 function PåVentToggle({ antallPåVent = 0 }: { antallPåVent?: number }) {
-  const { isPåVent = emptyDataGridFilterValues, ...rest } = useDataGridFilterContext<'isPåVent'>()
-  const dispatch = useDataGridFilterDispatch<'isPåVent'>()
-  const selected = isPåVentValues.symmetricDifference(isPåVent.values).size === 0 && !isDataGridFiltered(rest)
+  const dispatch = useDataGridFilterDispatch<OppgaveColumnFilter>()
+  const selected = useIsDataGridOnlyFilteredBy<OppgaveColumnFilter>('isPåVent', isPåVentValues)
   return (
     <ChipsToggle
       title="Vi alle oppgaver som er satt på vent"

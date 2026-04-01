@@ -1,6 +1,6 @@
 import { createContext, type Dispatch, useCallback, useContext, useMemo } from 'react'
 
-import { type DataGridFilterValues, type DataGridFilterValue } from './DataGridFilter.ts'
+import { type DataGridFilterValue, type DataGridFilterValues, emptyDataGridFilterValues } from './DataGridFilter.ts'
 
 export type DataGridFilterState<K extends string = string> = Record<K, DataGridFilterValues>
 
@@ -39,7 +39,15 @@ export function useIsDataGridFiltered(): boolean {
   return useMemo(() => isDataGridFiltered(filterState), [filterState])
 }
 
-export function isDataGridFiltered(state: DataGridFilterState): boolean {
+export function useIsDataGridOnlyFilteredBy<
+  K extends string = string,
+  V extends DataGridFilterValue = DataGridFilterValue,
+>(key: K, values: Set<V>) {
+  const { [key]: filter = emptyDataGridFilterValues, ...rest } = useDataGridFilterContext<K>()
+  return values.symmetricDifference(filter.values).size === 0 && !isDataGridFiltered(rest)
+}
+
+function isDataGridFiltered(state: DataGridFilterState): boolean {
   const entries = Object.values(state).filter(({ values }) => values.size > 0)
   return entries.length > 0
 }

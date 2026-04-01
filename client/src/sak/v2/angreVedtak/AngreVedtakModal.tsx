@@ -10,8 +10,8 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
   const vedtaksResultat = (gjeldendeBehandling?.utfall?.utfall as VedtaksResultat) || null
   const { angreVedtak } = useAngreVedtak()
 
-  const onBekreft = () => {
-    angreVedtak()
+  const onBekreft = async () => {
+    await angreVedtak()
     onClose()
   }
 
@@ -30,6 +30,11 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
         Ved angring av vedtaket vil vi stoppe videre distribusjon av vedtaket til andre fagsystemer, og gjøre
         behandlingen aktiv igjen.
       </p>
+      <p>
+        Behandlingen du har gjort av oppgaven vil bli aktivert igjen, og resultatet du valgte samt det eventuelle brevet
+        du skrev vil fortsatt være der.
+      </p>
+      <p>Etter angring vil den nye oppgaven knyttet til saken være på listen over dine oppgaver.</p>
       {(vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) && (
         <InfoCard data-color="warning" size="small">
           <InfoCard.Header>

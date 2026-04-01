@@ -1,4 +1,5 @@
 import { Actions, useActionState } from '../../../action/Actions'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { http } from '../../../io/HttpClient'
 import { useOppgave } from '../../../oppgave/useOppgave'
 import { mutateSak } from '../../../saksbilde/mutateSak'
@@ -13,6 +14,7 @@ export function useAngreVedtak(): AngreActions {
   const { versjon, sakId } = oppgave ?? {}
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
   const { execute, state } = useActionState()
+  const { showSuccessToast } = useToast()
 
   return {
     async angreVedtak() {
@@ -21,6 +23,7 @@ export function useAngreVedtak(): AngreActions {
         await http.post(`/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angring`, { versjon })
         await mutateBehandling()
         await mutateSak(sakId)
+        showSuccessToast('Vedtaket er angre og ny oppgave ligger i din liste')
       })
     },
     state,

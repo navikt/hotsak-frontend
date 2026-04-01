@@ -55,6 +55,8 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
     behandlesAvApplikasjon: 'HOTSAK',
     mappeId: undefined, // fixme
     mappenavn: undefined, // fixme
+    sistLest: undefined,
+    isUlest: true,
   }
 }
 

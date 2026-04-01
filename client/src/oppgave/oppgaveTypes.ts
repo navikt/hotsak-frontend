@@ -141,6 +141,10 @@ export interface Oppgave extends OppgaveBase {
   // mappe
   mappeId?: string
   mappenavn?: string
+
+  // oppgavebehandling
+  sistLest?: string
+  isUlest?: boolean
 }
 
 export interface OppgaveKodeverk {

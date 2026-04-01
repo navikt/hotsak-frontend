@@ -2,7 +2,7 @@ import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgavePaginationContext, useOppgavePaginationSortChangeHandler } from './OppgavePaginationContext.tsx'
-import { selectOppgaveId } from './oppgaveSelectors.ts'
+import { selectIsUlest, selectOppgaveId } from './oppgaveSelectors.ts'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 import { useOppgavelisteFiltrertHandler } from './useOppgavelistemetrikker.ts'
@@ -33,6 +33,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       sort={sort}
       onSortChange={handleSortChange}
       onFilterChange={handleFilterChange}
+      isHighlighted={selectIsUlest}
       zebraStripes
     />
   )

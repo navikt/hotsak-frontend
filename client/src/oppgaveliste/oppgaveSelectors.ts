@@ -32,14 +32,6 @@ export function selectPrioritet(it: Oppgave): Oppgaveprioritet {
   return it.prioritet
 }
 
-export function selectIsHastesak(it: Oppgave): boolean {
-  return it.prioritet === Oppgaveprioritet.KRITISK || it.prioritet === Oppgaveprioritet.HØY
-}
-
-export function selectIsPåVent(it: Oppgave): boolean {
-  return it.isPåVent === true
-}
-
 export function selectInnsenderNavn(it: Oppgave): string {
   return it.innsender?.fulltNavn ?? OPPGAVE_FILTER_OPTION_TOMME
 }
@@ -68,4 +60,16 @@ export function selectSaksstatus(it: Oppgave): OppgaveStatusType | string {
 
 export function selectFerdigstiltTidspunkt(it: Oppgave): string | undefined {
   return it.ferdigstiltTidspunkt
+}
+
+export function selectIsHastesak(it: Oppgave): boolean {
+  return it.prioritet === Oppgaveprioritet.KRITISK || it.prioritet === Oppgaveprioritet.HØY
+}
+
+export function selectIsPåVent(it: Oppgave): boolean {
+  return it.isPåVent === true
+}
+
+export function selectIsUlest(it: Oppgave): boolean {
+  return it.isUlest === true
 }

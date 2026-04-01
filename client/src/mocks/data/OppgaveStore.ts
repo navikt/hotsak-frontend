@@ -149,6 +149,11 @@ export class OppgaveStore extends Dexie {
     return this.oppgaver.update(oppgaveId, changes)
   }
 
+  async merkSomLest(oppgaveId: OppgaveId) {
+    // const meg = await this.saksbehandlerStore.innloggetSaksbehandler() todo -> støtt flere saksbehandlere
+    return this.oppgaver.update(oppgaveId, { sistLest: new Date().toISOString(), isUlest: false })
+  }
+
   async alle() {
     return this.oppgaver.toArray()
   }

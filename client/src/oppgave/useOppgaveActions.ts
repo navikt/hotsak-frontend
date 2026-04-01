@@ -45,9 +45,14 @@ export interface OppgaveActions extends Actions {
   fjernOppgavetildeling(request?: FjernOppgavetildelingRequest): Promise<void>
 
   /**
-   *
+   * TODO
    */
   endreOppgave(request: EndreOppgaveRequest): Promise<void>
+
+  /**
+   * TODO
+   */
+  merkSomLest(): Promise<void>
 }
 
 /**
@@ -100,6 +105,15 @@ export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
         await http.put(`/api/oppgaver/${oppgaveId}`, request, {
           versjon,
         })
+        if (isOppgaveContext) {
+          await mutateOppgaveOgSak()
+        }
+      })
+    },
+
+    async merkSomLest() {
+      return execute(async () => {
+        await http.put(`/api/oppgaver/${oppgaveId}/leste`)
         if (isOppgaveContext) {
           await mutateOppgaveOgSak()
         }

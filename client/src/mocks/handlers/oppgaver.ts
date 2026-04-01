@@ -71,6 +71,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return respondNoContent()
   }),
 
+  http.put<OppgaveParams>(`/api/oppgaver/:oppgaveId/leste`, async ({ params }) => {
+    const { oppgaveId } = params
+    await oppgaveStore.merkSomLest(oppgaveId)
+    await delay(200)
+    return respondNoContent()
+  }),
+
   http.get<OppgaveParams>(`/api/oppgaver/:oppgaveId/gjelder`, async () => {
     return HttpResponse.json({})
   }),

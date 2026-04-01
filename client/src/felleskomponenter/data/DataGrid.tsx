@@ -7,6 +7,8 @@ import { FormatDateTime } from '../format/FormatDateTime.tsx'
 import { type DataGridFilter } from './DataGridFilter.ts'
 import { DataGridFilterMenu } from './DataGridFilterMenu.tsx'
 import type { DataGridFilterAction } from './DataGridFilterContext.ts'
+import classes from './DataGrid.module.css'
+import clsx from 'clsx'
 
 export interface DataGridColumn<T extends object> {
   field: string | Exclude<keyof T, symbol | number>
@@ -41,6 +43,8 @@ export interface DataGridProps<T extends object, K extends string = string> exte
   renderContent?(props: DataGridContentProps<T>): ReactNode
 
   onFilterChange?(action: DataGridFilterAction<K>): void
+
+  isHighlighted?(row: T): boolean
 }
 
 export function DataGrid<T extends object>(props: DataGridProps<T>) {
@@ -56,6 +60,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     keyFactory,
     renderContent,
     onFilterChange,
+    isHighlighted,
     ...tableProps
   } = props
   const visibleColumns = useMemo(() => columns.filter(notHidden), [columns])
@@ -138,14 +143,21 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
             )
           })
 
+          const rowClassName = clsx({
+            [classes.highlighted]: typeof isHighlighted === 'function' && isHighlighted(row),
+          })
           if (renderContent) {
             return (
-              <ExpandableRow key={key} renderContent={renderContent} row={row}>
+              <ExpandableRow key={key} className={rowClassName} renderContent={renderContent} row={row}>
                 {cells}
               </ExpandableRow>
             )
           } else {
-            return <Table.Row key={key}>{cells}</Table.Row>
+            return (
+              <Table.Row key={key} className={rowClassName}>
+                {cells}
+              </Table.Row>
+            )
           }
         })}
       </Table.Body>
@@ -189,17 +201,24 @@ export interface DataGridContentProps<T extends object> {
 }
 
 function ExpandableRow<T extends object>({
-  renderContent,
+  className,
   row,
+  renderContent,
   children,
 }: {
-  renderContent: NonNullable<DataGridProps<T>['renderContent']>
+  className?: string
   row: T
+  renderContent: NonNullable<DataGridProps<T>['renderContent']>
   children: ReactNode
 }) {
   const [visible, setVisible] = useState(false)
   return (
-    <Table.ExpandableRow open={visible} onOpenChange={setVisible} content={visible ? renderContent({ row }) : null}>
+    <Table.ExpandableRow
+      className={className}
+      open={visible}
+      onOpenChange={setVisible}
+      content={visible ? renderContent({ row }) : null}
+    >
       {children}
     </Table.ExpandableRow>
   )

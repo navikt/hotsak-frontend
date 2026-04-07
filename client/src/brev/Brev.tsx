@@ -2,6 +2,7 @@ import { Button, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
 import { useEffect, useMemo, useState } from 'react'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
+import { http } from '../io/HttpClient.ts'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
@@ -22,7 +23,6 @@ import { Brevstatus } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
 import { useBrevutkast } from './useBrevutkast.ts'
-import { http } from '../io/HttpClient.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -212,7 +212,34 @@ export const Brev = () => {
       )}
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && !brevSendt && (
         <div className="brev">
-          {!brevutkast.data?.ferdigstilt && (
+          {oppgaveFerdigstilt && !brevutkast.data?.ferdigstilt && (
+            <>
+              <VStack paddingInline="space-20" gap="space-16">
+                <PanelTittel
+                  paddingInline="space-8 space-0"
+                  tittel="Brev"
+                  lukkPanel={() => {
+                    closePanel()
+                  }}
+                />
+                <TextContainer>
+                  <InfoCard data-color="info" size="small">
+                    <InfoCard.Header>
+                      <InfoCard.Title>Oppgaven er ferdigstilt</InfoCard.Title>
+                    </InfoCard.Header>
+                    <InfoCard.Content>
+                      <Tekst>
+                        Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet. Dersom du har angret på
+                        vedtaket finnes det en ny oppgave i din liste hvor du kan redigere brevet som tidligere var
+                        tilknyttet denne oppgaven.
+                      </Tekst>
+                    </InfoCard.Content>
+                  </InfoCard>
+                </TextContainer>
+              </VStack>
+            </>
+          )}
+          {!oppgaveFerdigstilt && !brevutkast.data?.ferdigstilt && (
             <>
               <div className="brevtoolbar">
                 <div className="left">

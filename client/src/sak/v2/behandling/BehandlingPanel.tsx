@@ -87,11 +87,12 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                   Vedtaksbrev
                 </Heading>
                 <VStack gap="space-12">
-                  {lesevisning && brevMetadata?.status === Brevstatus.UTBOKS && (
-                    <InlineMessage status="info" size="small">
-                      Brev lagt til utsending - sendes neste virkedag
-                    </InlineMessage>
-                  )}
+                  {lesevisning &&
+                    (brevMetadata?.status === Brevstatus.UTBOKS || brevMetadata?.status === Brevstatus.FERDIGSTILT) && (
+                      <InlineMessage status="info" size="small">
+                        Brev lagt til utsending - sendes neste virkedag
+                      </InlineMessage>
+                    )}
 
                   {lesevisning && brevMetadata?.status === Brevstatus.SENDT && (
                     <>

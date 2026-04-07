@@ -19,6 +19,11 @@ export interface DataGridColumn<T extends object> {
   width?: number
   order?: number
 
+  /**
+   * Only included in our test environment.
+   */
+  experiment?: boolean
+
   filter?: DataGridFilter
 
   formatDate?: boolean

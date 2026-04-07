@@ -4,7 +4,7 @@ import { type ReactNode } from 'react'
 
 import { useLocalReducer } from '../state/useLocalReducer.ts'
 import { associateBy } from '../utils/array.ts'
-import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
+import { type DefaultOppgaveColumns, getOppgaveColumn, OppgaveColumnField } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,
   OppgaveColumnsContext,
@@ -12,6 +12,7 @@ import {
   type OppgaveColumnsState,
   OppgaveColumnState,
 } from './OppgaveColumnsContext.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface OppgaveColumnsProviderProps {
   suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
@@ -21,14 +22,20 @@ export interface OppgaveColumnsProviderProps {
 
 export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
   const { suffix, defaultColumns, children } = props
+  const { erIkkeProd } = useMiljø()
   const [state, dispatch] = useLocalReducer(
     'oppgaveColumns' + suffix,
     reducer,
     (storedState = []): OppgaveColumnsState => {
       const columnsById = associateBy(storedState, (it) => it.id)
       return defaultColumns
+        .filter((column) => {
+          const [id] = asTuple(column)
+          const { experiment } = getOppgaveColumn(id)
+          return !experiment || erIkkeProd
+        })
         .map((column, defaultOrder) => {
-          const [id, defaultChecked] = Array.isArray(column) ? column : [column, true]
+          const [id, defaultChecked] = asTuple(column)
           const columnState = columnsById[id]
           return {
             id,
@@ -46,6 +53,10 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
       <OppgaveColumnsDispatchContext value={dispatch}>{children}</OppgaveColumnsDispatchContext>
     </OppgaveColumnsContext>
   )
+}
+
+function asTuple(column: OppgaveColumnField | [OppgaveColumnField, boolean]): [OppgaveColumnField, boolean] {
+  return Array.isArray(column) ? column : [column, true]
 }
 
 function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {

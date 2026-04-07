@@ -8,6 +8,10 @@ export function selectOppgaveId(it: Oppgave): OppgaveId {
   return it.oppgaveId
 }
 
+export function selectSakId(it: Oppgave): ID {
+  return it.sakId ?? ''
+}
+
 export function selectTildeltSaksbehandlerNavn(it: Oppgave): string {
   return it.tildeltSaksbehandler?.navn || OPPGAVE_FILTER_OPTION_TOMME
 }

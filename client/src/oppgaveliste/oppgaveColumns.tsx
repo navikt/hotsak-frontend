@@ -15,7 +15,6 @@ import {
 import { OppgaveStatusLabel, OppgaveStatusType } from '../types/types.internal.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
-
 import classes from './oppgaveColumns.module.css'
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
@@ -45,6 +44,20 @@ export const oppgaveColumns = {
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },
+  },
+  oppgaveId: {
+    field: 'oppgaveId',
+    header: 'ID',
+    sortKey: 'oppgaveId',
+    width: 125,
+    experiment: true,
+  },
+  sakId: {
+    field: 'sakId',
+    header: 'Saksnr.',
+    sortKey: 'sakId',
+    width: 125,
+    experiment: true,
   },
   saksbehandler: {
     field: 'saksbehandler',

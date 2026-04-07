@@ -16,6 +16,8 @@ export default function EnhetensOppgaverWrapper() {
 
 const defaultColumns: DefaultOppgaveColumns = [
   'taOppgave',
+  'oppgaveId',
+  'sakId',
   'oppgavetype',
   'behandlingstema',
   'behandlingstype',

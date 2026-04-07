@@ -11,7 +11,6 @@ import { CogIcon, DragVerticalIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, HStack, VStack } from '@navikt/ds-react'
 
 import classes from './OppgaveColumnMenu.module.css'
-
 import { getOppgaveColumn } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnState,
@@ -21,6 +20,7 @@ import {
   useOppgaveColumnsResetAllHandler,
   useOppgaveColumnToggleColumnHandler,
 } from './OppgaveColumnsContext.ts'
+import { useMemo } from 'react'
 
 export function OppgaveColumnMenu() {
   const columnsState = useOppgaveColumnsContext()
@@ -35,6 +35,8 @@ export function OppgaveColumnMenu() {
   )
 
   const handleMoveColumn = useOppgaveColumnsMoveColumnHandler()
+
+  const items = useMemo(() => columnsState.map((it) => it.id), [columnsState])
 
   return (
     <ActionMenu>
@@ -52,7 +54,7 @@ export function OppgaveColumnMenu() {
             onDragEnd={handleMoveColumn}
           >
             <div>
-              <SortableContext items={columnsState.map((col) => col.id)} strategy={verticalListSortingStrategy}>
+              <SortableContext items={items} strategy={verticalListSortingStrategy}>
                 {columnsState.map((columnState) => (
                   <OppgaveColumnMenuItem key={columnState.id} columnState={columnState} />
                 ))}

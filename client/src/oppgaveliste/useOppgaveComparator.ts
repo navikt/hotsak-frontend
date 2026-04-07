@@ -8,6 +8,8 @@ import {
   selectBrukerFødselsdato,
   selectBrukerFødselsnummer,
   selectFerdigstiltTidspunkt,
+  selectOppgaveId,
+  selectSakId,
 } from './oppgaveSelectors.ts'
 
 export function useOppgaveComparator(): Comparator<Oppgave> | undefined {
@@ -16,6 +18,10 @@ export function useOppgaveComparator(): Comparator<Oppgave> | undefined {
   } = useOppgavePaginationContext()
   return useMemo(() => {
     switch (orderBy) {
+      case 'oppgaveId':
+        return compareBy(direction, selectOppgaveId)
+      case 'sakId':
+        return compareBy(direction, selectSakId)
       case 'fnr':
         return compareBy(direction, selectBrukerFødselsnummer)
       case 'fødselsdato':

@@ -1,4 +1,4 @@
-import { HStack, Loader, Pagination, Table, type TableProps } from '@navikt/ds-react'
+import { HStack, Pagination, Skeleton, Table, type TableProps } from '@navikt/ds-react'
 import { type Key, type ReactNode, useMemo, useState } from 'react'
 
 import { isKeyOfObject } from '../../utils/type.ts'
@@ -70,7 +70,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     <Table {...tableProps}>
       <Table.Header>
         <Table.Row>
-          {renderContent ? <Table.HeaderCell style={{ width: 48 }} /> : null}
+          {expandable ? <Table.HeaderCell style={{ width: 48 }} /> : null}
           {visibleColumns.map((column) => {
             const key = column.field
 
@@ -109,11 +109,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {rows.length === 0 && loading && (
-          <PlaceholderRow colSpan={colSpan} textSize={textSize}>
-            <Loader />
-          </PlaceholderRow>
-        )}
+        {rows.length === 0 && loading && <SkeletonRows columns={visibleColumns} expandable={expandable} />}
         {rows.length === 0 && !loading && (
           <PlaceholderRow colSpan={colSpan} textSize={textSize}>
             {emptyMessage}
@@ -146,7 +142,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
           const rowClassName = clsx({
             [classes.highlighted]: typeof isHighlighted === 'function' && isHighlighted(row),
           })
-          if (renderContent) {
+          if (typeof renderContent === 'function') {
             return (
               <ExpandableRow key={key} className={rowClassName} renderContent={renderContent} row={row}>
                 {cells}
@@ -194,6 +190,32 @@ function PlaceholderRow({
       </Table.DataCell>
     </Table.Row>
   )
+}
+
+const skeletonRows: number[] = Array.from({ length: 10 }, (_, index) => index)
+
+function SkeletonRows<T extends object>({
+  columns,
+  expandable,
+}: {
+  columns: DataGridColumn<T>[]
+  expandable: boolean
+}) {
+  const height = expandable ? '2rem' : undefined
+  return skeletonRows.map((key) => (
+    <Table.Row key={key}>
+      {expandable ? (
+        <Table.DataCell style={{ width: 48 }}>
+          <Skeleton height={height} />
+        </Table.DataCell>
+      ) : null}
+      {columns.map((column) => (
+        <Table.DataCell key={column.field} width={column.width}>
+          <Skeleton height={height} />
+        </Table.DataCell>
+      ))}
+    </Table.Row>
+  ))
 }
 
 export interface DataGridContentProps<T extends object> {

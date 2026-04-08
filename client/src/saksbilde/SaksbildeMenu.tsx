@@ -6,11 +6,14 @@ import { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser.ts'
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
-import { GjenståendeOverfør } from '../sak/v2/behandling/behandlingTyper.ts'
+import { AngringLåst, GjenståendeOverfør, UtfallLåst } from '../sak/v2/behandling/behandlingTyper.ts'
 import { OverførtilGosysValideringFeil } from '../sak/v2/modaler/OverførtilGosysValideringFeil.tsx'
 import { OverførSakTilGosysModal } from './OverførSakTilGosysModal.tsx'
 import { useOverførSakTilGosys } from './useOverførSakTilGosys.ts'
 import { OppgaveMenuModals } from '../oppgave/OppgaveMenuModals.tsx'
+import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
+import { AngreVedtakModal } from '../sak/v2/angreVedtak/AngreVedtakModal.tsx'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface SaksbildeMenuProps {
   gjenståendeFørOverføring?: GjenståendeOverfør[]
@@ -19,11 +22,14 @@ export interface SaksbildeMenuProps {
 
 export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverføring = [] }: SaksbildeMenuProps) {
   const { oppgave } = useOppgave()
-  const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(spørreundersøkelseId)
   const [visValideringsfeil, setVisValideringsfeil] = useState(false)
+  const { gjeldendeBehandling } = useBehandling()
+  const [angreVedtakModalOpen, setAngreVedtakModalOpen] = useState(false)
+  const { erDev } = useMiljø()
 
-  if (!oppgave || oppgaveErAvsluttet) {
+  if (!oppgave) {
     return null
   }
 
@@ -45,24 +51,33 @@ export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverfør
         </ActionMenu.Trigger>
         <ActionMenu.Content>
           <OppgaveMenu oppgave={oppgave} />
-          {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-            <>
-              <ActionMenu.Divider />
-              <ActionMenu.Group label="Sak">
+          <>
+            <ActionMenu.Divider />
+            <ActionMenu.Group label="Sak">
+              <ActionMenu.Item
+                disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
+                onSelect={() => {
+                  if (gjenståendeFørOverføring.length > 0) {
+                    setVisValideringsfeil(true)
+                  } else {
+                    visOverførGosys()
+                  }
+                }}
+              >
+                Overfør sak til Gosys
+              </ActionMenu.Item>
+              {gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.MIDLERTIDIG_FERDIGSTILT) && erDev && (
                 <ActionMenu.Item
-                  onSelect={() => {
-                    if (gjenståendeFørOverføring.length > 0) {
-                      setVisValideringsfeil(true)
-                    } else {
-                      visOverførGosys()
-                    }
-                  }}
+                  disabled={gjeldendeBehandling.operasjoner.angreVedtak.angringLåst.includes(
+                    AngringLåst.ANGRE_TID_UTLØPT
+                  )}
+                  onSelect={() => setAngreVedtakModalOpen(true)}
                 >
-                  Overfør sak til Gosys
+                  Angre vedtak
                 </ActionMenu.Item>
-              </ActionMenu.Group>
-            </>
-          )}
+              )}
+            </ActionMenu.Group>
+          </>
         </ActionMenu.Content>
       </ActionMenu>
       <OppgaveMenuModals oppgave={oppgave} />
@@ -72,6 +87,7 @@ export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverfør
         open={visValideringsfeil}
         onClose={() => setVisValideringsfeil(false)}
       />
+      <AngreVedtakModal open={angreVedtakModalOpen} onClose={() => setAngreVedtakModalOpen(false)} />
     </>
   )
 }

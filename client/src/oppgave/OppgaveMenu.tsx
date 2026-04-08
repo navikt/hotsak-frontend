@@ -16,16 +16,16 @@ export interface OppgaveMenuProps {
 export function OppgaveMenu(props: OppgaveMenuProps) {
   const { oppgave, onAction } = props
   const {
-    oppgaveErAvsluttet,
     oppgaveErKlarTilBehandling,
     oppgaveErUnderBehandlingAvAnnenAnsatt,
+    oppgaveErUnderBehandlingAvInnloggetAnsatt,
     oppgaveErPåVent,
     gjeldendeEnhet,
   } = useOppgaveregler(oppgave)
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { logOppgaveLagtTilbake } = useUmami()
 
-  if (!oppgave || oppgaveErAvsluttet) {
+  if (!oppgave) {
     return null
   }
 
@@ -49,23 +49,36 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   return (
     <ActionMenu.Group label="Oppgave">
       {oppgaveErPåVent ? (
-        <OppgaveModalActionMenuItem modal={OppgaveModalType.FORTSETT_BEHANDLING}>
+        <OppgaveModalActionMenuItem
+          modal={OppgaveModalType.FORTSETT_BEHANDLING}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
+        >
           Fortsett behandling
         </OppgaveModalActionMenuItem>
       ) : (
-        <OppgaveModalActionMenuItem modal={OppgaveModalType.SETT_PÅ_VENT}>
+        <OppgaveModalActionMenuItem
+          modal={OppgaveModalType.SETT_PÅ_VENT}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
+        >
           Sett oppgaven på vent
         </OppgaveModalActionMenuItem>
       )}
       {!isJournalføring && (
-        <OppgaveModalActionMenuItem modal={OppgaveModalType.ENDRE_GJELDER}>
+        <OppgaveModalActionMenuItem
+          modal={OppgaveModalType.ENDRE_GJELDER}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
+        >
           Endre hva oppgaven gjelder
         </OppgaveModalActionMenuItem>
       )}
-      <OppgaveModalActionMenuItem modal={OppgaveModalType.OVERFØR_TIL_MEDARBEIDER}>
+      <OppgaveModalActionMenuItem
+        modal={OppgaveModalType.OVERFØR_TIL_MEDARBEIDER}
+        underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
+      >
         Overfør til medarbeider
       </OppgaveModalActionMenuItem>
       <ActionMenu.Item
+        disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
         onSelect={async () => {
           await fjernOppgavetildeling()
           logOppgaveLagtTilbake()
@@ -83,10 +96,22 @@ function OppgaveMenuGroup({ children }: { children: ReactNode }) {
   return <ActionMenu.Group label="Oppgave">{children}</ActionMenu.Group>
 }
 
-function OppgaveModalActionMenuItem({ modal, children }: { modal: OppgaveModalType; children: ReactNode }) {
+function OppgaveModalActionMenuItem({
+  modal,
+  underBehandlingAvInnloggetAnsatt,
+  children,
+}: {
+  modal: OppgaveModalType
+  underBehandlingAvInnloggetAnsatt: boolean
+  children: ReactNode
+}) {
   const åpneModal = useOppgaveÅpneModalHandler()
   const handleSelect = () => åpneModal(modal)
-  return <ActionMenu.Item onSelect={handleSelect}>{children}</ActionMenu.Item>
+  return (
+    <ActionMenu.Item disabled={!underBehandlingAvInnloggetAnsatt} onSelect={handleSelect}>
+      {children}
+    </ActionMenu.Item>
+  )
 }
 
 function GosysLinkItem({ oppgaveId }: { oppgaveId: OppgaveId }) {

@@ -58,7 +58,7 @@ export function Toppmeny() {
             <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="_new">
               Gosys
             </ActionMenu.Item>
-            <ActionMenu.Item as="a" href="https://app.adeo.no/modiapersonoversikt" target="_new">
+            <ActionMenu.Item as="a" href="https://modiapersonoversikt.intern.nav.no/landingpage" target="_new">
               Modia
             </ActionMenu.Item>
           </ActionMenu.Group>

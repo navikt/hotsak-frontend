@@ -15,8 +15,13 @@ export interface OppgaveMenuProps {
 
 export function OppgaveMenu(props: OppgaveMenuProps) {
   const { oppgave, onAction } = props
-  const { oppgaveErKlarTilBehandling, oppgaveErUnderBehandlingAvAnnenAnsatt, oppgaveErPåVent, gjeldendeEnhet } =
-    useOppgaveregler(oppgave)
+  const {
+    oppgaveErKlarTilBehandling,
+    oppgaveErUnderBehandlingAvAnnenAnsatt,
+    oppgaveErUnderBehandlingAvInnloggetAnsatt,
+    oppgaveErPåVent,
+    gjeldendeEnhet,
+  } = useOppgaveregler(oppgave)
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { logOppgaveLagtTilbake } = useUmami()
 
@@ -46,14 +51,14 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       {oppgaveErPåVent ? (
         <OppgaveModalActionMenuItem
           modal={OppgaveModalType.FORTSETT_BEHANDLING}
-          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvAnnenAnsatt}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
         >
           Fortsett behandling
         </OppgaveModalActionMenuItem>
       ) : (
         <OppgaveModalActionMenuItem
           modal={OppgaveModalType.SETT_PÅ_VENT}
-          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvAnnenAnsatt}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
         >
           Sett oppgaven på vent
         </OppgaveModalActionMenuItem>
@@ -61,19 +66,19 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       {!isJournalføring && (
         <OppgaveModalActionMenuItem
           modal={OppgaveModalType.ENDRE_GJELDER}
-          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvAnnenAnsatt}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
         >
           Endre hva oppgaven gjelder
         </OppgaveModalActionMenuItem>
       )}
       <OppgaveModalActionMenuItem
         modal={OppgaveModalType.OVERFØR_TIL_MEDARBEIDER}
-        underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvAnnenAnsatt}
+        underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
       >
         Overfør til medarbeider
       </OppgaveModalActionMenuItem>
       <ActionMenu.Item
-        disabled={!oppgaveErUnderBehandlingAvAnnenAnsatt}
+        disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
         onSelect={async () => {
           await fjernOppgavetildeling()
           logOppgaveLagtTilbake()

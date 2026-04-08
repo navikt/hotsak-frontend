@@ -38,9 +38,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
         <VStack gap="space-16" paddingInline="space-4">
           {behovsmelding.levering.hast && <Hast hast={behovsmelding.levering.hast} />}
           <section className={classes.panel}>
-            <CompactExpandableCard tittel="Om brukeren">
-              <FunksjonsbeskrivelseV2 funksjonsbeskrivelse={funksjonsbeskrivelse} skjulHeading={true} />
-            </CompactExpandableCard>
+            <FunksjonsbeskrivelseV2 funksjonsbeskrivelse={funksjonsbeskrivelse} />
           </section>
           <section className={classes.søknadContainer}>
             <Hjelpemidler sak={sak} behovsmelding={behovsmelding} />

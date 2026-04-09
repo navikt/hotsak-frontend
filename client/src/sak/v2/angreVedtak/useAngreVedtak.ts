@@ -1,9 +1,14 @@
+import { useNavigate } from 'react-router-dom'
 import { Actions, useActionState } from '../../../action/Actions'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { http } from '../../../io/HttpClient'
 import { useOppgave } from '../../../oppgave/useOppgave'
 import { mutateSak } from '../../../saksbilde/mutateSak'
 import { useBehandling } from '../behandling/useBehandling'
+
+export interface AngreResponse {
+  nyOppgaveId: string
+}
 
 export interface AngreActions extends Actions {
   angreVedtak(): Promise<void>
@@ -15,16 +20,21 @@ export function useAngreVedtak(): AngreActions {
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
   const { execute, state } = useActionState()
   const { showSuccessToast } = useToast()
+  const navigate = useNavigate()
 
   return {
     async angreVedtak() {
       if (!sakId || !gjeldendeBehandling) return
       return execute(async () => {
         await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
-        await http.post(`/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angring`, { versjon })
+        const response = await http.post<unknown, AngreResponse>(
+          `/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angring`,
+          { versjon }
+        )
         await mutateBehandling()
         await mutateSak(sakId)
-        showSuccessToast('Vedtaket er angret og ny oppgave ligger i din liste')
+        showSuccessToast('Vedtaket er angret og ny oppgave er aktiv')
+        navigate(`/oppgave/${response.nyOppgaveId}`)
       })
     },
     state,

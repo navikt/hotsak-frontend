@@ -1,5 +1,5 @@
 import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
-import { Children, ReactNode } from 'react'
+import { Children, ReactNode, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
@@ -21,6 +21,13 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (person?.fnr) {
+      setFodselsnummer(person?.fnr)
+    }
+    return () => setFodselsnummer('')
+  }, [person?.fnr])
+
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />
 
@@ -36,7 +43,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           as={Link}
           size="small"
           href="#"
-          onClick={(event) => {
+          onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
             event.preventDefault()
             setFodselsnummer(fnr)
             navigate('/personoversikt/saker')

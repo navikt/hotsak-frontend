@@ -18,7 +18,7 @@ import classes from './Toppmeny.module.css'
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
-  const { setFodselsnummer } = usePersonContext()
+  const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
@@ -58,7 +58,15 @@ export function Toppmeny() {
             <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="_new">
               Gosys
             </ActionMenu.Item>
-            <ActionMenu.Item as="a" href="https://modiapersonoversikt.intern.nav.no/landingpage" target="_new">
+            <ActionMenu.Item
+              as="a"
+              href={
+                fodselsnummer
+                  ? `https://modiapersonoversikt.intern.nav.no/person/${fodselsnummer}`
+                  : 'https://modiapersonoversikt.intern.nav.no/landingpage'
+              }
+              target="_new"
+            >
               Modia
             </ActionMenu.Item>
           </ActionMenu.Group>
@@ -68,7 +76,7 @@ export function Toppmeny() {
               icon={<ThemeIcon />}
               as="a"
               href="/"
-              onClick={async (e) => {
+              onClick={async (e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault()
                 logTemaByttet({
                   tekst: 'toppmeny-tema-bytte',

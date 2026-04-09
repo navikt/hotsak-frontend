@@ -36,8 +36,8 @@ export function useHjelpemiddeloversikt(
     isFromVedtak,
   } = useUtlånoversikt(fnr, vedtaksgrunnlag)
 
-  const { erProd } = useMiljø()
-  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || !erProd
+  const { erIkkeProd } = useMiljø()
+  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || erIkkeProd
   const høreapparatvedtakFraVedtak = vedtaksgrunnlag?.find(erHøreapparatVedtak)?.data
 
   const {
@@ -45,7 +45,7 @@ export function useHjelpemiddeloversikt(
     error: errorHaVedtak,
     isLoading: isLoadingHaVedtak,
   } = useSwr<HøreapparatVedtak, HttpError, [string, string] | null>(
-    fnr && erHørselshjelpemiddelPilot && !erProd && !isFromVedtak ? ['/api/person/ha-vedtak', fnr] : null,
+    fnr && erHørselshjelpemiddelPilot && !isFromVedtak ? ['/api/person/ha-vedtak', fnr] : null,
     ([url, fnr]) => http.post<{ fnr: string }, HøreapparatVedtak>(url, { fnr })
   )
 

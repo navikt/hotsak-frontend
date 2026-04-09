@@ -9,23 +9,23 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { CogIcon, DragVerticalIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, HStack, VStack } from '@navikt/ds-react'
+import { useMemo } from 'react'
 
 import classes from './OppgaveColumnMenu.module.css'
 import { getOppgaveColumn } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnState,
-  useIsTableCustomized,
-  useOppgaveColumnsContext,
-  useOppgaveColumnsMoveColumnHandler,
-  useOppgaveColumnsResetAllHandler,
-  useOppgaveColumnToggleColumnHandler,
-} from './OppgaveColumnsContext.ts'
-import { useMemo } from 'react'
+  useIsOppgavelisteCustomized,
+  useOppgavelisteColumnsContext,
+  useOppgavelisteColumnsMoveColumnHandler,
+  useOppgavelisteColumnsResetAllHandler,
+  useOppgavelisteColumnToggleColumnHandler,
+} from './OppgavelisteColumnsContext.ts'
 
 export function OppgaveColumnMenu() {
-  const columnsState = useOppgaveColumnsContext()
-  const isTableCustomized = useIsTableCustomized()
-  const handleResetAll = useOppgaveColumnsResetAllHandler()
+  const columnsState = useOppgavelisteColumnsContext()
+  const isOppgavelisteCustomized = useIsOppgavelisteCustomized()
+  const handleResetAll = useOppgavelisteColumnsResetAllHandler()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -34,7 +34,7 @@ export function OppgaveColumnMenu() {
     })
   )
 
-  const handleMoveColumn = useOppgaveColumnsMoveColumnHandler()
+  const handleMoveColumn = useOppgavelisteColumnsMoveColumnHandler()
 
   const items = useMemo(() => columnsState.map((it) => it.id), [columnsState])
 
@@ -61,7 +61,7 @@ export function OppgaveColumnMenu() {
               </SortableContext>
             </div>
           </DndContext>
-          {isTableCustomized && (
+          {isOppgavelisteCustomized && (
             <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleResetAll}>
               Tilbakestill tabell
             </ActionMenu.Item>
@@ -73,7 +73,7 @@ export function OppgaveColumnMenu() {
 }
 
 function OppgaveColumnMenuItem({ columnState }: { columnState: OppgaveColumnState }) {
-  const handleToggleColumn = useOppgaveColumnToggleColumnHandler(columnState.id)
+  const handleToggleColumn = useOppgavelisteColumnToggleColumnHandler(columnState.id)
   const header = getOppgaveColumn(columnState.id).header
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: columnState.id })

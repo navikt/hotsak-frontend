@@ -1,44 +1,43 @@
 import { TrashIcon } from '@navikt/aksel-icons'
-import { BodyShort, Box, Button, Chips, HGrid, HStack } from '@navikt/ds-react'
-import { type ReactNode } from 'react'
+import { Box, Button, HGrid, HStack, Tabs } from '@navikt/ds-react'
 
 import {
-  useDataGridFilterDispatch,
   useDataGridFilterResetAllHandler,
   useIsDataGridFiltered,
-  useIsDataGridOnlyFilteredBy,
 } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
+import { OppgaveToolbarTab, useOppgavelisteContext, useOppgavelisteTabChangeHandler } from './OppgavelisteContext.tsx'
 import classes from './OppgaveToolbar.module.css'
-import { OppgaveColumnFilter } from './oppgaveColumns.tsx'
-import { Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
-import { ChipsToggle } from '@navikt/ds-react/Chips'
-import { emptyDataGridFilterValues } from '../felleskomponenter/data/DataGridFilter.ts'
 
 export interface OppgaveToolbarProps {
-  antallOppgaver: string
+  antallOppgaver: number
   antallHastesaker?: number
   antallPåVent?: number
+  ferdigstilte?: boolean
   loading?: boolean
-  children?: ReactNode
 }
 
 export function OppgaveToolbar(props: OppgaveToolbarProps) {
-  const { antallOppgaver, antallHastesaker = 0, antallPåVent = 0, loading, children } = props
+  const { antallOppgaver, antallHastesaker = 0, antallPåVent = 0, ferdigstilte, loading } = props
+  const { currentTab } = useOppgavelisteContext()
+  const handleTabChanged = useOppgavelisteTabChangeHandler()
   const isDataGridFiltered = useIsDataGridFiltered()
   const handleFilterResetAll = useDataGridFilterResetAllHandler()
   return (
     <Box borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="space-8">
       <HGrid columns="1fr 1fr" align="center" className={classes.grid}>
-        <HStack gap="space-12" align="center" justify="start" wrap={false}>
-          <BodyShort size="small">{antallOppgaver}</BodyShort>
-        </HStack>
+        <div />
         <HStack gap="space-32" align="center" justify="end" wrap={false}>
-          <Chips size="small">
-            {!loading && <HastesakerToggle antallHastesaker={antallHastesaker} />}
-            {!loading && <PåVentToggle antallPåVent={antallPåVent} />}
-            {children}
-          </Chips>
+          {!loading && (
+            <Tabs value={currentTab} size="small" onChange={handleTabChanged}>
+              <Tabs.List>
+                <Tabs.Tab value={OppgaveToolbarTab.ALLE} label={`Alle (${antallOppgaver})`} />
+                <Tabs.Tab value={OppgaveToolbarTab.HASTESAKER} label={`Hastesaker (${antallHastesaker})`} />
+                <Tabs.Tab value={OppgaveToolbarTab.PÅ_VENT} label={`På vent (${antallPåVent})`} />
+                {ferdigstilte && <Tabs.Tab value={OppgaveToolbarTab.FERDIGSTILTE} label={`Ferdigstilte`} />}
+              </Tabs.List>
+            </Tabs>
+          )}
           <HStack gap="space-8" align="center" justify="end" wrap={false}>
             <Button
               data-color="danger"
@@ -59,58 +58,3 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
     </Box>
   )
 }
-
-function HastesakerToggle({ antallHastesaker = 0 }: { antallHastesaker?: number }) {
-  const dispatch = useDataGridFilterDispatch<OppgaveColumnFilter>()
-  const selected = useIsDataGridOnlyFilteredBy<OppgaveColumnFilter>('prioritet', hastesakValues)
-  if (antallHastesaker > 0) {
-    return (
-      <ChipsToggle
-        title="Vis alle oppgaver med høy eller kritisk prioritet"
-        selected={selected}
-        data-color="warning"
-        onClick={() => {
-          const values = selected ? emptyDataGridFilterValues.values : hastesakValues
-          dispatch({
-            type: 'setFieldValues',
-            field: 'prioritet',
-            values,
-            resetOthers: true,
-          })
-        }}
-      >{`Hastesaker (${antallHastesaker})`}</ChipsToggle>
-    )
-  }
-
-  return (
-    <ChipsToggle as="div" data-color="success" checkmark={false} style={{ cursor: 'default' }} disabled>
-      Ingen hastesaker.
-    </ChipsToggle>
-  )
-}
-
-const hastesakValues = new Set([Oppgaveprioritet.HØY, Oppgaveprioritet.KRITISK])
-
-function PåVentToggle({ antallPåVent = 0 }: { antallPåVent?: number }) {
-  const dispatch = useDataGridFilterDispatch<OppgaveColumnFilter>()
-  const selected = useIsDataGridOnlyFilteredBy<OppgaveColumnFilter>('isPåVent', isPåVentValues)
-  return (
-    <ChipsToggle
-      title="Vi alle oppgaver som er satt på vent"
-      selected={selected}
-      onClick={() => {
-        const values = selected ? emptyDataGridFilterValues.values : isPåVentValues
-        dispatch({
-          type: 'setFieldValues',
-          field: 'isPåVent',
-          values,
-          resetOthers: true,
-        })
-      }}
-    >
-      {`På vent (${antallPåVent})`}
-    </ChipsToggle>
-  )
-}
-
-const isPåVentValues = new Set([true])

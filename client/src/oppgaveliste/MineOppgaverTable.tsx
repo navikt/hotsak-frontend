@@ -1,7 +1,7 @@
 import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
-import { useOppgavePaginationContext, useOppgavePaginationSortChangeHandler } from './OppgavePaginationContext.tsx'
+import { useOppgavelisteContext, useOppgavelisteSortChangeHandler } from './OppgavelisteContext.tsx'
 import { selectIsUlest, selectOppgaveId } from './oppgaveSelectors.ts'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
@@ -16,8 +16,8 @@ export interface MineOppgaverTableProps {
 export function MineOppgaverTable(props: MineOppgaverTableProps) {
   const { oppgaver, filterOptions, loading } = props
   const columns = useOppgaveColumns(filterOptions)
-  const { sort } = useOppgavePaginationContext()
-  const handleSortChange = useOppgavePaginationSortChangeHandler()
+  const { sort } = useOppgavelisteContext()
+  const handleSortChange = useOppgavelisteSortChangeHandler()
   const handleFilterChange = useOppgavelisteFiltrertHandler()
   return (
     <DataGrid

@@ -1,4 +1,5 @@
 import { ActionMenu } from '@navikt/ds-react'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { type ReactNode } from 'react'
 
 import { type Oppgave, type OppgaveId, Oppgavetype } from './oppgaveTypes.ts'
@@ -118,7 +119,14 @@ function GosysLinkItem({ oppgaveId }: { oppgaveId: OppgaveId }) {
   const href = useOppgaveUrl(oppgaveId)
   const { logOppgaveÅpnetIGosys } = useUmami()
   return (
-    <ActionMenu.Item as="a" href={href} target="_blank" onClick={logOppgaveÅpnetIGosys}>
+    <ActionMenu.Item
+      as="a"
+      href={href}
+      target="_blank"
+      onClick={logOppgaveÅpnetIGosys}
+      icon={<ExternalLinkIcon />}
+      iconPosition="right"
+    >
       Åpne oppgaven i Gosys
     </ActionMenu.Item>
   )

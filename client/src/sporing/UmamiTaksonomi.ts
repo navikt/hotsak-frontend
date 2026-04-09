@@ -20,4 +20,8 @@ export const enum UmamiTaksonomi {
   UTFALL_LAVERE_RANGERT = 'utfall lavere rangert',
   POSTBEGRUNNELSE_ENDRET = 'postbegrunnelse endret',
   PROBLEMSAMMENDRAG_ENDRET = 'problemsammendrag endret',
+
+  // Modia
+  PERSONOVERSIKT_ÅPNET_I_MODIA = 'personoversikt åpnet i modia',
+  LANDINGPAGE_ÅPNET_I_MODIA = 'landingpage åpnet i modia',
 }

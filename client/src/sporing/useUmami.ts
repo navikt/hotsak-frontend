@@ -104,6 +104,14 @@ export function useUmami() {
       logProblemsammendragEndret(data: UmamiLogData) {
         logUmamiHendelse(UmamiTaksonomi.PROBLEMSAMMENDRAG_ENDRET, data)
       },
+      // Modia
+      logPersonoversiktÅpnetIModia() {
+        logUmamiHendelse(UmamiTaksonomi.PERSONOVERSIKT_ÅPNET_I_MODIA)
+      },
+
+      logLandingpageIModia() {
+        logUmamiHendelse(UmamiTaksonomi.LANDINGPAGE_ÅPNET_I_MODIA)
+      },
 
       isReady,
     }),

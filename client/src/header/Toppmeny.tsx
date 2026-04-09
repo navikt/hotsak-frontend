@@ -22,7 +22,7 @@ export function Toppmeny() {
   const navigate = useNavigate()
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
-  const { logTemaByttet } = useUmami()
+  const { logTemaByttet, logPersonoversiktÅpnetIModia, logLandingpageIModia } = useUmami()
 
   const handleSearch = (value: string) => {
     const fnrEllerSakId = fjernMellomrom(value)
@@ -60,6 +60,7 @@ export function Toppmeny() {
             </ActionMenu.Item>
             <ActionMenu.Item
               as="a"
+              onClick={fodselsnummer ? logPersonoversiktÅpnetIModia : logLandingpageIModia}
               href={
                 fodselsnummer
                   ? `https://modiapersonoversikt.intern.nav.no/person/${fodselsnummer}`

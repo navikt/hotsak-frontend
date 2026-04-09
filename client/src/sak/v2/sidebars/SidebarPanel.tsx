@@ -27,11 +27,26 @@ export function SidebarPanel(props: SidebarPanelProps) {
     children,
   } = props
   return (
-    <Box as="aside" paddingInline={paddingInline} paddingBlock={paddingBlock}>
+    <SidebarPanelBox paddingInline={paddingInline} paddingBlock={paddingBlock}>
       <Mellomtittel spacing={spacing}>{tittel}</Mellomtittel>
       {error && <Tekst>{error}</Tekst>}
       {loading && <Tekst>{loading}</Tekst>}
       {!loading && !error && children}
+    </SidebarPanelBox>
+  )
+}
+
+export interface SidebarPanelBoxProps {
+  paddingInline?: BoxProps['paddingInline']
+  paddingBlock?: BoxProps['paddingBlock']
+  children: ReactNode
+}
+
+export function SidebarPanelBox(props: SidebarPanelBoxProps) {
+  const { paddingInline = 'space-8 space-16', paddingBlock = 'space-16', children } = props
+  return (
+    <Box as="aside" paddingInline={paddingInline} paddingBlock={paddingBlock}>
+      {children}
     </Box>
   )
 }

@@ -2,7 +2,7 @@ import { BodyLong, Detail, HStack, Label, VStack } from '@navikt/ds-react'
 import { useSak } from '../../../saksbilde/useSak'
 import { useArtiklerByKategori } from './useArtiklerByKategori'
 import { Artikler } from './Artikler'
-import { SidebarPanel } from './SidebarPanel'
+import { SidebarPanel, SidebarPanelBox } from './SidebarPanel'
 import { Tekst, TextContainer } from '../../../felleskomponenter/typografi'
 import { formaterDato } from '../../../utils/dato'
 import { Skillelinje } from '../../../felleskomponenter/Strek'
@@ -32,9 +32,11 @@ export function UtlånsoversiktV2() {
   return (
     <>
       {isFromVedtak && (
-        <Detail spacing color="subtle">
-          {`Utlånte hjelpemidler og tilskudd brukeren hadde da vedtaket ble gjort ${formaterDato(sak?.data.vedtak?.vedtaksdato)}.`}
-        </Detail>
+        <SidebarPanelBox paddingBlock={'space-16 space-0'}>
+          <Detail spacing color="subtle">
+            {`Utlånte hjelpemidler og tilskudd brukeren hadde da vedtaket ble gjort ${formaterDato(sak?.data.vedtak?.vedtaksdato)}.`}
+          </Detail>
+        </SidebarPanelBox>
       )}
 
       {erHørselshjelpemiddelPilot && !erProd && (
@@ -52,11 +54,11 @@ export function UtlånsoversiktV2() {
                   <BodyLong size="small">{`${formaterDato(høreapparatVedtak.vedtaksdato)} Stønad til høreapparat`}</BodyLong>
                 </TextContainer>
               </HStack>
-              <Skillelinje />
             </VStack>
           ) : (
             <Tekst>Bruker har ingen vedtak om tilskudd til høreapparat.</Tekst>
           )}
+          <Skillelinje />
         </SidebarPanel>
       )}
 

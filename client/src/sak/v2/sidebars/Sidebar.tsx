@@ -17,14 +17,13 @@ import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
 export function Sidebar() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSakContext()
   const { sak } = useSak()
-  const { hjelpemiddelArtikler, error, isLoading } = useUtlånoversikt(
+  const { antallUtlånteHjelpemidler, error, isLoading } = useUtlånoversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
   const { kanBehandleSak } = useSaksregler()
   const closePanel = useClosePanel('sidebarpanel')
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
-  const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
     <Box background="default" height="100%" position="relative" paddingBlock="space-0 space-36">

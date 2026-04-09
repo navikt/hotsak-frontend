@@ -4,15 +4,23 @@ import { http } from '../../../io/HttpClient.ts'
 import type { HttpError } from '../../../io/HttpError.ts'
 import {
   HjelpemiddelArtikkel,
+  HøreapparatVedtak,
   VedtaksgrunnlagBase,
+  VedtaksgrunnlagHøreapparatvedtak,
   VedtaksgrunnlagType,
-  VedtaksgrunnlagUtlånsoversikt,
-} from '../../../types/types.internal'
+} from '../../../types/types.internal.ts'
+import { useMiljø } from '../../../utils/useMiljø.ts'
+import { useErPilot } from '../../../tilgang/useTilgang.ts'
+import { useUtlånoversikt } from './useUtlånoversikt.ts'
 
 export interface UseHjelpemiddeloversiktResponse {
   hjelpemiddelArtikler: HjelpemiddelArtikkel[]
-  error?: HttpError
-  isLoading: boolean
+  antallUtlånteHjelpemidler: number
+  høreapparatVedtak: HøreapparatVedtak | undefined
+  errorHjmOversikt?: HttpError
+  errorHaVedtak?: HttpError
+  isLoadingHjmOversikt: boolean
+  isLoadingHaVedtak: boolean
   isFromVedtak: boolean
 }
 
@@ -20,34 +28,54 @@ export function useHjelpemiddeloversikt(
   fnr?: string,
   vedtaksgrunnlag?: VedtaksgrunnlagBase[]
 ): UseHjelpemiddeloversiktResponse {
-  const utlånshistorikkFraVedtak = vedtaksgrunnlag?.find(erUtlånshistorikk)?.data
-  const harUtlånshistorikkFraVedtak = utlånshistorikkFraVedtak !== null && utlånshistorikkFraVedtak !== undefined
+  const {
+    hjelpemiddelArtikler,
+    antallUtlånteHjelpemidler,
+    error: errorHjmOversikt,
+    isLoading: isLoadingHjmOversikt,
+    isFromVedtak,
+  } = useUtlånoversikt(fnr, vedtaksgrunnlag)
+
+  const { erProd } = useMiljø()
+  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || !erProd
+  const høreapparatvedtakFraVedtak = vedtaksgrunnlag?.find(erHøreapparatVedtak)?.data
 
   const {
-    data: hjelpemiddelArtikler = [],
-    error,
-    isLoading,
-  } = useSwr<HjelpemiddelArtikkel[], HttpError, [string, string] | null>(
-    fnr && !harUtlånshistorikkFraVedtak ? ['/api/hjelpemiddeloversikt', fnr] : null,
-    ([url, fnr]) => http.post<{ fnr: string }, HjelpemiddelArtikkel[]>(url, { fnr })
+    data: høreapparatVedtak,
+    error: errorHaVedtak,
+    isLoading: isLoadingHaVedtak,
+  } = useSwr<HøreapparatVedtak, HttpError, [string, string] | null>(
+    fnr && erHørselshjelpemiddelPilot && !erProd && !isFromVedtak ? ['/api/person/ha-vedtak', fnr] : null,
+    ([url, fnr]) => http.post<{ fnr: string }, HøreapparatVedtak>(url, { fnr })
   )
 
-  if (harUtlånshistorikkFraVedtak) {
+  if (isFromVedtak) {
     return {
-      hjelpemiddelArtikler: utlånshistorikkFraVedtak,
-      isLoading: false,
+      hjelpemiddelArtikler,
+      antallUtlånteHjelpemidler,
+      høreapparatVedtak: høreapparatvedtakFraVedtak,
+      errorHjmOversikt: undefined,
+      errorHaVedtak: undefined,
+      isLoadingHjmOversikt: false,
+      isLoadingHaVedtak: false,
       isFromVedtak: true,
     }
   }
 
   return {
     hjelpemiddelArtikler,
-    error,
-    isLoading,
+    antallUtlånteHjelpemidler,
+    høreapparatVedtak,
+    errorHjmOversikt,
+    errorHaVedtak,
+    isLoadingHjmOversikt,
+    isLoadingHaVedtak,
     isFromVedtak: false,
   }
 }
 
-function erUtlånshistorikk(vedtaksgrunnlag: VedtaksgrunnlagBase): vedtaksgrunnlag is VedtaksgrunnlagUtlånsoversikt {
-  return vedtaksgrunnlag.type === VedtaksgrunnlagType.UTLAANSHISTORIKK
+function erHøreapparatVedtak(
+  vedtaksgrunnlag: VedtaksgrunnlagBase
+): vedtaksgrunnlag is VedtaksgrunnlagHøreapparatvedtak {
+  return vedtaksgrunnlag.type === VedtaksgrunnlagType.HØREAPPARATVEDTAK
 }

@@ -8,7 +8,7 @@ import { AlertError } from '../feilsider/AlertError'
 import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { useUtlånoversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import { naturalBy } from '../utils/array.ts'
 import { sorterKronologiskStigende } from '../utils/dato.ts'
@@ -28,9 +28,10 @@ function PersonoversiktContent() {
   const { saksoversikt, error, isLoading } = useSaksoversikt(fodselsnummer)
   const {
     hjelpemiddelArtikler,
+    antallUtlånteHjelpemidler,
     error: hjelpemiddeloversiktError,
     isLoading: hjelpemiddeloversiktLoading,
-  } = useHjelpemiddeloversikt(fodselsnummer)
+  } = useUtlånoversikt(fodselsnummer)
 
   const sakerOgBarnebrillekrav = useMemo(() => {
     if (!saksoversikt) return []
@@ -43,7 +44,6 @@ function PersonoversiktContent() {
 
   const hjelpemidler =
     hjelpemiddelArtikler?.sort((a, b) => sorterKronologiskStigende(a.datoUtsendelse, b.datoUtsendelse)) || []
-  const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
     <>

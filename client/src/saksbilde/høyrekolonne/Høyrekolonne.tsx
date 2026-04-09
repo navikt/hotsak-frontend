@@ -8,7 +8,7 @@ import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
 import { useValgtFane } from '../useValgtFane.ts'
 import { Historikk } from './historikk/Historikk'
-import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { useUtlånoversikt } from './hjelpemiddeloversikt/useUtlånoversikt.ts'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
 import { Notater } from './notat/Notater.tsx'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
@@ -19,13 +19,11 @@ export function Høyrekolonne() {
   const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
-  const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
+  const { antallUtlånteHjelpemidler, error, isLoading } = useUtlånoversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
   const [valgtFane, setValgtFane] = useValgtFane(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT)
-
-  const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
     <Box borderWidth="0 1" borderColor="neutral-subtle">

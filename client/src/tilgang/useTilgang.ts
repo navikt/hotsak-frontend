@@ -61,7 +61,7 @@ const piloter = {
     Enhet.NAV_HJELPEMIDDELSENTRAL_VESTFOLD_OG_TELEMARK,
     Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
   ],
-  hørselshjelpemiddel: [Enhet.NAV_HJELPEMIDDELSENTRAL_NORDLAND],
+  hørselshjelpemiddel: [Enhet.NAV_HJELPEMIDDELSENTRAL_NORDLAND, Enhet.NAV_HJELPEMIDDELSENTRAL_TROMS_OG_FINNMARK],
 } satisfies Record<string, string[]>
 
 export type PilotName = keyof typeof piloter

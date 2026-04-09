@@ -26,9 +26,8 @@ export function UtlånsoversiktV2() {
 
   const harHøreapparatVedtak = !!høreapparatVedtak?.harVedtak && !!høreapparatVedtak?.vedtaksdato
 
-  const { erProd } = useMiljø()
-  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || !erProd
-  const skalViseInformasjonOmHøreapparatVedtak = erHørselshjelpemiddelPilot && !erProd
+  const { erIkkeProd } = useMiljø()
+  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || erIkkeProd
 
   return (
     <>
@@ -40,7 +39,7 @@ export function UtlånsoversiktV2() {
         </SidebarPanelBox>
       )}
 
-      {skalViseInformasjonOmHøreapparatVedtak && (isLoadingHaVedtak || errorHaVedtak || harHøreapparatVedtak) && (
+      {erHørselshjelpemiddelPilot && (isLoadingHaVedtak || errorHaVedtak || harHøreapparatVedtak) && (
         <SidebarPanel
           tittel="Tilskudd til høreapparat"
           error={errorHaVedtak && 'Feil ved henting av høreapparatvedtak.'}

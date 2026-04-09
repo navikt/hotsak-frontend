@@ -43,7 +43,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           as={Link}
           size="small"
           href="#"
-          onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
+          onClick={(event: React.MouseEvent) => {
             event.preventDefault()
             setFodselsnummer(fnr)
             navigate('/personoversikt/saker')

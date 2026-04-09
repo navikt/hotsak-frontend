@@ -76,7 +76,7 @@ export function Toppmeny() {
               icon={<ThemeIcon />}
               as="a"
               href="/"
-              onClick={async (e: React.MouseEvent<HTMLAnchorElement>) => {
+              onClick={async (e: React.MouseEvent) => {
                 e.preventDefault()
                 logTemaByttet({
                   tekst: 'toppmeny-tema-bytte',

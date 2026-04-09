@@ -47,7 +47,7 @@ export function UtlånsoversiktV2() {
           spacing={false}
           paddingBlock={'space-16 space-0'}
         >
-          {harHøreapparatVedtak ? (
+          {harHøreapparatVedtak && (
             <VStack gap="space-2">
               <HStack gap="space-8">
                 <TextContainer>
@@ -55,8 +55,6 @@ export function UtlånsoversiktV2() {
                 </TextContainer>
               </HStack>
             </VStack>
-          ) : (
-            <Tekst>Bruker har ingen vedtak om tilskudd til høreapparat.</Tekst>
           )}
           <Skillelinje />
         </SidebarPanel>

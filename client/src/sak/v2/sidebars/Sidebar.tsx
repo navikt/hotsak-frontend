@@ -2,7 +2,7 @@ import { ClockDashedIcon, NotePencilIcon, WheelchairIcon, XMarkIcon } from '@nav
 import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
 import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
-import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { Notater } from '../../../saksbilde/høyrekolonne/notat/Notater'
 import { NotificationBadge } from '../../../saksbilde/høyrekolonne/notat/NotificationBadge'
 import { useNotater } from '../../../saksbilde/høyrekolonne/notat/useNotater'
@@ -17,14 +17,13 @@ import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
 export function Sidebar() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSakContext()
   const { sak } = useSak()
-  const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
+  const { antallUtlånteHjelpemidler, error, isLoading } = useUtlånoversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
   const { kanBehandleSak } = useSaksregler()
   const closePanel = useClosePanel('sidebarpanel')
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
-  const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
     <Box background="default" height="100%" position="relative" paddingBlock="space-0 space-36">

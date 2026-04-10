@@ -20,7 +20,7 @@ export interface OppgavelisteProviderProps {
 
 export function OppgavelisteProvider(props: OppgavelisteProviderProps) {
   const { suffix, defaultColumns, children } = props
-  const [state, dispatch] = useLocalReducer('oppgavePagination' + suffix, reducer, initialState)
+  const [state, dispatch] = useLocalReducer('oppgaveliste' + suffix, reducer, initialState)
   return (
     <OppgavelisteContext value={state}>
       <OppgavelisteDispatch value={dispatch}>

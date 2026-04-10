@@ -1,8 +1,6 @@
-import type { SortState } from '@navikt/ds-react'
-
 import type { PageResponse } from '../felleskomponenter/Page.ts'
 import type { Bydel, Enhet, Kommune, Navn, OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
-import { type IntervalString } from '../utils/dato.ts'
+import type { IntervalString } from '../utils/dato.ts'
 import { isInteger, isString } from '../utils/type.ts'
 
 /**
@@ -237,10 +235,6 @@ export enum OppgaveTildelt {
   INGEN = 'INGEN',
   MEDARBEIDER = 'MEDARBEIDER',
   MEG = 'MEG',
-}
-
-export interface OppgaveSortState extends SortState {
-  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | 'fødselsdato' | 'alder' | string
 }
 
 /**

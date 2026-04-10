@@ -1,7 +1,11 @@
+import { type SortState } from '@navikt/ds-react'
 import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
-import { type OppgaveSortState } from '../oppgave/oppgaveTypes.ts'
 import { useUmami } from '../sporing/useUmami.ts'
+
+export interface OppgavelisteSortState extends SortState {
+  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | 'fødselsdato' | 'alder' | string
+}
 
 export const OppgaveToolbarTab = {
   ALLE: 'ALLE',
@@ -15,7 +19,7 @@ export type OppgaveToolbarTab = keyof typeof OppgaveToolbarTab
 export interface OppgavelisteState {
   currentTab: OppgaveToolbarTab
   currentPage: number
-  sort: OppgaveSortState
+  sort: OppgavelisteSortState
 }
 
 export const initialState: OppgavelisteState = {
@@ -87,7 +91,7 @@ export interface OppgavelisteChangePageAction extends OppgavelisteBaseAction {
   page: number
 }
 
-export interface OppgavelisteSortAction extends OppgavelisteBaseAction, Omit<OppgaveSortState, 'direction'> {
+export interface OppgavelisteSortAction extends OppgavelisteBaseAction, Omit<OppgavelisteSortState, 'direction'> {
   type: 'sort'
 }
 

@@ -11,14 +11,15 @@ import classes from './OppgaveToolbar.module.css'
 
 export interface OppgaveToolbarProps {
   antallOppgaver: number
-  antallHastesaker?: number
-  antallPåVent?: number
+  antallHastesaker: number
+  antallPåVent: number
+  antallFerdigstilte?: number
   ferdigstilte?: boolean
   loading?: boolean
 }
 
 export function OppgaveToolbar(props: OppgaveToolbarProps) {
-  const { antallOppgaver, antallHastesaker = 0, antallPåVent = 0, ferdigstilte, loading } = props
+  const { antallOppgaver, antallHastesaker, antallPåVent, antallFerdigstilte, ferdigstilte, loading } = props
   const { currentTab } = useOppgavelisteContext()
   const handleTabChanged = useOppgavelisteTabChangeHandler()
   const isDataGridFiltered = useIsDataGridFiltered()
@@ -34,7 +35,9 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
                 <Tabs.Tab value={OppgaveToolbarTab.ALLE} label={`Alle (${antallOppgaver})`} />
                 <Tabs.Tab value={OppgaveToolbarTab.HASTESAKER} label={`Hastesaker (${antallHastesaker})`} />
                 <Tabs.Tab value={OppgaveToolbarTab.PÅ_VENT} label={`På vent (${antallPåVent})`} />
-                {ferdigstilte && <Tabs.Tab value={OppgaveToolbarTab.FERDIGSTILTE} label={`Ferdigstilte`} />}
+                {ferdigstilte && (
+                  <Tabs.Tab value={OppgaveToolbarTab.FERDIGSTILTE} label={`Ferdigstilte (${antallFerdigstilte})`} />
+                )}
               </Tabs.List>
             </Tabs>
           )}

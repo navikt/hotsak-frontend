@@ -16,13 +16,14 @@ export interface EnhetensOppgaverTableProps {
 export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
   const { oppgaver, filterOptions, loading } = props
   const columns = useOppgaveColumns(filterOptions)
-  const { sort } = useOppgavelisteContext()
+  const { currentTab, sort } = useOppgavelisteContext()
   const handleSortChange = useOppgavelisteSortChangeHandler()
   const handleFilterChange = useOppgavelisteFiltrertHandler()
   return (
     <DataGrid
       rows={oppgaver}
       columns={columns}
+      scope={currentTab}
       keyFactory={selectOppgaveId}
       renderContent={OppgaveDetails}
       stickyHeader

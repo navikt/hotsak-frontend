@@ -22,8 +22,8 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
   const { antallOppgaver, antallHastesaker, antallPåVent, antallFerdigstilte, ferdigstilte, loading } = props
   const { currentTab } = useOppgavelisteContext()
   const handleTabChanged = useOppgavelisteTabChangeHandler()
-  const isDataGridFiltered = useIsDataGridFiltered()
-  const handleFilterResetAll = useDataGridFilterResetAllHandler()
+  const isDataGridFiltered = useIsDataGridFiltered(currentTab)
+  const handleFilterResetAll = useDataGridFilterResetAllHandler(currentTab)
   return (
     <Box borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="space-8">
       <HGrid columns="1fr 1fr" align="center" className={classes.grid}>

@@ -7,7 +7,7 @@ import { OppgaveColumnField } from './oppgaveColumns.tsx'
 export function useOppgavelisteFiltrertHandler() {
   const { logOppgavelisteFiltrert } = useUmami()
   return useCallback(
-    (action: DataGridFilterAction<OppgaveColumnField>) => {
+    (action: DataGridFilterAction<string, OppgaveColumnField>) => {
       if (action.type !== 'addFieldValue') return
       const verdi = redacted.has(action.field) ? '' : action.value
       logOppgavelisteFiltrert({ kolonne: action.field, verdi })

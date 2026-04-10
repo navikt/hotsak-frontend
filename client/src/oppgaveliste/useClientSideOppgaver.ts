@@ -54,7 +54,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
   })
   const alleOppgaver = response.data?.oppgaver ?? ingenOppgaver
 
-  const filterState = useDataGridFilterContext<OppgaveColumnField>()
+  const filterState = useDataGridFilterContext<OppgaveColumnField>(currentTab)
   const comparator = useOppgaveComparator()
   const filtrerteOppgaver = useMemo(() => {
     return DataGridCollection.from(alleOppgaver)

@@ -18,7 +18,7 @@ export function useBehovsmelding(): UseBehovsmeldingResponse {
   return {
     behovsmelding,
     harKunTilbehør:
-      behovsmelding?.hjelpemidler.hjelpemidler.length === 0 && behovsmelding?.hjelpemidler.tilbehør.length > 0,
+      behovsmelding?.hjelpemidler?.hjelpemidler.length === 0 && behovsmelding?.hjelpemidler?.tilbehør.length > 0,
     ...rest,
   }
 }

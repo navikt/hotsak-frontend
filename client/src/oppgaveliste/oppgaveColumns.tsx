@@ -338,8 +338,6 @@ export const oppgaveColumns = {
 
 export type OppgaveColumnField = keyof typeof oppgaveColumns
 
-export type OppgaveColumnFilter = OppgaveColumnField | 'oppgavestatus' | 'isPåVent'
-
 export function getOppgaveColumn(id: OppgaveColumnField): DataGridColumn<Oppgave> {
   const column = oppgaveColumns[id]
   if (column == null) {

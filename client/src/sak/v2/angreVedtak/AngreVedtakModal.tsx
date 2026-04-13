@@ -1,17 +1,30 @@
-import { InfoCard } from '@navikt/ds-react'
+import { InfoCard, Textarea } from '@navikt/ds-react'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
 import { TextContainer } from '../../../felleskomponenter/typografi'
 import { useBehandling } from '../behandling/useBehandling'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useAngreVedtak } from './useAngreVedtak'
+import { useState } from 'react'
 
 export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { gjeldendeBehandling } = useBehandling()
   const vedtaksResultat = (gjeldendeBehandling?.utfall?.utfall as VedtaksResultat) || null
   const { angreVedtak } = useAngreVedtak()
+  const [årsak, setÅrsak] = useState('')
+  const [årsakError, setÅrsakError] = useState<string | undefined>(undefined)
 
   const onBekreft = async () => {
-    await angreVedtak()
+    if (!årsak.trim()) {
+      setÅrsakError('Du må oppgi en årsak for å angre vedtaket')
+      return
+    }
+    await angreVedtak({ årsak: årsak.trim() })
+    onClose()
+  }
+
+  const handleClose = () => {
+    setÅrsak('')
+    setÅrsakError(undefined)
     onClose()
   }
 
@@ -23,7 +36,7 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
       buttonSize="medium"
       bekreftButtonLabel={`Angre vedtak`}
       onBekreft={onBekreft}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <p>Det er mulig å angre på vedtaket samme virkedag som det ble fattet.</p>
       <p>
@@ -36,7 +49,7 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
       </p>
       <p>Etter angring vil den nye oppgaven knyttet til saken være på listen over dine oppgaver.</p>
       {(vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) && (
-        <InfoCard data-color="warning" size="small">
+        <InfoCard data-color="warning" size="small" style={{ marginBottom: '1rem' }}>
           <InfoCard.Header>
             <InfoCard.Title>Du må fjerne SF i OeBS.</InfoCard.Title>
           </InfoCard.Header>
@@ -50,6 +63,18 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
           </TextContainer>
         </InfoCard>
       )}
+      <Textarea
+        label="Årsak for angring"
+        description="Beskriv hvorfor du ønsker å angre vedtaket. Beskrivelsen vil havne i sakshistorikken. "
+        value={årsak}
+        onChange={(e) => {
+          setÅrsak(e.target.value)
+          if (årsakError && e.target.value.trim()) {
+            setÅrsakError(undefined)
+          }
+        }}
+        error={årsakError}
+      />
     </BekreftelseModal>
   )
 }

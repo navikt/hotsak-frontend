@@ -21,14 +21,15 @@ export interface DataGridFilterMenuProps<
 > {
   field: K
   filter: DataGridFilter<V>
-  onFilterChange?(action: DataGridFilterAction<K>): void
+  scope: string
+  onFilterChange?(action: DataGridFilterAction<string, K>): void
 }
 
 export function DataGridFilterMenu<K extends string = string, V extends DataGridFilterValue = DataGridFilterValue>(
   props: DataGridFilterMenuProps<K, V>
 ) {
-  const { field, filter, onFilterChange } = props
-  const state = useDataGridFilterContext()
+  const { field, filter, scope, onFilterChange } = props
+  const state = useDataGridFilterContext(scope)
   const current = state[field] ?? emptyDataGridFilterValues
   const options = useMemo(() => {
     const result = mapOf(filter.options)
@@ -46,7 +47,7 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
   }, [filter.options, filter.sortOptions, current.values])
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
-  const handleFilterReset = useDataGridFilterResetHandler(field)
+  const handleFilterReset = useDataGridFilterResetHandler(field, scope)
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -65,8 +66,9 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
               key={value.toString()}
               checked={current.values.has(value)}
               onCheckedChange={(checked) => {
-                const action: DataGridFilterAction<K> = {
+                const action: DataGridFilterAction<string, K> = {
                   type: checked ? 'addFieldValue' : 'removeFieldValue',
+                  scope,
                   field,
                   value,
                 }

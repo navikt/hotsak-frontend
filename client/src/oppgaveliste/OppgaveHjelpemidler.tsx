@@ -1,12 +1,13 @@
-import { BodyShort, HGrid, Link, Loader } from '@navikt/ds-react'
+import { BodyShort, HGrid, Loader } from '@navikt/ds-react'
 import { Fragment } from 'react'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 
 import { useArtiklerForOppgave } from '../oppgave/useArtiklerForOppgave.ts'
 import { naturalBy } from '../utils/array.ts'
 import { select } from '../utils/select.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
-
 import classes from './OppgaveHjelpemidler.module.css'
+import { IconLink } from '../felleskomponenter/IconLink.tsx'
 
 export interface OppgaveHjelpemidlerProps {
   sakId?: ID
@@ -23,15 +24,13 @@ export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {
         <HGrid gap="space-12" columns="min-content min-content min-content max-content">
           {artikler.map((artikkel) => (
             <Fragment key={artikkel.id ?? artikkel.hmsArtNr}>
-              <BodyShort size="small">
-                {artikkel.url ? (
-                  <Link href={artikkel.url} target="_blank">
-                    {artikkel.hmsArtNr}
-                  </Link>
-                ) : (
-                  artikkel.hmsArtNr
-                )}
-              </BodyShort>
+              {artikkel.url ? (
+                <BodyShort as={IconLink} icon={<ExternalLinkIcon />} href={artikkel.url} size="small" target="_blank">
+                  {artikkel.hmsArtNr}
+                </BodyShort>
+              ) : (
+                <BodyShort size="small">artikkel.hmsArtNr</BodyShort>
+              )}
               <BodyShort size="small" className={classes.text}>
                 {artikkel.artikkelnavn}
               </BodyShort>

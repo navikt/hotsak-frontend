@@ -1,61 +1,41 @@
 import { Box } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
-import { Oppgavestatus, OppgaveTildelt, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { OppgaveTildelt, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { intervalString } from '../utils/dato.ts'
 import { MineOppgaverTable } from './MineOppgaverTable.tsx'
-import { OppgaveToolbar } from './OppgaveToolbar.tsx'
+import { OppgaveToolbarTab, useOppgavelisteContext } from './OppgavelisteContext.tsx'
+import { OppgaveToolbar, type OppgaveToolbarProps } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
-import { ChipsToggle } from '@navikt/ds-react/Chips'
-import { emptyDataGridFilterValues } from '../felleskomponenter/data/DataGridFilter.ts'
-import {
-  useDataGridFilterContext,
-  useDataGridFilterDispatch,
-  useIsDataGridOnlyFilteredBy,
-} from '../felleskomponenter/data/DataGridFilterContext.ts'
-import { OppgaveColumnFilter } from './oppgaveColumns.tsx'
 
 const ANTALL_DAGER_FERDIGSTILTE = 10
 
 export function MineOppgaver() {
-  const { oppgavestatus = emptyDataGridFilterValues } = useDataGridFilterContext<'oppgavestatus'>()
-  const ferdigstilte = oppgavestatus.values.has(Oppgavestatus.FERDIGSTILT)
+  const { currentTab } = useOppgavelisteContext()
+  const ferdigstilte = currentTab === OppgaveToolbarTab.FERDIGSTILTE
   const iDag = useMemo(() => new Date(), [])
-  const { oppgaver, filterOptions, isLoading, ...rest } = useClientSideOppgaver({
-    statuskategori: ferdigstilte ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN,
+  const åpneOppgaver = useClientSideOppgaver({
+    statuskategori: Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEG,
-    ferdigstiltIntervall: ferdigstilte ? intervalString({ days: ANTALL_DAGER_FERDIGSTILTE }, iDag) : undefined,
   })
+  const ferdigstilteOppgaver = useClientSideOppgaver({
+    statuskategori: Statuskategori.AVSLUTTET,
+    tildelt: OppgaveTildelt.MEG,
+    ferdigstiltIntervall: intervalString({ days: ANTALL_DAGER_FERDIGSTILTE }, iDag),
+  })
+  const { oppgaver, filterOptions, isLoading } = ferdigstilte ? ferdigstilteOppgaver : åpneOppgaver
+  const toolbarProps: OppgaveToolbarProps = {
+    antallOppgaver: åpneOppgaver.antallOppgaver,
+    antallHastesaker: åpneOppgaver.antallHastesaker,
+    antallPåVent: åpneOppgaver.antallPåVent,
+    antallFerdigstilte: ferdigstilteOppgaver.antallOppgaver,
+    ferdigstilte: true,
+    loading: åpneOppgaver.isLoading || ferdigstilteOppgaver.isLoading,
+  }
   return (
     <Box marginInline="space-20">
-      <OppgaveToolbar loading={isLoading} {...rest}>
-        <FerdigstiltToggle />
-      </OppgaveToolbar>
+      <OppgaveToolbar {...toolbarProps} />
       <MineOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
     </Box>
   )
 }
-
-function FerdigstiltToggle() {
-  const dispatch = useDataGridFilterDispatch<OppgaveColumnFilter>()
-  const selected = useIsDataGridOnlyFilteredBy<OppgaveColumnFilter>('oppgavestatus', ferdigstiltValues)
-  return (
-    <ChipsToggle
-      title={`Vis oppgaver som er ferdigstilt siste ${ANTALL_DAGER_FERDIGSTILTE} dager`}
-      selected={selected}
-      onClick={() => {
-        const values = selected ? emptyDataGridFilterValues.values : ferdigstiltValues
-        dispatch({
-          type: 'setFieldValues',
-          field: 'oppgavestatus',
-          values,
-          resetOthers: true,
-        })
-      }}
-    >
-      Ferdigstilte
-    </ChipsToggle>
-  )
-}
-
-const ferdigstiltValues = new Set([Oppgavestatus.FERDIGSTILT])

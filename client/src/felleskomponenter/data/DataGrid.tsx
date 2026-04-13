@@ -1,14 +1,14 @@
 import { HStack, Pagination, Skeleton, Table, type TableProps } from '@navikt/ds-react'
+import clsx from 'clsx'
 import { type Key, type ReactNode, useMemo, useState } from 'react'
 
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
 import { FormatDateTime } from '../format/FormatDateTime.tsx'
-import { type DataGridFilter } from './DataGridFilter.ts'
-import { DataGridFilterMenu } from './DataGridFilterMenu.tsx'
-import type { DataGridFilterAction } from './DataGridFilterContext.ts'
 import classes from './DataGrid.module.css'
-import clsx from 'clsx'
+import { type DataGridFilter } from './DataGridFilter.ts'
+import type { DataGridFilterAction } from './DataGridFilterContext.ts'
+import { DataGridFilterMenu } from './DataGridFilterMenu.tsx'
 
 export interface DataGridColumn<T extends object> {
   field: string | Exclude<keyof T, symbol | number>
@@ -36,6 +36,7 @@ export interface DataGridColumn<T extends object> {
 export interface DataGridProps<T extends object, K extends string = string> extends TableProps {
   rows: ReadonlyArray<T>
   columns: ReadonlyArray<DataGridColumn<T>>
+  scope?: string
   textSize?: 'medium' | 'small'
   emptyMessage?: string
   loading?: boolean
@@ -56,6 +57,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
   const {
     rows,
     columns,
+    scope = 'global',
     textSize,
     emptyMessage = 'Ingen data funnet',
     loading,
@@ -104,7 +106,12 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
                   <HStack align="center" gap="space-4" wrap={false}>
                     <div>{header}</div>
                     {column.filter ? (
-                      <DataGridFilterMenu field={column.field} filter={column.filter} onFilterChange={onFilterChange} />
+                      <DataGridFilterMenu
+                        field={column.field}
+                        filter={column.filter}
+                        scope={scope}
+                        onFilterChange={onFilterChange}
+                      />
                     ) : null}
                   </HStack>
                 </Table.HeaderCell>

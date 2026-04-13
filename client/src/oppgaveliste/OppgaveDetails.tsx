@@ -1,4 +1,5 @@
-import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
+import { BodyShort, HStack, VStack } from '@navikt/ds-react'
 
 import { FormatFødselsnummer } from '../felleskomponenter/format/FormatFødselsnummer.tsx'
 import { FormatPersonnavn } from '../felleskomponenter/format/FormatPersonnavn.tsx'
@@ -11,6 +12,7 @@ import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
 import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 import { type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
+import { IconLink } from '../felleskomponenter/IconLink.tsx'
 
 export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) {
   const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
@@ -39,7 +41,7 @@ export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) 
         <OppgaveSisteKommentar oppgaveId={oppgave.oppgaveId} />
         <div>
           <Strek />
-          <BodyShort as={Link} href={oppgaveUrl} size="small" target="_blank" spacing>
+          <BodyShort as={IconLink} icon={<ExternalLinkIcon />} href={oppgaveUrl} size="small" target="_blank" spacing>
             Åpne i Gosys
           </BodyShort>
         </div>

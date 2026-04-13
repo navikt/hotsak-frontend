@@ -11,7 +11,7 @@ export interface AngreResponse {
 }
 
 export interface AngreActions extends Actions {
-  angreVedtak(): Promise<void>
+  angreVedtak({ årsak }: { årsak: string }): Promise<void>
 }
 
 export function useAngreVedtak(): AngreActions {
@@ -23,12 +23,13 @@ export function useAngreVedtak(): AngreActions {
   const navigate = useNavigate()
 
   return {
-    async angreVedtak() {
+    async angreVedtak({ årsak }: { årsak: string }) {
       if (!sakId || !gjeldendeBehandling) return
       return execute(async () => {
         await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
         const response = await http.post<unknown, AngreResponse>(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angring`,
+          { årsak },
           { versjon }
         )
         await mutateBehandling()

@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 
 import { DataGridCollection } from '../felleskomponenter/data/DataGridCollection.ts'
+import { type DataGridFilterValues } from '../felleskomponenter/data/DataGridFilter.ts'
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { type HttpError } from '../io/HttpError.ts'
-import { type FinnOppgaverRequest, type Oppgave } from '../oppgave/oppgaveTypes.ts'
+import { type FinnOppgaverRequest, type Oppgave, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
 import { useOpppgavesøk } from '../oppgave/useOppgavesøk.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
-import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
+import { OppgaveToolbarTab, useOppgavelisteContext } from './OppgavelisteContext.tsx'
 import {
   selectBehandlingstemaTerm,
   selectBehandlingstypeTerm,
@@ -34,13 +35,13 @@ export interface UseClientSideOppgaverResponse {
   isLoading: boolean
   isValidating: boolean
   filterOptions: OppgaveFilterOptions
-  antallOppgaver: string
+  antallOppgaver: number
   antallHastesaker: number
   antallPåVent: number
 }
 
 export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}): UseClientSideOppgaverResponse {
-  const { sort } = useOppgavePaginationContext()
+  const { currentTab, sort } = useOppgavelisteContext()
   const { tildelt, ...rest } = request
 
   const response = useOpppgavesøk({
@@ -53,7 +54,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
   })
   const alleOppgaver = response.data?.oppgaver ?? ingenOppgaver
 
-  const filterState = useDataGridFilterContext<OppgaveColumnField | 'isPåVent'>()
+  const filterState = useDataGridFilterContext<OppgaveColumnField>(currentTab)
   const comparator = useOppgaveComparator()
   const filtrerteOppgaver = useMemo(() => {
     return DataGridCollection.from(alleOppgaver)
@@ -66,10 +67,11 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
       .filterBy(selectInnsenderNavn, filterState.innsenderNavn)
       .filterBy(selectBrukerKommuneNavn, filterState.kommune)
       .filterBy(selectSaksstatus, filterState.saksstatus)
-      .filterBy(selectIsPåVent, filterState.isPåVent)
+      .filterBy(selectPrioritet, hastesakFilter(currentTab))
+      .filterBy(selectIsPåVent, isPåVentFilter(currentTab))
       .toSorted(comparator)
       .toArray()
-  }, [alleOppgaver, filterState, comparator])
+  }, [alleOppgaver, currentTab, filterState, comparator])
 
   const filterOptions = useOppgaveFilterOptions(alleOppgaver)
   const totalElements = response.data ? response.data.totalElements : 0
@@ -82,8 +84,19 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
     isLoading: response.isLoading,
     isValidating: response.isValidating,
     filterOptions,
-    antallOppgaver: `${filtrerteOppgaver.length} av ${totalElements} oppgaver`,
+    antallOppgaver: totalElements, // filtrerteOppgaver.length
     antallHastesaker,
     antallPåVent,
   }
 }
+
+function hastesakFilter(currentTab: OppgaveToolbarTab): DataGridFilterValues | undefined {
+  if (currentTab === OppgaveToolbarTab.HASTESAKER) return hastesakValues
+}
+
+function isPåVentFilter(currentTab: OppgaveToolbarTab): DataGridFilterValues | undefined {
+  if (currentTab === OppgaveToolbarTab.PÅ_VENT) return isPåVentValues
+}
+
+const hastesakValues: DataGridFilterValues = { values: new Set([Oppgaveprioritet.HØY, Oppgaveprioritet.KRITISK]) }
+const isPåVentValues: DataGridFilterValues = { values: new Set([true]) }

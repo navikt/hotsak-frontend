@@ -16,8 +16,8 @@ export default function MineOppgaverWrapper() {
 
 const defaultColumns: DefaultOppgaveColumns = [
   'overtaOppgave',
-  'oppgaveId',
-  'sakId',
+  ['oppgaveId', false],
+  ['sakId', false],
   'saksbehandler',
   'oppgavetype',
   'behandlingstema',

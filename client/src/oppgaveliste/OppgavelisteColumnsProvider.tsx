@@ -4,29 +4,29 @@ import { type ReactNode } from 'react'
 
 import { useLocalReducer } from '../state/useLocalReducer.ts'
 import { associateBy } from '../utils/array.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { type DefaultOppgaveColumns, getOppgaveColumn, OppgaveColumnField } from './oppgaveColumns.tsx'
 import {
-  type OppgaveColumnsAction,
-  OppgaveColumnsContext,
-  OppgaveColumnsDispatchContext,
-  type OppgaveColumnsState,
   OppgaveColumnState,
-} from './OppgaveColumnsContext.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
+  type OppgavelisteColumnsAction,
+  OppgavelisteColumnsContext,
+  OppgavelisteColumnsDispatch,
+  type OppgavelisteColumnsState,
+} from './OppgavelisteColumnsContext.ts'
 
-export interface OppgaveColumnsProviderProps {
+export interface OppgavelisteColumnsProviderProps {
   suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
   defaultColumns: DefaultOppgaveColumns
   children: ReactNode
 }
 
-export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
+export function OppgavelisteColumnsProvider(props: OppgavelisteColumnsProviderProps) {
   const { suffix, defaultColumns, children } = props
   const { erIkkeProd } = useMiljø()
   const [state, dispatch] = useLocalReducer(
     'oppgaveColumns' + suffix,
     reducer,
-    (storedState = []): OppgaveColumnsState => {
+    (storedState = []): OppgavelisteColumnsState => {
       const columnsById = associateBy(storedState, (it) => it.id)
       return defaultColumns
         .filter((column) => {
@@ -49,9 +49,9 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
     }
   )
   return (
-    <OppgaveColumnsContext value={state}>
-      <OppgaveColumnsDispatchContext value={dispatch}>{children}</OppgaveColumnsDispatchContext>
-    </OppgaveColumnsContext>
+    <OppgavelisteColumnsContext value={state}>
+      <OppgavelisteColumnsDispatch value={dispatch}>{children}</OppgavelisteColumnsDispatch>
+    </OppgavelisteColumnsContext>
   )
 }
 
@@ -59,7 +59,7 @@ function asTuple(column: OppgaveColumnField | [OppgaveColumnField, boolean]): [O
   return Array.isArray(column) ? column : [column, true]
 }
 
-function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
+function reducer(state: OppgavelisteColumnsState, action: OppgavelisteColumnsAction) {
   switch (action.type) {
     case 'addColumn':
       return state.map((column) => {
@@ -90,6 +90,6 @@ function byOrder(a: OppgaveColumnState, b: OppgaveColumnState): number {
   return a.order - b.order
 }
 
-function findColumnIndex(state: OppgaveColumnsState, id: UniqueIdentifier): number {
+function findColumnIndex(state: OppgavelisteColumnsState, id: UniqueIdentifier): number {
   return state.findIndex((column) => column.id === id)
 }

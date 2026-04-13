@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { comparator, type Comparator, compareBy } from '../utils/array.ts'
-import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
+import { useOppgavelisteContext } from './OppgavelisteContext.tsx'
 import {
   selectBrukerAlder,
   selectBrukerFødselsdato,
@@ -15,7 +15,7 @@ import {
 export function useOppgaveComparator(): Comparator<Oppgave> | undefined {
   const {
     sort: { orderBy, direction },
-  } = useOppgavePaginationContext()
+  } = useOppgavelisteContext()
   return useMemo(() => {
     switch (orderBy) {
       case 'oppgaveId':

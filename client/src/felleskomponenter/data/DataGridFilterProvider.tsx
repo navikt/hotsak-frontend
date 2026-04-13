@@ -3,6 +3,7 @@ import { type ReactNode } from 'react'
 import { useLocalReducer } from '../../state/useLocalReducer.ts'
 import { DataGridFilterValue, type DataGridFilterValues } from './DataGridFilter.ts'
 import {
+  DataGridColumnFilterState,
   type DataGridFilterAction,
   DataGridFilterContext,
   DataGridFilterDispatch,
@@ -17,10 +18,22 @@ export interface DataGridFilterProviderProps {
 export function DataGridFilterProvider(props: DataGridFilterProviderProps) {
   const { suffix, children } = props
   const [state, dispatch] = useLocalReducer('dataGridFilter' + suffix, reducer, (storedState) => {
-    const initialState: DataGridFilterState = {}
+    const initialState: DataGridFilterState = { global: {} }
     if (storedState == null) return initialState
-    return Object.entries(storedState).reduce((state, [field, values]) => {
-      state[field] = { values: new Set(values.values) }
+    return Object.entries(storedState).reduce((state, [scope, storedScopedState]) => {
+      // hvis values er satt tyder dette på at scope i virkeligheten er et filter, ignorer
+      if (storedScopedState.values) {
+        return state
+      }
+      state[scope] = Object.entries(storedScopedState).reduce<DataGridColumnFilterState>(
+        (scopedState, [field, values]) => {
+          if (Array.isArray(values?.values)) {
+            scopedState[field] = { values: new Set(values.values) }
+          }
+          return scopedState
+        },
+        {}
+      )
       return state
     }, initialState)
   })
@@ -32,10 +45,12 @@ export function DataGridFilterProvider(props: DataGridFilterProviderProps) {
 }
 
 function reducer(state: DataGridFilterState, action: DataGridFilterAction): DataGridFilterState {
+  const scope = action.scope
   if (action.type === 'resetAll') {
-    return {}
+    return { ...state, [scope]: {} }
   }
-  let current = state[action.field]
+  const scopedState = state[scope]
+  let current = scopedState?.[action.field]
   switch (action.type) {
     case 'addFieldValue': {
       if (!current) {
@@ -43,7 +58,7 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
       } else {
         current = filterValuesOf([...current.values, action.value])
       }
-      return { ...state, [action.field]: current }
+      return { ...state, [scope]: { ...scopedState, [action.field]: current } }
     }
     case 'removeFieldValue': {
       if (!current) {
@@ -51,18 +66,10 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
       } else {
         current = filterValuesOf([...current.values].filter((value) => value !== action.value))
       }
-      return { ...state, [action.field]: current }
-    }
-    case 'setFieldValues': {
-      const values = filterValuesOf(action.values)
-      if (action.resetOthers) {
-        return { [action.field]: values }
-      } else {
-        return { ...state, [action.field]: values }
-      }
+      return { ...state, [scope]: { ...scopedState, [action.field]: current } }
     }
     case 'resetField': {
-      return { ...state, [action.field]: emptyFilterValues() }
+      return { ...state, [scope]: { ...scopedState, [action.field]: emptyFilterValues() } }
     }
     default: {
       return state

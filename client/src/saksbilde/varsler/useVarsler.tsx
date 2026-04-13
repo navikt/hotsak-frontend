@@ -1,5 +1,6 @@
 import { BehovsmeldingType, LeveringTilleggsinfo, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
 import { Varsel } from '../../types/types.internal'
+import { useMiljø } from '../../utils/useMiljø'
 import { useBehovsmelding } from '../useBehovsmelding'
 
 interface VarslerDataResponse {
@@ -10,11 +11,11 @@ interface VarslerDataResponse {
   harVarsler: boolean
   varsler: Varsel[]
   isLoading: boolean
-  isError: any
 }
 
 export function useSøknadsVarsler(): VarslerDataResponse {
   const { behovsmelding } = useBehovsmelding()
+  const { erProd } = useMiljø()
 
   const beskrivelser: string[] = []
 
@@ -51,7 +52,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     beskrivelser.push('Det er en annen kontaktperson enn hjelpemiddelformidler. Denne må registreres.')
   }
 
-  if (harBeskjedTilKommune) {
+  if (erProd && harBeskjedTilKommune) {
     beskrivelser.push(
       'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på SF i OeBS.'
     )
@@ -79,6 +80,5 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     varsler,
     harVarsler: erSøknad && beskrivelser.length > 0,
     isLoading: false,
-    isError: undefined,
   }
 }

@@ -41,6 +41,9 @@ spec:
         - application: hm-grunndata-alternativprodukter
         - application: hm-brille-api
         - application: hm-mocks
+        - application: modiacontextholder
+          namespace: personoversikt
+          cluster: dev-gcp
   azure:
     application:
       enabled: true

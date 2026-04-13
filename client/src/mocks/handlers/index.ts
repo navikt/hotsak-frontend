@@ -5,6 +5,7 @@ import { ansatteHandlers } from './ansatte.ts'
 import { behovsmeldingHandlers } from './behovsmelding.ts'
 import { bestillingHandlers } from './bestilling.ts'
 import { bildeHandlers } from './bilder.ts'
+import { modiaHandlers } from './modia.ts'
 import { brevHandlers } from './brev.ts'
 import { brevutkastHandlers } from './brevutkast.ts'
 import { brillekalkulatorHandlers } from './brillekalkulator.ts'
@@ -30,6 +31,7 @@ export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...behovsmeldingHandlers(store),
   ...bestillingHandlers(store),
   ...bildeHandlers(),
+  ...modiaHandlers(),
   ...brevHandlers(store),
   ...brevutkastHandlers(store),
   ...brillekalkulatorHandlers(store),

@@ -81,3 +81,5 @@ spec:
       value: "true"
     - name: GOSYS_OPPGAVEBEHANDLING_URL
       value: https://gosys.intern.nav.no/gosys/oppgavebehandling
+    - name: MODIA_URL
+      value: https://modiapersonoversikt.intern.nav.no

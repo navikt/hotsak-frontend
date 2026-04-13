@@ -13,16 +13,21 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
+import { useModiaActions } from './useModiaActions.ts'
 import classes from './Toppmeny.module.css'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
+  const { erProd } = useMiljø()
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet, logPersonoversiktÅpnetIModia, logLandingpageIModia } = useUmami()
+  const { settAktivBruker } = useModiaActions()
+  const modiaUrl = window.appSettings.MODIA_URL
 
   const handleSearch = (value: string) => {
     const fnrEllerSakId = fjernMellomrom(value)
@@ -58,18 +63,34 @@ export function Toppmeny() {
             <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="_new">
               Gosys
             </ActionMenu.Item>
-            <ActionMenu.Item
-              as="a"
-              onClick={fodselsnummer ? logPersonoversiktÅpnetIModia : logLandingpageIModia}
-              href={
-                fodselsnummer
-                  ? `https://modiapersonoversikt.intern.nav.no/person/${fodselsnummer}`
-                  : 'https://modiapersonoversikt.intern.nav.no/landingpage'
-              }
-              target="_new"
-            >
-              Modia
-            </ActionMenu.Item>
+            {erProd ? (
+              <ActionMenu.Item
+                as="a"
+                onClick={fodselsnummer ? logPersonoversiktÅpnetIModia : logLandingpageIModia}
+                href={fodselsnummer ? `${modiaUrl}/person/${fodselsnummer}` : `${modiaUrl}/landingpage`}
+                target="_new"
+              >
+                Modia
+              </ActionMenu.Item>
+            ) : (
+              <ActionMenu.Item
+                as="a"
+                onClick={
+                  fodselsnummer
+                    ? async (e: React.MouseEvent) => {
+                        e.preventDefault()
+                        logPersonoversiktÅpnetIModia()
+                        await settAktivBruker(fodselsnummer)
+                        window.open(`${modiaUrl}/person/oversikt`, '_new')
+                      }
+                    : logLandingpageIModia
+                }
+                href={fodselsnummer ? undefined : `${modiaUrl}/landingpage`}
+                target="_new"
+              >
+                Modia
+              </ActionMenu.Item>
+            )}
           </ActionMenu.Group>
           <ActionMenu.Divider />
           <ActionMenu.Group label="Utseende">

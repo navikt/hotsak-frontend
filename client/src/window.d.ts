@@ -20,6 +20,7 @@ declare global {
       GIT_COMMIT?: string
 
       GOSYS_OPPGAVEBEHANDLING_URL?: string
+      MODIA_URL?: string
     }
     faro?: Faro
     store: {

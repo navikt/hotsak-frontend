@@ -93,3 +93,7 @@ spec:
       value: "true"
     - name: GOSYS_OPPGAVEBEHANDLING_URL
       value: https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling
+    - name: MODIA_URL
+      value: https://modiapersonoversikt.intern.dev.nav.no
+    - name: MODIACONTEXTHOLDER_API_URL
+      value: http://modiacontextholder.personoversikt.svc.cluster.local

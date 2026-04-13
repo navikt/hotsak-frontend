@@ -42,6 +42,10 @@ func main() {
 				Target:      os.Getenv("BRILLE_API_URL"),
 				StripPrefix: true,
 			},
+			"/modiacontextholder-api/": &proxy.Options{
+				Target:      os.Getenv("MODIACONTEXTHOLDER_API_URL"),
+				StripPrefix: true,
+			},	
 		},
 		IDP: idp,
 		EnvKeys: []string{
@@ -60,6 +64,7 @@ func main() {
 			"GIT_COMMIT",
 
 			"GOSYS_OPPGAVEBEHANDLING_URL",
+			"MODIA_URL",
 		},
 	}
 	hotbff.Start(opts)

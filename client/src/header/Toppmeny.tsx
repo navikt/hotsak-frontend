@@ -1,8 +1,8 @@
 import { MenuGridIcon, ThemeIcon } from '@navikt/aksel-icons'
 import { ActionMenu, HStack, InternalHeader } from '@navikt/ds-react'
-import { Link, type To, useNavigate } from 'react-router-dom'
-import { useLocation } from 'react-router'
 import { type ReactNode } from 'react'
+import { useLocation } from 'react-router'
+import { Link, type To, useNavigate } from 'react-router-dom'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
@@ -12,17 +12,15 @@ import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
+import classes from './Toppmeny.module.css'
 import { useDarkmode } from './useDarkmode.ts'
 import { useModiaActions } from './useModiaActions.ts'
-import classes from './Toppmeny.module.css'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
-  const { erProd } = useMiljø()
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet, logPersonoversiktÅpnetIModia, logLandingpageIModia } = useUmami()
@@ -63,34 +61,23 @@ export function Toppmeny() {
             <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="_new">
               Gosys
             </ActionMenu.Item>
-            {erProd ? (
-              <ActionMenu.Item
-                as="a"
-                onClick={fodselsnummer ? logPersonoversiktÅpnetIModia : logLandingpageIModia}
-                href={fodselsnummer ? `${modiaUrl}/person/${fodselsnummer}` : `${modiaUrl}/landingpage`}
-                target="_new"
-              >
-                Modia
-              </ActionMenu.Item>
-            ) : (
-              <ActionMenu.Item
-                as="a"
-                onClick={
-                  fodselsnummer
-                    ? async (e: React.MouseEvent) => {
-                        e.preventDefault()
-                        logPersonoversiktÅpnetIModia()
-                        await settAktivBruker(fodselsnummer)
-                        window.open(`${modiaUrl}/person/oversikt`, '_new')
-                      }
-                    : logLandingpageIModia
-                }
-                href={fodselsnummer ? undefined : `${modiaUrl}/landingpage`}
-                target="_new"
-              >
-                Modia
-              </ActionMenu.Item>
-            )}
+            <ActionMenu.Item
+              as="a"
+              onClick={
+                fodselsnummer
+                  ? async (e: React.MouseEvent) => {
+                      e.preventDefault()
+                      logPersonoversiktÅpnetIModia()
+                      await settAktivBruker(fodselsnummer)
+                      window.open(`${modiaUrl}/person/oversikt`, '_new')
+                    }
+                  : logLandingpageIModia
+              }
+              href={fodselsnummer ? undefined : `${modiaUrl}/landingpage`}
+              target="_new"
+            >
+              Modia
+            </ActionMenu.Item>
           </ActionMenu.Group>
           <ActionMenu.Divider />
           <ActionMenu.Group label="Utseende">

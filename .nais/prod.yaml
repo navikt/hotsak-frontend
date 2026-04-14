@@ -28,6 +28,9 @@ spec:
         - application: hm-grunndata-search
         - application: hm-grunndata-alternativprodukter
         - application: hm-brille-api
+        - application: modiacontextholder
+          namespace: personoversikt
+          cluster: prod-gcp
   azure:
     application:
       enabled: true
@@ -83,3 +86,5 @@ spec:
       value: https://gosys.intern.nav.no/gosys/oppgavebehandling
     - name: MODIA_URL
       value: https://modiapersonoversikt.intern.nav.no
+    - name: MODIACONTEXTHOLDER_API_URL
+      value: http://modiacontextholder.personoversikt.svc.cluster.local

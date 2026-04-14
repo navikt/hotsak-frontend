@@ -28,24 +28,6 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
     }
 
     return HttpResponse.json({
-      utsendingsinfo: {
-        varselSendt: [
-          {
-            type: 'EPOST',
-            tittel: 'Vedtak fra Nav',
-            adresse: 'email@nav.no',
-            tidspunkt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
-          },
-          {
-            type: 'SMS',
-            tittel: null,
-            adresse: '12345678',
-            tidspunkt: new Date(Date.now() + 4 * 60 * 1000).toISOString(),
-          },
-        ],
-        fysiskpostSendt: 'Herfindalsfjellet 37\n5725 VAKSDAL',
-        digitalpostSendt: null,
-      },
       datoEkspedert: new Date().toISOString(),
     })
   }),

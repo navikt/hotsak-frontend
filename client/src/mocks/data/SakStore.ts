@@ -534,6 +534,12 @@ export class SakStore extends Dexie {
           },
         })
       })
+      this.lagreHendelse(sakId, 'Varsel til bruker', 'EPOST: «Vedtak fra Nav» sendt til test@nav.no')
+      this.lagreHendelse(
+        sakId,
+        'Vedtaksbrev sendt til bruker',
+        'Brevet er sendt som fysisk post (sentral utskrift) til Herfindalsfjellet 37\n5725 VAKSDAL'
+      )
       return true
     }
   }

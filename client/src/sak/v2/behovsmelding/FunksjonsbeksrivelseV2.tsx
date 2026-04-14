@@ -31,13 +31,13 @@ function FunksjonsbeskrivelseContent({
       return (
         <>
           <Heading size="xsmall" spacing>
-            Funksjonsbeskrivelse mangler
+            Funksjonsbeskrivelse
           </Heading>
           <TextContainer>
             <Tekst>
-              Det er kun søkt om tilbehør i denne saken. Funksjonsbeskrivelsen finnes på søknaden hvor hjelpemidlet
-              tilbehøret skal brukes på er søkt om. For å unngå å be om informasjon Nav allerede har, ber vi ikke om
-              funksjonsbeskrivelsen en gang til.
+              Det er kun søkt om tilbehør i denne saken. Beskrivelse av brukers funksjon vil som oftest gå frem av
+              søknaden om hjelpemidlet som tilbehøret skal brukes sammen med. Fordi Nav allerede har denne
+              informasjonen, anses det ikke nødvendig å oppgi funksjonsbeskrivelsen en gang til.
             </Tekst>
           </TextContainer>
         </>
@@ -47,7 +47,7 @@ function FunksjonsbeskrivelseContent({
     return (
       <>
         <Heading size="xsmall" spacing>
-          Funksjonsbeskrivelse mangler
+          Funksjonsbeskrivelse
         </Heading>
         <TextContainer>
           <Tekst>

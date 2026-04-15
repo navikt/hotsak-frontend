@@ -7,7 +7,7 @@ const NAV_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-la
 
 export function byggHeaderHtml(metadata: Metadata): string {
   return (
-    `<div class="header">` +
+    `<header class="header">` +
     NAV_LOGO_SVG +
     `<dl>
           <dt>Navn:</dt>
@@ -18,17 +18,17 @@ export function byggHeaderHtml(metadata: Metadata): string {
           <dd>${metadata.saksnummer}</dd>
         </dl>
         <span>${metadata.brevOpprettet}</span>
-      </div>`
+      </header>`
   )
 }
 
 export function byggFooterHtml(metadata: Metadata): string {
-  return `<p>
+  return `<footer>
         Med vennlig hilsen <br />
         ${metadata.saksbehandlerNavn}
         ${metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />
         ${metadata.hjelpemiddelsentral}
-      </p>`
+      </footer>`
 }
 
 export function byggFullHtml(metadata: Metadata, nyVerdi: Value): string {
@@ -57,10 +57,14 @@ export function byggFullHtml(metadata: Metadata, nyVerdi: Value): string {
             }
           </style>
           <style>${versjonertStilarkV1}</style>
-        </head>` +
+        </head>
+        <body>` +
     byggHeaderHtml(metadata) +
+    `<main>` +
     (serialiserTilHtml(nyVerdi) || '') +
+    `</main>` +
     byggFooterHtml(metadata) +
-    '</html>'
+    `</body>
+    </html>`
   )
 }

@@ -54,10 +54,10 @@ const BarnebrillesakContent = memo(() => {
     )
   }
 
-  if (!oppgave || !sak) return null
+  if (!sak) return null
 
   const { saksstatus, vedtak } = sak.data
-  const visStatusTag = !oppgave.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
+  const visStatusTag = !oppgave?.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
   return (
     <div>
       <Header wrap={false} align={'baseline'}>
@@ -65,7 +65,7 @@ const BarnebrillesakContent = memo(() => {
         <Spacer />
         <HStack justify="center" align="center" gap="space-16">
           {visStatusTag && <StatusTag saksstatus={saksstatus} vedtaksstatus={vedtak?.status} />}
-          <OppgavePåVentTag oppgave={oppgave} variant="outline" />
+          {oppgave && <OppgavePåVentTag oppgave={oppgave} variant="outline" />}
           {harSkrivetilgang && <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />}
         </HStack>
       </Header>

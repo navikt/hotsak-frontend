@@ -15,6 +15,7 @@ import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
 import { useDarkmode } from './useDarkmode.ts'
 import { useModiaActions } from './useModiaActions.ts'
+//import { useModiaHotkey } from './useModiaHotkey.ts'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
@@ -26,6 +27,7 @@ export function Toppmeny() {
   const { logTemaByttet, logPersonoversiktÅpnetIModia, logLandingpageIModia } = useUmami()
   const { settAktivBruker } = useModiaActions()
   const modiaUrl = window.appSettings.MODIA_URL
+  //useModiaHotkey()
 
   const handleSearch = (value: string) => {
     const fnrEllerSakId = fjernMellomrom(value)
@@ -58,7 +60,7 @@ export function Toppmeny() {
         </ActionMenu.Trigger>
         <ActionMenu.Content>
           <ActionMenu.Group label="Systemer og oppslagsverk">
-            <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="_new">
+            <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="gosys">
               Gosys
             </ActionMenu.Item>
             <ActionMenu.Item
@@ -69,12 +71,12 @@ export function Toppmeny() {
                       e.preventDefault()
                       logPersonoversiktÅpnetIModia()
                       await settAktivBruker(fodselsnummer)
-                      window.open(`${modiaUrl}/person/oversikt`, '_new')
+                      window.open(`${modiaUrl}/person/oversikt`, 'modia')
                     }
                   : logLandingpageIModia
               }
               href={fodselsnummer ? undefined : `${modiaUrl}/landingpage`}
-              target="_new"
+              target="modia"
             >
               Modia
             </ActionMenu.Item>

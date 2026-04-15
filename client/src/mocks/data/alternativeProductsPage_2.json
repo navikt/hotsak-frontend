@@ -234,19 +234,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.954648",
@@ -523,19 +511,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.959823",
@@ -818,19 +794,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.965542",
@@ -1132,19 +1096,7 @@
               "backOrders": 0,
               "available": -1
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.971193",
@@ -1421,19 +1373,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:08:55.440170852",
@@ -1710,19 +1650,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:09:07.980716912",
@@ -2024,19 +1952,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:26.170573",
@@ -2307,19 +2223,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:42.773868",
@@ -2590,19 +2494,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.946765",
@@ -2879,19 +2771,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:08:35.637854844",
@@ -3168,19 +3048,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:09:32.778836311",
@@ -3457,19 +3325,7 @@
               "backOrders": 0,
               "available": 0
             },
-            {
-              "location": "Nord-Trøndelag",
-              "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0,
-              "physical": 0,
-              "orders": 0,
-              "request": 0,
-              "intRequest": 0,
-              "needNotified": 0,
-              "reserved": 0,
-              "backOrders": 0,
-              "available": 0
-            },
+
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:09:35.285772332",

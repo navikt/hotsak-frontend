@@ -1,11 +1,9 @@
 import { BehovsmeldingType, LeveringTilleggsinfo, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
 import { Varsel } from '../../types/types.internal'
-import { useMiljø } from '../../utils/useMiljø'
 import { useBehovsmelding } from '../useBehovsmelding'
 
 interface VarslerDataResponse {
   harAnnenLeveringsadresse: boolean
-  harBeskjedTilKommune: boolean
   harAnnenKontaktperson: boolean
   alleHjelpemidlerErUtlevert: boolean
   harVarsler: boolean
@@ -15,14 +13,12 @@ interface VarslerDataResponse {
 
 export function useSøknadsVarsler(): VarslerDataResponse {
   const { behovsmelding } = useBehovsmelding()
-  const { erProd } = useMiljø()
 
   const beskrivelser: string[] = []
 
   const erSøknad = behovsmelding?.type === BehovsmeldingType.SØKNAD
   const harAnnenLeveringsadresse =
     erSøknad && behovsmelding?.levering.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE
-  const harBeskjedTilKommune = erSøknad && !!behovsmelding?.levering.utleveringMerknad
   const harAnnenKontaktperson = erSøknad && !!behovsmelding?.levering.annenKontaktperson
 
   const skalHentesPåHjelpemiddelsentralen =
@@ -52,12 +48,6 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     beskrivelser.push('Det er en annen kontaktperson enn hjelpemiddelformidler. Denne må registreres.')
   }
 
-  if (erProd && harBeskjedTilKommune) {
-    beskrivelser.push(
-      'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på SF i OeBS.'
-    )
-  }
-
   if (harAlleredeUtleveteHjelpemidler) {
     if (alleHjelpemidlerErUtlevert) {
       beskrivelser.push(
@@ -74,7 +64,6 @@ export function useSøknadsVarsler(): VarslerDataResponse {
 
   return {
     harAnnenLeveringsadresse,
-    harBeskjedTilKommune,
     harAnnenKontaktperson,
     alleHjelpemidlerErUtlevert,
     varsler,

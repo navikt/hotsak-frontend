@@ -5,7 +5,6 @@ import { useArtiklerForSak } from './useArtiklerForSak.ts'
 import { Hjelpemiddel, OpplysningId } from '../../types/BehovsmeldingTypes.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { useProblemsammendrag } from '../../saksbilde/venstremeny/useProblemsammendrag.ts'
-import { useMiljø } from '../../utils/useMiljø.ts'
 
 export interface VedtakFormValues {
   problemsammendrag: string
@@ -27,10 +26,9 @@ export interface UseVedtakReturn {
 export function useVedtak(sak: Sak) {
   const behovsmelding = useBehovsmelding()
   const artikler = useArtiklerForSak(sak.sakId)
-  const { erIkkeProd } = useMiljø()
   const { problemsammendrag, sammendragMedLavere } = useProblemsammendrag()
   const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
-  const utleveringsmerknad = erIkkeProd ? behovsmelding.behovsmelding?.levering.utleveringMerknad : undefined
+  const utleveringsmerknad = behovsmelding.behovsmelding?.levering.utleveringMerknad
 
   const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1

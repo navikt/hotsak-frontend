@@ -3,11 +3,10 @@ import { forwardRef, useImperativeHandle, useState } from 'react'
 import { Controller, FormProvider } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Sak } from '../../types/types.internal'
-import { FritekstPanel } from './FritekstPanel'
-import { useVedtak, VedtakFormValues } from './useVedtak'
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
 import { useNyttSaksbilde } from '../v2/useNyttSaksbilde'
+import { FritekstPanel } from './FritekstPanel'
+import { useVedtak, VedtakFormValues } from './useVedtak'
 
 interface VedtakFormProps {
   sak: Sak
@@ -165,11 +164,9 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 </HStack>
               </VStack>
             )}
-            <Eksperiment>
-              {utleveringsmerknad && (!nyttSaksbilde || vedtaksresultat === VedtaksResultat.INNVILGET) && (
-                <FritekstPanel />
-              )}
-            </Eksperiment>
+            {utleveringsmerknad && (!nyttSaksbilde || vedtaksresultat === VedtaksResultat.INNVILGET) && (
+              <FritekstPanel />
+            )}
           </VStack>
           <button type="submit" style={{ display: 'none' }} />
         </form>

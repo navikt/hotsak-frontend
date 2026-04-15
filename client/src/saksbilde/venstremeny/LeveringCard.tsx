@@ -21,7 +21,7 @@ export function LeveringCard(props: UtleveringCardProps) {
   const { utleveringMerknad } = levering
   const leveringsmåte = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(levering)
-  const { harAnnenLeveringsadresse, harBeskjedTilKommune, harAnnenKontaktperson } = useSøknadsVarsler()
+  const { harAnnenLeveringsadresse, harAnnenKontaktperson } = useSøknadsVarsler()
   const { skjulKopiknapp } = useSkjulUIElementer()
 
   return (
@@ -49,7 +49,6 @@ export function LeveringCard(props: UtleveringCardProps) {
 
       {utleveringMerknad && (
         <VenstremenyCardRow
-          icon={lagMerknadIkon()}
           paddingBlock={'space-0 space-8'}
           title="Beskjed til kommunen"
           copyText={utleveringMerknad}
@@ -73,10 +72,6 @@ export function LeveringCard(props: UtleveringCardProps) {
 
   function lagLeveringsIkon() {
     return harAnnenLeveringsadresse ? <VarselIkonNøytralt /> : <HouseIcon />
-  }
-
-  function lagMerknadIkon() {
-    return harBeskjedTilKommune ? <VarselIkonNøytralt /> : <InformationSquareIcon />
   }
 
   function lagKontaktpersonIkon() {

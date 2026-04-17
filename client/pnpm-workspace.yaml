@@ -9,4 +9,8 @@ onlyBuiltDependencies:
   - msw
   - protobufjs
 
-overrides:
+updateConfig:
+  ignoreDependencies:
+    - '@types/node'
+
+overrides: { }

@@ -1,6 +1,6 @@
-import { formaterAdresse } from '../../utils/formater.ts'
 import { type Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes.ts'
-import type { Bydel, Kommune } from '../../types/types.internal.ts'
+import type { Bydel, Kommune } from '../../types/hotlibs.ts'
+import { formaterAdresse } from '../../utils/formater.ts'
 
 export interface LeveringsmåteTekst {
   label: string
@@ -17,13 +17,13 @@ export function lagLeveringsmåteTekst(
   switch (utleveringsmåte) {
     case Utleveringsmåte.ANNEN_BRUKSADRESSE:
       return {
-        label: `Til annen adresse`,
+        label: 'Til annen adresse',
         copyText: annenAdresse,
         kommune: annenUtleveringskommune,
         bydel: annenUtleveringsbydel,
       }
     case Utleveringsmåte.FOLKEREGISTRERT_ADRESSE:
-      return { label: `Til folkeregistert adresse`, copyText: adresseBruker }
+      return { label: 'Til folkeregistert adresse', copyText: adresseBruker }
     case Utleveringsmåte.HJELPEMIDDELSENTRALEN:
       return { label: 'Hentes på hjelpemiddelsentralen' }
     default:

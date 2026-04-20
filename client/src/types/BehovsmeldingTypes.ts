@@ -1,4 +1,4 @@
-import { Bydel, Kommune } from './types.internal'
+import type { Bydel, Kommune, Personnavn, Veiadresse } from './hotlibs.ts'
 
 export interface Innsenderbehovsmelding {
   id: string
@@ -17,11 +17,6 @@ export enum BehovsmeldingType {
   SØKNAD = 'SØKNAD',
   BESTILLING = 'BESTILLING',
   BYTTE = 'BYTTE',
-}
-
-export interface Personnavn {
-  fornavn: string
-  etternavn: string
 }
 
 export enum Prioritet {
@@ -116,12 +111,6 @@ export interface AnnenKontaktperson {
 export enum LeveringTilleggsinfo {
   UTLEVERING_KALENDERAPP = 'UTLEVERING_KALENDERAPP',
   ALLE_HJELPEMIDLER_ER_UTLEVERT = 'ALLE_HJELPEMIDLER_ER_UTLEVERT',
-}
-
-export interface Veiadresse {
-  adresse: string
-  postnummer: string
-  poststed: string
 }
 
 export interface Hast {

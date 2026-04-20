@@ -1,13 +1,13 @@
 import { BriefcaseIcon, PersonIcon, PhoneIcon } from '@navikt/aksel-icons'
+import type { Personnavn } from '../../types/hotlibs.ts'
 
-import type { Navn } from '../../types/types.internal'
 import { formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
 export interface FormidlerCardProps {
   tittel: string
-  formidlerNavn: string | Navn
+  formidlerNavn: string | Personnavn
   stilling: string
   kommune: string
   formidlerTelefon: string

@@ -1,5 +1,6 @@
 import type { PageResponse } from '../felleskomponenter/Page.ts'
-import type { Bydel, Enhet, Kommune, Navn, OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
+import type { Bydel, Enhet, Kommune, Personnavn } from '../types/hotlibs.ts'
+import type { OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
 import type { IntervalString } from '../utils/dato.ts'
 import { isInteger, isString } from '../utils/type.ts'
 
@@ -164,7 +165,7 @@ export interface Oppgavekategorisering {
 
 export interface OppgaveBruker {
   fnr: string
-  navn: Navn
+  navn: Personnavn
   fulltNavn: string
   fødselsdato?: string
   alder?: number
@@ -175,7 +176,7 @@ export interface OppgaveBruker {
 
 export interface OppgaveInnsender {
   fnr: string
-  navn: Navn
+  navn: Personnavn
   fulltNavn: string
 }
 

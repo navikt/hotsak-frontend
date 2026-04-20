@@ -268,7 +268,7 @@ export const Brev = () => {
                   brevOpprettet: formaterDatoLang(new Date().toISOString()),
                   saksbehandlerNavn: sak?.data.saksbehandler?.navn || '',
                   attestantsNavn: undefined,
-                  hjelpemiddelsentral: sak?.data.enhet.enhetsnavn || 'Nav hjelpemiddelsentral',
+                  hjelpemiddelsentral: sak?.data.enhet.navn || 'Nav hjelpemiddelsentral',
                 }}
                 brevId={sak!.data.sakId.toString()}
                 templateMarkdown={valgtMal}

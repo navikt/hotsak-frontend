@@ -1,4 +1,4 @@
-import type { Navn } from '../types/types.internal'
+import type { Personnavn } from '../types/hotlibs.ts'
 
 export function isNumber(value: unknown): value is number {
   return Number.isFinite(value)
@@ -12,6 +12,7 @@ export function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isFunction(value: unknown): value is (...args: any[]) => unknown {
   return typeof value === 'function'
 }
@@ -22,8 +23,8 @@ export function isError(value: unknown): value is Error {
   )
 }
 
-export function isNavn(value: unknown): value is Navn {
-  return value != null && isString((value as Navn).fornavn) && isString((value as Navn).etternavn)
+export function isPersonnavn(value: unknown): value is Personnavn {
+  return value != null && isString((value as Personnavn).fornavn) && isString((value as Personnavn).etternavn)
 }
 
 export function isNotBlank(value: unknown): value is string {

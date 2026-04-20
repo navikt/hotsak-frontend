@@ -1,20 +1,20 @@
-import type { Enhet } from '../../types/types.internal'
+import type { Enhet } from '../../types/hotlibs.ts'
 
 export const enheter = {
   itAvdelingen: {
-    enhetsnummer: '2970',
-    enhetsnavn: 'IT-avdelingen',
+    nummer: '2970',
+    navn: 'IT-avdelingen',
   },
   vikafossen: {
-    enhetsnummer: '2103',
-    enhetsnavn: 'Nav Vikafossen',
+    nummer: '2103',
+    navn: 'Nav Vikafossen',
   },
   oslo: {
-    enhetsnummer: '4703',
-    enhetsnavn: 'Nav hjelpemiddelsentral Oslo',
+    nummer: '4703',
+    navn: 'Nav hjelpemiddelsentral Oslo',
   },
   agder: {
-    enhetsnummer: '4710',
-    enhetsnavn: 'Nav hjelpemiddelsentral Agder',
+    nummer: '4710',
+    navn: 'Nav hjelpemiddelsentral Agder',
   },
 } satisfies Record<string, Enhet>

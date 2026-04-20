@@ -1,4 +1,4 @@
-import type { Navn } from '../../types/types.internal'
+import type { Personnavn } from '../../types/hotlibs.ts'
 import { tilfeldigInnslag } from './felles'
 
 const fornavn = [
@@ -57,8 +57,8 @@ const etternavn = [
   'Vulkan',
 ]
 
-export function lagTilfeldigNavn(): Navn & { fulltNavn: string } {
-  const navn: Navn = {
+export function lagTilfeldigNavn(): Personnavn & { fulltNavn: string } {
+  const navn: Personnavn = {
     fornavn: tilfeldigInnslag(fornavn),
     etternavn: tilfeldigInnslag(etternavn),
   }

@@ -1,11 +1,11 @@
 import { BodyShort, type BodyShortProps } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
-import { type Navn } from '../../types/types.internal.ts'
+import type { Personnavn } from '../../types/hotlibs.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 
 export interface FormatPersonnavnProps extends Omit<BodyShortProps, 'children'> {
-  value?: Navn
+  value?: Personnavn
 }
 
 export function FormatPersonnavn(props: FormatPersonnavnProps) {

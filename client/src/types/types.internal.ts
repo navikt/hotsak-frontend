@@ -1,4 +1,5 @@
 import type { Ansatt } from '../tilgang/Ansatt.ts'
+import type { Bydel, Enhet, HarPersonnavn, Kommune, Personnavn } from './hotlibs.ts'
 
 export interface SakResponse<T extends SakBase> {
   data: T
@@ -253,17 +254,6 @@ export enum SatsType {
   INGEN = 'INGEN',
 }
 
-// todo -> rename to Personnavn, samme type som i behovsmelding, fra hotlibs/core
-export interface Navn {
-  fornavn: string
-  mellomnavn?: string
-  etternavn: string
-}
-
-export interface HarNavn {
-  navn: Navn
-}
-
 export interface AdressebeskyttelseOgSkjerming {
   gradering?: Adressebeskyttelse[]
   skjermet: boolean
@@ -271,12 +261,12 @@ export interface AdressebeskyttelseOgSkjerming {
 
 export interface Innsender {
   fnr: string
-  navn: Navn
+  navn: Personnavn
   fulltNavn?: string
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
-export interface Bruker extends HarNavn {
+export interface Bruker extends HarPersonnavn {
   fnr: string
   fulltNavn?: string
   fødselsdato: string
@@ -300,16 +290,6 @@ export const AdressebeskyttelseAlert = {
   [Adressebeskyttelse.FORTROLIG]: 'Fortrolig adresse',
   [Adressebeskyttelse.STRENGT_FORTROLIG]: 'Strengt fortrolig adresse',
   [Adressebeskyttelse.STRENGT_FORTROLIG_UTLAND]: 'Strengt fortrolig adresse utland',
-}
-
-export interface Kommune {
-  nummer: string
-  navn: string
-}
-
-export interface Bydel {
-  nummer: string
-  navn: string
 }
 
 export enum VedtaksgrunnlagType {
@@ -432,16 +412,11 @@ export interface HjelpemiddelArtikkel {
 
 export interface VedtakType {
   vedtaksdato: string
-  status: VedtakStatusType
-  saksbehandlerRef: string
+  status: VedtakStatusType // fixme -> vedtaksstatus
+  saksbehandlerRef: string // fixme -> saksbehandlerId
   saksbehandlerNavn: string
-  soknadUuid: string
+  soknadUuid: string // fixme -> søknadId
   vedtaksgrunnlag?: VedtaksgrunnlagBase[]
-}
-
-export interface Enhet {
-  enhetsnummer: string
-  enhetsnavn: string
 }
 
 export enum FritakFraBegrunnelseÅrsak {
@@ -461,11 +436,6 @@ export enum GreitÅViteType {
   MERKNAD = 'MERKNAD',
 }
 
-export interface Bydel {
-  bydelsnummer: string
-  bydelsnavn: string
-}
-
 export interface Journalpost {
   journalpostId: string
   journalpostOpprettetTid: string
@@ -479,7 +449,7 @@ export interface Journalpost {
 
 export interface FødselsnummerOgNavn {
   fnr: string
-  navn: Navn
+  navn: Personnavn
   fulltNavn?: string
 }
 
@@ -662,7 +632,7 @@ export interface AvvisBestilling {
   begrunnelse: string
 }
 
-export interface Person extends Navn, HarNavn {
+export interface Person extends Personnavn, HarPersonnavn {
   fnr: string
   fødselsdato?: string
   telefon?: string

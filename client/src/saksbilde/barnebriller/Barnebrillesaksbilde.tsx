@@ -57,10 +57,10 @@ const BarnebrillesakContent = memo(() => {
     )
   }
 
-  if (!oppgave || !sak) return null
+  if (!sak) return null
 
   const { saksstatus, vedtak } = sak.data
-  const visStatusTag = !oppgave.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
+  const visStatusTag = !oppgave?.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
   return (
     <div>
       <Header wrap={false} align="baseline">

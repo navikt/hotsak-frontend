@@ -1,25 +1,22 @@
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { InfoModal } from '../../../saksbilde/komponenter/InfoModal'
 import { storForbokstavIOrd } from '../../../utils/formater'
-import { Gjenstående, VedtaksResultat } from '../behandling/behandlingTyper'
+import { Gjenstående, type VedtaksResultat } from '../behandling/behandlingTyper'
 
-export function BrevManglerModal({
-  open,
-  onClose,
-  gjenstående,
-  vedtaksResultat,
-}: {
+export interface BrevManglerModalProps {
   open: boolean
-  onClose: () => void
+  onClose(): void
   gjenstående: Gjenstående[]
-  vedtaksResultat?: VedtaksResultat
-}) {
+  vedtaksresultat?: VedtaksResultat
+}
+
+export function BrevManglerModal({ open, onClose, gjenstående, vedtaksresultat }: BrevManglerModalProps) {
   return (
     <InfoModal heading="Mangler brev" open={open} width="500px" onClose={onClose}>
       {gjenstående.includes(Gjenstående.BREV_MANGLER) && (
         <>
           <Tekst spacing>
-            Når du fatter et vedtak med resultat "{storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}" er det krav
+            Når du fatter et vedtak med resultat "{storForbokstavIOrd(vedtaksresultat).replace(/_/g, ' ')}" er det krav
             om at man underetter brukeren med brev.
           </Tekst>
           <Tekst spacing>

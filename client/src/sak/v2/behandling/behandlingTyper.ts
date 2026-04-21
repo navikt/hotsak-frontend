@@ -1,5 +1,5 @@
-import { OppgaveId } from '../../../oppgave/oppgaveTypes'
-import { Saksbehandler } from '../../../types/types.internal'
+import type { OppgaveId } from '../../../oppgave/oppgaveTypes'
+import type { NavIdent } from '../../../tilgang/Ansatt.ts'
 
 export interface Behandling {
   behandlingId: number
@@ -7,26 +7,54 @@ export interface Behandling {
   utfallLåst?: UtfallLåst[]
   operasjoner: Operasjoner
   utfall?: Behandlingsutfall
-  utførtAv?: Saksbehandler
+  utførtAv?: NavIdent
   oppgaveId: OppgaveId
   ferdigstiltTidspunkt?: string
 }
+
 export interface LagreBehandlingRequest {
   oppgaveId: OppgaveId
   utfall?: Behandlingsutfall
 }
 
-export type Behandlingsutfall = Utfall<VedtaksResultat | HenleggelsesÅrsak | Bestillingsreultat>
+export type BehandlingsutfallType = VedtaksResultat | Bestillingsresultat | Henleggelsesårsak | OverførtTil
 
-export interface Utfall<T extends VedtaksResultat | HenleggelsesÅrsak | Bestillingsreultat> {
+interface Utfall<T extends BehandlingsutfallType> {
   utfall: T
-  type: 'VEDTAK' | 'HENLEGGELSE' | 'BESTILLING' | 'OVERFØRING'
+  type: 'VEDTAK' | 'BESTILLING' | 'HENLEGGELSE' | 'OVERFØRING'
+}
+
+export type BehandlingsutfallVedtak = Utfall<VedtaksResultat>
+export type BehandlingsutfallBestilling = Utfall<Bestillingsresultat>
+export type BehandlingsutfallHenleggelse = Utfall<Henleggelsesårsak>
+export type BehandlingsutfallOverføring = Utfall<OverførtTil>
+
+export type Behandlingsutfall =
+  | BehandlingsutfallVedtak
+  | BehandlingsutfallBestilling
+  | BehandlingsutfallHenleggelse
+  | BehandlingsutfallOverføring
+
+export function isBehandlingsutfallVedtak(utfall?: Behandlingsutfall): utfall is BehandlingsutfallVedtak {
+  return utfall != null && utfall.type === 'VEDTAK'
+}
+
+export function isBehandlingsutfallBestilling(utfall?: Behandlingsutfall): utfall is BehandlingsutfallBestilling {
+  return utfall != null && utfall.type === 'BESTILLING'
+}
+
+export function isBehandlingsutfallHenleggelse(utfall?: Behandlingsutfall): utfall is BehandlingsutfallHenleggelse {
+  return utfall != null && utfall.type === 'HENLEGGELSE'
+}
+
+export function isBehandlingsutfallOverføring(utfall?: Behandlingsutfall): utfall is BehandlingsutfallOverføring {
+  return utfall != null && utfall.type === 'OVERFØRING'
 }
 
 export interface Operasjoner {
-  //vedtak:
+  // vedtak:
   overfør: { gjenstående: GjenståendeOverfør[] }
-  //endreUtfall:
+  // endreUtfall:
   angreVedtak: { angringLåst: AngringLåst[] }
 }
 
@@ -45,23 +73,26 @@ export interface BehandlingerResponse {
   behandlinger: Behandling[]
 }
 
+// todo -> bruke samme navn som i backend `Vedtaksresultat`
 export enum VedtaksResultat {
   INNVILGET = 'INNVILGET',
   AVSLÅTT = 'AVSLÅTT',
   DELVIS_INNVILGET = 'DELVIS_INNVILGET',
-  GOSYS = 'GOSYS',
-  BRUKER_ER_DØD = 'BRUKER_ER_DØD',
 }
 
-enum Bestillingsreultat {
+export enum Bestillingsresultat {
   GODKJENT = 'GODKJENT',
   AVVIST = 'AVVIST',
 }
 
-enum HenleggelsesÅrsak {
+export enum Henleggelsesårsak {
   BRUKER_ER_DØD = 'BRUKER_ER_DØD',
   DUPLIKAT = 'DUPLIKAT',
   FEIL_BRUKER = 'FEIL_BRUKER',
+}
+
+export enum OverførtTil {
+  GOSYS = 'GOSYS',
 }
 
 export enum Gjenstående {

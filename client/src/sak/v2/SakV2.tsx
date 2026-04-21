@@ -1,6 +1,7 @@
 import { Box, HStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
+
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { usePerson } from '../../personoversikt/usePerson.ts'
@@ -8,9 +9,10 @@ import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useSak } from '../../saksbilde/useSak.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
-import { Gjenstående, VedtaksResultat } from './behandling/behandlingTyper.ts'
+import { Gjenstående, isBehandlingsutfallVedtak } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
+import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
@@ -19,7 +21,6 @@ import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
-import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 
 function AvrundetPanel({ children }: { children: React.ReactNode }) {
   return (
@@ -49,7 +50,7 @@ export function SakV2() {
   const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
-  const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall as VedtaksResultat | undefined
+  const behandlingsutfall = gjeldendeBehandling?.utfall
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
 
@@ -174,28 +175,28 @@ export function SakV2() {
       </Box>
       <StickyBunnlinje sak={sak.data} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
-      <BrevManglerModal
-        open={visBrevMangler}
-        onClose={() => setVisBrevMangler(false)}
-        gjenstående={gjenstående}
-        vedtaksResultat={vedtaksResultat}
-      />
+      {isBehandlingsutfallVedtak(behandlingsutfall) && (
+        <BrevManglerModal
+          open={visBrevMangler}
+          onClose={() => setVisBrevMangler(false)}
+          gjenstående={gjenstående}
+          vedtaksresultat={behandlingsutfall.utfall}
+        />
+      )}
       <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
-      {vedtaksResultat &&
-        vedtaksResultat !== VedtaksResultat.GOSYS &&
-        vedtaksResultat !== VedtaksResultat.BRUKER_ER_DØD && (
-          <FattVedtakModalV2
-            open={visFerdigstillModal}
-            onClose={() => setVisFerdigstillModal(false)}
-            sak={sak.data}
-            vedtaksResultat={vedtaksResultat}
-          />
-        )}
+      {isBehandlingsutfallVedtak(behandlingsutfall) && (
+        <FattVedtakModalV2
+          open={visFerdigstillModal}
+          onClose={() => setVisFerdigstillModal(false)}
+          sak={sak.data}
+          vedtaksresultat={behandlingsutfall.utfall}
+        />
+      )}
     </Box>
   )
 
   function modalVelger() {
-    if (!gjeldendeBehandling || !vedtaksResultat) {
+    if (!gjeldendeBehandling || !behandlingsutfall) {
       setVisResultatManglerModal(true)
     } else if (brevutkastIkkeFerdigstilt) {
       setVisBrevMangler(true)

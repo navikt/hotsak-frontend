@@ -1,5 +1,6 @@
 import { Alert, InfoCard, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
+
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { Tekst } from '../../../felleskomponenter/typografi'
@@ -12,28 +13,23 @@ import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { useClosePanel } from '../paneler/usePanelHooks'
 
-type FattbartVedtaksresultat = Exclude<VedtaksResultat, VedtaksResultat.GOSYS | VedtaksResultat.BRUKER_ER_DØD>
-
-export function FattVedtakModalV2({
-  open,
-  onClose,
-  sak,
-  vedtaksResultat,
-}: {
+export interface FattVedtakModalV2Props {
   open: boolean
-  onClose: () => void
+  onClose(): void
   sak: Sak
-  vedtaksResultat: FattbartVedtaksresultat
-}) {
+  vedtaksresultat: VedtaksResultat
+}
+
+export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattVedtakModalV2Props) {
   const [vedtakLoader, setVedtakLoader] = useState(false)
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
   const formRef = useRef<VedtakFormHandle>(null)
   const closePanel = useClosePanel('brevpanel')
 
-  const erAvslag = vedtaksResultat === VedtaksResultat.AVSLÅTT
-  const erDelvisInnvilget = vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
-  const erInnvilget = vedtaksResultat === VedtaksResultat.INNVILGET
+  const erAvslag = vedtaksresultat === VedtaksResultat.AVSLÅTT
+  const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
+  const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
   const brevMetaData = useBrevMetadata()
 
   const fattVedtak = async (data: VedtakFormValues) => {
@@ -51,7 +47,7 @@ export function FattVedtakModalV2({
       })
     }
     if (erInnvilget) {
-      //lukker brevpanelet hvis det er åpent og det ikke finnes et brev og det innvilges
+      // lukker brevpanelet hvis det er åpent og det ikke finnes et brev og det innvilges
       if (!brevMetaData.harBrevISak) closePanel()
     }
     setVedtakLoader(false)
@@ -69,7 +65,7 @@ export function FattVedtakModalV2({
   }
 
   const vedtakTekst = (() => {
-    switch (vedtaksResultat) {
+    switch (vedtaksresultat) {
       case VedtaksResultat.INNVILGET:
         return { verb: 'innvilge', knapp: 'Innvilg' }
       case VedtaksResultat.DELVIS_INNVILGET:
@@ -77,7 +73,7 @@ export function FattVedtakModalV2({
       case VedtaksResultat.AVSLÅTT:
         return { verb: 'avslå', knapp: 'Avslå' }
       default:
-        return assertNever(vedtaksResultat)
+        return assertNever(vedtaksresultat)
     }
   })()
 
@@ -128,7 +124,7 @@ export function FattVedtakModalV2({
               ref={formRef}
               onVedtak={fattVedtak}
               postbegrunnelsePåkrevd={erInnvilget}
-              vedtaksresultat={vedtaksResultat}
+              vedtaksresultat={vedtaksresultat}
             />
           )}
         </VStack>

@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth, søknadslinjeHøyde } from '../../GlobalStyles'
+import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
+import { useOppgave } from '../../oppgave/useOppgave.ts'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
@@ -19,8 +21,6 @@ import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
-import { useOppgave } from '../../oppgave/useOppgave.ts'
-import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 
 const BarnebrillesakContainer = styled.div`
   display: flex;
@@ -37,15 +37,18 @@ const Header = styled(HStack)`
 `
 
 const BarnebrillesakContent = memo(() => {
-  const { oppgave } = useOppgave()
-  const { sak, error } = useBarnebrillesak()
+  const { oppgave, error: oppgaveError } = useOppgave()
+  const { sak, error: sakError } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
   const { showBoundary } = useErrorBoundary()
 
-  if (error) {
-    showBoundary(error)
+  if (oppgaveError) {
+    showBoundary(oppgaveError)
+  }
+  if (sakError) {
+    showBoundary(sakError)
   }
 
   if (sak?.data.sakstype !== Sakstype.BARNEBRILLER) {
@@ -54,13 +57,13 @@ const BarnebrillesakContent = memo(() => {
     )
   }
 
-  if (!sak) return null
+  if (!oppgave || !sak) return null
 
   const { saksstatus, vedtak } = sak.data
-  const visStatusTag = !oppgave?.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
+  const visStatusTag = !oppgave.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
   return (
     <div>
-      <Header wrap={false} align={'baseline'}>
+      <Header wrap={false} align="baseline">
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack justify="center" align="center" gap="space-16">

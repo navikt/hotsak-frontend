@@ -1,5 +1,6 @@
 import { Box, Button, Heading, HelpText, HStack, InlineMessage, Link, Select, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
+
 import { Brevstatus } from '../../../brev/brevTyper.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
@@ -12,22 +13,22 @@ import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../../../oppgave/useOppgaveregler.ts'
 import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
 import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
-import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
-import { Sak } from '../../../types/types.internal.ts'
+import { type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
+import { type Sak } from '../../../types/types.internal.ts'
 import { formaterDatoKort, formaterTidsstempelLang } from '../../../utils/dato.ts'
+import { BehandlingsutfallTag } from '../BehandlingsutfallTag.tsx'
 import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakProvider.tsx'
-import { VedtaksresultatTag } from '../VedtaksresultatTag.tsx'
-import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
+import { Gjenstående, isBehandlingsutfallVedtak, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
 
-interface BehandlingProps {
+export interface BehandlingPanelProps {
   sak: Sak
   behovsmelding: Innsenderbehovsmelding
 }
 
-function BehandlingPanel({ sak }: BehandlingProps) {
+function BehandlingPanel({ sak }: BehandlingPanelProps) {
   const { setOpprettBrevKlikket } = useSakContext()
 
   const brevPanel = usePanel('brevpanel')
@@ -41,7 +42,9 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const { gjeldendeBrev: brevMetadata, harBrevISak } = useBrevMetadata()
   const { varsler, harVarsler } = useSøknadsVarsler()
 
-  const vedtaksResultat = (gjeldendeBehandling?.utfall?.utfall as VedtaksResultat) || null
+  const vedtaksresultat = isBehandlingsutfallVedtak(gjeldendeBehandling?.utfall)
+    ? gjeldendeBehandling.utfall.utfall
+    : undefined
   const gjenstående = gjeldendeBehandling?.gjenstående || []
 
   const harBrevutkast = !!gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
@@ -75,12 +78,12 @@ function BehandlingPanel({ sak }: BehandlingProps) {
           </Box>
 
           {lesevisning ? (
-            <VedtaksResultatVisning vedtaksResultat={vedtaksResultat} />
+            <VedtaksResultatVisning utfall={vedtaksresultat} />
           ) : (
-            <VedtaksResultatVelger utfall={vedtaksResultat} harBrevutkast={harBrevutkast} />
+            <VedtaksResultatVelger utfall={vedtaksresultat} harBrevutkast={harBrevutkast} />
           )}
 
-          {vedtaksResultat && (
+          {vedtaksresultat && (
             <TextContainer>
               <Box paddingInline="space-8 space-0">
                 <Heading level="2" size="xsmall" spacing>
@@ -104,17 +107,17 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                       </InlineMessage>
                     </>
                   )}
-                  {lesevisning && !harBrevISak && vedtaksResultat === VedtaksResultat.INNVILGET && (
+                  {lesevisning && !harBrevISak && vedtaksresultat === VedtaksResultat.INNVILGET && (
                     <InlineMessage status="info" size="small">
                       Saken er innvilget uten å sende brev
                     </InlineMessage>
                   )}
-                  {!lesevisning && !harBrevutkast && <UnderrettBruker vedtaksResultat={vedtaksResultat} />}
+                  {!lesevisning && !harBrevutkast && <UnderrettBruker vedtaksresultat={vedtaksresultat} />}
 
                   {kanOppretteBrev && (
                     <div>
                       <Button
-                        variant={vedtaksResultat === VedtaksResultat.INNVILGET ? 'secondary' : 'primary'}
+                        variant={vedtaksresultat === VedtaksResultat.INNVILGET ? 'secondary' : 'primary'}
                         size="small"
                         onClick={() => {
                           setBrevpanelVisibility(true)
@@ -157,7 +160,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
             </TextContainer>
           )}
           {lesevisning &&
-            (vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) &&
+            (vedtaksresultat === VedtaksResultat.INNVILGET || vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET) &&
             harVarsler && (
               <>
                 <Heading level="2" size="xsmall">
@@ -175,13 +178,13 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   )
 }
 
-function UnderrettBruker({ vedtaksResultat }: { vedtaksResultat?: VedtaksResultat }) {
-  if (!vedtaksResultat) {
+function UnderrettBruker({ vedtaksresultat }: { vedtaksresultat?: VedtaksResultat }) {
+  if (!vedtaksresultat) {
     return null
   }
 
   let tekst: string
-  switch (vedtaksResultat) {
+  switch (vedtaksresultat) {
     case VedtaksResultat.INNVILGET:
       tekst = 'Du må selv vurdere om det er behov for å sende vedtaksbrev.'
       break
@@ -206,8 +209,8 @@ function UnderrettBruker({ vedtaksResultat }: { vedtaksResultat?: VedtaksResulta
 
 export default memo(BehandlingPanel)
 
-function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: VedtaksResultat }) {
-  if (!vedtaksResultat) {
+function VedtaksResultatVisning({ utfall }: { utfall?: VedtaksResultat }) {
+  if (!utfall) {
     return null
   }
   return (
@@ -216,13 +219,13 @@ function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: Vedtaks
         Vedtaksresultat
       </Heading>
       <div>
-        <VedtaksresultatTag vedtaksResultat={vedtaksResultat} />
+        <BehandlingsutfallTag utfall={utfall} />
       </div>
     </VStack>
   )
 }
 
-function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResultat | null; harBrevutkast: boolean }) {
+function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall?: VedtaksResultat; harBrevutkast: boolean }) {
   const { lagreBehandling } = useBehandlingActions()
   const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
 

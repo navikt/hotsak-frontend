@@ -2,7 +2,6 @@ import { type EndretArtikkel, type EndretArtikkelBegrunnelse } from '../../../sa
 
 export interface EndreArtikkelData {
   endretProdukt: string
-  produktMangler: boolean
   endreBegrunnelse: EndretArtikkelBegrunnelse | ''
   endreBegrunnelseFritekst: string | ''
 }

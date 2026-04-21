@@ -15,6 +15,7 @@ import { AlternativeProdukterTabPanel } from './alternativtProdukt/AlternativePr
 import { type EndreArtikkelData, type EndreHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
 import { ManueltSøkPanel } from './endreHmsNr/ManueltSøkTabPanel.tsx'
 import { OriginaltHjelpemiddel } from './OriginaltHjelpemiddel.tsx'
+import { useHjelpemiddel } from './useHjelpemiddel.ts'
 
 interface AlternativProduktModalProps {
   åpen: boolean
@@ -67,14 +68,16 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   const form = useForm<EndreArtikkelData>({
     defaultValues: {
       endretProdukt: '',
-      produktMangler: false,
       endreBegrunnelse: '',
       endreBegrunnelseFritekst: '',
     },
   })
 
+  const endreProduktHmsnr = form.watch('endretProdukt') || ''
+  const { error: produktError } = useHjelpemiddel(endreProduktHmsnr)
+
   const onSubmit = form.handleSubmit(async (data) => {
-    if (data.produktMangler) {
+    if (produktError) {
       return
     }
     if (!produktValgt) {

@@ -9,6 +9,7 @@ import { type Produkt } from '../../../types/types.internal.ts'
 import { type EndreArtikkelData, type EndreHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
 import { ManueltSøkPanel } from './endreHmsNr/ManueltSøkTabPanel.tsx'
 import { OriginaltHjelpemiddel } from './OriginaltHjelpemiddel.tsx'
+import { useHjelpemiddel } from './useHjelpemiddel.ts'
 
 interface AlternativProduktModalProps {
   åpen: boolean
@@ -31,16 +32,18 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
   const form = useForm<EndreArtikkelData>({
     defaultValues: {
       endretProdukt: '',
-      produktMangler: false,
       endreBegrunnelse: '',
       endreBegrunnelseFritekst: '',
     },
   })
 
+  const endreProduktHmsnr = form.watch('endretProdukt') || ''
+  const { error: produktError } = useHjelpemiddel(endreProduktHmsnr)
+
   const onSubmit = form.handleSubmit(async (data) => {
     console.log('Onsubmit i EndreTilbehørModal')
 
-    if (data.produktMangler) {
+    if (produktError) {
       console.log('Produkt mangler i EndreTilbehørModal, tidlig return', data)
       return
     }

@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { Alert, Box, HStack, Loader, TextField } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Tekst } from '../../../../felleskomponenter/typografi.tsx'
@@ -7,20 +5,13 @@ import { useHjelpemiddel } from '../useHjelpemiddel.ts'
 import { ProduktCard } from './ProduktCard.tsx'
 
 export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string }) {
-  const { watch, trigger, setValue, control } = useFormContext()
+  const { watch, control } = useFormContext()
   const endreProduktHmsnr = watch('endretProdukt') || ''
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
   // Vise lagervare tag
   // Link til endret hjelpemiddel hvis kilder !== oebs
-
-  useEffect(() => {
-    if (endreProduktHmsnr.length === 6 && !isLoading && error) {
-      console.log('Setter produkt mangler produktMangler til true', error)
-      setValue('produktMangler', true)
-    }
-  }, [hjelpemiddel, error, isLoading, endreProduktHmsnr, trigger])
 
   return (
     <>

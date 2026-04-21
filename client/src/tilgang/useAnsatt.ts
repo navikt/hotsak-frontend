@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 import type { Enhet, Personnavn } from '../types/hotlibs.ts'
 
@@ -8,7 +8,7 @@ import type { Enhet, Personnavn } from '../types/hotlibs.ts'
  * @param navIdent
  */
 export function useAnsatt(navIdent?: string) {
-  return useSWR<UtvidetAnsatt>(navIdent?.length === 7 ? `/api/ansatte/${navIdent}` : null)
+  return useSWRImmutable<UtvidetAnsatt>(navIdent?.length === 7 ? `/api/ansatte/${navIdent}` : null)
 }
 
 export interface UtvidetAnsatt extends Personnavn {

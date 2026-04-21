@@ -1,4 +1,5 @@
-import useSwr, { SWRResponse } from 'swr'
+import type { SWRResponse } from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 import type { HttpError } from '../io/HttpError.ts'
 import type { Innsenderbehovsmelding } from '../types/BehovsmeldingTypes'
@@ -11,7 +12,7 @@ interface UseBehovsmeldingResponse extends Omit<SWRResponse<Innsenderbehovsmeldi
 
 export function useBehovsmelding(): UseBehovsmeldingResponse {
   const sakId = useSakId()
-  const { data: behovsmelding, ...rest } = useSwr<Innsenderbehovsmelding, HttpError>(
+  const { data: behovsmelding, ...rest } = useSWRImmutable<Innsenderbehovsmelding, HttpError>(
     sakId ? `/api/sak/${sakId}/behovsmelding` : null
   )
 

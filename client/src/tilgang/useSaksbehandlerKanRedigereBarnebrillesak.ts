@@ -8,6 +8,9 @@ export function useSaksbehandlerKanRedigereBarnebrillesak(): boolean {
   if (!oppgave) {
     return false
   }
-  // todo -> hva med AVVENTER_DOKUMENTASJON og på vent?
-  return oppgave.kategorisering.oppgavetype === Oppgavetype.BEHANDLE_SAK && oppgaveErUnderBehandlingAvInnloggetAnsatt
+  return (
+    oppgave.kategorisering.oppgavetype === Oppgavetype.BEHANDLE_SAK &&
+    oppgaveErUnderBehandlingAvInnloggetAnsatt &&
+    !oppgave.isPåVent
+  )
 }

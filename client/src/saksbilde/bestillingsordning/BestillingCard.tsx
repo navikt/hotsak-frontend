@@ -7,7 +7,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { type Oppgave } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
 import {
-  Behandling,
+  type Behandling,
   Bestillingsresultat,
   isBehandlingsutfallBestilling,
   isBehandlingsutfallHenleggelse,
@@ -23,20 +23,24 @@ import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
 
 export interface BestillingCardProps {
-  oppgave: Oppgave
+  oppgave?: Oppgave
   gjeldendeBehandling?: Behandling
-  lesevisning: boolean
   harNotatUtkast?: boolean
 }
 
 export function BestillingCard(props: BestillingCardProps) {
-  const { oppgave, gjeldendeBehandling, lesevisning, harNotatUtkast } = props
-  const { oppgaveErKlarTilBehandling, oppgaveErUnderBehandlingAvAnnenAnsatt } = useOppgaveregler(oppgave)
-  const sakActions = useSakActions()
+  const { oppgave, gjeldendeBehandling, harNotatUtkast } = props
+  const {
+    oppgaveErKlarTilBehandling,
+    oppgaveErUnderBehandlingAvInnloggetAnsatt,
+    oppgaveErUnderBehandlingAvAnnenAnsatt,
+  } = useOppgaveregler(oppgave)
   const { behovsmelding } = useBehovsmelding()
   const [ferdigstillBestillingAttempt, setFerdigstillBestillingAttempt] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
+
+  const sakActions = useSakActions()
 
   const godkjennBestilling = async (merknad?: string) => {
     await sakActions.godkjennBestilling(merknad)
@@ -55,7 +59,7 @@ export function BestillingCard(props: BestillingCardProps) {
           Henlagt
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(gjeldendeBehandling?.ferdigstiltTidspunkt)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
@@ -69,7 +73,7 @@ export function BestillingCard(props: BestillingCardProps) {
           {godkjent ? 'Godkjent' : 'Avvist'}
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(gjeldendeBehandling?.ferdigstiltTidspunkt)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
@@ -86,12 +90,12 @@ export function BestillingCard(props: BestillingCardProps) {
   if (oppgaveErUnderBehandlingAvAnnenAnsatt) {
     return (
       <VenstremenyCard heading="Saksbehandler">
-        <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(oppgave.tildeltSaksbehandler?.navn)}.</Tekst>
+        <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(oppgave?.tildeltSaksbehandler?.navn)}.</Tekst>
       </VenstremenyCard>
     )
   }
 
-  if (lesevisning) {
+  if (!oppgaveErUnderBehandlingAvInnloggetAnsatt) {
     return null
   }
 

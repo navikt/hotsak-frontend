@@ -4,10 +4,17 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
+import { type Oppgave } from '../../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
 import { useVedtak } from '../../sak/felles/useVedtak.ts'
+import {
+  type Behandling,
+  isBehandlingsutfallHenleggelse,
+  isBehandlingsutfallOverføring,
+  isBehandlingsutfallVedtak,
+} from '../../sak/v2/behandling/behandlingTyper.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
-import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
-import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
+import { OppgaveStatusType, Sak } from '../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { FattVedtakModal } from '../modaler/FattVedtakModal.tsx'
@@ -17,13 +24,19 @@ import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 
 export interface VedtakCardProps {
+  oppgave?: Oppgave
+  gjeldendeBehandling?: Behandling
   sak: Sak
   harNotatUtkast?: boolean
-  lesevisning: boolean
 }
 
-export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
-  const innloggetAnsatt = useInnloggetAnsatt()
+export function VedtakCard(props: VedtakCardProps) {
+  const { oppgave, gjeldendeBehandling, sak, harNotatUtkast = false } = props
+  const {
+    oppgaveErKlarTilBehandling,
+    oppgaveErUnderBehandlingAvInnloggetAnsatt,
+    oppgaveErUnderBehandlingAvAnnenAnsatt,
+  } = useOppgaveregler(oppgave)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys('sak_overført_gosys_v1')
@@ -31,33 +44,35 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
 
   const { lavereRangertHjelpemiddel, harEndretPostbegrunnelse } = useVedtak(sak)
 
-  if (sak.saksstatus === OppgaveStatusType.HENLAGT) {
+  if (isBehandlingsutfallHenleggelse(gjeldendeBehandling?.utfall)) {
     return (
       <VenstremenyCard heading="Henlagt">
         <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Henlagt
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(sak.saksstatusGyldigFra)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (sak.vedtak && sak.vedtak.vedtaksstatus === VedtakStatusType.INNVILGET) {
+  // NB! Kun innvilgelse hvis ikke Hotsak 1.5
+  if (isBehandlingsutfallVedtak(gjeldendeBehandling?.utfall)) {
     return (
       <VenstremenyCard heading="Vedtak">
         <Tag variant="outline" data-color="success" data-cy="tag-soknad-status" size="small">
           Innvilget
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterDato(sak.vedtak.vedtaksdato)}`}</Tekst>
+          <Tekst>{`${formaterDato(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (sak.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
+  // NB! Eneste mulige overføring er overføring til Gosys
+  if (isBehandlingsutfallOverføring(gjeldendeBehandling?.utfall)) {
     return (
       <VenstremenyCard heading="Overført">
         <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
@@ -71,6 +86,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
+  // todo -> fjern denne, bør ikke kunne åpne sak som ikke er klar til behandling
   if (sak.saksstatus === OppgaveStatusType.AVVENTER_JOURNALFORING) {
     return (
       <VenstremenyCard heading="Avventer journalføring">
@@ -79,7 +95,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
+  if (oppgaveErKlarTilBehandling) {
     return (
       <VenstremenyCard heading="Sak ikke startet">
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
@@ -87,15 +103,15 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler?.id !== innloggetAnsatt.id) {
+  if (oppgaveErUnderBehandlingAvAnnenAnsatt) {
     return (
       <VenstremenyCard heading="Saksbehandler">
-        <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}.</Tekst>
+        <Tekst>Saken er tildelt saksbehandler {formaterNavn(oppgave?.tildeltSaksbehandler?.navn)}.</Tekst>
       </VenstremenyCard>
     )
   }
 
-  if (lesevisning) {
+  if (!oppgaveErUnderBehandlingAvInnloggetAnsatt) {
     return null
   }
 

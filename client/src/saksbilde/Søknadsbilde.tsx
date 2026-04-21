@@ -10,7 +10,6 @@ import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, sidebarMinWidth } from '../GlobalStyles'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
-import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
 import { Sakstype } from '../types/types.internal'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
@@ -35,7 +34,6 @@ const SaksbildeContent = memo(() => {
   const { sak, isLoading: isSakLoading } = useSak()
   const { gjeldendeBehandling } = useBehandling()
   const { behovsmelding, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
-  const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { varsler, harVarsler } = useSøknadsVarsler()
   const { harUtkast } = useNotater(sak?.data.sakId)
 
@@ -44,10 +42,9 @@ const SaksbildeContent = memo(() => {
     return <SakLoader />
   }
 
-  if (!oppgave || !sak || !behovsmelding) return null
+  if (!sak || !behovsmelding) return null
 
-  const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
-  const levering = behovsmelding.levering
+  const isBestilling = sak.data.sakstype === Sakstype.BESTILLING
 
   return (
     <HGrid
@@ -61,13 +58,17 @@ const SaksbildeContent = memo(() => {
             <Venstremeny gap="space-24">
               <Søknadsinfo />
               {sak.data.sakstype === Sakstype.SØKNAD && (
-                <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+                <VedtakCard
+                  oppgave={oppgave}
+                  gjeldendeBehandling={gjeldendeBehandling}
+                  sak={sak.data}
+                  harNotatUtkast={harUtkast}
+                />
               )}
-              {erBestilling && (
+              {isBestilling && (
                 <BestillingCard
                   oppgave={oppgave}
                   gjeldendeBehandling={gjeldendeBehandling}
-                  lesevisning={!harSkrivetilgang}
                   harNotatUtkast={harUtkast}
                 />
               )}
@@ -96,7 +97,7 @@ const SaksbildeContent = memo(() => {
                       </Box>
                     }
                   />
-                  <Route path="/formidler" element={<Formidler levering={levering} />} />
+                  <Route path="/formidler" element={<Formidler levering={behovsmelding.levering} />} />
                   <Route path="/" element={<Navigate to="hjelpemidler" replace />} />
                 </Routes>
               </Container>

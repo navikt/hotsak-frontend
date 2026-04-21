@@ -40,24 +40,28 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
     >
       <p>Det er mulig å angre på vedtaket samme virkedag som det ble fattet.</p>
       <p>
-        Ved angring av vedtaket vil vi stoppe videre distribusjon av vedtaket til andre fagsystemer, og gjøre
-        behandlingen aktiv igjen.
+        Ved angring av vedtaket vil vi stoppe videre distribusjon av vedtaket og det eventuelle brevet til andre
+        fagsystemer, og gjøre behandlingen aktiv igjen.
       </p>
       <p>
-        Behandlingen du har gjort av oppgaven vil bli aktivert igjen, og resultatet du valgte samt det eventuelle brevet
-        du skrev vil fortsatt være der.
+        Vi oppretter også en ny aktiv oppgave knyttet til saken, og resultatet du valgte samt det eventuelle brevet du
+        skrev på den opprinnelige oppgaven vil følge med over til den nye oppgaven.
       </p>
-      <p>Etter angring vil den nye oppgaven knyttet til saken være på listen over dine oppgaver.</p>
+      <p>
+        Etter angring vil den nye oppgaven knyttet til saken være på listen over dine oppgaver. Vi navigerer deg
+        automatisk til den.
+      </p>
       {(vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) && (
         <InfoCard data-color="warning" size="small" style={{ marginBottom: '1rem' }}>
           <InfoCard.Header>
-            <InfoCard.Title>Du må fjerne SF i OeBS.</InfoCard.Title>
+            <InfoCard.Title>Du må lukke SF i OeBS.</InfoCard.Title>
           </InfoCard.Header>
           <TextContainer>
             <InfoCard.Content>
               <p>
                 Ved innvilgelse eller delvis innvilgelse oppretter vi automatisk SF i OeBS ved fatting av vedtaket. Hvis
-                du angrer vedtaket må du derfor fjerne SF'en knyttet til saken som er opprettet i OeBS.
+                du angrer vedtaket må du derfor manuelt lukke SF'en i OeBS. Eventuelle åpne ordre må annulleres og
+                anmodninger/bestillinger må slettes om mulig i dialog med leverandør og Sentral forsyningsenhet (SFE).
               </p>
             </InfoCard.Content>
           </TextContainer>

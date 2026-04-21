@@ -6,6 +6,7 @@ import { AlertError } from '../feilsider/AlertError'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { usePerson } from '../personoversikt/usePerson'
+import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakProvider } from '../sak/v2/SakProvider'
 import { SakV2 } from '../sak/v2/SakV2'
@@ -21,6 +22,7 @@ import { useSak } from './useSak'
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()
   const { sak, isLoading: isSakLoading, error: sakError } = useSak()
+  const { gjeldendeBehandling } = useBehandling()
   const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
@@ -49,6 +51,15 @@ const SaksbildeContent = memo(() => {
             <SakV2 />
           </SakbrukerinnstillingerProvider>
         </SakProvider>
+      </>
+    )
+  }
+
+  if (gjeldendeBehandling != null && gjeldendeBehandling.behandlingId.toString() !== '0') {
+    return (
+      <>
+        <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
+        <p>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</p>
       </>
     )
   }

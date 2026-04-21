@@ -1,10 +1,11 @@
 import useSwr, { KeyedMutator } from 'swr'
+import type { HttpError } from '../../../io/HttpError.ts'
 
 import { useSakId } from '../../../saksbilde/useSak.ts'
 import { BehandlingerForSak } from './behandlingTyper.ts'
 
 export interface DataResponse extends BehandlingerForSak {
-  error: any
+  error: HttpError
   isLoading: boolean
   mutate: KeyedMutator<DataResponse>
 }

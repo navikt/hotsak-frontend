@@ -1,22 +1,12 @@
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
-import { useSak } from '../saksbilde/useSak.ts'
-import { useSaksbehandlerErTildeltSak } from '../tilgang/useSaksbehandlerErTildeltSak.ts'
-import { OppgaveStatusType } from '../types/types.internal.ts'
+import { useOppgave } from '../oppgave/useOppgave.ts'
+import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 
 export function useSaksregler() {
-  const { data: sak } = useSak()?.sak ?? { data: undefined }
-  const { isOppgaveContext } = useOppgaveContext()
-
-  const saksbehandlerErTildeltSak = useSaksbehandlerErTildeltSak(sak)
-
-  const kanBehandleSak =
-    isOppgaveContext && saksbehandlerErTildeltSak && sak?.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER
-  const kanEndreHmsnr =
-    isOppgaveContext && saksbehandlerErTildeltSak && sak?.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER
-
+  const { oppgave } = useOppgave()
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   return {
-    sakId: sak?.sakId,
-    kanEndreHmsnr,
-    kanBehandleSak,
+    sakId: oppgave?.sakId,
+    kanBehandleSak: oppgaveErUnderBehandlingAvInnloggetAnsatt,
+    kanEndreHjelpemiddel: oppgaveErUnderBehandlingAvInnloggetAnsatt,
   }
 }

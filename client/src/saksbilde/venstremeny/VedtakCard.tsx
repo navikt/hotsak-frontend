@@ -44,7 +44,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
+  if (sak.vedtak && sak.vedtak.vedtaksstatus === VedtakStatusType.INNVILGET) {
     return (
       <VenstremenyCard heading="Vedtak">
         <Tag variant="outline" data-color="success" data-cy="tag-soknad-status" size="small">

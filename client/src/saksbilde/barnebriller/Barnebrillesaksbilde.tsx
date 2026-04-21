@@ -41,7 +41,7 @@ const BarnebrillesakContent = memo(() => {
   const { sak, error } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
   const { showBoundary } = useErrorBoundary()
 
   if (error) {
@@ -64,7 +64,7 @@ const BarnebrillesakContent = memo(() => {
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack justify="center" align="center" gap="space-16">
-          {visStatusTag && <StatusTag saksstatus={saksstatus} vedtaksstatus={vedtak?.status} />}
+          {visStatusTag && <StatusTag saksstatus={saksstatus} vedtaksstatus={vedtak?.vedtaksstatus} />}
           {oppgave && <OppgavePåVentTag oppgave={oppgave} variant="outline" />}
           {harSkrivetilgang && <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />}
         </HStack>

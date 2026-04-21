@@ -36,7 +36,7 @@ export function Hjelpemiddel({
   minmaxStyrt,
 }: HjelpemiddelProps) {
   const { sakId } = sak
-  const { kanEndreHmsnr } = useSaksregler()
+  const { kanEndreHjelpemiddel } = useSaksregler()
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
   const produkt = produkter.find((it) => it.hmsArtNr === hjelpemiddel.produkt.hmsArtNr)
   const {
@@ -143,7 +143,7 @@ export function Hjelpemiddel({
         <div>
           <Tekst>{hjelpemiddel.antall} stk</Tekst>
         </div>
-        {kanEndreHmsnr && (
+        {kanEndreHjelpemiddel && (
           <div>
             <Bleed marginBlock="space-4 space-0">
               <Button

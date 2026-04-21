@@ -6,6 +6,7 @@ import {
   type Hendelse,
   OppgaveStatusType,
   type Sak,
+  SaksstatusKategori,
   Sakstype,
   StegType,
 } from '../../types/types.internal.ts'
@@ -62,6 +63,7 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
     sakstype,
     saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     saksstatusGyldigFra: opprettet,
+    statuskategori: SaksstatusKategori.ÅPEN,
     opprettet,
     søknadGjelder: behovsmeldingGjelder,
     bruker: {
@@ -117,6 +119,7 @@ export function lagBarnebrillesak(sakId: string): InsertBarnebrillesak {
     sakstype: Sakstype.BARNEBRILLER,
     saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     saksstatusGyldigFra: opprettet,
+    statuskategori: SaksstatusKategori.ÅPEN,
     opprettet,
     søknadGjelder: 'Briller til barn',
     bruker: {

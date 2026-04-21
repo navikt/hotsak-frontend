@@ -24,7 +24,7 @@ export function FrittStåendeTilbehørV2({
   tilbehør: Tilbehørtype[]
   produkter: Produkttype[]
 }) {
-  const { kanEndreHmsnr } = useSaksregler()
+  const { kanEndreHjelpemiddel } = useSaksregler()
   return (
     <VStack gap="space-16">
       <CompactExpandableCard tittel={'Tilbehør uten hovedhjelpemiddel'}>
@@ -38,7 +38,7 @@ export function FrittStåendeTilbehørV2({
                 sakId={sakId}
                 produkt={produkt}
                 frittståendeTilbehør={true}
-                kanEndreHmsnr={kanEndreHmsnr}
+                kanEndreHmsnr={kanEndreHjelpemiddel}
               />
             )
           })}
@@ -57,13 +57,13 @@ export function TilbehørlisteV2({
   tilbehør: Tilbehørtype[]
   produkter: Produkttype[]
 }) {
-  const { kanEndreHmsnr } = useSaksregler()
+  const { kanEndreHjelpemiddel } = useSaksregler()
 
   return (
     <VStack gap="space-12" className={classes.tilbehørListe}>
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
-        return <Tilbehør key={idx} sakId={sakId} tilbehør={t} produkt={produkt} kanEndreHmsnr={kanEndreHmsnr} />
+        return <Tilbehør key={idx} sakId={sakId} tilbehør={t} produkt={produkt} kanEndreHmsnr={kanEndreHjelpemiddel} />
       })}
     </VStack>
   )
@@ -164,6 +164,8 @@ function Tilbehør({
   )
 }
 
+// fixme
+// eslint-disable-next-line react-refresh/only-export-components
 function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
   return (
     <>

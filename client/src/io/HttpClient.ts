@@ -12,7 +12,7 @@ export interface RequestOptions {
 async function request<ResponseBody = unknown>(
   method: HttpMethod,
   url: string,
-  body?: any,
+  body?: unknown,
   options: RequestOptions = {}
 ): Promise<ResponseBody> {
   const { accept: Accept = 'application/json', versjon } = options

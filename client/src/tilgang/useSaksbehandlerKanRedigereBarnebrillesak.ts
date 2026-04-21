@@ -1,18 +1,13 @@
-import { Barnebrillesak, OppgaveStatusType, SakResponse, StegType } from '../types/types.internal'
-import { useSaksbehandlerErTildeltSak } from './useSaksbehandlerErTildeltSak'
-import { useSaksbehandlerHarSkrivetilgang } from './useSaksbehandlerHarSkrivetilgang'
+import { Oppgavetype } from '../oppgave/oppgaveTypes.ts'
+import { useOppgave } from '../oppgave/useOppgave.ts'
+import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 
-export function useSaksbehandlerKanRedigereBarnebrillesak(sakResponse?: SakResponse<Barnebrillesak>): boolean {
-  const sak = sakResponse?.data
-  const tilganger = sakResponse?.tilganger
-  const saksbehandlerErTildeltSak = useSaksbehandlerErTildeltSak(sak)
-  const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(tilganger)
-
-  return (
-    harSkrivetilgang &&
-    saksbehandlerErTildeltSak &&
-    sak?.steg !== StegType.GODKJENNE &&
-    sak?.steg !== StegType.FERDIG_BEHANDLET &&
-    sak?.saksstatus !== OppgaveStatusType.AVVENTER_DOKUMENTASJON
-  )
+export function useSaksbehandlerKanRedigereBarnebrillesak(): boolean {
+  const { oppgave } = useOppgave()
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  if (!oppgave) {
+    return false
+  }
+  // todo -> hva med AVVENTER_DOKUMENTASJON og på vent?
+  return oppgave.kategorisering.oppgavetype === Oppgavetype.BEHANDLE_SAK && oppgaveErUnderBehandlingAvInnloggetAnsatt
 }

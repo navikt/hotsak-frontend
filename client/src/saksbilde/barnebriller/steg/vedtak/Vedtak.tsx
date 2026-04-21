@@ -19,7 +19,7 @@ import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.t
 export function Vedtak() {
   const sakId = useSakId()
   const { sak, mutate } = useBarnebrillesak()
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
   const samletVurdering = useSamletVurdering(sak?.data)
   const { setStep } = useManuellSaksbehandlingContext()
   const { isLoading: henterSaksdokumenter } = useSaksdokumenter(

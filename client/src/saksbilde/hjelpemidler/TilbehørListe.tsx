@@ -68,7 +68,7 @@ function Tilbehør({
   produkt?: Produkttype
   frittståendeTilbehør?: boolean
 }) {
-  const { kanEndreHmsnr } = useSaksregler()
+  const { kanEndreHjelpemiddel } = useSaksregler()
   const harOpplysninger = tilbehør.opplysninger && tilbehør.opplysninger.length > 0
   const harSaksbehandlingvarsel = tilbehør.saksbehandlingvarsel && tilbehør.saksbehandlingvarsel.length > 0
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
@@ -120,7 +120,7 @@ function Tilbehør({
         <div style={{ alignSelf: 'start' }}>
           <Tekst>{tilbehør.antall} stk</Tekst>
         </div>
-        {kanEndreHmsnr && tilbehør.tilbehørId && (
+        {kanEndreHjelpemiddel && tilbehør.tilbehørId && (
           <div>
             <Button
               variant="tertiary"
@@ -147,6 +147,8 @@ function Tilbehør({
   )
 }
 
+// fixme
+// eslint-disable-next-line react-refresh/only-export-components
 function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
   return (
     <>

@@ -26,6 +26,7 @@ export interface SakBase {
   sakstype: Sakstype
   saksstatus: OppgaveStatusType
   saksstatusGyldigFra: string
+  statuskategori: SaksstatusKategori
   opprettet: string
   søknadGjelder: string
   bruker: Bruker
@@ -412,10 +413,10 @@ export interface HjelpemiddelArtikkel {
 
 export interface VedtakType {
   vedtaksdato: string
-  status: VedtakStatusType // fixme -> vedtaksstatus
-  saksbehandlerRef: string // fixme -> saksbehandlerId
+  vedtaksstatus: VedtakStatusType
+  saksbehandlerId: string
   saksbehandlerNavn: string
-  soknadUuid: string // fixme -> søknadId
+  søknadId: string
   vedtaksgrunnlag?: VedtaksgrunnlagBase[]
 }
 

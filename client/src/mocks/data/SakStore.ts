@@ -417,13 +417,13 @@ export class SakStore extends Dexie {
           saksstatus: OppgaveStatusType.VEDTAK_FATTET,
           vedtak: {
             vedtaksdato: nå,
-            status:
+            vedtaksstatus:
               (sak as Barnebrillesak)?.vilkårsvurdering?.resultat === 'JA'
                 ? VedtakStatusType.INNVILGET
                 : VedtakStatusType.AVSLÅTT,
             saksbehandlerNavn: sak.saksbehandler?.navn || '',
-            saksbehandlerRef: sak.saksbehandler?.id || '',
-            soknadUuid: '',
+            saksbehandlerId: sak.saksbehandler?.id || '',
+            søknadId: '',
           },
           totrinnskontroll,
         })
@@ -527,10 +527,10 @@ export class SakStore extends Dexie {
           saksstatus: status,
           vedtak: {
             vedtaksdato: nåIso(),
-            status: vedtakStatus || VedtakStatusType.INNVILGET,
+            vedtaksstatus: vedtakStatus || VedtakStatusType.INNVILGET,
             saksbehandlerNavn: sak.saksbehandler?.navn || '',
-            saksbehandlerRef: sak.saksbehandler?.id || '',
-            soknadUuid: '',
+            saksbehandlerId: sak.saksbehandler?.id || '',
+            søknadId: '',
           },
         })
       })
@@ -556,7 +556,7 @@ export class SakStore extends Dexie {
         mottattTidspunkt: sak.opprettet,
         gjelder: sak.søknadGjelder,
         behandletAv: sak.saksbehandler?.navn,
-        behandlingsutfall: sak.vedtak?.status, // fixme
+        behandlingsutfall: sak.vedtak?.vedtaksstatus, // fixme
         behandlingsutfallTidspunkt: sak.vedtak?.vedtaksdato, // fixme
         fagsaksystem: 'HOTSAK',
       })),

@@ -40,7 +40,7 @@ export function HjelpemiddelV2({
 }: HjelpemiddelV2Props) {
   const produkt = produkter.find((p) => p.hmsArtNr === hjelpemiddel.produkt.hmsArtNr)
 
-  const { kanEndreHmsnr } = useSaksregler()
+  const { kanEndreHjelpemiddel } = useSaksregler()
   const {
     endreHjelpemiddel,
     nåværendeHmsnr,
@@ -113,7 +113,7 @@ export function HjelpemiddelV2({
                     Har alternativliste
                   </Tag>
                 )}
-                {kanEndreHmsnr && (
+                {kanEndreHjelpemiddel && (
                   <div>
                     <Button
                       variant="tertiary"

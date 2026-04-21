@@ -73,7 +73,7 @@ const serialiserNodeTilHtml = (node: Descendant): string => {
     case 'a': {
       const url = escapeHtml(elementNode.url ?? '')
       const linkText = children || url
-      return `<a href="${url}" title="${linkText}">${children}</a>`
+      return `<a href="${url}" title="${linkText}" alt="${linkText}">${children}</a>`
     }
     case 'ul':
       return `<ul>${children}</ul>\n`

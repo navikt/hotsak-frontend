@@ -1,0 +1,207 @@
+{
+  "behovsmeldingId": "0ff31793-8dc3-4f74-aac6-f490f69ac4b3",
+  "beskrivelse": "behovsmelding_3",
+  "behovsmelding": {
+    "saksbehandlingvarsel": [],
+    "bruker": {
+      "fnr": "01056605014",
+      "navn": { "fornavn": "Ola", "mellomnavn": null, "etternavn": "Nordmann" },
+      "signaturtype": "FULLMAKT",
+      "telefon": "12121212",
+      "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
+      "kommunenummer": "4649",
+      "brukernummer": null,
+      "kilde": "PDL",
+      "legacyopplysninger": []
+    },
+    "brukersituasjon": {
+      "vilkår": [
+        {
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          }
+        },
+        {
+          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+          "tekst": {
+            "nb": "Ola Nordmann vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Ola Nordmann vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+          }
+        },
+        {
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",
+          "tekst": {
+            "nb": "Ola Nordmann sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Ola Nordmann behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+          }
+        }
+      ],
+      "funksjonsnedsettelser": ["BEVEGELSE"],
+      "funksjonsbeskrivelse": {
+        "innbyggersVarigeFunksjonsnedsettelse": "ANNEN_DIAGNOSE",
+        "diagnose": "Prolaps i ryggen",
+        "beskrivelse": "Prolapsen i ryggen har han hatt i mange år. Han er uføretrygdet p.g.a. den. Han kan bare gå korte avstander. Og må da hvile på veien. Det er langt fra der han bor og til sentrum. Nå kommer han seg ikke ned til sentrum på en trygg måte. Han får ikke handlet og treffer lite folk. "
+      }
+    },
+    "hjelpemidler": {
+      "hjelpemidler": [],
+      "tilbehør": [
+        {
+          "tilbehørId": "676caf3b-2901-4c6a-be07-5d68566be4a9",
+          "hmsArtNr": "203051",
+          "navn": "Presenning ers Elite2",
+          "iso6": "122393",
+          "antall": 3,
+          "begrunnelse": null,
+          "fritakFraBegrunnelseÅrsak": "ER_SELVFORKLARENDE_TILBEHØR",
+          "opplysninger": [
+            {
+              "key": {
+                "id": "TILBEHØR_SKAL_BRUKES_MED",
+                "versjon": 1
+              },
+              "ledetekst": {
+                "nb": "Skal brukes med",
+                "nn": "Skal brukast med"
+              },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": {
+                    "nb": "Et allerede utlånt hjelpemiddel",
+                    "nn": "Eit allereie utlånt hjelpemiddel"
+                  },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "saksbehandlingvarsel": []
+        },
+        {
+          "tilbehørId": "d409dbae-6c48-46a5-839a-31f10970ba12",
+          "hmsArtNr": "267913",
+          "navn": "Ispigg krykke albue Classic/Classic støtdemper krone oppfell",
+          "iso6": "120390",
+          "antall": 7,
+          "begrunnelse": null,
+          "fritakFraBegrunnelseÅrsak": "ER_PÅ_BESTILLINGSORDNING",
+          "opplysninger": [
+            {
+              "key": {
+                "id": "TILBEHØR_SKAL_BRUKES_MED",
+                "versjon": 1
+              },
+              "ledetekst": {
+                "nb": "Skal brukes med",
+                "nn": "Skal brukast med"
+              },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": {
+                    "nb": "Et allerede utlånt hjelpemiddel",
+                    "nn": "Eit allereie utlånt hjelpemiddel"
+                  },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "saksbehandlingvarsel": [
+            {
+              "tekst": {
+                "nb": "Tilbehøret er ikke på avtale med Nav. Saksbehandler skal vurdere om det er behov for mer informasjon.",
+                "nn": "Tilbehøyret er ikkje på avtale med Nav. Saksbehandlar skal vurdera om det er behov for meir informasjon."
+              },
+              "type": "INFO"
+            }
+          ]
+        }
+      ],
+      "totaltAntall": 3
+    },
+    "levering": {
+      "hjelpemiddelformidler": {
+        "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+        "arbeidssted": "Østby Dans og Fysioterapi",
+        "stilling": "CEO",
+        "telefon": "11223344",
+        "adresse": { "adresse": "Svanseveien 3", "postnummer": "6770", "poststed": "NORDFJORDEID" },
+        "epost": "kvadratisk.faktura@tull.kommune.no",
+        "treffesEnklest": "På telefon fra hjemmekontor.",
+        "kommunenavn": "STAD",
+        "kommunenummer": "4649"
+      },
+      "oppfølgingsansvarlig": "ANNEN_OPPFØLGINGSANSVARLIG",
+      "annenOppfølgingsansvarlig": {
+        "navn": { "fornavn": "Koffee", "mellomnavn": null, "etternavn": "Annen" },
+        "arbeidssted": "ISS",
+        "stilling": "Astronaut",
+        "telefon": "55 55 55 55",
+        "adresse": { "adresse": "Kaffegata 1", "postnummer": "0001", "poststed": "Oslo" },
+        "epost": "e@post.com"
+      },
+      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
+      "annenUtleveringsadresse": { "adresse": "Andre veien 13", "postnummer": "0001", "poststed": "Oslo" },
+      "annenUtleveringskommune": { "navn": "Bømlo", "nummer": "1337" },
+      "annenUtleveringsbydel": null,
+      "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
+      "annenKontaktperson": null,
+      "utleveringMerknad": "Dette er en merknad om utlevering fra formidler som skal med på 5.17",
+      "hast": null,
+      "automatiskUtledetTilleggsinfo": ["ALLE_HJELPEMIDLER_ER_UTLEVERT"]
+    },
+    "innsender": {
+      "rolle": "FORMIDLER",
+      "erKommunaltAnsatt": true,
+      "kurs": [{ "id": 4, "title": "Bestilling", "kilde": "kunnskapsbanken" }],
+      "sjekketUtlånsoversiktForKategorier": []
+    },
+    "vedlegg": [],
+    "metadata": {
+      "bestillingsordningsjekk": {
+        "kanVæreBestilling": false,
+        "kriterier": {
+          "alleHovedProdukterPåBestillingsOrdning": false,
+          "alleTilbehørPåBestillingsOrdning": false,
+          "brukerHarHjelpemidlerFraFør": null,
+          "brukerHarInfotrygdVedtakFraFør": null,
+          "brukerHarHotsakVedtakFraFør": true,
+          "leveringTilFolkeregistrertAdresse": true,
+          "brukersAdresseErSatt": true,
+          "brukerBorIkkeIUtlandet": true,
+          "brukerErIkkeSkjermetPerson": true,
+          "inneholderIkkeFritekst": true,
+          "kildeErPdl": true,
+          "harIkkeForMangeOrdrelinjer": true,
+          "ingenProdukterErAlleredeUtlevert": true,
+          "brukerErTilknyttetBydelIOslo": null,
+          "harIngenBytter": true,
+          "brukerHarAdresseIOeBS": false
+        },
+        "metaInfo": {
+          "hovedProdukter": ["331325"],
+          "hovedProdukterIkkePåBestillingsordning": ["331325"],
+          "tilbehør": ["018455", "023637"],
+          "tilbehørIkkePåBestillingsordning": ["018455", "023637"]
+        },
+        "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d"
+      }
+    },
+    "id": "02b6ee2a-59fe-481f-ada5-c583726bfd1b",
+    "type": "SØKNAD",
+    "innsendingsdato": "2025-11-14",
+    "innsendingstidspunkt": "2025-11-14T11:44:22.306290318Z",
+    "skjemaversjon": 2,
+    "hjmBrukersFnr": "01056605014",
+    "prioritet": "NORMAL"
+  },
+  "behovsmeldingGjelder": "Absolutt bare tilbehør",
+  "fnrBruker": "01056605014",
+  "fnrInnsender": "13820599335",
+  "opprettet": "2025-11-04T12:03:23.053Z",
+  "sakId": "69"
+}

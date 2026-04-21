@@ -29,7 +29,7 @@ export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {
                   {artikkel.hmsArtNr}
                 </BodyShort>
               ) : (
-                <BodyShort size="small">artikkel.hmsArtNr</BodyShort>
+                <BodyShort size="small">{artikkel.hmsArtNr}</BodyShort>
               )}
               <BodyShort size="small" className={classes.text}>
                 {artikkel.artikkelnavn}

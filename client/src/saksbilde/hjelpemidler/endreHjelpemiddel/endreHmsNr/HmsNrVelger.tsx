@@ -17,6 +17,7 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
 
   useEffect(() => {
     if (endreProduktHmsnr.length === 6 && !isLoading && error) {
+      console.log('Setter produkt mangler produktMangler til true', error)
       setValue('produktMangler', true)
     }
   }, [hjelpemiddel, error, isLoading, endreProduktHmsnr, trigger])

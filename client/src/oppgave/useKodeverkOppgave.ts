@@ -1,18 +1,18 @@
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
+import type { SetRequired } from 'type-fest'
 
 import { createUrl } from '../io/HttpClient.ts'
 import type { KodeverkGjelder, OppgaveKodeverk } from './oppgaveTypes.ts'
-import type { SetRequired } from 'type-fest'
 
 export function useKodeverkGjelder(behandlingstype?: string): ReadonlyArray<KodeverkGjelder> {
   const url = createUrl('/api/kodeverk/gjelder', { behandlingstype })
-  const { data } = useSWR<KodeverkGjelder[]>(url)
+  const { data } = useSWRImmutable<KodeverkGjelder[]>(url)
   return data ?? noData
 }
 
 export function useKodeverkOppgavetype(): ReadonlyArray<OppgaveKodeverk> {
   const url = createUrl('/api/kodeverk/oppgavetype')
-  const { data } = useSWR<OppgaveKodeverk[]>(url)
+  const { data } = useSWRImmutable<OppgaveKodeverk[]>(url)
   return data ?? noData
 }
 

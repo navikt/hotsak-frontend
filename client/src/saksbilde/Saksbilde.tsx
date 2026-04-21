@@ -4,51 +4,43 @@ import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AlertError } from '../feilsider/AlertError'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { usePerson } from '../personoversikt/usePerson'
-import { useBehandling } from '../sak/v2/behandling/useBehandling'
-import { SakProvider } from '../sak/v2/SakProvider'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
+import { SakProvider } from '../sak/v2/SakProvider'
 import { SakV2 } from '../sak/v2/SakV2'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde'
-import { OppgaveStatusType, SakBase, Sakstype } from '../types/types.internal'
+import { type SakBase, Sakstype } from '../types/types.internal'
 import { Barnebrillesaksbilde } from './barnebriller/Barnebrillesaksbilde'
 import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
 import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()
-  const { sak, isLoading, error } = useSak()
+  const { sak, isLoading: isSakLoading, error: sakError } = useSak()
   const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
-  const { gjeldendeBehandling } = useBehandling()
   const { showBoundary } = useErrorBoundary()
-  const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
+  const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
 
-  const sakErFerdigBehandletIHotsakClassic =
-    !gjeldendeBehandling &&
-    sak?.data.saksstatus &&
-    [OppgaveStatusType.VEDTAK_FATTET, OppgaveStatusType.SENDT_GOSYS].includes(sak?.data.saksstatus)
-
-  if (isLoading || personInfoLoading || isBehovsmeldingLoading) return <SakLoader />
+  if (isSakLoading || isPersonLoading || isBehovsmeldingLoading) return <SakLoader />
 
   if (personInfoError) {
     return <PersonFeilmelding personError={personInfoError} />
   }
 
-  if (error) {
-    showBoundary(error)
+  if (sakError) {
+    showBoundary(sakError)
   }
-
   if (behovsmeldingError) {
     showBoundary(behovsmeldingError)
   }
 
   if (!sak) return <div>Fant ikke sak</div>
 
-  if (nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD && !sakErFerdigBehandletIHotsakClassic) {
+  if (nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD) {
     return (
       <>
         <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
@@ -64,7 +56,7 @@ const SaksbildeContent = memo(() => {
   return (
     <>
       <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
-      <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
+      <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
       <SakstypeSwitch sak={sak.data} />
     </>
   )

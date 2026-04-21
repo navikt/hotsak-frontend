@@ -233,7 +233,7 @@ export class SakStore extends Dexie {
         ...gjeldendeBehandling,
         utfallLåst: [UtfallLåst.FERDIGSTILT],
         ferdigstiltTidspunkt: nåIso(),
-        utførtAv: saksbehandler,
+        utførtAv: saksbehandler.id,
       })
     }
   }

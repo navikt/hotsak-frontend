@@ -4,8 +4,15 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
-import { AvvisBestilling, OppgaveStatusType, Sak } from '../../types/types.internal'
+import { type Oppgave } from '../../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
+import {
+  Behandling,
+  Bestillingsresultat,
+  isBehandlingsutfallBestilling,
+  isBehandlingsutfallHenleggelse,
+} from '../../sak/v2/behandling/behandlingTyper.ts'
+import { AvvisBestilling } from '../../types/types.internal'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { useBehovsmelding } from '../useBehovsmelding.ts'
@@ -16,13 +23,15 @@ import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
 
 export interface BestillingCardProps {
-  bestilling: Sak
+  oppgave: Oppgave
+  gjeldendeBehandling?: Behandling
   lesevisning: boolean
   harNotatUtkast?: boolean
 }
 
-export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: BestillingCardProps) {
-  const innloggetAnsatt = useInnloggetAnsatt()
+export function BestillingCard(props: BestillingCardProps) {
+  const { oppgave, gjeldendeBehandling, lesevisning, harNotatUtkast } = props
+  const { oppgaveErKlarTilBehandling, oppgaveErUnderBehandlingAvAnnenAnsatt } = useOppgaveregler(oppgave)
   const sakActions = useSakActions()
   const { behovsmelding } = useBehovsmelding()
   const [ferdigstillBestillingAttempt, setFerdigstillBestillingAttempt] = useState(false)
@@ -39,46 +48,34 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     setVisAvvisModal(false)
   }
 
-  if (bestilling.saksstatus === OppgaveStatusType.HENLAGT) {
+  if (isBehandlingsutfallHenleggelse(gjeldendeBehandling?.utfall)) {
     return (
       <VenstremenyCard heading="Henlagt">
         <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Henlagt
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(bestilling.saksstatusGyldigFra)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(gjeldendeBehandling?.ferdigstiltTidspunkt)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (bestilling.saksstatus === OppgaveStatusType.FERDIGSTILT) {
+  if (isBehandlingsutfallBestilling(gjeldendeBehandling?.utfall)) {
+    const godkjent = gjeldendeBehandling.utfall.utfall === Bestillingsresultat.GODKJENT
     return (
       <VenstremenyCard>
-        <Tag data-color="success" data-cy="tag-soknad-status" variant="outline" size="small">
-          Ferdigstilt
+        <Tag data-color={godkjent ? 'success' : 'danger'} data-cy="tag-soknad-status" variant="outline" size="small">
+          {godkjent ? 'Godkjent' : 'Avvist'}
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(bestilling.saksstatusGyldigFra)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(gjeldendeBehandling?.ferdigstiltTidspunkt)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (bestilling.saksstatus === OppgaveStatusType.AVVIST) {
-    return (
-      <VenstremenyCard>
-        <Tag data-color="danger" data-cy="tag-soknad-status" variant="outline" size="small">
-          Avvist
-        </Tag>
-        <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(bestilling.saksstatusGyldigFra)}`}</Tekst>
-        </StatusTekst>
-      </VenstremenyCard>
-    )
-  }
-
-  if (bestilling.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
+  if (oppgaveErKlarTilBehandling) {
     return (
       <VenstremenyCard heading="Bestilling ikke startet">
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda.</Tekst>
@@ -86,13 +83,10 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     )
   }
 
-  if (
-    bestilling.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    bestilling.saksbehandler?.id !== innloggetAnsatt.id
-  ) {
+  if (oppgaveErUnderBehandlingAvAnnenAnsatt) {
     return (
       <VenstremenyCard heading="Saksbehandler">
-        <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(bestilling.saksbehandler?.navn || '')}.</Tekst>
+        <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(oppgave.tildeltSaksbehandler?.navn)}.</Tekst>
       </VenstremenyCard>
     )
   }

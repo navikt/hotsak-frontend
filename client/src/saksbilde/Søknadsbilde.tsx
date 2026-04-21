@@ -8,6 +8,8 @@ import styled from 'styled-components'
 import { AlertError } from '../feilsider/AlertError'
 import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, sidebarMinWidth } from '../GlobalStyles'
+import { useOppgave } from '../oppgave/useOppgave.ts'
+import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
 import { Sakstype } from '../types/types.internal'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
@@ -26,8 +28,12 @@ import { Søknadsinfo } from './venstremeny/Søknadsinfo'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 
+// fixme
+// eslint-disable-next-line react-refresh/only-export-components
 const SaksbildeContent = memo(() => {
+  const { oppgave } = useOppgave()
   const { sak, isLoading: isSakLoading } = useSak()
+  const { gjeldendeBehandling } = useBehandling()
   const { behovsmelding, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { varsler, harVarsler } = useSøknadsVarsler()
@@ -38,7 +44,7 @@ const SaksbildeContent = memo(() => {
     return <SakLoader />
   }
 
-  if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
+  if (!oppgave || !sak || !behovsmelding) return null
 
   const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
   const levering = behovsmelding.levering
@@ -58,7 +64,12 @@ const SaksbildeContent = memo(() => {
                 <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
               )}
               {erBestilling && (
-                <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+                <BestillingCard
+                  oppgave={oppgave}
+                  gjeldendeBehandling={gjeldendeBehandling}
+                  lesevisning={!harSkrivetilgang}
+                  harNotatUtkast={harUtkast}
+                />
               )}
             </Venstremeny>
           </ScrollContainer>

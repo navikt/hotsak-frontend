@@ -41,23 +41,17 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
   const { error: produktError } = useHjelpemiddel(endreProduktHmsnr)
 
   const onSubmit = form.handleSubmit(async (data) => {
-    console.log('Onsubmit i EndreTilbehørModal')
-
     if (produktError) {
-      console.log('Produkt mangler i EndreTilbehørModal, tidlig return', data)
       return
     }
     if (!produktValgt) {
-      console.log('Produkt ikke valgt i EndreTilbehørModal, setter produktValgt til true')
       setProduktValgt(true)
     } else {
-      console.log('Produkt valgt i EndreTilbehørModal, submitter form', data)
       logSkjemaFullført({
         komponent: 'EndreHjelpemiddelModal',
         valgtAlternativ: data.endretProdukt,
       })
       await handleSubmit(data)
-      console.log('Submit fullført i EndreTilbehørModal, resetter form og lukker modal')
       setProduktValgt(false)
     }
   })

@@ -1,11 +1,13 @@
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Button, Heading, HStack, Radio, RadioGroup, Select, Skeleton, VStack } from '@navikt/ds-react'
 import { memo, useCallback, useEffect, useState } from 'react'
+import { mutate } from 'swr'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 import { Tekst } from '../../../felleskomponenter/typografi'
+import { useOppgaveContext } from '../../../oppgave/OppgaveContext.ts'
 import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
@@ -23,6 +25,7 @@ export interface SendBrevProps {
 }
 
 export const SendBrevPanel = memo((props: SendBrevProps) => {
+  const { oppgaveId } = useOppgaveContext()
   const { sakId, lesevisning } = props
   const { data, mutate: hentBrevtekst } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
   const brevActions = useBrevActions()
@@ -112,8 +115,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     setSubmitAttempt(false)
     setFritekst('')
     showSuccessToast('Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.')
-    hentBarnebrillesak()
-    await hentSaksdokumenter()
+    await Promise.all([hentBarnebrillesak(), mutate(`/api/oppgaver/${oppgaveId}`), hentSaksdokumenter()])
 
     setTimeout(() => {
       hentBarnebrillesak()

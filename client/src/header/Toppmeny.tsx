@@ -5,6 +5,7 @@ import { useLocation } from 'react-router'
 import { Link, type To, useNavigate } from 'react-router-dom'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { HurtigtasterModal } from '../hotkeys/HurtigtasterModal.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
 import { useUmami } from '../sporing/useUmami.ts'
@@ -16,6 +17,7 @@ import classes from './Toppmeny.module.css'
 import { useModia } from './useModia.ts'
 import { useDarkmode } from './useDarkmode.ts'
 import { useHotkeys } from '../hotkeys/useHotkeys.ts'
+import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
@@ -26,7 +28,8 @@ export function Toppmeny() {
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
-  useHotkeys()
+  const hurtigtaster = useHurtigtasterModal()
+  useHotkeys({ visHurtigtaster: hurtigtaster.åpne })
 
   const handleSearch = (value: string) => {
     const fnrEllerSakId = fjernMellomrom(value)
@@ -39,112 +42,119 @@ export function Toppmeny() {
   }
 
   return (
-    <InternalHeader className={classes.root}>
-      <InternalHeader.Title as="a" href="/" className={classes.title}>
-        {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
-      </InternalHeader.Title>
-      <HStack justify="space-between" wrap={false} style={{ flex: 1 }}>
-        <HStack wrap={false}>
-          <ToppmenyLinkButton to="/mine">Mine oppgaver</ToppmenyLinkButton>
-          <ToppmenyLinkButton to="/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
-          <ToppmenyLinkButton to="/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
+    <>
+      <InternalHeader className={classes.root}>
+        <InternalHeader.Title as="a" href="/" className={classes.title}>
+          {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
+        </InternalHeader.Title>
+        <HStack justify="space-between" wrap={false} style={{ flex: 1 }}>
+          <HStack wrap={false}>
+            <ToppmenyLinkButton to="/mine">Mine oppgaver</ToppmenyLinkButton>
+            <ToppmenyLinkButton to="/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
+            <ToppmenyLinkButton to="/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
+          </HStack>
+          <Søk onSearch={handleSearch} />
         </HStack>
-        <Søk onSearch={handleSearch} />
-      </HStack>
-      <ActionMenu>
-        <ActionMenu.Trigger>
-          <InternalHeader.Button>
-            <MenuGridIcon style={{ fontSize: '1.5rem' }} title="Systemer og oppslagsverk" />
-          </InternalHeader.Button>
-        </ActionMenu.Trigger>
-        <ActionMenu.Content>
-          <ActionMenu.Group label="Systemer og oppslagsverk">
-            <ActionMenu.Item
-              as="a"
-              href={window.appSettings.GOSYS_OPPGAVEBEHANDLING_URL}
-              target="gosys"
-              shortcut="Alt + P"
-            >
-              Gosys
-            </ActionMenu.Item>
-            <ActionMenu.Item
-              shortcut="Alt + M"
-              onSelect={async () => {
-                await åpneModia()
-              }}
-            >
-              Modia
-            </ActionMenu.Item>
-          </ActionMenu.Group>
-          <ActionMenu.Divider />
-          <ActionMenu.Group label="Utseende">
-            <ActionMenu.Item
-              icon={<ThemeIcon />}
-              as="a"
-              href="/"
-              onClick={async (e: React.MouseEvent) => {
-                e.preventDefault()
-                logTemaByttet({
-                  tekst: 'toppmeny-tema-bytte',
-                  temaByttetTil: darkmodeLabel(!darkmode),
-                })
-
-                setDarkmode(!darkmode)
-                // gi umami litt tid til å sende før reload
-                await new Promise((resolve) => setTimeout(resolve, 150))
-                window.location.href = '/'
-              }}
-            >
-              {`Endre til ${darkmodeLabel(!darkmode)}`}
-            </ActionMenu.Item>
-          </ActionMenu.Group>
-          <Eksperiment>
-            <ActionMenu.Divider />
-            <ActionMenu.Group label="Eksperimenter">
+        <ActionMenu>
+          <ActionMenu.Trigger>
+            <InternalHeader.Button>
+              <MenuGridIcon style={{ fontSize: '1.5rem' }} title="Systemer og oppslagsverk" />
+            </InternalHeader.Button>
+          </ActionMenu.Trigger>
+          <ActionMenu.Content>
+            <ActionMenu.Group label="Systemer og oppslagsverk">
               <ActionMenu.Item
                 as="a"
-                href="/"
-                onClick={() => {
-                  setNyttSaksbilde(!nyttSaksbilde)
+                href={window.appSettings.GOSYS_OPPGAVEBEHANDLING_URL}
+                target="gosys"
+                shortcut="Alt + P"
+              >
+                Gosys
+              </ActionMenu.Item>
+              <ActionMenu.Item
+                shortcut="Alt + M"
+                onSelect={async () => {
+                  await åpneModia()
                 }}
               >
-                {nyttSaksbilde ? 'Gamle Hotsak' : 'Hotsak 1.5'}
+                Modia
               </ActionMenu.Item>
             </ActionMenu.Group>
-          </Eksperiment>
-        </ActionMenu.Content>
-        <EndringsloggMenu />
-      </ActionMenu>
-      <ActionMenu>
-        <ActionMenu.Trigger>
-          <InternalHeader.UserButton
-            name={innloggetAnsatt.navn}
-            description={valgtEnhet?.navn}
-            className={classes.userButton}
-          />
-        </ActionMenu.Trigger>
-        <ActionMenu.Content>
-          <ActionMenu.Group label="Andre enheter">
-            {innloggetAnsatt.enheter
-              .filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
-              .map((enhet) => (
+            <ActionMenu.Divider />
+            <ActionMenu.Group label="Utseende">
+              <ActionMenu.Item
+                icon={<ThemeIcon />}
+                as="a"
+                href="/"
+                onClick={async (e: React.MouseEvent) => {
+                  e.preventDefault()
+                  logTemaByttet({
+                    tekst: 'toppmeny-tema-bytte',
+                    temaByttetTil: darkmodeLabel(!darkmode),
+                  })
+
+                  setDarkmode(!darkmode)
+                  // gi umami litt tid til å sende før reload
+                  await new Promise((resolve) => setTimeout(resolve, 150))
+                  window.location.href = '/'
+                }}
+              >
+                {`Endre til ${darkmodeLabel(!darkmode)}`}
+              </ActionMenu.Item>
+            </ActionMenu.Group>
+            <ActionMenu.Divider />
+            <ActionMenu.Group label="Hjelp">
+              <ActionMenu.Item onSelect={hurtigtaster.åpne}>Hurtigtaster</ActionMenu.Item>
+            </ActionMenu.Group>
+            <Eksperiment>
+              <ActionMenu.Divider />
+              <ActionMenu.Group label="Eksperimenter">
                 <ActionMenu.Item
-                  key={enhet.nummer}
-                  onSelect={() => {
-                    return setValgtEnhet(enhet.nummer)
+                  as="a"
+                  href="/"
+                  onClick={() => {
+                    setNyttSaksbilde(!nyttSaksbilde)
                   }}
                 >
-                  {enhet.nummer} - {enhet.navn}
+                  {nyttSaksbilde ? 'Gamle Hotsak' : 'Hotsak 1.5'}
                 </ActionMenu.Item>
-              ))}
-          </ActionMenu.Group>
-          <ActionMenu.Divider />
-          <ActionMenu.Item as="a" href="/oauth2/logout">
-            Logg ut
-          </ActionMenu.Item>
-        </ActionMenu.Content>
-      </ActionMenu>
-    </InternalHeader>
+              </ActionMenu.Group>
+            </Eksperiment>
+          </ActionMenu.Content>
+          <EndringsloggMenu />
+        </ActionMenu>
+        <ActionMenu>
+          <ActionMenu.Trigger>
+            <InternalHeader.UserButton
+              name={innloggetAnsatt.navn}
+              description={valgtEnhet?.navn}
+              className={classes.userButton}
+            />
+          </ActionMenu.Trigger>
+          <ActionMenu.Content>
+            <ActionMenu.Group label="Andre enheter">
+              {innloggetAnsatt.enheter
+                .filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
+                .map((enhet) => (
+                  <ActionMenu.Item
+                    key={enhet.nummer}
+                    onSelect={() => {
+                      return setValgtEnhet(enhet.nummer)
+                    }}
+                  >
+                    {enhet.nummer} - {enhet.navn}
+                  </ActionMenu.Item>
+                ))}
+            </ActionMenu.Group>
+            <ActionMenu.Divider />
+            <ActionMenu.Item as="a" href="/oauth2/logout">
+              Logg ut
+            </ActionMenu.Item>
+          </ActionMenu.Content>
+        </ActionMenu>
+      </InternalHeader>
+      <HurtigtasterModal open={hurtigtaster.open} onClose={hurtigtaster.lukk} />
+    </>
   )
 }
 

@@ -5,7 +5,7 @@ import type { HotkeyDefinition } from './hotkeys.ts'
 export function useGlobalHotkey(
   hotkey: HotkeyDefinition,
   handler: (e: KeyboardEvent) => void,
-  options?: { enabled?: boolean }
+  options?: { enabled?: boolean; skipInInputFields?: boolean }
 ) {
   const handlerRef = useRef(handler)
   useEffect(() => {
@@ -13,11 +13,23 @@ export function useGlobalHotkey(
   })
 
   const enabled = options?.enabled ?? true
+  const skipInInputFields = options?.skipInInputFields ?? false
 
   useEffect(() => {
     if (!enabled) return
 
+    function isInputFocused() {
+      const el = document.activeElement
+      if (!el) return false
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) {
+        return true
+      }
+      return (el as HTMLElement).isContentEditable
+    }
+
     function onKeyDown(e: KeyboardEvent) {
+      if (skipInInputFields && isInputFocused()) return
+
       const matchesKey = e.code === hotkey.code
       const matchesAlt = !!hotkey.alt === e.altKey
       const matchesCtrl = !!hotkey.ctrl === e.ctrlKey
@@ -32,5 +44,5 @@ export function useGlobalHotkey(
 
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [hotkey.code, hotkey.alt, hotkey.ctrl, hotkey.shift, hotkey.meta, enabled])
+  }, [hotkey.code, hotkey.alt, hotkey.ctrl, hotkey.shift, hotkey.meta, enabled, skipInInputFields])
 }

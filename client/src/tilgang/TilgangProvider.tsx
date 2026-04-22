@@ -1,29 +1,16 @@
-import fetchIntercept from 'fetch-intercept'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { type ReactNode, useMemo } from 'react'
 import useSwr from 'swr'
 
 import { http } from '../io/HttpClient.ts'
-import type { HttpError } from '../io/HttpError.ts'
-import { InnloggetAnsatt } from './Ansatt.ts'
-import { initialState, TilgangContext, TilgangContextType } from './TilgangContext.ts'
+import { type HttpError } from '../io/HttpError.ts'
+import { type InnloggetAnsatt } from './Ansatt.ts'
+import { initialState, TilgangContext, type TilgangContextType } from './TilgangContext.ts'
 
 export function TilgangProvider({ children }: { children: ReactNode }) {
-  const { data: innloggetAnsatt, error } = useSwr<InnloggetAnsatt, HttpError>('/api/ansatte/meg')
-  const [erInnlogget, setErInnlogget] = useState<boolean | null>(null)
-
-  useEffect(() => {
-    return fetchIntercept.register({
-      response(response) {
-        if (response.status === 401) {
-          setErInnlogget(false)
-        }
-        return response
-      },
-    })
-  }, [])
+  const { data: innloggetAnsatt, error } = useSwr<InnloggetAnsatt, HttpError>('/api/ansatte/meg', { suspense: true })
 
   const value = useMemo<TilgangContextType>(() => {
-    if (error || erInnlogget === false) {
+    if (error) {
       return {
         ...initialState,
         innloggetAnsatt: {
@@ -47,7 +34,7 @@ export function TilgangProvider({ children }: { children: ReactNode }) {
         window.location.href = '/'
       },
     }
-  }, [innloggetAnsatt, error, erInnlogget])
+  }, [innloggetAnsatt, error])
 
-  return <TilgangContext.Provider value={value}>{children}</TilgangContext.Provider>
+  return <TilgangContext value={value}>{children}</TilgangContext>
 }

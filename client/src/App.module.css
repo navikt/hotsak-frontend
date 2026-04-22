@@ -4,17 +4,3 @@
   height: 100vh;
   overflow: hidden;
 }
-
-.panelLayout {
-  flex: 1;
-  min-height: 0;
-  overflow-y: hidden;
-  overflow-x: auto;
-}
-
-.sideLayout {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: auto;
-}

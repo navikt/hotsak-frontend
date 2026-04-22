@@ -26,7 +26,6 @@
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
     "debug": "4.4.3",
-    "fetch-intercept": "2.4.0",
     "graphql-request": "7.4.0",
     "platejs": "52.3.21",
     "react": "19.2.5",
@@ -46,8 +45,7 @@
     "stacktrace-js": "2.0.2",
     "styled-components": "6.4.0",
     "swr": "2.4.1",
-    "uuid": "14.0.0",
-    "whatwg-fetch": "3.6.20"
+    "uuid": "14.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -29,15 +29,8 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
         })
       } else {
         tags.push(
-          {
-            tag: 'link',
-            attrs: {
-              rel: 'preload',
-              href: '/api/ansatte/meg',
-              as: 'fetch',
-              crossorigin: 'anonymous',
-            },
-          },
+          preload('/api/ansatte/meg'),
+          preload('/api/endringslogg'),
           {
             tag: 'script',
             children: `window.appSettings = {}`,
@@ -54,6 +47,18 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
         html,
         tags,
       }
+    },
+  }
+}
+
+function preload(href: string): HtmlTagDescriptor {
+  return {
+    tag: 'link',
+    attrs: {
+      rel: 'preload',
+      href,
+      as: 'fetch',
+      crossorigin: 'anonymous',
     },
   }
 }

@@ -30,6 +30,15 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
       } else {
         tags.push(
           {
+            tag: 'link',
+            attrs: {
+              rel: 'preload',
+              href: '/api/ansatte/meg',
+              as: 'fetch',
+              crossorigin: 'anonymous',
+            },
+          },
+          {
             tag: 'script',
             children: `window.appSettings = {}`,
           },

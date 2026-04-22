@@ -1,14 +1,14 @@
 import fetchIntercept from 'fetch-intercept'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import useSwr from 'swr'
 
 import { http } from '../io/HttpClient.ts'
-import type { HttpError } from '../io/HttpError.ts'
-import { InnloggetAnsatt } from './Ansatt.ts'
-import { initialState, TilgangContext, TilgangContextType } from './TilgangContext.ts'
+import { type HttpError } from '../io/HttpError.ts'
+import { type InnloggetAnsatt } from './Ansatt.ts'
+import { initialState, TilgangContext, type TilgangContextType } from './TilgangContext.ts'
 
 export function TilgangProvider({ children }: { children: ReactNode }) {
-  const { data: innloggetAnsatt, error } = useSwr<InnloggetAnsatt, HttpError>('/api/ansatte/meg')
+  const { data: innloggetAnsatt, error } = useSwr<InnloggetAnsatt, HttpError>('/api/ansatte/meg', { suspense: true })
   const [erInnlogget, setErInnlogget] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -49,5 +49,5 @@ export function TilgangProvider({ children }: { children: ReactNode }) {
     }
   }, [innloggetAnsatt, error, erInnlogget])
 
-  return <TilgangContext.Provider value={value}>{children}</TilgangContext.Provider>
+  return <TilgangContext value={value}>{children}</TilgangContext>
 }

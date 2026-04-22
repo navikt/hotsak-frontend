@@ -1,11 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import '@navikt/ds-css'
 import { SWRConfig, type SWRConfiguration } from 'swr'
+
+import '@navikt/ds-css'
 
 import { App } from './App'
 import { http } from './io/HttpClient.ts'
+import { HttpError } from './io/HttpError.ts'
 import { initMsw } from './mocks'
 import { initUmami } from './sporing/umami'
 import { cleanupStorage, migrerLocalStorage } from './state/storage.ts'
@@ -35,6 +37,14 @@ async function main(): Promise<void> {
 const swrConfig: SWRConfiguration = {
   async fetcher(...args) {
     return http.get(args[0])
+  },
+  onError(err: unknown) {
+    if (HttpError.isHttpError(err)) {
+      console.warn(err.message)
+      if (err.status === 401) {
+        window.location.href = '/uautorisert'
+      }
+    }
   },
 }
 

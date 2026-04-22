@@ -22,7 +22,6 @@ export interface HjelpemiddelData {
 export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
   const { data: grunndataProdukt, isLoading: grunndataLoading } = useHjelpemiddelprodukt(hmsnr)
 
-  console.log('useHjelpemiddel - hmsnr:', hmsnr)
   const {
     data: oebsProdukt,
     error,

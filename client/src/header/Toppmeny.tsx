@@ -13,7 +13,7 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
-import { useApneModia } from './useÅpneModia.ts'
+import { useModia } from './useModia.ts'
 import { useDarkmode } from './useDarkmode.ts'
 import { useHotkeys } from '../hotkeys/useHotkeys.ts'
 
@@ -25,7 +25,7 @@ export function Toppmeny() {
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
-  const { åpneModia } = useApneModia()
+  const { åpneModia } = useModia()
   useHotkeys()
 
   const handleSearch = (value: string) => {

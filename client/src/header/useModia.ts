@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 
-import { usePersonContext } from '../personoversikt/PersonContext'
+import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
 import { useModiaActions } from './useModiaActions.ts'
 
-export function useApneModia() {
+export function useModia() {
   const { fodselsnummer } = usePersonContext()
   const { settAktivBruker } = useModiaActions()
   const { logPersonoversiktÅpnetIModia, logLandingpageIModia } = useUmami()

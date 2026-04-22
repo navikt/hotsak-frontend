@@ -13,21 +13,20 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
+import { useApneModia } from './useÅpneModia.ts'
 import { useDarkmode } from './useDarkmode.ts'
-import { useModiaActions } from './useModiaActions.ts'
-//import { useModiaHotkey } from './useModiaHotkey.ts'
+import { useHotkeys } from '../hotkeys/useHotkeys.ts'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
-  const { fodselsnummer, setFodselsnummer } = usePersonContext()
+  const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
-  const { logTemaByttet, logPersonoversiktÅpnetIModia, logLandingpageIModia } = useUmami()
-  const { settAktivBruker } = useModiaActions()
-  const modiaUrl = window.appSettings.MODIA_URL
-  //useModiaHotkey()
+  const { logTemaByttet } = useUmami()
+  const { åpneModia } = useApneModia()
+  useHotkeys()
 
   const handleSearch = (value: string) => {
     const fnrEllerSakId = fjernMellomrom(value)
@@ -60,23 +59,19 @@ export function Toppmeny() {
         </ActionMenu.Trigger>
         <ActionMenu.Content>
           <ActionMenu.Group label="Systemer og oppslagsverk">
-            <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="gosys">
+            <ActionMenu.Item
+              as="a"
+              href={window.appSettings.GOSYS_OPPGAVEBEHANDLING_URL}
+              target="gosys"
+              shortcut="Alt + P"
+            >
               Gosys
             </ActionMenu.Item>
             <ActionMenu.Item
-              as="a"
-              onClick={
-                fodselsnummer
-                  ? async (e: React.MouseEvent) => {
-                      e.preventDefault()
-                      logPersonoversiktÅpnetIModia()
-                      await settAktivBruker(fodselsnummer)
-                      window.open(`${modiaUrl}/person/oversikt`, 'modia')
-                    }
-                  : logLandingpageIModia
-              }
-              href={fodselsnummer ? undefined : `${modiaUrl}/landingpage`}
-              target="modia"
+              shortcut="Alt + M"
+              onSelect={async () => {
+                await åpneModia()
+              }}
             >
               Modia
             </ActionMenu.Item>

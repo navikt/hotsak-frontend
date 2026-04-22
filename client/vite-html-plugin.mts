@@ -14,6 +14,7 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
             NAIS_CLUSTER_NAME: 'local',
             
             FARO_URL: '',
+            GOSYS_OPPGAVEBEHANDLING_URL: 'https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling',
             MODIA_URL: 'https://modiapersonoversikt.intern.dev.nav.no',
             IMAGE_PROXY_URL: ${proxy.grunndata ? "'https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d'" : "'http://localhost:3001/imageproxy'"},
             

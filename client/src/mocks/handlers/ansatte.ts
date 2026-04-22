@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
-import type { StoreHandlersFactory } from '../data'
 import type { InnloggetAnsatt } from '../../tilgang/Ansatt.ts'
+import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent } from './response.ts'
 
 export const ansatteHandlers: StoreHandlersFactory = ({ saksbehandlerStore }) => [

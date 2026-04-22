@@ -42,7 +42,7 @@ const swrConfig: SWRConfiguration = {
     if (HttpError.isHttpError(err)) {
       console.warn(err.message)
       if (err.status === 401) {
-        window.location.href = '/uautorisert'
+        window.location.href = '/oauth2/login'
       }
     }
   },

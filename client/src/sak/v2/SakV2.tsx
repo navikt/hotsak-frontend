@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
+import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
+import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
@@ -37,7 +39,7 @@ function AvrundetPanel({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function SakV2() {
+function SakV2Content() {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
@@ -206,4 +208,12 @@ export function SakV2() {
       setVisFerdigstillModal(true)
     }
   }
+}
+
+export default function SakV2() {
+  return (
+    <AsyncBoundary errorComponent={Feilmelding}>
+      <SakV2Content />
+    </AsyncBoundary>
+  )
 }

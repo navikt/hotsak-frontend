@@ -117,7 +117,7 @@ const Container = styled.section`
   box-sizing: border-box;
 `
 
-export function Søknadsbilde() {
+export default function Søknadsbilde() {
   return (
     <AsyncBoundary errorComponent={Feilmelding}>
       <SaksbildeContent />

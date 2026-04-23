@@ -7,7 +7,15 @@ export interface LinkButtonProps extends ButtonProps {
 }
 
 export function LinkButton(props: LinkButtonProps) {
-  const { to, options, ...rest } = props
+  const { to, options, onClick, ...rest } = props
   const navigate = useNavigate()
-  return <Button {...rest} onClick={() => navigate(to, options)} />
+  return (
+    <Button
+      {...rest}
+      onClick={(event) => {
+        if (onClick) onClick(event)
+        return navigate(to, options)
+      }}
+    />
+  )
 }

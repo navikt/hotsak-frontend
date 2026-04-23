@@ -1,6 +1,7 @@
 import { ExclamationmarkTriangleIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 import { Tag } from '@navikt/ds-react'
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
+
 import classes from './AlertTag.module.css'
 
 interface AlertTagProps {
@@ -14,7 +15,7 @@ export function WarningTag({ children }: AlertTagProps) {
       size="small"
       data-color="warning"
       variant="moderate"
-      icon={<ExclamationmarkTriangleIcon aria-hiden />}
+      icon={<ExclamationmarkTriangleIcon aria-hidden />}
     >
       {children}
     </Tag>

@@ -18,14 +18,17 @@ export function useOppgaveId(): OppgaveId | undefined {
 }
 
 export interface UseOppgaveResponse extends Omit<SWRResponse<Oppgave, HttpError>, 'data'> {
-  oppgave?: Oppgave
+  oppgave: Oppgave
 }
 
 export function useOppgave(): UseOppgaveResponse {
   const oppgaveId = useOppgaveId()
-  const { data: oppgave, ...rest } = useSwr<Oppgave>(oppgaveId ? `/api/oppgaver/${oppgaveId}` : null)
+  const { data: oppgave, ...rest } = useSwr<Oppgave>(oppgaveId ? `/api/oppgaver/${oppgaveId}` : null, {
+    suspense: true,
+  })
   return {
-    oppgave,
+    // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
+    oppgave: oppgave!!,
     ...rest,
   }
 }

@@ -1,16 +1,18 @@
 import { lazy, useEffect } from 'react'
 
 import { DokumentProvider } from '../dokument/DokumentContext.tsx'
+import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
+import { Feilmelding } from '../felleskomponenter/feil/Feilmelding.tsx'
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
 import { type Oppgave, Oppgavetype } from './oppgaveTypes.ts'
 import { useOppgave } from './useOppgave.ts'
-import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
-const Saksbehandling = lazy(() => import('../saksbilde/Saksbilde.tsx'))
+const Saksbilde = lazy(() => import('../saksbilde/Saksbilde.tsx'))
 
-export default function Oppgave() {
+function OppgaveContent() {
   const { oppgave } = useOppgave()
   const { merkSomLest } = useOppgaveActions(oppgave)
   useEffect(() => {
@@ -19,9 +21,6 @@ export default function Oppgave() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oppgave])
-  if (!oppgave) {
-    return null
-  }
   return (
     <>
       <Sidetittel tittel={`Oppgave ${oppgave.oppgaveId}`} />
@@ -43,8 +42,16 @@ function OppgavetypeSwitch({ oppgave }: { oppgave: Oppgave }) {
     case Oppgavetype.BEHANDLE_SAK:
     case Oppgavetype.GODKJENNE_VEDTAK:
     case Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK:
-      return <Saksbehandling />
+      return <Saksbilde />
     default:
       return null
   }
+}
+
+export default function Oppgave() {
+  return (
+    <AsyncBoundary name="Oppgave" errorComponent={Feilmelding}>
+      <OppgaveContent />
+    </AsyncBoundary>
+  )
 }

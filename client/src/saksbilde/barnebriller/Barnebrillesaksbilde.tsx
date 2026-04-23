@@ -38,16 +38,13 @@ const Header = styled(HStack)`
 `
 
 const BarnebrillesakContent = memo(() => {
-  const { oppgave, error: oppgaveError } = useOppgave()
+  const { oppgave } = useOppgave()
   const { sak, error: sakError } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
   const { showBoundary } = useErrorBoundary()
 
-  if (oppgaveError) {
-    showBoundary(oppgaveError)
-  }
   if (sakError) {
     showBoundary(sakError)
   }
@@ -104,7 +101,7 @@ function LasterBarnebrillesaksbilde() {
   )
 }
 
-export function Barnebrillesaksbilde() {
+export default function Barnebrillesaksbilde() {
   return (
     <AsyncBoundary errorComponent={Feilmelding} suspenseFallback={<LasterBarnebrillesaksbilde />}>
       <ManuellSaksbehandlingProvider>

@@ -1,10 +1,12 @@
-import { memo, Suspense, useEffect } from 'react'
-import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
+import { memo, useEffect } from 'react'
+import { useErrorBoundary } from 'react-error-boundary'
 
 import { useDokumentContext } from '../../../../dokument/DokumentContext'
 import { DokumentPanel } from '../../../../dokument/DokumentPanel'
-import { AlertError } from '../../../../feilsider/AlertError'
+import { AsyncBoundary } from '../../../../felleskomponenter/AsyncBoundary.tsx'
+import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding.tsx'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
+import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
@@ -13,7 +15,6 @@ import { useJournalposter } from '../../../useJournalposter'
 import { Venstremeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
-import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
 
 const RegistrerSøknadContent = memo(() => {
   const { sak, isLoading, error } = useBarnebrillesak()
@@ -61,10 +62,10 @@ const RegistrerSøknadContent = memo(() => {
 
 const LasterRegistrerSøknadBilde = () => <LasterPersonlinje />
 
-export const RegistrerSøknad = () => (
-  <ErrorBoundary FallbackComponent={AlertError}>
-    <Suspense fallback={<LasterRegistrerSøknadBilde />}>
+export function RegistrerSøknad() {
+  return (
+    <AsyncBoundary errorComponent={Feilmelding} suspenseFallback={<LasterRegistrerSøknadBilde />}>
       <RegistrerSøknadContent />
-    </Suspense>
-  </ErrorBoundary>
-)
+    </AsyncBoundary>
+  )
+}

@@ -161,7 +161,6 @@ export function Toppmeny() {
 function ToppmenyLinkButton({ to, children }: { to: To; children: ReactNode }) {
   const location = useLocation()
   const pathname = location.pathname
-  console.log(to, location.pathname)
   const valgt = pathname === to || (pathname === '/' && to === '/oppgaver/mine')
   return (
     <InternalHeader.Button as={Link} to={to} isActive={valgt}>

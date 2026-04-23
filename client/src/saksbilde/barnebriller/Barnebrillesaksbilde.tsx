@@ -1,10 +1,11 @@
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
-import { memo, Suspense } from 'react'
-import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
+import { memo } from 'react'
+import { useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
-
-import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
+import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
+
+import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth, søknadslinjeHøyde } from '../../GlobalStyles'
 import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 import { useOppgave } from '../../oppgave/useOppgave.ts'
@@ -105,18 +106,16 @@ function LasterBarnebrillesaksbilde() {
 
 export function Barnebrillesaksbilde() {
   return (
-    <ErrorBoundary FallbackComponent={AlertError}>
-      <Suspense fallback={<LasterBarnebrillesaksbilde />}>
-        <ManuellSaksbehandlingProvider>
-          <HGrid
-            columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}
-            style={{ paddingBottom: 'var(--ax-space-12)' }}
-          >
-            <BarnebrillesakContent />
-            <BarnebrillesakSidebar />
-          </HGrid>
-        </ManuellSaksbehandlingProvider>
-      </Suspense>
-    </ErrorBoundary>
+    <AsyncBoundary errorComponent={Feilmelding} suspenseFallback={<LasterBarnebrillesaksbilde />}>
+      <ManuellSaksbehandlingProvider>
+        <HGrid
+          columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}
+          style={{ paddingBottom: 'var(--ax-space-12)' }}
+        >
+          <BarnebrillesakContent />
+          <BarnebrillesakSidebar />
+        </HGrid>
+      </ManuellSaksbehandlingProvider>
+    </AsyncBoundary>
   )
 }

@@ -28,6 +28,13 @@ export class HttpError extends Error {
     return value instanceof HttpError
   }
 
+  static BAD_REQUEST = new HttpError('Bad Request', 400)
+  static UNAUTHORIZED = new HttpError('Unauthorized', 401)
+  static FORBIDDEN = new HttpError('Forbidden', 401)
+  static NOT_FOUND = new HttpError('Not Found', 404)
+  static CONFLICT = new HttpError('Conflict', 409)
+  static INTERNAL_SERVER_ERROR = new HttpError('Internal Server Error', 401)
+
   constructor(
     message: string,
     readonly status: number,
@@ -37,26 +44,26 @@ export class HttpError extends Error {
   }
 
   isBadRequest() {
-    return this.status === 400
+    return this.status === HttpError.BAD_REQUEST.status
   }
 
   isUnauthorized() {
-    return this.status === 401
+    return this.status === HttpError.UNAUTHORIZED.status
   }
 
   isForbidden() {
-    return this.status === 403
+    return this.status === HttpError.FORBIDDEN.status
   }
 
   isNotFound() {
-    return this.status === 404
+    return this.status === HttpError.NOT_FOUND.status
   }
 
   isConflict() {
-    return this.status === 409
+    return this.status === HttpError.CONFLICT.status
   }
 
   isInternalServerError() {
-    return this.status === 500
+    return this.status === HttpError.INTERNAL_SERVER_ERROR.status
   }
 }

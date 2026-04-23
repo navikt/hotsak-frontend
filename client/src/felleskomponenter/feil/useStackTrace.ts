@@ -7,6 +7,7 @@ export function useStackTrace(error?: Error): StackTraceString {
   const [stackTrace, setStackTrace] = useState<StackTraceString>(null)
   useEffect(() => {
     formatStackTrace(error).then(setStackTrace)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorMessage])
   return stackTrace
 }

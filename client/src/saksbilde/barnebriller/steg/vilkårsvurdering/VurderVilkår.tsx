@@ -1,8 +1,9 @@
 import { Box, Button, Detail, ErrorSummary, Heading, Table, Tag } from '@navikt/ds-react'
 import { useEffect, useRef, useState } from 'react'
 
-import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
+import { FeilmeldingAlert } from '../../../../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
+import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
 import { Tekst } from '../../../../felleskomponenter/typografi'
 import { http } from '../../../../io/HttpClient.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -15,7 +16,6 @@ import { VurdertAv } from './kolonner/VurdertAv'
 import { alertVariant } from './oppsummertStatus'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { metadataFor } from './vilkårMetada'
-import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
 
 export function VurderVilkår() {
   const sakId = useSakId()
@@ -55,6 +55,7 @@ export function VurderVilkår() {
     } else if (sak?.data.vilkårsvurdering?.resultat !== VilkårsResultat.KANSKJE) {
       clearErrors()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitAttempt, sak?.data.vilkårsvurdering?.resultat])
 
   function gåTilNesteSteg(sakId: number | string, steg: StegType) {
@@ -75,11 +76,13 @@ export function VurderVilkår() {
   }
 
   if (!sak) {
-    return <Feilmelding>{`Fant ikke sak med saksnummer ${sakId}`}</Feilmelding>
+    return <FeilmeldingAlert>{`Fant ikke sak med saksnummer ${sakId}`}</FeilmeldingAlert>
   } // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
   if (!sak.data?.vilkårsvurdering) {
-    return <Feilmelding>{`Vilkårsvurderingen mangler resultat. Dette kan skyldes en teknisk feil.`}</Feilmelding>
+    return (
+      <FeilmeldingAlert>{`Vilkårsvurderingen mangler resultat. Dette kan skyldes en teknisk feil.`}</FeilmeldingAlert>
+    )
   }
   const vilkår =
     sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []

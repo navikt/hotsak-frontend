@@ -1,7 +1,7 @@
 import { Alert, Button, HelpText, HGrid, HGridProps, HStack, HStackProps, Loader, VStack } from '@navikt/ds-react'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
-import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
+import { FeilmeldingAlert } from '../../../../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Etikett, Tekst } from '../../../../felleskomponenter/typografi'
 import { SatsType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
@@ -30,7 +30,7 @@ export function RegistrerSøknadLesevisning() {
   if (!sak) {
     return (
       <div>
-        <Feilmelding>{`Fant ikke sak med saksnummer ${sakId}`}</Feilmelding>
+        <FeilmeldingAlert>{`Fant ikke sak med saksnummer ${sakId}`}</FeilmeldingAlert>
       </div>
     )
   }

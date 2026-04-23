@@ -21,9 +21,9 @@ export function App() {
 
   return (
     <Theme theme={darkMode ? 'dark' : 'light'}>
-      <AsyncBoundary suspenseFallback={null}>
-        <TilgangProvider>
-          <div className={classes.root}>
+      <div className={classes.root}>
+        <AsyncBoundary suspenseFallback={null}>
+          <TilgangProvider>
             <PersonProvider>
               <ToastProvider>
                 <Toppmeny />
@@ -31,9 +31,9 @@ export function App() {
                 <AppRoutes />
               </ToastProvider>
             </PersonProvider>
-          </div>
-        </TilgangProvider>
-      </AsyncBoundary>
+          </TilgangProvider>
+        </AsyncBoundary>
+      </div>
     </Theme>
   )
 }

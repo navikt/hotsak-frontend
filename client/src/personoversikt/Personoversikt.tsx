@@ -1,12 +1,12 @@
 import { Box } from '@navikt/ds-react'
-import { Suspense, useMemo } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
-import { Route } from 'react-router'
-import { Routes } from 'react-router-dom'
+import { useMemo } from 'react'
+import { Route, Routes } from 'react-router-dom'
 
-import { AlertError } from '../feilsider/AlertError'
-import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
+import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
+import { Feilmelding } from '../felleskomponenter/feil/Feilmelding.tsx'
+import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { useUtlånoversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
@@ -14,13 +14,12 @@ import { naturalBy } from '../utils/array.ts'
 import { sorterKronologiskStigende } from '../utils/dato.ts'
 import { select } from '../utils/select.ts'
 import { HjelpemiddeloversiktTable } from './HjelpemiddeloversiktTable.tsx'
+import { OppgaveoversiktPerson } from './OppgaveoversiktPerson.tsx'
 import { usePersonContext } from './PersonContext'
-import { Saksoversikt } from './Saksoversikt'
 import { PersonoversiktTabs } from './PersonoversiktTabs.tsx'
+import { Saksoversikt } from './Saksoversikt'
 import { usePerson } from './usePerson'
 import { useSaksoversikt } from './useSaksoversikt.ts'
-import { OppgaveoversiktPerson } from './OppgaveoversiktPerson.tsx'
-import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -50,7 +49,7 @@ function PersonoversiktContent() {
       <Sidetittel tittel="Personoversikt" />
       <Skjermlesertittel>Personoversikt</Skjermlesertittel>
       {personInfoLoading ? (
-        <LasterPersonoversikt />
+        <LasterPersonlinje />
       ) : (
         <>
           <Personlinje loading={personInfoLoading} person={personInfo} />
@@ -65,7 +64,7 @@ function PersonoversiktContent() {
                 path="/saker"
                 element={
                   error ? (
-                    <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
+                    <FeilmeldingAlert>Teknisk feil ved henting av saksoversikt</FeilmeldingAlert>
                   ) : (
                     <Saksoversikt
                       sakerOgBarnebrillekrav={sakerOgBarnebrillekrav}
@@ -79,7 +78,7 @@ function PersonoversiktContent() {
                 path="/hjelpemidler"
                 element={
                   hjelpemiddeloversiktError ? (
-                    <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding>
+                    <FeilmeldingAlert>Teknisk feil ved henting av utlånsoversikt</FeilmeldingAlert>
                   ) : (
                     <HjelpemiddeloversiktTable artikler={hjelpemidler} loading={hjelpemiddeloversiktLoading} />
                   )
@@ -93,16 +92,10 @@ function PersonoversiktContent() {
   )
 }
 
-function LasterPersonoversikt() {
-  return <LasterPersonlinje />
-}
-
 export default function Personoversikt() {
   return (
-    <ErrorBoundary FallbackComponent={AlertError}>
-      <Suspense fallback={<LasterPersonlinje />}>
-        <PersonoversiktContent />
-      </Suspense>
-    </ErrorBoundary>
+    <AsyncBoundary errorComponent={Feilmelding} suspenseFallback={<LasterPersonlinje />}>
+      <PersonoversiktContent />
+    </AsyncBoundary>
   )
 }

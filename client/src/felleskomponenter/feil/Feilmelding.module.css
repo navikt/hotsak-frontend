@@ -1,0 +1,10 @@
+.root {
+}
+
+.feilkode {
+  font-weight: normal;
+}
+
+.stackTrace {
+  white-space: pre-wrap;
+}

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { useDokumentContext } from '../dokument/DokumentContext'
 import { DokumentPanel } from '../dokument/DokumentPanel'
-import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
+import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
 import { headerHøydeRem } from '../GlobalStyles'
@@ -48,11 +48,11 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
 
   if (error) {
     if (error?.status === 403) {
-      return <Feilmelding>Du har ikke tilgang til å se denne journalposten.</Feilmelding>
+      return <FeilmeldingAlert>Du har ikke tilgang til å se denne journalposten.</FeilmeldingAlert>
     } else if (error?.status === 404) {
-      return <Feilmelding>Journalpost {journalpostId} ikke funnet.</Feilmelding>
+      return <FeilmeldingAlert>Journalpost {journalpostId} ikke funnet.</FeilmeldingAlert>
     } else {
-      return <Feilmelding>Teknisk feil. Klarte ikke å hente journalposten.</Feilmelding>
+      return <FeilmeldingAlert>Teknisk feil. Klarte ikke å hente journalposten.</FeilmeldingAlert>
     }
   }
 

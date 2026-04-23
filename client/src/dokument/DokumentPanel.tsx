@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
+import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Toast } from '../felleskomponenter/toast/Toast'
 import { RessursStatus } from '../types/types.internal'
 import { useDokumentContext } from './DokumentContext'
@@ -23,7 +23,7 @@ export function DokumentPanel() {
     return (
       <FeilmeldingContainer>
         <div>
-          <Feilmelding>Det oppstod en feil ved henting av dokument.</Feilmelding>
+          <FeilmeldingAlert>Det oppstod en feil ved henting av dokument.</FeilmeldingAlert>
         </div>
       </FeilmeldingContainer>
     )

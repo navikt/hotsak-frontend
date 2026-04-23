@@ -1,11 +1,11 @@
 import { Box, HGrid } from '@navikt/ds-react'
 import { memo } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 import { Navigate } from 'react-router'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { AlertError } from '../feilsider/AlertError'
+import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
+import { Feilmelding } from '../felleskomponenter/feil/Feilmelding.tsx'
 import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, sidebarMinWidth } from '../GlobalStyles'
 import { useOppgave } from '../oppgave/useOppgave.ts'
@@ -117,8 +117,10 @@ const Container = styled.section`
   box-sizing: border-box;
 `
 
-export const Søknadsbilde = () => (
-  <ErrorBoundary FallbackComponent={AlertError}>
-    <SaksbildeContent />
-  </ErrorBoundary>
-)
+export function Søknadsbilde() {
+  return (
+    <AsyncBoundary errorComponent={Feilmelding}>
+      <SaksbildeContent />
+    </AsyncBoundary>
+  )
+}

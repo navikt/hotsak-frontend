@@ -1,7 +1,7 @@
-import { ComponentType, type ReactNode, Suspense } from 'react'
-import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
+import { type ComponentType, type ReactNode, Suspense } from 'react'
+import { ErrorBoundary, type FallbackProps } from 'react-error-boundary'
 
-import { GlobalFeilside } from '../feilsider/GlobalFeilside.tsx'
+import { GlobalFeilside } from './feil/GlobalFeilside.tsx'
 
 export interface AsyncBoundaryProps {
   name?: string

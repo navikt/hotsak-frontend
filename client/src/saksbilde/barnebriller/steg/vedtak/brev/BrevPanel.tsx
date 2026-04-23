@@ -2,7 +2,7 @@ import { HStack, Loader } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Feilmelding } from '../../../../../felleskomponenter/feil/Feilmelding'
+import { FeilmeldingAlert } from '../../../../../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { Brevtype, RessursStatus } from '../../../../../types/types.internal'
 import { useBrev } from './useBrev'
@@ -27,12 +27,13 @@ export function BrevPanel(props: BrevPanelProps) {
     if (sakId && brevtype === Brevtype.BARNEBRILLER_VEDTAK) {
       hentForhåndsvisning(sakId, brevtype)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sakId, brevtype]) // todo -> få lagt til hentForhåndsvisning i avhengighetslisten, det gir render loop pt.
 
   if (!sakId) {
     return <div>Saksnummer mangler.</div>
   } else if (brevError) {
-    return <Feilmelding>Det oppstod en feil ved opprettelse av brev</Feilmelding>
+    return <FeilmeldingAlert>Det oppstod en feil ved opprettelse av brev</FeilmeldingAlert>
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (
       <HStack justify="center" gap="space-16" marginBlock="space-16">
@@ -50,7 +51,7 @@ export function BrevPanel(props: BrevPanelProps) {
     )
 }
 
-const DokumentIFrame = ({ fullSize, dokumentData }: { fullSize: boolean; dokumentData: any }) => {
+const DokumentIFrame = ({ fullSize, dokumentData }: { fullSize: boolean; dokumentData?: string }) => {
   if (fullSize) {
     return (
       <DokumentDiv>

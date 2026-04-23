@@ -2,9 +2,8 @@ import { lazy } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
 
 import classes from './AppRoutes.module.css'
-
-import { Feilside } from './feilsider/Feilside.tsx'
 import { AsyncBoundary } from './felleskomponenter/AsyncBoundary.tsx'
+import { Feilmelding } from './felleskomponenter/feil/Feilmelding.tsx'
 import { Protected } from './tilgang/Protected.tsx'
 
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -40,8 +39,8 @@ export function AppRoutes() {
           </Route>
         </Route>
 
-        <Route path="uautorisert" element={<Feilside statusCode={401} />} />
-        <Route path="*" element={<Feilside statusCode={404} />} />
+        <Route path="uautorisert" element={<Feilmelding status={401} />} />
+        <Route path="*" element={<Feilmelding status={404} />} />
       </Routes>
     </AsyncBoundary>
   )

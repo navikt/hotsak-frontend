@@ -1,19 +1,95 @@
-import type { ReactNode } from 'react'
-import styled from 'styled-components'
+import { Accordion, BodyShort, Box, CopyButton, Heading, Link } from '@navikt/ds-react'
+import { type FallbackProps } from 'react-error-boundary'
 
-import { Alert } from '@navikt/ds-react'
+import { HttpError } from '../../io/HttpError.ts'
+import { toError } from '../../utils/error.ts'
+import classes from './Feilmelding.module.css'
+import { useStackTrace } from './useStackTrace.ts'
 
-import { Tekst } from '../typografi'
+export interface FeilmeldingProps extends Partial<FallbackProps> {
+  status?: number
+}
 
-const FeilmeldingAlert = styled(Alert)`
-  width: max-content;
-  margin: 2rem;
-`
-
-export function Feilmelding({ children }: { children: ReactNode }) {
+export function Feilmelding(props: FeilmeldingProps) {
+  const error = toError(props.error)
+  const statusCode = HttpError.isHttpError(error) ? error.status : (props.status ?? 500)
+  const stackTrace = useStackTrace(error)
   return (
-    <FeilmeldingAlert size="small" variant="error">
-      <Tekst>{children}</Tekst>
-    </FeilmeldingAlert>
+    <Box
+      className={classes.root}
+      background="neutral-moderate"
+      borderColor="neutral-subtle"
+      marginBlock="space-20"
+      marginInline="space-20"
+      padding="space-16"
+      borderRadius="8"
+    >
+      <Heading size="large" spacing>
+        {overskrift[statusCode] || 'Teknisk feil'} | <small className={classes.feilkode}>Feilkode {statusCode}</small>
+      </Heading>
+      {{
+        401: <IkkeLoggetInn />,
+        403: <TilgangMangler />,
+        404: <IkkeFunnet />,
+      }[statusCode] || <TekniskFeil />}
+      {stackTrace && (
+        <Accordion>
+          <Accordion.Item>
+            <Accordion.Header>Informasjon til utviklere</Accordion.Header>
+            <Accordion.Content>
+              <CopyButton copyText={stackTrace} text="Kopier feilmelding" activeText="Kopiert" />
+              <pre className={classes.stackTrace}>{stackTrace}</pre>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion>
+      )}
+    </Box>
   )
+}
+
+function IkkeLoggetInn() {
+  return (
+    <>
+      <BodyShort spacing>Du må logge inn for å få tilgang til systemet.</BodyShort>
+      <BodyShort spacing>
+        <Link href="/oauth2/login">Gå til innloggingssiden</Link>.
+      </BodyShort>
+    </>
+  )
+}
+
+function TilgangMangler() {
+  return (
+    <>
+      <BodyShort spacing>Du mangler tilgang til denne ressursen.</BodyShort>
+    </>
+  )
+}
+
+function IkkeFunnet() {
+  return (
+    <>
+      <BodyShort spacing>
+        Beklager, siden kan være slettet eller flyttet, eller det var en feil i lenken som førte deg hit.
+      </BodyShort>
+      <BodyShort spacing>
+        Du kan bruke søket for å finne saker tilknyttet en person, eller gå{' '}
+        <Link href="/public">gå til oppgavelista</Link>.
+      </BodyShort>
+    </>
+  )
+}
+
+function TekniskFeil() {
+  return (
+    <>
+      <BodyShort spacing>Beklager, det har skjedd en teknisk feil.</BodyShort>
+    </>
+  )
+}
+
+const overskrift: Record<number, string> = {
+  401: 'Ikke logget inn',
+  403: 'Tilgang mangler',
+  404: 'Fant ikke siden',
 }

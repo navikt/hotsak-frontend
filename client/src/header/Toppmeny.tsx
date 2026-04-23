@@ -6,6 +6,8 @@ import { Link, type To, useNavigate } from 'react-router-dom'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { HurtigtasterModal } from '../hotkeys/HurtigtasterModal.tsx'
+import { useHotkeys } from '../hotkeys/useHotkeys.ts'
+import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
 import { useUmami } from '../sporing/useUmami.ts'
@@ -14,17 +16,15 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
+import { useDarkMode } from './useDarkMode.ts'
 import { useModia } from './useModia.ts'
-import { useDarkmode } from './useDarkmode.ts'
-import { useHotkeys } from '../hotkeys/useHotkeys.ts'
-import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
-  const [darkmode, setDarkmode] = useDarkmode()
+  const [darkMode, setDarkMode] = useDarkMode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
@@ -49,9 +49,9 @@ export function Toppmeny() {
         </InternalHeader.Title>
         <HStack justify="space-between" wrap={false} style={{ flex: 1 }}>
           <HStack wrap={false}>
-            <ToppmenyLinkButton to="/mine">Mine oppgaver</ToppmenyLinkButton>
-            <ToppmenyLinkButton to="/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
-            <ToppmenyLinkButton to="/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
+            <ToppmenyLinkButton to="/oppgaver/mine">Mine oppgaver</ToppmenyLinkButton>
+            <ToppmenyLinkButton to="/oppgaver/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
+            <ToppmenyLinkButton to="/oppgaver/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
           </HStack>
           <Søk onSearch={handleSearch} />
         </HStack>
@@ -86,20 +86,20 @@ export function Toppmeny() {
                 icon={<ThemeIcon />}
                 as="a"
                 href="/"
-                onClick={async (e: React.MouseEvent) => {
-                  e.preventDefault()
+                onClick={async (event) => {
+                  event.preventDefault()
                   logTemaByttet({
                     tekst: 'toppmeny-tema-bytte',
-                    temaByttetTil: darkmodeLabel(!darkmode),
+                    temaByttetTil: darkModeLabel(!darkMode),
                   })
 
-                  setDarkmode(!darkmode)
+                  setDarkMode(!darkMode)
                   // gi umami litt tid til å sende før reload
                   await new Promise((resolve) => setTimeout(resolve, 150))
                   window.location.href = '/'
                 }}
               >
-                {`Endre til ${darkmodeLabel(!darkmode)}`}
+                {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
             </ActionMenu.Group>
             <ActionMenu.Divider />
@@ -161,7 +161,8 @@ export function Toppmeny() {
 function ToppmenyLinkButton({ to, children }: { to: To; children: ReactNode }) {
   const location = useLocation()
   const pathname = location.pathname
-  const valgt = pathname === to || (pathname === '/' && to === '/mine')
+  console.log(to, location.pathname)
+  const valgt = pathname === to || (pathname === '/' && to === '/oppgaver/mine')
   return (
     <InternalHeader.Button as={Link} to={to} isActive={valgt}>
       {children}
@@ -169,6 +170,6 @@ function ToppmenyLinkButton({ to, children }: { to: To; children: ReactNode }) {
   )
 }
 
-function darkmodeLabel(darkmode: boolean) {
-  return darkmode ? 'mørkt tema' : 'lyst tema'
+function darkModeLabel(darkMode: boolean) {
+  return darkMode ? 'mørkt tema' : 'lyst tema'
 }

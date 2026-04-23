@@ -1,5 +1,5 @@
 import { useLocalState } from '../state/useLocalState.ts'
 
-export function useDarkmode() {
+export function useDarkMode() {
   return useLocalState('darkmode', false)
 }

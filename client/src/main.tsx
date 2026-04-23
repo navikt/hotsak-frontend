@@ -34,17 +34,9 @@ async function main(): Promise<void> {
   )
 }
 
-const swrConfig: SWRConfiguration = {
+const swrConfig: SWRConfiguration<unknown, HttpError> = {
   async fetcher(...args) {
     return http.get(args[0])
-  },
-  onError(err: unknown) {
-    if (HttpError.isHttpError(err)) {
-      console.warn(err.message)
-      if (err.status === 401) {
-        window.location.href = '/oauth2/login'
-      }
-    }
   },
 }
 

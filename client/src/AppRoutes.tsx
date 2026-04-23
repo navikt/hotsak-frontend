@@ -5,57 +5,42 @@ import classes from './AppRoutes.module.css'
 
 import { Feilside } from './feilsider/Feilside.tsx'
 import { AsyncBoundary } from './felleskomponenter/AsyncBoundary.tsx'
-import { RequireAuth } from './RequireAuth.tsx'
+import { Protected } from './tilgang/Protected.tsx'
 
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
-const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste.tsx'))
-const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
+const MineOppgaver = lazy(() => import('./oppgaveliste/MineOppgaverWrapper.tsx'))
+const EnhetensOppgaver = lazy(() => import('./oppgaveliste/EnhetensOppgaverWrapper.tsx'))
+const MedarbeidersOppgaver = lazy(() => import('./oppgaveliste/MedarbeidersOppgaverWrapper.tsx'))
+
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
+
+const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
 
 export function AppRoutes() {
   return (
     <AsyncBoundary suspenseFallback={null}>
       <Routes>
-        <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
-        {/* Ruter hvor paneler kan scrolles uavhengig og ingen global scroll */}
-        <Route element={<PanelLayout />}>
-          <Route
-            path="/sak/:sakId/*"
-            element={
-              <RequireAuth>
-                <Saksbilde />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/oppgave/:oppgaveId/*"
-            element={
-              <RequireAuth>
-                <Oppgave />
-              </RequireAuth>
-            }
-          />
+        <Route element={<Protected />}>
+          {/* Ruter hvor paneler kan scrolles uavhengig og ingen global scroll */}
+          <Route element={<PanelLayout />}>
+            <Route path="sak/:sakId/*" element={<Saksbilde />} />
+            <Route path="oppgave/:oppgaveId/*" element={<Oppgave />} />
+          </Route>
+
+          {/* Ruter hvor det er naturlig med global, vertikal scroll */}
+          <Route element={<SideLayout />}>
+            <Route index element={<MineOppgaver />} />
+            <Route path="oppgaver">
+              <Route index element={<MineOppgaver />} />
+              <Route path="mine" element={<MineOppgaver />} />
+              <Route path="enhetens" element={<EnhetensOppgaver />} />
+              <Route path="medarbeiders" element={<MedarbeidersOppgaver />} />
+            </Route>
+            <Route path="personoversikt/*" element={<Personoversikt />} />
+          </Route>
         </Route>
 
-        {/* Ruter hvor det er naturlig med global, vertikal scroll */}
-        <Route element={<SideLayout />}>
-          <Route
-            path="/*"
-            element={
-              <RequireAuth>
-                <Oppgaveliste />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/personoversikt/*"
-            element={
-              <RequireAuth>
-                <Personoversikt />
-              </RequireAuth>
-            }
-          />
-        </Route>
+        <Route path="uautorisert" element={<Feilside statusCode={401} />} />
         <Route path="*" element={<Feilside statusCode={404} />} />
       </Routes>
     </AsyncBoundary>

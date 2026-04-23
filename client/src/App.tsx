@@ -6,7 +6,7 @@ import { AppRoutes } from './AppRoutes.tsx'
 import { AsyncBoundary } from './felleskomponenter/AsyncBoundary.tsx'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
-import { useDarkmode } from './header/useDarkmode.ts'
+import { useDarkMode } from './header/useDarkMode.ts'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { useLogBruker } from './sporing/useLogBruker.ts'
 import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
@@ -14,13 +14,13 @@ import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
 export function App() {
-  const [darkmode] = useDarkmode()
+  const [darkMode] = useDarkMode()
 
   useLogBruker()
   useLogVinduStørrelse()
 
   return (
-    <Theme theme={darkmode ? 'dark' : 'light'}>
+    <Theme theme={darkMode ? 'dark' : 'light'}>
       <AsyncBoundary suspenseFallback={null}>
         <TilgangProvider>
           <div className={classes.root}>

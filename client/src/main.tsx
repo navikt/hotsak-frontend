@@ -7,7 +7,7 @@ import '@navikt/ds-css'
 
 import { App } from './App'
 import { http } from './io/HttpClient.ts'
-import { HttpError } from './io/HttpError.ts'
+import { type HttpError } from './io/HttpError.ts'
 import { initMsw } from './mocks'
 import { initUmami } from './sporing/umami'
 import { cleanupStorage, migrerLocalStorage } from './state/storage.ts'

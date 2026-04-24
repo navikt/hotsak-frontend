@@ -10,6 +10,7 @@ import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useSak } from '../../saksbilde/useSak.ts'
+import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import { Gjenstående, isBehandlingsutfallVedtak } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
@@ -19,6 +20,7 @@ import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
+import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
 import { Sidebar } from './sidebars/Sidebar.tsx'
@@ -47,6 +49,7 @@ function SakV2Content() {
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
+  const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
 
   const { panelState, totalVisibleMinWidth, harFlerePanelerÅpne } = useSakContext()
   const { panels } = panelState
@@ -55,6 +58,13 @@ function SakV2Content() {
   const behandlingsutfall = gjeldendeBehandling?.utfall
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
+
+  useSakHotkeys({
+    gjenstående,
+    onNotatIkkeFerdigstilt: () => setVisNotatIkkeFerdigstilt(true),
+    onBrevFinnesIUtkast: () => setVisBrevMangler(true),
+    onAnnetResultat: () => setAnnetResultatValgt(true),
+  })
 
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
   const brevutkastIkkeFerdigstilt =
@@ -186,6 +196,8 @@ function SakV2Content() {
         />
       )}
       <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
+      <UgyldigSnarveiModal open={annetResultatValgt} onClose={() => setAnnetResultatValgt(false)} />
+
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <FattVedtakModalV2
           open={visFerdigstillModal}

@@ -8,6 +8,7 @@ import {
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
 import { OppgaveToolbarTab, useOppgavelisteContext, useOppgavelisteTabChangeHandler } from './OppgavelisteContext.tsx'
 import classes from './OppgaveToolbar.module.css'
+import { useOppgavelisteHotkeys } from './useOppgavelisteHotkeys.ts'
 
 export interface OppgaveToolbarProps {
   antallOppgaver: number
@@ -24,6 +25,7 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
   const handleTabChanged = useOppgavelisteTabChangeHandler()
   const isDataGridFiltered = useIsDataGridFiltered(currentTab)
   const handleFilterResetAll = useDataGridFilterResetAllHandler(currentTab)
+  useOppgavelisteHotkeys()
   return (
     <Box borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="space-8">
       <HGrid columns="1fr 1fr" align="center" className={classes.grid}>

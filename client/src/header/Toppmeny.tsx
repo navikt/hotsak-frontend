@@ -6,7 +6,7 @@ import { Link, type To, useNavigate } from 'react-router-dom'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { HurtigtasterModal } from '../hotkeys/HurtigtasterModal.tsx'
-import { useHotkeys } from '../hotkeys/useHotkeys.ts'
+import { useGlobaleHotkeys } from '../hotkeys/useGlobaleHotkeys.ts'
 import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
@@ -29,7 +29,7 @@ export function Toppmeny() {
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
-  useHotkeys({ visHurtigtaster: hurtigtaster.åpne })
+  useGlobaleHotkeys({ visHurtigtaster: hurtigtaster.åpne })
 
   const handleSearch = (value: string) => {
     const fnrEllerSakId = fjernMellomrom(value)

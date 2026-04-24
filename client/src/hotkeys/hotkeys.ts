@@ -7,7 +7,12 @@ export interface HotkeyDefinition {
   description: string
 }
 
-export const HOTKEYS = {
+export interface HotkeyGroup {
+  label: string
+  hotkeys: Record<string, HotkeyDefinition>
+}
+
+export const GLOBALE_HOTKEYS = {
   åpneModia: {
     code: 'KeyM',
     alt: true,
@@ -39,6 +44,47 @@ export const HOTKEYS = {
     description: 'Gå til medarbeiders oppgaver',
   },
 } as const satisfies Record<string, HotkeyDefinition>
+
+export const SAK_HOTKEYS = {
+  innvilgeUtenBrev: {
+    code: 'KeyI',
+    alt: true,
+    description: 'Innvilge uten brev',
+  },
+} as const satisfies Record<string, HotkeyDefinition>
+
+export const OPPGAVELISTE_HOTKEYS = {
+  alle: {
+    code: 'KeyA',
+    description: 'Vis alle oppgaver på valgt liste',
+  },
+  hast: {
+    code: 'KeyH',
+    description: 'Vis hastesaker på valgt liste',
+  },
+  venter: {
+    code: 'KeyV',
+    description: 'Vis oppgaver vent på valgt liste',
+  },
+  ferdigstilte: {
+    code: 'KeyF',
+    description: 'Vis ferdigstilte oppgaver på valgt liste',
+  },
+  fjernAlleFiltre: {
+    code: 'KeyX',
+    description: 'Fjern alle filtre',
+  },
+} as const satisfies Record<string, HotkeyDefinition>
+
+export const HOTKEY_GRUPPER: HotkeyGroup[] = [
+  { label: 'Globale', hotkeys: GLOBALE_HOTKEYS },
+  ...(window.appSettings.NAIS_CLUSTER_NAME !== 'prod-gcp'
+    ? [
+        { label: 'Sak', hotkeys: SAK_HOTKEYS },
+        { label: 'Oppgaveliste', hotkeys: OPPGAVELISTE_HOTKEYS },
+      ]
+    : []),
+]
 
 export function formaterTaster(hotkey: HotkeyDefinition): string[] {
   const taster: string[] = []

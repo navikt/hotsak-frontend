@@ -1,7 +1,6 @@
 import { type ComponentType, type ReactNode, Suspense } from 'react'
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary'
-
-import { GlobalFeilside } from './feil/GlobalFeilside.tsx'
+import { Feilmelding } from './feil/Feilmelding.tsx'
 
 export interface AsyncBoundaryProps {
   name?: string
@@ -11,7 +10,7 @@ export interface AsyncBoundaryProps {
 }
 
 export function AsyncBoundary(props: AsyncBoundaryProps) {
-  const { name = 'AsyncBoundary', errorComponent = GlobalFeilside, suspenseFallback = null, children } = props
+  const { name = 'AsyncBoundary', errorComponent = Feilmelding, suspenseFallback = null, children } = props
   return (
     <ErrorBoundary FallbackComponent={errorComponent}>
       <Suspense name={name} fallback={suspenseFallback}>

@@ -7,7 +7,10 @@ import { type InnloggetAnsatt } from './Ansatt.ts'
 import { initialState, TilgangContext, type TilgangContextType } from './TilgangContext.ts'
 
 export function TilgangProvider({ children }: { children: ReactNode }) {
-  const { data: innloggetAnsatt, error } = useSwr<InnloggetAnsatt, HttpError>('/api/ansatte/meg', { suspense: true })
+  const { data: innloggetAnsatt, error } = useSwr<InnloggetAnsatt, HttpError>('/api/ansatte/meg', {
+    refreshInterval: 10_000,
+    suspense: true,
+  })
 
   const value = useMemo<TilgangContextType>(() => {
     if (error) {

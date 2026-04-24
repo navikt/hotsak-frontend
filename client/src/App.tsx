@@ -4,6 +4,7 @@ import classes from './App.module.css'
 
 import { AppRoutes } from './AppRoutes.tsx'
 import { AsyncBoundary } from './felleskomponenter/AsyncBoundary.tsx'
+import { GlobalFeilside } from './felleskomponenter/feil/GlobalFeilside.tsx'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
 import { useDarkMode } from './header/useDarkMode.ts'
@@ -22,7 +23,7 @@ export function App() {
   return (
     <Theme theme={darkMode ? 'dark' : 'light'}>
       <div className={classes.root}>
-        <AsyncBoundary suspenseFallback={null}>
+        <AsyncBoundary errorComponent={GlobalFeilside} suspenseFallback={null}>
           <TilgangProvider>
             <PersonProvider>
               <ToastProvider>

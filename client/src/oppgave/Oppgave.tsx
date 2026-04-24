@@ -2,7 +2,6 @@ import { lazy, useEffect } from 'react'
 
 import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
-import { Feilmelding } from '../felleskomponenter/feil/Feilmelding.tsx'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
 import { type Oppgave, Oppgavetype } from './oppgaveTypes.ts'
@@ -50,7 +49,7 @@ function OppgavetypeSwitch({ oppgave }: { oppgave: Oppgave }) {
 
 export default function Oppgave() {
   return (
-    <AsyncBoundary name="Oppgave" errorComponent={Feilmelding}>
+    <AsyncBoundary name="Oppgave">
       <OppgaveContent />
     </AsyncBoundary>
   )

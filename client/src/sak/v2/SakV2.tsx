@@ -4,7 +4,6 @@ import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
-import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
@@ -212,7 +211,7 @@ function SakV2Content() {
 
 export default function SakV2() {
   return (
-    <AsyncBoundary errorComponent={Feilmelding}>
+    <AsyncBoundary>
       <SakV2Content />
     </AsyncBoundary>
   )

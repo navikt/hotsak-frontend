@@ -4,7 +4,6 @@ import { useErrorBoundary } from 'react-error-boundary'
 import { useDokumentContext } from '../../../../dokument/DokumentContext'
 import { DokumentPanel } from '../../../../dokument/DokumentPanel'
 import { AsyncBoundary } from '../../../../felleskomponenter/AsyncBoundary.tsx'
-import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding.tsx'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -64,7 +63,7 @@ const LasterRegistrerSøknadBilde = () => <LasterPersonlinje />
 
 export function RegistrerSøknad() {
   return (
-    <AsyncBoundary errorComponent={Feilmelding} suspenseFallback={<LasterRegistrerSøknadBilde />}>
+    <AsyncBoundary suspenseFallback={<LasterRegistrerSøknadBilde />}>
       <RegistrerSøknadContent />
     </AsyncBoundary>
   )

@@ -5,7 +5,6 @@ import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
-import { Feilmelding } from '../felleskomponenter/feil/Feilmelding.tsx'
 import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, sidebarMinWidth } from '../GlobalStyles'
 import { useOppgave } from '../oppgave/useOppgave.ts'
@@ -119,7 +118,7 @@ const Container = styled.section`
 
 export default function Søknadsbilde() {
   return (
-    <AsyncBoundary errorComponent={Feilmelding}>
+    <AsyncBoundary>
       <SaksbildeContent />
     </AsyncBoundary>
   )

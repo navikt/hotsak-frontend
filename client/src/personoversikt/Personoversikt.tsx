@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
-import { Feilmelding } from '../felleskomponenter/feil/Feilmelding.tsx'
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
@@ -94,7 +93,7 @@ function PersonoversiktContent() {
 
 export default function Personoversikt() {
   return (
-    <AsyncBoundary errorComponent={Feilmelding} suspenseFallback={<LasterPersonlinje />}>
+    <AsyncBoundary suspenseFallback={<LasterPersonlinje />}>
       <PersonoversiktContent />
     </AsyncBoundary>
   )

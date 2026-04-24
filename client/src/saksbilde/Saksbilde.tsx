@@ -3,7 +3,6 @@ import { useErrorBoundary } from 'react-error-boundary'
 
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
-import { Feilmelding } from '../felleskomponenter/feil/Feilmelding.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { usePerson } from '../personoversikt/usePerson'
@@ -95,7 +94,7 @@ function SakstypeSwitch({ sak }: { sak: SakBase }) {
 
 export default function Saksbilde() {
   return (
-    <AsyncBoundary name="Saksbilde" errorComponent={Feilmelding} suspenseFallback={<SakLoader />}>
+    <AsyncBoundary name="Saksbilde" suspenseFallback={<SakLoader />}>
       <SaksbildeContent />
     </AsyncBoundary>
   )

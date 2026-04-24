@@ -4,8 +4,6 @@ import { useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
-
-import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth, søknadslinjeHøyde } from '../../GlobalStyles'
 import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 import { useOppgave } from '../../oppgave/useOppgave.ts'
@@ -103,7 +101,7 @@ function LasterBarnebrillesaksbilde() {
 
 export default function Barnebrillesaksbilde() {
   return (
-    <AsyncBoundary errorComponent={Feilmelding} suspenseFallback={<LasterBarnebrillesaksbilde />}>
+    <AsyncBoundary suspenseFallback={<LasterBarnebrillesaksbilde />}>
       <ManuellSaksbehandlingProvider>
         <HGrid
           columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}

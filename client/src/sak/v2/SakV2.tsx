@@ -59,10 +59,10 @@ function SakV2Content() {
   const gjenstående = gjeldendeBehandling?.gjenstående || []
 
   useSakHotkeys({
-    gjenstående,
-    onNotatIkkeFerdigstilt: () => setVisNotatIkkeFerdigstilt(true),
-    onBrevFinnesIUtkast: () => setVisBrevMangler(true),
     onAnnetResultat: () => setAnnetResultatValgt(true),
+    onBrevMangler: () => setVisBrevMangler(true),
+    onNotatIkkeFerdigstilt: () => setVisNotatIkkeFerdigstilt(true),
+    onFattVedtak: () => setVisFerdigstillModal(true),
   })
 
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)

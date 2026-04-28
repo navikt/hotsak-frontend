@@ -1,7 +1,8 @@
-import { Heading, HGrid, HStack, Modal, Tag, VStack } from '@navikt/ds-react'
+import { Heading, HStack, Modal, Tag, VStack } from '@navikt/ds-react'
 import { useRef } from 'react'
 
 import { formaterTaster, HOTKEY_GRUPPER } from './hotkeys.ts'
+import classes from './HurtigtasterModal.module.css'
 
 export function HurtigtasterModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null)
@@ -25,13 +26,11 @@ export function HurtigtasterModal({ open, onClose }: { open: boolean; onClose: (
               {Object.values(gruppe.hotkeys).map((hotkey) => (
                 <HStack key={hotkey.description} justify="space-between" align="center" wrap={false}>
                   <span>{hotkey.description}</span>
-                  <HGrid gap="space-6" columns={2}>
+                  <HStack gap="space-4" wrap={false}>
                     {formaterTaster(hotkey).map((tast) => (
-                      <Tag key={tast} size="small" variant="neutral">
-                        {tast}
-                      </Tag>
+                      <Tast key={tast}>{tast}</Tast>
                     ))}
-                  </HGrid>
+                  </HStack>
                 </HStack>
               ))}
             </VStack>
@@ -39,5 +38,13 @@ export function HurtigtasterModal({ open, onClose }: { open: boolean; onClose: (
         </VStack>
       </Modal.Body>
     </Modal>
+  )
+}
+
+function Tast({ children }: { children: string }) {
+  return (
+    <Tag size="small" variant="neutral" className={classes.tast}>
+      {children}
+    </Tag>
   )
 }

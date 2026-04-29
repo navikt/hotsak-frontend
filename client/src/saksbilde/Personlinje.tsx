@@ -31,7 +31,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />
 
-  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming } = person
+  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming, verge } = person
   const [adressebeskyttelse] = (adressebeskyttelseOgSkjerming?.gradering || []).filter(
     (gradering) => gradering !== Adressebeskyttelse.UGRADERT
   )
@@ -86,6 +86,11 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
       {adressebeskyttelseOgSkjerming?.skjermet && (
         <Tag data-color="danger" size="small" variant="outline">
           Skjermet
+        </Tag>
+      )}
+      {verge && (
+        <Tag data-color="warning" size="small" variant="outline">
+          Vergemål
         </Tag>
       )}
     </Container>

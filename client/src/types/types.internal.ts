@@ -644,6 +644,22 @@ export interface Person extends Personnavn, HarPersonnavn {
   bydel?: Bydel
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
   dødsdato?: string
+  verge?: Verge
+}
+
+export interface Verge {
+  type: string
+  vergeEllerFullmektig: VergeEllerFullmektig
+}
+
+export interface VergeEllerFullmektig {
+  motpartsPersonident: string
+  omfang: string
+  identifiserendeInformasjon: IdentifiserendeInformasjon
+}
+
+export interface IdentifiserendeInformasjon {
+  navn: Personnavn
 }
 
 export interface HjelpemiddelProdukt {

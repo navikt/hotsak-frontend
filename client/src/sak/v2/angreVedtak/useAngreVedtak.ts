@@ -5,6 +5,7 @@ import { http } from '../../../io/HttpClient'
 import { useOppgave } from '../../../oppgave/useOppgave'
 import { mutateSak } from '../../../saksbilde/mutateSak'
 import { useBehandling } from '../behandling/useBehandling'
+import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 
 export interface AngreResponse {
   nyOppgaveId: string
@@ -21,6 +22,7 @@ export function useAngreVedtak(): AngreActions {
   const { execute, state } = useActionState()
   const { showSuccessToast } = useToast()
   const navigate = useNavigate()
+  const { mutate: mutateBrevMetadata } = useBrevMetadata()
 
   return {
     async angreVedtak({ årsak }: { årsak: string }) {
@@ -34,6 +36,7 @@ export function useAngreVedtak(): AngreActions {
         )
         await mutateBehandling()
         await mutateSak(sakId)
+        await mutateBrevMetadata()
         showSuccessToast('Vedtaket er angret og ny oppgave er aktiv')
         navigate(`/oppgave/${response.nyOppgaveId}`)
       })

@@ -648,23 +648,23 @@ export interface Person extends Personnavn, HarPersonnavn {
 }
 
 export interface Vergemål {
-  type: string
+  type?: string | null
   vergeEllerFullmektig: VergeEllerFullmektig
 }
 
 export interface VergeEllerFullmektig {
-  motpartsPersonident: string
-  omfang: string
-  identifiserendeInformasjon: IdentifiserendeInformasjon
-  tjenesteomraade: Tjenesteomraade[]
+  motpartsPersonident?: string | null
+  omfang?: string | null
+  identifiserendeInformasjon?: IdentifiserendeInformasjon | null
+  tjenesteomraade?: Tjenesteomraade[] | null
 }
 
 export interface Tjenesteomraade {
-  tjenesteoppgave: string
+  tjenesteoppgave?: string | null
 }
 
 export interface IdentifiserendeInformasjon {
-  navn: Personnavn
+  navn?: Personnavn | null
 }
 
 export interface HjelpemiddelProdukt {

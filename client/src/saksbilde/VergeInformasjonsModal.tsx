@@ -6,7 +6,7 @@ export function VergeInformasjonsModal({
   modalRef,
   vergemål,
 }: {
-  modalRef: React.RefObject<HTMLDialogElement>
+  modalRef: React.RefObject<HTMLDialogElement | null>
   vergemål: Vergemål[]
 }) {
   return (
@@ -24,19 +24,26 @@ export function VergeInformasjonsModal({
           </Table.Header>
           <Table.Body>
             {vergemål.map((vergemål, i) => {
+              const { vergeEllerFullmektig } = vergemål
               return (
                 <Table.Row key={i}>
-                  <Table.DataCell>{storForbokstavIOrd(vergemål.type)}</Table.DataCell>
-                  <Table.DataCell>{storForbokstavIOrd(vergemål.vergeEllerFullmektig.omfang)}</Table.DataCell>
+                  <Table.DataCell>{vergemål.type ? storForbokstavIOrd(vergemål.type) : '-'}</Table.DataCell>
                   <Table.DataCell>
-                    {vergemål.vergeEllerFullmektig.tjenesteomraade
-                      .map((tjeneste) => storForbokstavIOrd(tjeneste.tjenesteoppgave))
-                      .join(', ')}
+                    {vergeEllerFullmektig.omfang ? storForbokstavIOrd(vergeEllerFullmektig.omfang) : '-'}
                   </Table.DataCell>
                   <Table.DataCell>
-                    {formaterNavn(vergemål.vergeEllerFullmektig.identifiserendeInformasjon.navn)}
+                    {vergeEllerFullmektig.tjenesteomraade
+                      ?.map((tjeneste) =>
+                        tjeneste.tjenesteoppgave ? storForbokstavIOrd(tjeneste.tjenesteoppgave) : '-'
+                      )
+                      .join(', ') || '-'}
                   </Table.DataCell>
-                  <Table.DataCell>{vergemål.vergeEllerFullmektig.motpartsPersonident}</Table.DataCell>
+                  <Table.DataCell>
+                    {vergeEllerFullmektig.identifiserendeInformasjon?.navn
+                      ? formaterNavn(vergeEllerFullmektig.identifiserendeInformasjon.navn)
+                      : '-'}
+                  </Table.DataCell>
+                  <Table.DataCell>{vergeEllerFullmektig.motpartsPersonident || '-'}</Table.DataCell>
                 </Table.Row>
               )
             })}

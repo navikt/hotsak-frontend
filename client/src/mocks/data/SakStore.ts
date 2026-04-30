@@ -147,7 +147,7 @@ export class SakStore extends Dexie {
               identifiserendeInformasjon: {
                 navn: {
                   fornavn: 'Streng',
-                  mellomnavn: null,
+                  mellomnavn: undefined,
                   etternavn: 'Malerbukse',
                 },
               },
@@ -162,7 +162,7 @@ export class SakStore extends Dexie {
               identifiserendeInformasjon: {
                 navn: {
                   fornavn: 'Streng',
-                  mellomnavn: null,
+                  mellomnavn: undefined,
                   etternavn: 'Malerbukse',
                 },
               },
@@ -177,11 +177,11 @@ export class SakStore extends Dexie {
             type: 'voksen',
             vergeEllerFullmektig: {
               motpartsPersonident: '12345678910',
-              omfang: '',
+              omfang: null,
               identifiserendeInformasjon: {
                 navn: {
                   fornavn: 'Tragisk',
-                  mellomnavn: null,
+                  mellomnavn: undefined,
                   etternavn: 'Seier',
                 },
               },

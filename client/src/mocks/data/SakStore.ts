@@ -138,7 +138,61 @@ export class SakStore extends Dexie {
         navn,
         kjønn: kjønn || Kjønn.UKJENT,
         enhet,
-        vergemål: [],
+        vergemål: [
+          {
+            type: 'voksen',
+            vergeEllerFullmektig: {
+              motpartsPersonident: '30466942398',
+              omfang: 'personligeOgOekonomiskeInteresser',
+              identifiserendeInformasjon: {
+                navn: {
+                  fornavn: 'Streng',
+                  mellomnavn: null,
+                  etternavn: 'Malerbukse',
+                },
+              },
+              tjenesteomraade: [],
+            },
+          },
+          {
+            type: 'voksen',
+            vergeEllerFullmektig: {
+              motpartsPersonident: '30466942398',
+              omfang: 'personligeOgOekonomiskeInteresser',
+              identifiserendeInformasjon: {
+                navn: {
+                  fornavn: 'Streng',
+                  mellomnavn: null,
+                  etternavn: 'Malerbukse',
+                },
+              },
+              tjenesteomraade: [
+                {
+                  tjenesteoppgave: 'hjelpemidler',
+                },
+              ],
+            },
+          },
+          {
+            type: 'voksen',
+            vergeEllerFullmektig: {
+              motpartsPersonident: '12345678910',
+              omfang: '',
+              identifiserendeInformasjon: {
+                navn: {
+                  fornavn: 'Tragisk',
+                  mellomnavn: null,
+                  etternavn: 'Seier',
+                },
+              },
+              tjenesteomraade: [
+                {
+                  tjenesteoppgave: 'pensjon',
+                },
+              ],
+            },
+          },
+        ],
       }))
     )
     return this.saker.bulkAdd(

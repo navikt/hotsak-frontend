@@ -38,7 +38,7 @@ export function useAngreVedtak(): AngreActions {
         )
         await mutateBehandling()
         await mutateSak(sakId)
-        await brevutkast.mutate()
+        await brevutkast.mutate(undefined, { revalidate: false })
         await mutateBrevMetadata()
         showSuccessToast('Vedtaket er angret og ny oppgave er aktiv')
         navigate(`/oppgave/${response.nyOppgaveId}`)

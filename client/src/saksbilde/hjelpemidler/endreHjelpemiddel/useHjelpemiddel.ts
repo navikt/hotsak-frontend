@@ -1,4 +1,4 @@
-import useSwr from 'swr'
+.import useSwr from 'swr'
 
 import type { HttpError } from '../../../io/HttpError.ts'
 import type { HjelpemiddelProdukt } from '../../../types/types.internal'
@@ -40,8 +40,10 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
         leverandør: grunndataProdukt.leverandør,
       }
     }
-
+    console.log("Grunndata produkt ikke funnet", grunndataProdukt)
     if (oebsProdukt) {
+      console.log("Sjekket om produkt finnes i OeBS.", oebsProdukt)
+                  
       return {
         hmsArtNr: oebsProdukt.hmsnr,
         artikkelnavn: oebsProdukt.navn,
@@ -53,7 +55,7 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
   }, [grunndataProdukt, oebsProdukt])
 
   const isLoading = grunndataLoading || (oebsLoading && !grunndataProdukt)
-
+  console.log("Hjelpemiddel ble", hjelpemiddel)
   return {
     hjelpemiddel,
     error,

@@ -138,6 +138,7 @@ export class SakStore extends Dexie {
         navn,
         kjønn: kjønn || Kjønn.UKJENT,
         enhet,
+        vergemål: [],
       }))
     )
     return this.saker.bulkAdd(

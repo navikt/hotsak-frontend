@@ -47,6 +47,7 @@ export class PersonStore extends Dexie {
         gradering: [],
         skjermet: false,
       },
+      vergemål: [],
     }
 
     return this.lagreAlle([stabilPerson])
@@ -82,5 +83,6 @@ export function lagPerson(alder: number = lagTilfeldigInteger(5, 95)): Person {
       gradering: [],
       skjermet: false,
     },
+    vergemål: [],
   }
 }

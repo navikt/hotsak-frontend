@@ -1,4 +1,4 @@
-.import useSwr from 'swr'
+import useSwr from 'swr'
 
 import type { HttpError } from '../../../io/HttpError.ts'
 import type { HjelpemiddelProdukt } from '../../../types/types.internal'

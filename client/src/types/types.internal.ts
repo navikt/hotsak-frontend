@@ -644,7 +644,7 @@ export interface Person extends Personnavn, HarPersonnavn {
   bydel?: Bydel
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
   dødsdato?: string
-  vergemål?: Vergemål[]
+  vergemål: Vergemål[]
 }
 
 export interface Vergemål {

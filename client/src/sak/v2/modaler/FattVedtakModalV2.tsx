@@ -34,7 +34,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
   const brevMetaData = useBrevMetadata()
   const { personInfo } = usePerson(sak.bruker.fnr)
-  const harVergePåHjelpemiddelområdet = personInfo.vergemål?.some((vergemål) =>
+  const harVergePåHjelpemiddelområdet = personInfo?.vergemål?.some((vergemål) =>
     vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
   )
   const [brevSkalSendesTilVerge, setBrevSkalSendesTilVerge] = useState<boolean | undefined>(undefined)
@@ -160,7 +160,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           </Alert>
         </>
       )}
-      {harVergePåHjelpemiddelområdet && (
+      {harVergePåHjelpemiddelområdet && personInfo && (
         <BrevTilBrukerEllerVerge
           person={personInfo}
           value={brevSkalSendesTilVerge}

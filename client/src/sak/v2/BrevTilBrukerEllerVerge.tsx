@@ -35,7 +35,9 @@ export function BrevTilBrukerEllerVerge({
         </HStack>
         <Alert variant="info" size="small" inline>
           Verge på hjelpemiddelområdet:{' '}
-          <strong>{formaterNavn(hjelpemiddelVerge.vergeEllerFullmektig.identifiserendeInformasjon.navn)}</strong>
+          <strong>
+            {formaterNavn(hjelpemiddelVerge.vergeEllerFullmektig.identifiserendeInformasjon?.navn ?? undefined)}
+          </strong>
         </Alert>
         <RadioGroup
           legend="Velg hvem brevet skal sendes til"

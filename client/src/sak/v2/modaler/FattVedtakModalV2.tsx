@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { Tekst } from '../../../felleskomponenter/typografi'
+import { usePerson } from '../../../personoversikt/usePerson'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
 import { Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
@@ -11,6 +12,7 @@ import { VedtakFormValues } from '../../felles/useVedtak'
 import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
+import { BrevTilBrukerEllerVerge } from '../BrevTilBrukerEllerVerge'
 import { useClosePanel } from '../paneler/usePanelHooks'
 
 export interface FattVedtakModalV2Props {
@@ -31,6 +33,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
   const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
   const brevMetaData = useBrevMetadata()
+  const { personInfo } = usePerson(sak.bruker.fnr)
+  const harVergePåHjelpemiddelområdet = personInfo.vergemål?.some((vergemål) =>
+    vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
+  )
+  const [brevSkalSendesTilVerge, setBrevSkalSendesTilVerge] = useState<boolean | undefined>(undefined)
+  const [vergeError, setVergeError] = useState<string | undefined>(undefined)
 
   const fattVedtak = async (data: VedtakFormValues) => {
     setVedtakLoader(true)
@@ -40,10 +48,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         problemsammendrag: data.problemsammendrag,
         postbegrunnelse: data.postbegrunnelse,
         utleveringMerknad: data.utleveringMerknad,
+        brevSkalSendesTilVerge: brevSkalSendesTilVerge,
       })
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({
         problemsammendrag: data.problemsammendrag,
+        brevSkalSendesTilVerge: brevSkalSendesTilVerge,
       })
     }
     if (erInnvilget) {
@@ -56,8 +66,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   }
 
   const fattAvslagsvedtak = async () => {
+    if (harVergePåHjelpemiddelområdet && brevSkalSendesTilVerge === undefined) {
+      setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
+      return
+    }
     setVedtakLoader(true)
-    await ferdigstillBehandling({})
+    await ferdigstillBehandling({ brevSkalSendesTilVerge: brevSkalSendesTilVerge })
 
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
@@ -85,7 +99,16 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       width="700px"
       buttonSize="medium"
       bekreftButtonLabel={`${vedtakTekst?.knapp}${brevMetaData.harBrevISak ? ' og send brev' : ''}`}
-      onBekreft={erAvslag ? fattAvslagsvedtak : () => formRef.current?.submit()}
+      onBekreft={
+        erAvslag
+          ? fattAvslagsvedtak
+          : () => {
+              if (harVergePåHjelpemiddelområdet && brevSkalSendesTilVerge === undefined) {
+                setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
+              }
+              formRef.current?.submit()
+            }
+      }
       onClose={onClose}
     >
       {(erInnvilget || erDelvisInnvilget) && (
@@ -136,6 +159,17 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
             varsel om vedtaksresultatet.
           </Alert>
         </>
+      )}
+      {harVergePåHjelpemiddelområdet && (
+        <BrevTilBrukerEllerVerge
+          person={personInfo}
+          value={brevSkalSendesTilVerge}
+          onChange={(value) => {
+            setBrevSkalSendesTilVerge(value)
+            setVergeError(undefined)
+          }}
+          error={vergeError}
+        />
       )}
     </BekreftelseModal>
   )

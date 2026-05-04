@@ -13,10 +13,12 @@ export interface BehandlingActions extends Actions {
     problemsammendrag,
     postbegrunnelse,
     utleveringMerknad,
+    brevSkalSendesTilVerge,
   }: {
     problemsammendrag?: string
     postbegrunnelse?: string
     utleveringMerknad?: string
+    brevSkalSendesTilVerge?: boolean
   }): Promise<void>
 }
 
@@ -49,15 +51,17 @@ export function useBehandlingActions(): BehandlingActions {
       problemsammendrag,
       postbegrunnelse,
       utleveringMerknad,
+      brevSkalSendesTilVerge,
     }: {
       problemsammendrag?: string
       postbegrunnelse?: string
       utleveringMerknad?: string
+      brevSkalSendesTilVerge?: boolean
     }) {
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
-          { problemsammendrag, postbegrunnelse, utleveringMerknad },
+          { problemsammendrag, postbegrunnelse, utleveringMerknad, brevSkalSendesTilVerge },
           { versjon }
         )
         await mutateBehandling()

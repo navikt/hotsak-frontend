@@ -10,7 +10,7 @@ export function FritekstPanel() {
   const [beskjedlengdeError, setBeskjedlengdeError] = useState(false)
 
   return (
-    <Box padding="space-16" background="neutral-soft">
+    <Box padding="space-16" background="neutral-soft" borderRadius="12">
       <VStack gap="space-16">
         <Heading level="2" size="xsmall" spacing>
           Beskjed fra formidler til kommunen om utlevering

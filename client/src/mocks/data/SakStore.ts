@@ -169,6 +169,7 @@ export class SakStore extends Dexie {
               tjenesteomraade: [
                 {
                   tjenesteoppgave: 'hjelpemidler',
+                  tjenestevirksomhet: 'nav',
                 },
               ],
             },
@@ -188,6 +189,7 @@ export class SakStore extends Dexie {
               tjenesteomraade: [
                 {
                   tjenesteoppgave: 'pensjon',
+                  tjenestevirksomhet: null,
                 },
               ],
             },

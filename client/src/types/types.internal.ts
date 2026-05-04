@@ -661,6 +661,7 @@ export interface VergeEllerFullmektig {
 
 export interface Tjenesteomraade {
   tjenesteoppgave?: string | null
+  tjenestevirksomhet?: string | null
 }
 
 export interface IdentifiserendeInformasjon {

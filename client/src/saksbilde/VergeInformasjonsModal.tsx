@@ -34,7 +34,12 @@ export function VergeInformasjonsModal({
                   <Table.DataCell>
                     {vergeEllerFullmektig.tjenesteomraade
                       ?.map((tjeneste) =>
-                        tjeneste.tjenesteoppgave ? storForbokstavIOrd(tjeneste.tjenesteoppgave) : '-'
+                        tjeneste.tjenesteoppgave
+                          ? storForbokstavIOrd(tjeneste.tjenesteoppgave) +
+                            (tjeneste.tjenestevirksomhet
+                              ? ' ' + '(' + storForbokstavIOrd(tjeneste.tjenestevirksomhet) + ')'
+                              : '')
+                          : '-'
                       )
                       .join(', ') || '-'}
                   </Table.DataCell>

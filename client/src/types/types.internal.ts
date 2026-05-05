@@ -664,6 +664,11 @@ export interface Tjenesteomraade {
   tjenestevirksomhet?: string | null
 }
 
+export enum Brevmottaker {
+  VERGE = 'VERGE',
+  BRUKER = 'BRUKER',
+}
+
 export interface IdentifiserendeInformasjon {
   navn?: Personnavn | null
 }

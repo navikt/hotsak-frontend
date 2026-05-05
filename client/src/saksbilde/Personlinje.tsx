@@ -1,4 +1,4 @@
-import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
+import { Button, HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
 import { Children, ReactNode, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -91,15 +91,9 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
         </Tag>
       )}
       {vergemål.length > 0 && (
-        <button
-          type="button"
-          onClick={() => vergemålModalRef.current?.showModal()}
-          style={{ all: 'unset', cursor: 'pointer' }}
-        >
-          <Tag data-color="warning" size="small" variant="outline">
-            Vergemål
-          </Tag>
-        </button>
+        <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
+          Vergemål
+        </Button>
       )}
       <VergeInformasjonsModal modalRef={vergemålModalRef} vergemål={vergemål} />
     </Container>

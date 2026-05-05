@@ -19,7 +19,6 @@ export function VergeInformasjonsModal({
               <Table.HeaderCell scope="col">Omfang</Table.HeaderCell>
               <Table.HeaderCell scope="col">Tjenesteområde</Table.HeaderCell>
               <Table.HeaderCell scope="col">Verge navn</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Verge fødselsnummer</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -48,7 +47,6 @@ export function VergeInformasjonsModal({
                       ? formaterNavn(vergeEllerFullmektig.identifiserendeInformasjon.navn)
                       : '-'}
                   </Table.DataCell>
-                  <Table.DataCell>{vergeEllerFullmektig.motpartsPersonident || '-'}</Table.DataCell>
                 </Table.Row>
               )
             })}

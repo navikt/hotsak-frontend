@@ -1,6 +1,6 @@
 import { Alert, Box, HelpText, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Person } from '../../types/types.internal'
+import { Brevmottaker, Person } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
 
 export function BrevTilBrukerEllerVerge({
@@ -10,8 +10,8 @@ export function BrevTilBrukerEllerVerge({
   error,
 }: {
   person: Person
-  value: boolean | undefined
-  onChange: (value: boolean) => void
+  value: Brevmottaker | undefined
+  onChange: (value: Brevmottaker) => void
   error?: string
 }) {
   const hjelpemiddelVerge = person.vergemål?.find((vergemål) =>
@@ -46,8 +46,8 @@ export function BrevTilBrukerEllerVerge({
           onChange={onChange}
           error={error}
         >
-          <Radio value={false}>Bruker</Radio>
-          <Radio value={true}>Verge</Radio>
+          <Radio value={Brevmottaker.BRUKER}>Bruker</Radio>
+          <Radio value={Brevmottaker.VERGE}>Verge</Radio>
         </RadioGroup>
       </VStack>
     </Box>

@@ -6,7 +6,7 @@ import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { usePerson } from '../../../personoversikt/usePerson'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
-import { Sak } from '../../../types/types.internal'
+import { Brevmottaker, Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
@@ -38,11 +38,11 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
     personInfo?.vergemål?.some((vergemål) =>
       vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
     ) && brevMetaData.harBrevISak
-  const [brevSkalSendesTilVerge, setBrevSkalSendesTilVerge] = useState<boolean | undefined>(undefined)
+  const [brevMottaker, setBrevMottaker] = useState<Brevmottaker | undefined>(undefined)
   const [vergeError, setVergeError] = useState<string | undefined>(undefined)
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    if (harVergePåHjelpemiddelområdet && brevSkalSendesTilVerge === undefined) {
+    if (harVergePåHjelpemiddelområdet && brevMottaker === undefined) {
       return
     }
     setVedtakLoader(true)
@@ -52,12 +52,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         problemsammendrag: data.problemsammendrag,
         postbegrunnelse: data.postbegrunnelse,
         utleveringMerknad: data.utleveringMerknad,
-        brevSkalSendesTilVerge: brevSkalSendesTilVerge,
+        brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined,
       })
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({
         problemsammendrag: data.problemsammendrag,
-        brevSkalSendesTilVerge: brevSkalSendesTilVerge,
+        brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined,
       })
     }
     if (erInnvilget) {
@@ -70,12 +70,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   }
 
   const fattAvslagsvedtak = async () => {
-    if (harVergePåHjelpemiddelområdet && brevSkalSendesTilVerge === undefined) {
+    if (harVergePåHjelpemiddelområdet && brevMottaker === undefined) {
       setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
       return
     }
     setVedtakLoader(true)
-    await ferdigstillBehandling({ brevSkalSendesTilVerge: brevSkalSendesTilVerge })
+    await ferdigstillBehandling({ brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined })
 
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
@@ -107,7 +107,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         erAvslag
           ? fattAvslagsvedtak
           : () => {
-              if (harVergePåHjelpemiddelområdet && brevSkalSendesTilVerge === undefined) {
+              if (harVergePåHjelpemiddelområdet && brevMottaker === undefined) {
                 setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
               }
               formRef.current?.submit()
@@ -167,9 +167,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       {harVergePåHjelpemiddelområdet && personInfo && (
         <BrevTilBrukerEllerVerge
           person={personInfo}
-          value={brevSkalSendesTilVerge}
+          value={brevMottaker}
           onChange={(value) => {
-            setBrevSkalSendesTilVerge(value)
+            setBrevMottaker(value)
             setVergeError(undefined)
           }}
           error={vergeError}

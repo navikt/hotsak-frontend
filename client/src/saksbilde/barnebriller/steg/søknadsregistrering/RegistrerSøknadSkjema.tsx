@@ -2,7 +2,8 @@ import { Box, Button, Loader } from '@navikt/ds-react'
 import { formatISO } from 'date-fns'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import styled from 'styled-components'
+
+import classes from './RegistrerSøknadSkjema.module.css'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
@@ -22,10 +23,6 @@ import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
-
-const Container = styled.div`
-  overflow: auto;
-`
 
 export function RegistrerSøknadSkjema() {
   const sakId = useSakId()
@@ -108,7 +105,7 @@ export function RegistrerSøknadSkjema() {
   }
 
   return (
-    <Container>
+    <div className={classes.container}>
       <Box paddingBlock="space-16 space-8">
         <Dokumenter dokumenter={dokumenter} />
       </Box>
@@ -136,6 +133,6 @@ export function RegistrerSøknadSkjema() {
           </form>
         </FormProvider>
       </Box>
-    </Container>
+    </div>
   )
 }

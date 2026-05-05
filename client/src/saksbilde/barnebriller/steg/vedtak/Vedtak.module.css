@@ -1,0 +1,6 @@
+.venstreKolonne {
+  border-left: 1px solid var(--ax-border-neutral-subtle);
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}

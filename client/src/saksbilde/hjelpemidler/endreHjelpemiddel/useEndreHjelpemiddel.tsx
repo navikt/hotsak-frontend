@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
-import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { http } from '../../../io/HttpClient.ts'
 import { useArtiklerForSak } from '../../../sak/felles/useArtiklerForSak.ts'
 import { type EndreHjelpemiddelRequest, type EndretProdukt } from './endreHjelpemiddelTypes.ts'

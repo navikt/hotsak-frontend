@@ -1,5 +1,6 @@
 import { Alert, Box, Button, Detail, Heading, Skeleton, Tag, VStack } from '@navikt/ds-react'
-import styled from 'styled-components'
+
+import classes from './Vedtak.module.css'
 
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -92,16 +93,9 @@ export function Vedtak() {
           </Box>
         </ScrollContainer>
       )}
-      <VenstreKolonne>
+      <div className={classes.venstreKolonne}>
         <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
-      </VenstreKolonne>
+      </div>
     </TreKolonner>
   )
 }
-
-const VenstreKolonne = styled('div')`
-  border-left: 1px solid var(--ax-border-neutral-subtle);
-  padding: 0;
-  margin: 0;
-  height: 100%;
-`

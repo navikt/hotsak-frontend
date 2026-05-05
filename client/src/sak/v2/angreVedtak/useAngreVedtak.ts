@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Actions, useActionState } from '../../../action/Actions'
-import { useToast } from '../../../felleskomponenter/toast/ToastContext'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { http } from '../../../io/HttpClient'
 import { useOppgave } from '../../../oppgave/useOppgave'
 import { mutateSak } from '../../../saksbilde/mutateSak'

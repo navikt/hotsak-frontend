@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { useSakId } from '../../saksbilde/useSak'
-import { useToast } from '../../felleskomponenter/toast/ToastContext'
+import { useToast } from '../../felleskomponenter/toast/useToast'
 import { useBehandling } from '../../sak/v2/behandling/useBehandling'
 import { useBrevMetadata } from '../useBrevMetadata'
 import { useClosePanel } from '../../sak/v2/paneler/usePanelHooks'

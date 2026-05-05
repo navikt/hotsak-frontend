@@ -1,16 +1,11 @@
 import { HStack, Loader } from '@navikt/ds-react'
 import { useEffect } from 'react'
-import styled from 'styled-components'
 
 import { FeilmeldingAlert } from '../../../../../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { Brevtype, RessursStatus } from '../../../../../types/types.internal'
 import { useBrev } from './useBrev'
-
-const DokumentDiv = styled.div`
-  width: 100%;
-  height: calc(100vh - 140px);
-`
+import classes from './BrevPanel.module.css'
 
 interface BrevPanelProps {
   sakId: number | string
@@ -54,17 +49,11 @@ export function BrevPanel(props: BrevPanelProps) {
 const DokumentIFrame = ({ fullSize, dokumentData }: { fullSize: boolean; dokumentData?: string }) => {
   if (fullSize) {
     return (
-      <DokumentDiv>
+      <div className={classes.dokumentDiv}>
         <iframe title={'dokument'} src={dokumentData} width={'100%'} height={'100%'}></iframe>
-      </DokumentDiv>
+      </div>
     )
   } else {
-    return <StyledIFrame title={'Dokument'} src={dokumentData} tabIndex={0}></StyledIFrame>
+    return <iframe className={classes.styledIFrame} title={'Dokument'} src={dokumentData} tabIndex={0}></iframe>
   }
 }
-
-const StyledIFrame = styled.iframe`
-  margin: 0rem 0.5rem;
-  aspect-ratio: 1/1.5;
-  width: 95%;
-`

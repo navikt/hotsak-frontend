@@ -1,7 +1,8 @@
 import { ClockIcon, EnvelopeClosedIcon, NotePencilIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect } from 'react'
-import styled from 'styled-components'
+
+import classes from './BarnebrillesakSidebar.module.css'
 
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
@@ -16,13 +17,6 @@ import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabConte
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer'
 
-const Sidebar = styled(Tabs)`
-  border-left: 1px solid var(--ax-border-neutral-subtle);
-  min-height: 90vh;
-  margin: 0;
-  padding: 0;
-`
-
 export function BarnebrillesakSidebar() {
   const { sak } = useBarnebrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
@@ -33,6 +27,7 @@ export function BarnebrillesakSidebar() {
     if (sak?.data.steg === StegType.GODKJENNE) {
       setValgtSidebarTab(HøyrekolonneTabs.TOTRINNSKONTROLL)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!sak) {
@@ -40,7 +35,8 @@ export function BarnebrillesakSidebar() {
   }
 
   return (
-    <Sidebar
+    <Tabs
+      className={classes.sidebar}
       value={valgtSidebarTab}
       defaultValue={HøyrekolonneTabs.SAKSHISTORIKK}
       iconPosition="top"
@@ -90,6 +86,6 @@ export function BarnebrillesakSidebar() {
           </SidebarPanel>
         </Tabs.Panel>
       </ScrollContainer>
-    </Sidebar>
+    </Tabs>
   )
 }

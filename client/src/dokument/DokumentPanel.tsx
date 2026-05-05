@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import styled from 'styled-components'
 
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Toast } from '../felleskomponenter/toast/Toast'
 import { RessursStatus } from '../types/types.internal'
 import { useDokumentContext } from './DokumentContext'
 import { useDokument } from './useDokument'
+import classes from './DokumentPanel.module.css'
 
 export function DokumentPanel() {
   const { hentetDokument, dokumentError, hentForhåndsvisning } = useDokument()
@@ -21,36 +21,26 @@ export function DokumentPanel() {
 
   if (dokumentError) {
     return (
-      <FeilmeldingContainer>
+      <div className={classes.feilmeldingContainer}>
         <div>
           <FeilmeldingAlert>Det oppstod en feil ved henting av dokument.</FeilmeldingAlert>
         </div>
-      </FeilmeldingContainer>
+      </div>
     )
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (
-      <FeilmeldingContainer>
+      <div className={classes.feilmeldingContainer}>
         <div>
           <Toast>Henter dokument...</Toast>
         </div>
-      </FeilmeldingContainer>
+      </div>
     )
   } else
     return (
-      <DokumentContainer>
+      <div className={classes.dokumentContainer}>
         {hentetDokument.status === RessursStatus.SUKSESS && (
           <iframe title={'dokument'} src={hentetDokument.data} width={'100%'} height={'100%'}></iframe>
         )}
-      </DokumentContainer>
+      </div>
     )
 }
-
-const DokumentContainer = styled.div`
-  width: 100%;
-  height: 100%;
-`
-
-const FeilmeldingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`

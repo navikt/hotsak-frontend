@@ -1,8 +1,7 @@
-import styled from 'styled-components'
+import type { ReactNode } from 'react'
 
-export const HøyrekolonneInnslag = styled.li`
-  &:not(:last-of-type) {
-    padding-bottom: var(--ax-space-8);
-    border-bottom: 1px solid var(--ax-border-neutral-subtle);
-  }
-`
+import classes from './HøyrekolonneInnslag.module.css'
+
+export function HøyrekolonneInnslag({ children }: { children: ReactNode }) {
+  return <li className={classes.høyrekolonneInnslag}>{children}</li>
+}

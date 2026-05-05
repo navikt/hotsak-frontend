@@ -1,24 +1,19 @@
 import { Switch } from '@navikt/ds-react'
-import styled from 'styled-components'
+
+import classes from './FilterToggle.module.css'
 
 export interface FilterToggleProps {
   label: string
   value: boolean
-  handleChange(...args: any[]): any
+  handleChange(checked: boolean): void
 }
 
 export function FilterToggle({ label, value, handleChange }: FilterToggleProps) {
   return (
-    <ToggleContainer>
+    <div className={classes.toggleContainer}>
       <Switch checked={value} onChange={(e) => handleChange(e.target.checked)} size="small">
         {label}
       </Switch>
-    </ToggleContainer>
+    </div>
   )
 }
-
-const ToggleContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-  padding-right: var(--ax-space-16);
-`

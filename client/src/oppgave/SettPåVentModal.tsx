@@ -11,7 +11,7 @@ import { isNotBlank } from '../utils/type.ts'
 import { tilLocalDateString } from '../utils/dato.ts'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
-import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../felleskomponenter/toast/useToast'
 
 export function SettPåVentModal() {
   const { gjeldendeEnhet } = useInnloggetAnsatt()

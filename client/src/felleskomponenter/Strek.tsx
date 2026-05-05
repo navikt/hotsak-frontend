@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import classes from './Strek.module.css'
 
 export function Skillelinje({ color = 'default' }: { color?: 'default' | 'info' }) {
   return (
@@ -8,8 +8,6 @@ export function Skillelinje({ color = 'default' }: { color?: 'default' | 'info' 
   )
 }
 
-export const Strek = styled.hr<{ color?: 'default' | 'info' }>`
-  border: none;
-  height: 1px;
-  background-color: ${({ color }) => (color === 'info' ? 'var(--ax-border-info)' : 'var(--ax-border-neutral-subtle)')};
-`
+export function Strek({ color = 'default' }: { color?: 'default' | 'info' }) {
+  return <hr className={color === 'info' ? classes.strekInfo : classes.strek} />
+}

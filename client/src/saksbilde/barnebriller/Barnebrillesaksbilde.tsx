@@ -1,10 +1,11 @@
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
 import { memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
-import styled from 'styled-components'
+
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
-import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth, søknadslinjeHøyde } from '../../GlobalStyles'
+import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
+import classes from './Barnebrillesaksbilde.module.css'
 import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 import { useOppgave } from '../../oppgave/useOppgave.ts'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
@@ -20,20 +21,6 @@ import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
-
-const BarnebrillesakContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 96vh;
-`
-
-const Header = styled(HStack)`
-  box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--ax-border-neutral-subtle));
-  padding-right: 2rem;
-  height: ${søknadslinjeHøyde};
-  align-items: center;
-`
 
 const BarnebrillesakContent = memo(() => {
   const { oppgave } = useOppgave()
@@ -59,7 +46,7 @@ const BarnebrillesakContent = memo(() => {
   const visStatusTag = !oppgave?.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
   return (
     <div>
-      <Header wrap={false} align="baseline">
+      <HStack className={classes.header} wrap={false} align="baseline">
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack justify="center" align="center" gap="space-16">
@@ -67,7 +54,7 @@ const BarnebrillesakContent = memo(() => {
           {oppgave && <OppgavePåVentTag oppgave={oppgave} variant="outline" />}
           {harSkrivetilgang && <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />}
         </HStack>
-      </Header>
+      </HStack>
       {saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
         <AlertContainerMedium>
           <Alert variant="info" size="small">
@@ -93,9 +80,9 @@ function Steg({ aktivtSteg }: { aktivtSteg: StepType }) {
 
 function LasterBarnebrillesaksbilde() {
   return (
-    <BarnebrillesakContainer>
+    <div className={classes.barnebrillesakContainer}>
       <LasterPersonlinje />
-    </BarnebrillesakContainer>
+    </div>
   )
 }
 

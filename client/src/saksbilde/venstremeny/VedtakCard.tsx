@@ -1,6 +1,7 @@
 import { Button, Tag } from '@navikt/ds-react'
 import { useState } from 'react'
-import styled from 'styled-components'
+
+import classes from './VedtakCard.module.css'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -50,9 +51,9 @@ export function VedtakCard(props: VedtakCardProps) {
         <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Henlagt
         </Tag>
-        <StatusTekst>
+        <div className={classes.statusTekst}>
           <Tekst>{`${formaterTidsstempel(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
-        </StatusTekst>
+        </div>
       </VenstremenyCard>
     )
   }
@@ -64,9 +65,9 @@ export function VedtakCard(props: VedtakCardProps) {
         <Tag variant="outline" data-color="success" data-cy="tag-soknad-status" size="small">
           Innvilget
         </Tag>
-        <StatusTekst>
+        <div className={classes.statusTekst}>
           <Tekst>{`${formaterDato(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
-        </StatusTekst>
+        </div>
       </VenstremenyCard>
     )
   }
@@ -78,10 +79,10 @@ export function VedtakCard(props: VedtakCardProps) {
         <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Overført til Gosys
         </Tag>
-        <StatusTekst>
+        <div className={classes.statusTekst}>
           <Tekst>{`${formaterTidsstempel(sak.saksstatusGyldigFra)}`}</Tekst>
           <Tekst>Saken er overført Gosys og behandles videre der.</Tekst>
-        </StatusTekst>
+        </div>
       </VenstremenyCard>
     )
   }
@@ -119,7 +120,8 @@ export function VedtakCard(props: VedtakCardProps) {
     <VenstremenyCard>
       {submitAttempt && harNotatUtkast && <NotatUtkastVarsel />}
       <Knappepanel gap="space-0">
-        <Knapp
+        <Button
+          className={classes.knapp}
           variant="primary"
           size="small"
           onClick={() => {
@@ -131,8 +133,9 @@ export function VedtakCard(props: VedtakCardProps) {
           }}
         >
           Innvilg søknaden
-        </Knapp>
-        <Knapp
+        </Button>
+        <Button
+          className={classes.knapp}
           variant="secondary"
           size="small"
           onClick={() => {
@@ -144,7 +147,7 @@ export function VedtakCard(props: VedtakCardProps) {
           }}
         >
           Overfør til Gosys
-        </Knapp>
+        </Button>
       </Knappepanel>
       <FattVedtakModal sak={sak} open={visVedtakModal} onClose={() => setVisVedtakModal(false)} />
       <OverførSakTilGosysModal
@@ -160,15 +163,3 @@ export function VedtakCard(props: VedtakCardProps) {
     </VenstremenyCard>
   )
 }
-
-const StatusTekst = styled.div`
-  padding-top: 0.5rem;
-`
-
-const Knapp = styled(Button)`
-  min-height: 0;
-  margin: 2px;
-  height: 1.8rem;
-  padding: 0 0.75rem;
-  box-sizing: border-box;
-`

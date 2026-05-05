@@ -1,0 +1,11 @@
+.statusTekst {
+  padding-top: 0.5rem;
+}
+
+.knapp {
+  min-height: 0;
+  margin: 2px;
+  height: 1.8rem;
+  padding: 0 0.75rem;
+  box-sizing: border-box;
+}

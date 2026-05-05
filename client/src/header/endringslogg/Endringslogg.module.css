@@ -1,0 +1,23 @@
+.ulest {
+  position: relative;
+}
+
+.ulest::before {
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  left: -16px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--ax-text-warning-decoration);
+  content: '';
+}
+
+.fading::before {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s 2s,
+    opacity 2s linear;
+}

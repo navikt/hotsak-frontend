@@ -1,0 +1,6 @@
+.container {
+  padding: 0 var(--ax-space-16);
+  padding-top: 1rem;
+  padding-bottom: var(--ax-space-32);
+  box-sizing: border-box;
+}

@@ -1,20 +1,10 @@
-import { memo, ReactNode } from 'react'
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Link as ExternalLink } from '@navikt/ds-react'
 
 import { TooltipWrapper } from '../TooltipWrapper'
 import { Tekst, TekstMedEllipsis } from '../typografi'
-import { DataCell } from './KolonneHeader'
-
-interface DataCelleProps {
-  children: ReactNode
-  width: number
-}
-
-export function DataCelle({ children, width }: DataCelleProps) {
-  return <DataCell width={width}>{children}</DataCell>
-}
 
 interface TekstCellProps {
   value?: string

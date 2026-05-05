@@ -1,0 +1,10 @@
+.dokumentDiv {
+  width: 100%;
+  height: calc(100vh - 140px);
+}
+
+.styledIFrame {
+  margin: 0rem 0.5rem;
+  aspect-ratio: 1/1.5;
+  width: 95%;
+}

@@ -2,7 +2,8 @@ import { Box, HGrid } from '@navikt/ds-react'
 import { memo } from 'react'
 import { Navigate } from 'react-router'
 import { Route, Routes } from 'react-router-dom'
-import styled from 'styled-components'
+
+import classes from './Søknadsbilde.module.css'
 
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
@@ -75,7 +76,7 @@ const SaksbildeContent = memo(() => {
           </ScrollContainer>
           <section>
             <ScrollContainer>
-              <Container>
+              <section className={classes.container}>
                 {harVarsler && <Saksvarsler varsler={varsler} />}
                 <Routes>
                   <Route
@@ -99,7 +100,7 @@ const SaksbildeContent = memo(() => {
                   <Route path="/formidler" element={<Formidler levering={behovsmelding.levering} />} />
                   <Route path="/" element={<Navigate to="hjelpemidler" replace />} />
                 </Routes>
-              </Container>
+              </section>
             </ScrollContainer>
           </section>
         </HGrid>
@@ -108,13 +109,6 @@ const SaksbildeContent = memo(() => {
     </HGrid>
   )
 })
-
-const Container = styled.section`
-  padding: 0 var(--ax-space-16);
-  padding-top: 1rem;
-  padding-bottom: var(--ax-space-32);
-  box-sizing: border-box;
-`
 
 export default function Søknadsbilde() {
   return (

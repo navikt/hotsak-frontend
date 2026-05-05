@@ -2,7 +2,8 @@ import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Box, Button, ExpansionCard, Heading, HStack, TextField, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import styled from 'styled-components'
+
+import classes from './JournalpostSkjema.module.css'
 
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
 import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
@@ -50,14 +51,14 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
 
   if (henterPerson || !personInfo || isLoading) {
     return (
-      <Container>
+      <div className={classes.container}>
         <Toast>Henter journalpost</Toast>
-      </Container>
+      </div>
     )
   }
 
   return (
-    <Container>
+    <div className={classes.container}>
       <JournalføringMenu onAction={mutate} />
       <Heading level="1" size="small" spacing>
         Journalføring
@@ -142,13 +143,6 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
           </Box>
         </VStack>
       </form>
-    </Container>
+    </div>
   )
 }
-
-const Container = styled.div`
-  overflow: auto;
-  border-right: 1px solid var(--ax-border-neutral-subtle);
-  padding-top: var(--ax-space-16);
-  padding-right: var(--ax-space-16);
-`

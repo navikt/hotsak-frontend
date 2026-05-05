@@ -1,7 +1,7 @@
 import { useSWRConfig } from 'swr'
 
 import { useActionState } from '../../../action/Actions.ts'
-import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { http } from '../../../io/HttpClient.ts'
 import { FerdigstillNotatRequest, NotatType } from '../../../types/types.internal'
 

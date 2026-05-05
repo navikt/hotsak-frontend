@@ -1,6 +1,6 @@
 import { Stack } from '@navikt/ds-react'
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
-import styled from 'styled-components'
+import { createContext, ReactNode, useCallback, useState } from 'react'
+import classes from './ToastContext.module.css'
 import { SuccessToast } from './Toast'
 
 export type ToastType = 'success' | 'info' | 'warning' | 'error'
@@ -20,6 +20,7 @@ interface ToastContextValue {
 }
 
 const ToastContext = createContext<ToastContextValue | undefined>(undefined)
+export { ToastContext }
 
 interface ToastProviderProps {
   children: ReactNode
@@ -58,14 +59,6 @@ export function ToastProvider({ children }: ToastProviderProps) {
   )
 }
 
-export function useToast() {
-  const context = useContext(ToastContext)
-  if (context === undefined) {
-    throw new Error('useToast må brukes innenfor en ToastProvider')
-  }
-  return context
-}
-
 interface ToastContainerProps {
   toasts: Toast[]
   onRemove: (id: string) => void
@@ -75,20 +68,12 @@ function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
   if (toasts.length === 0) return null
 
   return (
-    <ToastContainerWrapper gap="space-8" direction={'column-reverse'}>
+    <Stack className={classes.toastContainerWrapper} gap="space-8" direction={'column-reverse'}>
       {toasts.map((toast) => (
         <SuccessToast key={toast.id} onRemove={() => onRemove(toast.id)}>
           {toast.message}
         </SuccessToast>
       ))}
-    </ToastContainerWrapper>
+    </Stack>
   )
 }
-
-const ToastContainerWrapper = styled(Stack)`
-  position: fixed;
-  bottom: var(--ax-space-40);
-  right: var(--ax-space-40);
-  width: 350px;
-  z-index: 999999;
-`

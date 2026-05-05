@@ -1,0 +1,15 @@
+.textContainer {
+  /* TODO: finne et felles sted for css variabler */
+  max-width: 38em;
+}
+
+.flytendeBrytbarTekst {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.uppercaseHeading {
+  color: var(--ax-text-neutral-subtle);
+  font-size: var(--ax-font-size-small);
+  text-transform: uppercase;
+}

@@ -1,0 +1,5 @@
+.toggleContainer {
+  display: flex;
+  align-items: flex-end;
+  padding-right: var(--ax-space-16);
+}

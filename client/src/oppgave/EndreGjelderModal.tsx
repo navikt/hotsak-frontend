@@ -7,7 +7,7 @@ import { naturalBy } from '../utils/array.ts'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { useOppgaveActions } from './useOppgaveActions.ts'
-import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../felleskomponenter/toast/useToast'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
 

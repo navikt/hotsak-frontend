@@ -1,13 +1,13 @@
 import { Box, HStack, Loader } from '@navikt/ds-react'
 import { useEffect } from 'react'
-import styled from 'styled-components'
+
+import classes from './Journalføring.module.css'
 
 import { useDokumentContext } from '../dokument/DokumentContext'
 import { DokumentPanel } from '../dokument/DokumentPanel'
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
-import { headerHøydeRem } from '../GlobalStyles'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useOppgavetilgang } from '../oppgave/useOppgavetilgang.ts'
@@ -64,8 +64,8 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
     return (
       <>
         <Personlinje person={personInfo} loading={personInfoLoading} />
-        <Container>
-          <ToKolonner>
+        <div className={classes.container}>
+          <div className={classes.toKolonner}>
             <HStack paddingBlock="space-16 space-0">
               <span>
                 <Loader size="medium" title="Henter journalpost..." />
@@ -75,8 +75,8 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
               </Box>
             </HStack>
             <DokumentPanel />
-          </ToKolonner>
-        </Container>
+          </div>
+        </div>
       </>
     )
   }
@@ -84,29 +84,18 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
   return (
     <>
       <Personlinje person={personInfo} loading={personInfoLoading} />
-      <Container>
-        <ToKolonner>
+      <div className={classes.container}>
+        <div className={classes.toKolonner}>
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && harSkrivetilgang ? (
             <JournalpostSkjema journalpostId={journalpostId} />
           ) : (
             <JournalpostVisning journalpostId={journalpostId} lesevisning={!harSkrivetilgang} />
           )}
           <DokumentPanel />
-        </ToKolonner>
-      </Container>
+        </div>
+      </div>
     </>
   )
 }
 
 export default Journalføring
-
-const ToKolonner = styled.div`
-  display: grid;
-  grid-template-columns: 35rem 1fr;
-  grid-template-rows: 1fr;
-  height: calc(100vh - ${headerHøydeRem}rem);
-`
-
-const Container = styled.div`
-  padding-left: var(--ax-space-24);
-`

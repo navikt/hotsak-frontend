@@ -1,0 +1,7 @@
+.toastContainerWrapper {
+  position: fixed;
+  bottom: var(--ax-space-40);
+  right: var(--ax-space-40);
+  width: 350px;
+  z-index: 999999;
+}

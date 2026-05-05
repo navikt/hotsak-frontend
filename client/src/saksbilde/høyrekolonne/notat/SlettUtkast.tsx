@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
 import { useActionState } from '../../../action/Actions.ts'
-import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { http } from '../../../io/HttpClient.ts'
 import { Notat } from '../../../types/types.internal.ts'
@@ -22,7 +22,6 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const { showSuccessToast } = useToast()
   const { execute, state: sletterUtkast } = useActionState()
-  showSuccessToast
 
   const slettNotatUtkast = (sakId: string, notatId: string) =>
     execute(() => http.delete(`/api/sak/${sakId}/notater/${notatId}`))

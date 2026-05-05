@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import { Heading, HeadingProps, HelpText, HelpTextProps } from '@navikt/ds-react'
+
+import classes from './HeadingMedHjelpetekst.module.css'
 
 interface HeadingMedHjelpetekstProps {
   children: string
@@ -12,17 +12,11 @@ interface HeadingMedHjelpetekstProps {
 export function HeadingMedHjelpetekst(props: HeadingMedHjelpetekstProps) {
   const { children, hjelpetekst, placement, level } = props
   return (
-    <Container>
+    <div className={classes.container}>
       <Heading size="xsmall" level={level} spacing>
         {children}
       </Heading>
       <HelpText placement={placement}>{hjelpetekst}</HelpText>
-    </Container>
+    </div>
   )
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: var(--ax-space-8);
-`

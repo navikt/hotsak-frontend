@@ -7,7 +7,7 @@ import { useOppgaveActions } from './useOppgaveActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { tilLocalDateString } from '../utils/dato.ts'
 import { useUmami } from '../sporing/useUmami.ts'
-import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../felleskomponenter/toast/useToast'
 
 export function FortsettBehandlingModal() {
   const { åpenModal } = useOppgaveContext()

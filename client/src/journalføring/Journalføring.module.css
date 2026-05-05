@@ -1,0 +1,11 @@
+.toKolonner {
+  display: grid;
+  grid-template-columns: 35rem 1fr;
+  grid-template-rows: 1fr;
+  /* todo: finne et felles sted for css variabler */
+  height: calc(100vh - 3rem);
+}
+
+.container {
+  padding-left: var(--ax-space-24);
+}

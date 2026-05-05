@@ -1,0 +1,9 @@
+.dokumentContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.feilmeldingContainer {
+  display: flex;
+  justify-content: center;
+}

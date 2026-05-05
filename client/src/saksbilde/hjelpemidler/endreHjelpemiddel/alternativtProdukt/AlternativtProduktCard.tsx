@@ -1,10 +1,12 @@
 import { Box, Checkbox, HGrid, HStack, Tag, VStack } from '@navikt/ds-react'
-import styled from 'styled-components'
+
+import classes from './AlternativtProduktCard.module.css'
 
 import { FinnHjelpemiddelLink } from '../../../../felleskomponenter/FinnHjelpemiddelLink.tsx'
 import { Etikett, Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 import { LagerstatusUtregning } from './LagerstatusUtregning.tsx'
+import clsx from 'clsx'
 
 interface AlternativProduktCardProps {
   alternativtProdukt: AlternativeProduct
@@ -17,7 +19,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
   function produktbilde(produkt: AlternativeProduct): Maybe<string> {
     const media = produkt.media
       .filter((m) => m.type === 'IMAGE')
-      .sort((a, b) => (Number(a.priority) ?? 0) - (Number(b.priority) ?? 0))[0]
+      .sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0))[0]
     if (!media || !media.uri) {
       return undefined
     }
@@ -25,15 +27,15 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
   }
 
   return (
-    <ProduktCard
+    <Box
       key={alternativtProdukt.id}
       height="100%"
-      borderWidth="1"
-      borderColor="neutral-subtle"
-      borderRadius="8"
       paddingBlock="space-16 space-8"
       paddingInline="space-16"
-      selected={endretProdukt === alternativtProdukt.hmsArtNr}
+      className={clsx(
+        classes.produktCard,
+        endretProdukt === alternativtProdukt.hmsArtNr && classes.produktCardSelected
+      )}
     >
       <VStack>
         <Etikett size="small" spacing>
@@ -78,7 +80,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                 marginBottom: 'var(--ax-space-16)',
               }}
             >
-              <Bilde alt="Produktbilde" src={produktbilde(alternativtProdukt)} />
+              <img className={classes.bilde} alt="Produktbilde" src={produktbilde(alternativtProdukt)} />
             </div>
           )}
         </HGrid>
@@ -86,18 +88,6 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
       <Box background="accent-soft" padding="space-8" borderRadius="12">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
       </Box>
-    </ProduktCard>
+    </Box>
   )
 }
-
-const Bilde = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: var(--ax-radius-12);
-`
-
-const ProduktCard = styled(Box.New)<{ selected?: boolean }>`
-  border: ${({ selected }) => selected && '4px solid var(--ax-border-accent)'};
-  margin: ${({ selected }) => selected && '-3px'};
-`

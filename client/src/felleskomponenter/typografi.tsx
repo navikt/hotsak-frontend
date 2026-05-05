@@ -1,14 +1,13 @@
-import { forwardRef, type ReactNode } from 'react'
-import styled from 'styled-components'
+import { type ReactNode, type Ref } from 'react'
 
 import { BodyLong, BodyShort, BodyShortProps, Detail, Heading, Label } from '@navikt/ds-react'
-import { textcontainerBredde } from '../GlobalStyles'
+import classes from './typografi.module.css'
 
-export const TextContainer = styled.div`
-  max-width: ${textcontainerBredde};
-`
+export function TextContainer({ children }: { children: ReactNode }) {
+  return <div className={classes.textContainer}>{children}</div>
+}
 
-export const Tekst = ({ children, ...rest }: BodyShortProps) => {
+export function Tekst({ children, ...rest }: BodyShortProps) {
   return (
     <BodyShort size="small" {...rest}>
       {children}
@@ -16,19 +15,21 @@ export const Tekst = ({ children, ...rest }: BodyShortProps) => {
   )
 }
 
-export const TekstMedEllipsis = forwardRef<HTMLParagraphElement, { children: ReactNode }>(
-  ({ children, ...rest }, ref) => (
+export function TekstMedEllipsis({ children, ref, ...rest }: { children: ReactNode; ref?: Ref<HTMLParagraphElement> }) {
+  return (
     <BodyShort ref={ref} size="small" {...rest} truncate>
       {children}
     </BodyShort>
   )
-)
+}
 
+/* Falsk positiv, liker ikke non ascii karakterer i navnet på komponenten (å) */
+// eslint-disable-next-line react-refresh/only-export-components
 export function BrytbarBrødtekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
   return (
-    <FlytendeBrytbarTekst size="small" spacing={spacing}>
+    <BodyLong className={classes.flytendeBrytbarTekst} size="small" spacing={spacing}>
       {children}
-    </FlytendeBrytbarTekst>
+    </BodyLong>
   )
 }
 
@@ -54,9 +55,9 @@ export function Undertittel({ children }: { children: ReactNode }) {
 
 export function Mellomtittel({ children, spacing = true }: { children: ReactNode; spacing?: boolean }) {
   return (
-    <UppercaseHeading level="1" size="xsmall" spacing={spacing} textColor="subtle">
+    <Heading level="1" size="xsmall" spacing={spacing} textColor="subtle" className={classes.uppercaseHeading}>
       {children}
-    </UppercaseHeading>
+    </Heading>
   )
 }
 
@@ -73,14 +74,3 @@ export function Skjermlesertittel({
     </Heading>
   )
 }
-
-const FlytendeBrytbarTekst = styled(BodyLong)`
-  white-space: normal;
-  overflow-wrap: anywhere;
-`
-
-const UppercaseHeading = styled(Heading)`
-  color: var(--ax-text-neutral-subtle);
-  font-size: var(--ax-font-size-small);
-  text-transform: uppercase;
-`

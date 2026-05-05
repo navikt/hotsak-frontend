@@ -1,6 +1,7 @@
 import { VStack, VStackProps } from '@navikt/ds-react'
 import type { ReactNode } from 'react'
-import styled from 'styled-components'
+
+import classes from './Venstremeny.module.css'
 
 export interface VenstremenyProps {
   gap?: VStackProps['gap']
@@ -9,12 +10,14 @@ export interface VenstremenyProps {
 
 export function Venstremeny({ gap, children }: VenstremenyProps) {
   return (
-    <Container forwardedAs="aside" padding="space-16" gap={gap} style={{ height: '100%', overflowY: 'auto' }}>
+    <VStack
+      className={classes.container}
+      as="aside"
+      padding="space-16"
+      gap={gap}
+      style={{ height: '100%', overflowY: 'auto' }}
+    >
       {children}
-    </Container>
+    </VStack>
   )
 }
-
-const Container = styled(VStack)`
-  border-right: 1px solid var(--ax-border-neutral-subtle);
-`

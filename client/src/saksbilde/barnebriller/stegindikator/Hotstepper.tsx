@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
-import styled from 'styled-components'
 
-import { Box } from '@navikt/ds-react'
+import classes from './Hotstepper.module.css'
 
 import { StegType, StepType } from '../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../ManuellSaksbehandlingTabContext'
@@ -9,11 +8,6 @@ import { Stepper } from '../stepper'
 
 export function Hotstepper({ steg, lesemodus }: { steg: StegType; lesemodus: boolean }) {
   const { step, setStep } = useManuellSaksbehandlingContext()
-
-  useEffect(() => {
-    setStep(stegToStep(steg))
-  }, [])
-
   const stegToStep = (steg: StegType) => {
     switch (steg) {
       case StegType.VURDERE_VILKÅR:
@@ -26,8 +20,12 @@ export function Hotstepper({ steg, lesemodus }: { steg: StegType; lesemodus: boo
     }
   }
 
+  useEffect(() => {
+    setStep(stegToStep(steg))
+  }, [steg, setStep])
+
   return (
-    <StepperContainer>
+    <div className={classes.stepperContainer}>
       <Stepper
         aria-labelledby="stepper-heading"
         activeStep={step}
@@ -46,10 +44,6 @@ export function Hotstepper({ steg, lesemodus }: { steg: StegType; lesemodus: boo
           Vedtak
         </Stepper.Step>
       </Stepper>
-    </StepperContainer>
+    </div>
   )
 }
-
-const StepperContainer = styled(Box)`
-  width: 400px;
-`

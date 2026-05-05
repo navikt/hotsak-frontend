@@ -5,7 +5,7 @@ import { mutate } from 'swr'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
-import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { useOppgaveContext } from '../../../oppgave/OppgaveContext.ts'
 import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
@@ -46,17 +46,28 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const { showSuccessToast } = useToast()
   const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
 
+  /* TODO: Ta i bruk react hook form i stedet */
   useEffect(() => {
     if (brevtekst) {
       setFritekst(brevtekst)
     }
   }, [brevtekst])
 
+  const valider = useCallback(() => {
+    if (fritekst === '') {
+      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
+      return false
+    } else {
+      setValideringsfeil(undefined)
+      return true
+    }
+  }, [fritekst])
+
   useEffect(() => {
     if (submitAttempt) {
       valider()
     }
-  }, [fritekst, submitAttempt])
+  }, [submitAttempt, valider])
 
   const lagreUtkast = useCallback(
     async (tekst: string, valgtMålform?: MålformType) => {
@@ -66,20 +77,11 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
         setLagrer(false)
       }, 500)
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [sakId, målform, fritekst]
   )
 
   useDebounce(fritekst, lagreUtkast)
-
-  const valider = () => {
-    if (fritekst === '') {
-      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
-      return false
-    } else {
-      setValideringsfeil(undefined)
-      return true
-    }
-  }
 
   if (!data) {
     return (

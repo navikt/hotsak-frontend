@@ -1,20 +1,12 @@
-import styled from 'styled-components'
+import type { ReactNode } from 'react'
 
-import { headerHøydeRem, hotsakRegistrerSøknadHøyreKolonne, hotsakRegistrerSøknadKolonne } from '../GlobalStyles'
+import classes from './Kolonner.module.css'
 
 // TODO bytte ut disse med aksel HGrid
-export const Kolonner = styled.div`
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  align-self: flex-end;
-  align-items: flex-end;
-`
+export function Kolonner({ children }: { children: ReactNode }) {
+  return <div className={classes.kolonner}>{children}</div>
+}
 
-export const TreKolonner = styled.div`
-  display: grid;
-  /*grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto ${hotsakRegistrerSøknadHøyreKolonne};*/
-  grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto;
-  grid-template-rows: 1fr;
-  //height: calc(100vh - ${headerHøydeRem}rem);
-`
+export function TreKolonner({ children }: { children: ReactNode }) {
+  return <div className={classes.treKolonner}>{children}</div>
+}

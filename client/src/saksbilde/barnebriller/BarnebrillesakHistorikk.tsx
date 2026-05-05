@@ -1,10 +1,9 @@
-import { VStack } from '@navikt/ds-react'
+import { List, VStack } from '@navikt/ds-react'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 import { HistorikkHendelse } from '../høyrekolonne/historikk/HistorikkHendelse'
 import { useSakshistorikk } from '../høyrekolonne/historikk/useSakshistorikk'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel'
-import { ListeUtenPunkt } from '../../felleskomponenter/Liste'
 
 export function BarnebrillesakHistorikk() {
   const { hendelser, error, isLoading } = useSakshistorikk()
@@ -15,7 +14,7 @@ export function BarnebrillesakHistorikk() {
       loading={isLoading && 'Henter historikk...'}
     >
       {hendelser.length > 0 ? (
-        <VStack as={ListeUtenPunkt} gap="space-12">
+        <VStack as={List} gap="space-12">
           {hendelser.map((it) => (
             <HistorikkHendelse key={it.id} {...it} />
           ))}

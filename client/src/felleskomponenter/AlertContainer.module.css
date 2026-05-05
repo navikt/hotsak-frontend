@@ -1,0 +1,7 @@
+.alertContainerMedium {
+  padding-top: var(--ax-space-16);
+  padding-bottom: var(--ax-space-16);
+  padding-left: var(--ax-space-16);
+  padding-right: var(--ax-space-16);
+  margin: auto;
+}

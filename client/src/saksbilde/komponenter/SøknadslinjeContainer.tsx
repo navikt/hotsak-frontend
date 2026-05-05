@@ -1,7 +1,7 @@
-import styled from 'styled-components'
+import type { ReactNode } from 'react'
 
-import { søknadslinjeHøyde } from '../../GlobalStyles'
+import classes from './SøknadslinjeContainer.module.css'
 
-export const SøknadslinjeContainer = styled.nav`
-  height: ${søknadslinjeHøyde};
-`
+export function SøknadslinjeContainer({ children }: { children: ReactNode }) {
+  return <nav className={classes.søknadslinjeContainer}>{children}</nav>
+}

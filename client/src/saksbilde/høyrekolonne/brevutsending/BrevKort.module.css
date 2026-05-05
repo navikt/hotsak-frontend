@@ -1,0 +1,14 @@
+.container {
+  margin: 0;
+  padding: 16px 0;
+  display: flex;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--ax-border-neutral-subtle);
+  }
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}

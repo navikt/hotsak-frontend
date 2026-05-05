@@ -1,0 +1,6 @@
+.markdownEditorStyling {
+  & :global(.mdxEditorBox:has([contenteditable='true']:focus)) {
+    border: 3px solid var(--ax-border-focus);
+    margin: -2px;
+  }
+}

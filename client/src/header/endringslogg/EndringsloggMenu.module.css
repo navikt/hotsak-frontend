@@ -1,0 +1,17 @@
+.uleste {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--ax-text-warning-decoration);
+}
+
+.fading {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s 2s,
+    opacity 2s linear;
+}

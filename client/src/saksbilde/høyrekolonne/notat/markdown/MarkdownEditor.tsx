@@ -10,8 +10,10 @@ import {
   toolbarPlugin,
   UndoRedo,
 } from '@mdxeditor/editor'
-import { useEffect, useRef } from 'react'
-import styled from 'styled-components'
+import clsx from 'clsx'
+import { type Ref, useEffect, useRef } from 'react'
+
+import classes from './MarkdownEditor.module.css'
 
 export function MarkdownEditor({
   tekst,
@@ -89,24 +91,18 @@ export function MarkdownEditor({
   )
 }
 
-export const MardownEditorPreviewStyling = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'truncate',
-})<{ truncate?: boolean }>`
-  ${({ truncate }) =>
-    truncate &&
-    `
-    display: -webkit-box;
-    overflow: hidden;
-    text-overflow: ellipsis;    
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 7;
-  `}
-
-  .mdxEditorRemoveMargin {
-    padding: 0;
-    font-size: var(--ax-font-size-medium);
-    color: var(--ax-text-neutral);
-    font-family: 'Source Sans Pro';
-  }
-`
+export function MardownEditorPreviewStyling({
+  truncate,
+  children,
+  ref,
+}: {
+  truncate?: boolean
+  children: React.ReactNode
+  ref?: Ref<HTMLDivElement>
+}) {
+  return (
+    <div ref={ref} className={clsx(classes.markdownEditorPreview, truncate && classes.truncate)}>
+      {children}
+    </div>
+  )
+}

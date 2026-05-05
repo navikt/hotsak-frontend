@@ -1,0 +1,14 @@
+.barnebrillesakContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 96vh;
+}
+
+.header {
+  box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--ax-border-neutral-subtle));
+  padding-right: 2rem;
+  /* todo: finne et felles sted for css variabler */
+  height: 48px;
+  align-items: center;
+}

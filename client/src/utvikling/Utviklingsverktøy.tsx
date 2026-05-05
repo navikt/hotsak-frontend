@@ -1,20 +1,9 @@
 import { Button, Heading, Select, VStack } from '@navikt/ds-react'
 import { ChangeEventHandler, useEffect, useState } from 'react'
-import styled from 'styled-components'
 
 import { InnloggetAnsatt } from '../tilgang/Ansatt.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-
-const Wrapper = styled.div`
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 999999;
-  padding: 20px;
-  background: var(--ax-bg-neutral-moderate);
-  border: 2px dashed black;
-  min-width: 220px;
-`
+import classes from './Utviklingsverktøy.module.css'
 
 export function Utviklingsverktøy() {
   const { id: innloggetSaksbehandlerId } = useInnloggetAnsatt()
@@ -38,7 +27,7 @@ export function Utviklingsverktøy() {
 
   if (erSkjult) {
     return (
-      <Wrapper>
+      <div className={classes.wrapper}>
         <Button
           size="small"
           variant="secondary"
@@ -49,7 +38,7 @@ export function Utviklingsverktøy() {
         >
           Vis utviklingsverktøy
         </Button>
-      </Wrapper>
+      </div>
     )
   }
 
@@ -59,7 +48,7 @@ export function Utviklingsverktøy() {
   }
 
   return (
-    <Wrapper>
+    <div className={classes.wrapper}>
       <Button
         data-testid={'utviklerverktoy-lukk'}
         style={{ position: 'absolute', top: '7px', right: '7px' }}
@@ -100,6 +89,6 @@ export function Utviklingsverktøy() {
           </Button>
         </div>
       </VStack>
-    </Wrapper>
+    </div>
   )
 }

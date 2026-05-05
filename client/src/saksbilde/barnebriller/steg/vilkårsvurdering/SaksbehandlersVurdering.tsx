@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import { BodyShort, Box, Detail, Heading, Label, Link, VStack } from '@navikt/ds-react'
+
+import classes from './SaksbehandlersVurdering.module.css'
 
 import { Etikett, Tekst } from '../../../../felleskomponenter/typografi'
 import { StepType, Vilkår } from '../../../../types/types.internal'
@@ -19,14 +19,14 @@ export function SaksbehandlersVurdering({
   sakId: string
   lesevisning: boolean
   vilkår: Vilkår
-  onSaved: () => any
-  onCanceled: () => any
+  onSaved: () => void
+  onCanceled: () => void
 }) {
   const grunnlag = vilkår.grunnlag
 
   return (
     <Box padding="space-16" borderColor="info" borderWidth="0 0 0 4" background="neutral-moderate">
-      <Container>
+      <div className={classes.container}>
         <Heading level="2" size="xsmall" spacing>
           <Link href={vilkår.lovdataLenke} target="_blank">
             {`${vilkår.lovReferanse}`}
@@ -76,7 +76,7 @@ export function SaksbehandlersVurdering({
         ) : (
           <SaksbehandlersVurderingForm sakId={sakId} vilkår={vilkår} onSaved={onSaved} onCanceled={onCanceled} />
         )}
-      </Container>
+      </div>
     </Box>
   )
 }
@@ -94,7 +94,3 @@ const RedigerGrunnlagLink = () => {
     </Box>
   )
 }
-
-const Container = styled.div`
-  width: 500px;
-`

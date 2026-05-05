@@ -1,0 +1,11 @@
+.strek {
+  border: none;
+  height: 1px;
+  background-color: var(--ax-border-neutral-subtle);
+}
+
+.strekInfo {
+  border: none;
+  height: 1px;
+  background-color: var(--ax-border-info);
+}

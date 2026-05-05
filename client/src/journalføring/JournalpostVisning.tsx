@@ -1,5 +1,6 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
-import styled from 'styled-components'
+
+import classes from './JournalpostVisning.module.css'
 
 import { Dokumenter } from '../dokument/Dokumenter'
 import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
@@ -26,14 +27,14 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
 
   if (henterPerson || !personInfo || isLoading || !journalpost) {
     return (
-      <Container>
+      <div className={classes.container}>
         <Toast>Henter journalpost</Toast>
-      </Container>
+      </div>
     )
   }
 
   return (
-    <Container>
+    <div className={classes.container}>
       {!lesevisning && <JournalføringMenu onAction={mutate} />}
       <VStack gap="space-12">
         <Heading level="1" size="xsmall" spacing>
@@ -55,7 +56,7 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
           <JournalpostStatus />
         </Box>
       </VStack>
-    </Container>
+    </div>
   )
 }
 
@@ -77,10 +78,3 @@ function JournalpostStatus() {
 
   return null
 }
-
-const Container = styled.div`
-  overflow: auto;
-  border-right: 1px solid var(--ax-border-neutral-subtle);
-  padding-top: var(--ax-space-16);
-  padding-right: var(--ax-space-16);
-`

@@ -1,6 +1,7 @@
 import { Button, Tag } from '@navikt/ds-react'
 import { useState } from 'react'
-import styled from 'styled-components'
+
+import classes from './BestillingCard.module.css'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -58,9 +59,9 @@ export function BestillingCard(props: BestillingCardProps) {
         <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Henlagt
         </Tag>
-        <StatusTekst>
+        <div className={classes.statusTekst}>
           <Tekst>{`${formaterTidsstempel(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
-        </StatusTekst>
+        </div>
       </VenstremenyCard>
     )
   }
@@ -72,9 +73,9 @@ export function BestillingCard(props: BestillingCardProps) {
         <Tag data-color={godkjent ? 'success' : 'danger'} data-cy="tag-soknad-status" variant="outline" size="small">
           {godkjent ? 'Godkjent' : 'Avvist'}
         </Tag>
-        <StatusTekst>
+        <div className={classes.statusTekst}>
           <Tekst>{`${formaterTidsstempel(gjeldendeBehandling.ferdigstiltTidspunkt)}`}</Tekst>
-        </StatusTekst>
+        </div>
       </VenstremenyCard>
     )
   }
@@ -157,7 +158,3 @@ export function BestillingCard(props: BestillingCardProps) {
     </VenstremenyCard>
   )
 }
-
-const StatusTekst = styled.div`
-  padding-top: 0.5rem;
-`

@@ -5,7 +5,7 @@ import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from 
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
-import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
+import { useToast } from '../felleskomponenter/toast/useToast'
 
 export function LeggTilbakeModal() {
   const { åpenModal } = useOppgaveContext()

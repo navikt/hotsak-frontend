@@ -1,19 +1,11 @@
 import { ChangeEvent } from 'react'
-import styled from 'styled-components'
 
 import { Detail, HStack, Loader, Textarea, VStack } from '@navikt/ds-react'
+import classes from './Fritekst.module.css'
 
-export const Bakgrunnslagring = styled(HStack)`
-  display: flex;
-
-  justify-content: right;
-  vertical-align: baseline;
-  gap: 0.4rem;
-  padding-top: 0.5rem;
-  padding-right: 0.6rem;
-  height: var(--ax-space-32);
-  margin-left: auto;
-`
+export function Bakgrunnslagring({ children }: { children: React.ReactNode }) {
+  return <HStack className={classes.bakgrunnslagring}>{children}</HStack>
+}
 
 export const Fritekst = ({
   label,
@@ -28,7 +20,7 @@ export const Fritekst = ({
   beskrivelse: string
   valideringsfeil?: string
   lagrer: boolean
-  onTextChange: any
+  onTextChange: (value: string) => void
 }) => {
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     onTextChange(event.target.value)

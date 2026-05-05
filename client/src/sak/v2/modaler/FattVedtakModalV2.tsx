@@ -2,7 +2,7 @@ import { Alert, InfoCard, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
-import { useToast } from '../../../felleskomponenter/toast/ToastContext'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
 import { Sak } from '../../../types/types.internal'

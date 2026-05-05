@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { BodyShort, Detail, HStack, Tag } from '@navikt/ds-react'
 import { Sakstype } from '../types/types.internal'
 import { storForbokstavIAlleOrd } from '../utils/formater'
-import styled from 'styled-components'
+import classes from './Oppgaveetikett.module.css'
 
 export const BehovsmeldingEtikett = ({ variant, label }: { variant: 'alt1' | 'alt2' | 'alt3'; label: string }) => (
   <Tag variant={variant} size="small">
@@ -12,29 +12,22 @@ export const BehovsmeldingEtikett = ({ variant, label }: { variant: 'alt1' | 'al
 )
 
 const SøknadEtikett = () => (
-  <SquareTag variant="alt1" size="xsmall">
+  <Tag className={classes.squareTag} variant="alt1" size="xsmall">
     <Detail>S</Detail>
-  </SquareTag>
+  </Tag>
 )
 
 const BestillingEtikett = () => (
-  <SquareTag variant="alt2" size="xsmall">
+  <Tag className={classes.squareTag} variant="alt2" size="xsmall">
     <Detail>B</Detail>
-  </SquareTag>
+  </Tag>
 )
 
 const TilskuddEtikett = () => (
-  <SquareTag variant="alt3" size="xsmall">
+  <Tag className={classes.squareTag} variant="alt3" size="xsmall">
     <Detail>T</Detail>
-  </SquareTag>
+  </Tag>
 )
-
-const SquareTag = styled(Tag)`
-  padding-left: 6px;
-  padding-right: 6px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-`
 
 interface LabelProps {
   labelLinkTo?: string

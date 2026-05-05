@@ -1,7 +1,8 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 import { useRef } from 'react'
-import styled from 'styled-components'
+
+import classes from './EndringsloggMenu.module.css'
 
 import { Endringslogg } from './Endringslogg'
 import { useEndringslogg } from './useEndringslogg'
@@ -12,14 +13,10 @@ export function EndringsloggMenu() {
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
-        <InternalHeader.Button
-          style={{ position: 'relative' }}
-          onClick={() => {
-            if (contentRef.current && contentRef.current.getAttribute('aria-hidden') === 'true') {
-            }
-          }}
-        >
-          {!endringslogg.isLoading && <Uleste $fading={endringslogg.fading} />}
+        <InternalHeader.Button style={{ position: 'relative' }}>
+          {!endringslogg.isLoading && (
+            <div className={`${classes.uleste} ${endringslogg.fading ? classes.fading : ''}`} />
+          )}
           <InformationSquareIcon title="Endringslogg" width={20} height={20} />
         </InternalHeader.Button>
       </ActionMenu.Trigger>
@@ -29,16 +26,3 @@ export function EndringsloggMenu() {
     </ActionMenu>
   )
 }
-
-const Uleste = styled.div<{ $fading: boolean }>`
-  position: absolute;
-  top: 7px;
-  right: 7px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: var(--ax-text-warning-decoration);
-  visibility: ${(props) => (props.$fading ? 'hidden' : undefined)};
-  opacity: ${(props) => (props.$fading ? 0 : undefined)};
-  transition: ${(props) => (props.$fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
-`

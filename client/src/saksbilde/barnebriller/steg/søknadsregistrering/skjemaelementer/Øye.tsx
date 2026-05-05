@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import styled from 'styled-components'
 
 import { Select } from '@navikt/ds-react'
+import classes from './Øye.module.css'
 
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../../utils/formater'
 
@@ -30,7 +30,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
 
   return (
     <>
-      <Grid>
+      <div className={classes.grid}>
         <Controller
           name={`brilleseddel.${type}Sfære`}
           control={control}
@@ -85,19 +85,10 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
             </Select>
           )}
         />
-      </Grid>
+      </div>
     </>
   )
 }
-
-// TODO bytte ut med Hstack?
-export const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 145px 155px;
-  gap: var(--ax-space-20);
-
-  align-items: start;
-`
 
 function range(start: number, stop: number, step = 0.25): number[] {
   const valg = []

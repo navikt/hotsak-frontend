@@ -1,6 +1,7 @@
 import { Button, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
-import styled from 'styled-components'
+
+import classes from './AvvisBestillingModal.module.css'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 import type { AvvisBestilling } from '../../types/types.internal'
@@ -31,7 +32,8 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
           Bestillingen avvises i Hotsak. Bruker og formidler vil se oppdatert status på nav.no innen neste virkedag. Det
           er ikke behov for å gjøre noe videre med saken i Gosys.
         </Tekst>
-        <AvvisBestillingRadioGroup
+        <RadioGroup
+          className={classes.avvisBestillingRadioGroup}
           legend="Velg årsak til at bestillingen avvises"
           error={valgtÅrsak === '' && error}
           value={valgtÅrsak}
@@ -44,7 +46,7 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
               {årsak}
             </Radio>
           ))}
-        </AvvisBestillingRadioGroup>
+        </RadioGroup>
         <Textarea
           label="Begrunnelse for å avvise bestillingen"
           description="Unngå personopplysninger. Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
@@ -81,7 +83,3 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
 }
 
 const avvisÅrsaker: ReadonlyArray<string> = ['Duplikat av en annen bestilling', 'Annet']
-
-const AvvisBestillingRadioGroup = styled(RadioGroup)`
-  margin: var(--ax-space-16) 0;
-`

@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import styled from 'styled-components'
 
 import { ActionMenu, Box, Heading } from '@navikt/ds-react'
+import classes from './Endringslogg.module.css'
 import { EndringsloggInnslag, MerkSomLestCallback } from './useEndringslogg'
 import { format } from 'date-fns'
 import { useOnScreen } from './useOnScreen'
@@ -62,7 +62,7 @@ function Innslag({ innslag, merkSomLest }: { innslag: EndringsloggInnslag; merkS
   return (
     <Box margin="space-16">
       <header ref={innslagRef}>
-        <Ulest $fading={isFading}>{dato}</Ulest>
+        <span className={`${classes.ulest} ${isFading ? classes.fading : ''}`}>{dato}</span>
         <Heading level="3" size="xsmall" spacing>
           {innslag.tittel}
         </Heading>
@@ -83,22 +83,3 @@ function Innslag({ innslag, merkSomLest }: { innslag: EndringsloggInnslag; merkS
     </Box>
   )
 }
-
-const Ulest = styled.span<{ $fading: boolean }>`
-  position: relative;
-
-  &:before {
-    position: absolute;
-    transform: translateY(-50%);
-    top: 50%;
-    left: -16px;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background-color: var(--ax-text-warning-decoration);
-    content: '';
-    visibility: ${(props) => (props.$fading ? 'hidden' : undefined)};
-    opacity: ${(props) => (props.$fading ? 0 : undefined)};
-    transition: ${(props) => (props.$fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
-  }
-`

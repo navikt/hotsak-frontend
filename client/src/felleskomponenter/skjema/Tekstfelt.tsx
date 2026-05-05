@@ -1,11 +1,14 @@
-import styled from 'styled-components'
-
 import { Textarea, TextField } from '@navikt/ds-react'
+import type { ComponentProps } from 'react'
 
-export const Tekstfelt = styled(TextField)`
-  max-width: 400px;
-`
+import classes from './Tekstfelt.module.css'
 
-export const Tekstområde = styled(Textarea)`
-  max-width: 400px;
-`
+export function Tekstfelt(props: ComponentProps<typeof TextField>) {
+  return <TextField className={classes.tekstfelt} {...props} />
+}
+
+/* Falsk positiv, liker ikke non ascii karakterer i navnet på komponenten (å) */
+// eslint-disable-next-line react-refresh/only-export-components
+export function Tekstområde(props: ComponentProps<typeof Textarea>) {
+  return <Textarea className={classes.tekstområde} {...props} />
+}

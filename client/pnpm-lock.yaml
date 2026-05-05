@@ -122,9 +122,6 @@ importers:
       stacktrace-js:
         specifier: 2.0.2
         version: 2.0.2
-      styled-components:
-        specifier: 6.4.0
-        version: 6.4.0(css-to-react-native@3.2.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       swr:
         specifier: 2.4.1
         version: 2.4.1(react@19.2.5)

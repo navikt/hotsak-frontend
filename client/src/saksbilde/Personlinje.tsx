@@ -11,6 +11,7 @@ import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 import classes from './personlinje.module.css'
 import { VergeInformasjonsModal } from './VergeInformasjonsModal.tsx'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface PersonlinjeProps {
   person?: Person
@@ -22,6 +23,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const vergemålModalRef = useRef<HTMLDialogElement>(null)
+  const { erDev } = useMiljø()
 
   useEffect(() => {
     if (person?.fnr) {
@@ -90,7 +92,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           Skjermet
         </Tag>
       )}
-      {vergemål.length > 0 && (
+      {vergemål.length > 0 && erDev && (
         <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
           Vergemål
         </Button>

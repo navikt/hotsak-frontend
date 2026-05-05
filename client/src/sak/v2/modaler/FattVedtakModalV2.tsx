@@ -14,6 +14,7 @@ import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { BrevTilBrukerEllerVerge } from '../BrevTilBrukerEllerVerge'
 import { useClosePanel } from '../paneler/usePanelHooks'
+import { useMiljø } from '../../../utils/useMiljø'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -23,6 +24,7 @@ export interface FattVedtakModalV2Props {
 }
 
 export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattVedtakModalV2Props) {
+  const { erDev } = useMiljø()
   const [vedtakLoader, setVedtakLoader] = useState(false)
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
@@ -34,10 +36,13 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
   const brevMetaData = useBrevMetadata()
   const { personInfo } = usePerson(sak.bruker.fnr)
-  const harVergePåHjelpemiddelområdet =
+  const harVergePåHjelpemiddelområdet = !!(
     personInfo?.vergemål?.some((vergemål) =>
       vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
-    ) && brevMetaData.harBrevISak
+    ) &&
+    brevMetaData.harBrevISak &&
+    erDev
+  )
   const [brevMottaker, setBrevMottaker] = useState<Brevmottaker | undefined>(undefined)
   const [vergeError, setVergeError] = useState<string | undefined>(undefined)
 

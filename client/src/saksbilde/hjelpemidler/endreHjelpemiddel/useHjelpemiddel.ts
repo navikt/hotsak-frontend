@@ -23,10 +23,10 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
   const { data: grunndataProdukt, isLoading: grunndataLoading } = useHjelpemiddelprodukt(hmsnr)
 
   const {
-    data: oebsProdukt,
+    data: oebsProdukter,
     error,
     isLoading: oebsLoading,
-  } = useSwr<HjelpemiddelProdukt, HttpError>(
+  } = useSwr<HjelpemiddelProdukt[], HttpError>(
     !grunndataProdukt && hmsnr?.length === 6 ? `/api/hjelpemiddel/${hmsnr}` : null
   )
 
@@ -41,16 +41,17 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
       }
     }
 
-    if (oebsProdukt) {
+    if (oebsProdukter && oebsProdukter.length > 0) {
+      const produkt = oebsProdukter[0]
       return {
-        hmsArtNr: oebsProdukt.hmsnr,
-        artikkelnavn: oebsProdukt.navn,
+        hmsArtNr: produkt.hmsnr,
+        artikkelnavn: produkt.navn,
         kilde: 'OeBS',
       }
     }
 
     return undefined
-  }, [grunndataProdukt, oebsProdukt])
+  }, [grunndataProdukt, oebsProdukter])
 
   const isLoading = grunndataLoading || (oebsLoading && !grunndataProdukt)
 

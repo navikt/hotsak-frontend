@@ -41,6 +41,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const [vergeError, setVergeError] = useState<string | undefined>(undefined)
 
   const fattVedtak = async (data: VedtakFormValues) => {
+    if (harVergePåHjelpemiddelområdet && brevSkalSendesTilVerge === undefined) {
+      return
+    }
     setVedtakLoader(true)
 
     if (erInnvilget) {

@@ -2,7 +2,6 @@ import { Button, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
 import { useEffect, useMemo, useState } from 'react'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
-import { http } from '../io/HttpClient.ts'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
@@ -15,7 +14,7 @@ import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less'
 import { BrevContext } from './BrevContext.ts'
-import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
+import Breveditor from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import BrevForhåndsvisning from './BrevForhåndsvisning.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
@@ -23,6 +22,7 @@ import { Brevstatus } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
 import { useBrevutkast } from './useBrevutkast.ts'
+import { useVedtaksbrevActions } from './useVedtaksbrevActions.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -48,6 +48,9 @@ export const Brev = () => {
     : undefined
 
   const { brevutkast } = useBrevutkast()
+  const { lagreBrevutkast, ferdigstillBrevutkast, gjenåpneBrevutkast } = useVedtaksbrevActions({
+    onSuccess: () => brevutkast.mutate(),
+  })
 
   const [valgtMal, velgMal] = useState<string>()
   const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])
@@ -116,29 +119,6 @@ export const Brev = () => {
     )
   }
 
-  const lagreBrevutkast = async (data: StateMangement) => {
-    return fetch(`/api/sak/${sak!.data.sakId}/brevutkast`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      body: JSON.stringify({
-        oppgaveId: oppgave?.oppgaveId,
-        brevtype: 'BREVEDITOR_VEDTAKSBREV',
-        målform: 'BOKMÅL',
-        data: data,
-      }),
-    }).then((res) => {
-      if (brevutkast.data) {
-        // Ingen lokal mutate her siden et av de mulige resultatene her er at brevet merkes som ferdig og endrer viewet
-        // til en forhåndsvisning av de lagrede dataene som PDF
-        brevutkast.mutate()
-      }
-      return res
-    })
-  }
-
   const markerKlart = async (klart: boolean) => {
     setSynligKryssKnapp(true)
     const currentBrev = brevutkast.data?.data?.value
@@ -151,11 +131,10 @@ export const Brev = () => {
     }
     setPlaceholderFeil([])
     if (klart) {
-      await http.post(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
+      await ferdigstillBrevutkast()
     } else {
-      await http.delete(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
+      await gjenåpneBrevutkast()
     }
-    brevutkast.mutate()
 
     await mutateGjeldendeBehandling()
     await mutateBrevMetadata()
@@ -264,7 +243,6 @@ export const Brev = () => {
                   brukersNavn: sak?.data.bruker.fulltNavn || '',
                   brukersFødselsnummer: sak?.data.bruker.fnr || '',
                   saksnummer: Number(sak!.data.sakId),
-                  // TODO: Kan vi trigge on-change i breveditor for å oppdatere html i utkast, hvis siste utkast hadde en tidligere dato enn denne?
                   brevOpprettet: formaterDatoLang(new Date().toISOString()),
                   saksbehandlerNavn: sak?.data.saksbehandler?.navn || '',
                   attestantsNavn: undefined,
@@ -274,9 +252,7 @@ export const Brev = () => {
                 templateMarkdown={valgtMal}
                 initialState={brevutkast.data?.data}
                 onLagreBrev={async (state) => {
-                  await lagreBrevutkast(state).then((res) => {
-                    if (!res.ok) throw new Error(`Brev ikke lagret, statuskode ${res.status}`)
-                  })
+                  await lagreBrevutkast(state)
                 }}
               />
             </>

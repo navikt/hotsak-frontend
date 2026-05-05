@@ -1,5 +1,5 @@
-import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
-import { Children, ReactNode, useEffect } from 'react'
+import { Button, HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
+import { Children, ReactNode, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
@@ -10,6 +10,7 @@ import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../types/ty
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 import classes from './personlinje.module.css'
+import { VergeInformasjonsModal } from './VergeInformasjonsModal.tsx'
 
 export interface PersonlinjeProps {
   person?: Person
@@ -20,6 +21,7 @@ export interface PersonlinjeProps {
 export function Personlinje({ person, loading, skjulTelefonnummer = false }: PersonlinjeProps) {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
+  const vergemålModalRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
     if (person?.fnr) {
@@ -31,7 +33,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />
 
-  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming } = person
+  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming, vergemål } = person
   const [adressebeskyttelse] = (adressebeskyttelseOgSkjerming?.gradering || []).filter(
     (gradering) => gradering !== Adressebeskyttelse.UGRADERT
   )
@@ -88,6 +90,12 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           Skjermet
         </Tag>
       )}
+      {vergemål.length > 0 && (
+        <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
+          Vergemål
+        </Button>
+      )}
+      <VergeInformasjonsModal modalRef={vergemålModalRef} vergemål={vergemål} />
     </Container>
   )
 }

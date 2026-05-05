@@ -644,6 +644,33 @@ export interface Person extends Personnavn, HarPersonnavn {
   bydel?: Bydel
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
   dødsdato?: string
+  vergemål: Vergemål[]
+}
+
+export interface Vergemål {
+  type?: string | null
+  vergeEllerFullmektig: VergeEllerFullmektig
+}
+
+export interface VergeEllerFullmektig {
+  motpartsPersonident?: string | null
+  omfang?: string | null
+  identifiserendeInformasjon?: IdentifiserendeInformasjon | null
+  tjenesteomraade?: Tjenesteomraade[] | null
+}
+
+export interface Tjenesteomraade {
+  tjenesteoppgave?: string | null
+  tjenestevirksomhet?: string | null
+}
+
+export enum Brevmottaker {
+  VERGE = 'VERGE',
+  BRUKER = 'BRUKER',
+}
+
+export interface IdentifiserendeInformasjon {
+  navn?: Personnavn | null
 }
 
 export interface HjelpemiddelProdukt {

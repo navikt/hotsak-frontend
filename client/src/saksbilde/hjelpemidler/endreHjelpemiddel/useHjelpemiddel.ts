@@ -54,7 +54,7 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
   }, [grunndataProdukt, oebsProdukter])
 
   const isLoading = grunndataLoading || (oebsLoading && !grunndataProdukt)
-
+  console.log('Hjelpemiddel ble', hjelpemiddel)
   return {
     hjelpemiddel,
     error,

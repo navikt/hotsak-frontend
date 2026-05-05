@@ -1,9 +1,9 @@
 .toKolonner {
   display: grid;
   grid-template-columns: 35rem 1fr;
+  background-color: blue;
   grid-template-rows: 1fr;
-  /* todo: finne et felles sted for css variabler */
-  height: calc(100vh - 3rem);
+  height: calc(100vh - var(--header-hoyde-rem));
 }
 
 .container {

@@ -8,7 +8,6 @@
 
 .treKolonner {
   display: grid;
-  /* todo: finne et felles sted for css variabler */
-  grid-template-columns: 420px auto;
+  grid-template-columns: var(--hotsak-registrer-soknad-kolonne) auto;
   grid-template-rows: 1fr;
 }

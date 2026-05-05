@@ -1,0 +1,18 @@
+:root {
+  --hotsak-total-min-width: 1200px;
+  --hotsak-venstremeny-width: 340px;
+  --hotsak-registrer-soknad-kolonne: 420px;
+  --soknadsbilde-hovedinnhold-max-width: 600px;
+  --hovedinnhold-max-width: 1108px;
+  --hotsak-registrer-soknad-hoyre-kolonne: 300px;
+  --hotsak-historikk-min-width: 492px;
+  --sidebar-min-width: 350px;
+  --hotsak-historikk-max-width: 700px;
+  --hotsak-barnebrille-historikk-max-width: 600px;
+  --hotsak-max-width: 1800px;
+  --header-hoyde-rem: 3rem;
+  --header-hoyde: 48px;
+  --personlinje-hoyde: 48px;
+  --soknadslinje-hoyde: 48px;
+  --textcontainer-bredde: 38em;
+}

@@ -1,4 +1,3 @@
 .søknadslinjeContainer {
-  /* todo: finne et felles sted for css variabler */
-  height: 48px;
+  height: var(--soknadslinje-hoyde);
 }

@@ -2,6 +2,6 @@
   position: fixed;
   bottom: var(--ax-space-40);
   right: var(--ax-space-40);
-  width: 350px;
+  width: var(--sidebar-min-width);
   z-index: 999999;
 }

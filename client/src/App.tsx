@@ -1,7 +1,6 @@
 import { Theme } from '@navikt/ds-react'
 
 import classes from './App.module.css'
-
 import { AppRoutes } from './AppRoutes.tsx'
 import { AsyncBoundary } from './felleskomponenter/AsyncBoundary.tsx'
 import { GlobalFeilside } from './felleskomponenter/feil/GlobalFeilside.tsx'

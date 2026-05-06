@@ -1,8 +1,8 @@
 import { Alert, Box, Button, Detail, Heading, Skeleton, Tag, VStack } from '@navikt/ds-react'
 
-import classes from './Vedtak.module.css'
-
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
+import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
+import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
@@ -15,9 +15,14 @@ import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
-import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
+import classes from './Vedtak.module.css'
 
-export function Vedtak() {
+export interface VedtakProps {
+  oppgave?: Saksbehandlingsoppgave
+}
+
+export function Vedtak(props: VedtakProps) {
+  const { oppgave } = props
   const sakId = useSakId()
   const { sak, mutate } = useBarnebrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
@@ -76,7 +81,9 @@ export function Vedtak() {
                   lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
                 />
               )}
-              {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} />}
+              {oppgave != null && saksbehandlerKanRedigereBarnebrillesak && (
+                <Redigeringsvisning oppgave={oppgave} sak={sak.data} />
+              )}
               {visAlertGodkjenning && (
                 <Alert variant="info" size="small">
                   {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}

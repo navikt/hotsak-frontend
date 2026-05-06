@@ -1,15 +1,15 @@
-import { Actions, ExecutionPromise, useActionState } from '../action/Actions.ts'
+import { type Actions, type ExecutionPromise, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import type { JournalførJournalpostRequest, JournalførJournalpostResponse } from './journalføringTypes.ts'
 
 export interface JournalføringActions extends Actions {
   journalfør(request: Omit<JournalførJournalpostRequest, 'oppgaveId'>): ExecutionPromise<JournalførJournalpostResponse>
 }
 
-export function useJournalføringActions(): JournalføringActions {
+export function useJournalføringActions(oppgave: Oppgave): JournalføringActions {
+  const { oppgaveId, versjon } = oppgave
   const { execute, state } = useActionState()
-  const { oppgaveId, versjon } = useOppgaveContext()
   if (!oppgaveId) {
     throw new Error('Mangler oppgaveId!')
   }

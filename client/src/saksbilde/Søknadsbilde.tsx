@@ -3,12 +3,10 @@ import { memo } from 'react'
 import { Navigate } from 'react-router'
 import { Route, Routes } from 'react-router-dom'
 
-import classes from './Søknadsbilde.module.css'
-
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, sidebarMinWidth } from '../GlobalStyles'
-import { useOppgave } from '../oppgave/useOppgave.ts'
+import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { Sakstype } from '../types/types.internal'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
@@ -19,6 +17,7 @@ import HjelpemiddelListe from './hjelpemidler/HjelpemiddelListe'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { useNotater } from './høyrekolonne/notat/useNotater'
 import { SakLoader } from './SakLoader'
+import classes from './Søknadsbilde.module.css'
 import { Søknadslinje } from './Søknadslinje'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
@@ -29,8 +28,7 @@ import { Venstremeny } from './venstremeny/Venstremeny'
 
 // fixme
 // eslint-disable-next-line react-refresh/only-export-components
-const SaksbildeContent = memo(() => {
-  const { oppgave } = useOppgave()
+const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading } = useSak()
   const { gjeldendeBehandling } = useBehandling()
   const { behovsmelding, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
@@ -110,10 +108,10 @@ const SaksbildeContent = memo(() => {
   )
 })
 
-export default function Søknadsbilde() {
+export default function Søknadsbilde({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   return (
     <AsyncBoundary>
-      <SaksbildeContent />
+      <SaksbildeContent oppgave={oppgave} />
     </AsyncBoundary>
   )
 }

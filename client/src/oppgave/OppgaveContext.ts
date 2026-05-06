@@ -1,6 +1,4 @@
-import { createContext, Dispatch, useCallback, useContext } from 'react'
-
-import type { OppgaveBase } from './oppgaveTypes.ts'
+import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
 export enum OppgaveModalType {
   SETT_PÅ_VENT,
@@ -10,9 +8,10 @@ export enum OppgaveModalType {
   LEGG_TILBAKE,
 }
 
-export interface OppgaveState extends Partial<OppgaveBase> {
+export interface OppgaveState {
   isOppgaveContext: boolean
   åpenModal?: OppgaveModalType
+  sakId?: ID
 }
 
 const initialState: OppgaveState = {
@@ -57,7 +56,7 @@ export function useOppgaveLukkModalHandler() {
 }
 
 export interface OppgaveBaseAction {
-  type: 'åpneModal' | 'lukkModal' | 'versjonEndret'
+  type: 'åpneModal' | 'lukkModal' | 'sakEndret'
 }
 
 export interface OppgaveÅpneModalAction extends OppgaveBaseAction {
@@ -69,9 +68,9 @@ export interface OppgaveLukkModalAction extends OppgaveBaseAction {
   type: 'lukkModal'
 }
 
-export interface OppgaveVersjonEndretAction extends OppgaveBaseAction {
-  type: 'versjonEndret'
-  versjon: number
+export interface OppgaveSakEndretAction extends OppgaveBaseAction {
+  type: 'sakEndret'
+  sakId?: ID
 }
 
-export type OppgaveAction = OppgaveÅpneModalAction | OppgaveLukkModalAction | OppgaveVersjonEndretAction
+export type OppgaveAction = OppgaveÅpneModalAction | OppgaveLukkModalAction | OppgaveSakEndretAction

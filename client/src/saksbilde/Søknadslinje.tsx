@@ -3,6 +3,7 @@ import { Tabs } from '@navikt/ds-react'
 import { useLocation } from 'react-router'
 
 import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { useOppgaveId } from '../oppgave/useOppgave.ts'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { SaksbildeMenu } from './SaksbildeMenu.tsx'
 import { TabLink } from './TabLink'
@@ -14,7 +15,8 @@ export interface SøknadslinjeProps {
 export function Søknadslinje({ id }: SøknadslinjeProps) {
   const location = useLocation()
 
-  const { oppgaveId, isOppgaveContext } = useOppgaveContext()
+  const oppgaveId = useOppgaveId()
+  const { isOppgaveContext } = useOppgaveContext()
   const basePath = oppgaveId ? `/oppgave/${oppgaveId}` : `/sak/${id}`
 
   return (

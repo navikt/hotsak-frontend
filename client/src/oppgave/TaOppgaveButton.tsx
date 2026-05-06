@@ -15,7 +15,7 @@ export interface TaOppgaveButtonProps {
 
 export function TaOppgaveButton(props: TaOppgaveButtonProps) {
   const { oppgave, variant = 'secondary', size = 'small', children = 'Ta oppgave', onOppgavetildeling } = props
-  const { endreOppgavetildeling, state } = useOppgaveActions(oppgave)
+  const { endreOppgavetildeling, state } = useOppgaveActions(oppgave, false)
 
   const onClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation()

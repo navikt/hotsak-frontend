@@ -4,9 +4,9 @@ import { Toppmeny } from '../../header/Toppmeny.tsx'
 import { Feilmelding } from './Feilmelding.tsx'
 import classes from './GlobalFeilside.module.css'
 
-export type GlobalFeilsideFallbackProps = FallbackProps
+export type GlobalFeilsideProps = FallbackProps
 
-export function GlobalFeilside(props: GlobalFeilsideFallbackProps) {
+export function GlobalFeilside(props: GlobalFeilsideProps) {
   return (
     <div className={classes.root}>
       <Toppmeny />

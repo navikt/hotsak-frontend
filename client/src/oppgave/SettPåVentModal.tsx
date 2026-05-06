@@ -2,18 +2,19 @@ import { Checkbox, DatePicker, Textarea, useDatepicker, VStack } from '@navikt/d
 import { addDays } from 'date-fns'
 import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
+import { useToast } from '../felleskomponenter/toast/useToast'
+import { useUmami } from '../sporing/useUmami.ts'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { tilLocalDateString } from '../utils/dato.ts'
+import { isNotBlank } from '../utils/type.ts'
 
 import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
-import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { type Oppgave } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
-import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
-import { isNotBlank } from '../utils/type.ts'
-import { tilLocalDateString } from '../utils/dato.ts'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
-import { useUmami } from '../sporing/useUmami.ts'
-import { useToast } from '../felleskomponenter/toast/useToast'
 
-export function SettPåVentModal() {
+export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
   const { gjeldendeEnhet } = useInnloggetAnsatt()
 
   const { åpenModal } = useOppgaveContext()
@@ -42,7 +43,7 @@ export function SettPåVentModal() {
       onDateChange: (date) => form.setValue('fristFerdigstillelse', date ?? tomorrow),
     })
 
-  const { endreOppgave } = useOppgaveActions()
+  const { endreOppgave } = useOppgaveActions(oppgave)
   const { logOppgaveSattPåVent } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {

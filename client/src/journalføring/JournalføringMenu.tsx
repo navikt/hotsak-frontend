@@ -2,17 +2,16 @@ import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, HStack } from '@navikt/ds-react'
 
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
-import { useOppgave } from '../oppgave/useOppgave.ts'
-import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { OppgaveMenuModals } from '../oppgave/OppgaveMenuModals.tsx'
+import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 
 export interface JournalføringMenuProps {
+  oppgave: Journalføringsoppgave
   onAction?(): unknown | Promise<unknown>
 }
 
-export function JournalføringMenu({ onAction }: JournalføringMenuProps) {
-  const { oppgave } = useOppgave()
-
+export function JournalføringMenu({ oppgave, onAction }: JournalføringMenuProps) {
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   if (!(oppgave && oppgaveErUnderBehandlingAvInnloggetAnsatt)) {
     return null

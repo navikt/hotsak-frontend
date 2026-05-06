@@ -8,8 +8,9 @@ import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { useOppgaveContext } from '../../../oppgave/OppgaveContext.ts'
+import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
 import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
-import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
+import { type BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
@@ -20,15 +21,15 @@ import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
 
 export interface SendBrevProps {
-  sakId: string
+  oppgave?: Saksbehandlingsoppgave
   lesevisning: boolean
 }
 
 export const SendBrevPanel = memo((props: SendBrevProps) => {
-  const { oppgaveId } = useOppgaveContext()
-  const { sakId, lesevisning } = props
+  const { oppgave, lesevisning } = props
+  const sakId = useOppgaveContext().sakId?.toString() ?? '' // fixme
   const { data, mutate: hentBrevtekst } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
-  const brevActions = useBrevActions()
+  const brevActions = useBrevActions(oppgave)
   const brevtekst = data?.data.brevtekst
   const [lagrer, setLagrer] = useState(false)
   const [sletter, setSletter] = useState(false)
@@ -117,7 +118,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     setSubmitAttempt(false)
     setFritekst('')
     showSuccessToast('Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.')
-    await Promise.all([hentBarnebrillesak(), mutate(`/api/oppgaver/${oppgaveId}`), hentSaksdokumenter()])
+    await Promise.all([hentBarnebrillesak(), mutate(`/api/oppgaver/${oppgave?.oppgaveId}`), hentSaksdokumenter()])
 
     setTimeout(() => {
       hentBarnebrillesak()

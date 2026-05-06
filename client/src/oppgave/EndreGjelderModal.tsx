@@ -1,15 +1,16 @@
 import { useMemo } from 'react'
-
-import type { Oppgave } from './oppgaveTypes'
-import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
-import { harBehandlingstema, useKodeverkGjelder } from './useKodeverkOppgave.ts'
-import { naturalBy } from '../utils/array.ts'
 import { FormProvider, useForm } from 'react-hook-form'
+
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
-import { useOppgaveActions } from './useOppgaveActions.ts'
-import { useToast } from '../felleskomponenter/toast/useToast'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
+import { useToast } from '../felleskomponenter/toast/useToast'
 import { useUmami } from '../sporing/useUmami.ts'
+import { naturalBy } from '../utils/array.ts'
+import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
+
+import { type Oppgave } from './oppgaveTypes'
+import { harBehandlingstema, useKodeverkGjelder } from './useKodeverkOppgave.ts'
+import { useOppgaveActions } from './useOppgaveActions.ts'
 
 export interface EndreGjelderModalProps {
   oppgave: Oppgave
@@ -38,7 +39,7 @@ export function EndreGjelderModal(props: EndreGjelderModalProps) {
     },
   })
 
-  const { endreOppgave } = useOppgaveActions()
+  const { endreOppgave } = useOppgaveActions(oppgave)
   const { logOppgaveGjelderEndret } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {

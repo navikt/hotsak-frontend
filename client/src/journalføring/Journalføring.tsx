@@ -1,29 +1,28 @@
 import { Box, HStack, Loader } from '@navikt/ds-react'
 import { useEffect } from 'react'
 
-import classes from './Journalføring.module.css'
-
 import { useDokumentContext } from '../dokument/DokumentContext'
 import { DokumentPanel } from '../dokument/DokumentPanel'
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
-import { useOppgave } from '../oppgave/useOppgave.ts'
+import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useOppgavetilgang } from '../oppgave/useOppgavetilgang.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { Personlinje } from '../saksbilde/Personlinje'
 import { useJournalpost } from '../saksbilde/useJournalpost'
+import classes from './Journalføring.module.css'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
 
 export interface JournalføringProps {
-  journalpostId: string
+  oppgave: Journalføringsoppgave
 }
 
-export function Journalføring({ journalpostId }: JournalføringProps) {
-  const { oppgave } = useOppgave()
+export function Journalføring({ oppgave }: JournalføringProps) {
+  const { journalpostId } = oppgave
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { journalpost, error, isLoading } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
@@ -87,9 +86,9 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
       <div className={classes.container}>
         <div className={classes.toKolonner}>
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && harSkrivetilgang ? (
-            <JournalpostSkjema journalpostId={journalpostId} />
+            <JournalpostSkjema oppgave={oppgave} />
           ) : (
-            <JournalpostVisning journalpostId={journalpostId} lesevisning={!harSkrivetilgang} />
+            <JournalpostVisning oppgave={oppgave} lesevisning={!harSkrivetilgang} />
           )}
           <DokumentPanel />
         </div>

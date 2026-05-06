@@ -5,9 +5,8 @@ import { useErrorBoundary } from 'react-error-boundary'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
-import classes from './Barnebrillesaksbilde.module.css'
 import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
-import { useOppgave } from '../../oppgave/useOppgave.ts'
+import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
@@ -15,6 +14,7 @@ import { StatusTag } from '../komponenter/StatusTag'
 import { LasterPersonlinje } from '../Personlinje'
 import { SaksbildeMenu } from '../SaksbildeMenu.tsx'
 import { useBarnebrillesak } from '../useBarnebrillesak'
+import classes from './Barnebrillesaksbilde.module.css'
 import { BarnebrillesakSidebar } from './BarnebrillesakSidebar'
 import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
@@ -22,8 +22,7 @@ import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
 
-const BarnebrillesakContent = memo(() => {
-  const { oppgave } = useOppgave()
+const BarnebrillesakContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, error: sakError } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
@@ -86,7 +85,7 @@ function LasterBarnebrillesaksbilde() {
   )
 }
 
-export default function Barnebrillesaksbilde() {
+export default function Barnebrillesaksbilde({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   return (
     <AsyncBoundary suspenseFallback={<LasterBarnebrillesaksbilde />}>
       <ManuellSaksbehandlingProvider>
@@ -94,8 +93,8 @@ export default function Barnebrillesaksbilde() {
           columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}
           style={{ paddingBottom: 'var(--ax-space-12)' }}
         >
-          <BarnebrillesakContent />
-          <BarnebrillesakSidebar />
+          <BarnebrillesakContent oppgave={oppgave} />
+          <BarnebrillesakSidebar oppgave={oppgave} />
         </HGrid>
       </ManuellSaksbehandlingProvider>
     </AsyncBoundary>

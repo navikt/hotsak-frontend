@@ -5,8 +5,9 @@ import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
+import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import {
-  Barnebrillesak,
+  type Barnebrillesak,
   Brevkode,
   BrevTekst,
   Brevtype,
@@ -26,11 +27,12 @@ import { useSamletVurdering } from '../../useSamletVurdering'
 import { useBrev } from './brev/useBrev'
 
 interface RedigeringsvisningProps {
+  oppgave: Saksbehandlingsoppgave
   sak: Barnebrillesak
 }
 
 export function Redigeringsvisning(props: RedigeringsvisningProps) {
-  const { sak } = props
+  const { oppgave, sak } = props
   const { setStep } = useManuellSaksbehandlingContext()
   const samletVurdering = useSamletVurdering(sak)
   const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
@@ -45,7 +47,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const brevtekst = data?.data.brevtekst
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const { hentForhåndsvisning } = useBrev()
-  const brevActions = useBrevActions()
+  const brevActions = useBrevActions(oppgave)
 
   const { data: saksdokumenter } = useSaksdokumenter(
     sak.sakId,
@@ -71,35 +73,14 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const visFritekstFelt =
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && !manglerPåkrevdEtterspørreOpplysningerBrev
 
-  useEffect(() => {
-    if (brevtekst) {
-      setFritekst(brevtekst)
-    }
-  }, [brevtekst])
-
-  useEffect(() => {
-    if (submitAttempt) {
-      valider()
-    }
-  }, [fritekst, submitAttempt])
-
-  const lagreUtkast = useCallback(
-    (tekst: string) => brevActions.lagreBrevutkast(byggBrevPayload(tekst)),
-    [sak.sakId, fritekst]
-  )
-
-  useDebounce(fritekst, lagreUtkast)
-
-  function byggBrevPayload(tekst?: string): BrevTekst {
-    return {
-      sakId: sak.sakId,
-      målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      brevtype: Brevtype.BARNEBRILLER_VEDTAK,
-      data: {
-        brevtekst: tekst ? tekst : fritekst,
-      },
-    }
-  }
+  const byggBrevPayload = (tekst?: string): BrevTekst => ({
+    sakId: sak.sakId,
+    målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
+    brevtype: Brevtype.BARNEBRILLER_VEDTAK,
+    data: {
+      brevtekst: tekst ? tekst : fritekst,
+    },
+  })
 
   const valider = () => {
     if (fritekst === '') {
@@ -110,6 +91,29 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
       return true
     }
   }
+
+  useEffect(() => {
+    if (brevtekst) {
+      // fixme
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFritekst(brevtekst)
+    }
+  }, [brevtekst])
+
+  useEffect(() => {
+    if (submitAttempt) {
+      // fixme
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      valider()
+    }
+  }, [fritekst, submitAttempt])
+
+  const lagreUtkast = useCallback(
+    (tekst: string) => brevActions.lagreBrevutkast(byggBrevPayload(tekst)),
+    [sak.sakId, fritekst]
+  )
+
+  useDebounce(fritekst, lagreUtkast)
 
   return (
     <>

@@ -12,6 +12,7 @@ import { initMsw } from './mocks'
 import { initUmami } from './sporing/umami'
 import { cleanupStorage, migrerLocalStorage } from './state/storage.ts'
 import { initFaro } from './utils/faro'
+
 import './styles/global.css'
 
 async function main(): Promise<void> {

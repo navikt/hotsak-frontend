@@ -1,13 +1,14 @@
 import { Textarea } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
-import { useOppgaveActions } from './useOppgaveActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
-import { useUmami } from '../sporing/useUmami.ts'
 import { useToast } from '../felleskomponenter/toast/useToast'
+import { useUmami } from '../sporing/useUmami.ts'
+import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
+import { type Oppgave } from './oppgaveTypes.ts'
+import { useOppgaveActions } from './useOppgaveActions.ts'
 
-export function LeggTilbakeModal() {
+export function LeggTilbakeModal({ oppgave }: { oppgave: Oppgave }) {
   const { åpenModal } = useOppgaveContext()
   const lukkModal = useOppgaveLukkModalHandler()
 
@@ -17,7 +18,7 @@ export function LeggTilbakeModal() {
     },
   })
 
-  const { fjernOppgavetildeling } = useOppgaveActions()
+  const { fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { logOppgaveLagtTilbake } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async () => {

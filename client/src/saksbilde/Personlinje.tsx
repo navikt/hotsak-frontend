@@ -91,16 +91,14 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           Skjermet
         </Tag>
       )}
-      <Eksperiment>
-        <>
-          {vergemål.length > 0 && (
-            <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
-              Vergemål
-            </Button>
-          )}
+      {vergemål && vergemål.length > 0 && (
+        <Eksperiment>
+          <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
+            Vergemål
+          </Button>
           <VergeInformasjonsModal modalRef={vergemålModalRef} vergemål={vergemål} />
-        </>
-      </Eksperiment>
+        </Eksperiment>
+      )}
     </Container>
   )
 }

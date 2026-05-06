@@ -11,7 +11,6 @@ import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 import classes from './personlinje.module.css'
 import { VergeInformasjonsModal } from './VergeInformasjonsModal.tsx'
-import { useMiljø } from '../utils/useMiljø.ts'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 export interface PersonlinjeProps {

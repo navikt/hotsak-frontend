@@ -12,6 +12,7 @@ import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../
 import classes from './personlinje.module.css'
 import { VergeInformasjonsModal } from './VergeInformasjonsModal.tsx'
 import { useMiljø } from '../utils/useMiljø.ts'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 export interface PersonlinjeProps {
   person?: Person
@@ -92,11 +93,13 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           Skjermet
         </Tag>
       )}
-      {vergemål.length > 0 && erDev && (
-        <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
-          Vergemål
-        </Button>
-      )}
+      <Eksperiment>
+        {vergemål.length > 0 && (
+          <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
+            Vergemål
+          </Button>
+        )}
+      </Eksperiment>
       <VergeInformasjonsModal modalRef={vergemålModalRef} vergemål={vergemål} />
     </Container>
   )

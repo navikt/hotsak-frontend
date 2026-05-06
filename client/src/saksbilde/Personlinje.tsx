@@ -34,7 +34,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />
 
-  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming, vergemål } = person
+  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming, vergemål = [] } = person
   const [adressebeskyttelse] = (adressebeskyttelseOgSkjerming?.gradering || []).filter(
     (gradering) => gradering !== Adressebeskyttelse.UGRADERT
   )
@@ -97,11 +97,10 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
             <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
               Vergemål
             </Button>
-          )}  
-        <VergeInformasjonsModal modalRef={vergemålModalRef} vergemål={vergemål} />
-      </>
+          )}
+          <VergeInformasjonsModal modalRef={vergemålModalRef} vergemål={vergemål} />
+        </>
       </Eksperiment>
-      
     </Container>
   )
 }

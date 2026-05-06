@@ -24,7 +24,7 @@ export interface FattVedtakModalV2Props {
 }
 
 export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattVedtakModalV2Props) {
-  const { erDev } = useMiljø()
+  const { erDev, erLocal } = useMiljø()
   const [vedtakLoader, setVedtakLoader] = useState(false)
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
@@ -41,7 +41,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
     ) &&
     brevMetaData.harBrevISak &&
-    erDev
+    (erDev || erLocal)
   )
   const [brevMottaker, setBrevMottaker] = useState<Brevmottaker | undefined>(undefined)
   const [vergeError, setVergeError] = useState<string | undefined>(undefined)
@@ -57,12 +57,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         problemsammendrag: data.problemsammendrag,
         postbegrunnelse: data.postbegrunnelse,
         utleveringMerknad: data.utleveringMerknad,
-        brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined,
+        brevMottaker: brevMottaker ? [brevMottaker] : undefined,
       })
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({
         problemsammendrag: data.problemsammendrag,
-        brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined,
+        brevMottaker: brevMottaker ? [brevMottaker] : undefined,
       })
     }
     if (erInnvilget) {
@@ -80,7 +80,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       return
     }
     setVedtakLoader(true)
-    await ferdigstillBehandling({ brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined })
+    await ferdigstillBehandling({ brevMottaker: brevMottaker ? [brevMottaker] : undefined })
 
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')

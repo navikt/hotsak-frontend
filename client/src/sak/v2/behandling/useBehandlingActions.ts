@@ -19,7 +19,7 @@ export interface BehandlingActions extends Actions {
     problemsammendrag?: string
     postbegrunnelse?: string
     utleveringMerknad?: string
-    brevMottaker?: Set<Brevmottaker>
+    brevMottaker?: Brevmottaker[]
   }): Promise<void>
 }
 
@@ -57,7 +57,7 @@ export function useBehandlingActions(): BehandlingActions {
       problemsammendrag?: string
       postbegrunnelse?: string
       utleveringMerknad?: string
-      brevMottaker?: Set<Brevmottaker>
+      brevMottaker?: Brevmottaker[]
     }) {
       return execute(async () => {
         await http.post(

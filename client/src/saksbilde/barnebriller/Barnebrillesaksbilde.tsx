@@ -61,19 +61,19 @@ const BarnebrillesakContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppg
           </Alert>
         </AlertContainerMedium>
       )}
-      <Steg aktivtSteg={step} />
+      <Steg aktivtSteg={step} oppgave={oppgave} />
     </div>
   )
 })
 
-function Steg({ aktivtSteg }: { aktivtSteg: StepType }) {
+function Steg({ aktivtSteg, oppgave }: { aktivtSteg: StepType; oppgave?: Saksbehandlingsoppgave }) {
   switch (aktivtSteg) {
     case StepType.REGISTRER:
       return <RegistrerSøknad />
     case StepType.VILKÅR:
       return <VurderVilkår />
     case StepType.FATTE_VEDTAK:
-      return <Vedtak />
+      return <Vedtak oppgave={oppgave} />
   }
 }
 

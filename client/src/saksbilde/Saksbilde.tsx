@@ -1,3 +1,4 @@
+import { BodyShort, Box } from '@navikt/ds-react'
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 
@@ -61,7 +62,9 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
     return (
       <>
         <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
-        <p>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</p>
+        <Box margin="space-16">
+          <BodyShort>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</BodyShort>
+        </Box>
       </>
     )
   }

@@ -2,16 +2,19 @@ import { useDebugValue } from 'react'
 import { useParams } from 'react-router'
 import useSwr, { type SWRResponse } from 'swr'
 
-import { HttpError } from '../io/HttpError.ts'
+import type { HttpError } from '../io/HttpError.ts'
 import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
 import type { Sak, SakBase, SakResponse } from '../types/types.internal'
 
-export function useSakId(): string | undefined {
+export function useSakId(): string {
   const { sakId: sakIdUrl } = useParams<{ sakId: string }>()
   const { sakId: sakIdOppgave } = useOppgaveContext()
   const sakId = sakIdUrl ?? sakIdOppgave
   useDebugValue(sakId)
-  return sakId?.toString()
+  if (!sakId) {
+    throw new Error('Både URL og OppgaveContext mangler sakId')
+  }
+  return sakId.toString()
 }
 
 export interface UseSakResponse<T extends SakBase> extends Omit<SWRResponse<SakResponse<T>, HttpError>, 'data'> {
@@ -20,7 +23,7 @@ export interface UseSakResponse<T extends SakBase> extends Omit<SWRResponse<SakR
 
 export function useSak<T extends SakBase = Sak>(): UseSakResponse<T> {
   const sakId = useSakId()
-  const { data: sak, ...rest } = useSwr<SakResponse<T>, HttpError>(sakId ? `/api/sak/${sakId}` : null, {
+  const { data: sak, ...rest } = useSwr<SakResponse<T>, HttpError>(`/api/sak/${sakId}`, {
     refreshInterval: 10_000,
   })
 

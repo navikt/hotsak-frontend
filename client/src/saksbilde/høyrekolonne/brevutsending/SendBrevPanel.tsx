@@ -7,7 +7,6 @@ import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
-import { useOppgaveContext } from '../../../oppgave/OppgaveContext.ts'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
 import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { type BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
@@ -17,6 +16,7 @@ import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { useBrevActions } from '../../useBrevActions.ts'
+import { useSakId } from '../../useSak.ts'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
 
@@ -27,7 +27,7 @@ export interface SendBrevProps {
 
 export const SendBrevPanel = memo((props: SendBrevProps) => {
   const { oppgave, lesevisning } = props
-  const sakId = useOppgaveContext().sakId?.toString() ?? '' // fixme
+  const sakId = useSakId()
   const { data, mutate: hentBrevtekst } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
   const brevActions = useBrevActions(oppgave)
   const brevtekst = data?.data.brevtekst

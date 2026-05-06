@@ -24,7 +24,6 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const vergemålModalRef = useRef<HTMLDialogElement>(null)
-  const { erDev } = useMiljø()
 
   useEffect(() => {
     if (person?.fnr) {

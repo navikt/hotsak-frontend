@@ -1,14 +1,15 @@
 import { Chips, HStack } from '@navikt/ds-react'
 import clsx from 'clsx'
+
 import { useOppgaveContext } from '../../oppgave/OppgaveContext'
 import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
-import { useNotater } from '../../saksbilde/høyrekolonne/notat/useNotater'
 import { useSakId } from '../../saksbilde/useSak'
 import globalStyles from '../../styles/shared.module.css'
-import classes from './SakKontrollPanel.module.css'
+import { useNotater } from '../notater/useNotater'
 import { GjenståendeOverfør } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
+import classes from './SakKontrollPanel.module.css'
 
 export const SakKontrollPanel = () => {
   const sakId = useSakId()

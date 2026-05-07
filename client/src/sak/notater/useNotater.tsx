@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import useSwr, { KeyedMutator } from 'swr'
 
-import { HttpError } from '../../../io/HttpError.ts'
-import { Notat, NotatType, Saksnotater } from '../../../types/types.internal.ts'
+import { HttpError } from '../../io/HttpError.ts'
+import { Notat, NotatType, Saksnotater } from '../../types/types.internal.ts'
 
 interface NotaterResponse {
   antallNotater: number
@@ -27,6 +27,8 @@ export function useNotater(sakId?: string): NotaterResponse {
   useEffect(() => {
     if (saksnotater) {
       const utkast = saksnotater.notater.filter((notat) => !notat.ferdigstilt)
+      // fixme
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHarUtkast(utkast.length > 0)
     }
   }, [saksnotater])
@@ -45,6 +47,8 @@ export function useNotater(sakId?: string): NotaterResponse {
 
   useEffect(() => {
     if (avventerJournalføring) {
+      // fixme
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRefreshInterval(2000)
     } else {
       setRefreshInterval(0)

@@ -2,7 +2,7 @@ import '@mdxeditor/editor/style.css'
 import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { FerdigstillNotatRequest, MålformType, Notat, NotatType } from '../../../types/types.internal.ts'
+import { FerdigstillNotatRequest, MålformType, Notat, NotatType } from '../../types/types.internal.ts'
 import type { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'

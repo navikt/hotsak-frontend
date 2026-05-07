@@ -4,13 +4,13 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, Spacer, Tag, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
-import classes from './NotatCard.module.css'
-import { Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
-import { Notat, NotatKlassifisering, NotatType } from '../../../types/types.internal.ts'
-import { formaterTidsstempelLang } from '../../../utils/dato.ts'
-import { useIsClamped } from '../../../utils/useIsClamped.ts'
+import { Tekst, Undertittel } from '../../felleskomponenter/typografi.tsx'
+import { Notat, NotatKlassifisering, NotatType } from '../../types/types.internal.ts'
+import { formaterTidsstempelLang } from '../../utils/dato.ts'
+import { useIsClamped } from '../../utils/useIsClamped.ts'
 import { MardownEditorPreviewStyling } from './markdown/MarkdownEditor.tsx'
 import { NotatActions } from './NotatActions.tsx'
+import classes from './NotatCard.module.css'
 
 export interface NotaterProps {
   notat: Notat

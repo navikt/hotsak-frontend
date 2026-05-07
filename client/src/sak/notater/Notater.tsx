@@ -2,15 +2,15 @@ import '@mdxeditor/editor/style.css'
 import { Box, List, Loader, ReadMore, ToggleGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { FilterChips } from '../../../felleskomponenter/filter/FilterChips.tsx'
-import type { FilterOption } from '../../../felleskomponenter/filter/filterTypes.ts'
-import { Etikett, Mellomtittel, Tekst } from '../../../felleskomponenter/typografi.tsx'
-import { NotatType } from '../../../types/types.internal.ts'
+import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
+import type { FilterOption } from '../../felleskomponenter/filter/filterTypes.ts'
+import { Etikett, Mellomtittel, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { NotatType } from '../../types/types.internal.ts'
 import { ForvaltningsnotatForm } from './ForvaltningsnotatForm.tsx'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { NotatCard } from './NotatCard.tsx'
-import { useNotater } from './useNotater.tsx'
 import classes from './Notater.module.css'
+import { useNotater } from './useNotater.tsx'
 
 export interface NotaterProps {
   sakId: string

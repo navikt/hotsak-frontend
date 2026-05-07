@@ -4,9 +4,9 @@ import { Tekst } from '../felleskomponenter/typografi'
 import type { Tilbakemelding } from '../innsikt/Besvarelse'
 import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
+import { useNotater } from '../sak/notater/useNotater'
 import { useBehandling } from '../sak/v2/behandling/useBehandling'
 import { NotatType } from '../types/types.internal'
-import { useNotater } from './høyrekolonne/notat/useNotater'
 import { useSakId } from './useSak'
 
 export interface OverførSakTilGosysModalProps {

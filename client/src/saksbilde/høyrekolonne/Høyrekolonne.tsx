@@ -2,17 +2,17 @@ import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-i
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
+import { Notater } from '../../sak/notater/Notater.tsx'
+import { NotificationBadge } from '../../sak/notater/NotificationBadge.tsx'
+import { useNotater } from '../../sak/notater/useNotater.tsx'
+import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
+import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
 import { useValgtFane } from '../useValgtFane.ts'
 import { Historikk } from './historikk/Historikk'
 import { useUtlånoversikt } from './hjelpemiddeloversikt/useUtlånoversikt.ts'
-import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
-import { Notater } from './notat/Notater.tsx'
-import { NotificationBadge } from './notat/NotificationBadge.tsx'
-import { useNotater } from './notat/useNotater.tsx'
-import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
 import classes from './Høyrekolonne.module.css'
 
 export function Høyrekolonne() {

@@ -1,3 +1,4 @@
+import { BodyShort, Box } from '@navikt/ds-react'
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 
@@ -7,6 +8,7 @@ import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
+import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
@@ -22,7 +24,7 @@ const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbi
 const SakV2 = lazy(() => import('../sak/v2/SakV2'))
 const Søknadsbilde = lazy(() => import('./Søknadsbilde'))
 
-const SaksbildeContent = memo(() => {
+const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const [nyttSaksbilde] = useNyttSaksbilde()
   const { sak, isLoading: isSakLoading, error: sakError } = useSak()
   const { gjeldendeBehandling } = useBehandling()
@@ -62,7 +64,9 @@ const SaksbildeContent = memo(() => {
     return (
       <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
-        <p>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</p>
+        <Box margin="space-16">
+          <BodyShort>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</BodyShort>
+        </Box>
       </div>
     )
   }
@@ -71,33 +75,33 @@ const SaksbildeContent = memo(() => {
     <div className={classes.wrapper}>
       <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
       <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
-      <SakstypeSwitch sak={sak.data} />
+      <SakstypeSwitch oppgave={oppgave} sak={sak.data} />
     </div>
   )
 })
 
-function SakstypeSwitch({ sak }: { sak: SakBase }) {
+function SakstypeSwitch({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: SakBase }) {
   switch (sak.sakstype) {
     case Sakstype.BARNEBRILLER:
       return (
         <DokumentProvider>
-          <Barnebrillesaksbilde />
+          <Barnebrillesaksbilde oppgave={oppgave} />
         </DokumentProvider>
       )
     case Sakstype.BESTILLING:
     default:
       return (
         <DokumentProvider>
-          <Søknadsbilde />
+          <Søknadsbilde oppgave={oppgave} />
         </DokumentProvider>
       )
   }
 }
 
-export default function Saksbilde() {
+export default function Saksbilde({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   return (
     <AsyncBoundary name="Saksbilde" suspenseFallback={<SakLoader />}>
-      <SaksbildeContent />
+      <SaksbildeContent oppgave={oppgave} />
     </AsyncBoundary>
   )
 }

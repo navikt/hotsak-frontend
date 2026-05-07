@@ -146,6 +146,30 @@ export interface Oppgave extends OppgaveBase {
   isUlest?: boolean
 }
 
+export interface Journalføringsoppgave extends Oppgave {
+  kategorisering: Oppgavekategorisering<Oppgavetype.JOURNALFØRING>
+  journalpostId: string
+}
+
+export type SaksbehandlingOppgavetype =
+  | Oppgavetype.BEHANDLE_SAK
+  | Oppgavetype.GODKJENNE_VEDTAK
+  | Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
+
+export interface Saksbehandlingsoppgave extends Oppgave {
+  kategorisering: Oppgavekategorisering<SaksbehandlingOppgavetype>
+  sakId: ID
+  sak: OppgaveSak
+}
+
+export function isJournalføringsoppgave(oppgave: Oppgave): oppgave is Journalføringsoppgave {
+  return oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
+}
+
+export function isSaksbehandlingsoppgave(oppgave: Oppgave): oppgave is Saksbehandlingsoppgave {
+  return oppgave.kategorisering.oppgavetype !== Oppgavetype.JOURNALFØRING
+}
+
 export interface OppgaveKodeverk {
   kode: string
   term: string
@@ -156,8 +180,8 @@ export interface KodeverkGjelder {
   behandlingstype?: OppgaveKodeverk
 }
 
-export interface Oppgavekategorisering {
-  oppgavetype: Oppgavetype
+export interface Oppgavekategorisering<T extends Oppgavetype = Oppgavetype> {
+  oppgavetype: T
   behandlingstema?: OppgaveKodeverk
   behandlingstype?: OppgaveKodeverk
   tema: 'HJE' | string
@@ -191,15 +215,6 @@ export interface OppgaveSak {
 export interface OppgaveTotrinnskontroll {
   saksbehandlerId: string
   godkjennerId?: string
-}
-
-export interface GjelderAlternativerResponse {
-  behandlingstemaKode: string
-  behandlingstemaTerm: string
-  alternativer: Array<{
-    behandlingstemaKode: string
-    behandlingstemaTerm: string
-  }>
 }
 
 export interface FinnOppgaverRequest {

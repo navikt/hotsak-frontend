@@ -15,6 +15,7 @@ import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { BrevTilBrukerEllerVerge } from '../BrevTilBrukerEllerVerge'
 import { useClosePanel } from '../paneler/usePanelHooks'
+import { useMiljø } from '../../../utils/useMiljø'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -24,6 +25,7 @@ export interface FattVedtakModalV2Props {
 }
 
 export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattVedtakModalV2Props) {
+  const { erDev, erLocal } = useMiljø()
   const [vedtakLoader, setVedtakLoader] = useState(false)
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
@@ -35,15 +37,18 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
   const brevMetaData = useBrevMetadata()
   const { personInfo } = usePerson(sak.bruker.fnr)
-  const harVergePåHjelpemiddelområdet =
+  const harVergePåHjelpemiddelområdet = !!(
     personInfo?.vergemål?.some((vergemål) =>
       vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
-    ) && brevMetaData.harBrevISak
-  const [brevMottaker, setBrevMottaker] = useState<Brevmottaker | undefined>(undefined)
+    ) &&
+    brevMetaData.harBrevISak &&
+    (erDev || erLocal)
+  )
+  const [brevmottaker, setBrevmottaker] = useState<Brevmottaker | undefined>(undefined)
   const [vergeError, setVergeError] = useState<string | undefined>(undefined)
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    if (harVergePåHjelpemiddelområdet && brevMottaker === undefined) {
+    if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
       return
     }
     setVedtakLoader(true)
@@ -53,12 +58,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         problemsammendrag: data.problemsammendrag,
         postbegrunnelse: data.postbegrunnelse,
         utleveringMerknad: data.utleveringMerknad,
-        brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined,
+        brevmottaker: brevmottaker ? [brevmottaker] : undefined,
       })
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({
         problemsammendrag: data.problemsammendrag,
-        brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined,
+        brevmottaker: brevmottaker ? [brevmottaker] : undefined,
       })
     }
     if (erInnvilget) {
@@ -71,12 +76,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   }
 
   const fattAvslagsvedtak = async () => {
-    if (harVergePåHjelpemiddelområdet && brevMottaker === undefined) {
-      setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
+    if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
+      setVergeError('Du må velge om brevet skal sendes til bruker eller til brukers verge')
       return
     }
     setVedtakLoader(true)
-    await ferdigstillBehandling({ brevMottaker: brevMottaker ? new Set([brevMottaker]) : undefined })
+    await ferdigstillBehandling({ brevmottaker: brevmottaker ? [brevmottaker] : undefined })
 
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
@@ -108,8 +113,8 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         erAvslag
           ? fattAvslagsvedtak
           : () => {
-              if (harVergePåHjelpemiddelområdet && brevMottaker === undefined) {
-                setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
+              if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
+                setVergeError('Du må velge om brevet skal sendes til bruker eller til brukers verge')
               }
               formRef.current?.submit()
             }
@@ -168,9 +173,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       {harVergePåHjelpemiddelområdet && personInfo && (
         <BrevTilBrukerEllerVerge
           person={personInfo}
-          value={brevMottaker}
+          value={brevmottaker}
           onChange={(value) => {
-            setBrevMottaker(value)
+            setBrevmottaker(value)
             setVergeError(undefined)
           }}
           error={vergeError}

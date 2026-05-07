@@ -14,8 +14,14 @@ import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
+import { Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 
-export function Vedtak() {
+export interface VedtakProps {
+  oppgave?: Saksbehandlingsoppgave
+}
+
+export function Vedtak(props: VedtakProps) {
+  const { oppgave } = props
   const sakId = useSakId()
   const { sak, mutate } = useBarnebrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
@@ -76,7 +82,9 @@ export function Vedtak() {
                   lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
                 />
               )}
-              {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} />}
+              {oppgave != null && saksbehandlerKanRedigereBarnebrillesak && (
+                <Redigeringsvisning oppgave={oppgave} sak={sak.data} />
+              )}
               {visAlertGodkjenning && (
                 <Alert variant="info" size="small">
                   {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}

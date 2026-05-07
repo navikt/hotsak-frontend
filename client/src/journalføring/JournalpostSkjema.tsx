@@ -3,11 +3,10 @@ import { Box, Button, ExpansionCard, Heading, HStack, TextField, VStack } from '
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import classes from './JournalpostSkjema.module.css'
-
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
 import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
+import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
@@ -15,17 +14,19 @@ import { useJournalpost } from '../saksbilde/useJournalpost.ts'
 import { SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
+import classes from './JournalpostSkjema.module.css'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 
 export interface JournalpostSkjemaProps {
-  journalpostId: string
+  oppgave: Journalføringsoppgave
 }
 
-export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
+export function JournalpostSkjema({ oppgave }: JournalpostSkjemaProps) {
+  const { journalpostId } = oppgave
   const navigate = useNavigate()
   const { journalpost, isLoading, mutate } = useJournalpost(journalpostId)
-  const journalføringActions = useJournalføringActions()
+  const journalføringActions = useJournalføringActions(oppgave)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
@@ -59,7 +60,7 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
 
   return (
     <div className={classes.container}>
-      <JournalføringMenu onAction={mutate} />
+      <JournalføringMenu oppgave={oppgave} onAction={mutate} />
       <Heading level="1" size="small" spacing>
         Journalføring
       </Heading>

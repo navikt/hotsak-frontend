@@ -1,26 +1,25 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
 
-import classes from './JournalpostVisning.module.css'
-
 import { Dokumenter } from '../dokument/Dokumenter'
 import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
-import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
-import { useOppgave } from '../oppgave/useOppgave.ts'
+import { type Journalføringsoppgave, Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { formaterNavn } from '../utils/formater'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
+import classes from './JournalpostVisning.module.css'
 
 export interface JournalpostVisningProps {
-  journalpostId: string
+  oppgave: Journalføringsoppgave
   lesevisning: boolean
 }
 
-export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVisningProps) {
+export function JournalpostVisning({ oppgave, lesevisning }: JournalpostVisningProps) {
+  const { journalpostId } = oppgave
   const { journalpost, isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
@@ -35,7 +34,7 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
 
   return (
     <div className={classes.container}>
-      {!lesevisning && <JournalføringMenu onAction={mutate} />}
+      {!lesevisning && <JournalføringMenu oppgave={oppgave} onAction={mutate} />}
       <VStack gap="space-12">
         <Heading level="1" size="xsmall" spacing>
           Journalføring
@@ -53,15 +52,14 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
           <Dokumenter dokumenter={journalpost.dokumenter} />
         </VStack>
         <Box paddingBlock="space-24 space-0" paddingInline="space-0 space-24">
-          <JournalpostStatus />
+          <JournalpostStatus oppgave={oppgave} />
         </Box>
       </VStack>
     </div>
   )
 }
 
-function JournalpostStatus() {
-  const { oppgave } = useOppgave()
+function JournalpostStatus({ oppgave }: { oppgave: Journalføringsoppgave }) {
   const { oppgaveErUnderBehandlingAvAnnenAnsatt } = useOppgaveregler(oppgave)
 
   if (!oppgave) {

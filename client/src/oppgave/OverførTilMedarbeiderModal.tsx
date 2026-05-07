@@ -13,15 +13,17 @@ import { useUmami } from '../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { isNotBlank } from '../utils/type.ts'
 import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
+import { type Oppgave } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
 
 export interface OverførTilMedarbeiderModalProps {
-  sakId: string
+  oppgave: Oppgave
 }
 
 export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalProps) {
-  const { sakId } = props
+  const { oppgave } = props
+  const sakId = oppgave.sakId?.toString()
   const { harUtkast } = useNotater(sakId)
   const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { gjeldendeEnhet } = useInnloggetAnsatt()
@@ -38,7 +40,7 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   })
   const { formState, register } = form
 
-  const { endreOppgavetildeling } = useOppgaveActions()
+  const { endreOppgavetildeling } = useOppgaveActions(oppgave)
   const { logOppgaveOverførtTilMedarbeider } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {

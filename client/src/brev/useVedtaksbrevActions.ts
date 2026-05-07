@@ -1,15 +1,16 @@
 import { useCallback } from 'react'
+
 import { http } from '../io/HttpClient.ts'
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
-import type { StateMangement } from './breveditor/Breveditor.tsx'
+import { useOppgaveId } from '../oppgave/useOppgave.ts'
 import { useSakId } from '../saksbilde/useSak.ts'
+import type { StateMangement } from './breveditor/Breveditor.tsx'
 
 interface UseVedtaksbrevActionsParams {
   onSuccess?: () => void
 }
 
 export function useVedtaksbrevActions({ onSuccess }: UseVedtaksbrevActionsParams) {
-  const { oppgaveId } = useOppgaveContext()
+  const oppgaveId = useOppgaveId()
   const sakId = useSakId()
 
   const lagreBrevutkast = useCallback(

@@ -1,10 +1,9 @@
-import { useSWRConfig } from 'swr'
+import { mutate, preload } from 'swr'
 
 import { Actions, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
 import { mutateSak } from '../saksbilde/mutateSak.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
-import { useOppgaveContext } from './OppgaveContext.ts'
 import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
 
 export interface EndreOppgavetildelingRequest {
@@ -56,25 +55,20 @@ export interface OppgaveActions extends Actions {
 }
 
 /**
- * Opprett `OppgaveActions` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext`.
+ * TODO
+ *
+ * @param oppgave
+ * @param isOppgaveContext
  */
-export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
-  const { mutate } = useSWRConfig()
-  const {
-    oppgaveId = oppgave?.oppgaveId,
-    versjon = oppgave?.versjon,
-    sakId = oppgave?.sakId,
-    isOppgaveContext,
-  } = useOppgaveContext()
-
+export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true): OppgaveActions {
+  const { oppgaveId, versjon, sakId } = oppgave
   const { execute, state } = useActionState()
 
-  const mutateOppgave = () => mutate(`/api/oppgaver/${oppgaveId}`)
   const mutateOppgaveOgSak = () => {
     if (sakId) {
-      return Promise.all([mutateOppgave(), mutateSak(sakId)])
+      return Promise.all([mutateOppgave(oppgaveId), mutateSak(sakId)])
     }
-    return mutateOppgave()
+    return mutateOppgave(oppgaveId)
   }
 
   return {
@@ -117,4 +111,12 @@ export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
 
     state,
   }
+}
+
+export function preloadOppgave(oppgaveId: OppgaveId) {
+  return preload(`/api/oppgaver/${oppgaveId}`, http.get)
+}
+
+export function mutateOppgave(oppgaveId: OppgaveId) {
+  return mutate(`/api/oppgaver/${oppgaveId}`)
 }

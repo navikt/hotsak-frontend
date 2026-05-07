@@ -1,15 +1,12 @@
 import { useDebugValue } from 'react'
 import { useParams } from 'react-router'
-import useSwr, { SWRResponse } from 'swr'
+import useSwr, { type SWRResponse } from 'swr'
 
-import { HttpError } from '../io/HttpError.ts'
-import { useOppgaveContext } from './OppgaveContext.ts'
-import { erOppgaveId, Oppgave, OppgaveId } from './oppgaveTypes.ts'
+import { type HttpError } from '../io/HttpError.ts'
+import { erOppgaveId, type Oppgave, type OppgaveId } from './oppgaveTypes.ts'
 
 export function useOppgaveId(): OppgaveId | undefined {
-  const { oppgaveId: oppgaveIdUrl } = useParams<{ oppgaveId: OppgaveId | string }>()
-  const { oppgaveId: oppgaveIdOppgave } = useOppgaveContext()
-  const oppgaveId = oppgaveIdUrl ?? oppgaveIdOppgave
+  const { oppgaveId } = useParams<{ oppgaveId: OppgaveId | string }>()
   useDebugValue(oppgaveId)
   if (erOppgaveId(oppgaveId)) {
     return oppgaveId

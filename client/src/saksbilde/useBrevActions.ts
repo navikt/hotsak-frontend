@@ -1,7 +1,7 @@
 import { Actions, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
+import type { Oppgave } from '../oppgave/oppgaveTypes.ts'
 import type { BrevTekst, Brevtype } from '../types/types.internal.ts'
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
 
 export interface BrevActions extends Actions {
   lagreBrevutkast(tekst: BrevTekst): Promise<void>
@@ -9,8 +9,8 @@ export interface BrevActions extends Actions {
   lagreBrevsending(tekst: BrevTekst): Promise<void>
 }
 
-export function useBrevActions(): BrevActions {
-  const { oppgaveId, versjon } = useOppgaveContext()
+export function useBrevActions(oppgave?: Oppgave): BrevActions {
+  const { oppgaveId, versjon } = oppgave ?? {} // fixme
   const { execute, state } = useActionState()
   return {
     lagreBrevutkast(tekst: BrevTekst): Promise<void> {

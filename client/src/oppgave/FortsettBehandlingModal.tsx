@@ -2,14 +2,15 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react'
 import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
-import { useOppgaveActions } from './useOppgaveActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
-import { tilLocalDateString } from '../utils/dato.ts'
-import { useUmami } from '../sporing/useUmami.ts'
 import { useToast } from '../felleskomponenter/toast/useToast'
+import { useUmami } from '../sporing/useUmami.ts'
+import { tilLocalDateString } from '../utils/dato.ts'
+import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
+import { type Oppgave } from './oppgaveTypes.ts'
+import { useOppgaveActions } from './useOppgaveActions.ts'
 
-export function FortsettBehandlingModal() {
+export function FortsettBehandlingModal({ oppgave }: { oppgave: Oppgave }) {
   const { åpenModal } = useOppgaveContext()
   const lukkModal = useOppgaveLukkModalHandler()
 
@@ -27,7 +28,7 @@ export function FortsettBehandlingModal() {
       onDateChange: (date) => form.setValue('fristFerdigstillelse', date ?? today),
     })
 
-  const { endreOppgave } = useOppgaveActions()
+  const { endreOppgave } = useOppgaveActions(oppgave)
   const { logOppgaveGjenopptatt } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {

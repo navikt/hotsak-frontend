@@ -2,22 +2,22 @@ import { ClockIcon, EnvelopeClosedIcon, NotePencilIcon, PersonGavelIcon } from '
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect } from 'react'
 
-import classes from './BarnebrillesakSidebar.module.css'
-
+import { ScrollContainer } from '../../felleskomponenter/ScrollContainer'
+import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
+import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
-import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel'
 import { Notater } from '../høyrekolonne/notat/Notater'
 import { NotificationBadge } from '../høyrekolonne/notat/NotificationBadge'
 import { useNotater } from '../høyrekolonne/notat/useNotater'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
+import classes from './BarnebrillesakSidebar.module.css'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
-import { ScrollContainer } from '../../felleskomponenter/ScrollContainer'
 
-export function BarnebrillesakSidebar() {
+export function BarnebrillesakSidebar({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const { sak } = useBarnebrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
@@ -78,7 +78,7 @@ export function BarnebrillesakSidebar() {
           <TotrinnskontrollPanel />
         </Tabs.Panel>
         <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV}>
-          <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+          <SendBrevPanel oppgave={oppgave} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
         </Tabs.Panel>
         <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
           <SidebarPanel tittel="Notater">

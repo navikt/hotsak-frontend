@@ -1,8 +1,8 @@
-import { SettPåVentModal } from './SettPåVentModal.tsx'
-import { type Oppgave } from './oppgaveTypes.ts'
 import { EndreGjelderModal } from './EndreGjelderModal.tsx'
-import { OverførTilMedarbeiderModal } from './OverførTilMedarbeiderModal.tsx'
 import { FortsettBehandlingModal } from './FortsettBehandlingModal.tsx'
+import { type Oppgave } from './oppgaveTypes.ts'
+import { OverførTilMedarbeiderModal } from './OverførTilMedarbeiderModal.tsx'
+import { SettPåVentModal } from './SettPåVentModal.tsx'
 
 export interface OppgaveMenuModalsProps {
   oppgave: Oppgave
@@ -12,10 +12,10 @@ export function OppgaveMenuModals(props: OppgaveMenuModalsProps) {
   const { oppgave } = props
   return (
     <>
-      <SettPåVentModal />
-      <FortsettBehandlingModal />
+      <SettPåVentModal oppgave={oppgave} />
+      <FortsettBehandlingModal oppgave={oppgave} />
       <EndreGjelderModal oppgave={oppgave} />
-      <OverførTilMedarbeiderModal sakId={oppgave.sakId?.toString() ?? ''} />
+      <OverførTilMedarbeiderModal oppgave={oppgave} />
     </>
   )
 }

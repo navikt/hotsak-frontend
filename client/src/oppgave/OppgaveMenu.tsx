@@ -1,16 +1,16 @@
-import { ActionMenu } from '@navikt/ds-react'
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
+import { ActionMenu } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 
+import { useUmami } from '../sporing/useUmami.ts'
+import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
 import { type Oppgave, type OppgaveId, Oppgavetype } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
-import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
 import { useOppgaveUrl } from './useOppgaveUrl.ts'
-import { useUmami } from '../sporing/useUmami.ts'
 
 export interface OppgaveMenuProps {
-  oppgave?: Oppgave
+  oppgave: Oppgave
   onAction?(): unknown | Promise<unknown>
 }
 

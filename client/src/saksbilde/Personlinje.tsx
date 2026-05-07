@@ -2,16 +2,15 @@ import { Button, HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
 import { Children, ReactNode, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
-import { søknadslinjeHøyde } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../types/types.internal'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 import classes from './personlinje.module.css'
 import { VergeInformasjonsModal } from './VergeInformasjonsModal.tsx'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 export interface PersonlinjeProps {
   person?: Person
@@ -126,15 +125,7 @@ function Element({ children }: { children: ReactNode }) {
 
 function Container({ children }: { children?: ReactNode }) {
   return (
-    <HStack
-      align="center"
-      flexShrink="0"
-      //minWidth={hotsakTotalMinWidth}
-      height={søknadslinjeHøyde}
-      gap="space-16"
-      paddingInline="space-12"
-      className={classes.container}
-    >
+    <HStack align="center" flexShrink="0" gap="space-16" paddingInline="space-12" className={classes.container}>
       {Children.map(children, (child, index) => (
         <>
           {child && index > 0 && <div>|</div>}

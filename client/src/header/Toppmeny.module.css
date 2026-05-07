@@ -1,7 +1,12 @@
-.root {
-}
-
 .title,
 .userButton {
   white-space: nowrap;
+}
+
+.navFlex {
+  flex: 1;
+}
+
+.menuIcon {
+  font-size: 1.5rem;
 }

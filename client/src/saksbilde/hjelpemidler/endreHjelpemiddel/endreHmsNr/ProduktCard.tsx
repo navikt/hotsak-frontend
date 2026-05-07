@@ -1,4 +1,6 @@
 import { Box, HGrid, VStack } from '@navikt/ds-react'
+
+import classes from './ProduktCard.module.css'
 import { FinnHjelpemiddelLink } from '../../../../felleskomponenter/FinnHjelpemiddelLink'
 import { Etikett, Tekst, Undertittel } from '../../../../felleskomponenter/typografi'
 import { HjelpemiddelData } from '../useHjelpemiddel'
@@ -20,14 +22,7 @@ export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }
         </Etikett>
         <HGrid columns={hjelpemiddel.kilde === 'FinnHjelpemiddel' ? '1fr 1fr' : '1fr'} gap="space-16">
           {hjelpemiddel.produktbildeUri && (
-            <img
-              alt="Produktbilde"
-              src={hjelpemiddel.produktbildeUri}
-              style={{
-                width: '150px',
-                objectFit: 'contain',
-              }}
-            />
+            <img alt="Produktbilde" src={hjelpemiddel.produktbildeUri} className={classes.produktbilde} />
           )}
           <VStack>
             {hjelpemiddel.kilde === 'FinnHjelpemiddel' ? (

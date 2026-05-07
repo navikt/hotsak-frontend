@@ -1,15 +1,16 @@
 import { Detail } from '@navikt/ds-react'
 import { formaterTidsstempelKort } from '../../../../utils/dato'
+import classes from './Lagreindikator.module.css'
 
 export function Lagreindikator(props: { lagrerUtkast: boolean; sistLagretTidspunkt?: string }) {
   const { lagrerUtkast, sistLagretTidspunkt } = props
 
   if (!sistLagretTidspunkt) {
-    return <div style={{ marginLeft: 'auto', marginTop: '2rem' }}></div>
+    return <div className={classes.placeholder}></div>
   }
 
   return (
-    <div style={{ marginLeft: 'auto', marginTop: '0.3rem', marginBottom: '0.5rem' }}>
+    <div className={classes.container}>
       {lagrerUtkast ? (
         <Detail textColor="subtle">Lagrer...</Detail>
       ) : (

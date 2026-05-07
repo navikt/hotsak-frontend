@@ -4,3 +4,19 @@
   padding-bottom: var(--ax-space-32);
   box-sizing: border-box;
 }
+
+.hovedGrid {
+  background: var(--ax-bg-default);
+  height: 100%;
+  min-height: 0;
+}
+
+.section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex1 {
+  flex: 1;
+}

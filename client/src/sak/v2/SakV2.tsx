@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
+import classes from './SakV2.module.css'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { usePerson } from '../../personoversikt/usePerson.ts'
@@ -88,28 +89,12 @@ function SakV2Content() {
   }
 
   return (
-    <Box
-      background="neutral-moderate"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        minWidth: `${totalVisibleMinWidth}px`,
-        overflowY: 'hidden',
-      }}
-    >
+    <Box background="neutral-moderate" className={classes.container} style={{ minWidth: `${totalVisibleMinWidth}px` }}>
       <HStack width="100%" wrap={false}>
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
-      <Box
-        marginBlock="space-8 space-0"
-        marginInline="space-8"
-        style={{
-          flex: 1,
-          minHeight: 0,
-        }}
-      >
+      <Box marginBlock="space-8 space-0" marginInline="space-8" className={classes.resizableArea}>
         <Group orientation="horizontal" defaultLayout={defaultLayout} onLayoutChange={onLayoutChanged}>
           {bahandlingsPanel.visible && (
             <Panel

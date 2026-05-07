@@ -72,14 +72,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
             </VStack>
           </VStack>
           {produktbilde(alternativtProdukt) && (
-            <div
-              style={{
-                height: '170px',
-                position: 'relative',
-                margin: 'auto',
-                marginBottom: 'var(--ax-space-16)',
-              }}
-            >
+            <div className={classes.bildeContainer}>
               <img className={classes.bilde} alt="Produktbilde" src={produktbilde(alternativtProdukt)} />
             </div>
           )}

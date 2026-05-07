@@ -1,11 +1,18 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .toKolonner {
   display: grid;
   grid-template-columns: 35rem 1fr;
-  background-color: blue;
   grid-template-rows: 1fr;
-  height: calc(100vh - var(--header-hoyde-rem));
+  height: 100%;
 }
 
 .container {
+  flex: 1;
+  min-height: 0;
   padding-left: var(--ax-space-24);
 }

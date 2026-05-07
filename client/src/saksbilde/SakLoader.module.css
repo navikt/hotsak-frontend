@@ -1,0 +1,8 @@
+.skeletonGrid {
+  max-width: 1592px;
+}
+
+.sidePanel {
+  border-left: 1px solid var(--ax-border-neutral-subtle);
+  border-right: 1px solid var(--ax-border-neutral-subtle);
+}

@@ -13,6 +13,7 @@ import { useSak } from '../saksbilde/useSak.ts'
 import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less'
+import classes from './Brev.module.css'
 import { BrevContext } from './BrevContext.ts'
 import Breveditor from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
@@ -102,13 +103,13 @@ export const Brev = () => {
 
   if (brevutkast.isLoading) {
     return (
-      <div style={{ textAlign: 'center', padding: '2em' }}>
+      <div className={classes.loaderContainer}>
         <Loader title="Laster inn brevutkast..." />
       </div>
     )
   } else if (brevutkast.error) {
     return (
-      <div style={{ textAlign: 'center', padding: '2em' }}>
+      <div className={classes.loaderContainer}>
         <LocalAlert status="warning">
           <LocalAlert.Title>Feil med lagring av utkast</LocalAlert.Title>
           <LocalAlert.Content>
@@ -156,7 +157,7 @@ export const Brev = () => {
     >
       {brevSendt && (
         <>
-          <div style={{ padding: '0.8em 1em' }}>
+          <div className={classes.panelHeader}>
             <PanelTittel tittel="Vedtaksbrev" lukkPanel={closePanel} />
           </div>
           <BrevForhåndsvisning loaderTekst="Henter vedtaksbrev fra Joark..." />
@@ -272,7 +273,7 @@ export const Brev = () => {
                 </>
               )}
               {oppgaveFerdigstilt && (
-                <div style={{ padding: '0.8em 1em' }}>
+                <div className={classes.panelHeader}>
                   <PanelTittel tittel="Vedtaksbrev" lukkPanel={closePanel} />
                 </div>
               )}

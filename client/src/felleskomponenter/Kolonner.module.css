@@ -5,9 +5,3 @@
   align-self: flex-end;
   align-items: flex-end;
 }
-
-.treKolonner {
-  display: grid;
-  grid-template-columns: var(--hotsak-registrer-soknad-kolonne) auto;
-  grid-template-rows: 1fr;
-}

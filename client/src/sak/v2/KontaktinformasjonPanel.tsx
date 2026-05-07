@@ -45,7 +45,7 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
       background="default"
       paddingBlock="space-0 space-36"
       paddingInline="space-12 space-0"
-      style={{ height: '100%' }}
+      className={classes.container}
     >
       <PanelTittel tittel="Kontaktinformasjon" lukkPanel={lukkPanel} />
       <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-4 space-0">

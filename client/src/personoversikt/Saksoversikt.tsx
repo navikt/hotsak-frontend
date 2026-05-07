@@ -12,6 +12,7 @@ import {
   type SaksoversiktBarnebrillekrav,
   type SaksoversiktSak,
 } from './saksoversiktTypes.ts'
+import classes from './Saksoversikt.module.css'
 
 export interface SaksoversiktProps {
   sakerOgBarnebrillekrav: Array<SaksoversiktSak | SaksoversiktBarnebrillekrav>
@@ -29,12 +30,12 @@ export function Saksoversikt(props: SaksoversiktProps) {
       ) : (
         <>
           {barnebrillekravHentet === false && (
-            <Alert size="small" variant="warning" style={{ margin: '0.2rem 0 1rem 0', width: 'fit-content' }}>
+            <Alert size="small" variant="warning" className={classes.warningAlert}>
               Vi kan for øyeblikket ikke vise barnebrillesaker fra direkteoppgjørsløsningen for optikere.
             </Alert>
           )}
           <div>
-            <Alert size="small" variant="info" style={{ margin: '0 0 1rem 0' }} inline>
+            <Alert size="small" variant="info" className={classes.infoAlert} inline>
               Her ser du saker for brukeren i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd.
             </Alert>
           </div>

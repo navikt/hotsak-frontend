@@ -1,0 +1,12 @@
+.wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: var(--hotsak-registrer-soknad-kolonne) 1fr;
+  grid-template-rows: 1fr;
+}
+
+.wrapper > * {
+  min-height: 0;
+}

@@ -2,6 +2,7 @@ import { HStack, Loader, LocalAlert } from '@navikt/ds-react'
 import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev'
 import { Brevtype, RessursStatus } from '../types/types.internal'
 import { Etikett } from '../felleskomponenter/typografi'
+import classes from './BrevForhåndsvisning.module.css'
 
 const BrevForhåndsvisning = ({ loaderTekst }: { loaderTekst: string }) => {
   const { hentedeBrev } = useBrev()
@@ -22,7 +23,7 @@ const BrevForhåndsvisning = ({ loaderTekst }: { loaderTekst: string }) => {
           width="100%"
           height="100%"
           allow="fullscreen"
-          style={{ border: 'none' }}
+          className={classes.iframe}
         />
       )
     case RessursStatus.FEILET:

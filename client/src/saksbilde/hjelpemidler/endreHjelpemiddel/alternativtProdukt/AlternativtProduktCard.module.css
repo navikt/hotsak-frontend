@@ -5,6 +5,13 @@
   border-radius: var(--ax-radius-12);
 }
 
+.bildeContainer {
+  height: 170px;
+  position: relative;
+  margin: auto;
+  margin-bottom: var(--ax-space-16);
+}
+
 .produktCard {
   border: 1px solid var(--ax-border-neutral-subtle);
   border-radius: var(--ax-radius-8);

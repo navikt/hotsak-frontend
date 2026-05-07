@@ -1,5 +1,7 @@
 import { Fragment } from 'react'
 import { HelpText, HGrid } from '@navikt/ds-react'
+
+import classes from './LagerstatusUtregning.module.css'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { AlternativeProduct } from '../../useAlternativeProdukter'
 
@@ -27,22 +29,12 @@ export function LagerstatusUtregning(props: { lagerstatus: WareHouseStock }) {
             <Fragment key={key}>
               <div>{operator}</div>
               <div>{label}</div>
-              <div style={{ justifySelf: 'end' }}>{lagerstatus[key]}</div>
+              <div className={classes.endAligned}>{lagerstatus[key]}</div>
             </Fragment>
           )
         })}
       </HGrid>
-      <HGrid
-        columns="auto auto 1fr"
-        gap="space-0 space-8"
-        style={{
-          borderTopWidth: '1px',
-          borderTopStyle: 'solid',
-          borderTopColor: 'var(--ax-border-subtle)',
-          borderBottomStyle: 'double',
-          borderBottomColor: 'var(--ax-border-subtle)',
-        }}
-      >
+      <HGrid columns="auto auto 1fr" gap="space-0 space-8" className={classes.sumRow}>
         <div>
           <Etikett>=</Etikett>
         </div>

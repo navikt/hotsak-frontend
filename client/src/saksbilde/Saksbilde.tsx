@@ -1,6 +1,8 @@
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 
+import classes from './Saksbilde.module.css'
+
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
@@ -45,32 +47,32 @@ const SaksbildeContent = memo(() => {
 
   if (nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD) {
     return (
-      <>
+      <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
         <SakProvider>
           <SakbrukerinnstillingerProvider>
             <SakV2 />
           </SakbrukerinnstillingerProvider>
         </SakProvider>
-      </>
+      </div>
     )
   }
 
   if (gjeldendeBehandling != null && gjeldendeBehandling.behandlingId.toString() !== '0') {
     return (
-      <>
+      <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
         <p>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</p>
-      </>
+      </div>
     )
   }
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
       <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
       <SakstypeSwitch sak={sak.data} />
-    </>
+    </div>
   )
 })
 

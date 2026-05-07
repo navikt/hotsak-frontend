@@ -1,4 +1,6 @@
 import { Box, Heading, HGrid, VStack } from '@navikt/ds-react'
+
+import classes from './OriginaltHjelpemiddel.module.css'
 import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
 import { Etikett, Tekst } from '../../../felleskomponenter/typografi'
 import { Opplysning } from '../../../types/BehovsmeldingTypes'
@@ -26,16 +28,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
             <HGrid columns="auto 1fr" gap="space-20">
               <div>
                 {grunndataProdukt && (
-                  <img
-                    alt="Produktbilde"
-                    src={grunndataProdukt.produktbildeUri}
-                    style={{
-                      width: '160px',
-                      //maxWidth: '100%',
-                      objectFit: 'contain',
-                      borderRadius: 'var(--ax-radius-8)',
-                    }}
-                  />
+                  <img alt="Produktbilde" src={grunndataProdukt.produktbildeUri} className={classes.produktbilde} />
                 )}
               </div>
               <VStack gap="space-4">
@@ -64,7 +57,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
                           : opplysning.innhold[0].fritekst}
                       </Tekst>
                     ) : (
-                      <ul key={opplysning.ledetekst.nb} style={{ margin: '0' }}>
+                      <ul key={opplysning.ledetekst.nb} className={classes.opplysningListe}>
                         {opplysning.innhold.map((element, idx) => (
                           <li key={idx}>
                             <Tekst>

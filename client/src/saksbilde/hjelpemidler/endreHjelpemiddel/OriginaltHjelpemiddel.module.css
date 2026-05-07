@@ -1,0 +1,9 @@
+.produktbilde {
+  width: 160px;
+  object-fit: contain;
+  border-radius: var(--ax-radius-8);
+}
+
+.opplysningListe {
+  margin: 0;
+}

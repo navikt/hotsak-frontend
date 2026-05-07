@@ -13,6 +13,7 @@ import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakProvider'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
+import classes from './Sidebar.module.css'
 
 export function Sidebar() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSakContext()
@@ -33,13 +34,10 @@ export function Sidebar() {
         size="small"
         icon={<XMarkIcon title={`Lukk sidepanel`} fontSize="20px" />}
         onClick={closePanel}
-        style={{
-          /* FIXME: Trolig ikke måten vi bør gjøre dette på, men har ikke tid til noe annet */ position: 'absolute',
-          right: '0.3rem',
-        }}
+        className={classes.closeButton}
       />
       <Tabs
-        style={{ height: '100%' }}
+        className={classes.tabs}
         size="small"
         value={valgtNedreVenstreKolonneTab.toString()}
         onChange={(value) => setValgtNedreVenstreKolonneTab(value as VenstrekolonneTabs)}
@@ -77,7 +75,7 @@ export function Sidebar() {
                     <Tag
                       variant={`${antallNotater > 0 ? 'info-moderate' : 'neutral-moderate'}`}
                       size="xsmall"
-                      style={{ position: 'relative' }}
+                      className={classes.notificationTag}
                       data-testid="notatteller"
                     >
                       {antallNotater}

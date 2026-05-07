@@ -1,11 +1,11 @@
 import { memo, useEffect } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 
+import classes from './RegistrerSøknad.module.css'
+
 import { useDokumentContext } from '../../../../dokument/DokumentContext'
 import { DokumentPanel } from '../../../../dokument/DokumentPanel'
 import { AsyncBoundary } from '../../../../felleskomponenter/AsyncBoundary.tsx'
-import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
-import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
@@ -46,16 +46,12 @@ const RegistrerSøknadContent = memo(() => {
   if (!sak) return <div>Fant ikke saken</div>
 
   return (
-    <TreKolonner>
+    <div className={classes.wrapper}>
       <Venstremeny>
-        <ScrollContainer>
-          {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
-        </ScrollContainer>
+        {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
       </Venstremeny>
-      <ScrollContainer>
-        <DokumentPanel />
-      </ScrollContainer>
-    </TreKolonner>
+      <DokumentPanel />
+    </div>
   )
 })
 

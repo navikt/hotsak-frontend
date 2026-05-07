@@ -51,7 +51,7 @@ export function Utviklingsverktøy() {
     <div className={classes.wrapper}>
       <Button
         data-testid={'utviklerverktoy-lukk'}
-        style={{ position: 'absolute', top: '7px', right: '7px' }}
+        className={classes.closeButton}
         size="small"
         variant="secondary"
         onClick={() => {

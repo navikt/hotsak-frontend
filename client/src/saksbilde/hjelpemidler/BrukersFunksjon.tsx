@@ -1,7 +1,8 @@
 import { Box, Label, VStack } from '@navikt/ds-react'
 import { BrytbarBrødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
-import { textcontainerBredde } from '../../GlobalStyles.tsx'
-import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
+import { Funksjonsbeskrivelse } from '../../types/BehovsmeldingTypes.ts'
+import { tekstByFunksjonsnedsettelse } from '../../sak/v2/behovsmelding/tilbehør/funksjonsnedsettelser.ts'
+import classes from './BrukersFunksjon.module.css'
 
 export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse; skjulHeading?: boolean }) {
   const { funksjonsbeskrivelse, skjulHeading = false } = props
@@ -22,7 +23,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
         borderColor="neutral-subtle"
         borderWidth="1"
       >
-        <VStack gap="space-24" style={{ maxWidth: `${textcontainerBredde}` }}>
+        <VStack gap="space-24" className={classes.content}>
           <Box>
             <Etikett>
               Innbyggers sykdom, skade eller lyte som har ført til varig og vesentlig nedsatt funksjonsevne:
@@ -42,17 +43,4 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
       </Box>
     </Box>
   )
-}
-
-export const tekstByFunksjonsnedsettelse = (brukerFunksjon: Funksjonsbeskrivelse) => {
-  const tekst: Record<keyof typeof InnbyggersVarigeFunksjonsnedsettelse, string> = {
-    [InnbyggersVarigeFunksjonsnedsettelse.ALDERDOMSSVEKKELSE]: 'Innbygger har alderdomssvekkelse.',
-    [InnbyggersVarigeFunksjonsnedsettelse.ANNEN_VARIG_DIAGNOSE]: `Innbygger har en varig diagnose: ${brukerFunksjon.diagnose}`,
-    [InnbyggersVarigeFunksjonsnedsettelse.ANNEN_DIAGNOSE]: `Innbygger har en diagnose: ${brukerFunksjon.diagnose}`,
-    [InnbyggersVarigeFunksjonsnedsettelse.UAVKLART]:
-      'Det er uavklart om innbygger har en varig sykdom, skade eller lyte.',
-    [InnbyggersVarigeFunksjonsnedsettelse.UAVKLART_V2]:
-      'Det er uavklart om personen har en sykdom, skade eller lyte som har ført til varig og vesentlig nedsatt funksjonsevne.',
-  }
-  return tekst[brukerFunksjon.innbyggersVarigeFunksjonsnedsettelse]
 }

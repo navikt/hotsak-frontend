@@ -1,0 +1,10 @@
+.placeholder {
+  margin-left: auto;
+  margin-top: var(--ax-space-32);
+}
+
+.container {
+  margin-left: auto;
+  margin-top: var(--ax-space-4);
+  margin-bottom: var(--ax-space-8);
+}

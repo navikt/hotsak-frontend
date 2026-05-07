@@ -5,6 +5,7 @@ import { useBehandling } from '../behandling/useBehandling'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useAngreVedtak } from './useAngreVedtak'
 import { useState } from 'react'
+import classes from './AngreVedtakModal.module.css'
 
 export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { gjeldendeBehandling } = useBehandling()
@@ -52,7 +53,7 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
         automatisk til den.
       </p>
       {(vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) && (
-        <InfoCard data-color="warning" size="small" style={{ marginBottom: '1rem' }}>
+        <InfoCard data-color="warning" size="small" className={classes.warningCard}>
           <InfoCard.Header>
             <InfoCard.Title>Du må lukke SF i OeBS.</InfoCard.Title>
           </InfoCard.Header>

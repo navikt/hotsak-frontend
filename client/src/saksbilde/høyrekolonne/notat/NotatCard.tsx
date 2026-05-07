@@ -3,6 +3,8 @@ import '@mdxeditor/editor/style.css'
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, Spacer, Tag, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
+
+import classes from './NotatCard.module.css'
 import { Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { Notat, NotatKlassifisering, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLang } from '../../../utils/dato.ts'
@@ -38,7 +40,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             <NotatActions notat={notat} mutate={mutateNotater} />
           </HStack>
           <HStack gap="space-8">
-            <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+            <Heading level="3" size="xsmall" className={classes.heading}>
               {notat.tittel}
             </Heading>
           </HStack>

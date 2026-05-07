@@ -3,6 +3,7 @@ import { Tabs } from '@navikt/ds-react'
 import { useLocation } from 'react-router'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { TabLink } from '../saksbilde/TabLink'
+import classes from './PersonoversiktTabs.module.css'
 
 export interface PersonoversiktTabsProps {
   sakerCount: number
@@ -13,7 +14,7 @@ export function PersonoversiktTabs({ sakerCount, hjelpemidlerCount }: Personover
   const location = useLocation()
   return (
     <Tabs value={location.pathname}>
-      <Tabs.List style={{ padding: `0 var(--ax-space-16)` }}>
+      <Tabs.List className={classes.tabsList}>
         <TabLink to="/personoversikt/saker">{`Saker (${sakerCount})`}</TabLink>
         <Eksperiment>
           <TabLink to="/personoversikt/oppgaver">Oppgaver</TabLink>

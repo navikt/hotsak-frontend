@@ -10,13 +10,7 @@ export interface VenstremenyProps {
 
 export function Venstremeny({ gap, children }: VenstremenyProps) {
   return (
-    <VStack
-      className={classes.container}
-      as="aside"
-      padding="space-16"
-      gap={gap}
-      style={{ height: '100%', overflowY: 'auto' }}
-    >
+    <VStack className={classes.container} as="aside" padding="space-16" gap={gap}>
       {children}
     </VStack>
   )

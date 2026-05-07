@@ -2,7 +2,6 @@ import { Alert, Box, Button, Detail, Heading, Skeleton, Tag, VStack } from '@nav
 
 import classes from './Vedtak.module.css'
 
-import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
@@ -15,7 +14,6 @@ import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
-import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
 
 export function Vedtak() {
   const sakId = useSakId()
@@ -43,21 +41,23 @@ export function Vedtak() {
     henterSaksdokumenter
 
   return (
-    <TreKolonner>
+    <div className={classes.wrapper}>
       {visSkeleton ? (
-        <Box padding="space-16">
-          <Heading level="1" size="small" spacing>
-            Forslag til vedtak
-          </Heading>
-          <VStack gap="space-8">
-            <Skeleton variant="rectangle" width="40%" height={60} />
-            <Skeleton variant="rectangle" width="80%" height={20} />
-            <Skeleton variant="rectangle" width="80%" height={20} />
-            <Skeleton variant="rectangle" width="80%" height={90} />
-          </VStack>
-        </Box>
+        <div className={classes.scrollColumn}>
+          <Box padding="space-16">
+            <Heading level="1" size="small" spacing>
+              Forslag til vedtak
+            </Heading>
+            <VStack gap="space-8">
+              <Skeleton variant="rectangle" width="40%" height={60} />
+              <Skeleton variant="rectangle" width="80%" height={20} />
+              <Skeleton variant="rectangle" width="80%" height={20} />
+              <Skeleton variant="rectangle" width="80%" height={90} />
+            </VStack>
+          </Box>
+        </div>
       ) : (
-        <ScrollContainer>
+        <div className={classes.scrollColumn}>
           <Box padding="space-16">
             <Heading level="1" size="small" spacing>
               {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
@@ -91,11 +91,11 @@ export function Vedtak() {
               )}
             </VStack>
           </Box>
-        </ScrollContainer>
+        </div>
       )}
       <div className={classes.venstreKolonne}>
         <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
       </div>
-    </TreKolonner>
+    </div>
   )
 }

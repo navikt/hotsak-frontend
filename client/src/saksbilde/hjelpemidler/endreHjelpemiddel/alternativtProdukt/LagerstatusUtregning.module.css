@@ -1,0 +1,11 @@
+.endAligned {
+  justify-self: end;
+}
+
+.sumRow {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--ax-border-subtle);
+  border-bottom-style: double;
+  border-bottom-color: var(--ax-border-subtle);
+}

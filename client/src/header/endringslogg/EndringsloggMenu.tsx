@@ -13,7 +13,7 @@ export function EndringsloggMenu() {
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
-        <InternalHeader.Button style={{ position: 'relative' }}>
+        <InternalHeader.Button className={classes.triggerButton}>
           {!endringslogg.isLoading && (
             <div className={`${classes.uleste} ${endringslogg.fading ? classes.fading : ''}`} />
           )}

@@ -1,11 +1,12 @@
 import useSWR from 'swr'
 import { Button, Chips, Select } from '@navikt/ds-react'
 import { type ReactNode, useEffect, useState } from 'react'
+import classes from './Brevmaler.module.css'
 
 export const BrevmalVelger = ({ velgMal }: { velgMal: (mal: string) => void }) => {
   return (
-    <div style={{ padding: '1em', background: 'white', height: '100%' }}>
-      <div style={{ maxWidth: '300px' }}>
+    <div className={classes.velgerContainer}>
+      <div className={classes.velgerInner}>
         <Velger
           tittel="Velg brevmal"
           alternativer={[
@@ -110,7 +111,7 @@ export const BrevmalVelger = ({ velgMal }: { velgMal: (mal: string) => void }) =
                   onClick={() => {
                     velgMal('# ')
                   }}
-                  style={{ margin: '1em 0' }}
+                  className={classes.spacing}
                 >
                   Opprett brev
                 </Button>
@@ -128,7 +129,7 @@ const Svartidsbrev = ({ velgMal }: { velgMal: (mal: string) => void }) => {
   const alternativer = ['4 uker', '12 uker', '18 uker']
 
   return (
-    <div style={{ margin: '1em 0' }}>
+    <div className={classes.spacing}>
       <Chips>
         {alternativer.map((option) => (
           <Chips.Toggle key={option} selected={selected == option} onClick={() => setSelected(option)}>
@@ -156,7 +157,7 @@ const Velger = ({
   const [underType, setUnderType] = useState<string>()
   return (
     <>
-      <div style={{ margin: '1em 0 0 0' }}>
+      <div className={classes.spacingTop}>
         <Select
           label={tittel}
           onChange={(e) => {
@@ -206,7 +207,7 @@ const OpprettBrevKnapp = ({
       onClick={() => {
         setKey(unikNøkkel)
       }}
-      style={{ margin: '1em 0' }}
+      className={classes.spacing}
     >
       Opprett brev
     </Button>

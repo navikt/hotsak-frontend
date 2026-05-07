@@ -1,0 +1,17 @@
+.velgerContainer {
+  padding: var(--ax-space-16);
+  background: white;
+  height: 100%;
+}
+
+.velgerInner {
+  max-width: var(--hotsak-registrer-soknad-hoyre-kolonne);
+}
+
+.spacing {
+  margin: var(--ax-space-16) 0;
+}
+
+.spacingTop {
+  margin: var(--ax-space-16) 0 0 0;
+}

@@ -8,3 +8,9 @@
   border: 2px dashed black;
   min-width: 220px;
 }
+
+.closeButton {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+}

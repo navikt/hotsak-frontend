@@ -6,7 +6,7 @@ import { besvarelseToSvar, IBesvarelse, Tilbakemelding } from './Besvarelse'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
 import { SpørreundersøkelseStack } from './SpørreundersøkelseStack'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
-import { textcontainerBredde } from '../GlobalStyles'
+import classes from './SpørreundersøkelseModal.module.css'
 
 export interface SpørreundersøkelseModalProps extends Pick<ModalProps, 'open'> {
   loading?: boolean
@@ -79,8 +79,8 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
             )
           })}
         >
-          <Modal.Body style={{ paddingTop: 0 }}>
-            <VStack gap="space-16" style={{ maxWidth: `${textcontainerBredde}` }} marginInline={'space-0 space-24'}>
+          <Modal.Body className={classes.modalBody}>
+            <VStack gap="space-16" className={classes.content} marginInline={'space-0 space-24'}>
               {children}
               <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} size={size} />
             </VStack>

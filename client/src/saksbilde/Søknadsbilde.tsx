@@ -49,11 +49,11 @@ const SaksbildeContent = memo(() => {
   return (
     <HGrid
       columns={`max(${hovedInnholdMaxWidth})  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
-      style={{ background: 'var(--ax-bg-default)', height: '100%', minHeight: '0' }}
+      className={classes.hovedGrid}
     >
-      <section style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <section className={classes.section}>
         <Søknadslinje id={sak.data.sakId} />
-        <HGrid columns={`${hotsakVenstremenyWidth} auto`} style={{ flex: 1 }}>
+        <HGrid columns={`${hotsakVenstremenyWidth} auto`} className={classes.flex1}>
           <ScrollContainer>
             <Venstremeny gap="space-24">
               <Søknadsinfo />

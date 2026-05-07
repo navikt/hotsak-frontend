@@ -77,7 +77,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     <Table {...tableProps}>
       <Table.Header>
         <Table.Row>
-          {expandable ? <Table.HeaderCell style={{ width: 48 }} /> : null}
+          {expandable ? <Table.HeaderCell className={classes.expandCell} /> : null}
           {visibleColumns.map((column) => {
             const key = column.field
 
@@ -197,7 +197,7 @@ function PlaceholderRow({
 }) {
   return (
     <Table.Row>
-      <Table.DataCell colSpan={colSpan} textSize={textSize} align="center" style={{ padding: 10 }}>
+      <Table.DataCell colSpan={colSpan} textSize={textSize} align="center" className={classes.placeholderCell}>
         {children}
       </Table.DataCell>
     </Table.Row>
@@ -217,7 +217,7 @@ function SkeletonRows<T extends object>({
   return skeletonRows.map((key) => (
     <Table.Row key={key}>
       {expandable ? (
-        <Table.DataCell style={{ width: 48 }}>
+        <Table.DataCell className={classes.expandCell}>
           <Skeleton height={height} />
         </Table.DataCell>
       ) : null}

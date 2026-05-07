@@ -1,0 +1,5 @@
+.container {
+  overflow-y: auto;
+  flex-grow: 1;
+  height: calc(100vh - (var(--header-hoyde) + var(--personlinje-hoyde) + var(--soknadslinje-hoyde)));
+}

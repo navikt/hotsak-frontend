@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { useEffect } from 'react'
 import { Loader } from '@navikt/ds-react'
+import classes from './BrevmalLaster.module.css'
 
 export const BrevmalLaster = ({ malKey, velgMal }: { malKey: string; velgMal: (mal: string) => void }) => {
   let importer
@@ -34,12 +35,12 @@ export const BrevmalLaster = ({ malKey, velgMal }: { malKey: string; velgMal: (m
   }, [data, velgMal])
 
   return (
-    <div style={{ padding: '1em', background: 'white', height: '100%', textAlign: 'center' }}>
+    <div className={classes.container}>
       <Loader size="large" title="Laster brevmal" />
     </div>
   )
 }
 
-const useImporterMal = (key: string | undefined, importer: Promise<any> | undefined) => {
-  return useSWR(key, importer === undefined ? async () => {} : async () => (await importer).default)
+const useImporterMal = (key: string | undefined, importer: Promise<{ default: string }> | undefined) => {
+  return useSWR(key, importer === undefined ? null : async () => (await importer).default)
 }

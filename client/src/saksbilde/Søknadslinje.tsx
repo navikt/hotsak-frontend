@@ -6,6 +6,7 @@ import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { SaksbildeMenu } from './SaksbildeMenu.tsx'
 import { TabLink } from './TabLink'
+import classes from './Søknadslinje.module.css'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -27,7 +28,7 @@ export function Søknadslinje({ id }: SøknadslinjeProps) {
           <TabLink to={`${basePath}/bruker`}>Bruker</TabLink>
           <TabLink to={`${basePath}/formidler`}>Formidler</TabLink>
           {isOppgaveContext && (
-            <div style={{ alignSelf: 'center', margin: '0 var(--ax-space-12) 0 auto' }}>
+            <div className={classes.menuContainer}>
               <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />
             </div>
           )}

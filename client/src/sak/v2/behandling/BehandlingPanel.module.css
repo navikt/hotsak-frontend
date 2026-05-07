@@ -1,0 +1,11 @@
+.container {
+  height: 100%;
+}
+
+.saksvarsler {
+  max-width: var(--textcontainer-bredde);
+}
+
+.selectAuto {
+  width: auto;
+}

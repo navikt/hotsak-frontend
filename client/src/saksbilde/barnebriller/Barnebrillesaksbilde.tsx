@@ -45,7 +45,7 @@ const BarnebrillesakContent = memo(() => {
   const { saksstatus, vedtak } = sak.data
   const visStatusTag = !oppgave?.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
   return (
-    <div>
+    <div className={classes.content}>
       <HStack className={classes.header} wrap={false} align="baseline">
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
@@ -92,7 +92,7 @@ export default function Barnebrillesaksbilde() {
       <ManuellSaksbehandlingProvider>
         <HGrid
           columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}
-          style={{ paddingBottom: 'var(--ax-space-12)' }}
+          className={classes.grid}
         >
           <BarnebrillesakContent />
           <BarnebrillesakSidebar />

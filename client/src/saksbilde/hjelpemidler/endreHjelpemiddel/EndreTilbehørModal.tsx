@@ -2,6 +2,8 @@ import { Box, Button, Modal } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
+import classes from './EndreModal.module.css'
+
 import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../../sak/sakTypes.ts'
 import { useUmami } from '../../../sporing/useUmami.ts'
 import { type Tilbehør } from '../../../types/BehovsmeldingTypes.ts'
@@ -100,7 +102,7 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
           size="small"
           aria-label={'Endre tilbehør'}
         >
-          <Modal.Body style={{ scrollbarGutter: 'stable both-edges' }}>
+          <Modal.Body className={classes.modalBody}>
             <Box paddingBlock="space-24 space-0" paddingInline="space-16">
               <OriginaltHjelpemiddel
                 navn={tilbehør.navn}

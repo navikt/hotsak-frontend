@@ -1,6 +1,6 @@
-import { headerHøyde, personlinjeHøyde, søknadslinjeHøyde } from '../GlobalStyles'
+import classes from './ScrollContainer.module.css'
 
-export function ScrollContainer(props: { children: React.ReactNode; height?: string }) {
-  const { children, height = `calc( 100vh - ( ${headerHøyde} + ${personlinjeHøyde} + ${søknadslinjeHøyde}) )` } = props
-  return <div style={{ overflowY: 'auto', flexGrow: 1, height }}>{children}</div>
+export function ScrollContainer(props: { children: React.ReactNode }) {
+  const { children } = props
+  return <div className={classes.container}>{children}</div>
 }

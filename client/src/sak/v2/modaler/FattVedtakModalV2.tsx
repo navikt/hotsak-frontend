@@ -8,6 +8,7 @@ import { usePerson } from '../../../personoversikt/usePerson'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
 import { Brevmottaker, Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
+import classes from './FattVedtakModalV2.module.css'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
@@ -158,7 +159,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       )}
       {erAvslag && (
         <>
-          <Alert variant="info" size="small" style={{ marginBottom: '1em' }}>
+          <Alert variant="info" size="small" className={classes.alertSpacing}>
             Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da få
             varsel om vedtaksresultatet.
           </Alert>

@@ -1,0 +1,7 @@
+.tabsList {
+  height: var(--soknadslinje-hoyde);
+}
+
+.notificationTag {
+  position: relative;
+}

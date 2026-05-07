@@ -1,9 +1,14 @@
-.root {
-}
-
 .highlighted td:first-of-type {
   background-image: linear-gradient(var(--ax-border-strong), var(--ax-border-strong));
   background-position: left center;
   background-repeat: no-repeat;
   background-size: 5px 95%;
+}
+
+.expandCell {
+  width: 48px;
+}
+
+.placeholderCell {
+  padding: var(--ax-space-10, 10px);
 }

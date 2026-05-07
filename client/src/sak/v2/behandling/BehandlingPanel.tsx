@@ -8,7 +8,6 @@ import { useUtsendingsInfo } from '../../../brev/useUtsendingsInfo.ts'
 import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
-import { textcontainerBredde } from '../../../GlobalStyles.tsx'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../../../oppgave/useOppgaveregler.ts'
 import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
@@ -22,6 +21,7 @@ import { useSakContext } from '../SakProvider.tsx'
 import { Gjenstående, isBehandlingsutfallVedtak, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
+import classes from './BehandlingPanel.module.css'
 
 export interface BehandlingPanelProps {
   sak: Sak
@@ -53,7 +53,7 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
   const { datoEkspedert } = useUtsendingsInfo()
 
   return (
-    <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-36" style={{ height: '100%' }}>
+    <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-36" className={classes.container}>
       <PanelTittel
         paddingInline="space-8 space-0"
         tittel="Behandle sak"
@@ -167,7 +167,7 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                   Videre behandling i OeBS
                 </Heading>
                 <Tekst>Saken kan nå tas videre i OeBS</Tekst>
-                <div style={{ maxWidth: `${textcontainerBredde}` }}>
+                <div className={classes.saksvarsler}>
                   <Saksvarsler varsler={varsler} />
                 </div>
               </>
@@ -245,7 +245,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall?: VedtaksResu
           size="small"
           label="Resultat"
           readOnly={harBrevutkast}
-          style={{ width: 'auto' }}
+          className={classes.selectAuto}
           value={utfall ? utfall : ''}
           onChange={async (e) => {
             if (utfall === (e.target.value as VedtaksResultat)) {

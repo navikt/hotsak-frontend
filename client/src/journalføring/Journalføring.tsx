@@ -62,7 +62,7 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
 
   if (isLoading) {
     return (
-      <>
+      <div className={classes.wrapper}>
         <Personlinje person={personInfo} loading={personInfoLoading} />
         <div className={classes.container}>
           <div className={classes.toKolonner}>
@@ -77,12 +77,12 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
             <DokumentPanel />
           </div>
         </div>
-      </>
+      </div>
     )
   }
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <Personlinje person={personInfo} loading={personInfoLoading} />
       <div className={classes.container}>
         <div className={classes.toKolonner}>
@@ -94,7 +94,7 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
           <DokumentPanel />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -1,0 +1,29 @@
+.wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.resultatCell {
+  width: 180px;
+}
+
+.beskrivelseCell {
+  width: 500px;
+}
+
+.basertPåCell {
+  width: 300px;
+}
+
+.vurdertAvCell {
+  width: 250px;
+}
+
+.begrunnelseCell {
+  width: 250px;
+}
+
+.lovReferanseCell {
+  width: 150px;
+}

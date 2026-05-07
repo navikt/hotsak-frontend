@@ -1,20 +1,17 @@
 import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react'
+import clsx from 'clsx'
 import ReactMarkdown from 'react-markdown'
 import type { IOppfølgingsspørsmål } from './spørreundersøkelser'
 import { Spørsmål, SpørsmålProps } from './Spørsmål'
+import classes from './Oppfølgingsspørsmål.module.css'
 
 export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspørsmål>) {
   const { spørsmål, navn, nivå = 0, size } = props
   return (
-    <Box
-      padding={nivå > 1 ? 'space-0' : 'space-12'}
-      style={{
-        marginTop: nivå > 1 ? 'var(--ax-space-12)' : 'space-0',
-      }}
-    >
+    <Box padding={nivå > 1 ? 'space-0' : 'space-12'} className={clsx(nivå > 1 && classes.marginTop)}>
       <VStack gap="space-20">
         {spørsmål.tips && (
-          <Alert size="small" variant="info" style={{ marginBottom: '1rem' }}>
+          <Alert size="small" variant="info" className={classes.alertSpacing}>
             <Heading size="xsmall" level="3">
               {spørsmål.tips.tittel}
             </Heading>

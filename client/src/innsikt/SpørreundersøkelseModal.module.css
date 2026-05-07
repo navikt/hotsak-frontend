@@ -1,0 +1,7 @@
+.modalBody {
+  padding-top: 0;
+}
+
+.content {
+  max-width: var(--textcontainer-bredde);
+}

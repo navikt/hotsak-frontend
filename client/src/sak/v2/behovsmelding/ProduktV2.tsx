@@ -1,7 +1,9 @@
 import { HStack } from '@navikt/ds-react'
+import clsx from 'clsx'
 import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
 import { BrytbarBrødtekst, Tekst } from '../../../felleskomponenter/typografi'
 import { Kopiknapp } from '../../../felleskomponenter/Kopiknapp'
+import classes from './ProduktV2.module.css'
 
 export function ProduktV2({
   gjennomstrek = false,
@@ -19,7 +21,7 @@ export function ProduktV2({
     <HStack gap="space-8" align="start">
       {showLink ? (
         <FinnHjelpemiddelLink variant="neutral" hmsnr={hmsnr}>
-          <div style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
+          <div className={clsx(gjennomstrek && classes.gjennomstrek)}>
             <Tekst>{hmsnr}</Tekst>
           </div>
         </FinnHjelpemiddelLink>
@@ -27,7 +29,7 @@ export function ProduktV2({
         <BrytbarBrødtekst>{navn}</BrytbarBrødtekst>
       )}
       <Kopiknapp tooltip="Kopier hmsnummer" copyText={hmsnr} placement="bottom" />
-      <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
+      <Tekst weight="semibold" className={clsx(gjennomstrek && classes.gjennomstrek)}>
         {navn}
       </Tekst>
     </HStack>

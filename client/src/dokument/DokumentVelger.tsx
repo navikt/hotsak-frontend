@@ -1,6 +1,8 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyShort, Link, Table, Tooltip } from '@navikt/ds-react'
 
+import classes from './DokumentVelger.module.css'
+
 import { Etikett } from '../felleskomponenter/typografi'
 import type { Dokument } from '../types/types.internal'
 
@@ -41,7 +43,7 @@ export function DokumentVelger({ dokument, valgtDokumentId, onClick }: DokumentV
           </BodyShort>
         )}
       </Table.DataCell>
-      <Table.DataCell style={{ width: '50px' }}>
+      <Table.DataCell className={classes.linkCell}>
         <BodyShort size="large">
           <Tooltip content="Åpne i ny fane">
             <Link href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`} target="_blank">

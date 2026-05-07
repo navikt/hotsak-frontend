@@ -6,3 +6,7 @@
 .panel {
   padding-inline: var(--ax-space-0) var(--ax-space-12);
 }
+
+.container {
+  height: 100%;
+}

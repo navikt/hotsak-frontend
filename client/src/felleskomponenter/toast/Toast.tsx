@@ -16,7 +16,7 @@ export function Toast({ children }: { children: ReactNode }) {
       marginInline="space-20 space-0"
       borderRadius="8"
       shadow="dialog"
-      style={{ width: 'max-content', position: 'fixed', top: '14rem' }}
+      className={classes.container}
     >
       <HStack gap="space-12" align="center">
         <Tekst>{children}</Tekst>

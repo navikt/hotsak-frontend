@@ -10,6 +10,7 @@ import { ForvaltningsnotatForm } from './ForvaltningsnotatForm.tsx'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { NotatCard } from './NotatCard.tsx'
 import { useNotater } from './useNotater.tsx'
+import classes from './Notater.module.css'
 
 export interface NotaterProps {
   sakId: string
@@ -87,7 +88,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
       </VStack>
       {notaterLaster && (
         <div>
-          <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
+          <Loader size="large" className={classes.loader} />
         </div>
       )}
       {notaterLastet && (
@@ -103,7 +104,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
         <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
         {notaterLaster && (
           <div>
-            <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
+            <Loader size="large" className={classes.loader} />
           </div>
         )}
         {!notaterLaster && notater && (

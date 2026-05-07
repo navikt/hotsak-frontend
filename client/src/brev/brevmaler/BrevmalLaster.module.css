@@ -1,0 +1,6 @@
+.container {
+  padding: var(--ax-space-16);
+  background: white;
+  height: 100%;
+  text-align: center;
+}

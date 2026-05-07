@@ -24,7 +24,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
       background="default"
       paddingBlock="space-0 space-36"
       paddingInline="space-12 space-0"
-      style={{ height: '100%' }}
+      className={classes.container}
     >
       <PanelTittel tittel="Søknad om hjelpemidler" lukkPanel={lukkPanel} />
       <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-0 space-24">

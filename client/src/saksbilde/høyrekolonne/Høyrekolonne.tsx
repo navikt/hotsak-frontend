@@ -2,7 +2,6 @@ import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-i
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
-import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
@@ -14,6 +13,7 @@ import { Notater } from './notat/Notater.tsx'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
 import { useNotater } from './notat/useNotater.tsx'
 import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
+import classes from './Høyrekolonne.module.css'
 
 export function Høyrekolonne() {
   const { kanBehandleSak } = useSaksregler()
@@ -34,7 +34,7 @@ export function Høyrekolonne() {
         onChange={setValgtFane}
         loop
       >
-        <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
+        <Tabs.List className={classes.tabsList}>
           <Tooltip content="Historikk">
             <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<ClockDashedIcon title="Sakshistorikk" />} />
           </Tooltip>
@@ -65,7 +65,7 @@ export function Høyrekolonne() {
                         data-color="neutral"
                         variant="moderate"
                         size="xsmall"
-                        style={{ position: 'relative' }}
+                        className={classes.notificationTag}
                         data-testid="notatteller"
                       >
                         {antallNotater}

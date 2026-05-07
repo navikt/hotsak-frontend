@@ -1,9 +1,10 @@
 import { Box, Button, Detail, ErrorSummary, Heading, Table, Tag } from '@navikt/ds-react'
 import { useEffect, useRef, useState } from 'react'
 
+import classes from './VurderVilkår.module.css'
+
 import { FeilmeldingAlert } from '../../../../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
-import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
 import { Tekst } from '../../../../felleskomponenter/typografi'
 import { http } from '../../../../io/HttpClient.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -91,7 +92,7 @@ export function VurderVilkår() {
   const alertType = alertVariant(status)
 
   return (
-    <ScrollContainer>
+    <div className={classes.wrapper}>
       <Box padding="space-16">
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
@@ -151,25 +152,25 @@ export function VurderVilkår() {
                       />
                     }
                   >
-                    <Table.DataCell scope="row" style={{ width: '180px' }}>
+                    <Table.DataCell scope="row" className={classes.resultatCell}>
                       <Resultat vilkårOppfylt={vilkårOppfylt} />
                     </Table.DataCell>
-                    <Table.DataCell scope="row" style={{ width: '500px' }}>
+                    <Table.DataCell scope="row" className={classes.beskrivelseCell}>
                       <Tekst>{beskrivelse}</Tekst>
                     </Table.DataCell>
-                    <Table.DataCell scope="row" style={{ width: '300px' }}>
+                    <Table.DataCell scope="row" className={classes.basertPåCell}>
                       {vilkårMetadata?.basertPå.map((metadata) => <Tekst key={`${metadata}`}>{metadata}</Tekst>) || '-'}
                     </Table.DataCell>
-                    <Table.DataCell scope="row" style={{ width: '250px' }}>
+                    <Table.DataCell scope="row" className={classes.vurdertAvCell}>
                       <VurdertAv
                         vilkårOppfylt={vilkårOppfylt}
                         resultatSaksbehandler={manuellVurdering?.vilkårOppfylt}
                       />
                     </Table.DataCell>
-                    <Table.DataCell scope="row" style={{ width: '250px' }}>
+                    <Table.DataCell scope="row" className={classes.begrunnelseCell}>
                       <Tekst>{manuellVurdering?.begrunnelse || '-'}</Tekst>
                     </Table.DataCell>
-                    <Table.DataCell scope="row" style={{ width: '150px' }}>
+                    <Table.DataCell scope="row" className={classes.lovReferanseCell}>
                       <Tekst>{lovReferanse}</Tekst>
                     </Table.DataCell>
                   </Table.ExpandableRow>
@@ -204,7 +205,7 @@ export function VurderVilkår() {
           </Knappepanel>
         }
       </Box>
-    </ScrollContainer>
+    </div>
   )
 
   function sorterPåLovreferanse(a?: string, b?: string): number {

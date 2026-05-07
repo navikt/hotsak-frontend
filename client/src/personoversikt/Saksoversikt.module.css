@@ -1,0 +1,8 @@
+.warningAlert {
+  margin: var(--ax-space-2) 0 var(--ax-space-16) 0;
+  width: fit-content;
+}
+
+.infoAlert {
+  margin: 0 0 var(--ax-space-16) 0;
+}

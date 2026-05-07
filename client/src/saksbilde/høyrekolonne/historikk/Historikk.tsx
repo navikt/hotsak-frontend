@@ -9,7 +9,7 @@ export function Historikk() {
 
   return (
     <SidebarPanel
-      tittel="Historikk "
+      tittel="Historikk"
       error={error && 'Feil ved henting av historikk.'}
       loading={isLoading && 'Henter historikk...'}
     >

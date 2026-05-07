@@ -1,5 +1,7 @@
 import { Alert, Box, Button, HStack, Radio, RadioGroup, Table } from '@navikt/ds-react'
 
+import classes from './KnyttTilEksisterendeSak.module.css'
+
 import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpetekst'
 import { SakstypeEtikett } from '../felleskomponenter/SakstypeEtikett.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
@@ -10,7 +12,7 @@ import { formaterDato } from '../utils/dato'
 export interface KnyttTilEksisterendeSakProps {
   åpneSaker: SaksoversiktSak[]
   valgtEksisterendeSakId: string
-  onChange: (...args: any[]) => any
+  onChange: (value: string) => void
 }
 
 export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
@@ -48,17 +50,17 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
               <Table.Body>
                 {åpneSaker.map((sak) => (
                   <Table.Row key={sak.sakId}>
-                    <Table.DataCell style={{ verticalAlign: 'middle', width: '50px' }}>
+                    <Table.DataCell className={classes.radioCell}>
                       <Radio value={sak.sakId}>{''}</Radio>
                     </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>{sak.sakId}</Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                    <Table.DataCell className={classes.tableCell}>{sak.sakId}</Table.DataCell>
+                    <Table.DataCell className={classes.tableCell}>
                       {sak.sakstype && <SakstypeEtikett sakstype={sak.sakstype} />}
                     </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                    <Table.DataCell className={classes.tableCell}>
                       {OppgaveStatusLabel.get(sak.saksstatus)}
                     </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                    <Table.DataCell className={classes.tableCell}>
                       {formaterDato(sak.saksstatusGyldigFra)}
                     </Table.DataCell>
                   </Table.Row>

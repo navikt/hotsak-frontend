@@ -47,7 +47,7 @@ export function Toppmeny() {
         <InternalHeader.Title as="a" href="/" className={classes.title}>
           {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
         </InternalHeader.Title>
-        <HStack justify="space-between" wrap={false} style={{ flex: 1 }}>
+        <HStack justify="space-between" wrap={false} className={classes.navFlex}>
           <HStack wrap={false}>
             <ToppmenyLinkButton to="/oppgaver/mine">Mine oppgaver</ToppmenyLinkButton>
             <ToppmenyLinkButton to="/oppgaver/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
@@ -58,7 +58,7 @@ export function Toppmeny() {
         <ActionMenu>
           <ActionMenu.Trigger>
             <InternalHeader.Button>
-              <MenuGridIcon style={{ fontSize: '1.5rem' }} title="Systemer og oppslagsverk" />
+              <MenuGridIcon className={classes.menuIcon} title="Systemer og oppslagsverk" />
             </InternalHeader.Button>
           </ActionMenu.Trigger>
           <ActionMenu.Content>

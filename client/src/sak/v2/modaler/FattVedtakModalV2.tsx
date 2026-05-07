@@ -76,7 +76,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
 
   const fattAvslagsvedtak = async () => {
     if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
-      setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
+      setVergeError('Du må velge om brevet skal sendes til bruker eller til brukers verge')
       return
     }
     setVedtakLoader(true)
@@ -113,7 +113,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           ? fattAvslagsvedtak
           : () => {
               if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
-                setVergeError('Du må velge om brevet skal sendes til bruker eller verge')
+                setVergeError('Du må velge om brevet skal sendes til bruker eller til brukers verge')
               }
               formRef.current?.submit()
             }

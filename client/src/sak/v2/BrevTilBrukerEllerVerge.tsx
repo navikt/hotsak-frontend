@@ -26,10 +26,11 @@ export function BrevTilBrukerEllerVerge({
     <Box padding="space-16" background="neutral-soft" borderRadius="12" marginBlock="space-16 space-0">
       <VStack gap="space-8">
         <HStack wrap={false} gap="space-8" align="center">
-          <Etikett>Send vedtaksbrev til bruker eller verge</Etikett>
+          <Etikett>Send vedtaksbrev til bruker eller til brukers verge</Etikett>
           <HelpText strategy="fixed">
             <Tekst>
-              Brukeren har en verge på hjelpemiddelområdet. Du kan sende vedtaksbrevet til enten brukeren eller vergen.
+              Brukeren har en verge på hjelpemiddelområdet. Du kan sende vedtaksbrevet til enten brukeren eller
+              brukerens verge.
             </Tekst>
           </HelpText>
         </HStack>

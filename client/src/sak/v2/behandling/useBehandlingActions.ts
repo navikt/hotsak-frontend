@@ -14,12 +14,12 @@ export interface BehandlingActions extends Actions {
     problemsammendrag,
     postbegrunnelse,
     utleveringMerknad,
-    brevMottaker,
+    brevmottaker,
   }: {
     problemsammendrag?: string
     postbegrunnelse?: string
     utleveringMerknad?: string
-    brevMottaker?: Brevmottaker[]
+    brevmottaker?: Brevmottaker[]
   }): Promise<void>
 }
 
@@ -52,17 +52,17 @@ export function useBehandlingActions(): BehandlingActions {
       problemsammendrag,
       postbegrunnelse,
       utleveringMerknad,
-      brevMottaker,
+      brevmottaker,
     }: {
       problemsammendrag?: string
       postbegrunnelse?: string
       utleveringMerknad?: string
-      brevMottaker?: Brevmottaker[]
+      brevmottaker?: Brevmottaker[]
     }) {
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
-          { problemsammendrag, postbegrunnelse, utleveringMerknad, brevMottaker },
+          { problemsammendrag, postbegrunnelse, utleveringMerknad, brevmottaker },
           { versjon }
         )
         await mutateBehandling()

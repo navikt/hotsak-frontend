@@ -9,11 +9,8 @@ import type { Sak, SakBase, SakResponse } from '../types/types.internal'
 export function useSakId(): string {
   const { sakId: sakIdUrl } = useParams<{ sakId: string }>()
   const { sakId: sakIdOppgave } = useOppgaveContext()
-  const sakId = sakIdUrl ?? sakIdOppgave
+  const sakId = sakIdUrl ?? sakIdOppgave ?? ''
   useDebugValue(sakId)
-  if (!sakId) {
-    throw new Error('Både URL og OppgaveContext mangler sakId')
-  }
   return sakId.toString()
 }
 
@@ -23,7 +20,7 @@ export interface UseSakResponse<T extends SakBase> extends Omit<SWRResponse<SakR
 
 export function useSak<T extends SakBase = Sak>(): UseSakResponse<T> {
   const sakId = useSakId()
-  const { data: sak, ...rest } = useSwr<SakResponse<T>, HttpError>(`/api/sak/${sakId}`, {
+  const { data: sak, ...rest } = useSwr<SakResponse<T>, HttpError>(sakId ? `/api/sak/${sakId}` : null, {
     refreshInterval: 10_000,
   })
 

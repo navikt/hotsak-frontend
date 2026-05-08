@@ -3,9 +3,9 @@ import { BodyShort, Detail, HStack, Loader, VStack } from '@navikt/ds-react'
 
 import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
 import { Strek } from '../felleskomponenter/Strek.tsx'
+import { useOppgavekommentarer } from '../oppgave/kommentar/useOppgavekommentarer.ts'
 import { type OppgaveId } from '../oppgave/oppgaveTypes.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
-import { useOppgavekommentarer } from './useOppgavekommentarer.ts'
 
 export interface OppgaveSisteKommentarProps {
   oppgaveId: OppgaveId

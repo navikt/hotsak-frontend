@@ -1,15 +1,16 @@
 import '@mdxeditor/editor/style.css'
-import { Box, List, Loader, ReadMore, ToggleGroup, VStack } from '@navikt/ds-react'
+import { Box, Loader, ToggleGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
 import type { FilterOption } from '../../felleskomponenter/filter/filterTypes.ts'
-import { Etikett, Mellomtittel, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { Mellomtittel, Tekst } from '../../felleskomponenter/typografi.tsx'
 import { NotatType } from '../../types/types.internal.ts'
 import { ForvaltningsnotatForm } from './ForvaltningsnotatForm.tsx'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { NotatCard } from './NotatCard.tsx'
 import classes from './Notater.module.css'
+import { Notatinformasjon } from './Notatinformasjon.tsx'
 import { useNotater } from './useNotater.tsx'
 
 export interface NotaterProps {
@@ -21,7 +22,8 @@ export interface NotatFormValues {
   tekst: string
 }
 
-export function Notater({ sakId, lesevisning }: NotaterProps) {
+export function Notater(props: NotaterProps) {
+  const { sakId, lesevisning } = props
   const {
     notater,
     mutate: mutateNotater,
@@ -43,37 +45,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   return (
     <>
       <VStack gap="space-8">
-        <ReadMore size="small" header="Når skal du bruke de ulike notattypene">
-          <Etikett>Internt arbeidsnotat</Etikett>
-          <Tekst spacing>
-            Brukes for egne notater, for eksempel huskelapper til deg selv. Disse journalføres ikke. Merk at brukere kan
-            få innsyn i interne notater hvis de ber om det.
-          </Tekst>
-          <Etikett>Forvaltningsnotat</Etikett>
-          <Tekst>
-            Brukes hvis du skal dokumentere opplysninger som kan ha betydning for utfallet av en sak. Disse notatene
-            blir journalført. Vi har to typer forvaltningsnotat:
-          </Tekst>
-          <Box marginBlock="space-12" asChild>
-            <List data-aksel-migrated-v8 size="small" as="ul">
-              <List.Item>
-                <Etikett>Interne saksopplysninger:</Etikett>
-                <Tekst>
-                  Opplysninger som kan ha betydning for saken som for eksempel gjengir innholdet i en iakttakelse, et
-                  møte, en befaring eller en uttalelse fra intern fagperson. Notatet vil ikke være synlig på brukers
-                  side på nav.no, men bruker vil kunne be om innsyn i det.
-                </Tekst>
-              </List.Item>
-              <List.Item>
-                <Etikett>Eksterne saksopplysninger: </Etikett>
-                <Tekst>
-                  Opplysninger som gjengir innholdet i en henvendelse eller dialog med tredjepart. Bruker vil få innsyn
-                  i notatet på innlogget side på nav.no fra første virkedag etter at det er ferdigstilt.
-                </Tekst>
-              </List.Item>
-            </List>
-          </Box>
-        </ReadMore>
+        <Notatinformasjon />
         <Box paddingBlock="space-24 space-0">
           <ToggleGroup
             size="small"
@@ -81,6 +53,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             label="Opprett nytt notat"
             onChange={(type) => setNotatType(type as NotatType)}
           >
+            <ToggleGroup.Item value={'KOMMENTAR'} label="Kommentar" />
             <ToggleGroup.Item value={NotatType.INTERNT} label="Internt arbeidsnotat" />
             <ToggleGroup.Item value={NotatType.JOURNALFØRT} label="Forvaltningsnotat" />
           </ToggleGroup>

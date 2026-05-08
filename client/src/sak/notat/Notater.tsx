@@ -12,6 +12,7 @@ import { NotatCard } from './NotatCard.tsx'
 import classes from './Notater.module.css'
 import { Notatinformasjon } from './Notatinformasjon.tsx'
 import { useNotater } from './useNotater.tsx'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -53,7 +54,9 @@ export function Notater(props: NotaterProps) {
             label="Opprett nytt notat"
             onChange={(type) => setNotatType(type as NotatType)}
           >
-            <ToggleGroup.Item value={'KOMMENTAR'} label="Kommentar" />
+            <Eksperiment>
+              <ToggleGroup.Item value={'KOMMENTAR'} label="Kommentar" />
+            </Eksperiment>
             <ToggleGroup.Item value={NotatType.INTERNT} label="Internt arbeidsnotat" />
             <ToggleGroup.Item value={NotatType.JOURNALFØRT} label="Forvaltningsnotat" />
           </ToggleGroup>

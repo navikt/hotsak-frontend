@@ -1,5 +1,5 @@
 import { useForm, UseFormReturn } from 'react-hook-form'
-import { Sak } from '../../types/types.internal.ts'
+import { Brevmottaker, Sak } from '../../types/types.internal.ts'
 import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useArtiklerForSak } from './useArtiklerForSak.ts'
 import { Hjelpemiddel, OpplysningId } from '../../types/BehovsmeldingTypes.ts'
@@ -10,6 +10,7 @@ export interface VedtakFormValues {
   problemsammendrag: string
   postbegrunnelse?: string
   utleveringMerknad?: string
+  brevmottaker?: Brevmottaker
 }
 
 export interface UseVedtakReturn {
@@ -52,6 +53,7 @@ export function useVedtak(sak: Sak) {
       problemsammendrag: problemsammendrag,
       postbegrunnelse: lavereRangertBegrunnelse,
       utleveringMerknad: utleveringsmerknad,
+      brevmottaker: undefined,
     },
   })
 

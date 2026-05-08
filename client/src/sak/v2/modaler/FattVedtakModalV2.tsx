@@ -1,21 +1,18 @@
-import { Alert, InfoCard, VStack } from '@navikt/ds-react'
+import { InfoCard, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
-import { usePerson } from '../../../personoversikt/usePerson'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
-import { Brevmottaker, Sak } from '../../../types/types.internal'
+import { Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
-import classes from './FattVedtakModalV2.module.css'
+import { AvslagForm, AvslagFormHandle, AvslagFormValues } from '../../felles/AvslagForm'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
-import { BrevTilBrukerEllerVerge } from '../BrevTilBrukerEllerVerge'
 import { useClosePanel } from '../paneler/usePanelHooks'
-import { useMiljø } from '../../../utils/useMiljø'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -25,32 +22,19 @@ export interface FattVedtakModalV2Props {
 }
 
 export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattVedtakModalV2Props) {
-  const { erDev, erLocal } = useMiljø()
   const [vedtakLoader, setVedtakLoader] = useState(false)
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
-  const formRef = useRef<VedtakFormHandle>(null)
+  const vedtakFormRef = useRef<VedtakFormHandle>(null)
+  const avslagFormRef = useRef<AvslagFormHandle>(null)
   const closePanel = useClosePanel('brevpanel')
 
   const erAvslag = vedtaksresultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
   const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
   const brevMetaData = useBrevMetadata()
-  const { personInfo } = usePerson(sak.bruker.fnr)
-  const harVergePåHjelpemiddelområdet = !!(
-    personInfo?.vergemål?.some((vergemål) =>
-      vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
-    ) &&
-    brevMetaData.harBrevISak &&
-    (erDev || erLocal)
-  )
-  const [brevmottaker, setBrevmottaker] = useState<Brevmottaker | undefined>(undefined)
-  const [vergeError, setVergeError] = useState<string | undefined>(undefined)
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
-      return
-    }
     setVedtakLoader(true)
 
     if (erInnvilget) {
@@ -58,12 +42,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         problemsammendrag: data.problemsammendrag,
         postbegrunnelse: data.postbegrunnelse,
         utleveringMerknad: data.utleveringMerknad,
-        brevmottaker: brevmottaker ? [brevmottaker] : undefined,
+        brevmottaker: data.brevmottaker ? [data.brevmottaker] : undefined,
       })
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({
         problemsammendrag: data.problemsammendrag,
-        brevmottaker: brevmottaker ? [brevmottaker] : undefined,
+        brevmottaker: data.brevmottaker ? [data.brevmottaker] : undefined,
       })
     }
     if (erInnvilget) {
@@ -75,13 +59,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
     onClose()
   }
 
-  const fattAvslagsvedtak = async () => {
-    if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
-      setVergeError('Du må velge om brevet skal sendes til bruker eller til brukers verge')
-      return
-    }
+  const fattAvslagsvedtak = async (data: AvslagFormValues) => {
     setVedtakLoader(true)
-    await ferdigstillBehandling({ brevmottaker: brevmottaker ? [brevmottaker] : undefined })
+    await ferdigstillBehandling({ brevmottaker: data.brevmottaker ? [data.brevmottaker] : undefined })
 
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
@@ -109,16 +89,13 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       width="700px"
       buttonSize="medium"
       bekreftButtonLabel={`${vedtakTekst?.knapp}${brevMetaData.harBrevISak ? ' og send brev' : ''}`}
-      onBekreft={
-        erAvslag
-          ? fattAvslagsvedtak
-          : () => {
-              if (harVergePåHjelpemiddelområdet && brevmottaker === undefined) {
-                setVergeError('Du må velge om brevet skal sendes til bruker eller til brukers verge')
-              }
-              formRef.current?.submit()
-            }
-      }
+      onBekreft={() => {
+        if (erAvslag) {
+          avslagFormRef.current?.submit()
+        } else {
+          vedtakFormRef.current?.submit()
+        }
+      }}
       onClose={onClose}
     >
       {(erInnvilget || erDelvisInnvilget) && (
@@ -154,7 +131,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           {(erInnvilget || erDelvisInnvilget) && (
             <VedtakForm
               sak={sak}
-              ref={formRef}
+              ref={vedtakFormRef}
               onVedtak={fattVedtak}
               postbegrunnelsePåkrevd={erInnvilget}
               vedtaksresultat={vedtaksresultat}
@@ -162,25 +139,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           )}
         </VStack>
       )}
-      {erAvslag && (
-        <>
-          <Alert variant="info" size="small" className={classes.alertSpacing}>
-            Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da få
-            varsel om vedtaksresultatet.
-          </Alert>
-        </>
-      )}
-      {harVergePåHjelpemiddelområdet && personInfo && (
-        <BrevTilBrukerEllerVerge
-          person={personInfo}
-          value={brevmottaker}
-          onChange={(value) => {
-            setBrevmottaker(value)
-            setVergeError(undefined)
-          }}
-          error={vergeError}
-        />
-      )}
+      {erAvslag && <AvslagForm sak={sak} onSubmit={fattAvslagsvedtak} ref={avslagFormRef} />}
     </BekreftelseModal>
   )
 }

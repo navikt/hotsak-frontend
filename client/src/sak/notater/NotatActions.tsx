@@ -1,12 +1,11 @@
 import '@mdxeditor/editor/style.css'
-
 import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, Tooltip } from '@navikt/ds-react'
 
-import { Tekst } from '../../../felleskomponenter/typografi.tsx'
-import { SpørreundersøkelseModal } from '../../../innsikt/SpørreundersøkelseModal.tsx'
-import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
-import { Notat, NotatKlassifisering, NotatType } from '../../../types/types.internal.ts'
+import { Tekst } from '../../felleskomponenter/typografi.tsx'
+import { SpørreundersøkelseModal } from '../../innsikt/SpørreundersøkelseModal.tsx'
+import { useSaksregler } from '../../saksregler/useSaksregler.ts'
+import { Notat, NotatKlassifisering, NotatType } from '../../types/types.internal.ts'
 import {
   FeilregistrerJournalførtNotatModalProps,
   useFeilregistrerJournalførtNotat,

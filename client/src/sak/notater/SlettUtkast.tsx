@@ -4,12 +4,12 @@ import { Button } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
-import { useActionState } from '../../../action/Actions.ts'
-import { useToast } from '../../../felleskomponenter/toast/useToast'
-import { Tekst } from '../../../felleskomponenter/typografi.tsx'
-import { http } from '../../../io/HttpClient.ts'
-import { Notat } from '../../../types/types.internal.ts'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
+import { useActionState } from '../../action/Actions.ts'
+import { useToast } from '../../felleskomponenter/toast/useToast'
+import { Tekst } from '../../felleskomponenter/typografi.tsx'
+import { http } from '../../io/HttpClient.ts'
+import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
+import { Notat } from '../../types/types.internal.ts'
 
 export interface NotaterProps {
   sakId: string

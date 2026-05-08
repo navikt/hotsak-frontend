@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
-import { useActionState } from '../../../../action/Actions.ts'
-import type { ISvar, Tilbakemelding } from '../../../../innsikt/Besvarelse.ts'
-import type { SpørreundersøkelseId } from '../../../../innsikt/spørreundersøkelser.ts'
-import { http } from '../../../../io/HttpClient.ts'
-import { Notat, NotatType } from '../../../../types/types.internal.ts'
-import { useToast } from '../../../../felleskomponenter/toast/useToast'
+import { useActionState } from '../../../action/Actions.ts'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
+import type { ISvar, Tilbakemelding } from '../../../innsikt/Besvarelse.ts'
+import type { SpørreundersøkelseId } from '../../../innsikt/spørreundersøkelser.ts'
+import { http } from '../../../io/HttpClient.ts'
+import { Notat, NotatType } from '../../../types/types.internal.ts'
 
 export interface FeilregistrerJournalførtNotatModalProps {
   open: boolean

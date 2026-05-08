@@ -1,5 +1,6 @@
 import { Detail } from '@navikt/ds-react'
-import { formaterTidsstempelKort } from '../../../../utils/dato'
+
+import { formaterTidsstempelKort } from '../../../utils/dato'
 import classes from './Lagreindikator.module.css'
 
 export function Lagreindikator(props: { lagrerUtkast: boolean; sistLagretTidspunkt?: string }) {

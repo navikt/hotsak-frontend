@@ -7,7 +7,7 @@ import { SelectController } from '../felleskomponenter/skjema/SelectController.t
 import { useToast } from '../felleskomponenter/toast/useToast'
 import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { http } from '../io/HttpClient.ts'
-import { useNotater } from '../saksbilde/høyrekolonne/notat/useNotater.tsx'
+import { useNotater } from '../sak/notater/useNotater.tsx'
 import { InfoModal } from '../saksbilde/komponenter/InfoModal.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'

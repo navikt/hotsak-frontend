@@ -6,6 +6,7 @@ import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
+import { useNotater } from '../../../../sak/notater/useNotater'
 import {
   type Barnebrillesak,
   Brevkode,
@@ -16,7 +17,6 @@ import {
   StepType,
   VilkårsResultat,
 } from '../../../../types/types.internal'
-import { useNotater } from '../../../høyrekolonne/notat/useNotater'
 import { useBrevActions } from '../../../useBrevActions.ts'
 import { useSakActions } from '../../../useSakActions.ts'
 import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'

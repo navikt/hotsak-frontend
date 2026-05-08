@@ -1,19 +1,20 @@
 import { ClockDashedIcon, NotePencilIcon, WheelchairIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
+
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
 import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
-import { Notater } from '../../../saksbilde/høyrekolonne/notat/Notater'
-import { NotificationBadge } from '../../../saksbilde/høyrekolonne/notat/NotificationBadge'
-import { useNotater } from '../../../saksbilde/høyrekolonne/notat/useNotater'
 import { useSak } from '../../../saksbilde/useSak'
 import { useSaksregler } from '../../../saksregler/useSaksregler'
+import { Notater } from '../../notater/Notater'
+import { NotificationBadge } from '../../notater/NotificationBadge'
+import { useNotater } from '../../notater/useNotater'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakProvider'
+import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import classes from './Sidebar.module.css'
 
 export function Sidebar() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSakContext()

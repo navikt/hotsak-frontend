@@ -3,7 +3,12 @@ import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VSta
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
-import { Tekst } from '../../../felleskomponenter/typografi.tsx'
+import { Tekst } from '../../felleskomponenter/typografi.tsx'
+import { useBrev } from '../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
+import { ForhåndsvisningsModal } from '../../saksbilde/høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
+import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
+import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
+import { useSak } from '../../saksbilde/useSak.ts'
 import {
   Brevtype,
   FerdigstillNotatRequest,
@@ -11,12 +16,7 @@ import {
   Notat,
   NotatKlassifisering,
   NotatType,
-} from '../../../types/types.internal.ts'
-import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
-import { InfoModal } from '../../komponenter/InfoModal.tsx'
-import { useSak } from '../../useSak.ts'
-import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
+} from '../../types/types.internal.ts'
 import type { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { KeyedMutator, mutate } from 'swr'
 
-import { http } from '../../../io/HttpClient.ts'
-import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal.ts'
-import { delay } from '../../../utils/delay.ts'
+import { http } from '../../io/HttpClient.ts'
+import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../types/types.internal.ts'
+import { delay } from '../../utils/delay.ts'
 
 export function useUtkastEndret(
   type: NotatType,
@@ -63,6 +63,8 @@ export function useUtkastEndret(
   useEffect(() => {
     if (oppretterNyttUtkast) return // Nytt notat er under opprettelse, ikke gjør noe
     if (tittel !== '' || tekst !== '' || klassifisering) {
+      // fixme
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       utkastEndret(tittel, tekst, klassifisering)
     }
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])

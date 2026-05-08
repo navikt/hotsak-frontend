@@ -1,10 +1,11 @@
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
-import { Box, Button, ExpansionCard, Heading, HStack, TextField, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HStack, TextField, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
 import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
+import { CompactExpandableCard } from '../felleskomponenter/panel/CompactExpandableCard.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
@@ -39,7 +40,6 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
         sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
       })
       .then((response) => {
-        console.log('Journalføring fullført, response:', response)
         if (!response) {
           throw new Error('Klarte ikke å opprette behandle sak-oppgave og/eller sak')
         }
@@ -61,16 +61,17 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
             </Heading>
 
             <Box paddingInline="space-4 space-12">
-              <ExpansionCard size="small" aria-label="Bruker det skal journalføres på">
-                <ExpansionCard.Header>
-                  <ExpansionCard.Title as="h3" size="small">
-                    <HStack align="center" gap="space-4">
-                      <PersonEnvelopeIcon />
-                      {`${formaterNavn(personInfo.navn)} | ${personInfo.fnr}`}
-                    </HStack>
-                  </ExpansionCard.Title>
-                </ExpansionCard.Header>
-                <ExpansionCard.Content>
+              <CompactExpandableCard
+                variant="default"
+                defaultOpen={false}
+                tittel={
+                  <HStack align="center" gap="space-4">
+                    <PersonEnvelopeIcon />
+                    {`${formaterNavn(personInfo.navn)} | ${personInfo.fnr}`}
+                  </HStack>
+                }
+              >
+                <Box background="default" paddingBlock="space-12" paddingInline="space-12 space-0">
                   <Kolonner>
                     <TextField
                       label="Endre bruker"
@@ -89,8 +90,8 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
                       Endre bruker
                     </Button>
                   </Kolonner>
-                </ExpansionCard.Content>
-              </ExpansionCard>
+                </Box>
+              </CompactExpandableCard>
             </Box>
           </div>
           <Box marginInline="space-8 space-12">

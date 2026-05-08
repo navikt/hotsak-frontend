@@ -4,6 +4,11 @@
   background-color: var(--ax-bg-neutral-softA);
 }
 
+.rootDefault {
+  padding-inline: var(--ax-space-8);
+  padding-block: var(--ax-space-8);
+}
+
 .root[data-open='true']::after {
   display: none;
 }

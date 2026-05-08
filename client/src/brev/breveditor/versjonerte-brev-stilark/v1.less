@@ -47,14 +47,21 @@ section p:last-child {
 }
 
 .header {
-  position: relative;
   margin-bottom: 48pt;
 }
 
 .header svg {
+  display: block;
   height: 16pt;
   margin-bottom: 48pt;
 }
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
 
 .header dl dd {
   display: inline;
@@ -69,13 +76,6 @@ section p:last-child {
 .header dl dt {
   display: inline-block;
   min-width: 160px;
-}
-
-.header span {
-  display: block;
-  position: absolute;
-  right: 0;
-  bottom: 0;
 }
 
 section.signatur {

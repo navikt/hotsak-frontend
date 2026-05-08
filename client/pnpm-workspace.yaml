@@ -13,4 +13,9 @@ updateConfig:
   ignoreDependencies:
     - '@types/node'
 
-overrides: { }
+allowBuilds:
+  cypress: true
+  es5-ext: false
+  esbuild: true
+  msw: true
+  protobufjs: false

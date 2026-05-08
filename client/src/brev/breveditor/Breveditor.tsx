@@ -237,17 +237,15 @@ const Breveditor = ({
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
                       <div className="header">
-                        <div className="header-row">
-                          <dl>
-                            <dt>Navn:</dt>
-                            <dd>{metadata.brukersNavn}</dd>
-                            <dt>Fødselsnummer:</dt>
-                            <dd>{metadata.brukersFødselsnummer}</dd>
-                            <dt>Saksnummer:</dt>
-                            <dd>{metadata.saksnummer}</dd>
-                          </dl>
-                          <span>{metadata.brevOpprettet}</span>
-                        </div>
+                        <dl>
+                          <dt>Navn:</dt>
+                          <dd>{metadata.brukersNavn}</dd>
+                          <dt>Fødselsnummer:</dt>
+                          <dd>{metadata.brukersFødselsnummer}</dd>
+                          <dt>Saksnummer:</dt>
+                          <dd>{metadata.saksnummer}</dd>
+                        </dl>
+                        <span>{metadata.brevOpprettet}</span>
                       </div>
                       <PlateContainer>
                         <PlateContent

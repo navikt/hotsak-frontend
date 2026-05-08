@@ -24,7 +24,7 @@ export interface JournalføringProps {
 export function Journalføring({ oppgave }: JournalføringProps) {
   const { journalpostId } = oppgave
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
-  const { journalpost, error, isLoading } = useJournalpost(journalpostId)
+  const { journalpost, error, isLoading, mutate } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const { harSkrivetilgang } = useOppgavetilgang()
@@ -59,20 +59,22 @@ export function Journalføring({ oppgave }: JournalføringProps) {
     return <PersonFeilmelding personError={personInfoError} />
   }
 
-  if (isLoading) {
+  if (isLoading || personInfoLoading || !journalpost || !personInfo) {
     return (
       <div className={classes.wrapper}>
         <Personlinje person={personInfo} loading={personInfoLoading} />
         <div className={classes.container}>
           <div className={classes.toKolonner}>
-            <HStack paddingBlock="space-16 space-0">
-              <span>
-                <Loader size="medium" title="Henter journalpost..." />
-              </span>
-              <Box paddingInline="space-16 space-0">
-                <Etikett>Henter journalpost...</Etikett>
-              </Box>
-            </HStack>
+            <div className={classes.skjemaOgVisning}>
+              <HStack paddingBlock="space-16 space-0">
+                <span>
+                  <Loader size="medium" title="Henter journalpost..." />
+                </span>
+                <Box paddingInline="space-16 space-0">
+                  <Etikett>Henter journalpost...</Etikett>
+                </Box>
+              </HStack>
+            </div>
             <DokumentPanel />
           </div>
         </div>
@@ -85,11 +87,24 @@ export function Journalføring({ oppgave }: JournalføringProps) {
       <Personlinje person={personInfo} loading={personInfoLoading} />
       <div className={classes.container}>
         <div className={classes.toKolonner}>
-          {oppgaveErUnderBehandlingAvInnloggetAnsatt && harSkrivetilgang ? (
-            <JournalpostSkjema oppgave={oppgave} />
-          ) : (
-            <JournalpostVisning oppgave={oppgave} lesevisning={!harSkrivetilgang} />
-          )}
+          <div className={classes.skjemaOgVisning}>
+            {oppgaveErUnderBehandlingAvInnloggetAnsatt && harSkrivetilgang ? (
+              <JournalpostSkjema
+                oppgave={oppgave}
+                journalpost={journalpost}
+                personInfo={personInfo}
+                mutateJournalpost={mutate}
+              />
+            ) : (
+              <JournalpostVisning
+                oppgave={oppgave}
+                journalpost={journalpost}
+                personInfo={personInfo}
+                mutateJournalpost={mutate}
+                lesevisning={!harSkrivetilgang}
+              />
+            )}
+          </div>
           <DokumentPanel />
         </div>
       </div>

@@ -14,5 +14,10 @@
 .container {
   flex: 1;
   min-height: 0;
-  padding-left: var(--ax-space-24);
+}
+
+.skjemaOgVisning {
+  overflow-y: auto;
+  border-right: 1px solid var(--ax-border-neutral-subtle);
+  padding: var(--ax-space-16);
 }

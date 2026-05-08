@@ -5,44 +5,41 @@ import { useNavigate } from 'react-router'
 
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
 import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
-import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
-import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
-import { useJournalpost } from '../saksbilde/useJournalpost.ts'
-import { SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
+import { type Journalpost, type Person, SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
-import classes from './JournalpostSkjema.module.css'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 
 export interface JournalpostSkjemaProps {
   oppgave: Journalføringsoppgave
+  journalpost: Journalpost
+  personInfo: Person
+  mutateJournalpost(): void
 }
 
-export function JournalpostSkjema({ oppgave }: JournalpostSkjemaProps) {
-  const { journalpostId } = oppgave
+export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJournalpost }: JournalpostSkjemaProps) {
   const navigate = useNavigate()
-  const { journalpost, isLoading, mutate } = useJournalpost(journalpostId)
   const journalføringActions = useJournalføringActions(oppgave)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
-  const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
   const { saksoversikt } = useSaksoversikt(fodselsnummer, SaksstatusKategori.ÅPEN, Sakstype.BARNEBRILLER)
-  const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
+  const [journalpostTittel, setJournalpostTittel] = useState(journalpost.tittel || '')
 
   const journalfør = () => {
     journalføringActions
       .journalfør({
-        journalpostId: journalpost!.journalpostId,
+        journalpostId: journalpost.journalpostId,
         tittel: journalpostTittel,
         journalføresPåFnr: fodselsnummer,
         sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
       })
       .then((response) => {
+        console.log('Journalføring fullført, response:', response)
         if (!response) {
           throw new Error('Klarte ikke å opprette behandle sak-oppgave og/eller sak')
         }
@@ -50,17 +47,9 @@ export function JournalpostSkjema({ oppgave }: JournalpostSkjemaProps) {
       })
   }
 
-  if (henterPerson || !personInfo || isLoading) {
-    return (
-      <div className={classes.container}>
-        <Toast>Henter journalpost</Toast>
-      </div>
-    )
-  }
-
   return (
-    <div className={classes.container}>
-      <JournalføringMenu oppgave={oppgave} onAction={mutate} />
+    <>
+      <JournalføringMenu oppgave={oppgave} onAction={mutateJournalpost} />
       <Heading level="1" size="small" spacing>
         Journalføring
       </Heading>
@@ -77,7 +66,7 @@ export function JournalpostSkjema({ oppgave }: JournalpostSkjemaProps) {
                   <ExpansionCard.Title as="h3" size="small">
                     <HStack align="center" gap="space-4">
                       <PersonEnvelopeIcon />
-                      {`${formaterNavn(personInfo?.navn)} | ${personInfo?.fnr}`}
+                      {`${formaterNavn(personInfo.navn)} | ${personInfo.fnr}`}
                     </HStack>
                   </ExpansionCard.Title>
                 </ExpansionCard.Header>
@@ -96,8 +85,6 @@ export function JournalpostSkjema({ oppgave }: JournalpostSkjemaProps) {
                       onClick={() => {
                         setFodselsnummer(journalføresPåFnr)
                       }}
-                      disabled={henterPerson}
-                      loading={henterPerson}
                     >
                       Endre bruker
                     </Button>
@@ -119,7 +106,7 @@ export function JournalpostSkjema({ oppgave }: JournalpostSkjemaProps) {
             />
           </Box>
 
-          <Dokumenter dokumenter={journalpost?.dokumenter || []} />
+          <Dokumenter dokumenter={journalpost.dokumenter} />
           {saksoversikt?.saker && saksoversikt.saker.length > 0 && (
             <KnyttTilEksisterendeSak
               åpneSaker={saksoversikt?.saker || []}
@@ -144,6 +131,6 @@ export function JournalpostSkjema({ oppgave }: JournalpostSkjemaProps) {
           </Box>
         </VStack>
       </form>
-    </div>
+    </>
   )
 }

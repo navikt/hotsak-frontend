@@ -1,7 +1,0 @@
-.container {
-  overflow: auto;
-  border-right: 1px solid var(--ax-border-neutral-subtle);
-  padding-top: var(--ax-space-16);
-  padding-bottom: var(--ax-space-16);
-  padding-right: var(--ax-space-16);
-}

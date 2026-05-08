@@ -5,10 +5,18 @@
     "saksbehandlingvarsel": [],
     "bruker": {
       "fnr": "01056605014",
-      "navn": { "fornavn": "Ola", "mellomnavn": null, "etternavn": "Nordmann" },
+      "navn": {
+        "fornavn": "Ola",
+        "mellomnavn": null,
+        "etternavn": "Nordmann"
+      },
       "signaturtype": "FULLMAKT",
       "telefon": "12121212",
-      "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
+      "veiadresse": {
+        "adresse": "Fjellvegen 69",
+        "postnummer": "6770",
+        "poststed": "Nordfjordeid"
+      },
       "kommunenummer": "4649",
       "brukernummer": null,
       "kilde": "PDL",
@@ -101,17 +109,26 @@
           },
           "opplysninger": [
             {
-              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "ledetekst": {
+                "nb": "Bruksarena",
+                "nn": "Bruksarena"
+              },
               "innhold": [
                 {
                   "fritekst": null,
-                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "forhåndsdefinertTekst": {
+                    "nb": "I eget hjem.",
+                    "nn": "I eigen heim."
+                  },
                   "begrepsforklaring": null
                 }
               ]
             },
             {
-              "ledetekst": { "nb": "Krav om kurs", "nn": "Krav om kurs" },
+              "ledetekst": {
+                "nb": "Krav om kurs",
+                "nn": "Krav om kurs"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -124,7 +141,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Behov for kabin", "nn": "Behov for kabin" },
+              "ledetekst": {
+                "nb": "Behov for kabin",
+                "nn": "Behov for kabin"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -137,7 +157,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Grunnen til behovet", "nn": "Grunnen til behovet" },
+              "ledetekst": {
+                "nb": "Grunnen til behovet",
+                "nn": "Grunnen til behovet"
+              },
               "innhold": [
                 {
                   "fritekst": "Bruker bor langt fra sentrum og strekningen er værutsatt",
@@ -147,7 +170,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Betjene styring", "nn": "Betene styring" },
+              "ledetekst": {
+                "nb": "Betjene styring",
+                "nn": "Betene styring"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -160,7 +186,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Trafikk", "nn": "Trafikk" },
+              "ledetekst": {
+                "nb": "Trafikk",
+                "nn": "Trafikk"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -173,7 +202,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Nedsatt gangfunksjon", "nn": "Nedsatt gangfunksjon" },
+              "ledetekst": {
+                "nb": "Nedsatt gangfunksjon",
+                "nn": "Nedsatt gangfunksjon"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -186,7 +218,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Oppbevaring og lading", "nn": "Oppbevaring og lading" },
+              "ledetekst": {
+                "nb": "Oppbevaring og lading",
+                "nn": "Oppbevaring og lading"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -199,7 +234,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Forsikringsvilkår", "nn": "Forsikringsvilkår" },
+              "ledetekst": {
+                "nb": "Forsikringsvilkår",
+                "nn": "Forsikringsvilkår"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -212,7 +250,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Spesialsykkel", "nn": "Spesialsykkel" },
+              "ledetekst": {
+                "nb": "Spesialsykkel",
+                "nn": "Spesialsykkel"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -225,7 +266,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Gasshendel", "nn": "Gasshendel" },
+              "ledetekst": {
+                "nb": "Gasshendel",
+                "nn": "Gasshendel"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -238,7 +282,10 @@
               ]
             },
             {
-              "ledetekst": { "nb": "Kroppsmål", "nn": "Kroppsmål" },
+              "ledetekst": {
+                "nb": "Kroppsmål",
+                "nn": "Kroppsmål"
+              },
               "innhold": [
                 {
                   "fritekst": null,
@@ -332,7 +379,7 @@
                 "nb": "Tilbehøret er ikke på avtale med Nav. Saksbehandler skal vurdere om det er behov for mer informasjon.",
                 "nn": "Tilbehøyret er ikkje på avtale med Nav. Saksbehandlar skal vurdera om det er behov for meir informasjon."
               },
-              "type": "INFO"
+              "type": "WARNING"
             }
           ]
         }
@@ -341,11 +388,19 @@
     },
     "levering": {
       "hjelpemiddelformidler": {
-        "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+        "navn": {
+          "fornavn": "Kvadratisk",
+          "mellomnavn": null,
+          "etternavn": "Faktura"
+        },
         "arbeidssted": "Østby Dans og Fysioterapi",
         "stilling": "CEO",
         "telefon": "11223344",
-        "adresse": { "adresse": "Svanseveien 3", "postnummer": "6770", "poststed": "NORDFJORDEID" },
+        "adresse": {
+          "adresse": "Svanseveien 3",
+          "postnummer": "6770",
+          "poststed": "NORDFJORDEID"
+        },
         "epost": "kvadratisk.faktura@tull.kommune.no",
         "treffesEnklest": "På telefon fra hjemmekontor.",
         "kommunenavn": "STAD",
@@ -353,16 +408,31 @@
       },
       "oppfølgingsansvarlig": "ANNEN_OPPFØLGINGSANSVARLIG",
       "annenOppfølgingsansvarlig": {
-        "navn": { "fornavn": "Koffee", "mellomnavn": null, "etternavn": "Annen" },
+        "navn": {
+          "fornavn": "Koffee",
+          "mellomnavn": null,
+          "etternavn": "Annen"
+        },
         "arbeidssted": "ISS",
         "stilling": "Astronaut",
         "telefon": "55 55 55 55",
-        "adresse": { "adresse": "Kaffegata 1", "postnummer": "0001", "poststed": "Oslo" },
+        "adresse": {
+          "adresse": "Kaffegata 1",
+          "postnummer": "0001",
+          "poststed": "Oslo"
+        },
         "epost": "e@post.com"
       },
       "utleveringsmåte": "ANNEN_BRUKSADRESSE",
-      "annenUtleveringsadresse": { "adresse": "Andre veien 13", "postnummer": "0001", "poststed": "Oslo" },
-      "annenUtleveringskommune": { "navn": "Bømlo", "nummer": "1337" },
+      "annenUtleveringsadresse": {
+        "adresse": "Andre veien 13",
+        "postnummer": "0001",
+        "poststed": "Oslo"
+      },
+      "annenUtleveringskommune": {
+        "navn": "Bømlo",
+        "nummer": "1337"
+      },
       "annenUtleveringsbydel": null,
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,
@@ -373,7 +443,13 @@
     "innsender": {
       "rolle": "FORMIDLER",
       "erKommunaltAnsatt": true,
-      "kurs": [{ "id": 4, "title": "Bestilling", "kilde": "kunnskapsbanken" }],
+      "kurs": [
+        {
+          "id": 4,
+          "title": "Bestilling",
+          "kilde": "kunnskapsbanken"
+        }
+      ],
       "sjekketUtlånsoversiktForKategorier": []
     },
     "vedlegg": [],

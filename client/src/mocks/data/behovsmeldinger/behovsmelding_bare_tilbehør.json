@@ -5,10 +5,18 @@
     "saksbehandlingvarsel": [],
     "bruker": {
       "fnr": "01056605014",
-      "navn": { "fornavn": "Ola", "mellomnavn": null, "etternavn": "Nordmann" },
+      "navn": {
+        "fornavn": "Ola",
+        "mellomnavn": null,
+        "etternavn": "Nordmann"
+      },
       "signaturtype": "FULLMAKT",
       "telefon": "12121212",
-      "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
+      "veiadresse": {
+        "adresse": "Fjellvegen 69",
+        "postnummer": "6770",
+        "poststed": "Nordfjordeid"
+      },
       "kommunenummer": "4649",
       "brukernummer": null,
       "kilde": "PDL",
@@ -116,7 +124,7 @@
                 "nb": "Tilbehøret er ikke på avtale med Nav. Saksbehandler skal vurdere om det er behov for mer informasjon.",
                 "nn": "Tilbehøyret er ikkje på avtale med Nav. Saksbehandlar skal vurdera om det er behov for meir informasjon."
               },
-              "type": "INFO"
+              "type": "WARNING"
             }
           ]
         }
@@ -125,11 +133,19 @@
     },
     "levering": {
       "hjelpemiddelformidler": {
-        "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+        "navn": {
+          "fornavn": "Kvadratisk",
+          "mellomnavn": null,
+          "etternavn": "Faktura"
+        },
         "arbeidssted": "Østby Dans og Fysioterapi",
         "stilling": "CEO",
         "telefon": "11223344",
-        "adresse": { "adresse": "Svanseveien 3", "postnummer": "6770", "poststed": "NORDFJORDEID" },
+        "adresse": {
+          "adresse": "Svanseveien 3",
+          "postnummer": "6770",
+          "poststed": "NORDFJORDEID"
+        },
         "epost": "kvadratisk.faktura@tull.kommune.no",
         "treffesEnklest": "På telefon fra hjemmekontor.",
         "kommunenavn": "STAD",
@@ -137,16 +153,31 @@
       },
       "oppfølgingsansvarlig": "ANNEN_OPPFØLGINGSANSVARLIG",
       "annenOppfølgingsansvarlig": {
-        "navn": { "fornavn": "Koffee", "mellomnavn": null, "etternavn": "Annen" },
+        "navn": {
+          "fornavn": "Koffee",
+          "mellomnavn": null,
+          "etternavn": "Annen"
+        },
         "arbeidssted": "ISS",
         "stilling": "Astronaut",
         "telefon": "55 55 55 55",
-        "adresse": { "adresse": "Kaffegata 1", "postnummer": "0001", "poststed": "Oslo" },
+        "adresse": {
+          "adresse": "Kaffegata 1",
+          "postnummer": "0001",
+          "poststed": "Oslo"
+        },
         "epost": "e@post.com"
       },
       "utleveringsmåte": "ANNEN_BRUKSADRESSE",
-      "annenUtleveringsadresse": { "adresse": "Andre veien 13", "postnummer": "0001", "poststed": "Oslo" },
-      "annenUtleveringskommune": { "navn": "Bømlo", "nummer": "1337" },
+      "annenUtleveringsadresse": {
+        "adresse": "Andre veien 13",
+        "postnummer": "0001",
+        "poststed": "Oslo"
+      },
+      "annenUtleveringskommune": {
+        "navn": "Bømlo",
+        "nummer": "1337"
+      },
       "annenUtleveringsbydel": null,
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,
@@ -157,7 +188,13 @@
     "innsender": {
       "rolle": "FORMIDLER",
       "erKommunaltAnsatt": true,
-      "kurs": [{ "id": 4, "title": "Bestilling", "kilde": "kunnskapsbanken" }],
+      "kurs": [
+        {
+          "id": 4,
+          "title": "Bestilling",
+          "kilde": "kunnskapsbanken"
+        }
+      ],
       "sjekketUtlånsoversiktForKategorier": []
     },
     "vedlegg": [],

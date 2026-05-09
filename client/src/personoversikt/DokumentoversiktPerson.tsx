@@ -1,4 +1,4 @@
-import { Link } from '@navikt/ds-react'
+import { Link, Tag } from '@navikt/ds-react'
 
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
 import { DataGrid, type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
@@ -12,6 +12,15 @@ const columns: DataGridColumn<Journalpost>[] = [
   {
     field: 'journalpostId',
     header: 'Journalpost-ID',
+  },
+  {
+    field: 'journalposttype',
+    header: 'Type',
+    renderCell: ({ journalposttype }) => (
+      <Tag size="small" variant="neutral">
+        {journalposttype}
+      </Tag>
+    ),
   },
   {
     field: 'journalpostOpprettetTid',
@@ -39,8 +48,17 @@ const columns: DataGridColumn<Journalpost>[] = [
 
 export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
   const { fnr } = props
-  const { journalposter } = useDokumentsøk({ fnr })
-  return <DataGrid rows={journalposter} columns={columns} keyFactory={journalpostKey} size="small" textSize="small" />
+  const { journalposter, isLoading } = useDokumentsøk({ fnr })
+  return (
+    <DataGrid
+      rows={journalposter}
+      columns={columns}
+      keyFactory={journalpostKey}
+      size="small"
+      textSize="small"
+      loading={isLoading}
+    />
+  )
 }
 
 function journalpostKey(journalpost: Journalpost): string {

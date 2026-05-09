@@ -19,8 +19,10 @@ export type InsertHendelse = Omit<LagretHendelse, 'id'>
 export function lagJournalpost(journalpostId: string): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const journalpostOpprettetTid = lagTilfeldigDato(new Date().getFullYear()).toISOString()
+  const journalposttyper = ['I', 'U', 'N'] as const
   return {
     journalpostId,
+    journalposttype: journalposttyper[lagTilfeldigInteger(0, 2)],
     journalstatus: JournalpostStatusType.MOTTATT,
     journalpostOpprettetTid,
     fnrInnsender,

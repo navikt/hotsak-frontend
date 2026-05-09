@@ -443,6 +443,7 @@ export interface Journalpost {
   tittel: string
   fnrInnsender: string
   journalstatus: JournalpostStatusType
+  journalposttype: 'I' | 'U' | 'N'
   dokumenter: Dokument[]
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn

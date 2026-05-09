@@ -9,11 +9,20 @@ export interface OppgaveoversiktPersonProps {
 
 export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
   const { fnr } = props
-  const { data } = useOpppgavesøk({ brukerId: fnr })
+  const { data, isLoading } = useOpppgavesøk({ brukerId: fnr })
   if (!data) {
     return null
   }
-  return <DataGrid rows={data.oppgaver} columns={columns} keyFactory={selectOppgaveId} size="small" textSize="small" />
+  return (
+    <DataGrid
+      rows={data.oppgaver}
+      columns={columns}
+      keyFactory={selectOppgaveId}
+      size="small"
+      textSize="small"
+      loading={isLoading}
+    />
+  )
 }
 
 const columns = [

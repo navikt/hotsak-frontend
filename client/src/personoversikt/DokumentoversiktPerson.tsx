@@ -1,4 +1,4 @@
-import { Link, Tag } from '@navikt/ds-react'
+import { Button, Link, Tag, type TagProps } from '@navikt/ds-react'
 
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
 import { DataGrid, type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
@@ -12,19 +12,18 @@ const columns: DataGridColumn<Journalpost>[] = [
   {
     field: 'journalpostId',
     header: 'Journalpost-ID',
+    width: 110,
   },
   {
     field: 'journalposttype',
     header: 'Type',
-    renderCell: ({ journalposttype }) => (
-      <Tag size="small" variant="neutral">
-        {journalposttype}
-      </Tag>
-    ),
+    width: 175,
+    renderCell: ({ journalposttype }) => journalposttypeTag(journalposttype),
   },
   {
     field: 'journalpostOpprettetTid',
     header: 'Opprettet',
+    width: 145,
     formatDateTime: true,
   },
   {
@@ -43,6 +42,16 @@ const columns: DataGridColumn<Journalpost>[] = [
         </Link>
       )
     },
+  },
+  {
+    field: 'opprettSak',
+    header: '',
+    width: 135,
+    renderCell: () => (
+      <Button size="small" variant="secondary">
+        Opprett sak
+      </Button>
+    ),
   },
 ]
 
@@ -63,4 +72,18 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
 
 function journalpostKey(journalpost: Journalpost): string {
   return journalpost.journalpostId
+}
+
+function journalposttypeTag(type: Journalpost['journalposttype']) {
+  const config: Record<typeof type, { label: string; color: TagProps['data-color'] }> = {
+    I: { label: 'Inngående dokument', color: 'meta-purple' },
+    U: { label: 'Utgående dokument', color: 'meta-lime' },
+    N: { label: 'Notat', color: 'neutral' },
+  }
+  const { label, color } = config[type]
+  return (
+    <Tag size="small" variant="outline" data-color={color}>
+      {label}
+    </Tag>
+  )
 }

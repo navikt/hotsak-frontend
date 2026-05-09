@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
+import type { DokumentsøkRequest } from '../../dokument/useDokumentsøk.ts'
 import type {
   JournalførJournalpostRequest,
   JournalførJournalpostResponse,
@@ -17,6 +18,12 @@ interface DokumentParams extends JournalpostParams {
 }
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakStore }) => [
+  http.post<never, DokumentsøkRequest>(`/api/dokumenter/sok`, async () => {
+    const journalposter = await journalpostStore.søk()
+    await delay(200)
+    return HttpResponse.json({ journalposter })
+  }),
+
   http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {
     const journalpostId = params.journalpostId
     const journalpost = await journalpostStore.hent(journalpostId)

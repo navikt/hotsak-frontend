@@ -73,6 +73,16 @@ export class JournalpostStore extends Dexie {
     return this.journalposter.toArray()
   }
 
+  async søk(): Promise<Journalpost[]> {
+    const journalposter = await this.journalposter.toArray()
+    return Promise.all(
+      journalposter.map(async (journalpost) => {
+        const dokumenter = await this.dokumenter.where('journalpostId').equals(journalpost.journalpostId).toArray()
+        return { ...journalpost, dokumenter }
+      })
+    )
+  }
+
   async lagreHendelse(journalpostId: string, hendelse: string, detaljer?: string) {
     const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
     return this.hendelser.add({

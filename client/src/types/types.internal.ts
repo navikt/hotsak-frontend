@@ -447,6 +447,7 @@ export interface Journalpost {
   dokumenter: Dokument[]
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
+  sakId?: string
 }
 
 export interface FødselsnummerOgNavn {

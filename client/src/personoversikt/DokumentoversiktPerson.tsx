@@ -44,14 +44,21 @@ const columns: DataGridColumn<Journalpost>[] = [
     },
   },
   {
+    field: 'sakId',
+    header: 'Sak',
+    width: 100,
+    renderCell: ({ sakId }) => (sakId ? <Link href={`/sak/${sakId}`}>Åpne sak</Link> : null),
+  },
+  {
     field: 'opprettSak',
     header: '',
     width: 135,
-    renderCell: () => (
-      <Button size="small" variant="secondary">
-        Opprett sak
-      </Button>
-    ),
+    renderCell: ({ journalposttype }) =>
+      journalposttype === 'I' ? (
+        <Button size="small" variant="secondary">
+          Opprett sak
+        </Button>
+      ) : null,
   },
 ]
 

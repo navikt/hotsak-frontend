@@ -47,13 +47,23 @@ section p:last-child {
 }
 
 .header {
-  position: relative;
   margin-bottom: 48pt;
 }
 
 .header svg {
+  display: block;
   height: 16pt;
   margin-bottom: 48pt;
+}
+
+.header-row {
+  display: table;
+  width: 100%;
+}
+
+.header dl {
+  display: table-cell;
+  margin: 0;
 }
 
 .header dl dd {
@@ -72,10 +82,10 @@ section p:last-child {
 }
 
 .header span {
-  display: block;
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  display: table-cell;
+  text-align: right;
+  vertical-align: bottom;
+  white-space: nowrap;
 }
 
 section.signatur {

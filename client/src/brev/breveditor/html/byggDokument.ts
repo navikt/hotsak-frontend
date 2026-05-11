@@ -9,7 +9,8 @@ export function byggHeaderHtml(metadata: Metadata): string {
   return (
     `<header class="header">` +
     NAV_LOGO_SVG +
-    `<dl>
+    `<div class="header-row">
+        <dl>
           <dt>Navn:</dt>
           <dd>${metadata.brukersNavn}</dd>
           <dt>Fødselsnummer:</dt>
@@ -18,6 +19,7 @@ export function byggHeaderHtml(metadata: Metadata): string {
           <dd>${metadata.saksnummer}</dd>
         </dl>
         <span>${metadata.brevOpprettet}</span>
+      </div>
     </header>`
   )
 }

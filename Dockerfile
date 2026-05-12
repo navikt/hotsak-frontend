@@ -1,5 +1,5 @@
 # build server
-FROM golang:1.26.2-trixie AS server-builder
+FROM golang:1.26.3-trixie AS server-builder
 WORKDIR /app
 COPY server ./
 RUN go test -v ./... && \

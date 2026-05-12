@@ -1,5 +1,5 @@
 module hotsak-frontend-server
 
-go 1.26.2
+go 1.26.3
 
-require github.com/navikt/hotbff v0.0.0-20260512125752-f02cd56d50b9
+require github.com/navikt/hotbff v0.0.0-20260512140826-7c294d9fb7b5

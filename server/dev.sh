@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 export BIND_ADDRESS=:3000
+export DEBUG_LOG=true
 
 # hm-mocks
 export NAIS_TOKEN_ENDPOINT=http://localhost:4040/texas/api/v1/token

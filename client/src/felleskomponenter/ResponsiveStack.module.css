@@ -15,6 +15,5 @@
     flex-direction: row;
     gap: var(--ax-space-32);
     align-items: start;
-    padding-inline: var(--ax-space-0) var(--ax-space-16);
   }
 }

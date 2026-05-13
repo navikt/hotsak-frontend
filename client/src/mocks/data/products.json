@@ -1768,6 +1768,25 @@
           }
         ],
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/331325"
+      },
+      {
+        "id": "0f1eadb8-eae2-4f43-8723-fa4ddb26e31f",
+        "hmsArtNr": "018455",
+        "articleName": "Krykkeholder ers Minicrosser X dobbel bakmontert",
+        "isoCategoryTitleShort": null,
+        "supplier": {
+          "name": "Medema Norge AS"
+        },
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/018455",
+        "media": [
+          {
+            "uri": "orig/30418.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          }
+        ],
+        "agreements": []
       }
     ]
   }

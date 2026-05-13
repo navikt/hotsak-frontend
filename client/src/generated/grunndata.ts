@@ -34,6 +34,7 @@ export interface HMDBAttributesDoc {
   bestillingsordning?: Maybe<Scalars['Boolean']['output']>
   compatibleWith?: Maybe<HMDBCompatibleWith>
   digitalSoknad?: Maybe<Scalars['Boolean']['output']>
+  documentUrls?: Maybe<Array<HMDBDocumentUrl>>
   hasTender?: Maybe<Scalars['Boolean']['output']>
   keywords?: Maybe<Array<Scalars['String']['output']>>
   manufacturer?: Maybe<Scalars['String']['output']>
@@ -57,6 +58,12 @@ export interface HMDBCompatibleWith {
   __typename?: 'CompatibleWith'
   productIds?: Maybe<Array<Maybe<Scalars['String']['output']>>>
   seriesIds?: Maybe<Array<Maybe<Scalars['String']['output']>>>
+}
+
+export interface HMDBDocumentUrl {
+  __typename?: 'DocumentUrl'
+  title: Scalars['String']['output']
+  url: Scalars['String']['output']
 }
 
 export interface HMDBMediaDoc {
@@ -173,6 +180,7 @@ export interface HMDBTechDataFilters {
   breddeCM?: Maybe<Scalars['Int']['output']>
   brukervektMaksKG?: Maybe<Scalars['Int']['output']>
   brukervektMinKG?: Maybe<Scalars['Int']['output']>
+  dybdeCM?: Maybe<Scalars['Int']['output']>
   fyllmateriale?: Maybe<Scalars['String']['output']>
   lengdeCM?: Maybe<Scalars['Int']['output']>
   materialeTrekk?: Maybe<Scalars['String']['output']>
@@ -199,13 +207,7 @@ export type HMDBFinnHjelpemiddelprodukterQuery = {
     isoCategoryTitleShort?: string | null
     productVariantURL: string
     supplier: { __typename?: 'ProductSupplier'; name: string }
-    media: Array<{
-      __typename?: 'MediaDoc'
-      uri: string
-      type: HMDBMediaType
-      source: HMDBMediaSourceType
-      priority: number
-    }>
+    media: Array<{ __typename?: 'MediaDoc'; uri: string; type: HMDBMediaType; priority: number }>
     agreements: Array<{ __typename?: 'AgreementInfoDoc'; rank: number; postTitle?: string | null }>
   }>
 }

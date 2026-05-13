@@ -195,7 +195,7 @@ export type FinnAlternativeProdukterSideQuery = {
       isoCategory: string
       alternativeFor: Array<string>
       supplier: { __typename?: 'Supplier'; id: string; name: string }
-      media: Array<{ __typename?: 'Media'; uri: string; type: string; priority?: number | null; text: string }>
+      media: Array<{ __typename?: 'Media'; uri: string; type: string; priority?: number | null }>
       wareHouseStock?: Array<{
         __typename?: 'WareHouseStock'
         location: string

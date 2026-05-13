@@ -35,7 +35,6 @@ const finnAlternativeProdukterSideQuery = gql`
           uri
           type
           priority
-          text
         }
         wareHouseStock {
           location

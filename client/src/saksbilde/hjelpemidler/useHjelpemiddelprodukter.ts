@@ -4,12 +4,12 @@ import { useMemo } from 'react'
 import type {
   HMDBFinnHjelpemiddelprodukterQuery,
   HMDBFinnHjelpemiddelprodukterQueryVariables,
-  HMDBMediaDoc,
 } from '../../generated/grunndata.ts'
 import { useGraphQLQuery } from '../../graphql/useGraphQL.ts'
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 import type { Produkt } from '../../types/types.internal'
 import { unique } from '../../utils/array.ts'
+import { produktbildeUri } from '../../felleskomponenter/bilde/Produktbilde.tsx'
 
 const finnHjelpemiddelprodukterQuery = gql`
   query FinnHjelpemiddelprodukter($hmsnrs: [String!]!) {
@@ -25,7 +25,6 @@ const finnHjelpemiddelprodukterQuery = gql`
       media {
         uri
         type
-        source
         priority
       }
       agreements {
@@ -37,7 +36,6 @@ const finnHjelpemiddelprodukterQuery = gql`
 `
 
 const ingenProdukter: Produkt[] = []
-const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 const HMSNR_LENGDE = 6
 
 interface ProduktResponse {
@@ -92,7 +90,7 @@ export function useHjelpemiddelprodukter(hmsnrs: string[]): ProdukterResponse {
           isotittel: produkt.isoCategoryTitleShort ?? '',
           leverandør: produkt.supplier.name,
           produktUrl: produkt.productVariantURL ?? '',
-          produktbildeUri: produktbilde(produkt.media ?? []),
+          produktbildeUri: produktbildeUri(produkt.media ?? []),
           delkontrakter: produkt.agreements.map((agreement) => ({
             rangering: agreement.rank,
             posttittel: agreement.postTitle ?? undefined,
@@ -104,14 +102,4 @@ export function useHjelpemiddelprodukter(hmsnrs: string[]): ProdukterResponse {
     }
     return { data: ingenProdukter, isLoading, error }
   }, [data, error, isLoading])
-}
-
-function produktbilde(media: HMDBMediaDoc[]): Maybe<string> {
-  const image = media
-    .filter((m) => m.type === 'IMAGE')
-    .sort((a, b) => (Number(a.priority) ?? 0) - (Number(b.priority) ?? 0))[0]
-  if (!image || !image.uri) {
-    return undefined
-  }
-  return `${imageProxyUrl}/${image.uri}`
 }

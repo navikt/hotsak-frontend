@@ -1,12 +1,13 @@
-import { Box, Checkbox, HGrid, HStack, Tag, VStack } from '@navikt/ds-react'
+import { Box, Checkbox, HStack, Tag, VStack } from '@navikt/ds-react'
 
 import classes from './AlternativtProduktCard.module.css'
 
+import clsx from 'clsx'
+import { Produktbilde, produktbildeUri } from '../../../../felleskomponenter/bilde/Produktbilde.tsx'
 import { FinnHjelpemiddelLink } from '../../../../felleskomponenter/FinnHjelpemiddelLink.tsx'
 import { Etikett, Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 import { LagerstatusUtregning } from './LagerstatusUtregning.tsx'
-import clsx from 'clsx'
 
 interface AlternativProduktCardProps {
   alternativtProdukt: AlternativeProduct
@@ -14,17 +15,7 @@ interface AlternativProduktCardProps {
 }
 
 export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: AlternativProduktCardProps) {
-  const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
-
-  function produktbilde(produkt: AlternativeProduct): Maybe<string> {
-    const media = produkt.media
-      .filter((m) => m.type === 'IMAGE')
-      .sort((a, b) => (Number(a.priority) || 0) - (Number(b.priority) || 0))[0]
-    if (!media || !media.uri) {
-      return undefined
-    }
-    return `${imageProxyUrl}/${media.uri}`
-  }
+  const bildeUri = produktbildeUri(alternativtProdukt.media)
 
   return (
     <Box
@@ -41,7 +32,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
         <Etikett size="small" spacing>
           {alternativtProdukt.articleName || alternativtProdukt.title}
         </Etikett>
-        <HGrid columns="1fr 1fr">
+        <HStack wrap={false} gap="space-12" align="start" justify="space-between">
           <VStack gap="space-4">
             <FinnHjelpemiddelLink hmsnr={alternativtProdukt.hmsArtNr}>
               <Tekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Tekst>
@@ -71,12 +62,14 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
               ))}
             </VStack>
           </VStack>
-          {produktbilde(alternativtProdukt) && (
-            <div className={classes.bildeContainer}>
-              <img className={classes.bilde} alt="Produktbilde" src={produktbilde(alternativtProdukt)} />
-            </div>
+          {bildeUri && (
+            <Produktbilde
+              src={bildeUri}
+              alt={alternativtProdukt.articleName || alternativtProdukt.title}
+              size="small"
+            />
           )}
-        </HGrid>
+        </HStack>
       </VStack>
       <Box background="accent-soft" padding="space-8" borderRadius="12">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>

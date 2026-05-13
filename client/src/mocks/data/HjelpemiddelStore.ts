@@ -26,7 +26,7 @@ export class HjelpemiddelStore extends Dexie {
       return []
     }
 
-    // @ts-ignore
+    // @ts-expect-error  FIXME , noe feil med typene her
     return this.hjelpemidler.bulkAdd(products.data.products, { allKeys: true }).catch(console.warn)
   }
 

@@ -1,5 +1,6 @@
 minimumReleaseAgeExclude:
   - '@navikt/*'
+  - protobufjs@8.0.2
 
 onlyBuiltDependencies:
   - '@swc/core'
@@ -13,4 +14,12 @@ updateConfig:
   ignoreDependencies:
     - '@types/node'
 
-overrides: { }
+allowBuilds:
+  cypress: true
+  es5-ext: false
+  esbuild: true
+  msw: true
+  protobufjs: false
+
+overrides:
+  protobufjs@>=8.0.0 <=8.0.1: ^8.0.2

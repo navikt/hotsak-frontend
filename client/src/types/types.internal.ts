@@ -443,9 +443,11 @@ export interface Journalpost {
   tittel: string
   fnrInnsender: string
   journalstatus: JournalpostStatusType
+  journalposttype: 'I' | 'U' | 'N'
   dokumenter: Dokument[]
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
+  sakId?: string
 }
 
 export interface FødselsnummerOgNavn {
@@ -664,9 +666,10 @@ export interface Tjenesteomraade {
   tjenestevirksomhet?: string | null
 }
 
-export enum Brevmottaker {
+export enum Mottaker {
   VERGE = 'VERGE',
   BRUKER = 'BRUKER',
+  FORMIDLER = 'FORMIDLER',
 }
 
 export interface IdentifiserendeInformasjon {

@@ -1,4 +1,4 @@
-import { InfoCard, VStack } from '@navikt/ds-react'
+import { Alert, InfoCard, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
@@ -7,12 +7,13 @@ import { Tekst } from '../../../felleskomponenter/typografi'
 import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
 import { Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
-import { AvslagForm, AvslagFormHandle, AvslagFormValues } from '../../felles/AvslagForm'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { useClosePanel } from '../paneler/usePanelHooks'
+import classes from './FattVedtakModalV2.module.css'
+import { usePerson } from '../../../personoversikt/usePerson'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -26,8 +27,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
   const vedtakFormRef = useRef<VedtakFormHandle>(null)
-  const avslagFormRef = useRef<AvslagFormHandle>(null)
   const closePanel = useClosePanel('brevpanel')
+  const { personInfo } = usePerson(sak.bruker.fnr)
+  const vergemål = personInfo?.vergemål || []
 
   const erAvslag = vedtaksresultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
@@ -42,12 +44,10 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         problemsammendrag: data.problemsammendrag,
         postbegrunnelse: data.postbegrunnelse,
         utleveringMerknad: data.utleveringMerknad,
-        brevmottaker: data.brevmottaker ? [data.brevmottaker] : undefined,
       })
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({
         problemsammendrag: data.problemsammendrag,
-        brevmottaker: data.brevmottaker ? [data.brevmottaker] : undefined,
       })
     }
     if (erInnvilget) {
@@ -59,9 +59,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
     onClose()
   }
 
-  const fattAvslagsvedtak = async (data: AvslagFormValues) => {
+  const fattAvslagsvedtak = async () => {
     setVedtakLoader(true)
-    await ferdigstillBehandling({ brevmottaker: data.brevmottaker ? [data.brevmottaker] : undefined })
+    await ferdigstillBehandling({})
 
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
@@ -91,7 +91,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       bekreftButtonLabel={`${vedtakTekst?.knapp}${brevMetaData.harBrevISak ? ' og send brev' : ''}`}
       onBekreft={() => {
         if (erAvslag) {
-          avslagFormRef.current?.submit()
+          fattAvslagsvedtak()
         } else {
           vedtakFormRef.current?.submit()
         }
@@ -116,7 +116,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           {brevMetaData.harBrevISak && (
             <InfoCard data-color="info" size="small">
               <InfoCard.Header>
-                <InfoCard.Title>Du er i ferd med å sende ut et brev</InfoCard.Title>
+                <InfoCard.Title>
+                  Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}
+                </InfoCard.Title>
               </InfoCard.Header>
               <InfoCard.Content>
                 <Tekst>Brevet vil bli sendt ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.</Tekst>
@@ -139,7 +141,14 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           )}
         </VStack>
       )}
-      {erAvslag && <AvslagForm sak={sak} onSubmit={fattAvslagsvedtak} ref={avslagFormRef} />}
+      {erAvslag && (
+        <VStack gap="space-16">
+          <Alert variant="info" size="small" className={classes.alertSpacing}>
+            Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}. Brevet vil bli sendt
+            ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.
+          </Alert>
+        </VStack>
+      )}
     </BekreftelseModal>
   )
 }

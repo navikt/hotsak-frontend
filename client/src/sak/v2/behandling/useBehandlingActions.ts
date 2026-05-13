@@ -1,12 +1,11 @@
+import { useSWRConfig } from 'swr'
 import { Actions, useActionState } from '../../../action/Actions.ts'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { http } from '../../../io/HttpClient.ts'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../saksbilde/mutateSak.ts'
-import { Brevmottaker } from '../../../types/types.internal.ts'
 import { Behandlingsutfall } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
-import { useSWRConfig } from 'swr'
 
 export interface BehandlingActions extends Actions {
   lagreBehandling(utfall?: Behandlingsutfall): Promise<void>
@@ -14,12 +13,10 @@ export interface BehandlingActions extends Actions {
     problemsammendrag,
     postbegrunnelse,
     utleveringMerknad,
-    brevmottaker,
   }: {
     problemsammendrag?: string
     postbegrunnelse?: string
     utleveringMerknad?: string
-    brevmottaker?: Brevmottaker[]
   }): Promise<void>
 }
 
@@ -52,17 +49,15 @@ export function useBehandlingActions(): BehandlingActions {
       problemsammendrag,
       postbegrunnelse,
       utleveringMerknad,
-      brevmottaker,
     }: {
       problemsammendrag?: string
       postbegrunnelse?: string
       utleveringMerknad?: string
-      brevmottaker?: Brevmottaker[]
     }) {
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
-          { problemsammendrag, postbegrunnelse, utleveringMerknad, brevmottaker },
+          { problemsammendrag, postbegrunnelse, utleveringMerknad },
           { versjon }
         )
         await mutateBehandling()

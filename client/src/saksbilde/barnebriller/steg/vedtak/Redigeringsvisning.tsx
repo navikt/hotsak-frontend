@@ -6,7 +6,7 @@ import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
-import { useNotater } from '../../../../sak/notater/useNotater'
+import { useNotater } from '../../../../sak/notat/useNotater'
 import {
   type Barnebrillesak,
   Brevkode,

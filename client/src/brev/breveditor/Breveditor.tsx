@@ -27,6 +27,8 @@ import { transformerPlaceholders } from './transformerPlaceholders.ts'
 import { useEditorScale } from './useEditorScale.ts'
 import { useLagreBrev } from './useLagreBrev.ts'
 import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
+import { usePerson } from '../../personoversikt/usePerson.ts'
+import { formaterNavn } from '../../utils/formater.ts'
 
 export interface StateMangement {
   value: Value
@@ -145,6 +147,14 @@ const Breveditor = ({
 
   const { widthScale, heightScale, widthRef, heightRef } = useEditorScale(visMarger)
   const { endringsstatus, lagreMedDebounceOgRetry } = useLagreBrev(onLagreBrev)
+  const { personInfo } = usePerson(metadata.brukersFødselsnummer)
+  const vergemål = personInfo?.vergemål || []
+  const harVerge = vergemål.length > 0
+  const vergeNavn = vergemål
+    .map((v) => v.vergeEllerFullmektig.identifiserendeInformasjon?.navn)
+    .filter((navn): navn is NonNullable<typeof navn> => !!navn)
+    .map((navn) => formaterNavn(navn))
+    .join(', ')
 
   // Stopp refresh/lukking av nettsiden hvis man har ulagrede endringer
   useBeforeUnload(
@@ -182,7 +192,7 @@ const Breveditor = ({
   // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
   useEffect(() => {
     if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(metadata, initialState.value)
+      const ferskHtml = byggFullHtml(metadata, initialState.value, vergeNavn)
       if (initialState.valueAsHtml !== ferskHtml) {
         const oppdatertState: StateMangement = {
           value: initialState.value,
@@ -216,7 +226,7 @@ const Breveditor = ({
           if ((onStateChange != undefined || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: StateMangement = {
               value: nyVerdi,
-              valueAsHtml: byggFullHtml(metadata, nyVerdi),
+              valueAsHtml: byggFullHtml(metadata, nyVerdi, vergeNavn),
               history: changedEditor.history,
             }
             if (!state.current || state.current.value !== nyVerdi) {
@@ -237,15 +247,23 @@ const Breveditor = ({
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
                       <div className="header">
-                        <dl>
-                          <dt>Navn:</dt>
-                          <dd>{metadata.brukersNavn}</dd>
-                          <dt>Fødselsnummer:</dt>
-                          <dd>{metadata.brukersFødselsnummer}</dd>
-                          <dt>Saksnummer:</dt>
-                          <dd>{metadata.saksnummer}</dd>
-                        </dl>
-                        <span>{metadata.brevOpprettet}</span>
+                        <div className="header-row">
+                          <dl>
+                            {harVerge && (
+                              <>
+                                <dt>Verge:</dt>
+                                <dd>{vergeNavn}</dd>
+                              </>
+                            )}
+                            <dt> {harVerge ? 'Saken gjelder' : 'Navn'}:</dt>
+                            <dd>{metadata.brukersNavn}</dd>
+                            <dt>Fødselsnummer:</dt>
+                            <dd>{metadata.brukersFødselsnummer}</dd>
+                            <dt>Saksnummer:</dt>
+                            <dd>{metadata.saksnummer}</dd>
+                          </dl>
+                          <span>{metadata.brevOpprettet}</span>
+                        </div>
                       </div>
                       <PlateContainer>
                         <PlateContent

@@ -1,9 +1,11 @@
 package main
 
 import (
+	"net/http"
 	"os"
 
 	"github.com/navikt/hotbff"
+	"github.com/navikt/hotbff/httpx"
 	"github.com/navikt/hotbff/proxy"
 	"github.com/navikt/hotbff/texas"
 )
@@ -15,7 +17,7 @@ var (
 
 func init() {
 	if useMSW {
-		idp = ""
+		idp = nil
 	}
 }
 
@@ -27,7 +29,6 @@ func main() {
 			"/api/": &proxy.Options{
 				Target:      os.Getenv("HOTSAK_API_URL"),
 				StripPrefix: false,
-				IDP:         texas.EntraID,
 				IDPTarget:   os.Getenv("HOTSAK_API_SCOPE"),
 			},
 			"/grunndata-api/": &proxy.Options{
@@ -45,7 +46,7 @@ func main() {
 			"/modiacontextholder-api/": &proxy.Options{
 				Target:      os.Getenv("MODIACONTEXTHOLDER_API_URL"),
 				StripPrefix: true,
-			},	
+			},
 		},
 		IDP: idp,
 		EnvKeys: []string{
@@ -67,5 +68,47 @@ func main() {
 			"MODIA_URL",
 		},
 	}
-	hotbff.Start(opts)
+
+	mux := http.NewServeMux()
+	if useMSW {
+		gjeldendeEnhet := &enhet{
+			Nummer: "2970",
+			Navn:   "IT-avdelingen",
+		}
+		ansatt := &autentisertAnsatt{
+			ID:    "S112233",
+			Navn:  "Silje Saksbehandler",
+			Epost: "silje.saksbehandler@nav.no",
+			Grupper: []string{
+				"HOTSAK_BRUKERE",
+				"HOTSAK_SAKSBEHANDLER",
+				"BRILLEADMIN_BRUKERE",
+			},
+			Enheter:        []*enhet{gjeldendeEnhet},
+			GjeldendeEnhet: gjeldendeEnhet,
+			Enhetsnumre: []string{
+				gjeldendeEnhet.Nummer,
+			},
+		}
+		mux.Handle("GET /api/ansatte/meg", httpx.ServeJSON(ansatt))
+		endringslogg := &[]string{}
+		mux.Handle("GET /api/endringslogg", httpx.ServeJSON(endringslogg))
+	}
+
+	hotbff.Start(mux, opts)
+}
+
+type enhet struct {
+	Nummer string `json:"nummer"`
+	Navn   string `json:"navn"`
+}
+
+type autentisertAnsatt struct {
+	ID             string   `json:"id"`
+	Navn           string   `json:"navn"`
+	Epost          string   `json:"epost"`
+	Grupper        []string `json:"grupper"`
+	Enheter        []*enhet `json:"enheter"`
+	GjeldendeEnhet *enhet   `json:"gjeldendeEnhet"`
+	Enhetsnumre    []string `json:"enhetsnumre"`
 }

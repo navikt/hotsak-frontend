@@ -2,9 +2,9 @@ import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-i
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
-import { Notater } from '../../sak/notater/Notater.tsx'
-import { NotificationBadge } from '../../sak/notater/NotificationBadge.tsx'
-import { useNotater } from '../../sak/notater/useNotater.tsx'
+import { Notater } from '../../sak/notat/Notater.tsx'
+import { NotificationBadge } from '../../sak/notat/NotificationBadge.tsx'
+import { useNotater } from '../../sak/notat/useNotater.tsx'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
 import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler'

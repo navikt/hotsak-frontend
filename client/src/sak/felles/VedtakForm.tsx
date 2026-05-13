@@ -7,10 +7,6 @@ import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
 import { useNyttSaksbilde } from '../v2/useNyttSaksbilde'
 import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
-import { usePerson } from '../../personoversikt/usePerson'
-import { useBrevMetadata } from '../../brev/useBrevMetadata'
-import { useMiljø } from '../../utils/useMiljø'
-import { BrevTilBrukerEllerVerge } from '../v2/BrevTilBrukerEllerVerge'
 
 interface VedtakFormProps {
   sak: Sak
@@ -25,18 +21,8 @@ export interface VedtakFormHandle {
 
 export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
   ({ sak, onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat }: VedtakFormProps, ref) => {
-    const { erDev, erLocal } = useMiljø()
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
     const [nyttSaksbilde] = useNyttSaksbilde()
-    const brevMetaData = useBrevMetadata()
-    const { personInfo } = usePerson(sak.bruker.fnr)
-    const harVergePåHjelpemiddelområdet = !!(
-      personInfo?.vergemål?.some((vergemål) =>
-        vergemål.vergeEllerFullmektig.tjenesteomraade?.some((tjeneste) => tjeneste.tjenesteoppgave === 'hjelpemidler')
-      ) &&
-      brevMetaData.harBrevISak &&
-      (erDev || erLocal)
-    )
 
     const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami } = useVedtak(sak)
 
@@ -180,23 +166,6 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
             )}
             {utleveringsmerknad && (!nyttSaksbilde || vedtaksresultat === VedtaksResultat.INNVILGET) && (
               <FritekstPanel />
-            )}
-            {harVergePåHjelpemiddelområdet && personInfo && (
-              <Controller
-                control={form.control}
-                name="brevmottaker"
-                rules={{
-                  required: 'Du må velge om brevet skal sendes til bruker eller til brukers verge',
-                }}
-                render={({ field, fieldState }) => (
-                  <BrevTilBrukerEllerVerge
-                    person={personInfo}
-                    value={field.value}
-                    onChange={field.onChange}
-                    error={fieldState.error?.message}
-                  />
-                )}
-              />
             )}
           </VStack>
           <button type="submit" style={{ display: 'none' }} />

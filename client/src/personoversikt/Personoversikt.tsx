@@ -12,6 +12,7 @@ import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import { naturalBy } from '../utils/array.ts'
 import { sorterKronologiskStigende } from '../utils/dato.ts'
 import { select } from '../utils/select.ts'
+import { DokumentoversiktPerson } from './DokumentoversiktPerson.tsx'
 import { HjelpemiddeloversiktTable } from './HjelpemiddeloversiktTable.tsx'
 import { OppgaveoversiktPerson } from './OppgaveoversiktPerson.tsx'
 import { usePersonContext } from './PersonContext'
@@ -58,7 +59,6 @@ function PersonoversiktContent() {
           />
           <Box paddingBlock="space-16" paddingInline="space-32">
             <Routes>
-              <Route path="/oppgaver" element={<OppgaveoversiktPerson fnr={fodselsnummer} />} />
               <Route
                 path="/saker"
                 element={
@@ -73,6 +73,8 @@ function PersonoversiktContent() {
                   )
                 }
               />
+              <Route path="/oppgaver" element={<OppgaveoversiktPerson fnr={fodselsnummer} />} />
+              <Route path="/dokumenter" element={<DokumentoversiktPerson fnr={fodselsnummer} />} />
               <Route
                 path="/hjelpemidler"
                 element={

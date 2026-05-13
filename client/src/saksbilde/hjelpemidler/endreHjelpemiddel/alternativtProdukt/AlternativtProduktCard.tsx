@@ -63,13 +63,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
               ))}
             </VStack>
           </VStack>
-          {bildeUri && (
-            <Produktbilde
-              src={bildeUri}
-              alt={alternativtProdukt.articleName || alternativtProdukt.title}
-              size="small"
-            />
-          )}
+          {bildeUri && <Produktbilde src={bildeUri} alt={alternativtProdukt.articleName || alternativtProdukt.title} />}
         </HStack>
       </VStack>
       <Box background="accent-soft" padding="space-8" borderRadius="12">

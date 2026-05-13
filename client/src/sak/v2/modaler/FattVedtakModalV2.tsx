@@ -13,6 +13,7 @@ import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import classes from './FattVedtakModalV2.module.css'
+import { usePerson } from '../../../personoversikt/usePerson'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -27,6 +28,8 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const { showSuccessToast } = useToast()
   const vedtakFormRef = useRef<VedtakFormHandle>(null)
   const closePanel = useClosePanel('brevpanel')
+  const { personInfo } = usePerson(sak.bruker.fnr)
+  const vergemål = personInfo?.vergemål || []
 
   const erAvslag = vedtaksresultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
@@ -113,7 +116,9 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           {brevMetaData.harBrevISak && (
             <InfoCard data-color="info" size="small">
               <InfoCard.Header>
-                <InfoCard.Title>Du er i ferd med å sende ut et brev</InfoCard.Title>
+                <InfoCard.Title>
+                  Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}
+                </InfoCard.Title>
               </InfoCard.Header>
               <InfoCard.Content>
                 <Tekst>Brevet vil bli sendt ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.</Tekst>
@@ -139,8 +144,8 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       {erAvslag && (
         <VStack gap="space-16">
           <Alert variant="info" size="small" className={classes.alertSpacing}>
-            Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da få
-            varsel om vedtaksresultatet.
+            Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}. Brevet vil bli sendt
+            ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.
           </Alert>
         </VStack>
       )}

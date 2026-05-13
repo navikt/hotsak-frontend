@@ -1,10 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import {
-  type HMDBFinnHjelpemiddelprodukterQuery,
-  HMDBMediaSourceType,
-  HMDBMediaType,
-} from '../../generated/grunndata.ts'
+import { type HMDBFinnHjelpemiddelprodukterQuery, HMDBMediaType } from '../../generated/grunndata.ts'
 import { lagTilfeldigHmsArtNr, lagUUID } from './felles.ts'
 import products from './products.json'
 
@@ -62,7 +58,6 @@ function lagHjelpemiddel(hmsArtNr: string = lagTilfeldigHmsArtNr()): LagretHjelp
       {
         uri: 'orig/60048.jpg',
         type: HMDBMediaType.Image,
-        source: HMDBMediaSourceType.Import,
         priority: 1,
       },
     ],

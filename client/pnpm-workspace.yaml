@@ -1,5 +1,6 @@
 minimumReleaseAgeExclude:
   - '@navikt/*'
+  - protobufjs@8.0.2
 
 onlyBuiltDependencies:
   - '@swc/core'
@@ -19,3 +20,6 @@ allowBuilds:
   esbuild: true
   msw: true
   protobufjs: false
+
+overrides:
+  protobufjs@>=8.0.0 <=8.0.1: ^8.0.2

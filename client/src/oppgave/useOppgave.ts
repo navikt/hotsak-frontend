@@ -1,7 +1,8 @@
 import { useDebugValue } from 'react'
 import { useParams } from 'react-router'
-import useSwr, { type SWRResponse } from 'swr'
+import useSwr, { mutate, preload, type SWRResponse } from 'swr'
 
+import { http } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { erOppgaveId, type Oppgave, type OppgaveId } from './oppgaveTypes.ts'
 
@@ -28,4 +29,12 @@ export function useOppgave(): UseOppgaveResponse {
     oppgave: oppgave!!,
     ...rest,
   }
+}
+
+export function preloadOppgave(oppgaveId: OppgaveId) {
+  return preload(`/api/oppgaver/${oppgaveId}`, http.get)
+}
+
+export function mutateOppgave(oppgaveId: OppgaveId, oppgave?: Oppgave) {
+  return mutate(`/api/oppgaver/${oppgaveId}`, oppgave)
 }

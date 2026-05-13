@@ -1,10 +1,10 @@
-import { preload } from 'swr'
+import { useCallback } from 'react'
 
 import { LinkButton } from '../felleskomponenter/button/LinkButton.tsx'
-import { http } from '../io/HttpClient.ts'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
+import { mutateOppgave } from '../oppgave/useOppgave.ts'
+import { preloadBehandling, preloadBehovsmelding, preloadSak } from '../sak/useSak.ts'
 import { Sakstype } from '../types/types.internal.ts'
-
 import classes from './ÅpneOppgave.module.css'
 
 export interface ÅpneOppgaveProps {
@@ -13,6 +13,20 @@ export interface ÅpneOppgaveProps {
 
 export function ÅpneOppgave(props: ÅpneOppgaveProps) {
   const { oppgave } = props
+
+  // fungerer ikke siden komponenten heter ÅpneOppgave
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const preload = useCallback(() => {
+    if (oppgave.sak) {
+      const sakId = oppgave.sak.sakId
+      const tasks = [preloadSak(sakId), preloadBehandling(sakId), mutateOppgave(oppgave.oppgaveId, oppgave)]
+      if (oppgave.sak.sakstype === Sakstype.BESTILLING || oppgave.sak.sakstype === 'SØKNAD') {
+        tasks.push(preloadBehovsmelding(sakId))
+      }
+      return tasks
+    }
+  }, [oppgave])
+
   return (
     <LinkButton
       className={classes.root}
@@ -20,15 +34,7 @@ export function ÅpneOppgave(props: ÅpneOppgaveProps) {
       type="button"
       variant="secondary"
       to={`/oppgave/${oppgave.oppgaveId}`}
-      onClick={() => {
-        if (oppgave.sak) {
-          preload(`/api/sak/${oppgave.sak.sakId}`, http.get)
-          preload(`/api/sak/${oppgave.sak.sakId}/behandling`, http.get)
-          if (oppgave.sak.sakstype === Sakstype.BESTILLING || oppgave.sak.sakstype === 'SØKNAD') {
-            preload(`/api/sak/${oppgave.sak.sakId}/behovsmelding`, http.get)
-          }
-        }
-      }}
+      onClick={preload}
     >
       Åpne
     </LinkButton>

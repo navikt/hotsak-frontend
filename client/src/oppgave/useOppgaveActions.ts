@@ -1,10 +1,9 @@
-import { mutate, preload } from 'swr'
-
 import { Actions, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
-import { mutateSak } from '../saksbilde/mutateSak.ts'
+import { mutateSak } from '../sak/useSak.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
 import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
+import { mutateOppgave } from './useOppgave.ts'
 
 export interface EndreOppgavetildelingRequest {
   oppgaveId?: OppgaveId
@@ -111,12 +110,4 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
 
     state,
   }
-}
-
-export function preloadOppgave(oppgaveId: OppgaveId) {
-  return preload(`/api/oppgaver/${oppgaveId}`, http.get)
-}
-
-export function mutateOppgave(oppgaveId: OppgaveId) {
-  return mutate(`/api/oppgaver/${oppgaveId}`)
 }

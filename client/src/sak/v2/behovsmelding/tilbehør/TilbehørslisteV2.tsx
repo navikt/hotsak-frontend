@@ -1,6 +1,8 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Box, Button, HStack, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
+import { Produktbilde } from '../../../../felleskomponenter/bilde/Produktbilde'
+import { CompactExpandableCard } from '../../../../felleskomponenter/panel/CompactExpandableCard'
 import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../../../felleskomponenter/typografi'
 import { EndreTilbehørModal } from '../../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreTilbehørModal'
 import { useEndreHjelpemiddel } from '../../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel'
@@ -10,10 +12,11 @@ import { useSaksregler } from '../../../../saksregler/useSaksregler'
 import { Tilbehør as Tilbehørtype } from '../../../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../../../types/types.internal'
 import { AntallTag } from '../../AntallTag'
+import { ResponsiveStack } from '../../../../felleskomponenter/ResponsiveStack'
+import classes from './Tilbehørsliste.module.css'
 import { ProduktV2 } from '../ProduktV2'
 import { EndretTilbehørBegrunnelse } from './EndretTilbehørBegrunnelse'
-import { CompactExpandableCard } from '../../../../felleskomponenter/panel/CompactExpandableCard'
-import classes from './Tilbehørsliste.module.css'
+import { Eksperiment } from '../../../../felleskomponenter/Eksperiment'
 
 export function FrittStåendeTilbehørV2({
   sakId,
@@ -60,7 +63,7 @@ export function TilbehørlisteV2({
   const { kanEndreHjelpemiddel } = useSaksregler()
 
   return (
-    <VStack gap="space-12" className={classes.tilbehørListe}>
+    <VStack gap="space-2" className={classes.tilbehørListe}>
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
         return <Tilbehør key={idx} sakId={sakId} tilbehør={t} produkt={produkt} kanEndreHmsnr={kanEndreHjelpemiddel} />
@@ -100,58 +103,63 @@ function Tilbehør({
 
   return (
     <Box paddingBlock="space-8">
-      <VStack gap="space-4">
-        {harEndretTilbehør && (
-          <ProduktV2
-            hmsnr={endretHjelpemiddelResponse.hmsArtNr}
-            navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
-            showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
-          />
-        )}
-        <HStack gap="space-12">
-          <ProduktV2
-            hmsnr={tilbehør.hmsArtNr || '-'}
-            navn={tilbehør.navn || '-'}
-            gjennomstrek={endretTilbehør !== undefined}
-          />
-        </HStack>
-        <HStack paddingBlock={'space-8 space-0'}>
-          <div>
-            <AntallTag antall={tilbehør.antall} />
-          </div>
-          {kanEndreHmsnr && (
-            <div>
-              <Button
-                variant="tertiary"
-                size="xsmall"
-                icon={<PencilIcon />}
-                onClick={() => {
-                  setVisAlternativerModal(true)
-                }}
-              >
-                Endre
-              </Button>
-            </div>
+      <ResponsiveStack>
+        <VStack gap="space-4">
+          {harEndretTilbehør && (
+            <ProduktV2
+              hmsnr={endretHjelpemiddelResponse.hmsArtNr}
+              navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
+              showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
+            />
           )}
-        </HStack>
-        {harEndretTilbehør && (
-          <Box paddingInline="space-16 space-0">
-            <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
-            <EndretTilbehørBegrunnelse endretTilbehør={endretTilbehør} />
-          </Box>
-        )}
-        {harSaksbehandlingvarsel && (
-          <Box>
-            <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
-          </Box>
-        )}
-        {harOpplysninger && (
-          <Box>
-            <Opplysninger opplysninger={tilbehør.opplysninger!} />
-          </Box>
-        )}
-        {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
-      </VStack>
+          <HStack gap="space-12">
+            <ProduktV2
+              hmsnr={tilbehør.hmsArtNr || '-'}
+              navn={tilbehør.navn || '-'}
+              gjennomstrek={endretTilbehør !== undefined}
+            />
+          </HStack>
+          <HStack paddingBlock={'space-8 space-0'}>
+            <div>
+              <AntallTag antall={tilbehør.antall} />
+            </div>
+            {kanEndreHmsnr && (
+              <div>
+                <Button
+                  variant="tertiary"
+                  size="xsmall"
+                  icon={<PencilIcon />}
+                  onClick={() => {
+                    setVisAlternativerModal(true)
+                  }}
+                >
+                  Endre
+                </Button>
+              </div>
+            )}
+          </HStack>
+          {harEndretTilbehør && (
+            <Box paddingInline="space-16 space-0">
+              <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
+              <EndretTilbehørBegrunnelse endretTilbehør={endretTilbehør} />
+            </Box>
+          )}
+          {harSaksbehandlingvarsel && (
+            <Box>
+              <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
+            </Box>
+          )}
+          {harOpplysninger && (
+            <Box>
+              <Opplysninger opplysninger={tilbehør.opplysninger!} />
+            </Box>
+          )}
+          {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
+        </VStack>
+        <Eksperiment>
+          {produkt && <Produktbilde src={produkt?.produktbildeUri} alt={tilbehør.navn} size="small" />}
+        </Eksperiment>
+      </ResponsiveStack>
       <EndreTilbehørModal
         åpen={visAlternativerModal}
         tilbehør={tilbehør}

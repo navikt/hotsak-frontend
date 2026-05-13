@@ -9,7 +9,7 @@ import { useGraphQLQuery } from '../../graphql/useGraphQL.ts'
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 import type { Produkt } from '../../types/types.internal'
 import { unique } from '../../utils/array.ts'
-import { produktbildeUri } from '../../felleskomponenter/bilde/Produktbilde.tsx'
+import { produktbildeUri } from '../../felleskomponenter/bilde/produktbildeUri.ts'
 
 const finnHjelpemiddelprodukterQuery = gql`
   query FinnHjelpemiddelprodukter($hmsnrs: [String!]!) {

@@ -20,10 +20,3 @@
   object-fit: contain;
   border-radius: var(--ax-radius-12);
 }
-
-.bildeContainer {
-  height: 170px;
-  position: relative;
-  margin: auto;
-  margin-bottom: var(--ax-space-16);
-}

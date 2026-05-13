@@ -1,7 +1,8 @@
 import { PencilIcon } from '@navikt/aksel-icons'
-import { Box, Button, Heading, HStack, Tag, VStack } from '@navikt/ds-react'
+import { Button, Heading, HStack, Tag, VStack } from '@navikt/ds-react'
 
 import { useState } from 'react'
+import { Produktbilde } from '../../../felleskomponenter/bilde/Produktbilde.tsx'
 import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard.tsx'
 import { Skillelinje } from '../../../felleskomponenter/Strek.tsx'
 import { BrytbarBrødtekst, Etikett, TextContainer } from '../../../felleskomponenter/typografi.tsx'
@@ -20,6 +21,8 @@ import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../..
 import { AntallTag } from '../AntallTag.tsx'
 import { ProduktV2 } from './ProduktV2.tsx'
 import { TilbehørlisteV2 } from './tilbehør/TilbehørslisteV2.tsx'
+import { Eksperiment } from '../../../felleskomponenter/Eksperiment.tsx'
+import { ResponsiveStack } from '../../../felleskomponenter/ResponsiveStack.tsx'
 
 interface HjelpemiddelV2Props {
   sak: Sak
@@ -58,8 +61,8 @@ export function HjelpemiddelV2({
   return (
     <>
       <CompactExpandableCard tittel={produkt?.isotittel || 'Mangler kategori'}>
-        <Box>
-          <VStack key={hjelpemiddel.produkt.hmsArtNr} paddingBlock="space-8" gap="space-12" paddingInline="space-12">
+        <ResponsiveStack>
+          <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="space-12">
             <TextContainer>
               <VStack gap="space-4">
                 <BrytbarBrødtekst>Delkontrakt {hjelpemiddel.produkt.delkontrakttittel}</BrytbarBrødtekst>
@@ -74,13 +77,11 @@ export function HjelpemiddelV2({
                   showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
                 />
               )}
-              <HStack gap="space-8">
-                <ProduktV2
-                  hmsnr={hjelpemiddel.produkt.hmsArtNr}
-                  navn={hjelpemiddel.produkt.artikkelnavn}
-                  gjennomstrek={endretHjelpemiddel !== undefined}
-                />
-              </HStack>
+              <ProduktV2
+                hmsnr={hjelpemiddel.produkt.hmsArtNr}
+                navn={hjelpemiddel.produkt.artikkelnavn}
+                gjennomstrek={endretHjelpemiddel !== undefined}
+              />
               {endretHjelpemiddel && (
                 <div>
                   <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
@@ -130,7 +131,12 @@ export function HjelpemiddelV2({
               </HStack>
             </VStack>
           </VStack>
-        </Box>
+          <Eksperiment>
+            {produkt && (
+              <Produktbilde src={produkt?.produktbildeUri} alt={hjelpemiddel.produkt.artikkelnavn} size="small" />
+            )}
+          </Eksperiment>
+        </ResponsiveStack>
         <Skillelinje />
         <VStack gap="space-8" paddingInline="space-12" paddingBlock="space-4 space-12">
           <Varsler varsler={hjelpemiddel.varsler} />

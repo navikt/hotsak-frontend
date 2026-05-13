@@ -666,9 +666,10 @@ export interface Tjenesteomraade {
   tjenestevirksomhet?: string | null
 }
 
-export enum Brevmottaker {
+export enum Mottaker {
   VERGE = 'VERGE',
   BRUKER = 'BRUKER',
+  FORMIDLER = 'FORMIDLER',
 }
 
 export interface IdentifiserendeInformasjon {

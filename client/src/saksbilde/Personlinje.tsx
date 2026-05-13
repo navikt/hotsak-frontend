@@ -1,8 +1,7 @@
-import { Button, HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
-import { Children, ReactNode, useEffect, useRef } from 'react'
+import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
+import { Children, ReactNode, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
@@ -10,7 +9,6 @@ import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../types/ty
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 import classes from './personlinje.module.css'
-import { VergeInformasjonsModal } from './VergeInformasjonsModal.tsx'
 
 export interface PersonlinjeProps {
   person?: Person
@@ -21,7 +19,6 @@ export interface PersonlinjeProps {
 export function Personlinje({ person, loading, skjulTelefonnummer = false }: PersonlinjeProps) {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
-  const vergemålModalRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
     if (person?.fnr) {
@@ -91,12 +88,9 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
         </Tag>
       )}
       {vergemål && vergemål.length > 0 && (
-        <Eksperiment>
-          <Button variant="secondary" size="small" onClick={() => vergemålModalRef.current?.showModal()}>
-            Vergemål
-          </Button>
-          <VergeInformasjonsModal modalRef={vergemålModalRef} vergemål={vergemål} />
-        </Eksperiment>
+        <Tag data-color="warning" size="small" variant="outline">
+          Vergemål
+        </Tag>
       )}
     </Container>
   )

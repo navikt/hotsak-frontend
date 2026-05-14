@@ -335,54 +335,6 @@ export interface Varsel {
   beskrivelse: string[]
 }
 
-export interface Saksnotater {
-  notater: Notat[]
-  totalElements: number
-}
-export interface Notat {
-  id: string
-  sakId: string
-  saksbehandler: Saksbehandler
-  klassifisering?: NotatKlassifisering | null
-  type: NotatType
-  tittel: string
-  tekst: string
-  opprettet: string
-  oppdatert: string
-  ferdigstilt?: string
-  feilregistrert?: string
-  journalpostId?: string
-  dokumentId?: string
-  målform: MålformType
-}
-
-export type FerdigstillNotatRequest = Omit<
-  Notat,
-  'opprettet' | 'oppdatert' | 'ferdigstilt' | 'feilregistrert' | 'journalpostId' | 'saksbehandler'
->
-export enum NotatKlassifisering {
-  INTERNE_SAKSOPPLYSNINGER = 'INTERNE_SAKSOPPLYSNINGER',
-  EKSTERNE_SAKSOPPLYSNINGER = 'EKSTERNE_SAKSOPPLYSNINGER',
-}
-
-export interface NotatUtkast {
-  id?: string
-  tittel?: string
-  tekst?: string
-  type: NotatType
-  klassifisering?: NotatKlassifisering | null
-}
-
-export enum NotatType {
-  INTERNT = 'INTERNT',
-  JOURNALFØRT = 'JOURNALFØRT',
-}
-
-export interface NotatTeller {
-  antallNotater: number
-  harUtkast: boolean
-}
-
 export interface BrevTekst {
   sakId: string
   målform: MålformType

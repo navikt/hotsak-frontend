@@ -98,7 +98,7 @@ export interface OppgaveBase {
   /**
    * NB! Journalføringsoppgaver har ikke `sakId`.
    */
-  sakId?: ID
+  sakId?: string
 }
 
 export interface Oppgave extends OppgaveBase {
@@ -158,7 +158,7 @@ export type SaksbehandlingOppgavetype =
 
 export interface Saksbehandlingsoppgave extends Oppgave {
   kategorisering: Oppgavekategorisering<SaksbehandlingOppgavetype>
-  sakId: ID
+  sakId: string
   sak: OppgaveSak
 }
 

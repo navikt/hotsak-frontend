@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw'
 
-import type { FerdigstillNotatRequest, NotatUtkast } from '../../types/types.internal'
+import type { FerdigstillNotatRequest, NotatUtkast } from '../../sak/notat/notatTyper'
+import { GjenståendeOverfør } from '../../sak/v2/behandling/behandlingTyper'
 import type { StoreHandlersFactory } from '../data'
 import { lastDokument } from '../data/felles'
 import type { SakParams } from './params'
 import { delay, respondNoContent, respondPdf } from './response'
-import { GjenståendeOverfør } from '../../sak/v2/behandling/behandlingTyper'
 
 interface NotatParams extends SakParams {
   notatId: string

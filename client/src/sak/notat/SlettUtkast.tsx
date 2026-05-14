@@ -9,12 +9,12 @@ import { useToast } from '../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { http } from '../../io/HttpClient.ts'
 import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
-import { Notat } from '../../types/types.internal.ts'
+import { type Notat } from './notatTyper.ts'
 
 export interface NotaterProps {
   sakId: string
   aktivtUtkast?: Notat
-  onReset: () => void
+  onReset(): void
 }
 
 export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {

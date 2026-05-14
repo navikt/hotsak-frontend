@@ -1,17 +1,16 @@
 import Dexie, { Table } from 'dexie'
 
 import {
-  FerdigstillNotatRequest,
-  MålformType,
-  Notat,
+  type FerdigstillNotatRequest,
+  type Notat,
   NotatKlassifisering,
   NotatType,
-  NotatUtkast,
-  Saksbehandler,
-} from '../../types/types.internal'
+  type NotatUtkast,
+} from '../../sak/notat/notatTyper'
+import { MålformType, Saksbehandler } from '../../types/types.internal.ts'
+import { nåIso } from './felles.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
-import { nåIso } from './felles.ts'
 
 type LagretNotat = Notat
 type InsertNotat = Omit<LagretNotat, 'id'>

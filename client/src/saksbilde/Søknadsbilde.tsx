@@ -46,7 +46,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
 
   return (
     <HGrid
-      columns={`max(${hovedInnholdMaxWidth})  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
+      columns={`max(${hovedInnholdMaxWidth}) minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
       className={classes.hovedGrid}
     >
       <section className={classes.section}>
@@ -103,7 +103,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
           </section>
         </HGrid>
       </section>
-      <Høyrekolonne />
+      <Høyrekolonne oppgave={oppgave} />
     </HGrid>
   )
 })

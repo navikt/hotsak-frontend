@@ -82,7 +82,7 @@ export function BarnebrillesakSidebar({ oppgave }: { oppgave?: Saksbehandlingsop
         </Tabs.Panel>
         <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
           <SidebarPanel tittel="Notater">
-            <Notater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+            <Notater oppgave={oppgave} />
           </SidebarPanel>
         </Tabs.Panel>
       </ScrollContainer>

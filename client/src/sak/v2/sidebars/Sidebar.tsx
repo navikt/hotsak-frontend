@@ -2,10 +2,10 @@ import { ClockDashedIcon, NotePencilIcon, WheelchairIcon, XMarkIcon } from '@nav
 import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
+import type { Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { useSak } from '../../../saksbilde/useSak'
-import { useSaksregler } from '../../../saksregler/useSaksregler'
 import { Notater } from '../../notat/Notater'
 import { NotificationBadge } from '../../notat/NotificationBadge'
 import { useNotater } from '../../notat/useNotater'
@@ -16,14 +16,17 @@ import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
 
-export function Sidebar() {
+export interface SidebarProps {
+  oppgave?: Saksbehandlingsoppgave
+}
+
+export function Sidebar({ oppgave }: SidebarProps) {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSakContext()
   const { sak } = useSak()
   const { antallUtlånteHjelpemidler, error, isLoading } = useUtlånoversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
-  const { kanBehandleSak } = useSaksregler()
   const closePanel = useClosePanel('sidebarpanel')
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
 
@@ -98,7 +101,7 @@ export function Sidebar() {
           {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
               <SidebarPanel tittel="Notater">
-                <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
+                <Notater oppgave={oppgave} />
               </SidebarPanel>
             </Tabs.Panel>
           )}

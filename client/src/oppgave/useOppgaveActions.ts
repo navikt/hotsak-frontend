@@ -2,6 +2,7 @@ import { Actions, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
 import { mutateSak } from '../sak/useSak.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
+import { mutateOppgavekommentarer } from './kommentar/useOppgavekommentarer.ts'
 import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
 import { mutateOppgave } from './useOppgave.ts'
 
@@ -43,14 +44,23 @@ export interface OppgaveActions extends Actions {
   fjernOppgavetildeling(request?: FjernOppgavetildelingRequest): Promise<void>
 
   /**
-   * TODO
+   * Endre oppgave.
+   *
+   * @param request
    */
   endreOppgave(request: EndreOppgaveRequest): Promise<void>
 
   /**
-   * TODO
+   * Merk oppgave som lest.
    */
   merkSomLest(): Promise<void>
+
+  /**
+   * Lagre en kommentar til oppgaven.
+   *
+   * @param tekst
+   */
+  lagreKommentar(tekst: string): Promise<void>
 }
 
 /**
@@ -106,6 +116,15 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
 
     async merkSomLest() {
       return execute(() => http.put(`/api/oppgaver/${oppgaveId}/leste`))
+    },
+
+    async lagreKommentar(tekst: string) {
+      return execute(async () => {
+        await http.post(`/api/oppgaver/${oppgaveId}/kommentarer`, { tekst }, { versjon })
+        if (isOppgaveContext) {
+          await mutateOppgavekommentarer(oppgaveId)
+        }
+      })
     },
 
     state,

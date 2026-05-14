@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import useSwr, { KeyedMutator } from 'swr'
 
 import { HttpError } from '../../io/HttpError.ts'
-import { Notat, NotatType, Saksnotater } from '../../types/types.internal.ts'
+import { isAvventerJournalføring, isNotatFerdigstilt, isNotatType, isNotatUtkast } from './notatSelectors.ts'
+import { type Notat, NotatType, type Saksnotater } from './notatTyper.ts'
 
-interface NotaterResponse {
+export interface UseNotaterResponse {
   antallNotater: number
   harUtkast: boolean
   notater: Notat[]
@@ -14,46 +15,26 @@ interface NotaterResponse {
   finnAktivtUtkast(valgtType?: NotatType): Notat | undefined
 }
 
-export function useNotater(sakId?: string): NotaterResponse {
-  const [refreshInterval, setRefreshInterval] = useState(0)
-  const [harUtkast, setHarUtkast] = useState(false)
-  const {
-    data: saksnotater,
-    error,
-    mutate,
-    isLoading,
-  } = useSwr<Saksnotater, HttpError>(sakId ? `/api/sak/${sakId}/notater` : null, { refreshInterval })
-
-  useEffect(() => {
-    if (saksnotater) {
-      const utkast = saksnotater.notater.filter((notat) => !notat.ferdigstilt)
-      // fixme
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setHarUtkast(utkast.length > 0)
+export function useNotater(sakId?: string): UseNotaterResponse {
+  const { data, error, mutate, isLoading } = useSwr<Saksnotater, HttpError>(
+    sakId ? `/api/sak/${sakId}/notater` : null,
+    {
+      refreshInterval(latestData) {
+        if (!latestData) return 0
+        const avventerJournalføring = latestData.notater.some(isAvventerJournalføring)
+        return avventerJournalføring ? 2000 : 0
+      },
     }
-  }, [saksnotater])
+  )
 
-  const finnAktivtUtkast = (valgtType?: NotatType): Notat | undefined => {
-    return saksnotater?.notater.filter((notat) => !notat.ferdigstilt).find((notat) => notat.type === valgtType)
-  }
+  const { notater, totalElements } = data ?? noData
 
-  const { notater, totalElements } = saksnotater ?? { notater: [], totalElements: 0 }
-  const ferdigstilteNotater = notater?.filter((notat) => notat.ferdigstilt) ?? []
-
-  const avventerJournalføring =
-    ferdigstilteNotater
-      .filter((notat) => notat.type === NotatType.JOURNALFØRT)
-      .filter((notat) => !notat.journalpostId || !notat.dokumentId).length > 0
-
-  useEffect(() => {
-    if (avventerJournalføring) {
-      // fixme
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setRefreshInterval(2000)
-    } else {
-      setRefreshInterval(0)
-    }
-  }, [avventerJournalføring])
+  const harUtkast = useMemo(() => notater.some(isNotatUtkast), [notater])
+  const ferdigstilteNotater = useMemo(() => notater.filter(isNotatFerdigstilt), [notater])
+  const finnAktivtUtkast = useCallback(
+    (valgtType?: NotatType): Notat | undefined => notater.filter(isNotatUtkast).find(isNotatType(valgtType)),
+    [notater]
+  )
 
   return {
     antallNotater: totalElements,
@@ -61,7 +42,9 @@ export function useNotater(sakId?: string): NotaterResponse {
     notater: ferdigstilteNotater,
     mutate,
     isLoading,
-    harLastet: !isLoading && (saksnotater != null || error != null),
+    harLastet: !isLoading && (data != null || error != null),
     finnAktivtUtkast,
   }
 }
+
+const noData: Saksnotater = { notater: [], totalElements: 0 }

@@ -2,7 +2,14 @@ import { useMemo } from 'react'
 
 import classes from './FormatDateTime.module.css'
 
-export function FormatDateTime({ dateTime }: { dateTime?: string }) {
+export interface FormatDateTimeProps {
+  dateTime?: string
+  dateStyle?: Intl.DateTimeFormatOptions['dateStyle']
+  timeStyle?: Intl.DateTimeFormatOptions['timeStyle']
+}
+
+export function FormatDateTime(props: FormatDateTimeProps) {
+  const { dateTime } = props
   const formatted = useMemo(() => (dateTime ? formatter.format(new Date(dateTime)) : null), [dateTime])
   if (!formatted) {
     return null
@@ -15,9 +22,6 @@ export function FormatDateTime({ dateTime }: { dateTime?: string }) {
 }
 
 const formatter = new Intl.DateTimeFormat('nb-NO', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
+  dateStyle: 'short',
+  timeStyle: 'short',
 })

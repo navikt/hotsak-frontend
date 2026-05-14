@@ -6,7 +6,7 @@ import classes from './MarkdownTextArea.module.css'
 type MarkdownTextAreaProps = {
   label: string
   tekst: string
-  onChange: (tekst: string) => void
+  onChange(tekst: string): void
   readOnly: boolean
   valideringsfeil?: string
 }

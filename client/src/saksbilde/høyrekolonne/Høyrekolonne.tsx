@@ -2,12 +2,12 @@ import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-i
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
+import type { Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { Notater } from '../../sak/notat/Notater.tsx'
 import { NotificationBadge } from '../../sak/notat/NotificationBadge.tsx'
 import { useNotater } from '../../sak/notat/useNotater.tsx'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
 import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
-import { useSaksregler } from '../../saksregler/useSaksregler'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
 import { useValgtFane } from '../useValgtFane.ts'
@@ -15,8 +15,11 @@ import { Historikk } from './historikk/Historikk'
 import { useUtlånoversikt } from './hjelpemiddeloversikt/useUtlånoversikt.ts'
 import classes from './Høyrekolonne.module.css'
 
-export function Høyrekolonne() {
-  const { kanBehandleSak } = useSaksregler()
+export interface HøyrekolonneProps {
+  oppgave?: Saksbehandlingsoppgave
+}
+
+export function Høyrekolonne({ oppgave }: HøyrekolonneProps) {
   const { sak } = useSak()
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const { antallUtlånteHjelpemidler, error, isLoading } = useUtlånoversikt(
@@ -90,7 +93,7 @@ export function Høyrekolonne() {
           {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
               <SidebarPanel tittel="Notater">
-                <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
+                <Notater oppgave={oppgave} />
               </SidebarPanel>
             </Tabs.Panel>
           )}

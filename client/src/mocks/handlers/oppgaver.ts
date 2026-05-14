@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
+import { type Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer.ts'
 import {
   erInternOppgaveId,
   type FinnOppgaverRequest,
@@ -7,10 +8,10 @@ import {
   type OppgaveId,
   oppgaveIdUtenPrefix,
 } from '../../oppgave/oppgaveTypes.ts'
+import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
 import { type Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { type StoreHandlersFactory } from '../data'
 import { delay, respondNoContent, respondNotFound } from './response.ts'
-import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
 
 export interface OppgaveParams {
   oppgaveId: OppgaveId
@@ -39,9 +40,27 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return HttpResponse.json({ behandlere })
   }),
 
-  http.get<never, never, unknown[]>('/api/oppgaver/:oppgaveId/kommentarer', async () => {
+  http.get<OppgaveParams, never, Oppgavekommentar[]>('/api/oppgaver/:oppgaveId/kommentarer', async ({ params }) => {
     await delay(75)
-    return HttpResponse.json([])
+    const { oppgaveId } = params
+    const kommentarer = await oppgaveStore.finnKommentarer(oppgaveId)
+    return HttpResponse.json(kommentarer)
+  }),
+
+  http.post<OppgaveParams, { tekst: string }>('/api/oppgaver/:oppgaveId/kommentarer', async ({ request, params }) => {
+    await delay(75)
+    const { oppgaveId } = params
+    const { tekst } = await request.json()
+    await oppgaveStore.lagreKommentar(oppgaveId, {
+      oppgaveId,
+      tekst,
+      registrertAv: 'S112233', // fixme -> bruk innlogget saksbehandler
+      registrertAvEnhetsnummer: '2970', // fixme -> bruk valgt enhet
+      registrertAvSystem: 'HOTSAK',
+      registrertTidspunkt: new Date().toISOString(),
+      legacy: false,
+    })
+    return respondNoContent()
   }),
 
   http.post<OppgaveParams>(`/api/oppgaver/:oppgaveId/tildeling`, async ({ params }) => {

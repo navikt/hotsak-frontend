@@ -6,7 +6,7 @@ import { useToast } from '../../../felleskomponenter/toast/useToast'
 import type { ISvar, Tilbakemelding } from '../../../innsikt/Besvarelse.ts'
 import type { SpørreundersøkelseId } from '../../../innsikt/spørreundersøkelser.ts'
 import { http } from '../../../io/HttpClient.ts'
-import { Notat, NotatType } from '../../../types/types.internal.ts'
+import { type Notat, NotatType } from '../notatTyper.ts'
 
 export interface FeilregistrerJournalførtNotatModalProps {
   open: boolean

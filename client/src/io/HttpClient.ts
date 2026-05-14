@@ -83,18 +83,25 @@ export const http: HttpClient = {
   },
 }
 
+export function getMultiple<T extends readonly unknown[] | []>(urls: string[]): Promise<T> {
+  return Promise.all(urls.map((url) => http.get(url))) as Promise<T>
+}
+
 export type QueryParameter = string | number | boolean | null | undefined
 export type QueryParameters = Record<string, QueryParameter | QueryParameter[]>
+
 export function createQueryString(queryParameters: QueryParameters): string {
   const destination = new URLSearchParams()
   populateQueryParameters(destination, queryParameters)
   return destination.toString()
 }
+
 export function createUrl(path: string, queryParameters: QueryParameters = {}): string {
   const url = new URL(path, window.location.href)
   populateQueryParameters(url.searchParams, queryParameters)
   return url.pathname + url.search
 }
+
 function populateQueryParameters(destination: URLSearchParams, queryParameters: QueryParameters) {
   Object.entries(queryParameters).forEach(([name, valueOrValues]) => {
     if (valueOrValues) {

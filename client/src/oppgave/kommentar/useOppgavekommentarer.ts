@@ -1,8 +1,9 @@
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
+
 import { type HttpError } from '../../io/HttpError.ts'
 import { type OppgaveId } from '../oppgaveTypes.ts'
 
-export interface OppgaveKommentar {
+export interface Oppgavekommentar {
   tekst: string
   registrertAv: string
   registrertAvEnhetsnummer: string
@@ -12,5 +13,9 @@ export interface OppgaveKommentar {
 }
 
 export function useOppgavekommentarer(oppgaveId?: Nullable<OppgaveId>) {
-  return useSWR<OppgaveKommentar[], HttpError>(oppgaveId ? `/api/oppgaver/${oppgaveId}/kommentarer` : null)
+  return useSWR<Oppgavekommentar[], HttpError>(oppgaveId ? `/api/oppgaver/${oppgaveId}/kommentarer` : null)
+}
+
+export function mutateOppgavekommentarer(oppgaveId: OppgaveId, kommentarer?: Oppgavekommentar[]) {
+  return mutate(`/api/oppgaver/${oppgaveId}/kommentarer`, kommentarer)
 }

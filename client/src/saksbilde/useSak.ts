@@ -4,12 +4,13 @@ import useSwr, { type SWRResponse } from 'swr'
 
 import type { HttpError } from '../io/HttpError.ts'
 import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import type { OppgaveBase } from '../oppgave/oppgaveTypes.ts'
 import type { Sak, SakBase, SakResponse } from '../types/types.internal'
 
-export function useSakId(): string {
+export function useSakId(oppgave?: OppgaveBase): string {
   const { sakId: sakIdUrl } = useParams<{ sakId: string }>()
-  const { sakId: sakIdOppgave } = useOppgaveContext()
-  const sakId = sakIdUrl ?? sakIdOppgave ?? ''
+  const { sakId: sakIdContext } = useOppgaveContext()
+  const sakId = sakIdUrl ?? oppgave?.sakId ?? sakIdContext ?? ''
   useDebugValue(sakId)
   return sakId.toString()
 }

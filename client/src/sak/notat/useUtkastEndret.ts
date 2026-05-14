@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { KeyedMutator, mutate } from 'swr'
 
 import { http } from '../../io/HttpClient.ts'
-import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../types/types.internal.ts'
 import { delay } from '../../utils/delay.ts'
+import { NotatKlassifisering, NotatType, type NotatUtkast, type Saksnotater } from './notatTyper.ts'
 
 export function useUtkastEndret(
   type: NotatType,

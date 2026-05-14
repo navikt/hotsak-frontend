@@ -15,7 +15,5 @@ export function FormatDate({ date }: { date?: string }) {
 }
 
 const formatter = new Intl.DateTimeFormat('nb-NO', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
+  dateStyle: 'short',
 })

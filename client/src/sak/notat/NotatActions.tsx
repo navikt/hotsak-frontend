@@ -5,18 +5,18 @@ import { ActionMenu, Button, Tooltip } from '@navikt/ds-react'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { SpørreundersøkelseModal } from '../../innsikt/SpørreundersøkelseModal.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import { Notat, NotatKlassifisering, NotatType } from '../../types/types.internal.ts'
 import {
   FeilregistrerJournalførtNotatModalProps,
   useFeilregistrerJournalførtNotat,
 } from './feilregistering/useFeilregistrerJournalførtNotat.ts'
+import { type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
 
-export interface NotaterProps {
+export interface NotatActionsProps {
   notat: Notat
-  mutate: () => void
+  mutate(): void
 }
 
-export function NotatActions({ notat }: NotaterProps) {
+export function NotatActions({ notat }: NotatActionsProps) {
   const { kanBehandleSak } = useSaksregler()
   const { onOpen: visFeilregistrerNotat, ...feilregistrerJournalførtNotat } = useFeilregistrerJournalførtNotat(notat)
 

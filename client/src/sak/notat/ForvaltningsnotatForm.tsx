@@ -4,19 +4,13 @@ import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
+import { type FerdigstillNotatRequest, type Notat, NotatKlassifisering, NotatType } from '../../sak/notat/notatTyper.ts'
 import { useBrev } from '../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { ForhåndsvisningsModal } from '../../saksbilde/høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
 import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
-import {
-  Brevtype,
-  FerdigstillNotatRequest,
-  MålformType,
-  Notat,
-  NotatKlassifisering,
-  NotatType,
-} from '../../types/types.internal.ts'
+import { Brevtype, MålformType } from '../../types/types.internal.ts'
 import type { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
@@ -109,7 +103,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)} name="forvaltningsnotat-form">
         {!notaterLaster && (
-          <VStack gap="space-16" paddingBlock="space-24 space-0">
+          <VStack gap="space-16" marginBlock="space-20 space-0">
             <Controller
               name="klassifisering"
               control={control}
@@ -148,7 +142,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
         )}
 
         {!lesevisning && (
-          <HStack justify="space-between" paddingBlock={'space-6 space-0'}>
+          <HStack justify="space-between" marginBlock="space-6 space-0">
             <Button
               type="button"
               size="xsmall"
@@ -169,7 +163,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
         )}
 
         {!lesevisning && (
-          <VStack paddingBlock={'space-12 space-0'}>
+          <VStack marginBlock="space-12 space-0">
             <div>
               <Button
                 variant="secondary"
@@ -199,7 +193,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
           reverserKnapperekkefølge={true}
           bekreftButtonVariant="secondary"
           avbrytButtonVariant="primary"
-          width={'660px'}
+          width="660px"
           open={visJournalførNotatModal}
           loading={ferdigstiller}
           onClose={() => setVisJournalførNotatModal(false)}

@@ -1,6 +1,8 @@
 import Dexie, { Table } from 'dexie'
 
+import { isFuture } from 'date-fns'
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
+import type { Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer.ts'
 import {
   type FinnOppgaverRequest,
   type FinnOppgaverResponse,
@@ -12,20 +14,27 @@ import {
   Oppgavetype,
   Statuskategori,
 } from '../../oppgave/oppgaveTypes.ts'
+import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
 import { Sakstype } from '../../types/types.internal.ts'
 import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
+import { KodeverkStore } from './KodeverkStore.ts'
 import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
-import { KodeverkStore } from './KodeverkStore.ts'
-import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
-import { isFuture } from 'date-fns'
+
+interface LagretOppgavekommentar extends Oppgavekommentar {
+  id: number
+  oppgaveId: OppgaveId
+}
+
+type InsertOppgavekommentar = Omit<LagretOppgavekommentar, 'id'>
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
+  private readonly kommentarer!: Table<LagretOppgavekommentar, number, InsertOppgavekommentar>
 
   constructor(
     private readonly kodeverkStore: KodeverkStore,
@@ -37,6 +46,7 @@ export class OppgaveStore extends Dexie {
     super('OppgaveStore')
     this.version(1).stores({
       oppgaver: 'oppgaveId',
+      kommentarer: '++id,oppgaveId',
     })
   }
 
@@ -212,5 +222,13 @@ export class OppgaveStore extends Dexie {
       totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
       totalElements,
     }
+  }
+
+  async finnKommentarer(oppgaveId: OppgaveId): Promise<Oppgavekommentar[]> {
+    return this.kommentarer.where({ oppgaveId }).toArray()
+  }
+
+  async lagreKommentar(oppgaveId: OppgaveId, kommentar: InsertOppgavekommentar) {
+    await this.kommentarer.add({ ...kommentar, oppgaveId })
   }
 }

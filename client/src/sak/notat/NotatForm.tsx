@@ -2,10 +2,10 @@ import '@mdxeditor/editor/style.css'
 import { TextField, VStack } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Notat } from '../../types/types.internal.ts'
 import { Lagreindikator } from './markdown/Lagreindikator.tsx'
 import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
-import { NotatFormValues } from './Notater.tsx'
+import { type NotatFormValues } from './Notater.tsx'
+import { type Notat } from './notatTyper.ts'
 
 export interface NotatFormProps {
   readOnly: boolean

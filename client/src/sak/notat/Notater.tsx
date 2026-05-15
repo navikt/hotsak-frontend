@@ -6,7 +6,6 @@ import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
 import { useSakId } from '../../saksbilde/useSak.ts'
 import { FerdigstilteNotater } from './FerdigstilteNotater.tsx'
 import { Notatinformasjon } from './Notatinformasjon.tsx'
-import { NotatType } from './notatTyper.ts'
 import { OpprettNotat } from './OpprettNotat.tsx'
 import { useNotater } from './useNotater.tsx'
 
@@ -24,14 +23,17 @@ export function Notater(props: NotaterProps) {
   const sakId = useSakId(oppgave)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErAvsluttet } = useOppgaveregler(oppgave)
   const { notater, mutate: mutateNotater, isLoading: notaterLaster, finnAktivtUtkast } = useNotater(sakId)
-  const aktivtUtkast = finnAktivtUtkast(NotatType.JOURNALFØRT)
 
   if (!oppgave || oppgaveErAvsluttet) {
-    // fixme -> finn aktuell oppgaveId for sak
     return (
       <VStack gap="space-16">
         <Notatinformasjon />
-        <FerdigstilteNotater loading={notaterLaster} notater={notater} mutateNotater={mutateNotater} />
+        <FerdigstilteNotater
+          oppgaveId={oppgave?.oppgaveId}
+          loading={notaterLaster}
+          notater={notater}
+          mutateNotater={mutateNotater}
+        />
       </VStack>
     )
   }
@@ -40,7 +42,7 @@ export function Notater(props: NotaterProps) {
     <VStack gap="space-16">
       <Notatinformasjon />
       {oppgaveErUnderBehandlingAvInnloggetAnsatt ? (
-        <OpprettNotat oppgave={oppgave} aktivtUtkast={aktivtUtkast} />
+        <OpprettNotat oppgave={oppgave} finnAktivtUtkast={finnAktivtUtkast} />
       ) : (
         <div>
           <Label as="div" size="small" spacing>

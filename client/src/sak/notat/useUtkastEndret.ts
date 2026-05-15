@@ -40,6 +40,7 @@ export function useUtkastEndret(
       return
     }
 
+    if (!utkastId) return
     if (debounceTimer) clearTimeout(debounceTimer)
     setDebounceTimer(
       setTimeout(async () => {

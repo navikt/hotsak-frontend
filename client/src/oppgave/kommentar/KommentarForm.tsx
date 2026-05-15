@@ -19,6 +19,10 @@ export function KommentarForm(props: KommentarFormProps) {
     },
   })
 
+  const {
+    formState: { isSubmitting, errors },
+  } = form
+
   const handleSubmit = form.handleSubmit(async ({ tekst }) => {
     await lagreKommentar(tekst)
     showSuccessToast('Kommentaren ble lagret')
@@ -36,6 +40,7 @@ export function KommentarForm(props: KommentarFormProps) {
           size="small"
           minLength={3}
           maxLength={2000}
+          error={errors.tekst?.message}
           {...form.register('tekst', {
             required: 'Du må skrive en kommentar',
             minLength: {
@@ -49,7 +54,7 @@ export function KommentarForm(props: KommentarFormProps) {
           })}
         />
         <div>
-          <Button type="submit" size="small" variant="secondary">
+          <Button type="submit" size="small" variant="secondary" loading={isSubmitting}>
             Lagre kommentar
           </Button>
         </div>

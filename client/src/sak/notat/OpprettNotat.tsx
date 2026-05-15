@@ -9,12 +9,13 @@ import { NotatType, type Notat } from './notatTyper'
 
 export interface OpprettNotatProps {
   oppgave: Saksbehandlingsoppgave
-  aktivtUtkast?: Notat
+  finnAktivtUtkast(valgtType?: NotatType | string): Notat | undefined
 }
 
 export function OpprettNotat(props: OpprettNotatProps) {
-  const { oppgave, aktivtUtkast } = props
+  const { oppgave, finnAktivtUtkast } = props
   const [type, setType] = useState<NotatType | string>(NotatType.KOMMENTAR)
+  const aktivtUtkast = finnAktivtUtkast(type)
 
   return (
     <VStack gap="space-16">

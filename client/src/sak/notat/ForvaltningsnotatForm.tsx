@@ -1,10 +1,10 @@
 import '@mdxeditor/editor/style.css'
 import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
-import { type FerdigstillNotatRequest, type Notat, NotatKlassifisering, NotatType } from '../../sak/notat/notatTyper.ts'
+import { type Notat, NotatKlassifisering, NotatType } from '../../sak/notat/notatTyper.ts'
 import { useBrev } from '../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { ForhåndsvisningsModal } from '../../saksbilde/høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
 import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
@@ -36,7 +36,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const { hentForhåndsvisning } = useBrev()
-  const { ferdigstill, ferdigstiller } = useFerdigstillNotat()
+  const { ferdigstill } = useFerdigstillNotat()
 
   const form = useForm<ForvaltningsnotatFormValues>({
     defaultValues: {
@@ -49,16 +49,13 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
 
   const {
     control,
-    handleSubmit,
-    watch,
     reset,
-    trigger,
-    formState: { errors },
+    formState: { isSubmitting, errors },
   } = form
 
-  const tittel = watch('tittel')
-  const tekst = watch('tekst')
-  const klassifisering = watch('klassifisering')
+  const tittel = useWatch({ control, name: 'tittel' })
+  const tekst = useWatch({ control, name: 'tekst' })
+  const klassifisering = useWatch({ control, name: 'klassifisering' })
 
   const { lagrerUtkast } = useUtkastEndret(
     NotatType.JOURNALFØRT,
@@ -70,18 +67,6 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
     klassifisering
   )
 
-  const lagPayload = (): FerdigstillNotatRequest => {
-    return {
-      id: aktivtUtkast!.id,
-      sakId,
-      målform: MålformType.BOKMÅL,
-      type: NotatType.JOURNALFØRT,
-      tittel,
-      tekst,
-      klassifisering,
-    }
-  }
-
   const resetForm = () =>
     reset({
       tittel: '',
@@ -90,15 +75,23 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
       bekreftSynlighet: false,
     })
 
-  const onSubmit = async () => {
-    await ferdigstill(lagPayload())
+  const handleSubmit = form.handleSubmit(async (data) => {
+    await ferdigstill({
+      id: aktivtUtkast!.id,
+      sakId,
+      målform: MålformType.BOKMÅL,
+      type: NotatType.JOURNALFØRT,
+      tittel: data.tittel,
+      tekst: data.tekst,
+      klassifisering: data.klassifisering,
+    })
     setVisJournalførNotatModal(false)
     resetForm()
-  }
+  })
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} name="forvaltningsnotat-form">
+      <form onSubmit={handleSubmit} name="forvaltningsnotat-form">
         {!notaterLaster && (
           <VStack gap="space-16">
             <Controller
@@ -109,19 +102,14 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
                 <RadioGroup
                   legend="Hvilken type informasjon skal journalføres?"
                   size="small"
-                  value={field.value}
-                  onChange={(e) => {
-                    field.onChange(e)
-                    trigger('klassifisering')
-                  }}
                   error={errors.klassifisering?.message}
+                  {...field}
                 >
                   <Radio value={NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER}>Interne saksopplysninger</Radio>
                   <Radio value={NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER}>Eksterne saksopplysninger</Radio>
                 </RadioGroup>
               )}
             />
-
             {klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
               <Alert variant="info" size="small">
                 Notatet blir journalført. Bruker vil få innsyn i notatet på innlogget side på nav.no fra første virkedag
@@ -134,7 +122,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
                 be om innsyn i det.
               </Alert>
             )}
-            <NotatForm readOnly={ferdigstiller} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
+            <NotatForm readOnly={isSubmitting} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
           </VStack>
         )}
 
@@ -163,17 +151,14 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
               variant="secondary"
               type="button"
               size="small"
-              onClick={async () => {
-                const isValid = await trigger(['tittel', 'tekst', 'klassifisering'])
-                if (isValid) {
-                  if (klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER) {
-                    setVisJournalførNotatModal(true)
-                  } else {
-                    onSubmit()
-                  }
+              onClick={() => {
+                if (klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER) {
+                  setVisJournalførNotatModal(true)
+                } else {
+                  handleSubmit()
                 }
               }}
-              loading={false}
+              loading={isSubmitting}
             >
               Journalfør notat
             </Button>
@@ -188,15 +173,18 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
           avbrytButtonVariant="primary"
           width="660px"
           open={visJournalførNotatModal}
-          loading={ferdigstiller}
+          loading={isSubmitting}
           onClose={() => setVisJournalførNotatModal(false)}
-          onBekreft={handleSubmit(onSubmit)}
+          onBekreft={handleSubmit}
         >
           <Controller
             name="bekreftSynlighet"
             control={control}
             rules={{
-              validate: (value) => value || 'Du må bekrefte at du er klar over at notatet blir synlig for bruker',
+              validate: (value, data) =>
+                data.klassifisering !== NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER ||
+                value ||
+                'Du må bekrefte at du er klar over at notatet blir synlig for bruker',
             }}
             render={({ field }) => (
               <CheckboxGroup
@@ -221,6 +209,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
         <InfoModal heading="Ingen utkast" open={visUtkastManglerModal} onClose={() => setVisUtkastManglerModal(false)}>
           <Tekst>Notatet kan ikke forhåndsvises før det er opprettet et utkast</Tekst>
         </InfoModal>
+
         <ForhåndsvisningsModal
           open={visForhåndsvisningsmodal}
           sakId={sakId}

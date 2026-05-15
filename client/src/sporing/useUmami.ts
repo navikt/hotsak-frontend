@@ -82,6 +82,9 @@ export function useUmami() {
       logOppgaveÅpnetIGosys() {
         logUmamiHendelse(UmamiTaksonomi.OPPGAVE_ÅPNET_I_GOSYS)
       },
+      logOppgaveKommentarLagret() {
+        logUmamiHendelse(UmamiTaksonomi.OPPGAVE_KOMMENTAR_LAGRET)
+      },
 
       // oppgaveliste
       logOppgavelisteFiltrert(data: { kolonne: string; verdi: string | number | boolean }) {
@@ -104,6 +107,7 @@ export function useUmami() {
       logProblemsammendragEndret(data: UmamiLogData) {
         logUmamiHendelse(UmamiTaksonomi.PROBLEMSAMMENDRAG_ENDRET, data)
       },
+
       // Modia
       logPersonoversiktÅpnetIModia() {
         logUmamiHendelse(UmamiTaksonomi.PERSONOVERSIKT_ÅPNET_I_MODIA)

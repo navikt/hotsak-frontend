@@ -11,6 +11,7 @@ export const enum UmamiTaksonomi {
   OPPGAVE_OVERFØRT_TIL_MEDARBEIDER = 'oppgave overført til medarbeider',
   OPPGAVE_LAGT_TILBAKE = 'oppgave lagt tilbake',
   OPPGAVE_ÅPNET_I_GOSYS = 'oppgave åpnet i gosys',
+  OPPGAVE_KOMMENTAR_LAGRET = 'oppgave kommentar lagret',
 
   // oppgaveliste
   OPPGAVELISTE_FILTRERT = 'oppgaveliste filtrert',

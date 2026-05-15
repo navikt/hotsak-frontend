@@ -1,14 +1,13 @@
-import { ClockDashedIcon, NotePencilIcon, WheelchairIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, WheelchairIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
-import type { Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
+import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { useSak } from '../../../saksbilde/useSak'
 import { Notater } from '../../notat/Notater'
-import { NotificationBadge } from '../../notat/NotificationBadge'
-import { useNotater } from '../../notat/useNotater'
+import { NotaterIcon } from '../../notat/NotaterIcon'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakProvider'
@@ -28,7 +27,6 @@ export function Sidebar({ oppgave }: SidebarProps) {
     sak?.data.vedtak?.vedtaksgrunnlag
   )
   const closePanel = useClosePanel('sidebarpanel')
-  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
 
   return (
     <Box background="default" height="100%" position="relative" paddingBlock="space-0 space-36">
@@ -72,22 +70,7 @@ export function Sidebar({ oppgave }: SidebarProps) {
           <Tooltip content="Notater">
             <Tabs.Tab
               value={HøyrekolonneTabs.NOTATER}
-              icon={
-                <>
-                  <NotePencilIcon title="Notat" />
-                  {!henterNotater && (
-                    <Tag
-                      variant={`${antallNotater > 0 ? 'info-moderate' : 'neutral-moderate'}`}
-                      size="xsmall"
-                      className={classes.notificationTag}
-                      data-testid="notatteller"
-                    >
-                      {antallNotater}
-                      {harUtkast && <NotificationBadge data-testid="utkast-badge" />}
-                    </Tag>
-                  )}
-                </>
-              }
+              icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
             />
           </Tooltip>
         </Tabs.List>

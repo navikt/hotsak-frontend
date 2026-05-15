@@ -20,7 +20,7 @@ export interface FerdigstilteNotaterProps {
 
 export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
   const { oppgaveId, notater, mutateNotater } = props
-  const { data: kommentarer, isLoading } = useOppgavekommentarer(oppgaveId)
+  const { kommentarer, isLoading } = useOppgavekommentarer(oppgaveId)
   const loading = props.loading ?? isLoading
 
   const [filter, setFilter] = useState(['ALLE'])

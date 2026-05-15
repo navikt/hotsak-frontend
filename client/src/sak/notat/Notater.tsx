@@ -13,11 +13,6 @@ export interface NotaterProps {
   oppgave?: Saksbehandlingsoppgave
 }
 
-export interface NotatFormValues {
-  tittel: string
-  tekst: string
-}
-
 export function Notater(props: NotaterProps) {
   const { oppgave } = props
   const sakId = useSakId(oppgave)

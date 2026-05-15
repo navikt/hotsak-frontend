@@ -1,9 +1,10 @@
 import { Actions, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
 import { mutateSak } from '../sak/useSak.ts'
-import type { NavIdent } from '../tilgang/Ansatt.ts'
+import { useUmami } from '../sporing/useUmami.ts'
+import { type NavIdent } from '../tilgang/Ansatt.ts'
 import { mutateOppgavekommentarer } from './kommentar/useOppgavekommentarer.ts'
-import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
+import { type OppgaveBase, type OppgaveId } from './oppgaveTypes.ts'
 import { mutateOppgave } from './useOppgave.ts'
 
 export interface EndreOppgavetildelingRequest {
@@ -72,6 +73,7 @@ export interface OppgaveActions extends Actions {
 export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true): OppgaveActions {
   const { oppgaveId, versjon, sakId } = oppgave
   const { execute, state } = useActionState()
+  const { logOppgaveKommentarLagret } = useUmami()
 
   const mutateOppgaveOgSak = () => {
     if (sakId) {
@@ -123,6 +125,7 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
         await http.post(`/api/oppgaver/${oppgaveId}/kommentarer`, { tekst }, { versjon })
         if (isOppgaveContext) {
           await mutateOppgavekommentarer(oppgaveId)
+          logOppgaveKommentarLagret()
         }
       })
     },

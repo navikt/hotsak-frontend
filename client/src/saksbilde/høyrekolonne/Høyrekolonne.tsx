@@ -1,11 +1,10 @@
-import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, WheelchairIcon } from '@navikt/aksel-icons'
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 import type { Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { Notater } from '../../sak/notat/Notater.tsx'
-import { NotificationBadge } from '../../sak/notat/NotificationBadge.tsx'
-import { useNotater } from '../../sak/notat/useNotater.tsx'
+import { NotaterIcon } from '../../sak/notat/NotaterIcon.tsx'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
 import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
 import { HøyrekolonneTabs } from '../../types/types.internal'
@@ -21,7 +20,6 @@ export interface HøyrekolonneProps {
 
 export function Høyrekolonne({ oppgave }: HøyrekolonneProps) {
   const { sak } = useSak()
-  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const { antallUtlånteHjelpemidler, error, isLoading } = useUtlånoversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
@@ -60,23 +58,7 @@ export function Høyrekolonne({ oppgave }: HøyrekolonneProps) {
             <Tooltip content="Notater">
               <Tabs.Tab
                 value={HøyrekolonneTabs.NOTATER}
-                icon={
-                  <>
-                    <NotePencilIcon title="Notat" />
-                    {!henterNotater && (
-                      <Tag
-                        data-color="neutral"
-                        variant="moderate"
-                        size="xsmall"
-                        className={classes.notificationTag}
-                        data-testid="notatteller"
-                      >
-                        {antallNotater}
-                        {harUtkast && <NotificationBadge data-testid="utkast-badge" />}
-                      </Tag>
-                    )}
-                  </>
-                }
+                icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak.data.sakId} />}
               />
             </Tooltip>
           )}

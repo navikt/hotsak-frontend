@@ -49,3 +49,13 @@ export interface NotatUtkast {
   type: NotatType
   klassifisering?: NotatKlassifisering | null
 }
+
+export interface NotatFormValues {
+  tittel: string
+  tekst: string
+}
+
+export interface ForvaltningsnotatFormValues extends NotatFormValues {
+  klassifisering?: NotatKlassifisering | null
+  bekreftSynlighet: boolean
+}

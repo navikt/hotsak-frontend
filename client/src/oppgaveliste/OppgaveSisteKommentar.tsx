@@ -13,7 +13,7 @@ export interface OppgaveSisteKommentarProps {
 
 export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {
   const { oppgaveId } = props
-  const { data: kommentarer = [], isLoading } = useOppgavekommentarer(oppgaveId)
+  const { kommentarer = [], isLoading } = useOppgavekommentarer(oppgaveId)
   const sisteKommentar = kommentarer[0]
   return (
     <div>

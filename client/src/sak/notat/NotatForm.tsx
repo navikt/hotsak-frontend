@@ -4,8 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { Lagreindikator } from './markdown/Lagreindikator.tsx'
 import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
-import { type NotatFormValues } from './Notater.tsx'
-import { type Notat } from './notatTyper.ts'
+import { type Notat, type NotatFormValues } from './notatTyper.ts'
 
 export interface NotatFormProps {
   readOnly: boolean

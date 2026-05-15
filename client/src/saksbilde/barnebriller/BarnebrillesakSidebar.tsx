@@ -1,12 +1,11 @@
-import { ClockIcon, EnvelopeClosedIcon, NotePencilIcon, PersonGavelIcon } from '@navikt/aksel-icons'
-import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
+import { ClockIcon, EnvelopeClosedIcon, PersonGavelIcon } from '@navikt/aksel-icons'
+import { Tabs, Tooltip } from '@navikt/ds-react'
 import { useEffect } from 'react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { Notater } from '../../sak/notat/Notater'
-import { NotificationBadge } from '../../sak/notat/NotificationBadge'
-import { useNotater } from '../../sak/notat/useNotater'
+import { NotaterIcon } from '../../sak/notat/NotaterIcon.tsx'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
@@ -20,7 +19,6 @@ import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollP
 export function BarnebrillesakSidebar({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const { sak } = useBarnebrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
-  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
 
   useEffect(() => {
@@ -56,17 +54,7 @@ export function BarnebrillesakSidebar({ oppgave }: { oppgave?: Saksbehandlingsop
         <Tooltip content="Notater">
           <Tabs.Tab
             value={HøyrekolonneTabs.NOTATER}
-            icon={
-              <>
-                <NotePencilIcon title="Notat" />
-                {!henterNotater && (
-                  <Tag data-color="neutral" variant="moderate" size="xsmall" className={classes.notificationTag}>
-                    {antallNotater}
-                    {harUtkast && <NotificationBadge />}
-                  </Tag>
-                )}
-              </>
-            }
+            icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
           />
         </Tooltip>
       </Tabs.List>

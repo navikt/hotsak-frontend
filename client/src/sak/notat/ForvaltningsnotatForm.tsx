@@ -4,24 +4,18 @@ import { useState } from 'react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
-import { type Notat, NotatKlassifisering, NotatType } from '../../sak/notat/notatTyper.ts'
 import { useBrev } from '../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { ForhåndsvisningsModal } from '../../saksbilde/høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
 import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
 import { Brevtype, MålformType } from '../../types/types.internal.ts'
-import type { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
+import { type ForvaltningsnotatFormValues, type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
 import { SlettUtkast } from './SlettUtkast.tsx'
 import { useFerdigstillNotat } from './useFerdigstillNotat.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
-
-export interface ForvaltningsnotatFormValues extends NotatFormValues {
-  klassifisering?: NotatKlassifisering | null
-  bekreftSynlighet: boolean
-}
 
 export interface ForvaltningsnotatFormProps {
   sakId: string
@@ -126,6 +120,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
               <NotatForm readOnly={isSubmitting} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
             </VStack>
           )}
+
           <HStack align="center" justify="space-between">
             <Button
               type="button"
@@ -144,6 +139,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
             </Button>
             <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
           </HStack>
+
           <div>
             <Button
               variant="secondary"

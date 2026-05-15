@@ -120,6 +120,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
               <NotatForm readOnly={isSubmitting} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
             </VStack>
           )}
+
           <HStack align="center" justify="space-between">
             <Button
               type="button"
@@ -138,6 +139,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
             </Button>
             <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
           </HStack>
+
           <div>
             <Button
               variant="secondary"

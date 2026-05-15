@@ -16,7 +16,10 @@ export function KommentarForm(props: KommentarFormProps) {
       tekst: '',
     },
   })
-  const handleSubmit = form.handleSubmit(({ tekst }) => lagreKommentar(tekst))
+  const handleSubmit = form.handleSubmit(async ({ tekst }) => {
+    await lagreKommentar(tekst)
+    form.reset({ tekst: '' })
+  })
   return (
     <div>
       <VStack as="form" gap="space-16" marginBlock="space-20 space-0" onSubmit={handleSubmit}>

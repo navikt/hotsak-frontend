@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
-import classes from './SakV2.module.css'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
+import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
@@ -23,6 +23,7 @@ import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
+import classes from './SakV2.module.css'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 
@@ -41,7 +42,7 @@ function AvrundetPanel({ children }: { children: React.ReactNode }) {
   )
 }
 
-function SakV2Content() {
+function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
@@ -162,7 +163,7 @@ function SakV2Content() {
                 minSize={`${sidePanel.minWidth}${sidePanel.minWidthUnit}`}
               >
                 <AvrundetPanel>
-                  <Sidebar />
+                  <Sidebar oppgave={oppgave} />
                 </AvrundetPanel>
               </Panel>
             </>
@@ -206,10 +207,10 @@ function SakV2Content() {
   }
 }
 
-export default function SakV2() {
+export default function SakV2({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   return (
     <AsyncBoundary>
-      <SakV2Content />
+      <SakV2Content oppgave={oppgave} />
     </AsyncBoundary>
   )
 }

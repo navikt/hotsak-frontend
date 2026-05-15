@@ -2,8 +2,6 @@ import { BodyShort, Box } from '@navikt/ds-react'
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 
-import classes from './Saksbilde.module.css'
-
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
@@ -17,6 +15,7 @@ import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde'
 import { type SakBase, Sakstype } from '../types/types.internal'
 import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
+import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 
@@ -53,7 +52,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
         <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
         <SakProvider>
           <SakbrukerinnstillingerProvider>
-            <SakV2 />
+            <SakV2 oppgave={oppgave} />
           </SakbrukerinnstillingerProvider>
         </SakProvider>
       </div>

@@ -25,11 +25,10 @@ export interface ForvaltningsnotatFormValues extends NotatFormValues {
 
 export interface ForvaltningsnotatFormProps {
   sakId: string
-  lesevisning: boolean
   aktivtUtkast?: Notat
 }
 
-export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: ForvaltningsnotatFormProps) {
+export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: ForvaltningsnotatFormProps) {
   const { sak } = useSak()
 
   const { mutate: mutateNotater, isLoading: notaterLaster } = useNotater(sakId)
@@ -97,13 +96,11 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
     resetForm()
   }
 
-  const readOnly = lesevisning || ferdigstiller
-
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)} name="forvaltningsnotat-form">
         {!notaterLaster && (
-          <VStack gap="space-16" marginBlock="space-20 space-0">
+          <VStack gap="space-16">
             <Controller
               name="klassifisering"
               control={control}
@@ -137,55 +134,51 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
                 be om innsyn i det.
               </Alert>
             )}
-            <NotatForm readOnly={readOnly} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
+            <NotatForm readOnly={ferdigstiller} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
           </VStack>
         )}
 
-        {!lesevisning && (
-          <HStack justify="space-between" marginBlock="space-6 space-0">
+        <HStack justify="space-between" marginBlock="space-6 space-0">
+          <Button
+            type="button"
+            size="xsmall"
+            variant="tertiary"
+            onClick={() => {
+              if (aktivtUtkast?.id) {
+                hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
+                setVisForhåndsvisningsmodal(true)
+              } else {
+                setVisUtkastManglerModal(true)
+              }
+            }}
+          >
+            Forhåndsvis dokument
+          </Button>
+          <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
+        </HStack>
+
+        <VStack marginBlock="space-12 space-0">
+          <div>
             <Button
+              variant="secondary"
               type="button"
-              size="xsmall"
-              variant="tertiary"
-              onClick={() => {
-                if (aktivtUtkast?.id) {
-                  hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
-                  setVisForhåndsvisningsmodal(true)
-                } else {
-                  setVisUtkastManglerModal(true)
+              size="small"
+              onClick={async () => {
+                const isValid = await trigger(['tittel', 'tekst', 'klassifisering'])
+                if (isValid) {
+                  if (klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER) {
+                    setVisJournalførNotatModal(true)
+                  } else {
+                    onSubmit()
+                  }
                 }
               }}
+              loading={false}
             >
-              Forhåndsvis dokument
+              Journalfør notat
             </Button>
-            <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
-          </HStack>
-        )}
-
-        {!lesevisning && (
-          <VStack marginBlock="space-12 space-0">
-            <div>
-              <Button
-                variant="secondary"
-                type="button"
-                size="small"
-                onClick={async () => {
-                  const isValid = await trigger(['tittel', 'tekst', 'klassifisering'])
-                  if (isValid) {
-                    if (klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER) {
-                      setVisJournalførNotatModal(true)
-                    } else {
-                      onSubmit()
-                    }
-                  }
-                }}
-                loading={false}
-              >
-                Journalfør notat
-              </Button>
-            </div>
-          </VStack>
-        )}
+          </div>
+        </VStack>
 
         <BekreftelseModal
           heading="Er du sikker på at du vil journalføre notatet?"

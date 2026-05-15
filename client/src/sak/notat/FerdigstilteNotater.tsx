@@ -34,7 +34,7 @@ export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
   }, [alle, filter])
 
   return (
-    <VStack gap="space-16" paddingBlock="space-32 space-0">
+    <VStack gap="space-16">
       <Mellomtittel spacing={false}>Notater tilknyttet saken</Mellomtittel>
       {loading ? (
         <div>

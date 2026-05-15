@@ -1,11 +1,10 @@
 import '@mdxeditor/editor/style.css'
-import { Box, Loader, ToggleGroup, VStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { BodyShort, Label, VStack } from '@navikt/ds-react'
 
-import type { Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
+import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
 import { useSakId } from '../../saksbilde/useSak.ts'
 import { FerdigstilteNotater } from './FerdigstilteNotater.tsx'
-import classes from './Notater.module.css'
 import { Notatinformasjon } from './Notatinformasjon.tsx'
 import { NotatType } from './notatTyper.ts'
 import { OpprettNotat } from './OpprettNotat.tsx'
@@ -23,39 +22,39 @@ export interface NotatFormValues {
 export function Notater(props: NotaterProps) {
   const { oppgave } = props
   const sakId = useSakId(oppgave)
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErAvsluttet } = useOppgaveregler(oppgave)
   const { notater, mutate: mutateNotater, isLoading: notaterLaster, finnAktivtUtkast } = useNotater(sakId)
-  const [notatType, setNotatType] = useState<NotatType>(NotatType.KOMMENTAR)
+  const aktivtUtkast = finnAktivtUtkast(NotatType.JOURNALFØRT)
 
-  const aktivtUtkast = finnAktivtUtkast(notatType)
+  if (!oppgave || oppgaveErAvsluttet) {
+    // fixme -> finn aktuell oppgaveId for sak
+    return (
+      <VStack gap="space-16">
+        <Notatinformasjon />
+        <FerdigstilteNotater loading={notaterLaster} notater={notater} mutateNotater={mutateNotater} />
+      </VStack>
+    )
+  }
 
   return (
-    <>
-      <VStack gap="space-8">
-        <Notatinformasjon />
-        <Box paddingBlock="space-24 space-0">
-          <ToggleGroup
-            size="small"
-            value={notatType}
-            label="Opprett nytt notat"
-            onChange={(type) => setNotatType(type as NotatType)}
-          >
-            <ToggleGroup.Item value={NotatType.KOMMENTAR} label="Kommentar" />
-            <ToggleGroup.Item value={NotatType.JOURNALFØRT} label="Forvaltningsnotat" />
-          </ToggleGroup>
-        </Box>
-      </VStack>
-      {notaterLaster && (
+    <VStack gap="space-16">
+      <Notatinformasjon />
+      {oppgaveErUnderBehandlingAvInnloggetAnsatt ? (
+        <OpprettNotat oppgave={oppgave} aktivtUtkast={aktivtUtkast} />
+      ) : (
         <div>
-          <Loader size="large" className={classes.loader} />
+          <Label as="div" size="small" spacing>
+            Opprett nytt notat
+          </Label>
+          <BodyShort size="small">Saken er i lesevisning. Du må ta saken for å kunne opprette notater.</BodyShort>
         </div>
       )}
-      {oppgave && <OpprettNotat type={notatType} oppgave={oppgave} aktivtUtkast={aktivtUtkast} />}
       <FerdigstilteNotater
-        oppgaveId={oppgave?.oppgaveId}
+        oppgaveId={oppgave.oppgaveId}
         loading={notaterLaster}
         notater={notater}
         mutateNotater={mutateNotater}
       />
-    </>
+    </VStack>
   )
 }

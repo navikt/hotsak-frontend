@@ -38,7 +38,7 @@ export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
       <Mellomtittel spacing={false}>Notater tilknyttet saken</Mellomtittel>
       {loading ? (
         <div>
-          <Loader size="large" className="fixme" />
+          <Loader size="large" />
         </div>
       ) : (
         <>

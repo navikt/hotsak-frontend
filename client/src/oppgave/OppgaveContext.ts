@@ -11,11 +11,17 @@ export enum OppgaveModalType {
 export interface OppgaveState {
   isOppgaveContext: boolean
   åpenModal?: OppgaveModalType
-  sakId?: ID
+  sakId?: string
+  kommentar: {
+    tekst: string
+  }
 }
 
 const initialState: OppgaveState = {
   isOppgaveContext: false,
+  kommentar: {
+    tekst: '',
+  },
 }
 
 export const OppgaveContext = createContext<OppgaveState>(initialState)
@@ -56,7 +62,7 @@ export function useOppgaveLukkModalHandler() {
 }
 
 export interface OppgaveBaseAction {
-  type: 'åpneModal' | 'lukkModal' | 'sakEndret'
+  type: 'åpneModal' | 'lukkModal' | 'kommentar' | 'sakEndret'
 }
 
 export interface OppgaveÅpneModalAction extends OppgaveBaseAction {
@@ -68,9 +74,18 @@ export interface OppgaveLukkModalAction extends OppgaveBaseAction {
   type: 'lukkModal'
 }
 
-export interface OppgaveSakEndretAction extends OppgaveBaseAction {
-  type: 'sakEndret'
-  sakId?: ID
+export interface OppgaveKommentarAction extends OppgaveBaseAction {
+  type: 'kommentar'
+  tekst: string
 }
 
-export type OppgaveAction = OppgaveÅpneModalAction | OppgaveLukkModalAction | OppgaveSakEndretAction
+export interface OppgaveSakEndretAction extends OppgaveBaseAction {
+  type: 'sakEndret'
+  sakId?: string
+}
+
+export type OppgaveAction =
+  | OppgaveÅpneModalAction
+  | OppgaveLukkModalAction
+  | OppgaveKommentarAction
+  | OppgaveSakEndretAction

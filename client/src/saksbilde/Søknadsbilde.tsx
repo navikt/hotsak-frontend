@@ -27,8 +27,8 @@ import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 
 // fixme
-// eslint-disable-next-line react-refresh/only-export-components
-const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
+ 
+const SøknadsbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading } = useSak()
   const { gjeldendeBehandling } = useBehandling()
   const { behovsmelding, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
@@ -111,7 +111,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
 export default function Søknadsbilde({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   return (
     <AsyncBoundary>
-      <SaksbildeContent oppgave={oppgave} />
+      <SøknadsbildeContent oppgave={oppgave} />
     </AsyncBoundary>
   )
 }

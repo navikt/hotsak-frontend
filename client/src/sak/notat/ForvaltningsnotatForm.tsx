@@ -92,60 +92,58 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit} name="forvaltningsnotat-form">
-        {!notaterLaster && (
-          <VStack gap="space-16">
-            <Controller
-              name="klassifisering"
-              control={control}
-              rules={{ required: 'Du må velge en verdi' }}
-              render={({ field }) => (
-                <RadioGroup
-                  legend="Hvilken type informasjon skal journalføres?"
-                  size="small"
-                  error={errors.klassifisering?.message}
-                  {...field}
-                >
-                  <Radio value={NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER}>Interne saksopplysninger</Radio>
-                  <Radio value={NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER}>Eksterne saksopplysninger</Radio>
-                </RadioGroup>
+        <VStack gap="space-8">
+          {!notaterLaster && (
+            <VStack gap="space-16">
+              <Controller
+                name="klassifisering"
+                control={control}
+                rules={{ required: 'Du må velge en verdi' }}
+                render={({ field }) => (
+                  <RadioGroup
+                    legend="Hvilken type informasjon skal journalføres?"
+                    size="small"
+                    error={errors.klassifisering?.message}
+                    {...field}
+                  >
+                    <Radio value={NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER}>Interne saksopplysninger</Radio>
+                    <Radio value={NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER}>Eksterne saksopplysninger</Radio>
+                  </RadioGroup>
+                )}
+              />
+              {klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
+                <Alert variant="info" size="small">
+                  Notatet blir journalført. Bruker vil få innsyn i notatet på innlogget side på nav.no fra første
+                  virkedag etter at det er ferdigstilt.
+                </Alert>
               )}
-            />
-            {klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
-              <Alert variant="info" size="small">
-                Notatet blir journalført. Bruker vil få innsyn i notatet på innlogget side på nav.no fra første virkedag
-                etter at det er ferdigstilt.
-              </Alert>
-            )}
-            {klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
-              <Alert variant="info" size="small">
-                Notatet blir journalført. Notatet vil ikke være tilgjengelig på innlogget side på nav.no, men bruker kan
-                be om innsyn i det.
-              </Alert>
-            )}
-            <NotatForm readOnly={isSubmitting} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
-          </VStack>
-        )}
-
-        <HStack justify="space-between" marginBlock="space-6 space-0">
-          <Button
-            type="button"
-            size="xsmall"
-            variant="tertiary"
-            onClick={() => {
-              if (aktivtUtkast?.id) {
-                hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
-                setVisForhåndsvisningsmodal(true)
-              } else {
-                setVisUtkastManglerModal(true)
-              }
-            }}
-          >
-            Forhåndsvis dokument
-          </Button>
-          <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
-        </HStack>
-
-        <VStack marginBlock="space-12 space-0">
+              {klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
+                <Alert variant="info" size="small">
+                  Notatet blir journalført. Notatet vil ikke være tilgjengelig på innlogget side på nav.no, men bruker
+                  kan be om innsyn i det.
+                </Alert>
+              )}
+              <NotatForm readOnly={isSubmitting} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
+            </VStack>
+          )}
+          <HStack align="center" justify="space-between">
+            <Button
+              type="button"
+              size="xsmall"
+              variant="tertiary"
+              onClick={() => {
+                if (aktivtUtkast?.id) {
+                  hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
+                  setVisForhåndsvisningsmodal(true)
+                } else {
+                  setVisUtkastManglerModal(true)
+                }
+              }}
+            >
+              Forhåndsvis dokument
+            </Button>
+            <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
+          </HStack>
           <div>
             <Button
               variant="secondary"

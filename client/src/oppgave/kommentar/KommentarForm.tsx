@@ -1,7 +1,9 @@
 import { Alert, Button, Textarea, VStack } from '@navikt/ds-react'
 
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useToast } from '../../felleskomponenter/toast/useToast'
+import { useOppgaveContext, useOppgaveDispatch } from '../OppgaveContext'
 import type { Oppgave } from '../oppgaveTypes'
 import { useOppgaveActions } from '../useOppgaveActions'
 
@@ -11,29 +13,39 @@ export interface KommentarFormProps {
 
 export function KommentarForm(props: KommentarFormProps) {
   const { oppgave } = props
-  const { lagreKommentar } = useOppgaveActions(oppgave)
-  const { showSuccessToast } = useToast()
+  const { kommentar } = useOppgaveContext()
   const form = useForm({
-    defaultValues: {
-      tekst: '',
-    },
+    defaultValues: kommentar,
   })
 
   const {
     formState: { isSubmitting, errors },
   } = form
 
+  const { lagreKommentar } = useOppgaveActions(oppgave)
+  const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async ({ tekst }) => {
     await lagreKommentar(tekst)
     showSuccessToast('Kommentaren ble lagret')
     form.reset({ tekst: '' })
   })
 
+  const dispatch = useOppgaveDispatch()
+  useEffect(() => {
+    return () => {
+      dispatch({
+        type: 'kommentar',
+        tekst: form.getValues('tekst'),
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div>
       <VStack as="form" gap="space-16" onSubmit={handleSubmit}>
         <Alert variant="info" size="small" inline>
-          Kommentaren kan bli utlevert til innbygger ved forespørsel om innsyn
+          Kommentarene kan bli utlevert til innbygger ved forespørsel om innsyn
         </Alert>
         <Textarea
           label="Kommentar"

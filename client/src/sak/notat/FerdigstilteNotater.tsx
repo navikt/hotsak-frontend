@@ -6,6 +6,7 @@ import { type FilterOption } from '../../felleskomponenter/filter/filterTypes'
 import { Mellomtittel, Tekst } from '../../felleskomponenter/typografi'
 import { useOppgavekommentarer, type Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer'
 import { type OppgaveId } from '../../oppgave/oppgaveTypes'
+import { isUtførtAvAnsatt, uførtAvId } from '../../tilgang/UtførtAv'
 import { MålformType } from '../../types/types.internal'
 import { naturalBy, reverseComparator } from '../../utils/array'
 import { NotatCard } from './NotatCard'
@@ -56,13 +57,11 @@ export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
 function kommentarTilNotat(kommentar: Oppgavekommentar): Notat {
   const { registrertAv, registrertTidspunkt } = kommentar
   return {
-    id: `${registrertAv}_${registrertTidspunkt}`,
+    id: `${uførtAvId(registrertAv)}_${registrertTidspunkt}`,
     sakId: '',
-    saksbehandler: {
-      id: registrertAv,
-      navn: registrertAv,
-      epost: '',
-    },
+    saksbehandler: isUtførtAvAnsatt(registrertAv)
+      ? registrertAv
+      : { id: registrertAv, navn: 'Automatisk prosess', epost: '' },
     type: NotatType.KOMMENTAR,
     tittel: '',
     tekst: kommentar.tekst,

@@ -51,14 +51,14 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     await delay(75)
     const { oppgaveId } = params
     const { tekst } = await request.json()
+    const saksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
     await oppgaveStore.lagreKommentar(oppgaveId, {
       oppgaveId,
       tekst,
-      registrertAv: 'S112233', // fixme -> bruk innlogget saksbehandler
-      registrertAvEnhetsnummer: '2970', // fixme -> bruk valgt enhet
+      registrertAv: saksbehandler,
+      registrertAvEnhet: saksbehandler.gjeldendeEnhet,
       registrertAvSystem: 'HOTSAK',
       registrertTidspunkt: new Date().toISOString(),
-      legacy: false,
     })
     return respondNoContent()
   }),

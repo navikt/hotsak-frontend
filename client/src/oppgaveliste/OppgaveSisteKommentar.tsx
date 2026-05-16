@@ -5,6 +5,7 @@ import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
 import { Strek } from '../felleskomponenter/Strek.tsx'
 import { useOppgavekommentarer } from '../oppgave/kommentar/useOppgavekommentarer.ts'
 import { type OppgaveId } from '../oppgave/oppgaveTypes.ts'
+import { utførtAvNavn } from '../tilgang/UtførtAv.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 
 export interface OppgaveSisteKommentarProps {
@@ -26,9 +27,9 @@ export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {
             {sisteKommentar ? (
               <VStack gap="space-8">
                 <HStack gap="space-8" align="center">
-                  <Detail>{sisteKommentar.registrertAv}</Detail>
+                  <Detail>{utførtAvNavn(sisteKommentar.registrertAv)}</Detail>
                   <Detail>|</Detail>
-                  <Detail>{sisteKommentar.registrertAvEnhetsnummer}</Detail>
+                  <Detail>{sisteKommentar.registrertAvEnhet.navn}</Detail>
                   <Detail>|</Detail>
                   <Detail>
                     <FormatDateTime dateTime={sisteKommentar.registrertTidspunkt} />

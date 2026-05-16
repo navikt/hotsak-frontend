@@ -1,15 +1,16 @@
 import useSWR, { mutate, type SWRResponse } from 'swr'
 
 import { type HttpError } from '../../io/HttpError.ts'
+import { type UtførtAv } from '../../tilgang/UtførtAv.ts'
+import { type Enhet } from '../../types/hotlibs.ts'
 import { type OppgaveId } from '../oppgaveTypes.ts'
 
 export interface Oppgavekommentar {
   tekst: string
-  registrertAv: string
-  registrertAvEnhetsnummer: string
+  registrertAv: UtførtAv
+  registrertAvEnhet: Enhet
   registrertAvSystem: string
   registrertTidspunkt: string
-  legacy: boolean
 }
 
 export interface UseOppgavekommentarerResponse extends Omit<SWRResponse<Oppgavekommentar[], HttpError>, 'data'> {

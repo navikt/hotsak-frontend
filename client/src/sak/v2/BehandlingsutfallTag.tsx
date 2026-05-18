@@ -8,7 +8,7 @@ import {
   VedtaksResultat,
 } from './behandling/behandlingTyper'
 
-export function BehandlingsutfallTag({ utfall }: { utfall?: BehandlingsutfallType }) {
+export function BehandlingsutfallTag({ utfall }: { utfall?: BehandlingsutfallType | null }) {
   if (!utfall) return null
   const { label, variant } = behandlingsutfallTagPropsByUtfall[utfall]
   return (
@@ -35,6 +35,8 @@ const behandlingsutfallTagPropsByUtfall: Record<
   [Henleggelsesårsak.BRUKER_ER_DØD]: { label: 'Henlagt - Bruker er død', variant: 'neutral-moderate' },
   [Henleggelsesårsak.DUPLIKAT]: { label: 'Henlagt - Duplikat', variant: 'neutral-moderate' },
   [Henleggelsesårsak.FEIL_BRUKER]: { label: 'Henlagt - Feil bruker', variant: 'neutral-moderate' },
+  [Henleggelsesårsak.FEILAKTIG_OPPRETTET]: { label: 'Henlagt - Feilaktig opprettet', variant: 'neutral-moderate' },
+  [Henleggelsesårsak.SØKNAD_TRUKKET]: { label: 'Henlagt - Søknad trukket', variant: 'neutral-moderate' },
 
   [OverførtTil.GOSYS]: { label: 'Overført til Gosys', variant: 'neutral-moderate' },
 }

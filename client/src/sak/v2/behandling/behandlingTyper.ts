@@ -43,7 +43,11 @@ interface Utfall<T extends BehandlingsutfallType> {
 
 export type BehandlingsutfallVedtak = Utfall<VedtaksResultat>
 export type BehandlingsutfallBestilling = Utfall<Bestillingsresultat>
-export type BehandlingsutfallHenleggelse = Utfall<Henleggelsesårsak>
+export interface BehandlingsutfallHenleggelse {
+  utfall: Henleggelsesårsak | null
+  type: 'HENLEGGELSE'
+  begrunnelse: string | null
+}
 export type BehandlingsutfallOverføring = Utfall<OverførtTil>
 
 export type Behandlingsutfall =
@@ -102,6 +106,8 @@ export enum Henleggelsesårsak {
   BRUKER_ER_DØD = 'BRUKER_ER_DØD',
   DUPLIKAT = 'DUPLIKAT',
   FEIL_BRUKER = 'FEIL_BRUKER',
+  SØKNAD_TRUKKET = 'SØKNAD_TRUKKET',
+  FEILAKTIG_OPPRETTET = 'FEILAKTIG_OPPRETTET',
 }
 
 export enum OverførtTil {

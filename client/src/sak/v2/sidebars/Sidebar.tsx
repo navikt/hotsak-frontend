@@ -10,10 +10,10 @@ import { Notater } from '../../notat/Notater'
 import { NotaterIcon } from '../../notat/NotaterIcon'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SakPanelTabTypes'
-import { useSakContext } from '../SakProvider'
 import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
+import { useSakContext } from '../SakV2ContextType'
 
 export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave

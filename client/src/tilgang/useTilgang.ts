@@ -54,14 +54,6 @@ export function useIsSaksbehandlerBarnebriller(): boolean {
 
 const piloter = {
   test: [Enhet.IT_AVDELINGEN],
-  nyttSaksbilde: [
-    Enhet.IT_AVDELINGEN,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_AKERSHUS,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_OSLO,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_VESTFOLD_OG_TELEMARK,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
-  ],
   hørselshjelpemiddel: [Enhet.NAV_HJELPEMIDDELSENTRAL_NORDLAND, Enhet.NAV_HJELPEMIDDELSENTRAL_TROMS_OG_FINNMARK],
 } satisfies Record<string, string[]>
 

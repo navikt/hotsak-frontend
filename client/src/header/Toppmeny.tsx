@@ -4,12 +4,10 @@ import { type ReactNode } from 'react'
 import { useLocation } from 'react-router'
 import { Link, type To, useNavigate } from 'react-router-dom'
 
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { HurtigtasterModal } from '../hotkeys/HurtigtasterModal.tsx'
 import { useGlobaleHotkeys } from '../hotkeys/useGlobaleHotkeys.ts'
 import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
 import { useUmami } from '../sporing/useUmami.ts'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
@@ -25,7 +23,6 @@ export function Toppmeny() {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const [darkMode, setDarkMode] = useDarkMode()
-  const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
@@ -45,7 +42,7 @@ export function Toppmeny() {
     <>
       <InternalHeader className={classes.root}>
         <InternalHeader.Title as="a" href="/" className={classes.title}>
-          {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
+          Hotsak 1.5
         </InternalHeader.Title>
         <HStack justify="space-between" wrap={false} className={classes.navFlex}>
           <HStack wrap={false}>
@@ -106,20 +103,6 @@ export function Toppmeny() {
             <ActionMenu.Group label="Hjelp">
               <ActionMenu.Item onSelect={hurtigtaster.åpne}>Hurtigtaster</ActionMenu.Item>
             </ActionMenu.Group>
-            <Eksperiment>
-              <ActionMenu.Divider />
-              <ActionMenu.Group label="Eksperimenter">
-                <ActionMenu.Item
-                  as="a"
-                  href="/"
-                  onClick={() => {
-                    setNyttSaksbilde(!nyttSaksbilde)
-                  }}
-                >
-                  {nyttSaksbilde ? 'Gamle Hotsak' : 'Hotsak 1.5'}
-                </ActionMenu.Item>
-              </ActionMenu.Group>
-            </Eksperiment>
           </ActionMenu.Content>
           <EndringsloggMenu />
         </ActionMenu>

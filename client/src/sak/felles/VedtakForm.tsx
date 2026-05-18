@@ -4,7 +4,6 @@ import { Controller, FormProvider } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Sak } from '../../types/types.internal'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
-import { useNyttSaksbilde } from '../v2/useNyttSaksbilde'
 import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
 
@@ -22,7 +21,6 @@ export interface VedtakFormHandle {
 export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
   ({ sak, onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
-    const [nyttSaksbilde] = useNyttSaksbilde()
 
     const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami } = useVedtak(sak)
 
@@ -164,9 +162,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 </HStack>
               </VStack>
             )}
-            {utleveringsmerknad && (!nyttSaksbilde || vedtaksresultat === VedtaksResultat.INNVILGET) && (
-              <FritekstPanel />
-            )}
+            {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
           </VStack>
           <button type="submit" style={{ display: 'none' }} />
         </form>

@@ -11,7 +11,6 @@ export const storageKeys = new Set([
   'debug',
   'filterState',
   'innloggetSaksbehandlerId',
-  'nyttSaksbilde',
   'oppgaveColumnsEnhetens',
   'oppgaveColumnsMedarbeiders',
   'oppgaveColumnsMine',

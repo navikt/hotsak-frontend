@@ -1,4 +1,3 @@
-import { useNyttSaksbilde } from '../../sak/v2/useNyttSaksbilde'
 import { Signaturtype } from '../../types/BehovsmeldingTypes'
 import { Bruker as Hjelpemiddelbruker } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
@@ -19,10 +18,9 @@ interface SignaturProps {
 }
 
 export function Signatur({ bruker, signaturType }: SignaturProps) {
-  const nyttSaksbilde = useNyttSaksbilde()
   const formatertNavn = formaterNavn(bruker)
 
-  const headingLevel = nyttSaksbilde ? '2' : '1'
+  const headingLevel = '2'
 
   switch (signaturType) {
     case Signaturtype.BRUKER_BEKREFTER:

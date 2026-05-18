@@ -1,10 +1,9 @@
 import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
-import { Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
-import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 import { Skillelinje } from '../../felleskomponenter/Strek'
-import { useNyttSaksbilde } from '../../sak/v2/useNyttSaksbilde'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes'
+import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 import classes from './Formidler.module.css'
 
 interface FormidlerProps {
@@ -14,7 +13,6 @@ interface FormidlerProps {
 
 export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
   const { hjelpemiddelformidler: formidler, oppfølgingsansvarlig, annenOppfølgingsansvarlig } = levering
-  const nyttSaksbilde = useNyttSaksbilde()
 
   const oppfølging =
     oppfølgingsansvarlig === Oppfølgingsansvarlig.HJELPEMIDDELFORMIDLER
@@ -86,7 +84,7 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
       {oppfølgingsansvarlig && (
         <Box paddingBlock="space-12 space-0" paddingInline="space-32 space-0">
           <Skillelinje />
-          <Heading level="2" size="small" spacing={!nyttSaksbilde}>
+          <Heading level="2" size="small" spacing={false}>
             Oppfølgings- og opplæringsansvarlig
           </Heading>
           <Box paddingBlock="space-16 space-0">

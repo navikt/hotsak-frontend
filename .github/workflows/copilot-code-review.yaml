@@ -1,0 +1,92 @@
+name: Copilot kodegjennomgang
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  models: read
+
+jobs:
+  code-review:
+    name: Gjennomgå kodeendringer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Hent diff av TypeScript-filer
+        id: diff
+        run: |
+          git diff HEAD~1..HEAD -- '*.ts' '*.tsx' > /tmp/diff.txt
+          LINES=$(wc -l < /tmp/diff.txt)
+          echo "Diff: ${LINES} linjer"
+
+          if [ "$LINES" -eq 0 ]; then
+            echo "empty=true" >> $GITHUB_OUTPUT
+          else
+            # Begrens til 12 000 tegn for å holde seg innenfor tokengrensen
+            head -c 12000 /tmp/diff.txt > /tmp/diff_trimmed.txt
+            echo "empty=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Ingen TypeScript-endringer
+        if: steps.diff.outputs.empty == 'true'
+        run: |
+          {
+            echo "### 🤖 Copilot kodegjennomgang"
+            echo ""
+            echo "Ingen TypeScript-endringer i denne pushen."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Kjør Copilot kodegjennomgang
+        if: steps.diff.outputs.empty == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DIFF=$(cat /tmp/diff_trimmed.txt)
+
+          PAYLOAD=$(jq -n \
+            --arg diff "$DIFF" \
+            '{
+              model: "gpt-4o",
+              messages: [
+                {
+                  role: "system",
+                  content: "Du er en erfaren kodereviewer for et Nav-prosjekt som bruker TypeScript, React og Aksel Design System (v8+). Gjennomgå de oppgitte endringene og lag en strukturert, konsis oppsummering på norsk med konkrete forbedringsforslag. Organiser svaret i disse seksjonene (bruk kun de som er relevante):\n\n## 🐛 Potensielle feil\n## ⚠️ Typesikkerhet\n## ♿ Tilgjengelighet (UU)\n## 🎨 Aksel Design System-konvensjoner\n## 🧹 Kodekvalitet\n## ✅ Bra gjort\n\nVær konkret og henvis til faktiske linjer eller mønstre fra diff-en. Unngå generelle råd som ikke er direkte knyttet til endringene."
+                },
+                {
+                  role: "user",
+                  content: ("Gjennomgå disse kodeendringene:\n\n```diff\n" + $diff + "\n```")
+                }
+              ],
+              max_tokens: 1500,
+              temperature: 0.2
+            }')
+
+          RESPONSE=$(curl -sf \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD" \
+            https://models.inference.ai.azure.com/chat/completions) || {
+            echo "### 🤖 Copilot kodegjennomgang" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "❌ Kunne ikke kalle GitHub Models API. Sjekk at `models: read`-tillatelsen er aktivert." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          }
+
+          REVIEW=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // "Ingen gjennomgang returnert."')
+
+          {
+            echo "### 🤖 Copilot kodegjennomgang"
+            echo ""
+            echo "**Commit:** [\`${GITHUB_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})"
+            echo "**Endrede filer:** $(git diff --name-only HEAD~1..HEAD -- '*.ts' '*.tsx' | wc -l | tr -d ' ') TypeScript-filer"
+            echo ""
+            echo "$REVIEW"
+          } >> "$GITHUB_STEP_SUMMARY"

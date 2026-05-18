@@ -3,12 +3,6 @@ import { expect, test } from '@playwright/test'
 import { åpneSak } from './helpers'
 
 test.describe('Notater', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.setItem('nyttSaksbilde', 'true')
-    })
-  })
-
   test('kan opprette en kommentar', async ({ page }) => {
     await åpneSak(page)
 

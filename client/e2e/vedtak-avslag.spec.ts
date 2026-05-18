@@ -3,12 +3,6 @@ import { expect, test } from '@playwright/test'
 import { klikkFattVedtak, settBehandlingsresultat, åpneSak } from './helpers'
 
 test.describe('Vedtak: Avslag', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.setItem('nyttSaksbilde', 'true')
-    })
-  })
-
   test('krever brev ved avslag', async ({ page }) => {
     await åpneSak(page)
 

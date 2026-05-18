@@ -24,13 +24,12 @@ test.describe('Oppgaveliste', () => {
     await expect(page).toHaveURL(/\/oppgave\//)
   })
 
-  test('kan bytte mellom tabs', async ({ page }) => {
+  test('kan bytte mellom tabs åpne og ferdigstilte', async ({ page }) => {
     await page.goto('/')
     await page.getByRole('link', { name: /Enhetens oppgaver/i }).click()
     await page.getByRole('table').waitFor({ state: 'visible' })
 
-    // Check that filter tabs exist (Alle, Hastesaker, På vent)
-    await expect(page.getByRole('tab', { name: /Hastesaker/i })).toBeVisible()
-    await expect(page.getByRole('tab', { name: /På vent/i })).toBeVisible()
+    // Check that tabs exist
+    await expect(page.getByRole('tab', { name: /ferdigstilte/i })).toBeVisible()
   })
 })

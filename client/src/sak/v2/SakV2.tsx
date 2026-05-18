@@ -183,12 +183,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
         />
       )}
       {isBehandlingsutfallHenleggelse(behandlingsutfall) && (
-        <BrevManglerModal
-          open={visBrevMangler}
-          onClose={() => setVisBrevMangler(false)}
-          gjenstående={gjenstående}
-          henleggelsesutfall={behandlingsutfall.utfall}
-        />
+        <BrevManglerModal open={visBrevMangler} onClose={() => setVisBrevMangler(false)} gjenstående={gjenstående} />
       )}
       <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
       <UgyldigSnarveiModal open={annetResultatValgt} onClose={() => setAnnetResultatValgt(false)} />

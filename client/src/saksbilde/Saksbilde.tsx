@@ -53,6 +53,17 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
       </div>
     )
   }
+  // TODO: Denne kan vi fjerne nå?
+  if (gjeldendeBehandling != null && gjeldendeBehandling.behandlingId.toString() !== '0') {
+    return (
+      <div className={classes.wrapper}>
+        <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
+        <Box margin="space-16">
+          <BodyShort>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</BodyShort>
+        </Box>
+      </div>
+    )
+  }
 
   return (
     <div className={classes.wrapper}>

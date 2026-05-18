@@ -26,7 +26,7 @@ test.describe('Oppgaveliste', () => {
 
   test('kan bytte mellom tabs åpne og ferdigstilte', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('link', { name: /Enhetens oppgaver/i }).click()
+    await page.getByRole('link', { name: /Mine oppgaver/i }).click()
     await page.getByRole('table').waitFor({ state: 'visible' })
 
     // Check that tabs exist

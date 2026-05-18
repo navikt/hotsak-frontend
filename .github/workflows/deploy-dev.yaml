@@ -13,7 +13,7 @@ on:
 
 jobs:
   test:
-    name: Kjør Cypress-tester
+    name: Kjør tester
     runs-on: ubuntu-latest
     continue-on-error: true
 
@@ -37,19 +37,22 @@ jobs:
         working-directory: client
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - name: Kjør Cypress
-        uses: cypress-io/github-action@v6
-        with:
-          start: pnpm run dev
-          wait-on: 'http://localhost:3001'
-          working-directory: client
-          config-file: cypress.config.js
-          record: false
-      - name: Last opp artefakt
+      - name: Kjør enhetstester
+        run: pnpm run test:ci
+        working-directory: client
+      - name: Installer Playwright
+        run: pnpm exec playwright install --with-deps chromium
+        working-directory: client
+      - name: Kjør E2E-tester
+        run: pnpm run e2e
+        working-directory: client
+      - name: Last opp Playwright-rapport
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v6
         with:
-          name: cypress-test
-          path: cypress/screenshots/
+          name: playwright-report
+          path: client/playwright-report/
+          retention-days: 14
 
   build:
     name: Bygg

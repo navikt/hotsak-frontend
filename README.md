@@ -9,7 +9,7 @@ Koden er delt i to separate moduler:
 
 ### Forutsetninger
 
-- Node ≥ 20
+- Node ≥ 24
 - Go (for serveren)
 
 ### PNPM
@@ -66,13 +66,29 @@ Legg til støtte for Go i Visual Studio Code [https://marketplace.visualstudio.c
 
 ## Kjør tester
 
-Vi bruker Cypress sammen med MSW for å kjøre testene våre:
+### Enhetstester (Vitest)
 
-- Kjør cypress-tester i nettleser: start appen med `pnpm run dev`, deretter `pnpm run cypress:open` i en annen terminal.
-- Kjør cypress-tester i headless nettleser: start appen med `pnpm run dev`, deretter `pnpm run cypress:run` i en annen
-  terminal.
+```bash
+pnpm run test        # watch-modus
+pnpm run test:ci     # kjør én gang (CI)
+```
 
-Tester kjøres også automatisk i GitHub Actions ved push.
+### E2E-tester (Playwright)
+
+E2E-testene bruker Playwright med Chromium og kjører mot dev-serveren (MSW mocker API-et).
+
+```bash
+# Installer Playwright-nettlesere (kun første gang)
+cd client && pnpm exec playwright install chromium
+
+# Kjør E2E-tester (starter dev-server automatisk)
+pnpm run e2e
+
+# Kjør E2E-tester med UI (headed modus)
+pnpm run e2e:ui
+```
+
+Tester kjøres også automatisk i GitHub Actions ved push til main.
 
 ## Deploy
 

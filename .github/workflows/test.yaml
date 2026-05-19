@@ -36,6 +36,36 @@ jobs:
       - name: Kjør E2E-tester
         run: pnpm run e2e
         working-directory: client
+      - name: Playwright test summary
+        if: ${{ !cancelled() }}
+        working-directory: client
+        run: |
+          if [ -f playwright-results.json ]; then
+            PASSED=$(jq '.stats.expected' playwright-results.json)
+            FAILED=$(jq '.stats.unexpected' playwright-results.json)
+            SKIPPED=$(jq '.stats.skipped' playwright-results.json)
+            FLAKY=$(jq '.stats.flaky' playwright-results.json)
+            TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
+            if [ "$FAILED" -eq 0 ]; then
+              STATUS="✅"
+            else
+              STATUS="❌"
+            fi
+            echo "# Playwright Test Report" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- Test Results: ${STATUS} ${PASSED} passes · ${TOTAL} total" >> $GITHUB_STEP_SUMMARY
+            if [ "$SKIPPED" -gt 0 ]; then
+              echo "- Skipped: ⏭️ ${SKIPPED}" >> $GITHUB_STEP_SUMMARY
+            fi
+            if [ "$FLAKY" -gt 0 ]; then
+              echo "- Flaky: ⚠️ ${FLAKY}" >> $GITHUB_STEP_SUMMARY
+            fi
+            if [ "$FAILED" -gt 0 ]; then
+              echo "- Failed: ❌ ${FAILED}" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
       - name: Last opp Playwright-rapport
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v6

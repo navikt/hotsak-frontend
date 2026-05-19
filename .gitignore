@@ -28,6 +28,7 @@ yarn-error.log*
 yarn-error.log
 client/test-results/
 client/playwright-report/
+client/playwright-results.json
 *.iml
 
 server/secure.log

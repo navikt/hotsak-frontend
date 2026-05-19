@@ -32,6 +32,9 @@ export interface SakBase {
   bruker: Bruker
   innsender: Innsender
   enhet: Enhet
+  /**
+   * @deprecated bruk saksbehandler fra oppgave
+   */
   saksbehandler?: Saksbehandler
   vedtak?: VedtakType
 }

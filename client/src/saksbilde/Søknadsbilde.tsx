@@ -24,8 +24,6 @@ import { useSøknadsVarsler } from './varsler/useVarsler'
 import { Søknadsinfo } from './venstremeny/Søknadsinfo'
 import { Venstremeny } from './venstremeny/Venstremeny'
 
-// fixme
-
 const SøknadsbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading } = useSak()
   const { gjeldendeBehandling } = useBehandling()

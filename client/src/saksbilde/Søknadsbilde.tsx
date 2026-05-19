@@ -9,7 +9,6 @@ import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, 
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useNotater } from '../sak/notat/useNotater'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
-import { Sakstype } from '../types/types.internal'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
@@ -23,11 +22,8 @@ import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 import { useSøknadsVarsler } from './varsler/useVarsler'
 import { Søknadsinfo } from './venstremeny/Søknadsinfo'
-import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 
-// fixme
- 
 const SøknadsbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading } = useSak()
   const { gjeldendeBehandling } = useBehandling()
@@ -42,8 +38,6 @@ const SøknadsbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppga
 
   if (!sak || !behovsmelding) return null
 
-  const isBestilling = sak.data.sakstype === Sakstype.BESTILLING
-
   return (
     <HGrid
       columns={`max(${hovedInnholdMaxWidth}) minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
@@ -55,21 +49,7 @@ const SøknadsbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppga
           <ScrollContainer>
             <Venstremeny gap="space-24">
               <Søknadsinfo />
-              {sak.data.sakstype === Sakstype.SØKNAD && (
-                <VedtakCard
-                  oppgave={oppgave}
-                  gjeldendeBehandling={gjeldendeBehandling}
-                  sak={sak.data}
-                  harNotatUtkast={harUtkast}
-                />
-              )}
-              {isBestilling && (
-                <BestillingCard
-                  oppgave={oppgave}
-                  gjeldendeBehandling={gjeldendeBehandling}
-                  harNotatUtkast={harUtkast}
-                />
-              )}
+              <BestillingCard oppgave={oppgave} gjeldendeBehandling={gjeldendeBehandling} harNotatUtkast={harUtkast} />
             </Venstremeny>
           </ScrollContainer>
           <section>

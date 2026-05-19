@@ -298,11 +298,6 @@ export enum VedtaksgrunnlagType {
   HØREAPPARATVEDTAK = 'HØREAPPARATVEDTAK',
 }
 
-export interface VedtakPayload {
-  sakId: string
-  //status: VedtakStatusType
-}
-
 export interface VedtaksgrunnlagBase {
   type: VedtaksgrunnlagType
 }
@@ -481,7 +476,6 @@ export enum OppgaveStatusType {
   // Kun for søknad
   SENDT_GOSYS = 'SENDT_GOSYS', // OVERFØRT_GOSYS
   VEDTAK_FATTET = 'VEDTAK_FATTET',
-
   // Kun for bestilling
   FERDIGSTILT = 'FERDIGSTILT', // BESTILLING_GODKJENT
   AVVIST = 'AVVIST', // BESTILLING_AVVIST
@@ -510,7 +504,6 @@ export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
   [OppgaveStatusType.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
   [OppgaveStatusType.SENDT_GOSYS, 'Overført til Gosys'],
-  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
   [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],
   [OppgaveStatusType.HENLAGT, 'Henlagt'],

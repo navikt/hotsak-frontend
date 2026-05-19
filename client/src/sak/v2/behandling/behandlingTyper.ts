@@ -47,10 +47,6 @@ export function isBehandlingsutfallHenleggelse(utfall?: Behandlingsutfall): utfa
   return utfall != null && utfall.type === 'HENLEGGELSE'
 }
 
-export function isBehandlingsutfallOverføring(utfall?: Behandlingsutfall): utfall is BehandlingsutfallOverføring {
-  return utfall != null && utfall.type === 'OVERFØRING'
-}
-
 export interface Operasjoner {
   // vedtak:
   overfør: { gjenstående: GjenståendeOverfør[] }

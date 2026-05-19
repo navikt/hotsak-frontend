@@ -1,4 +1,3 @@
-import { BodyShort, Box } from '@navikt/ds-react'
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 
@@ -8,7 +7,6 @@ import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson'
-import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakProvider } from '../sak/v2/SakProvider'
 import { type SakBase, Sakstype } from '../types/types.internal'
@@ -24,7 +22,6 @@ const Søknadsbilde = lazy(() => import('./Søknadsbilde'))
 
 const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading, error: sakError } = useSak()
-  const { gjeldendeBehandling } = useBehandling()
   const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
@@ -56,17 +53,6 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
       </div>
     )
   }
-  // TODO: Denne kan vi fjerne nå?
-  if (gjeldendeBehandling != null && gjeldendeBehandling.behandlingId.toString() !== '0') {
-    return (
-      <div className={classes.wrapper}>
-        <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
-        <Box margin="space-16">
-          <BodyShort>Denne saken er påbegynt i Hotsak 1.5 og må behandles videre der.</BodyShort>
-        </Box>
-      </div>
-    )
-  }
 
   return (
     <div className={classes.wrapper}>
@@ -86,7 +72,6 @@ function SakstypeSwitch({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sa
         </DokumentProvider>
       )
     case Sakstype.BESTILLING:
-    default:
       return (
         <DokumentProvider>
           <Søknadsbilde oppgave={oppgave} />

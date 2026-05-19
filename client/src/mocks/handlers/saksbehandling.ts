@@ -7,13 +7,7 @@ import {
   LagreBehandlingRequest,
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
-import {
-  OppgaveStatusType,
-  StegType,
-  TilgangResultat,
-  TilgangType,
-  type VedtakPayload,
-} from '../../types/types.internal'
+import { OppgaveStatusType, StegType, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'
 import { type StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
@@ -126,13 +120,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       const saksdokumenter = await sakStore.hentSaksdokumenter(sakId) // dokumentType
       return HttpResponse.json(saksdokumenter)
     }
-  }),
-
-  // TODO, denne kan fjeres når nye Hotsak er i bruk overalt
-  http.put<SakParams, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ params }) => {
-    const sakId = params.sakId
-    await sakStore.fattVedtak(sakId)
-    return respondNoContent()
   }),
 
   http.put<SakParams>('/api/sak/:sakId/tilbakeforing', async ({ params }) => {

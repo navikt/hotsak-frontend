@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { Sakstype } from '../../types/types.internal'
+import { LeveringTilleggsinfo } from '../../types/BehovsmeldingTypes'
 import { formaterAdresse } from '../../utils/formater'
 import { SakLoader } from '../SakLoader'
 import { useBehovsmelding } from '../useBehovsmelding'
@@ -9,7 +9,6 @@ import { FormidlerCard } from '../venstremeny/FormidlerCard'
 import { GreitÅViteCard } from '../venstremeny/GreitÅViteCard'
 import { LeveringCard } from '../venstremeny/LeveringCard'
 import { SøknadCard } from '../venstremeny/SøknadCard'
-import { LeveringTilleggsinfo } from '../../types/BehovsmeldingTypes'
 
 export const Søknadsinfo = memo(() => {
   const { sak, isLoading: isSakLoading } = useSak()
@@ -22,7 +21,6 @@ export const Søknadsinfo = memo(() => {
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
-  const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
   const levering = behovsmelding.levering
   const formidler = levering.hjelpemiddelformidler
 
@@ -37,7 +35,7 @@ export const Søknadsinfo = memo(() => {
         telefon={sak?.data.bruker.telefon}
       />
       <FormidlerCard
-        tittel={erBestilling ? 'Bestiller' : 'Formidler'}
+        tittel="Bestiller"
         stilling={formidler.stilling}
         formidlerNavn={formidler.navn}
         formidlerTelefon={formidler.telefon}

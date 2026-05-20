@@ -164,7 +164,7 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                       <Button
                         variant={
                           vedtaksresultat === VedtaksResultat.INNVILGET ||
-                          henleggelseUtfall.utfall !== Henleggelsesårsak.SØKNAD_TRUKKET
+                          henleggelseUtfall?.utfall !== Henleggelsesårsak.SØKNAD_TRUKKET
                             ? 'secondary'
                             : 'primary'
                         }

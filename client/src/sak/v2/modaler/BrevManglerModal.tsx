@@ -8,7 +8,7 @@ export interface BrevManglerModalProps {
   onClose(): void
   gjenstående: Gjenstående[]
   vedtaksresultat?: VedtaksResultat
-  henleggelsesutfall?: Henleggelsesårsak
+  henleggelsesutfall?: Henleggelsesårsak | null
 }
 
 export function BrevManglerModal({

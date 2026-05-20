@@ -66,8 +66,9 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
               }}
               error={fieldState.error?.message}
             >
-              <Radio value={Henleggelsesårsak.SØKNAD_TRUKKET}>Søknaden er trukket</Radio>
-              <Radio value={Henleggelsesårsak.FEILAKTIG_OPPRETTET}>Behandlingen er feilaktig opprettet</Radio>
+              <Radio value={Henleggelsesårsak.SØKNAD_TRUKKET}>Søknaden er trukket av bruker</Radio>
+              <Radio value={Henleggelsesårsak.FEILAKTIG_OPPRETTET}>Søknaden er feilaktig opprettet</Radio>
+              <Radio value={Henleggelsesårsak.ANNET}>Annet</Radio>
             </RadioGroup>
           )}
         />
@@ -82,9 +83,7 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
               {...field}
               onBlur={(e) => {
                 field.onBlur()
-                if (e.target.value) {
-                  onSave(getValues('årsak') || null, e.target.value)
-                }
+                onSave(getValues('årsak') || null, e.target.value)
               }}
               error={fieldState.error?.message}
             />

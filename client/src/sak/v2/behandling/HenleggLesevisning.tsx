@@ -12,6 +12,7 @@ const årsakLabels: Record<Henleggelsesårsak, string> = {
   [Henleggelsesårsak.BRUKER_ER_DØD]: 'Bruker er død',
   [Henleggelsesårsak.DUPLIKAT]: 'Duplikat',
   [Henleggelsesårsak.FEIL_BRUKER]: 'Feil bruker',
+  [Henleggelsesårsak.ANNET]: 'Annet',
 }
 
 export function HenleggLesevisning({ utfall }: HenleggLesevisningProps) {

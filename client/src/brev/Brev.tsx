@@ -4,10 +4,9 @@ import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
-import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
+import { isBehandlingsutfallHenleggelse, VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
-import { useSakContext } from '../sak/v2/SakProvider.tsx'
 import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { Brevtype, RessursStatus } from '../types/types.internal.ts'
@@ -24,6 +23,7 @@ import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
 import { useBrevutkast } from './useBrevutkast.ts'
 import { useVedtaksbrevActions } from './useVedtaksbrevActions.ts'
+import { useSakContext } from '../sak/v2/SakV2ContextType.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -40,6 +40,7 @@ export const Brev = () => {
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
 
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
+  const erHenleggelse = isBehandlingsutfallHenleggelse(gjeldendeBehandling?.utfall)
   const datoSoknadMottatt = sak?.data.opprettet
   const hjelpemidlerSøktOm = sak?.data.søknadGjelder
     ? sak.data.søknadGjelder
@@ -65,7 +66,9 @@ export const Brev = () => {
           ? 'delvis-innvilgelse-bruker-har-ikke-rett'
           : vedtaksResultat === VedtaksResultat.AVSLÅTT
             ? 'avslag-bruker-har-ikke-rett'
-            : undefined
+            : erHenleggelse
+              ? 'henleggelse'
+              : undefined
       : undefined
 
   const [prevBrevutkastValue, setPrevBrevutkastValue] = useState(brevutkast.data?.data?.value)

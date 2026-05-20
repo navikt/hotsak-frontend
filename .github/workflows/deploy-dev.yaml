@@ -61,9 +61,9 @@ jobs:
             else
               STATUS="❌"
             fi
-            echo "# Playwright Test Report" >> $GITHUB_STEP_SUMMARY
+            echo "## Playwright Test Report" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "## Summary" >> $GITHUB_STEP_SUMMARY
+            echo "### Summary" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "- Test Results: ${STATUS} ${PASSED} passes · ${TOTAL} total" >> $GITHUB_STEP_SUMMARY
             if [ "$SKIPPED" -gt 0 ]; then

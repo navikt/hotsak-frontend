@@ -10,9 +10,10 @@ export function useGlobaleHotkeys({ visHurtigtaster }: { visHurtigtaster: () => 
   const { åpneModia } = useModia()
   const erHotsakEksperimenter = useErPilot('hotsakEksperimenter')
 
-  useHotkey(GLOBALE_HOTKEYS.åpneModia, åpneModia, { skipInInputFields: true })
+  useHotkey(GLOBALE_HOTKEYS.åpneModia, åpneModia, { skipInInputFields: true, enabled: erHotsakEksperimenter })
   useHotkey(GLOBALE_HOTKEYS.åpneGosys, () => window.open(window.appSettings.GOSYS_OPPGAVEBEHANDLING_URL, 'gosys'), {
     skipInInputFields: true,
+    enabled: erHotsakEksperimenter,
   })
   useHotkey(GLOBALE_HOTKEYS.visHurtigtaster, visHurtigtaster, {
     skipInInputFields: true,
@@ -26,5 +27,8 @@ export function useGlobaleHotkeys({ visHurtigtaster }: { visHurtigtaster: () => 
     skipInInputFields: true,
     enabled: erHotsakEksperimenter,
   })
-  useHotkey(GLOBALE_HOTKEYS.medarbeidersOppgaver, () => navigate('/oppgaver/medarbeiders'), { skipInInputFields: true })
+  useHotkey(GLOBALE_HOTKEYS.medarbeidersOppgaver, () => navigate('/oppgaver/medarbeiders'), {
+    skipInInputFields: true,
+    enabled: erHotsakEksperimenter,
+  })
 }

@@ -37,6 +37,7 @@ const behandlingsutfallTagPropsByUtfall: Record<
   [Henleggelsesårsak.FEIL_BRUKER]: { label: 'Henlagt - Feil bruker', variant: 'neutral-moderate' },
   [Henleggelsesårsak.FEILAKTIG_OPPRETTET]: { label: 'Henlagt - Feilaktig opprettet', variant: 'neutral-moderate' },
   [Henleggelsesårsak.SØKNAD_TRUKKET]: { label: 'Henlagt - Søknad trukket', variant: 'neutral-moderate' },
+  [Henleggelsesårsak.ANNET]: { label: 'Henlagt - Annet', variant: 'neutral-moderate' },
 
   [OverførtTil.GOSYS]: { label: 'Overført til Gosys', variant: 'neutral-moderate' },
 }

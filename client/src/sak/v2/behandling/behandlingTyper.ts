@@ -108,6 +108,7 @@ export enum Henleggelsesårsak {
   FEIL_BRUKER = 'FEIL_BRUKER',
   SØKNAD_TRUKKET = 'SØKNAD_TRUKKET',
   FEILAKTIG_OPPRETTET = 'FEILAKTIG_OPPRETTET',
+  ANNET = 'ANNET',
 }
 
 export enum OverførtTil {

@@ -115,18 +115,17 @@ export function HjelpemiddelV2({
                   </Tag>
                 )}
                 {kanEndreHjelpemiddel && (
-                  <div>
-                    <Button
-                      variant="tertiary"
-                      size="xsmall"
-                      icon={<PencilIcon />}
-                      onClick={() => {
-                        setVisAlternativerModal(true)
-                      }}
-                    >
-                      Endre
-                    </Button>
-                  </div>
+                  <Button
+                    variant="tertiary"
+                    size="xsmall"
+                    style={{ alignSelf: 'center' }}
+                    icon={<PencilIcon />}
+                    onClick={() => {
+                      setVisAlternativerModal(true)
+                    }}
+                  >
+                    Endre
+                  </Button>
                 )}
               </HStack>
             </VStack>

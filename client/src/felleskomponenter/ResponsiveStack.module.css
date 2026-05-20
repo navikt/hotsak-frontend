@@ -5,6 +5,7 @@
 .layout {
   display: flex;
   flex-direction: column-reverse;
+  align-items: start;
   gap: var(--ax-space-0);
   padding-inline: var(--ax-space-12) var(--ax-space-8);
   padding-block: var(--ax-space-8);

@@ -1,4 +1,7 @@
 .border {
+  display: inline-block;
+  width: fit-content;
+  flex: 0 0 auto;
   border-radius: var(--ax-radius-8);
   border: 1px solid var(--ax-border-neutral-subtle);
   overflow: hidden;

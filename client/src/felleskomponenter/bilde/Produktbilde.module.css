@@ -1,22 +1,25 @@
-.small {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+.border {
   border-radius: var(--ax-radius-8);
   border: 1px solid var(--ax-border-neutral-subtle);
+  overflow: hidden;
+}
+
+.small {
+  max-width: 130px;
+  max-height: 140px;
+  width: auto;
+  height: auto;
 }
 
 .medium {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: var(--ax-radius-8);
-  border: 1px solid var(--ax-border-neutral-subtle);
+  max-width: 150px;
+  max-height: 160px;
+  width: auto;
+  height: auto;
 }
 
-.bilde {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: var(--ax-radius-12);
+img {
+  display: block;
+  border-radius: inherit;
+  width: 100%;
 }

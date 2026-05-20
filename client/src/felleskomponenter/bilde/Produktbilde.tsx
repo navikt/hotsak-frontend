@@ -14,7 +14,7 @@ export function Produktbilde({
   }
 
   return (
-    <div>
+    <div className={classes.border}>
       <img alt={alt} src={src} className={size === 'small' ? classes.small : classes.medium} />
     </div>
   )

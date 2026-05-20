@@ -152,7 +152,9 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                   {!lesevisning && !harBrevutkast && erHenleggelse && (
                     <TextContainer>
                       <InlineMessage status="info" size="small">
-                        Du må selv vurdere om det er behov for å sende brev om henleggelsen.
+                        {gjenstående.includes(Gjenstående.BREV_MANGLER)
+                          ? 'Du må sende brev om henleggelsen når søknaden er trukket av brukeren.'
+                          : 'Du må selv vurdere om det er behov for å sende brev om henleggelsen.'}
                       </InlineMessage>
                     </TextContainer>
                   )}
@@ -161,7 +163,10 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                     <div>
                       <Button
                         variant={
-                          vedtaksresultat === VedtaksResultat.INNVILGET || erHenleggelse ? 'secondary' : 'primary'
+                          vedtaksresultat === VedtaksResultat.INNVILGET ||
+                          henleggelseUtfall.utfall !== Henleggelsesårsak.SØKNAD_TRUKKET
+                            ? 'secondary'
+                            : 'primary'
                         }
                         size="small"
                         onClick={() => {

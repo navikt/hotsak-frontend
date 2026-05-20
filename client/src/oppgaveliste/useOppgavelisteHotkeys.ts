@@ -1,32 +1,33 @@
 import { useDataGridFilterResetAllHandler } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { OPPGAVELISTE_HOTKEYS } from '../hotkeys/hotkeys.ts'
 import { useHotkey } from '../hotkeys/useHotkey.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
+import { useErPilot } from '../tilgang/useTilgang.ts'
 import { OppgaveToolbarTab, useOppgavelisteContext, useOppgavelisteTabChangeHandler } from './OppgavelisteContext.tsx'
 
 export function useOppgavelisteHotkeys() {
-  const { erIkkeProd } = useMiljø()
+  const erHotsakEksperimenter = useErPilot('hotsakEksperimenter')
   const { currentTab } = useOppgavelisteContext()
   const handleTabChanged = useOppgavelisteTabChangeHandler()
   const handleFilterResetAll = useDataGridFilterResetAllHandler(currentTab)
 
   useHotkey(OPPGAVELISTE_HOTKEYS.alle, () => handleTabChanged(OppgaveToolbarTab.ALLE), {
-    enabled: erIkkeProd,
+    enabled: erHotsakEksperimenter,
     skipInInputFields: true,
   })
   useHotkey(OPPGAVELISTE_HOTKEYS.hast, () => handleTabChanged(OppgaveToolbarTab.HASTESAKER), {
-    enabled: erIkkeProd,
+    enabled: erHotsakEksperimenter,
     skipInInputFields: true,
   })
   useHotkey(OPPGAVELISTE_HOTKEYS.venter, () => handleTabChanged(OppgaveToolbarTab.PÅ_VENT), {
-    enabled: erIkkeProd,
+    enabled: erHotsakEksperimenter,
     skipInInputFields: true,
   })
+  // TODO Ikke ferdigstilte hurtigtast i alle tabs
   useHotkey(OPPGAVELISTE_HOTKEYS.ferdigstilte, () => handleTabChanged(OppgaveToolbarTab.FERDIGSTILTE), {
-    enabled: erIkkeProd,
+    enabled: erHotsakEksperimenter,
   })
   useHotkey(OPPGAVELISTE_HOTKEYS.fjernAlleFiltre, handleFilterResetAll, {
-    enabled: erIkkeProd,
+    enabled: erHotsakEksperimenter,
     skipInInputFields: true,
   })
 }

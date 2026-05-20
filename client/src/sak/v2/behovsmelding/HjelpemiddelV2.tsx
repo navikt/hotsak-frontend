@@ -4,6 +4,7 @@ import { Button, Heading, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Produktbilde } from '../../../felleskomponenter/bilde/Produktbilde.tsx'
 import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard.tsx'
+import { ResponsiveStack } from '../../../felleskomponenter/ResponsiveStack.tsx'
 import { Skillelinje } from '../../../felleskomponenter/Strek.tsx'
 import { BrytbarBrødtekst, Etikett, TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import Bytter from '../../../saksbilde/hjelpemidler/Bytter.tsx'
@@ -14,6 +15,7 @@ import { type AlternativeProduct } from '../../../saksbilde/hjelpemidler/useAlte
 import { Utlevert } from '../../../saksbilde/hjelpemidler/Utlevert.tsx'
 import { Varsler } from '../../../saksbilde/hjelpemidler/Varsel.tsx'
 import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
+import { useErPilot } from '../../../tilgang/useTilgang.ts'
 import { type Hjelpemiddel as HjelpemiddelType } from '../../../types/BehovsmeldingTypes.ts'
 import { type Produkt as ProduktType, Sak } from '../../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
@@ -21,8 +23,6 @@ import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../..
 import { AntallTag } from '../AntallTag.tsx'
 import { ProduktV2 } from './ProduktV2.tsx'
 import { TilbehørlisteV2 } from './tilbehør/TilbehørslisteV2.tsx'
-import { Eksperiment } from '../../../felleskomponenter/Eksperiment.tsx'
-import { ResponsiveStack } from '../../../felleskomponenter/ResponsiveStack.tsx'
 
 interface HjelpemiddelV2Props {
   sak: Sak
@@ -57,6 +57,7 @@ export function HjelpemiddelV2({
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretArtikkel
   const harAlternativeProdukter = alternativeProdukter.length > 0
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
+  const erHotsakEksperimenter = useErPilot('hotsakEksperimenter')
 
   return (
     <>
@@ -130,11 +131,9 @@ export function HjelpemiddelV2({
               </HStack>
             </VStack>
           </VStack>
-          <Eksperiment>
-            {produkt && (
-              <Produktbilde src={produkt?.produktbildeUri} alt={hjelpemiddel.produkt.artikkelnavn} size="small" />
-            )}
-          </Eksperiment>
+          {erHotsakEksperimenter && produkt && (
+            <Produktbilde src={produkt?.produktbildeUri} alt={hjelpemiddel.produkt.artikkelnavn} size="small" />
+          )}
         </ResponsiveStack>
         <Skillelinje />
         <VStack gap="space-8" paddingInline="space-12" paddingBlock="space-4 space-12">

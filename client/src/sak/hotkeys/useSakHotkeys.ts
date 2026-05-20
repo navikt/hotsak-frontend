@@ -2,7 +2,7 @@ import { SAK_HOTKEYS } from '../../hotkeys/hotkeys.ts'
 import { useHotkey } from '../../hotkeys/useHotkey.ts'
 import { useOppgave } from '../../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
-import { useMiljø } from '../../utils/useMiljø.ts'
+import { useErPilot } from '../../tilgang/useTilgang.ts'
 import { Gjenstående, isBehandlingsutfallVedtak, VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../v2/behandling/useBehandling.ts'
 import { useBehandlingActions } from '../v2/behandling/useBehandlingActions.ts'
@@ -18,7 +18,7 @@ export function useSakHotkeys({
   onNotatIkkeFerdigstilt: () => void
   onFattVedtak: () => void
 }) {
-  const { erIkkeProd } = useMiljø()
+  const erHotsakEksperimenter = useErPilot('hotsakEksperimenter')
   const { oppgave } = useOppgave()
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { lagreBehandling } = useBehandlingActions()
@@ -48,6 +48,6 @@ export function useSakHotkeys({
         onFattVedtak()
       }
     },
-    { enabled: erIkkeProd && oppgaveErUnderBehandlingAvInnloggetAnsatt, skipInInputFields: true }
+    { enabled: erHotsakEksperimenter && oppgaveErUnderBehandlingAvInnloggetAnsatt, skipInInputFields: true }
   )
 }

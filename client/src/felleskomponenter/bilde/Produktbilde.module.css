@@ -4,6 +4,7 @@
   flex: 0 0 auto;
   border-radius: var(--ax-radius-8);
   border: 1px solid var(--ax-border-neutral-subtle);
+  padding: var(--ax-space-8);
   overflow: hidden;
 }
 
@@ -23,6 +24,5 @@
 
 img {
   display: block;
-  border-radius: inherit;
   width: 100%;
 }

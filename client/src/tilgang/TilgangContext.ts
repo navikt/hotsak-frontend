@@ -15,7 +15,6 @@ export const initialState: TilgangContextType = {
     grupper: [],
     enheter: [],
     gjeldendeEnhet: {
-      id: '',
       nummer: '',
       navn: '',
     },

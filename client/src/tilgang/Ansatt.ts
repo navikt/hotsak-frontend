@@ -1,3 +1,4 @@
+import type { Enhet } from '../types/hotlibs.ts'
 import type { Adressebeskyttelse } from '../types/types.internal.ts'
 
 export enum AnsattGruppe {
@@ -6,15 +7,6 @@ export enum AnsattGruppe {
   HOTSAK_NASJONAL = 'HOTSAK_NASJONAL',
   HOTSAK_SAKSBEHANDLER = 'HOTSAK_SAKSBEHANDLER',
   BRILLEADMIN_BRUKERE = 'BRILLEADMIN_BRUKERE',
-}
-
-export interface AnsattEnhet {
-  /**
-   * objectId fra Entra ID.
-   */
-  readonly id: string
-  readonly nummer: string
-  readonly navn: string
 }
 
 /**
@@ -38,8 +30,8 @@ export interface Ansatt {
 
 export interface InnloggetAnsatt extends Ansatt {
   readonly grupper: ReadonlyArray<AnsattGruppe>
-  readonly enheter: ReadonlyArray<AnsattEnhet>
-  readonly gjeldendeEnhet: AnsattEnhet
+  readonly enheter: ReadonlyArray<Enhet>
+  readonly gjeldendeEnhet: Enhet
   /**
    * Graderinger saksbehandler kan behandle.
    */

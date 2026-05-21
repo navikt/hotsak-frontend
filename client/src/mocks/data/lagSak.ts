@@ -94,8 +94,6 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
       },
     },
     enhet: enheter.itAvdelingen,
-    saksbehandler: undefined,
-    vedtak: undefined,
     greitÅViteFaktum: [],
     hast: levering.hast
       ? {

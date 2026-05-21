@@ -57,7 +57,7 @@ import {
 } from './lagVilkårsvurdering.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { PersonStore } from './PersonStore'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { Saksbehandlere } from './Saksbehandlere.ts'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -82,7 +82,6 @@ export class SakStore extends Dexie {
 
   constructor(
     private readonly behovsmeldingStore: BehovsmeldingStore,
-    private readonly saksbehandlerStore: SaksbehandlerStore,
     private readonly personStore: PersonStore,
     private readonly journalpostStore: JournalpostStore
   ) {
@@ -248,7 +247,7 @@ export class SakStore extends Dexie {
 
   async ferdigstillBehandlingForSak(sakId: string) {
     const behandlinger = await this.hentBehandlinger(sakId)
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = Saksbehandlere.innlogget()
 
     if (behandlinger.length > 0) {
       const gjeldendeBehandling = behandlinger[0]
@@ -262,7 +261,7 @@ export class SakStore extends Dexie {
   }
 
   async lagreHendelse(sakId: string, hendelse: string, detaljer?: string) {
-    const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const { navn: bruker } = Saksbehandlere.innlogget()
     return this.hendelser.put({
       opprettet: nåIso(),
       sakId,
@@ -291,9 +290,9 @@ export class SakStore extends Dexie {
     }
     */
 
-    let saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    let saksbehandler = Saksbehandlere.innlogget()
     if (payload.saksbehandlerId) {
-      saksbehandler = await this.saksbehandlerStore.hent(payload.saksbehandlerId)
+      saksbehandler = Saksbehandlere.hent(payload.saksbehandlerId)
     }
 
     this.transaction('rw', this.saker, this.hendelser, () => {
@@ -395,7 +394,7 @@ export class SakStore extends Dexie {
   }
 
   async sendTilGodkjenning(sakId: string) {
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = Saksbehandlere.innlogget()
     const totrinnskontroll: Totrinnskontroll = {
       saksbehandler,
       opprettet: new Date().toISOString(),
@@ -423,7 +422,7 @@ export class SakStore extends Dexie {
       return
     }
 
-    const godkjenner = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const godkjenner = Saksbehandlere.innlogget()
     return this.transaction('rw', this.saker, this.hendelser, () => {
       const nå = nåIso()
       if (resultat === TotrinnskontrollVurdering.GODKJENT) {
@@ -516,7 +515,7 @@ export class SakStore extends Dexie {
   }
 
   async lagreSaksdokument(sakId: string, tittel: string) {
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = Saksbehandlere.innlogget()
     const dokumentId = (await this.saksdokumenter.count()) + 1
     this.saksdokumenter.add({
       sakId,

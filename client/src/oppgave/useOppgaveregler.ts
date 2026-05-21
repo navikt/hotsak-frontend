@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { type Enhet } from '../types/hotlibs.ts'
 import { type Oppgave, Statuskategori } from './oppgaveTypes.ts'
-import { type AnsattEnhet } from '../tilgang/Ansatt.ts'
 
 export interface UseOppgavereglerResponse {
   /**
@@ -30,7 +30,7 @@ export interface UseOppgavereglerResponse {
    */
   oppgaveErUnderBehandlingAvAnnenAnsatt: boolean
   oppgaveErPåVent: boolean
-  gjeldendeEnhet?: AnsattEnhet
+  gjeldendeEnhet?: Enhet
 }
 
 const initialResponse: UseOppgavereglerResponse = {

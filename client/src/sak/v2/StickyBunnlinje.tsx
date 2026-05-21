@@ -56,7 +56,7 @@ export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps)
         <HStack align="center" justify="space-between" gap="space-16">
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
-              Fatt vedtak
+              {gjeldendeBehandling?.utfall?.type === 'HENLEGGELSE' ? 'Ferdigstill' : 'Fatt vedtak'}
             </Button>
           )}
           {isBehandlingFerdigstilt(gjeldendeBehandling) && <Behandlingsutfall behandling={gjeldendeBehandling} />}

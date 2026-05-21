@@ -7,6 +7,7 @@ import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { useUtsendingsInfo } from '../../../brev/useUtsendingsInfo.ts'
 import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../../../oppgave/useOppgaveregler.ts'
@@ -15,13 +16,24 @@ import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
 import { type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../../types/types.internal.ts'
 import { formaterDatoKort, formaterTidsstempelLang } from '../../../utils/dato.ts'
+import { useMiljø } from '../../../utils/useMiljø.ts'
 import { BehandlingsutfallTag } from '../BehandlingsutfallTag.tsx'
 import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
-import { useSakContext } from '../SakProvider.tsx'
-import { Gjenstående, isBehandlingsutfallVedtak, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
+import classes from './BehandlingPanel.module.css'
+import {
+  Gjenstående,
+  isBehandlingsutfallHenleggelse,
+  isBehandlingsutfallVedtak,
+  UtfallLåst,
+  VedtaksResultat,
+  Henleggelsesårsak,
+  BehandlingsutfallHenleggelse,
+} from './behandlingTyper.ts'
+import { HenleggForm } from './HenleggForm.tsx'
+import { HenleggLesevisning } from './HenleggLesevisning.tsx'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import classes from './BehandlingPanel.module.css'
+import { useSakContext } from '../SakV2ContextType.ts'
 
 export interface BehandlingPanelProps {
   sak: Sak
@@ -32,6 +44,7 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
   const { setOpprettBrevKlikket } = useSakContext()
 
   const brevPanel = usePanel('brevpanel')
+  const closePanel = useClosePanel('brevpanel')
   const lukkBehandlingsPanel = useClosePanel('behandlingspanel')
   const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
 
@@ -45,12 +58,29 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
   const vedtaksresultat = isBehandlingsutfallVedtak(gjeldendeBehandling?.utfall)
     ? gjeldendeBehandling.utfall.utfall
     : undefined
+  const henleggelseUtfall = isBehandlingsutfallHenleggelse(gjeldendeBehandling?.utfall)
+    ? gjeldendeBehandling.utfall
+    : undefined
+  const erHenleggelse = henleggelseUtfall != null
   const gjenstående = gjeldendeBehandling?.gjenstående || []
 
   const harBrevutkast = !!gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
   const kanOppretteBrev = !lesevisning && !harBrevutkast
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
   const { datoEkspedert } = useUtsendingsInfo()
+  const { ferdigstillBehandling, lagreBehandling } = useBehandlingActions()
+  const { showSuccessToast } = useToast()
+  const { henleggFormRef } = useSakContext()
+
+  const henlegg = async () => {
+    await ferdigstillBehandling({})
+    if (!harBrevISak) closePanel()
+    showSuccessToast('Saken er henlagt')
+  }
+
+  const lagreHenleggelse = async (årsak: Henleggelsesårsak | null, begrunnelse: string | null) => {
+    await lagreBehandling({ type: 'HENLEGGELSE', utfall: årsak, begrunnelse })
+  }
 
   return (
     <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-36" className={classes.container}>
@@ -78,16 +108,20 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
           </Box>
 
           {lesevisning ? (
-            <VedtaksResultatVisning utfall={vedtaksresultat} />
+            <VedtaksResultatVisning utfall={vedtaksresultat} henleggelse={henleggelseUtfall} />
           ) : (
-            <VedtaksResultatVelger utfall={vedtaksresultat} harBrevutkast={harBrevutkast} />
+            <VedtaksResultatVelger
+              utfall={vedtaksresultat}
+              erHenleggelse={erHenleggelse}
+              harBrevutkast={harBrevutkast}
+            />
           )}
 
-          {vedtaksresultat && (
+          {(vedtaksresultat || erHenleggelse) && (
             <TextContainer>
               <Box paddingInline="space-8 space-0">
                 <Heading level="2" size="xsmall" spacing>
-                  Vedtaksbrev
+                  {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
                 </Heading>
                 <VStack gap="space-12">
                   {lesevisning &&
@@ -100,7 +134,7 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                   {lesevisning && brevMetadata?.status === Brevstatus.SENDT && (
                     <>
                       <InlineMessage status="info" size="small">
-                        Vedtaksbrevet ble sendt til bruker den{' '}
+                        {erHenleggelse ? 'Brevet ble sendt til bruker den ' : 'Vedtaksbrevet ble sendt til bruker den '}
                         {datoEkspedert
                           ? formaterTidsstempelLang(datoEkspedert)
                           : formaterTidsstempelLang(brevMetadata?.sendt)}
@@ -112,19 +146,35 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                       Saken er innvilget uten å sende brev
                     </InlineMessage>
                   )}
-                  {!lesevisning && !harBrevutkast && <UnderrettBruker vedtaksresultat={vedtaksresultat} />}
+                  {!lesevisning && !harBrevutkast && !erHenleggelse && (
+                    <UnderrettBruker vedtaksresultat={vedtaksresultat} />
+                  )}
+                  {!lesevisning && !harBrevutkast && erHenleggelse && (
+                    <TextContainer>
+                      <InlineMessage status="info" size="small">
+                        {gjenstående.includes(Gjenstående.BREV_MANGLER)
+                          ? 'Du må sende brev om henleggelsen når søknaden er trukket av brukeren.'
+                          : 'Du må selv vurdere om det er behov for å sende brev om henleggelsen.'}
+                      </InlineMessage>
+                    </TextContainer>
+                  )}
 
                   {kanOppretteBrev && (
                     <div>
                       <Button
-                        variant={vedtaksresultat === VedtaksResultat.INNVILGET ? 'secondary' : 'primary'}
+                        variant={
+                          vedtaksresultat === VedtaksResultat.INNVILGET ||
+                            henleggelseUtfall?.utfall !== Henleggelsesårsak.SØKNAD_TRUKKET
+                            ? 'secondary'
+                            : 'primary'
+                        }
                         size="small"
                         onClick={() => {
                           setBrevpanelVisibility(true)
                           setOpprettBrevKlikket(true)
                         }}
                       >
-                        Opprett vedtaksbrev
+                        {erHenleggelse ? 'Opprett brev' : 'Opprett vedtaksbrev'}
                       </Button>
                     </div>
                   )}
@@ -138,7 +188,7 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                           setBrevpanelVisibility(true)
                         }}
                       >
-                        Vis vedtaksbrev
+                        Vis {erHenleggelse ? 'brev' : 'vedtaksbrev'}
                       </Button>
                     </div>
                   )}
@@ -155,6 +205,17 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                       Ferdigstill utkastet i brevpanelet. Brevet blir lagt til utsending etter at vedtaket er fattet.
                     </InlineMessage>
                   )}
+
+                  {erHenleggelse && !lesevisning && (
+                    <HenleggForm
+                      ref={henleggFormRef}
+                      onHenleggelse={henlegg}
+                      onSave={lagreHenleggelse}
+                      defaultÅrsak={henleggelseUtfall.utfall}
+                      defaultBegrunnelse={henleggelseUtfall.begrunnelse}
+                    />
+                  )}
+                  {lesevisning && henleggelseUtfall && <HenleggLesevisning utfall={henleggelseUtfall} />}
                 </VStack>
               </Box>
             </TextContainer>
@@ -209,25 +270,43 @@ function UnderrettBruker({ vedtaksresultat }: { vedtaksresultat?: VedtaksResulta
 
 export default memo(BehandlingPanel)
 
-function VedtaksResultatVisning({ utfall }: { utfall?: VedtaksResultat }) {
-  if (!utfall) {
+function VedtaksResultatVisning({
+  utfall,
+  henleggelse,
+}: {
+  utfall?: VedtaksResultat
+  henleggelse?: BehandlingsutfallHenleggelse
+}) {
+  if (!utfall && !henleggelse) {
     return null
   }
   return (
     <VStack gap="space-8">
       <Heading size="xsmall" level="2" spacing={false}>
-        Vedtaksresultat
+        {henleggelse ? 'Henleggelsesresultat' : 'Vedtaksresultat'}
       </Heading>
       <div>
-        <BehandlingsutfallTag utfall={utfall} />
+        {utfall ? <BehandlingsutfallTag utfall={utfall} /> : <BehandlingsutfallTag utfall={henleggelse?.utfall} />}
       </div>
     </VStack>
   )
 }
 
-function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall?: VedtaksResultat; harBrevutkast: boolean }) {
+function VedtaksResultatVelger({
+  utfall,
+  erHenleggelse,
+  harBrevutkast,
+}: {
+  utfall?: VedtaksResultat
+  erHenleggelse: boolean
+  harBrevutkast: boolean
+}) {
   const { lagreBehandling } = useBehandlingActions()
   const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
+  const { erProd } = useMiljø()
+
+  const HENLEGGELSE_VALUE = 'HENLEGGELSE'
+  const currentValue = erHenleggelse ? HENLEGGELSE_VALUE : (utfall ?? '')
 
   return (
     <>
@@ -246,13 +325,16 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall?: VedtaksResu
           label="Resultat"
           readOnly={harBrevutkast}
           className={classes.selectAuto}
-          value={utfall ? utfall : ''}
+          value={currentValue}
           onChange={async (e) => {
-            if (utfall === (e.target.value as VedtaksResultat)) {
+            const value = e.target.value
+            if (value === currentValue) {
               return
             }
-            if (e.target.value !== '') {
-              await lagreBehandling({ utfall: e.target.value as VedtaksResultat, type: 'VEDTAK' })
+            if (value === HENLEGGELSE_VALUE) {
+              await lagreBehandling({ type: HENLEGGELSE_VALUE, utfall: null, begrunnelse: null })
+            } else if (value !== '') {
+              await lagreBehandling({ utfall: value as VedtaksResultat, type: 'VEDTAK' })
             } else {
               await lagreBehandling(undefined)
             }
@@ -262,6 +344,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall?: VedtaksResu
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
+          {!erProd && <option value={HENLEGGELSE_VALUE}>Henlagt</option>}
         </Select>
         {harBrevutkast && (
           <div>

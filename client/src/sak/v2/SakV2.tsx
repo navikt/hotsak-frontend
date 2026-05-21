@@ -12,20 +12,21 @@ import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useSak } from '../../saksbilde/useSak.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
-import { Gjenstående, isBehandlingsutfallVedtak } from './behandling/behandlingTyper.ts'
+import { Gjenstående, isBehandlingsutfallHenleggelse, isBehandlingsutfallVedtak } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
+import { HenleggModal } from './modaler/HenleggModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
-import { useSakContext } from './SakProvider.tsx'
 import classes from './SakV2.module.css'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
+import { useSakContext } from './SakV2ContextType.ts'
 
 function AvrundetPanel({ children }: { children: ReactNode }) {
   return (
@@ -46,13 +47,14 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
+  const [visHenleggModal, setVisHenleggModal] = useState(false)
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
 
-  const { panelState, totalVisibleMinWidth, harFlerePanelerÅpne } = useSakContext()
+  const { panelState, totalVisibleMinWidth, harFlerePanelerÅpne, henleggFormRef } = useSakContext()
   const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
@@ -180,6 +182,9 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
           vedtaksresultat={behandlingsutfall.utfall}
         />
       )}
+      {isBehandlingsutfallHenleggelse(behandlingsutfall) && (
+        <BrevManglerModal open={visBrevMangler} onClose={() => setVisBrevMangler(false)} gjenstående={gjenstående} />
+      )}
       <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
       <UgyldigSnarveiModal open={annetResultatValgt} onClose={() => setAnnetResultatValgt(false)} />
 
@@ -191,16 +196,24 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
           vedtaksresultat={behandlingsutfall.utfall}
         />
       )}
+      {isBehandlingsutfallHenleggelse(behandlingsutfall) && (
+        <HenleggModal open={visHenleggModal} onClose={() => setVisHenleggModal(false)} sak={sak.data} />
+      )}
     </Box>
   )
 
-  function modalVelger() {
+  async function modalVelger() {
     if (!gjeldendeBehandling || !behandlingsutfall) {
       setVisResultatManglerModal(true)
     } else if (brevutkastIkkeFerdigstilt) {
       setVisBrevMangler(true)
     } else if (notaterIkkeFerdigstilt) {
       setVisNotatIkkeFerdigstilt(true)
+    } else if (isBehandlingsutfallHenleggelse(behandlingsutfall)) {
+      const valid = await henleggFormRef.current?.validate()
+      if (valid) {
+        setVisHenleggModal(true)
+      }
     } else {
       setVisFerdigstillModal(true)
     }

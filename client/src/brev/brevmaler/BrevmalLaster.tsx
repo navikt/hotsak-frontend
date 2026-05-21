@@ -27,6 +27,8 @@ export const BrevmalLaster = ({ malKey, velgMal }: { malKey: string; velgMal: (m
     case 'avslag-andre-enn-nav-dekker':
       importer = import('./maler/avslag-andre-enn-nav-dekker.md?raw')
       break
+    case 'henleggelse':
+      importer = import('./maler/henleggelse.md?raw')
   }
 
   const { data } = useImporterMal(malKey, importer)

@@ -1,4 +1,4 @@
-import { useSakContext } from '../SakProvider'
+import { useSakContext } from '../SakV2ContextType'
 import { PanelId } from './panelReducer'
 
 export function usePanel(panelId: PanelId) {

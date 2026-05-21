@@ -29,7 +29,6 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
     kategorisering,
     beskrivelse: sak.søknadGjelder,
     tildeltEnhet: sak.enhet,
-    tildeltSaksbehandler: sak.saksbehandler,
     aktivDato: sak.opprettet,
     fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 60).toISOString(),
     opprettetTidspunkt: sak.opprettet,
@@ -53,9 +52,6 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
     sakId,
     sak: { sakId, sakstype: sak.sakstype, saksstatus: sak.saksstatus, søknadId: '', søknadGjelder: sak.søknadGjelder },
     behandlesAvApplikasjon: 'HOTSAK',
-    mappeId: undefined, // fixme
-    mappenavn: undefined, // fixme
-    sistLest: undefined,
     isUlest: true,
   }
 }
@@ -89,7 +85,5 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
       fulltNavn: formaterNavn(journalføring.bruker!.navn),
     },
     journalpostId: journalpostId,
-    mappeId: undefined, // fixme
-    mappenavn: undefined, // fixme
   }
 }

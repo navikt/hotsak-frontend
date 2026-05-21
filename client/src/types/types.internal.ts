@@ -32,13 +32,12 @@ export interface SakBase {
   bruker: Bruker
   innsender: Innsender
   enhet: Enhet
-  /**
-   * @deprecated bruk saksbehandler fra oppgave
-   */
-  saksbehandler?: Saksbehandler
   vedtak?: VedtakType
 }
 
+/**
+ * Sak for digital behovsmeldig pt.
+ */
 export interface Sak extends SakBase {
   sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
   greitÅViteFaktum: GreitÅViteFaktum[]

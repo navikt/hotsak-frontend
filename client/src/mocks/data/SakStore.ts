@@ -1,7 +1,6 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
 
 import { type JournalførJournalpostRequest } from '../../journalføring/journalføringTypes.ts'
-import { type EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
   Behandling,
@@ -282,25 +281,16 @@ export class SakStore extends Dexie {
     return this.hendelser.where('sakId').equals(sakId).toArray()
   }
 
-  async tildel(sakId: string, payload: EndreOppgavetildelingRequest = {}): Promise<204 | 404 | 409> {
+  async tildel(sakId: string): Promise<204 | 404 | 409> {
     const sak = await this.hent(sakId)
     if (!sak) {
       return 404
     }
-    /* todo
-    if (false) {
-      return 409
-    }
-    */
 
-    let saksbehandler = Saksbehandlere.innlogget()
-    if (payload.saksbehandlerId) {
-      saksbehandler = Saksbehandlere.hent(payload.saksbehandlerId)
-    }
+    // todo -> 409
 
     this.transaction('rw', this.saker, this.hendelser, () => {
       this.oppdaterSak(sak.sakId, {
-        saksbehandler,
         saksstatus: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
       })
       this.lagreHendelse(sak.sakId, 'Saksbehandler har tatt saken', undefined)
@@ -317,7 +307,6 @@ export class SakStore extends Dexie {
 
     this.transaction('rw', this.saker, this.hendelser, () => {
       this.oppdaterSak(sak.sakId, {
-        saksbehandler: undefined,
         saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
       })
       this.lagreHendelse(sak.sakId, 'Saksbehandler er meldt av saken')
@@ -405,7 +394,6 @@ export class SakStore extends Dexie {
 
     return this.transaction('rw', this.saker, this.hendelser, () => {
       this.oppdaterSak<LagretBarnebrillesak>(sakId, {
-        saksbehandler: undefined,
         steg: StegType.GODKJENNE,
         saksstatus: OppgaveStatusType.AVVENTER_GODKJENNER,
         totrinnskontroll,
@@ -437,7 +425,6 @@ export class SakStore extends Dexie {
           godkjent: nå,
         }
         this.oppdaterSak<LagretBarnebrillesak>(sak.sakId, {
-          saksbehandler: totrinnskontroll.saksbehandler,
           steg: StegType.FERDIG_BEHANDLET,
           saksstatus: OppgaveStatusType.VEDTAK_FATTET,
           vedtak: {
@@ -446,8 +433,8 @@ export class SakStore extends Dexie {
               (sak as Barnebrillesak)?.vilkårsvurdering?.resultat === 'JA'
                 ? VedtakStatusType.INNVILGET
                 : VedtakStatusType.AVSLÅTT,
-            saksbehandlerNavn: sak.saksbehandler?.navn || '',
-            saksbehandlerId: sak.saksbehandler?.id || '',
+            saksbehandlerId: godkjenner.id, // fixme i virkeligheten er dette første saksbehandler, ikke godkjenner
+            saksbehandlerNavn: godkjenner.navn, // fixme i virkeligheten er dette første saksbehandler, ikke godkjenner
             søknadId: '',
           },
           totrinnskontroll,
@@ -463,7 +450,6 @@ export class SakStore extends Dexie {
           begrunnelse,
         }
         this.oppdaterSak<LagretBarnebrillesak>(sak.sakId, {
-          saksbehandler: totrinnskontroll.saksbehandler,
           steg: StegType.REVURDERE,
           saksstatus: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
           totrinnskontroll,
@@ -547,14 +533,15 @@ export class SakStore extends Dexie {
     if (sak.saksstatus === status) {
       return false
     } else {
+      const saksbehandler = Saksbehandlere.innlogget()
       this.transaction('rw', this.saker, this.hendelser, () => {
         this.oppdaterSak(sak.sakId, {
           saksstatus: status,
           vedtak: {
             vedtaksdato: nåIso(),
             vedtaksstatus: vedtakStatus || VedtakStatusType.INNVILGET,
-            saksbehandlerNavn: sak.saksbehandler?.navn || '',
-            saksbehandlerId: sak.saksbehandler?.id || '',
+            saksbehandlerId: saksbehandler.id,
+            saksbehandlerNavn: saksbehandler.navn,
             søknadId: '',
           },
         })
@@ -580,9 +567,9 @@ export class SakStore extends Dexie {
         område: [],
         mottattTidspunkt: sak.opprettet,
         gjelder: sak.søknadGjelder,
-        behandletAv: sak.saksbehandler?.navn,
-        behandlingsutfall: sak.vedtak?.vedtaksstatus, // fixme
-        behandlingsutfallTidspunkt: sak.vedtak?.vedtaksdato, // fixme
+        behandletAv: Saksbehandlere.default.navn, // fixme bruk behandling
+        behandlingsutfall: sak.vedtak?.vedtaksstatus, // fixme bruk behandling
+        behandlingsutfallTidspunkt: sak.vedtak?.vedtaksdato, // fixme bruk behandling
         fagsaksystem: 'HOTSAK',
       })),
       barnebrillekrav: [],

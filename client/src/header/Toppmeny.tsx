@@ -103,7 +103,9 @@ export function Toppmeny() {
             <Pilot name="hotsakEksperimenter">
               <ActionMenu.Divider />
               <ActionMenu.Group label="Hjelp">
-                <ActionMenu.Item onSelect={hurtigtaster.åpne}>Hurtigtaster</ActionMenu.Item>
+                <ActionMenu.Item onSelect={hurtigtaster.åpne} shortcut="Alt + H">
+                  Hurtigtaster
+                </ActionMenu.Item>
               </ActionMenu.Group>
             </Pilot>
           </ActionMenu.Content>

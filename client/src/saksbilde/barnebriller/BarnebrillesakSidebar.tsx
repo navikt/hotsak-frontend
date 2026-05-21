@@ -63,7 +63,7 @@ export function BarnebrillesakSidebar({ oppgave }: { oppgave?: Saksbehandlingsop
           <BarnebrillesakHistorikk />
         </Tabs.Panel>
         <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL}>
-          <TotrinnskontrollPanel />
+          <TotrinnskontrollPanel oppgave={oppgave} />
         </Tabs.Panel>
         <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV}>
           <SendBrevPanel oppgave={oppgave} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />

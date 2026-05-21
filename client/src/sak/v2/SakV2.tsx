@@ -118,7 +118,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
                 minSize={`${brevPanel.minWidth}${brevPanel.minWidthUnit}`}
               >
                 <AvrundetPanel>
-                  <BrevPanel />
+                  <BrevPanel oppgave={oppgave} />
                 </AvrundetPanel>
               </Panel>
             </>

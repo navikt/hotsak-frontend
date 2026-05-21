@@ -1,9 +1,9 @@
 import { Button, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
 import { useEffect, useMemo, useState } from 'react'
+
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
-import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
-import { useOppgave } from '../oppgave/useOppgave.ts'
+import { type Oppgave, Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
@@ -25,14 +25,17 @@ import { useBrevMetadata } from './useBrevMetadata.ts'
 import { useBrevutkast } from './useBrevutkast.ts'
 import { useVedtaksbrevActions } from './useVedtaksbrevActions.ts'
 
-export const Brev = () => {
+export interface BrevProps {
+  oppgave?: Oppgave
+}
+
+export function Brev({ oppgave }: BrevProps) {
   const { sak } = useSak()
   const { opprettBrevKlikket, setOpprettBrevKlikket } = useSakContext()
   const closePanel = useClosePanel('brevpanel')
   const [visSlettBrevModal, setVisSlettBrevModal] = useState(false)
 
   const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
-  const { oppgave } = useOppgave()
   const { mutate: mutateBrevMetadata, gjeldendeBrev: brev } = useBrevMetadata()
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
@@ -245,7 +248,7 @@ export const Brev = () => {
                   brukersFødselsnummer: sak?.data.bruker.fnr || '',
                   saksnummer: Number(sak!.data.sakId),
                   brevOpprettet: formaterDatoLang(new Date().toISOString()),
-                  saksbehandlerNavn: sak?.data.saksbehandler?.navn || '',
+                  saksbehandlerNavn: oppgave?.tildeltSaksbehandler?.navn || '',
                   attestantsNavn: undefined,
                   hjelpemiddelsentral: sak?.data.enhet.navn || 'Nav hjelpemiddelsentral',
                 }}

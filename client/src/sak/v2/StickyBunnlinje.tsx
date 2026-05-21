@@ -1,26 +1,37 @@
 import { Box, Button, HStack, Tag } from '@navikt/ds-react'
 
+import { useMemo } from 'react'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 import { useOppgave } from '../../oppgave/useOppgave'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
+import { useUtførtAv, utførtAvNavn } from '../../tilgang/UtførtAv.ts'
 import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
 import { formaterDato } from '../../utils/dato'
-import { Gjenstående, UtfallLåst } from './behandling/behandlingTyper'
+import { type FerdigstiltBehandling, Gjenstående, isBehandlingFerdigstilt } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { BehandlingsutfallTag } from './BehandlingsutfallTag.tsx'
 import classes from './StickyBunnlinje.module.css'
 
-export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => void }) {
+export interface StickyBunnlinjeProps {
+  sak: Sak
+  onClick(): void
+}
+
+export function StickyBunnlinje({ sak, onClick }: StickyBunnlinjeProps) {
   const { oppgave } = useOppgave()
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErPåVent } = useOppgaveregler(oppgave)
   const { gjeldendeBehandling } = useBehandling()
 
-  const knappevariant = [Gjenstående.BREV_IKKE_FERDIGSTILT, Gjenstående.BREV_MANGLER, Gjenstående.UTFALL_MANGLER].some(
-    (gjenstående) => gjeldendeBehandling?.gjenstående.includes(gjenstående)
+  const knappevariant = useMemo(
+    () =>
+      [Gjenstående.BREV_IKKE_FERDIGSTILT, Gjenstående.BREV_MANGLER, Gjenstående.UTFALL_MANGLER].some((gjenstående) =>
+        gjeldendeBehandling?.gjenstående.includes(gjenstående)
+      )
+        ? 'secondary'
+        : 'primary',
+    [gjeldendeBehandling]
   )
-    ? 'secondary'
-    : 'primary'
 
   if (!oppgave) return null
   return (
@@ -49,12 +60,7 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
               Fatt vedtak
             </Button>
           )}
-          {oppgaveErAvsluttet && gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
-            <HStack gap="space-12" align="center">
-              <BehandlingsutfallTag utfall={gjeldendeBehandling?.utfall?.utfall} />
-              <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterDato(sak.vedtak?.vedtaksdato)}`}</Tekst>
-            </HStack>
-          )}
+          {isBehandlingFerdigstilt(gjeldendeBehandling) && <Behandlingsutfall behandling={gjeldendeBehandling} />}
           {!oppgaveErPåVent && !oppgaveErAvsluttet && (
             <Tag data-color="neutral" variant="moderate" size="small">
               {OppgaveStatusLabel.get(sak.saksstatus)}
@@ -63,6 +69,18 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
           {oppgaveErPåVent && <OppgavePåVentTag oppgave={oppgave} />}
         </HStack>
       </Box>
+    </HStack>
+  )
+}
+
+function Behandlingsutfall({ behandling }: { behandling: FerdigstiltBehandling }) {
+  const ferdigstiltTidspunkt = behandling.ferdigstiltTidspunkt || behandling.midlertidigFerdigstiltTidspunkt
+  const utførtAv = useUtførtAv(behandling.utførtAv)
+  const saksbehandler = utførtAvNavn(utførtAv)
+  return (
+    <HStack gap="space-12" align="center">
+      <BehandlingsutfallTag utfall={behandling.utfall.utfall} />
+      <Tekst>{`av: ${saksbehandler} ${formaterDato(ferdigstiltTidspunkt)}`}</Tekst>
     </HStack>
   )
 }

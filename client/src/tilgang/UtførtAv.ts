@@ -1,4 +1,5 @@
-import type { Ansatt, NavIdent } from './Ansatt'
+import { isNavIdent, type Ansatt, type NavIdent } from './Ansatt'
+import { useAnsatt } from './useAnsatt'
 
 export type System = string
 export type Systemnavn = string
@@ -30,4 +31,22 @@ export function utførtAvNavn(utførtAv: UtførtAv): string {
   } else {
     return 'Ukjent'
   }
+}
+
+export function useUtførtAv(utførtAvId?: UtførtAvId): UtførtAv {
+  const { data: ansatt } = useAnsatt(utførtAvId)
+
+  if (utførtAvId && !isNavIdent(utførtAvId)) {
+    return 'Automatisk prosess'
+  }
+
+  if (ansatt) {
+    return {
+      id: ansatt.navIdent,
+      navn: `${ansatt.fornavn} ${ansatt.etternavn}`,
+      epost: ansatt.epost,
+    }
+  }
+
+  return ''
 }

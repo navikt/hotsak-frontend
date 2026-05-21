@@ -1,7 +1,6 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
 
 import { type JournalførJournalpostRequest } from '../../journalføring/journalføringTypes.ts'
-import { type OppgaveId } from '../../oppgave/oppgaveTypes.ts'
 import { type EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
@@ -214,11 +213,13 @@ export class SakStore extends Dexie {
     const gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
 
     const behandlingId = await this.behandlinger.put({
-      oppgaveId: request.oppgaveId as OppgaveId,
       gjenstående: gjenstående,
+      utfallLåst: [],
       operasjoner: { overfør: { gjenstående: [] }, angreVedtak: { angringLåst: [] } },
       utfall: request.utfall,
       sakId,
+      oppgaveId: request.oppgaveId,
+      opprettet: nåIso(),
     })
 
     return behandlingId

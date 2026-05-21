@@ -3,7 +3,7 @@ import { Box, Button, HStack, Tag } from '@navikt/ds-react'
 import { useMemo } from 'react'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
-import { useOppgave } from '../../oppgave/useOppgave'
+import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
 import { useUtførtAv, utførtAvNavn } from '../../tilgang/UtførtAv.ts'
 import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
@@ -14,12 +14,12 @@ import { BehandlingsutfallTag } from './BehandlingsutfallTag.tsx'
 import classes from './StickyBunnlinje.module.css'
 
 export interface StickyBunnlinjeProps {
+  oppgave?: Saksbehandlingsoppgave
   sak: Sak
   onClick(): void
 }
 
-export function StickyBunnlinje({ sak, onClick }: StickyBunnlinjeProps) {
-  const { oppgave } = useOppgave()
+export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps) {
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErPåVent } = useOppgaveregler(oppgave)
   const { gjeldendeBehandling } = useBehandling()
 
@@ -33,7 +33,6 @@ export function StickyBunnlinje({ sak, onClick }: StickyBunnlinjeProps) {
     [gjeldendeBehandling]
   )
 
-  if (!oppgave) return null
   return (
     <HStack
       asChild
@@ -66,7 +65,7 @@ export function StickyBunnlinje({ sak, onClick }: StickyBunnlinjeProps) {
               {OppgaveStatusLabel.get(sak.saksstatus)}
             </Tag>
           )}
-          {oppgaveErPåVent && <OppgavePåVentTag oppgave={oppgave} />}
+          {oppgave && oppgaveErPåVent && <OppgavePåVentTag oppgave={oppgave} />}
         </HStack>
       </Box>
     </HStack>

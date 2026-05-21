@@ -1,43 +1,51 @@
 import { VStack } from '@navikt/ds-react'
 
 import { Tekst } from '../../../../felleskomponenter/typografi'
+import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../../../../oppgave/useOppgaveregler.ts'
 import { SidebarPanel } from '../../../../sak/v2/sidebars/SidebarPanel.tsx'
-import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
 
-export function TotrinnskontrollPanel() {
-  const saksbehandler = useInnloggetAnsatt()
+export interface TotrinnskontrollPanelProps {
+  oppgave?: Saksbehandlingsoppgave
+}
+
+export function TotrinnskontrollPanel({ oppgave }: TotrinnskontrollPanelProps) {
+  const { oppgaveErKlarTilBehandling, oppgaveErUnderBehandlingAvAnnenAnsatt } = useOppgaveregler(oppgave)
 
   const { sak, error } = useBarnebrillesak()
-
-  if (error || !sak) {
+  if (error) {
     return (
       <SidebarPanel tittel="Totrinnskontroll">
-        <Tekst>Feil ved henting av sak..</Tekst>
+        <Tekst>Feil ved henting av sak.</Tekst>
+      </SidebarPanel>
+    )
+  }
+  if (!sak) {
+    return null
+  }
+
+  if (oppgaveErKlarTilBehandling) {
+    return (
+      <SidebarPanel tittel="Totrinnskontroll">
+        <Tekst>Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.</Tekst>
       </SidebarPanel>
     )
   }
 
-  if (!sak.data.saksbehandler || sak.data.saksbehandler.id === '') {
-    return (
-      <SidebarPanel tittel="Totrinnskontroll">
-        <Tekst>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Tekst>
-      </SidebarPanel>
-    )
-  }
+  const { saksstatus, steg, totrinnskontroll } = sak.data
 
   const totrinnskontrollFullført =
-    sak.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
-    sak.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
+    totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
+    totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
 
   if (
     !totrinnskontrollFullført &&
-    sak.data.saksstatus !== OppgaveStatusType.VEDTAK_FATTET &&
-    sak.data.saksbehandler &&
-    sak.data.saksbehandler.id !== saksbehandler.id
+    saksstatus !== OppgaveStatusType.VEDTAK_FATTET &&
+    oppgaveErUnderBehandlingAvAnnenAnsatt
   ) {
     return (
       <SidebarPanel tittel="Totrinnskontroll">
@@ -46,7 +54,7 @@ export function TotrinnskontrollPanel() {
     )
   }
 
-  if (!totrinnskontrollFullført && sak.data.steg !== StegType.GODKJENNE) {
+  if (!totrinnskontrollFullført && steg !== StegType.GODKJENNE) {
     return (
       <SidebarPanel tittel="Totrinnskontroll">
         <Tekst>Saken er ikke klar til godkjenning.</Tekst>

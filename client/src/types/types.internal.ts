@@ -73,7 +73,7 @@ export enum Hasteårsak {
 export interface Totrinnskontroll {
   saksbehandler: Saksbehandler
   godkjenner?: Saksbehandler
-  resultat?: 'GODKJENT' | 'RETURNERT'
+  resultat?: TotrinnskontrollVurdering
   begrunnelse?: string
   opprettet?: string
   godkjent?: string

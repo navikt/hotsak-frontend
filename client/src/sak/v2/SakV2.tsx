@@ -1,5 +1,5 @@
 import { Box, HStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
@@ -27,7 +27,7 @@ import classes from './SakV2.module.css'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 
-function AvrundetPanel({ children }: { children: React.ReactNode }) {
+function AvrundetPanel({ children }: { children: ReactNode }) {
   return (
     <Box
       background="default"
@@ -170,7 +170,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
           )}
         </Group>
       </Box>
-      <StickyBunnlinje sak={sak.data} onClick={() => modalVelger()} />
+      <StickyBunnlinje oppgave={oppgave} sak={sak.data} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <BrevManglerModal

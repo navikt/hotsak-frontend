@@ -1,3 +1,4 @@
+import type { Enhet } from '../types/hotlibs.ts'
 import type { Adressebeskyttelse } from '../types/types.internal.ts'
 
 export enum AnsattGruppe {
@@ -8,19 +9,18 @@ export enum AnsattGruppe {
   BRILLEADMIN_BRUKERE = 'BRILLEADMIN_BRUKERE',
 }
 
-export interface AnsattEnhet {
-  /**
-   * objectId fra Entra ID.
-   */
-  readonly id: string
-  readonly nummer: string
-  readonly navn: string
-}
-
 /**
  * Format: /^[A-Z][0-9]{6}$/
  */
 export type NavIdent = string
+
+export function isNavIdent(value: unknown): value is NavIdent {
+  if (typeof value !== 'string' || value.length !== 7) {
+    return false
+  }
+  const [first, ...rest] = value.toUpperCase()
+  return first >= 'A' && first <= 'Z' && rest.every((it) => it >= '0' && it <= '9')
+}
 
 export interface Ansatt {
   readonly id: NavIdent
@@ -30,8 +30,8 @@ export interface Ansatt {
 
 export interface InnloggetAnsatt extends Ansatt {
   readonly grupper: ReadonlyArray<AnsattGruppe>
-  readonly enheter: ReadonlyArray<AnsattEnhet>
-  readonly gjeldendeEnhet: AnsattEnhet
+  readonly enheter: ReadonlyArray<Enhet>
+  readonly gjeldendeEnhet: Enhet
   /**
    * Graderinger saksbehandler kan behandle.
    */

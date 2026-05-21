@@ -1,15 +1,32 @@
 import type { OppgaveId } from '../../../oppgave/oppgaveTypes'
-import type { NavIdent } from '../../../tilgang/Ansatt.ts'
+import type { UtførtAvId } from '../../../tilgang/UtførtAv.ts'
 
 export interface Behandling {
-  behandlingId: number
+  behandlingId: number // egentlig string fra backend
   gjenstående: Gjenstående[]
-  utfallLåst?: UtfallLåst[]
+  utfallLåst: UtfallLåst[]
   operasjoner: Operasjoner
   utfall?: Behandlingsutfall
-  utførtAv?: NavIdent
+  utførtAv?: UtførtAvId
+  sakId: string
   oppgaveId: OppgaveId
+  opprettet: string
+  midlertidigFerdigstiltTidspunkt?: string
   ferdigstiltTidspunkt?: string
+}
+
+export interface FerdigstiltBehandling extends Behandling {
+  utfall: Behandlingsutfall
+  utførtAv: UtførtAvId
+  midlertidigFerdigstiltTidspunkt: string
+}
+
+export function isBehandlingFerdigstilt(behandling?: Behandling): behandling is FerdigstiltBehandling {
+  if (!behandling) return false
+  return (
+    behandling.utfallLåst.includes(UtfallLåst.MIDLERTIDIG_FERDIGSTILT) ||
+    behandling.utfallLåst.includes(UtfallLåst.FERDIGSTILT)
+  )
 }
 
 export interface LagreBehandlingRequest {

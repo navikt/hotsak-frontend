@@ -23,11 +23,9 @@ export async function initMsw(): Promise<unknown> {
     oppgaveStore,
     personStore,
     sakStore,
-    saksbehandlerStore,
   } = store
 
   try {
-    await saksbehandlerStore.populer()
     await personStore.populer()
     await hjelpemiddelStore.populer()
     await journalpostStore.populer()
@@ -40,12 +38,6 @@ export async function initMsw(): Promise<unknown> {
   }
 
   window.store = {
-    async saksbehandlere() {
-      return saksbehandlerStore.alle()
-    },
-    byttInnloggetSaksbehandler(id: string) {
-      saksbehandlerStore.byttInnloggetSaksbehandler(id)
-    },
     async delete() {
       const databases = await indexedDB.databases()
       return await Promise.all(

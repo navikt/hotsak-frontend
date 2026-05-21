@@ -1,21 +1,13 @@
 import { Button, Heading, Select, VStack } from '@navikt/ds-react'
-import { ChangeEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, useState } from 'react'
 
-import { InnloggetAnsatt } from '../tilgang/Ansatt.ts'
+import { Saksbehandlere } from '../mocks/data/Saksbehandlere.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import classes from './Utviklingsverktøy.module.css'
 
 export function Utviklingsverktøy() {
   const { id: innloggetSaksbehandlerId } = useInnloggetAnsatt()
-  const [saksbehandlere, setSaksbehandlere] = useState<InnloggetAnsatt[]>([])
   const [erSkjult, setErSkjult] = useState(false)
-
-  useEffect(() => {
-    if (!window.appSettings.USE_MSW) {
-      return
-    }
-    window.store.saksbehandlere().then(setSaksbehandlere).catch(console.warn)
-  }, [])
 
   const handleSkjul = (skjult: boolean) => {
     setErSkjult(skjult)
@@ -43,7 +35,7 @@ export function Utviklingsverktøy() {
   }
 
   const byttSaksbehandler: ChangeEventHandler<HTMLSelectElement> = async (event) => {
-    window.store.byttInnloggetSaksbehandler(event.target.value)
+    Saksbehandlere.setInnloggetId(event.target.value)
     window.location.reload()
   }
 
@@ -70,7 +62,7 @@ export function Utviklingsverktøy() {
           value={innloggetSaksbehandlerId}
           onChange={byttSaksbehandler}
         >
-          {saksbehandlere.map(({ id, navn }) => (
+          {Saksbehandlere.alle().map(({ id, navn }) => (
             <option key={id} value={id}>
               {navn}
             </option>

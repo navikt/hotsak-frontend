@@ -13,17 +13,14 @@ import {
   LagretJournalpost,
 } from './lagJournalpost.ts'
 import { lagPerson, PersonStore } from './PersonStore.ts'
-import { SaksbehandlerStore } from './SaksbehandlerStore.ts'
+import { Saksbehandlere } from './Saksbehandlere.ts'
 
 export class JournalpostStore extends Dexie {
   private readonly journalposter!: Table<LagretJournalpost, string, InsertJournalpost>
   private readonly dokumenter!: Table<LagretDokument, number, InsertDokument>
   private readonly hendelser!: Table<LagretHendelse, number, InsertHendelse>
 
-  constructor(
-    private readonly saksbehandlerStore: SaksbehandlerStore,
-    private readonly personStore: PersonStore
-  ) {
+  constructor(private readonly personStore: PersonStore) {
     super('JournalpostStore')
     this.version(1).stores({
       journalposter: 'journalpostId',
@@ -84,7 +81,7 @@ export class JournalpostStore extends Dexie {
   }
 
   async lagreHendelse(journalpostId: string, hendelse: string, detaljer?: string) {
-    const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const { navn: bruker } = Saksbehandlere.innlogget()
     return this.hendelser.add({
       opprettet: nåIso(),
       journalpostId,

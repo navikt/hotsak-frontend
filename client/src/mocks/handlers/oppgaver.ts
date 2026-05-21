@@ -11,13 +11,14 @@ import {
 import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
 import { type Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { type StoreHandlersFactory } from '../data'
+import { Saksbehandlere } from '../data/Saksbehandlere.ts'
 import { delay, respondNoContent, respondNotFound } from './response.ts'
 
 export interface OppgaveParams {
   oppgaveId: OppgaveId
 }
 
-export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
+export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }) => [
   http.post<never, FinnOppgaverRequest, FinnOppgaverResponse>(`/api/oppgaver/sok`, async ({ request }) => {
     await delay(200)
     const response = await oppgaveStore.finn(await request.json())
@@ -35,7 +36,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
   }),
 
   http.get<never, never, Oppgavebehandlere>('/api/oppgaver/:oppgaveId/behandlere', async () => {
-    const behandlere = await saksbehandlerStore.alle()
+    const behandlere = Saksbehandlere.alle()
     await delay(75)
     return HttpResponse.json({ behandlere })
   }),
@@ -51,7 +52,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     await delay(75)
     const { oppgaveId } = params
     const { tekst } = await request.json()
-    const saksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = Saksbehandlere.innlogget()
     await oppgaveStore.lagreKommentar(oppgaveId, {
       oppgaveId,
       tekst,

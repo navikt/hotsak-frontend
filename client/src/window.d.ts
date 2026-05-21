@@ -1,5 +1,4 @@
 import type { Faro } from '@grafana/faro-web-sdk'
-import type { InnloggetAnsatt } from './tilgang/Ansatt.ts'
 
 declare global {
   interface Window {
@@ -24,8 +23,6 @@ declare global {
     }
     faro?: Faro
     store: {
-      saksbehandlere(): Promise<InnloggetAnsatt[]>
-      byttInnloggetSaksbehandler(id: string): void
       delete(): Promise<unknown>
     }
   }

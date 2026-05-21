@@ -9,7 +9,7 @@ import {
 } from '../../sak/notat/notatTyper'
 import { MålformType, Saksbehandler } from '../../types/types.internal.ts'
 import { nåIso } from './felles.ts'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { Saksbehandlere } from './Saksbehandlere.ts'
 import { SakStore } from './SakStore'
 
 type LagretNotat = Notat
@@ -18,10 +18,7 @@ type InsertNotat = Omit<LagretNotat, 'id'>
 export class NotatStore extends Dexie {
   private readonly notater!: Table<LagretNotat, number, InsertNotat>
 
-  constructor(
-    private readonly saksbehandlerStore: SaksbehandlerStore,
-    private readonly sakStore: SakStore
-  ) {
+  constructor(private readonly sakStore: SakStore) {
     super('NotatStore')
     this.version(1).stores({
       notater: '++id,sakId',
@@ -34,7 +31,7 @@ export class NotatStore extends Dexie {
       return []
     }
 
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = Saksbehandlere.innlogget()
     const alleSaker = await this.sakStore.alle()
     const notater = alleSaker.map(({ sakId }) => this.lagNotat(sakId, saksbehandler, NotatType.JOURNALFØRT))
 
@@ -46,7 +43,7 @@ export class NotatStore extends Dexie {
   }
 
   async lagreUtkast(sakId: string, utkast: NotatUtkast) {
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = Saksbehandlere.innlogget()
     try {
       return await this.notater.add({
         sakId,

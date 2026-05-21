@@ -4,29 +4,21 @@ import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { EndreHjelpemiddelStore } from './EndreHjelpemiddelStore'
 import { HjelpemiddelStore } from './HjelpemiddelStore'
 import { JournalpostStore } from './JournalpostStore'
+import { KodeverkStore } from './KodeverkStore.ts'
 import { NotatStore } from './NotatStore'
 import { OppgaveStore } from './OppgaveStore'
 import { PersonStore } from './PersonStore'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
-import { KodeverkStore } from './KodeverkStore.ts'
 
 export async function setupStore() {
   const kodeverkStore = new KodeverkStore()
   const behovsmeldingStore = new BehovsmeldingStore()
   const hjelpemiddelStore = new HjelpemiddelStore()
   const personStore = new PersonStore()
-  const saksbehandlerStore = new SaksbehandlerStore()
-  const journalpostStore = new JournalpostStore(saksbehandlerStore, personStore)
-  const sakStore = new SakStore(behovsmeldingStore, saksbehandlerStore, personStore, journalpostStore)
-  const oppgaveStore = new OppgaveStore(
-    kodeverkStore,
-    behovsmeldingStore,
-    saksbehandlerStore,
-    journalpostStore,
-    sakStore
-  )
-  const notatStore = new NotatStore(saksbehandlerStore, sakStore)
+  const journalpostStore = new JournalpostStore(personStore)
+  const sakStore = new SakStore(behovsmeldingStore, personStore, journalpostStore)
+  const oppgaveStore = new OppgaveStore(kodeverkStore, behovsmeldingStore, journalpostStore, sakStore)
+  const notatStore = new NotatStore(sakStore)
   const endreHjelpemiddelStore = new EndreHjelpemiddelStore(sakStore)
 
   return {
@@ -39,7 +31,6 @@ export async function setupStore() {
     oppgaveStore,
     personStore,
     sakStore,
-    saksbehandlerStore,
   }
 }
 

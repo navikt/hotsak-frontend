@@ -22,7 +22,7 @@ import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import { KodeverkStore } from './KodeverkStore.ts'
 import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { Saksbehandlere } from './Saksbehandlere.ts'
 import { SakStore } from './SakStore'
 
 interface LagretOppgavekommentar extends Oppgavekommentar {
@@ -39,7 +39,6 @@ export class OppgaveStore extends Dexie {
   constructor(
     private readonly kodeverkStore: KodeverkStore,
     private readonly behovsmeldingStore: BehovsmeldingStore,
-    private readonly saksbehandlerStore: SaksbehandlerStore,
     private readonly journalpostStore: JournalpostStore,
     private readonly sakStore: SakStore
   ) {
@@ -119,7 +118,7 @@ export class OppgaveStore extends Dexie {
   }
 
   async tildel(oppgaveId: OppgaveId) {
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = Saksbehandlere.innlogget()
     console.log(`Tildeler oppgaveId: ${oppgaveId} til saksbehandlerId: ${saksbehandler.id}`)
     return this.oppgaver.update(oppgaveId, {
       tildeltSaksbehandler: saksbehandler,
@@ -169,7 +168,7 @@ export class OppgaveStore extends Dexie {
   }
 
   async finn(request: FinnOppgaverRequest): Promise<FinnOppgaverResponse> {
-    const meg = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const meg = Saksbehandlere.innlogget()
     const alleOppgaver = await this.alle()
     const filtrerteOppgaver = alleOppgaver
       .filter(({ oppgavestatus }) => {

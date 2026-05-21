@@ -1,17 +1,18 @@
 import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
-import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 import {
   BehandlingerResponse,
   LagreBehandlingRequest,
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
+import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 import { OppgaveStatusType, StegType, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'
 import { type StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
 import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
+import { Saksbehandlere } from '../data/Saksbehandlere.ts'
 import { BehandlingParams, type SakParams } from './params'
 import {
   delay,
@@ -27,7 +28,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   endreHjelpemiddelStore,
   journalpostStore,
   sakStore,
-  saksbehandlerStore,
   oppgaveStore,
 }) => [
   http.get<SakParams>(`/api/sak/:sakId`, async ({ params }) => {
@@ -44,7 +44,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     await delay(500)
 
     const sak = await sakStore.hent(sakId)
-    const { navn: bruker } = await saksbehandlerStore.innloggetSaksbehandler()
+    const { navn: bruker } = Saksbehandlere.innlogget()
     const harSkrivetilgang = bruker !== 'Lese Visningsrud'
 
     const tilganger = {

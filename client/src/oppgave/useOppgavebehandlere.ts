@@ -4,7 +4,7 @@ import type { Ansatt } from '../tilgang/Ansatt.ts'
 import { useOppgave } from './useOppgave.ts'
 
 export interface Oppgavebehandlere {
-  behandlere: Ansatt[]
+  behandlere: ReadonlyArray<Ansatt>
 }
 
 export function useOppgavebehandlere(): Oppgavebehandlere & {

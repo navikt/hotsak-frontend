@@ -9,7 +9,7 @@ export class Saksbehandlere {
     navn: 'Silje Saksbehandler',
     epost: 'silje.saksbehandler@nav.no',
   })
-  static readonly saksbehandlere: Readonly<Record<NavIdent, InnloggetAnsatt>> = {
+  static readonly byNavIdent: Readonly<Record<NavIdent, InnloggetAnsatt>> = {
     S112233: Saksbehandlere.default,
     V998877: lagSaksbehandler({
       id: 'V998877',
@@ -30,7 +30,7 @@ export class Saksbehandlere {
   }
 
   static alle(): ReadonlyArray<Readonly<InnloggetAnsatt>> {
-    return Object.values(Saksbehandlere.saksbehandlere)
+    return Object.values(Saksbehandlere.byNavIdent)
   }
 
   static innlogget(): Readonly<InnloggetAnsatt> {
@@ -39,7 +39,7 @@ export class Saksbehandlere {
     if (!id) {
       return fallback()
     }
-    const ansatt = Saksbehandlere.saksbehandlere[id]
+    const ansatt = Saksbehandlere.byNavIdent[id]
     if (ansatt) {
       return Saksbehandlere.medGjeldendeEnhet(ansatt)
     }
@@ -47,7 +47,7 @@ export class Saksbehandlere {
   }
 
   static hent(id: NavIdent): Readonly<InnloggetAnsatt> {
-    const ansatt = Saksbehandlere.saksbehandlere[id]
+    const ansatt = Saksbehandlere.byNavIdent[id]
     if (!ansatt) {
       throw Error(`Fant ikke ansatt med id: ${id}`)
     }

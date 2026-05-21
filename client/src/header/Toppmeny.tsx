@@ -9,10 +9,11 @@ import { useGlobaleHotkeys } from '../hotkeys/useGlobaleHotkeys.ts'
 import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useUmami } from '../sporing/useUmami.ts'
-import { useErPilot, useTilgangContext } from '../tilgang/useTilgang.ts'
+import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
+import { Pilot } from '../felleskomponenter/Pilot.tsx'
 import classes from './Toppmeny.module.css'
 import { useDarkMode } from './useDarkMode.ts'
 import { useModia } from './useModia.ts'
@@ -26,7 +27,6 @@ export function Toppmeny() {
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
-  const erHotsakEksperimenter = useErPilot('hotsakEksperimenter')
   useGlobaleHotkeys({ visHurtigtaster: hurtigtaster.åpne })
 
   const handleSearch = (value: string) => {
@@ -100,14 +100,12 @@ export function Toppmeny() {
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
             </ActionMenu.Group>
-            {erHotsakEksperimenter && (
-              <>
-                <ActionMenu.Divider />
-                <ActionMenu.Group label="Hjelp">
-                  <ActionMenu.Item onSelect={hurtigtaster.åpne}>Hurtigtaster</ActionMenu.Item>
-                </ActionMenu.Group>
-              </>
-            )}
+            <Pilot name="hotsakEksperimenter">
+              <ActionMenu.Divider />
+              <ActionMenu.Group label="Hjelp">
+                <ActionMenu.Item onSelect={hurtigtaster.åpne}>Hurtigtaster</ActionMenu.Item>
+              </ActionMenu.Group>
+            </Pilot>
           </ActionMenu.Content>
           <EndringsloggMenu />
         </ActionMenu>

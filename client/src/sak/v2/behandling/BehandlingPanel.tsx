@@ -134,21 +134,28 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                       </InlineMessage>
                     )}
 
-                  {lesevisning && brevMetadata?.status === Brevstatus.SENDT && (
-                    <>
+                  {isBehandlingFerdigstilt(gjeldendeBehandling) &&
+                    lesevisning &&
+                    brevMetadata?.status === Brevstatus.SENDT && (
+                      <>
+                        <InlineMessage status="info" size="small">
+                          {erHenleggelse
+                            ? 'Brevet ble sendt til bruker den '
+                            : 'Vedtaksbrevet ble sendt til bruker den '}
+                          {datoEkspedert
+                            ? formaterTidsstempelLang(datoEkspedert)
+                            : formaterTidsstempelLang(brevMetadata?.sendt)}
+                        </InlineMessage>
+                      </>
+                    )}
+                  {isBehandlingFerdigstilt(gjeldendeBehandling) &&
+                    lesevisning &&
+                    !harBrevISak &&
+                    vedtaksresultat === VedtaksResultat.INNVILGET && (
                       <InlineMessage status="info" size="small">
-                        {erHenleggelse ? 'Brevet ble sendt til bruker den ' : 'Vedtaksbrevet ble sendt til bruker den '}
-                        {datoEkspedert
-                          ? formaterTidsstempelLang(datoEkspedert)
-                          : formaterTidsstempelLang(brevMetadata?.sendt)}
+                        Saken er innvilget uten å sende brev
                       </InlineMessage>
-                    </>
-                  )}
-                  {lesevisning && !harBrevISak && vedtaksresultat === VedtaksResultat.INNVILGET && (
-                    <InlineMessage status="info" size="small">
-                      Saken er innvilget uten å sende brev
-                    </InlineMessage>
-                  )}
+                    )}
                   {!lesevisning && !harBrevutkast && !erHenleggelse && (
                     <UnderrettBruker vedtaksresultat={vedtaksresultat} />
                   )}
@@ -218,7 +225,9 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                       defaultBegrunnelse={henleggelseUtfall.begrunnelse}
                     />
                   )}
-                  {lesevisning && henleggelseUtfall && <HenleggLesevisning utfall={henleggelseUtfall} />}
+                  {isBehandlingFerdigstilt(gjeldendeBehandling) && lesevisning && henleggelseUtfall && (
+                    <HenleggLesevisning utfall={henleggelseUtfall} />
+                  )}
                 </VStack>
               </Box>
             </TextContainer>

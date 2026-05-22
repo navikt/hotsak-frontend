@@ -123,9 +123,13 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
           {(vedtaksresultat || erHenleggelse) && (
             <TextContainer>
               <Box paddingInline="space-8 space-0">
-                <Heading level="2" size="xsmall" spacing>
-                  {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
-                </Heading>
+                {!lesevisning ||
+                  isBehandlingFerdigstilt(gjeldendeBehandling) ||
+                  (lesevisning && harBrevISak && (
+                    <Heading level="2" size="xsmall" spacing>
+                      {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
+                    </Heading>
+                  ))}
                 <VStack gap="space-12">
                   {lesevisning &&
                     (brevMetadata?.status === Brevstatus.UTBOKS || brevMetadata?.status === Brevstatus.FERDIGSTILT) && (

@@ -28,6 +28,7 @@ import {
   VedtaksResultat,
   Henleggelsesårsak,
   BehandlingsutfallHenleggelse,
+  isBehandlingFerdigstilt,
 } from './behandlingTyper.ts'
 import { HenleggForm } from './HenleggForm.tsx'
 import { HenleggLesevisning } from './HenleggLesevisning.tsx'
@@ -107,9 +108,11 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
             </Tekst>
           </Box>
 
-          {lesevisning ? (
+          {isBehandlingFerdigstilt(gjeldendeBehandling) && (
             <VedtaksResultatVisning utfall={vedtaksresultat} henleggelse={henleggelseUtfall} />
-          ) : (
+          )}
+
+          {!lesevisning && !isBehandlingFerdigstilt(gjeldendeBehandling) && (
             <VedtaksResultatVelger
               utfall={vedtaksresultat}
               erHenleggelse={erHenleggelse}
@@ -164,7 +167,7 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                       <Button
                         variant={
                           vedtaksresultat === VedtaksResultat.INNVILGET ||
-                            henleggelseUtfall?.utfall !== Henleggelsesårsak.SØKNAD_TRUKKET
+                          henleggelseUtfall?.utfall !== Henleggelsesårsak.SØKNAD_TRUKKET
                             ? 'secondary'
                             : 'primary'
                         }

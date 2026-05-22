@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import type { HotkeyDefinition } from './hotkeys.ts'
+import { matcherHotkeyCode, type HotkeyDefinition } from './hotkeys.ts'
 
 export function useHotkey(
   hotkey: HotkeyDefinition,
@@ -30,7 +30,7 @@ export function useHotkey(
     function onKeyDown(e: KeyboardEvent) {
       if (skipInInputFields && isInputFocused()) return
 
-      const matchesKey = e.code === hotkey.code
+      const matchesKey = matcherHotkeyCode(hotkey, e.code)
       const matchesAlt = !!hotkey.alt === e.altKey
       const matchesCtrl = !!hotkey.ctrl === e.ctrlKey
       const matchesShift = !!hotkey.shift === e.shiftKey
@@ -44,5 +44,5 @@ export function useHotkey(
 
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [hotkey.code, hotkey.alt, hotkey.ctrl, hotkey.shift, hotkey.meta, enabled, skipInInputFields])
+  }, [hotkey, enabled, skipInInputFields])
 }

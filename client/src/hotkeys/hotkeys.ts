@@ -1,5 +1,6 @@
 export interface HotkeyDefinition {
   code: string
+  alternativeCodes?: string[]
   alt?: boolean
   ctrl?: boolean
   shift?: boolean
@@ -30,16 +31,19 @@ export const GLOBALE_HOTKEYS = {
   },
   mineOppgaver: {
     code: 'Digit1',
+    alternativeCodes: ['Numpad1'],
     alt: true,
     description: 'Gå til mine oppgaver',
   },
   enhetensOppgaver: {
     code: 'Digit2',
+    alternativeCodes: ['Numpad2'],
     alt: true,
     description: 'Gå til enhetens oppgaver',
   },
   medarbeidersOppgaver: {
     code: 'Digit3',
+    alternativeCodes: ['Numpad3'],
     alt: true,
     description: 'Gå til medarbeiders oppgaver',
   },
@@ -99,5 +103,11 @@ export function formaterTaster(hotkey: HotkeyDefinition): string[] {
 function formaterCode(code: string): string {
   if (code.startsWith('Key')) return code.slice(3)
   if (code.startsWith('Digit')) return code.slice(5)
+  if (code.startsWith('Numpad')) return code.slice(6)
   return code
+}
+
+export function matcherHotkeyCode(hotkey: HotkeyDefinition, code: string): boolean {
+  const matchesAlternativeCode = hotkey.alternativeCodes?.includes(code) ?? false
+  return hotkey.code === code || matchesAlternativeCode
 }

@@ -19,22 +19,22 @@ import { formaterDatoKort, formaterTidsstempelLang } from '../../../utils/dato.t
 import { useMiljø } from '../../../utils/useMiljø.ts'
 import { BehandlingsutfallTag } from '../BehandlingsutfallTag.tsx'
 import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
+import { useSakContext } from '../SakV2ContextType.ts'
 import classes from './BehandlingPanel.module.css'
 import {
+  BehandlingsutfallHenleggelse,
   Gjenstående,
+  Henleggelsesårsak,
+  isBehandlingFerdigstilt,
   isBehandlingsutfallHenleggelse,
   isBehandlingsutfallVedtak,
   UtfallLåst,
   VedtaksResultat,
-  Henleggelsesårsak,
-  BehandlingsutfallHenleggelse,
-  isBehandlingFerdigstilt,
 } from './behandlingTyper.ts'
 import { HenleggForm } from './HenleggForm.tsx'
 import { HenleggLesevisning } from './HenleggLesevisning.tsx'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useSakContext } from '../SakV2ContextType.ts'
 
 export interface BehandlingPanelProps {
   sak: Sak
@@ -79,8 +79,8 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
     showSuccessToast('Saken er henlagt')
   }
 
-  const lagreHenleggelse = async (årsak: Henleggelsesårsak | null, begrunnelse: string | null) => {
-    await lagreBehandling({ type: 'HENLEGGELSE', utfall: årsak, begrunnelse })
+  const lagreHenleggelse = async (utfall: Henleggelsesårsak | undefined, begrunnelse?: string) => {
+    await lagreBehandling({ type: 'HENLEGGELSE', utfall, begrunnelse })
   }
 
   return (
@@ -346,7 +346,7 @@ function VedtaksResultatVelger({
               return
             }
             if (value === HENLEGGELSE_VALUE) {
-              await lagreBehandling({ type: HENLEGGELSE_VALUE, utfall: null, begrunnelse: null })
+              await lagreBehandling({ type: HENLEGGELSE_VALUE, utfall: undefined })
             } else if (value !== '') {
               await lagreBehandling({ utfall: value as VedtaksResultat, type: 'VEDTAK' })
             } else {

@@ -3,13 +3,14 @@
   flex: 0 0 var(--ax-space-16);
   position: relative;
   outline: none;
+  z-index: 1;
+}
 
-  &:hover {
-    background-color: var(--ax-border-accent-subtleA);
-    transition: background-color 0.4s linear;
-  }
+.resizeHandle:hover {
+  background-color: var(--ax-border-accent-subtleA);
+}
 
-  &[data-resize-handle-active] {
-    background-color: var(--ax-border-accent-subtle);
-  }
+.resizeHandle:active,
+.resizeHandle[data-separator='active'] {
+  background-color: var(--ax-border-accent-subtle);
 }

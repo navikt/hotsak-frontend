@@ -27,6 +27,11 @@ import classes from './SakV2.module.css'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useSakContext } from './SakV2ContextType.ts'
+import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
+import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
+
+import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
+import { useMiljø } from '../../utils/useMiljø.ts'
 
 function AvrundetPanel({ children }: { children: ReactNode }) {
   return (
@@ -53,8 +58,10 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
+  const { erProd } = useMiljø()
 
-  const { panelState, totalVisibleMinWidth, harFlerePanelerÅpne, henleggFormRef } = useSakContext()
+  const { panelState, totalVisibleMinWidth, harFlerePanelerÅpne, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
+    useSakContext()
   const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
@@ -81,6 +88,12 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const sidePanel = panels.sidebarpanel
   const brevPanel = panels.brevpanel
 
+  const { setEksperimentSidebarPanel, handleEksperimentSidebarResize } = useEksperimentSidebar({
+    sidePanelVisible: sidePanel.visible,
+    sidePanelDefaultSize: sidePanel.defaultSize,
+    sidebarOpenDefaultSizeRequestId,
+  })
+
   if (!behovsmelding) {
     // TODO skeleton eller loader her?
     return <div>Fant ikke behovsmelding</div>
@@ -97,8 +110,17 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
-      <Box marginBlock="space-8 space-0" marginInline="space-8" className={classes.resizableArea}>
-        <Group orientation="horizontal" defaultLayout={defaultLayout} onLayoutChange={onLayoutChanged}>
+      <Box
+        marginBlock="space-8 space-0"
+        marginInline="space-8"
+        className={`${classes.resizableArea} ${classes.sakHovedLayout}`}
+      >
+        <Group
+          orientation="horizontal"
+          defaultLayout={defaultLayout}
+          onLayoutChange={onLayoutChanged}
+          className={!erProd ? classes.eksperimentPanelGroup : undefined}
+        >
           {bahandlingsPanel.visible && (
             <Panel
               id="behandlingspanel"
@@ -156,7 +178,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
               </Panel>
             </>
           )}
-          {sidePanel.visible && (
+          {sidePanel.visible && erProd && (
             <>
               {harFlerePanelerÅpne && <ResizeHandle />}
               <Panel
@@ -170,7 +192,37 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
               </Panel>
             </>
           )}
+          {!erProd && (
+            <>
+              {sidePanel.visible && <ResizeHandle />}
+              <Panel
+                id="sidebarpanel"
+                panelRef={setEksperimentSidebarPanel}
+                defaultSize={sidePanel.visible ? sidePanel.defaultSize : 0}
+                minSize={`${sidePanel.minWidth}${sidePanel.minWidthUnit}`}
+                collapsible
+                collapsedSize={0}
+                groupResizeBehavior="preserve-pixel-size"
+                onResize={handleEksperimentSidebarResize}
+              >
+                <div className={classes.eksperimentSidebarPanel}>
+                  <AvrundetPanel>
+                    <SidebarEksperiment oppgave={oppgave} />
+                  </AvrundetPanel>
+                </div>
+              </Panel>
+            </>
+          )}
         </Group>
+        {!erProd && (
+          <>
+            <Box paddingInline="space-8 space-0">
+              <AvrundetPanel>
+                <VertikalIkonBar />
+              </AvrundetPanel>
+            </Box>
+          </>
+        )}
       </Box>
       <StickyBunnlinje oppgave={oppgave} sak={sak.data} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />

@@ -14,7 +14,7 @@ export function NotaterIcon({ oppgaveId, sakId }: { oppgaveId?: OppgaveId; sakId
   const antall = antallKommentarer + antallNotater
 
   return (
-    <HStack align="center" gap="space-2">
+    <HStack align="center" gap="space-0">
       <NotePencilIcon title="Notater" />
       {!isLoading && (
         <Tag

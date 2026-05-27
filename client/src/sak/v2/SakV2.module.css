@@ -9,3 +9,29 @@
   flex: 1;
   min-height: 0;
 }
+
+.sakHovedLayout {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.eksperimentPanelGroup {
+  flex: 1;
+  min-width: 0;
+}
+
+.eksperimentSidebarPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.eksperimentSidebarPanel > * {
+  flex: 1;
+  min-width: 0;
+}

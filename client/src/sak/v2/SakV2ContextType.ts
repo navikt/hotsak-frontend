@@ -7,7 +7,7 @@ import {
   getTotalVisibleMinWidth,
   initialPanelState,
 } from './paneler/panelReducer'
-import { VenstrekolonneTabs } from './SakPanelTabTypes'
+import { SidebarValg, VenstrekolonneTabs } from './SakPanelTabTypes'
 
 /**
  * Holder på instillinger og state for det som skjer i saksbehandlingsbildet i nye Hotsak. Ligger som en egen provider for ikke å blande det
@@ -17,6 +17,9 @@ import { VenstrekolonneTabs } from './SakPanelTabTypes'
 const initialState = {
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
   setValgtNedreVenstreKolonneTab() {},
+  aktivSidebar: SidebarValg.HJELPEMIDDELOVERSIKT,
+  setAktivSidebar() {},
+  sidebarOpenDefaultSizeRequestId: 0,
   opprettBrevKlikket: false,
   setOpprettBrevKlikket() {},
   henleggFormRef: { current: null } as RefObject<HenleggFormHandle | null>,
@@ -34,6 +37,9 @@ SakContext.displayName = 'SakV2'
 type SakV2ContextType = {
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs
   setValgtNedreVenstreKolonneTab(tab: VenstrekolonneTabs): void
+  aktivSidebar: SidebarValg
+  setAktivSidebar(sidebar: SidebarValg): void
+  sidebarOpenDefaultSizeRequestId: number
   panelState: PanelState
   panelDispatch: React.Dispatch<PanelAction>
   totalVisibleMinWidth: number

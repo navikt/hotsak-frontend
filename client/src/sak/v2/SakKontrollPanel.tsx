@@ -10,6 +10,7 @@ import { GjenståendeOverfør } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
 import classes from './SakKontrollPanel.module.css'
+import { useMiljø } from '../../utils/useMiljø'
 
 export const SakKontrollPanel = () => {
   const sakId = useSakId()
@@ -26,6 +27,7 @@ export const SakKontrollPanel = () => {
   const { isOppgaveContext } = useOppgaveContext()
   const { gjeldendeBehandling } = useBehandling()
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
+  const { erProd } = useMiljø()
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
 
@@ -49,9 +51,11 @@ export const SakKontrollPanel = () => {
           <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
             Kontaktinformasjon
           </ToggleKnapp>
-          <ToggleKnapp selected={sidePanel.visible} onToggle={() => toggleSidePanel()}>
-            Utlån, notater og historikk
-          </ToggleKnapp>
+          {erProd && (
+            <ToggleKnapp selected={sidePanel.visible} onToggle={() => toggleSidePanel()}>
+              Utlån, notater og historikk
+            </ToggleKnapp>
+          )}
         </Chips>
         {isOppgaveContext && (
           <SaksbildeMenu

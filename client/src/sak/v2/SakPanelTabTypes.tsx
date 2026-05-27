@@ -1,3 +1,5 @@
+// TODO: Rydde opp i disse og ikke kall dem noe som har med plassering i UI å gjøre
+
 export enum VenstrekolonneTabs {
   BEHOVSMELDINGSINFO = 'BEHOVSMELDINGSINFO',
   SAKSOVERSIKT = 'SAKSOVERSIKT',
@@ -10,4 +12,10 @@ export enum HøyrekolonneTabs {
   NOTATER = 'NOTATER',
   BREV = 'BREV',
   BEHANDLING = 'BEHANDLING',
+}
+
+export enum SidebarValg {
+  SAKSOVERSIKT = 'SAKSOVERSIKT',
+  HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
+  NOTATER = 'NOTATER',
 }

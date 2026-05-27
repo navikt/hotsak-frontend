@@ -4,10 +4,10 @@ import { Controller, useForm } from 'react-hook-form'
 import { Henleggelsesårsak } from './behandlingTyper'
 
 interface HenleggFormProps {
-  onHenleggelse: () => void
-  onSave: (årsak: Henleggelsesårsak | null, begrunnelse: string | null) => void
-  defaultÅrsak: Henleggelsesårsak | null
-  defaultBegrunnelse: string | null
+  onHenleggelse(): void
+  onSave(årsak: Henleggelsesårsak | undefined, begrunnelse?: string): void
+  defaultÅrsak?: Henleggelsesårsak
+  defaultBegrunnelse?: string
 }
 
 export interface HenleggFormValues {
@@ -16,8 +16,8 @@ export interface HenleggFormValues {
 }
 
 export interface HenleggFormHandle {
-  validate: () => Promise<boolean>
-  submit: () => Promise<boolean>
+  validate(): Promise<boolean>
+  submit(): Promise<boolean>
 }
 
 export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
@@ -62,7 +62,7 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
               value={field.value ?? ''}
               onChange={(value) => {
                 field.onChange(value)
-                onSave(value, getValues('begrunnelse') || null)
+                onSave(value, getValues('begrunnelse'))
               }}
               error={fieldState.error?.message}
             >
@@ -83,7 +83,7 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
               {...field}
               onBlur={(e) => {
                 field.onBlur()
-                onSave(getValues('årsak') || null, e.target.value)
+                onSave(getValues('årsak'), e.target.value)
               }}
               error={fieldState.error?.message}
             />

@@ -3,15 +3,12 @@ import {
   ArrowRedoIcon,
   ArrowUndoIcon,
   ExpandIcon,
-  FileParagraphIcon,
   LinkIcon,
   MenuElipsisVerticalCircleIcon,
   ShrinkIcon,
 } from '@navikt/aksel-icons'
 import { useAngreKnapp } from './AngreKnapp.tsx'
 import { useGjentaKnapp } from './GjentaKnapp.tsx'
-import { SettInnDelmalModal } from './SettInnDelmalKnapp.tsx'
-import { useState } from 'react'
 import { useBreveditorContext } from '../BreveditorContext.ts'
 import { useMarkKnapp } from './hjelpere/MarkKnapp/useMarkKnapp.ts'
 import { useLinkKnapp } from './LinkKnapp/useLinkKnapp.ts'
@@ -25,7 +22,6 @@ const FormateringMeny = () => {
   const kursivKnapp = useMarkKnapp('italic')
   const underlinjeKnapp = useMarkKnapp('underline')
   const linkKnapp = useLinkKnapp()
-  const [visSettInnDelmal, settVisSettInnDelmal] = useState(false)
   return (
     <>
       <ActionMenu
@@ -109,9 +105,6 @@ const FormateringMeny = () => {
             </ActionMenu.Item>
           </ActionMenu.Group>
           <ActionMenu.Group label="Annet">
-            <ActionMenu.Item icon={<FileParagraphIcon fontSize="1rem" />} onSelect={() => settVisSettInnDelmal(true)}>
-              Sett inn delmal
-            </ActionMenu.Item>
             <ActionMenu.Item
               icon={breveditor.visMarger ? <ExpandIcon fontSize="1rem" /> : <ShrinkIcon fontSize="1rem" />}
               onSelect={() => breveditor.settVisMarger(!breveditor.visMarger)}
@@ -121,7 +114,6 @@ const FormateringMeny = () => {
           </ActionMenu.Group>
         </ActionMenu.Content>
       </ActionMenu>
-      {visSettInnDelmal && <SettInnDelmalModal onClose={() => settVisSettInnDelmal(false)} />}
     </>
   )
 }

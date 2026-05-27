@@ -228,7 +228,9 @@ export class SakStore extends Dexie {
 
     const behandling = await this.behandlinger.get(behandlingId)
     const gjenstående =
-      request.utfall?.utfall === VedtaksResultat.INNVILGET || request.utfall?.type === 'HENLEGGELSE'
+      request.utfall?.utfall === VedtaksResultat.INNVILGET ||
+      request.utfall?.utfall === 'FEILAKTIG_OPPRETTET' ||
+      request.utfall?.utfall === 'ANNET'
         ? []
         : [Gjenstående.BREV_MANGLER]
 

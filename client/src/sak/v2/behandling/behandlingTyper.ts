@@ -36,18 +36,22 @@ export interface LagreBehandlingRequest {
 
 export type BehandlingsutfallType = VedtaksResultat | Bestillingsresultat | Henleggelsesårsak | OverførtTil
 
-interface Utfall<T extends BehandlingsutfallType> {
+interface Utfall<T extends BehandlingsutfallType | undefined> {
   utfall: T
   type: 'VEDTAK' | 'BESTILLING' | 'HENLEGGELSE' | 'OVERFØRING'
 }
 
 export type BehandlingsutfallVedtak = Utfall<VedtaksResultat>
-export type BehandlingsutfallBestilling = Utfall<Bestillingsresultat>
-export interface BehandlingsutfallHenleggelse {
-  utfall: Henleggelsesårsak | null
-  type: 'HENLEGGELSE'
-  begrunnelse: string | null
+
+export interface BehandlingsutfallBestilling extends Utfall<Bestillingsresultat> {
+  type: 'BESTILLING'
 }
+
+export interface BehandlingsutfallHenleggelse extends Utfall<Henleggelsesårsak | undefined> {
+  type: 'HENLEGGELSE'
+  begrunnelse?: string
+}
+
 export type BehandlingsutfallOverføring = Utfall<OverførtTil>
 
 export type Behandlingsutfall =

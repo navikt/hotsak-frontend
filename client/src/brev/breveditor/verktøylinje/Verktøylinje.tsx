@@ -9,7 +9,6 @@ import PunktlisteKnapp from './PunktlisteKnapp.tsx'
 import NummerertListeKnapp from './NummerertListeKnapp.tsx'
 import SvitsjMargerKnapp from './SvitsjMargerKnapp.tsx'
 import LinkKnapp from './LinkKnapp/LinkKnapp.tsx'
-import SettInnDelmalKnapp from './SettInnDelmalKnapp.tsx'
 import FormateringMeny from './FormateringMeny.tsx'
 import Skillelinje from './Skillelinje.tsx'
 import { useRefSize } from '../hooks.ts'
@@ -52,7 +51,6 @@ const Verktøylinje = () => {
             <PunktlisteKnapp />
             <NummerertListeKnapp />
             <Skillelinje />
-            <SettInnDelmalKnapp />
             <SvitsjMargerKnapp />
             <BlokktypeMeny />
           </>
@@ -66,7 +64,6 @@ const Verktøylinje = () => {
             <KursivKnapp />
             <UnderlinjeKnapp />
             <PunktlisteKnapp />
-            <SettInnDelmalKnapp />
             <FormateringMeny />
             <BlokktypeMeny />
           </>
@@ -77,7 +74,6 @@ const Verktøylinje = () => {
             <FetKnapp />
             <KursivKnapp />
             <PunktlisteKnapp />
-            <SettInnDelmalKnapp />
             <FormateringMeny />
             <BlokktypeMeny />
           </>

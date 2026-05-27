@@ -123,12 +123,24 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
           {(vedtaksresultat || erHenleggelse) && (
             <TextContainer>
               <Box paddingInline="space-8 space-0">
-                {(!lesevisning || isBehandlingFerdigstilt(gjeldendeBehandling) || (lesevisning && harBrevISak)) && (
-                  <Heading level="2" size="xsmall" spacing>
-                    {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
-                  </Heading>
-                )}
                 <VStack gap="space-12">
+                  {erHenleggelse && !lesevisning && (
+                    <HenleggForm
+                      ref={henleggFormRef}
+                      onHenleggelse={henlegg}
+                      onSave={lagreHenleggelse}
+                      defaultÅrsak={henleggelseUtfall.utfall}
+                      defaultBegrunnelse={henleggelseUtfall.begrunnelse}
+                    />
+                  )}
+                  {isBehandlingFerdigstilt(gjeldendeBehandling) && lesevisning && henleggelseUtfall && (
+                    <HenleggLesevisning utfall={henleggelseUtfall} />
+                  )}
+                  {(!lesevisning || isBehandlingFerdigstilt(gjeldendeBehandling) || (lesevisning && harBrevISak)) && (
+                    <Heading level="2" size="xsmall">
+                      {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
+                    </Heading>
+                  )}
                   {lesevisning &&
                     (brevMetadata?.status === Brevstatus.UTBOKS || brevMetadata?.status === Brevstatus.FERDIGSTILT) && (
                       <InlineMessage status="info" size="small">
@@ -216,19 +228,6 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
                     <InlineMessage status="info" size="small">
                       Ferdigstill utkastet i brevpanelet. Brevet blir lagt til utsending etter at vedtaket er fattet.
                     </InlineMessage>
-                  )}
-
-                  {erHenleggelse && !lesevisning && (
-                    <HenleggForm
-                      ref={henleggFormRef}
-                      onHenleggelse={henlegg}
-                      onSave={lagreHenleggelse}
-                      defaultÅrsak={henleggelseUtfall.utfall}
-                      defaultBegrunnelse={henleggelseUtfall.begrunnelse}
-                    />
-                  )}
-                  {isBehandlingFerdigstilt(gjeldendeBehandling) && lesevisning && henleggelseUtfall && (
-                    <HenleggLesevisning utfall={henleggelseUtfall} />
                   )}
                 </VStack>
               </Box>

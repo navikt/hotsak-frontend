@@ -6,8 +6,8 @@ test.describe('Notater', () => {
   test('kan opprette en kommentar', async ({ page }) => {
     await åpneSak(page)
 
-    // Open notater panel via the pencil icon tab
-    await page.getByRole('tab', { name: /notater/i }).click()
+    // Open notater panel via the pencil icon button
+    await page.getByRole('button', { name: /notater/i }).click()
 
     // "Kommentar" is selected by default in the ToggleGroup
     const kommentarTextbox = page.getByRole('textbox', { name: /kommentar/i })

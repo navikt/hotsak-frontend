@@ -72,6 +72,10 @@ export function isBehandlingsutfallHenleggelse(utfall?: Behandlingsutfall): utfa
   return utfall != null && utfall.type === 'HENLEGGELSE'
 }
 
+export function isBehandlingsutfallOverføring(utfall?: Behandlingsutfall): utfall is BehandlingsutfallOverføring {
+  return utfall != null && utfall.type === 'OVERFØRING'
+}
+
 export interface Operasjoner {
   // vedtak:
   overfør: { gjenstående: GjenståendeOverfør[] }
@@ -111,7 +115,8 @@ export enum Henleggelsesårsak {
   DUPLIKAT = 'DUPLIKAT',
   FEIL_BRUKER = 'FEIL_BRUKER',
   SØKNAD_TRUKKET = 'SØKNAD_TRUKKET',
-  FEILAKTIG_OPPRETTET = 'FEILAKTIG_OPPRETTET',
+  FEIL_HJELPEMIDDEL = 'FEIL_HJELPEMIDDEL',
+  FLERE_SØKNADER_SAMME_BEHOV = 'FLERE_SØKNADER_SAMME_BEHOV',
   ANNET = 'ANNET',
 }
 

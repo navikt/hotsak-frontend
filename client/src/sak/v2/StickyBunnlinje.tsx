@@ -8,7 +8,12 @@ import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
 import { useUtførtAv, utførtAvNavn } from '../../tilgang/UtførtAv.ts'
 import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
 import { formaterDato } from '../../utils/dato'
-import { type FerdigstiltBehandling, Gjenstående, isBehandlingFerdigstilt } from './behandling/behandlingTyper'
+import {
+  type FerdigstiltBehandling,
+  Gjenstående,
+  isBehandlingFerdigstilt,
+  isBehandlingsutfallOverføring,
+} from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { BehandlingsutfallTag } from './BehandlingsutfallTag.tsx'
 import classes from './StickyBunnlinje.module.css'
@@ -56,7 +61,11 @@ export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps)
         <HStack align="center" justify="space-between" gap="space-16">
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
-              {gjeldendeBehandling?.utfall?.type === 'HENLEGGELSE' ? 'Ferdigstill' : 'Fatt vedtak'}
+              {isBehandlingsutfallOverføring(gjeldendeBehandling?.utfall)
+                ? 'Overfør til Gosys'
+                : gjeldendeBehandling?.utfall?.type === 'HENLEGGELSE'
+                  ? 'Ferdigstill'
+                  : 'Fatt vedtak'}
             </Button>
           )}
           {isBehandlingFerdigstilt(gjeldendeBehandling) && <Behandlingsutfall behandling={gjeldendeBehandling} />}

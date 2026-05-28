@@ -12,7 +12,12 @@ import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useSak } from '../../saksbilde/useSak.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
-import { Gjenstående, isBehandlingsutfallHenleggelse, isBehandlingsutfallVedtak } from './behandling/behandlingTyper.ts'
+import {
+  Gjenstående,
+  isBehandlingsutfallHenleggelse,
+  isBehandlingsutfallOverføring,
+  isBehandlingsutfallVedtak,
+} from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
@@ -20,6 +25,7 @@ import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
+import { OverførTilGosysModal } from './modaler/OverførTilGosysModal.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
@@ -32,6 +38,7 @@ import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
 
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { useMiljø } from '../../utils/useMiljø.ts'
+import { OverførtilGosysValideringFeil } from './modaler/OverførtilGosysValideringFeil.tsx'
 
 function AvrundetPanel({ children }: { children: ReactNode }) {
   return (
@@ -53,6 +60,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
   const [visHenleggModal, setVisHenleggModal] = useState(false)
+  const [visOverførGosysModal, setVisOverførGosysModal] = useState(false)
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
@@ -68,6 +76,8 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   const behandlingsutfall = gjeldendeBehandling?.utfall
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
+  const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
+  const [visOverføringValideringsfeil, setVisOverføringValideringsfeil] = useState(false)
 
   useSakHotkeys({
     onAnnetResultat: () => setAnnetResultatValgt(true),
@@ -256,12 +266,24 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
       {isBehandlingsutfallHenleggelse(behandlingsutfall) && (
         <HenleggModal open={visHenleggModal} onClose={() => setVisHenleggModal(false)} sak={sak.data} />
       )}
+      <OverførTilGosysModal open={visOverførGosysModal} onClose={() => setVisOverførGosysModal(false)} />
+      <OverførtilGosysValideringFeil
+        gjenstående={gjenståendeForOverføringTilGosys}
+        open={visOverføringValideringsfeil}
+        onClose={() => setVisOverføringValideringsfeil(false)}
+      />
     </Box>
   )
 
   async function modalVelger() {
     if (!gjeldendeBehandling || !behandlingsutfall) {
       setVisResultatManglerModal(true)
+    } else if (isBehandlingsutfallOverføring(behandlingsutfall)) {
+      if (gjenståendeForOverføringTilGosys.length > 0) {
+        setVisOverføringValideringsfeil(true)
+      } else {
+        setVisOverførGosysModal(true)
+      }
     } else if (brevutkastIkkeFerdigstilt) {
       setVisBrevMangler(true)
     } else if (notaterIkkeFerdigstilt) {

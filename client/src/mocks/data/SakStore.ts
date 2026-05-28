@@ -5,6 +5,7 @@ import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
   Behandling,
   Gjenstående,
+  Henleggelsesårsak,
   LagreBehandlingRequest,
   UtfallLåst,
   VedtaksResultat,
@@ -229,8 +230,10 @@ export class SakStore extends Dexie {
     const behandling = await this.behandlinger.get(behandlingId)
     const gjenstående =
       request.utfall?.utfall === VedtaksResultat.INNVILGET ||
-      request.utfall?.utfall === 'FEILAKTIG_OPPRETTET' ||
-      request.utfall?.utfall === 'ANNET'
+      request.utfall?.utfall === Henleggelsesårsak.FEIL_HJELPEMIDDEL ||
+      request.utfall?.utfall === Henleggelsesårsak.FLERE_SØKNADER_SAMME_BEHOV ||
+      request.utfall?.utfall === Henleggelsesårsak.ANNET ||
+      request.utfall?.type === 'OVERFØRING'
         ? []
         : [Gjenstående.BREV_MANGLER]
 

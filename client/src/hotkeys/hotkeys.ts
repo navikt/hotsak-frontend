@@ -19,11 +19,6 @@ export const GLOBALE_HOTKEYS = {
     alt: true,
     description: 'Åpne Modia',
   },
-  åpneGosys: {
-    code: 'KeyP',
-    alt: true,
-    description: 'Åpne Gosys',
-  },
   visHurtigtaster: {
     code: 'KeyH',
     alt: true,

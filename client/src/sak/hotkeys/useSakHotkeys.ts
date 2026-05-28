@@ -1,7 +1,9 @@
 import { SAK_HOTKEYS } from '../../hotkeys/hotkeys.ts'
 import { useHotkey } from '../../hotkeys/useHotkey.ts'
 import { useOppgave } from '../../oppgave/useOppgave.ts'
+import { useOppgaveUrl } from '../../oppgave/useOppgaveUrl.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
+import { useUmami } from '../../sporing/useUmami.ts'
 import { useErPilot } from '../../tilgang/useTilgang.ts'
 import { Gjenstående, isBehandlingsutfallVedtak, VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../v2/behandling/useBehandling.ts'
@@ -20,7 +22,9 @@ export function useSakHotkeys({
 }) {
   const erHotsakEksperimenter = useErPilot('hotsakEksperimenter')
   const { oppgave } = useOppgave()
+  const oppgaveUrl = useOppgaveUrl(oppgave.oppgaveId)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  const { logOppgaveÅpnetIGosys } = useUmami()
   const { lagreBehandling } = useBehandlingActions()
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
 
@@ -49,5 +53,14 @@ export function useSakHotkeys({
       }
     },
     { enabled: erHotsakEksperimenter && oppgaveErUnderBehandlingAvInnloggetAnsatt, skipInInputFields: true }
+  )
+
+  useHotkey(
+    SAK_HOTKEYS.åpneOppgaveIGosys,
+    () => {
+      logOppgaveÅpnetIGosys()
+      window.open(oppgaveUrl, 'gosys')
+    },
+    { enabled: erHotsakEksperimenter, skipInInputFields: true }
   )
 }

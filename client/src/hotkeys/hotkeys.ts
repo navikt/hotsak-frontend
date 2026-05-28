@@ -55,6 +55,11 @@ export const SAK_HOTKEYS = {
     alt: true,
     description: 'Innvilge uten brev',
   },
+  åpneOppgaveIGosys: {
+    code: 'KeyG',
+    alt: true,
+    description: 'Åpne oppgaven i Gosys',
+  },
 } as const satisfies Record<string, HotkeyDefinition>
 
 export const OPPGAVELISTE_HOTKEYS = {

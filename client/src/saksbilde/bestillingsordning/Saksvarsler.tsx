@@ -4,7 +4,7 @@ import { Varsel } from '../../types/types.internal'
 
 export function Saksvarsler({ varsler }: { varsler: Varsel[] }) {
   return varsler.map((varsel) => (
-    <Box paddingBlock="space-0 space-16">
+    <Box paddingBlock="space-0 space-16" key={varsel.tittel}>
       <InfoCard data-color="warning" size="small">
         <InfoCard.Header>
           <InfoCard.Title>{varsel.tittel}</InfoCard.Title>

@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Dialog } from '@navikt/ds-react'
-import { ReactNode, useEffect, useRef } from 'react'
+import { ReactNode, useRef } from 'react'
 
 export interface BekreftelsesDialogProps {
   heading: string
@@ -36,16 +36,6 @@ export function BekreftelsesDialog(props: BekreftelsesDialogProps) {
 
   const bekreftKnappRef = useRef<HTMLButtonElement>(null)
 
-  useEffect(() => {
-    if (!open) return
-    const id = setTimeout(() => {
-      console.log('BK', bekreftKnappRef.current)
-      bekreftKnappRef.current?.focus()
-    }, 0)
-    console.log('Fokuserer bekreft-knapp i dialog', id)
-    return () => clearTimeout(id)
-  }, [open])
-
   const bekreftKnapp = (
     <Button
       variant={bekreftButtonVariant}
@@ -66,27 +56,22 @@ export function BekreftelsesDialog(props: BekreftelsesDialogProps) {
   )
 
   return (
-    <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()}>
-      <Dialog.Popup closeOnOutsideClick={false} width={width}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => !nextOpen && onClose()}
+      onOpenChangeComplete={(isOpen) => {
+        if (isOpen) {
+          bekreftKnappRef.current?.focus({ focusVisible: true } as FocusOptions & { focusVisible?: boolean })
+        }
+      }}
+    >
+      <Dialog.Popup initialFocusTo={bekreftKnappRef} closeOnOutsideClick={false} width={width}>
         <Dialog.Header>
           <Dialog.Title>{heading}</Dialog.Title>
         </Dialog.Header>
         {children && <Dialog.Body>{children}</Dialog.Body>}
         <Dialog.Footer>
-          {reverserKnapperekkefølge ? (
-            avbrytKnapp
-          ) : (
-            <Button
-              variant={bekreftButtonVariant}
-              ref={bekreftKnappRef}
-              size={buttonSize}
-              onClick={onBekreft}
-              disabled={loading}
-              loading={loading}
-            >
-              Balalaika
-            </Button>
-          )}
+          {reverserKnapperekkefølge ? avbrytKnapp : bekreftKnapp}
           {reverserKnapperekkefølge ? bekreftKnapp : avbrytKnapp}
         </Dialog.Footer>
       </Dialog.Popup>

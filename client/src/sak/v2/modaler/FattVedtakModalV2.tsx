@@ -4,7 +4,8 @@ import { useRef, useState } from 'react'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
-import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
+import { usePerson } from '../../../personoversikt/usePerson'
+import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
 import { Sak } from '../../../types/types.internal'
 import { assertNever } from '../../../utils/type'
 import { VedtakFormValues } from '../../felles/useVedtak'
@@ -13,7 +14,6 @@ import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import classes from './FattVedtakModalV2.module.css'
-import { usePerson } from '../../../personoversikt/usePerson'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -82,7 +82,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   })()
 
   return (
-    <BekreftelseModal
+    <BekreftelsesDialog
       heading={`Vil du ${vedtakTekst?.verb} søknaden?`}
       loading={vedtakLoader}
       open={open}
@@ -149,6 +149,6 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           </Alert>
         </VStack>
       )}
-    </BekreftelseModal>
+    </BekreftelsesDialog>
   )
 }

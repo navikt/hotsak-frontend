@@ -1,6 +1,7 @@
-import { Box, Button, Heading, HelpText, HStack, InlineMessage, Select, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HelpText, HStack, InfoCard, InlineMessage, Select, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
+import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
@@ -13,7 +14,9 @@ import {
   Gjenstående,
   Henleggelsesårsak,
   isBehandlingsutfallHenleggelse,
+  isBehandlingsutfallOverføring,
   isBehandlingsutfallVedtak,
+  OverførtTil,
   UtfallLåst,
   VedtaksResultat,
   type Behandling,
@@ -36,6 +39,7 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined
   const henleggelseUtfall = isBehandlingsutfallHenleggelse(behandling?.utfall) ? behandling.utfall : undefined
+  const erBehandlingsutfallOverføring = behandling?.utfall && isBehandlingsutfallOverføring(behandling.utfall)
   const erHenleggelse = henleggelseUtfall != null
   const gjenstående = behandling?.gjenstående || []
 
@@ -53,21 +57,31 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
     await lagreBehandling({ type: 'HENLEGGELSE', utfall, begrunnelse })
   }
 
+  const lagreOverføring = async () => {
+    await lagreBehandling({ type: 'OVERFØRING', utfall: OverførtTil.GOSYS })
+  }
+
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8">
-      <VedtaksResultatVelger utfall={vedtaksresultat} erHenleggelse={erHenleggelse} harBrevutkast={harBrevutkast} />
-
-      {(vedtaksresultat || erHenleggelse) && (
+      <VedtaksResultatVelger
+        behandling={behandling}
+        utfall={vedtaksresultat}
+        erHenleggelse={erHenleggelse}
+        harBrevutkast={harBrevutkast}
+      />
+      {(vedtaksresultat || erHenleggelse || erBehandlingsutfallOverføring) && (
         <TextContainer>
           <Box paddingInline="space-8 space-0">
             <VStack gap="space-12">
-              {erHenleggelse && (
+              {(erHenleggelse || erBehandlingsutfallOverføring) && (
                 <HenleggForm
                   ref={henleggFormRef}
                   onHenleggelse={henlegg}
                   onSave={lagreHenleggelse}
-                  defaultÅrsak={henleggelseUtfall.utfall}
-                  defaultBegrunnelse={henleggelseUtfall.begrunnelse}
+                  onOverføringValgt={lagreOverføring}
+                  defaultÅrsak={erBehandlingsutfallOverføring ? undefined : henleggelseUtfall?.utfall}
+                  defaultBegrunnelse={erBehandlingsutfallOverføring ? undefined : henleggelseUtfall?.begrunnelse}
+                  overføringTilGosys={erBehandlingsutfallOverføring === true}
                 />
               )}
 
@@ -125,6 +139,17 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
           </Box>
         </TextContainer>
       )}
+      {isBehandlingsutfallOverføring(behandling?.utfall) && (
+        <InfoCard data-color="warning">
+          <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+            <InfoCard.Title>Du må overføre saken til Gosys og rydde opp i dokumentene</InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>
+            Hotsak mangler funksjonalitet for å håndtere avvik. Du må overføre saken til Gosys og følge rutinen som
+            gjelder for håndtering av denne typen avvik.
+          </InfoCard.Content>
+        </InfoCard>
+      )}
     </VStack>
   )
 }
@@ -162,17 +187,24 @@ function VedtaksResultatVelger({
   utfall,
   erHenleggelse,
   harBrevutkast,
+  behandling,
 }: {
   utfall?: VedtaksResultat
   erHenleggelse: boolean
   harBrevutkast: boolean
+  behandling?: Behandling
 }) {
   const { lagreBehandling } = useBehandlingActions()
   const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
   const { erProd } = useMiljø()
 
   const HENLEGGELSE_VALUE = 'HENLEGGELSE'
-  const currentValue = erHenleggelse ? HENLEGGELSE_VALUE : (utfall ?? '')
+  const erBehandlingsutfallOverføring = behandling?.utfall && isBehandlingsutfallOverføring(behandling.utfall)
+  const currentValue = erBehandlingsutfallOverføring
+    ? OverførtTil.GOSYS
+    : erHenleggelse
+      ? HENLEGGELSE_VALUE
+      : (utfall ?? '')
 
   return (
     <>
@@ -189,7 +221,7 @@ function VedtaksResultatVelger({
         <Select
           size="small"
           label="Resultat"
-          readOnly={harBrevutkast}
+          readOnly={harBrevutkast || erBehandlingsutfallOverføring}
           className={classes.selectAuto}
           value={currentValue}
           onChange={async (e) => {
@@ -211,6 +243,7 @@ function VedtaksResultatVelger({
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
           {!erProd && <option value={HENLEGGELSE_VALUE}>Henlagt</option>}
+          {erBehandlingsutfallOverføring && <option value={OverførtTil.GOSYS}>Overført til Gosys</option>}
         </Select>
         {harBrevutkast && (
           <div>

@@ -59,6 +59,6 @@ export function useSakHotkeys({
       logOppgaveÅpnetIGosys()
       window.open(oppgaveUrl, 'gosys')
     },
-    { enabled: !!oppgaveUrl }
+    { enabled: oppgave?.oppgaveId != null }
   )
 }

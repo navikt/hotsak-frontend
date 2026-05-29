@@ -13,7 +13,7 @@ export function useHotkey(
   })
 
   const enabled = options?.enabled ?? true
-  const skipInInputFields = options?.skipInInputFields ?? false
+  const skipInInputFields = options?.skipInInputFields ?? true
 
   useEffect(() => {
     if (!enabled) return

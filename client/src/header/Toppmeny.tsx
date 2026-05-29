@@ -13,7 +13,6 @@ import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
-import { Pilot } from '../felleskomponenter/Pilot.tsx'
 import classes from './Toppmeny.module.css'
 import { useDarkMode } from './useDarkMode.ts'
 import { useModia } from './useModia.ts'
@@ -100,14 +99,12 @@ export function Toppmeny() {
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
             </ActionMenu.Group>
-            <Pilot name="hotsakEksperimenter">
-              <ActionMenu.Divider />
-              <ActionMenu.Group label="Hjelp">
-                <ActionMenu.Item onSelect={hurtigtaster.åpne} shortcut="Alt + H">
-                  Hurtigtaster
-                </ActionMenu.Item>
-              </ActionMenu.Group>
-            </Pilot>
+            <ActionMenu.Divider />
+            <ActionMenu.Group label="Hjelp">
+              <ActionMenu.Item onSelect={hurtigtaster.åpne} shortcut="Alt + H">
+                Hurtigtaster
+              </ActionMenu.Item>
+            </ActionMenu.Group>
           </ActionMenu.Content>
           <EndringsloggMenu />
         </ActionMenu>

@@ -16,7 +16,6 @@ import { ResponsiveStack } from '../../../../felleskomponenter/ResponsiveStack'
 import classes from './Tilbehørsliste.module.css'
 import { ProduktV2 } from '../ProduktV2'
 import { EndretTilbehørBegrunnelse } from './EndretTilbehørBegrunnelse'
-import { Eksperiment } from '../../../../felleskomponenter/Eksperiment'
 
 export function FrittStåendeTilbehørV2({
   sakId,
@@ -156,9 +155,7 @@ function Tilbehør({
           )}
           {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
         </VStack>
-        <Eksperiment>
-          {produkt && <Produktbilde src={produkt?.produktbildeUri} alt={tilbehør.navn} size="small" />}
-        </Eksperiment>
+        {produkt && <Produktbilde src={produkt?.produktbildeUri} alt={tilbehør.navn} size="small" />}
       </ResponsiveStack>
       <EndreTilbehørModal
         åpen={visAlternativerModal}

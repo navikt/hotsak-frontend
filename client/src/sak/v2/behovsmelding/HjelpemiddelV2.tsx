@@ -4,7 +4,6 @@ import { Button, Heading, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Produktbilde } from '../../../felleskomponenter/bilde/Produktbilde.tsx'
 import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard.tsx'
-import { Pilot } from '../../../felleskomponenter/Pilot.tsx'
 import { ResponsiveStack } from '../../../felleskomponenter/ResponsiveStack.tsx'
 import { Skillelinje } from '../../../felleskomponenter/Strek.tsx'
 import { BrytbarBrødtekst, Etikett, TextContainer } from '../../../felleskomponenter/typografi.tsx'
@@ -130,11 +129,9 @@ export function HjelpemiddelV2({
               </HStack>
             </VStack>
           </VStack>
-          <Pilot name="hotsakEksperimenter">
-            {produkt && (
-              <Produktbilde src={produkt?.produktbildeUri} alt={hjelpemiddel.produkt.artikkelnavn} size="small" />
-            )}
-          </Pilot>
+          {produkt && (
+            <Produktbilde src={produkt?.produktbildeUri} alt={hjelpemiddel.produkt.artikkelnavn} size="small" />
+          )}
         </ResponsiveStack>
         <Skillelinje />
         <VStack gap="space-8" paddingInline="space-12" paddingBlock="space-4 space-12">

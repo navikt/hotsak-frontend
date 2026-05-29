@@ -1,33 +1,20 @@
+import { useMatch } from 'react-router-dom'
 import { useDataGridFilterResetAllHandler } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { OPPGAVELISTE_HOTKEYS } from '../hotkeys/hotkeys.ts'
 import { useHotkey } from '../hotkeys/useHotkey.ts'
-import { useErPilot } from '../tilgang/useTilgang.ts'
 import { OppgaveToolbarTab, useOppgavelisteContext, useOppgavelisteTabChangeHandler } from './OppgavelisteContext.tsx'
 
 export function useOppgavelisteHotkeys() {
-  const erHotsakEksperimenter = useErPilot('hotsakEksperimenter')
   const { currentTab } = useOppgavelisteContext()
   const handleTabChanged = useOppgavelisteTabChangeHandler()
   const handleFilterResetAll = useDataGridFilterResetAllHandler(currentTab)
+  const erPåMineOppgaver = !!useMatch('/oppgaver/mine')
 
-  useHotkey(OPPGAVELISTE_HOTKEYS.alle, () => handleTabChanged(OppgaveToolbarTab.ALLE), {
-    enabled: erHotsakEksperimenter,
-    skipInInputFields: true,
-  })
-  useHotkey(OPPGAVELISTE_HOTKEYS.hast, () => handleTabChanged(OppgaveToolbarTab.HASTESAKER), {
-    enabled: erHotsakEksperimenter,
-    skipInInputFields: true,
-  })
-  useHotkey(OPPGAVELISTE_HOTKEYS.venter, () => handleTabChanged(OppgaveToolbarTab.PÅ_VENT), {
-    enabled: erHotsakEksperimenter,
-    skipInInputFields: true,
-  })
-  // TODO Ikke ferdigstilte hurtigtast i alle tabs
+  useHotkey(OPPGAVELISTE_HOTKEYS.alle, () => handleTabChanged(OppgaveToolbarTab.ALLE), {})
+  useHotkey(OPPGAVELISTE_HOTKEYS.hast, () => handleTabChanged(OppgaveToolbarTab.HASTESAKER), {})
+  useHotkey(OPPGAVELISTE_HOTKEYS.venter, () => handleTabChanged(OppgaveToolbarTab.PÅ_VENT), {})
   useHotkey(OPPGAVELISTE_HOTKEYS.ferdigstilte, () => handleTabChanged(OppgaveToolbarTab.FERDIGSTILTE), {
-    enabled: erHotsakEksperimenter,
+    enabled: erPåMineOppgaver,
   })
-  useHotkey(OPPGAVELISTE_HOTKEYS.fjernAlleFiltre, handleFilterResetAll, {
-    enabled: erHotsakEksperimenter,
-    skipInInputFields: true,
-  })
+  useHotkey(OPPGAVELISTE_HOTKEYS.fjernAlleFiltre, handleFilterResetAll, {})
 }

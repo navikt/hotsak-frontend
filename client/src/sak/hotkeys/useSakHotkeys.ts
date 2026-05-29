@@ -20,7 +20,7 @@ export function useSakHotkeys({
   onFattVedtak: () => void
 }) {
   const { oppgave } = useOppgave()
-  const oppgaveUrl = useOppgaveUrl(oppgave.oppgaveId)
+  const oppgaveUrl = useOppgaveUrl(oppgave?.oppgaveId)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { logOppgaveÅpnetIGosys } = useUmami()
   const { lagreBehandling } = useBehandlingActions()
@@ -53,8 +53,12 @@ export function useSakHotkeys({
     { enabled: oppgaveErUnderBehandlingAvInnloggetAnsatt }
   )
 
-  useHotkey(SAK_HOTKEYS.åpneOppgaveIGosys, () => {
-    logOppgaveÅpnetIGosys()
-    window.open(oppgaveUrl, 'gosys')
-  })
+  useHotkey(
+    SAK_HOTKEYS.åpneOppgaveIGosys,
+    () => {
+      logOppgaveÅpnetIGosys()
+      window.open(oppgaveUrl, 'gosys')
+    },
+    { enabled: !!oppgaveUrl }
+  )
 }

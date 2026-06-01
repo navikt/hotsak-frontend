@@ -17,7 +17,7 @@ export function Utlevert({ alleredeUtlevert, utlevertInfo }: UtlevertProps) {
       utlevertTekst = 'Fra fremskutt lager'
       break
     case UtlevertType.OVERFØRT:
-      utlevertTekst = `Overført fra annen bruker. Brukernummer ${utlevertInfo.annenKommentar}`
+      utlevertTekst = `Overført fra annen bruker. Brukernummer ${utlevertInfo.overførtFraBruker}`
       break
     case UtlevertType.KORTTIDSLÅN:
       utlevertTekst = 'Korttidsutlån/utprøvingslån'

@@ -37,6 +37,12 @@ export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps)
           </Tekst>
         </HStack>
       )}
+      {levering.annenUtleveringMottaker && (
+        <HStack gap="space-6">
+          <Etikett>Mottaker:</Etikett>
+          <Tekst>{levering.annenUtleveringMottaker}</Tekst>
+        </HStack>
+      )}
     </VStack>
   )
 }

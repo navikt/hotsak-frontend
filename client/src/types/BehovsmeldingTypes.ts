@@ -61,6 +61,7 @@ export interface Levering {
   annenUtleveringsadresse: Veiadresse
   annenUtleveringskommune?: Kommune
   annenUtleveringsbydel?: Bydel
+  annenUtleveringMottaker?: string
   utleveringKontaktperson?: Kontaktperson
   annenKontaktperson?: AnnenKontaktperson
   utleveringMerknad?: string

@@ -68,7 +68,7 @@ export function Høyrekolonne({ oppgave }: HøyrekolonneProps) {
             <Historikk />
           </Tabs.Panel>
           <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}>
-            <Box paddingInline="space-16 space-16">
+            <Box>
               <UtlånsoversiktV2 />
             </Box>
           </Tabs.Panel>

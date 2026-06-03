@@ -23,7 +23,7 @@ export function Historikk() {
       loading={isLoading && 'Henter historikk...'}
     >
       {hendelser.length > 0 ? (
-        <VStack as={List} gap="space-8">
+        <VStack as={List} gap="space-8" paddingBlock="space-8">
           {hendelser.map((it) => (
             <HistorikkHendelse key={it.id} {...it} />
           ))}

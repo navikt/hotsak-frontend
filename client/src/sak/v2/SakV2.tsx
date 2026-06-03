@@ -8,8 +8,8 @@ import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
-import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
-import { useSak } from '../../saksbilde/useSak.ts'
+import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
+import { type Sak } from '../../types/types.internal.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
@@ -55,13 +55,19 @@ function AvrundetPanel({ children }: { children: ReactNode }) {
   )
 }
 
-function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
-  const { sak } = useSak()
-  const { behovsmelding } = useBehovsmelding()
+function SakV2Content({
+  oppgave,
+  sak,
+  behovsmelding,
+}: {
+  oppgave?: Saksbehandlingsoppgave
+  sak: Sak
+  behovsmelding: Innsenderbehovsmelding
+}) {
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
   const [visHenleggModal, setVisHenleggModal] = useState(false)
   const [visOverførGosysModal, setVisOverførGosysModal] = useState(false)
-  const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
+  const { personInfo, isLoading: personInfoLoading } = usePerson(sak.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
@@ -104,16 +110,6 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
     sidebarOpenDefaultSizeRequestId,
   })
 
-  if (!behovsmelding) {
-    // TODO skeleton eller loader her?
-    return <div>Fant ikke behovsmelding</div>
-  }
-
-  if (!sak) {
-    // TODO skeleton eller loader her?
-    return <div>Fant ikke sak</div>
-  }
-
   return (
     <Box background="neutral-moderate" className={classes.container} style={{ minWidth: `${totalVisibleMinWidth}px` }}>
       <HStack width="100%" wrap={false}>
@@ -139,7 +135,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
               groupResizeBehavior="preserve-pixel-size"
             >
               <AvrundetPanel>
-                <BehandlingPanel sak={sak.data} behovsmelding={behovsmelding} />
+                <BehandlingPanel sak={sak} behovsmelding={behovsmelding} />
               </AvrundetPanel>
             </Panel>
           )}
@@ -167,7 +163,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
                 minSize={`${behovsmeldingsPanel.minWidth}${behovsmeldingsPanel.minWidthUnit}`}
               >
                 <AvrundetPanel>
-                  <BehovsmeldingsPanel sak={sak.data} behovsmelding={behovsmelding} />
+                  <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
                 </AvrundetPanel>
               </Panel>
             </>
@@ -183,7 +179,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
                 groupResizeBehavior="preserve-pixel-size"
               >
                 <AvrundetPanel>
-                  <KontaktinformasjonPanel sak={sak.data} behovsmelding={behovsmelding} />
+                  <KontaktinformasjonPanel sak={sak} behovsmelding={behovsmelding} />
                 </AvrundetPanel>
               </Panel>
             </>
@@ -233,7 +229,7 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
         </Group>
         {!erProd && <VertikalIkonBar />}
       </Box>
-      <StickyBunnlinje oppgave={oppgave} sak={sak.data} onClick={() => modalVelger()} />
+      <StickyBunnlinje oppgave={oppgave} sak={sak} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <BrevManglerModal
@@ -258,12 +254,12 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
         <FattVedtakModalV2
           open={visFerdigstillModal}
           onClose={() => setVisFerdigstillModal(false)}
-          sak={sak.data}
+          sak={sak}
           vedtaksresultat={behandlingsutfall.utfall}
         />
       )}
       {isBehandlingsutfallHenleggelse(behandlingsutfall) && (
-        <HenleggModal open={visHenleggModal} onClose={() => setVisHenleggModal(false)} sak={sak.data} />
+        <HenleggModal open={visHenleggModal} onClose={() => setVisHenleggModal(false)} sak={sak} />
       )}
       <OverførTilGosysModal open={visOverførGosysModal} onClose={() => setVisOverførGosysModal(false)} />
       <OverførtilGosysValideringFeil
@@ -298,10 +294,18 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   }
 }
 
-export default function SakV2({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
+export default function SakV2({
+  oppgave,
+  sak,
+  behovsmelding,
+}: {
+  oppgave?: Saksbehandlingsoppgave
+  sak: Sak
+  behovsmelding: Innsenderbehovsmelding
+}) {
   return (
     <AsyncBoundary>
-      <SakV2Content oppgave={oppgave} />
+      <SakV2Content oppgave={oppgave} sak={sak} behovsmelding={behovsmelding} />
     </AsyncBoundary>
   )
 }

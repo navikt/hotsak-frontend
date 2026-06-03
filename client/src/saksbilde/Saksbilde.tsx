@@ -15,6 +15,7 @@ import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))
 const SakV2 = lazy(() => import('../sak/v2/SakV2'))
@@ -22,9 +23,10 @@ const Søknadsbilde = lazy(() => import('./Søknadsbilde'))
 
 const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading, error: sakError } = useSak()
-  const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
+  const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
+  const { erIkkeProd } = useMiljø()
 
   if (isSakLoading || isPersonLoading || isBehovsmeldingLoading) return <SakLoader />
 
@@ -39,15 +41,18 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
     showBoundary(behovsmeldingError)
   }
 
-  if (!sak) return <div>Fant ikke sak</div>
+  // TODO: Bedre og finere feilmelding her
+  if (!sak || !behovsmelding) return <div>Fant ikke sak eller behovsmelding</div>
 
-  if (sak.data.sakstype === Sakstype.SØKNAD) {
+  const sakData = sak.data
+
+  if (sakData.sakstype === Sakstype.SØKNAD || (erIkkeProd && sakData.sakstype === Sakstype.BESTILLING)) {
     return (
       <div className={classes.wrapper}>
-        <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
+        <Sidetittel tittel={`Sak ${sakData.sakId}`} />
         <SakProvider>
           <SakbrukerinnstillingerProvider>
-            <SakV2 oppgave={oppgave} />
+            <SakV2 oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
           </SakbrukerinnstillingerProvider>
         </SakProvider>
       </div>
@@ -56,9 +61,9 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
 
   return (
     <div className={classes.wrapper}>
-      <Sidetittel tittel={`Sak ${sak.data.sakId}`} />
+      <Sidetittel tittel={`Sak ${sakData.sakId}`} />
       <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
-      <SakstypeSwitch oppgave={oppgave} sak={sak.data} />
+      <SakstypeSwitch oppgave={oppgave} sak={sakData} />
     </div>
   )
 })

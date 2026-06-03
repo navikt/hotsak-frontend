@@ -1,5 +1,5 @@
 import { WheelchairIcon } from '@navikt/aksel-icons'
-import { HStack, Tag } from '@navikt/ds-react'
+import { Tag, VStack } from '@navikt/ds-react'
 
 import { useUtlånoversikt } from '../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { useSak } from '../../saksbilde/useSak'
@@ -13,13 +13,13 @@ export function UtlånsoversiktIcon() {
   )
 
   return (
-    <HStack align="center" gap="space-0">
+    <VStack align="center" gap="space-0">
       <WheelchairIcon title="Utlånsoversikt" />
       {!isLoading && !error && (
         <Tag variant={`${antallUtlånteHjelpemidler > 0 ? 'info-moderate' : 'neutral-moderate'}`} size="xsmall">
           {antallUtlånteHjelpemidler}
         </Tag>
       )}
-    </HStack>
+    </VStack>
   )
 }

@@ -21,7 +21,7 @@ export function Notater(props: NotaterProps) {
 
   if (!oppgave || oppgaveErAvsluttet) {
     return (
-      <VStack gap="space-16">
+      <VStack gap="space-16" paddingBlock="space-12">
         <Notatinformasjon />
         <FerdigstilteNotater
           oppgaveId={oppgave?.oppgaveId}
@@ -34,7 +34,7 @@ export function Notater(props: NotaterProps) {
   }
 
   return (
-    <VStack gap="space-16">
+    <VStack gap="space-16" paddingBlock="space-12">
       <Notatinformasjon />
       {oppgaveErUnderBehandlingAvInnloggetAnsatt ? (
         <OpprettNotat oppgave={oppgave} finnAktivtUtkast={finnAktivtUtkast} />

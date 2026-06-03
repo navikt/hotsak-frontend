@@ -4,7 +4,7 @@ import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 import type { Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { Notater } from '../../sak/notat/Notater.tsx'
-import { NotaterIcon } from '../../sak/notat/NotaterIcon.tsx'
+import { NotaterIconLegacy } from '../../sak/notat/NotaterIcon.tsx'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
 import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
 import { HøyrekolonneTabs } from '../../types/types.internal'
@@ -58,7 +58,7 @@ export function Høyrekolonne({ oppgave }: HøyrekolonneProps) {
             <Tooltip content="Notater">
               <Tabs.Tab
                 value={HøyrekolonneTabs.NOTATER}
-                icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak.data.sakId} />}
+                icon={<NotaterIconLegacy oppgaveId={oppgave?.oppgaveId} sakId={sak.data.sakId} />}
               />
             </Tooltip>
           )}

@@ -1,5 +1,5 @@
 import { ClockDashedIcon } from '@navikt/aksel-icons'
-import { Button, VStack } from '@navikt/ds-react'
+import { Button, VStack, Box, Tooltip } from '@navikt/ds-react'
 
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { useSak } from '../../../saksbilde/useSak'
@@ -17,33 +17,58 @@ export function VertikalIkonBar({ oppgave }: SidebarProps) {
   const { aktivSidebar, setAktivSidebar } = useSakContext()
 
   return (
-    <VStack align="center" gap="space-12" paddingInline="space-4">
-      <Button
-        onClick={() => setAktivSidebar(SidebarValg.SAKSOVERSIKT)}
-        size="small"
-        style={aktivSidebar === SidebarValg.SAKSOVERSIKT ? { outline: '2px solid var(--ax-border-accent)' } : {}}
-        icon={<ClockDashedIcon title="Sakshistorikk" />}
-        variant="tertiary"
-        data-color="neutral"
-      />
-      <Button
-        size="small"
-        variant="tertiary"
-        data-color="neutral"
-        style={
-          aktivSidebar === SidebarValg.HJELPEMIDDELOVERSIKT ? { outline: '2px solid var(--ax-border-accent)' } : {}
-        }
-        onClick={() => setAktivSidebar(SidebarValg.HJELPEMIDDELOVERSIKT)}
-        icon={<UtlånsoversiktIcon />}
-      />
-      <Button
-        size="small"
-        variant="tertiary"
-        data-color="neutral"
-        style={aktivSidebar === SidebarValg.NOTATER ? { outline: '2px solid var(--ax-border-accent)' } : {}}
-        onClick={() => setAktivSidebar(SidebarValg.NOTATER)}
-        icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
-      />
-    </VStack>
+    <Box
+      background="default"
+      paddingBlock="space-12 space-0"
+      borderRadius="0 12 0 0"
+      height="100%"
+      borderColor="neutral-subtle"
+      borderWidth="1 1 0 1"
+    >
+      <VStack align="center" gap="space-12" paddingInline="space-4">
+        <Tooltip content="Sakshistorikk" placement="left">
+          <Button
+            onClick={() => setAktivSidebar(SidebarValg.SAKSHISTORIKK)}
+            size="small"
+            style={
+              aktivSidebar === SidebarValg.SAKSHISTORIKK
+                ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
+                : {}
+            }
+            icon={<ClockDashedIcon title="Sakshistorikk" />}
+            variant="tertiary"
+            data-color="neutral"
+          />
+        </Tooltip>
+        <Tooltip content="Utlånsoversikt" placement="left">
+          <Button
+            size="small"
+            variant="tertiary"
+            data-color="neutral"
+            style={
+              aktivSidebar === SidebarValg.HJELPEMIDDELOVERSIKT
+                ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
+                : {}
+            }
+            onClick={() => setAktivSidebar(SidebarValg.HJELPEMIDDELOVERSIKT)}
+            icon={<UtlånsoversiktIcon />}
+          />
+        </Tooltip>
+        <Tooltip content="Notater" placement="left">
+          <Button
+            size="small"
+            variant="tertiary"
+            data-color="neutral"
+            style={
+              aktivSidebar === SidebarValg.NOTATER
+                ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
+                : {}
+            }
+            onClick={() => setAktivSidebar(SidebarValg.NOTATER)}
+            icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
+          />
+        </Tooltip>
+      </VStack>
+    </Box>
   )
 }

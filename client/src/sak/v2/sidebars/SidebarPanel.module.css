@@ -1,0 +1,9 @@
+.icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.icon :global(svg) {
+  width: 1.5rem;
+  height: 1.5rem;
+}

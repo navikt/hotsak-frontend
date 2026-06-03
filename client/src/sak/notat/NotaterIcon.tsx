@@ -1,13 +1,15 @@
 import { NotePencilIcon } from '@navikt/aksel-icons'
-import { HStack, Tag } from '@navikt/ds-react'
+import { Tag, VStack, HStack } from '@navikt/ds-react'
 
 import { useOppgavekommentarer } from '../../oppgave/kommentar/useOppgavekommentarer'
 import { type OppgaveId } from '../../oppgave/oppgaveTypes'
 import classes from './NotaterIcon.module.css'
+
 import { NotificationBadge } from './NotificationBadge'
 import { useNotater } from './useNotater'
 
-export function NotaterIcon({ oppgaveId, sakId }: { oppgaveId?: OppgaveId; sakId?: string }) {
+// TODO: Slå sammen denne eller se om vi skal bruke vertikal sidebar overalt i stedet.
+export function NotaterIconLegacy({ oppgaveId, sakId }: { oppgaveId?: OppgaveId; sakId?: string }) {
   const { antallKommentarer } = useOppgavekommentarer(oppgaveId)
   const { antallNotater, harUtkast, isLoading } = useNotater(sakId)
 
@@ -28,5 +30,31 @@ export function NotaterIcon({ oppgaveId, sakId }: { oppgaveId?: OppgaveId; sakId
         </Tag>
       )}
     </HStack>
+  )
+}
+
+export function NotaterIcon({ oppgaveId, sakId }: { oppgaveId?: OppgaveId; sakId?: string }) {
+  const { antallKommentarer } = useOppgavekommentarer(oppgaveId)
+  const { antallNotater, harUtkast, isLoading } = useNotater(sakId)
+
+  const antall = antallKommentarer + antallNotater
+
+  return (
+    <VStack align="center" gap="space-0">
+      <div className={classes.iconWrapper}>
+        {harUtkast && <NotificationBadge />}
+        <NotePencilIcon title="Notater" />
+      </div>
+      {!isLoading && (
+        <Tag
+          size="xsmall"
+          variant={`${antall > 0 ? 'info-moderate' : 'neutral-moderate'}`}
+          className={classes.tag}
+          data-testid="notatteller"
+        >
+          {antall}
+        </Tag>
+      )}
+    </VStack>
   )
 }

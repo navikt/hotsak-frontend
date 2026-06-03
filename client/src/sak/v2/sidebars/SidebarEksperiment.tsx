@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@navikt/aksel-icons'
+import { ChevronRightIcon, NotePencilIcon } from '@navikt/aksel-icons'
 import { Box, Button } from '@navikt/ds-react'
 
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
@@ -13,6 +13,8 @@ import { useSakContext } from '../SakV2ContextType'
 import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
+import { Mellomtittel } from '../../../felleskomponenter/typografi'
+import { useMiljø } from '../../../utils/useMiljø'
 
 export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave
@@ -23,16 +25,20 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
   const { sak } = useSak()
   useUtlånoversikt(sak?.data.bruker.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
   const closePanel = useClosePanel('sidebarpanel')
+  const { erProd } = useMiljø()
 
   function renderActivePanel() {
     switch (aktivSidebar) {
-      case SidebarValg.SAKSOVERSIKT:
+      case SidebarValg.SAKSHISTORIKK:
         return <Historikk />
       case SidebarValg.HJELPEMIDDELOVERSIKT:
         return <UtlånsoversiktV2 />
       case SidebarValg.NOTATER:
         return (
-          <SidebarPanel tittel="Notater">
+          <SidebarPanel
+            tittel={erProd ? <Mellomtittel>Notater</Mellomtittel> : 'Notater'}
+            icon={<NotePencilIcon title="Notater" />}
+          >
             <Notater oppgave={oppgave} />
           </SidebarPanel>
         )

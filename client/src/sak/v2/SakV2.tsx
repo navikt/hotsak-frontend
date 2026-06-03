@@ -216,23 +216,22 @@ function SakV2Content({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
                 onResize={handleEksperimentSidebarResize}
               >
                 <div className={classes.eksperimentSidebarPanel}>
-                  <AvrundetPanel>
+                  <Box
+                    background="default"
+                    paddingBlock="space-12 space-0"
+                    borderRadius="12 0 0 0"
+                    height="100%"
+                    borderColor="neutral-subtle"
+                    borderWidth="1 0 0 1"
+                  >
                     <SidebarEksperiment oppgave={oppgave} />
-                  </AvrundetPanel>
+                  </Box>
                 </div>
               </Panel>
             </>
           )}
         </Group>
-        {!erProd && (
-          <>
-            <Box paddingInline="space-8 space-0">
-              <AvrundetPanel>
-                <VertikalIkonBar />
-              </AvrundetPanel>
-            </Box>
-          </>
-        )}
+        {!erProd && <VertikalIkonBar />}
       </Box>
       <StickyBunnlinje oppgave={oppgave} sak={sak.data} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />

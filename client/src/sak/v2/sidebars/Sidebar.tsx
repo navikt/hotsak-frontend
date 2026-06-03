@@ -7,13 +7,14 @@ import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { useSak } from '../../../saksbilde/useSak'
 import { Notater } from '../../notat/Notater'
-import { NotaterIcon } from '../../notat/NotaterIcon'
+import { NotaterIconLegacy } from '../../notat/NotaterIcon'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SakPanelTabTypes'
+import { useSakContext } from '../SakV2ContextType'
 import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import { useSakContext } from '../SakV2ContextType'
+import { Mellomtittel } from '../../../felleskomponenter/typografi'
 
 export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave
@@ -70,7 +71,7 @@ export function Sidebar({ oppgave }: SidebarProps) {
           <Tooltip content="Notater">
             <Tabs.Tab
               value={HøyrekolonneTabs.NOTATER}
-              icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
+              icon={<NotaterIconLegacy oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
             />
           </Tooltip>
         </Tabs.List>
@@ -83,7 +84,7 @@ export function Sidebar({ oppgave }: SidebarProps) {
           </Tabs.Panel>
           {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
-              <SidebarPanel tittel="Notater">
+              <SidebarPanel tittel={<Mellomtittel>Notater</Mellomtittel>}>
                 <Notater oppgave={oppgave} />
               </SidebarPanel>
             </Tabs.Panel>

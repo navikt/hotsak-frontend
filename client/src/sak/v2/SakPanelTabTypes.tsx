@@ -15,7 +15,7 @@ export enum HøyrekolonneTabs {
 }
 
 export enum SidebarValg {
-  SAKSOVERSIKT = 'SAKSOVERSIKT',
+  SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
   NOTATER = 'NOTATER',
 }

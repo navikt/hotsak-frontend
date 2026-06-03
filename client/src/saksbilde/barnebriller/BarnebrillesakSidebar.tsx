@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { Notater } from '../../sak/notat/Notater'
-import { NotaterIcon } from '../../sak/notat/NotaterIcon.tsx'
+import { NotaterIconLegacy } from '../../sak/notat/NotaterIcon.tsx'
 import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
@@ -54,7 +54,7 @@ export function BarnebrillesakSidebar({ oppgave }: { oppgave?: Saksbehandlingsop
         <Tooltip content="Notater">
           <Tabs.Tab
             value={HøyrekolonneTabs.NOTATER}
-            icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
+            icon={<NotaterIconLegacy oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
           />
         </Tooltip>
       </Tabs.List>

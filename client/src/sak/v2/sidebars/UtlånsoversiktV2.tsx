@@ -2,13 +2,15 @@ import { BodyLong, Detail, HStack, Label, VStack } from '@navikt/ds-react'
 import { useSak } from '../../../saksbilde/useSak'
 import { useArtiklerByKategori } from './useArtiklerByKategori'
 import { Artikler } from './Artikler'
-import { SidebarPanel, SidebarPanelBox } from './SidebarPanel'
-import { Tekst, TextContainer } from '../../../felleskomponenter/typografi'
+import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
+import { Mellomtittel, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
 import { formaterDato } from '../../../utils/dato'
 import { Skillelinje } from '../../../felleskomponenter/Strek'
 import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { useErPilot } from '../../../tilgang/useTilgang'
 import { useMiljø } from '../../../utils/useMiljø'
+import { WheelchairIcon } from '@navikt/aksel-icons'
+import { Sakstype } from '../../../types/types.internal'
 
 export function UtlånsoversiktV2() {
   const { sak } = useSak()
@@ -28,9 +30,14 @@ export function UtlånsoversiktV2() {
 
   const { erIkkeProd } = useMiljø()
   const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || erIkkeProd
-
+  const erBestilling = sak?.data?.sakstype === Sakstype.BESTILLING
   return (
     <>
+      {erIkkeProd && !erBestilling && (
+        <SidebarPanelBox paddingBlock={'space-8 space-0'}>
+          <SidebarPanelHeading tittel="Utlånsoversikt" icon={<WheelchairIcon title="Utlånsoversikt" />} />
+        </SidebarPanelBox>
+      )}
       {isFromVedtak && (
         <SidebarPanelBox paddingBlock={'space-16 space-0'}>
           <Detail spacing color="subtle">
@@ -41,7 +48,7 @@ export function UtlånsoversiktV2() {
 
       {erHørselshjelpemiddelPilot && (isLoadingHaVedtak || errorHaVedtak || harHøreapparatVedtak) && (
         <SidebarPanel
-          tittel="Tilskudd til høreapparat"
+          tittel={<Mellomtittel>Tilskudd til høreapparat</Mellomtittel>}
           error={errorHaVedtak && 'Feil ved henting av høreapparatvedtak.'}
           loading={isLoadingHaVedtak && 'Henter høreapparatvedtak...'}
           spacing={false}
@@ -61,7 +68,7 @@ export function UtlånsoversiktV2() {
       )}
 
       <SidebarPanel
-        tittel="Utlånte hjelpemidler"
+        tittel={<Mellomtittel>Utlånte hjelpemidler</Mellomtittel>}
         error={errorHjmOversikt && 'Feil ved henting av brukers hjelpemiddeloversikt.'}
         loading={isLoadingHjmOversikt && 'Henter brukers hjelpemiddeloversikt...'}
         spacing={false}

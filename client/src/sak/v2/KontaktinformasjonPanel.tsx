@@ -144,6 +144,9 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
                     tekst={`${levering.annenUtleveringsbydel.navn} (${levering.annenUtleveringsbydel.nummer})`}
                   />
                 )}
+                {levering.annenUtleveringMottaker && (
+                  <KopierbarFelt etikett="Mottaker" tekst={levering.annenUtleveringMottaker} />
+                )}
                 {levering.utleveringMerknad && (
                   <KopierbarFelt etikett="Beskjed til kommunen" tekst={levering.utleveringMerknad} />
                 )}

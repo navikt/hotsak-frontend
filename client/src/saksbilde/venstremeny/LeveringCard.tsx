@@ -46,6 +46,16 @@ export function LeveringCard(props: UtleveringCardProps) {
           {leveringsmåte.bydel.navn} {leveringsmåte.bydel.nummer}
         </VenstremenyCardRow>
       )}
+      {levering.annenUtleveringMottaker && (
+        <VenstremenyCardRow
+          paddingBlock={'space-0 space-8'}
+          title="Mottaker"
+          copyText={levering.annenUtleveringMottaker}
+          skjulKopiknapp={skjulKopiknapp}
+        >
+          {levering.annenUtleveringMottaker}
+        </VenstremenyCardRow>
+      )}
 
       {utleveringMerknad && (
         <VenstremenyCardRow

@@ -26,7 +26,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
-  const { erIkkeProd } = useMiljø()
+  const { erLocal } = useMiljø()
 
   if (isSakLoading || isPersonLoading || isBehovsmeldingLoading) return <SakLoader />
 
@@ -46,7 +46,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
 
   const sakData = sak.data
 
-  if (sakData.sakstype === Sakstype.SØKNAD || (erIkkeProd && sakData.sakstype === Sakstype.BESTILLING)) {
+  if (sakData.sakstype === Sakstype.SØKNAD || (erLocal && sakData.sakstype === Sakstype.BESTILLING)) {
     return (
       <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sakData.sakId}`} />

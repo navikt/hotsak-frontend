@@ -3,18 +3,24 @@ import { Button, Heading, HStack, HStackProps } from '@navikt/ds-react'
 
 export const PanelTittel = ({
   tittel,
+  icon,
   lukkPanel,
   paddingInline = 'space-0 space-12',
 }: {
   tittel: string
+  icon?: React.ReactNode
   lukkPanel: () => void
   paddingInline?: HStackProps['paddingInline']
 }) => {
   return (
     <HStack justify="space-between" paddingInline={paddingInline} align={'center'}>
-      <Heading level="1" size="xsmall" spacing={false}>
-        {tittel}
-      </Heading>
+      <HStack gap="space-8" align="center">
+        <Heading level="1" size="xsmall" spacing={false}>
+          {tittel}
+        </Heading>
+        {icon && icon}
+      </HStack>
+
       <Button
         data-color="neutral"
         variant="tertiary"

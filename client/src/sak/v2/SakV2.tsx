@@ -4,7 +4,6 @@ import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
-import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
@@ -30,6 +29,7 @@ import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import classes from './SakV2.module.css'
+import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useSakContext } from './SakV2ContextType.ts'
@@ -74,8 +74,7 @@ function SakV2Content({
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erProd } = useMiljø()
 
-  const { panelState, totalVisibleMinWidth, harFlerePanelerÅpne, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
-    useSakContext()
+  const { panelState, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } = useSakContext()
   const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
@@ -98,7 +97,7 @@ function SakV2Content({
 
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({ groupId: 'sakv2', storage: localStorage })
 
-  const bahandlingsPanel = panels.behandlingspanel
+  const behandlingsPanel = panels.behandlingspanel
   const behovsmeldingsPanel = panels.behovsmeldingspanel
   const kontaktinformasjonPanel = panels.kontaktinformasjonpanel
   const sidePanel = panels.sidebarpanel
@@ -114,7 +113,7 @@ function SakV2Content({
     <Box background="neutral-moderate" className={classes.container} style={{ minWidth: `${totalVisibleMinWidth}px` }}>
       <HStack width="100%" wrap={false}>
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
-        <SakKontrollPanel />
+        <SakKontrollPanel sakstype={sak.sakstype} />
       </HStack>
       <Box
         marginBlock="space-8 space-0"
@@ -127,11 +126,11 @@ function SakV2Content({
           onLayoutChange={onLayoutChanged}
           className={!erProd ? classes.eksperimentPanelGroup : undefined}
         >
-          {bahandlingsPanel.visible && (
+          {behandlingsPanel.visible && (
             <Panel
               id="behandlingspanel"
-              defaultSize={bahandlingsPanel.defaultSize}
-              minSize={`${bahandlingsPanel.minWidth}${bahandlingsPanel.minWidthUnit}`}
+              defaultSize={behandlingsPanel.defaultSize}
+              minSize={`${behandlingsPanel.minWidth}${behandlingsPanel.minWidthUnit}`}
               groupResizeBehavior="preserve-pixel-size"
             >
               <AvrundetPanel>
@@ -139,92 +138,60 @@ function SakV2Content({
               </AvrundetPanel>
             </Panel>
           )}
-          {brevPanel.visible && (
-            <>
-              {harFlerePanelerÅpne && <ResizeHandle />}
-              <Panel
-                id="brevpanel"
-                defaultSize={brevPanel.defaultSize}
-                minSize={`${brevPanel.minWidth}${brevPanel.minWidthUnit}`}
-              >
-                <AvrundetPanel>
-                  <BrevPanel oppgave={oppgave} />
-                </AvrundetPanel>
-              </Panel>
-            </>
-          )}
-          {behovsmeldingsPanel.visible && (
-            <>
-              {harFlerePanelerÅpne && <ResizeHandle />}
-
-              <Panel
-                id="behovsmeldingspanel"
-                defaultSize={behovsmeldingsPanel.defaultSize}
-                minSize={`${behovsmeldingsPanel.minWidth}${behovsmeldingsPanel.minWidthUnit}`}
-              >
-                <AvrundetPanel>
-                  <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
-                </AvrundetPanel>
-              </Panel>
-            </>
-          )}
-          {kontaktinformasjonPanel.visible && (
-            <>
-              {harFlerePanelerÅpne && <ResizeHandle />}
-
-              <Panel
-                id="kontaktinformasjonpanel"
-                defaultSize={kontaktinformasjonPanel.defaultSize}
-                minSize={`${kontaktinformasjonPanel.minWidth}${kontaktinformasjonPanel.minWidthUnit}`}
-                groupResizeBehavior="preserve-pixel-size"
-              >
-                <AvrundetPanel>
-                  <KontaktinformasjonPanel sak={sak} behovsmelding={behovsmelding} />
-                </AvrundetPanel>
-              </Panel>
-            </>
-          )}
-          {sidePanel.visible && erProd && (
-            <>
-              {harFlerePanelerÅpne && <ResizeHandle />}
-              <Panel
-                id="sidebarpanel"
-                defaultSize={sidePanel.defaultSize}
-                minSize={`${sidePanel.minWidth}${sidePanel.minWidthUnit}`}
-              >
-                <AvrundetPanel>
-                  <Sidebar oppgave={oppgave} />
-                </AvrundetPanel>
-              </Panel>
-            </>
-          )}
+          <ResizablePanel panelId="brevpanel" panel={brevPanel} visible={brevPanel.visible}>
+            <AvrundetPanel>
+              <BrevPanel oppgave={oppgave} />
+            </AvrundetPanel>
+          </ResizablePanel>
+          <ResizablePanel
+            panelId="behovsmeldingspanel"
+            panel={behovsmeldingsPanel}
+            visible={behovsmeldingsPanel.visible}
+          >
+            <AvrundetPanel>
+              <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
+            </AvrundetPanel>
+          </ResizablePanel>
+          <ResizablePanel
+            panelId="kontaktinformasjonpanel"
+            panel={kontaktinformasjonPanel}
+            visible={kontaktinformasjonPanel.visible}
+            groupResizeBehavior="preserve-pixel-size"
+          >
+            <AvrundetPanel>
+              <KontaktinformasjonPanel sak={sak} behovsmelding={behovsmelding} />
+            </AvrundetPanel>
+          </ResizablePanel>
+          <ResizablePanel panelId="sidebarpanel" panel={sidePanel} visible={sidePanel.visible && erProd}>
+            <AvrundetPanel>
+              <Sidebar oppgave={oppgave} />
+            </AvrundetPanel>
+          </ResizablePanel>
           {!erProd && (
-            <>
-              {sidePanel.visible && <ResizeHandle />}
-              <Panel
-                id="sidebarpanel"
-                panelRef={setEksperimentSidebarPanel}
-                defaultSize={sidePanel.visible ? sidePanel.defaultSize : 0}
-                minSize={`${sidePanel.minWidth}${sidePanel.minWidthUnit}`}
-                collapsible
-                collapsedSize={0}
-                groupResizeBehavior="preserve-pixel-size"
-                onResize={handleEksperimentSidebarResize}
-              >
-                <div className={classes.eksperimentSidebarPanel}>
-                  <Box
-                    background="default"
-                    paddingBlock="space-12 space-0"
-                    borderRadius="12 0 0 0"
-                    height="100%"
-                    borderColor="neutral-subtle"
-                    borderWidth="1 0 0 1"
-                  >
-                    <SidebarEksperiment oppgave={oppgave} />
-                  </Box>
-                </div>
-              </Panel>
-            </>
+            <ResizablePanel
+              panelId="sidebarpanel"
+              panel={sidePanel}
+              canShowResizeHandle={sidePanel.visible}
+              panelRef={setEksperimentSidebarPanel}
+              defaultSize={sidePanel.visible ? sidePanel.defaultSize : 0}
+              collapsible
+              collapsedSize={0}
+              groupResizeBehavior="preserve-pixel-size"
+              onResize={handleEksperimentSidebarResize}
+            >
+              <div className={classes.eksperimentSidebarPanel}>
+                <Box
+                  background="default"
+                  paddingBlock="space-12 space-0"
+                  borderRadius="12 0 0 0"
+                  height="100%"
+                  borderColor="neutral-subtle"
+                  borderWidth="1 0 0 1"
+                >
+                  <SidebarEksperiment oppgave={oppgave} />
+                </Box>
+              </div>
+            </ResizablePanel>
           )}
         </Group>
         {!erProd && <VertikalIkonBar />}

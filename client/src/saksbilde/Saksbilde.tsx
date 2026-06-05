@@ -16,6 +16,7 @@ import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 import { useMiljø } from '../utils/useMiljø.ts'
+import { useSaksregler } from '../saksregler/useSaksregler.ts'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))
 const SakV2 = lazy(() => import('../sak/v2/SakV2'))
@@ -23,6 +24,7 @@ const Søknadsbilde = lazy(() => import('./Søknadsbilde'))
 
 const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading, error: sakError } = useSak()
+  const { erBestilling } = useSaksregler()
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
@@ -46,11 +48,11 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
 
   const sakData = sak.data
 
-  if (sakData.sakstype === Sakstype.SØKNAD || (erLocal && sakData.sakstype === Sakstype.BESTILLING)) {
+  if (sakData.sakstype === Sakstype.SØKNAD || (erLocal && erBestilling)) {
     return (
       <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sakData.sakId}`} />
-        <SakProvider>
+        <SakProvider sakstype={sakData.sakstype}>
           <SakbrukerinnstillingerProvider>
             <SakV2 oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
           </SakbrukerinnstillingerProvider>

@@ -11,6 +11,7 @@ import { AngreVedtakModal } from '../sak/v2/angreVedtak/AngreVedtakModal.tsx'
 import { AngringLåst, GjenståendeOverfør, UtfallLåst } from '../sak/v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { OverførtilGosysValideringFeil } from '../sak/v2/modaler/OverførtilGosysValideringFeil.tsx'
+import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { OverførSakTilGosysModal } from './OverførSakTilGosysModal.tsx'
 import { useOverførSakTilGosys } from './useOverførSakTilGosys.ts'
 
@@ -21,6 +22,7 @@ export interface SaksbildeMenuProps {
 
 export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverføring = [] }: SaksbildeMenuProps) {
   const { oppgave } = useOppgave()
+  const { erBestilling } = useSaksregler()
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(spørreundersøkelseId)
   const [visValideringsfeil, setVisValideringsfeil] = useState(false)
@@ -49,33 +51,35 @@ export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverfør
         </ActionMenu.Trigger>
         <ActionMenu.Content>
           <OppgaveMenu oppgave={oppgave} />
-          <>
-            <ActionMenu.Divider />
-            <ActionMenu.Group label="Sak">
-              <ActionMenu.Item
-                disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
-                onSelect={() => {
-                  if (gjenståendeFørOverføring.length > 0) {
-                    setVisValideringsfeil(true)
-                  } else {
-                    visOverførGosys()
-                  }
-                }}
-              >
-                Overfør sak til Gosys
-              </ActionMenu.Item>
-              {gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.MIDLERTIDIG_FERDIGSTILT) && (
+          {!erBestilling && (
+            <>
+              <ActionMenu.Divider />
+              <ActionMenu.Group label="Sak">
                 <ActionMenu.Item
-                  disabled={gjeldendeBehandling.operasjoner.angreVedtak.angringLåst.includes(
-                    AngringLåst.ANGRE_TID_UTLØPT
-                  )}
-                  onSelect={() => setAngreVedtakModalOpen(true)}
+                  disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
+                  onSelect={() => {
+                    if (gjenståendeFørOverføring.length > 0) {
+                      setVisValideringsfeil(true)
+                    } else {
+                      visOverførGosys()
+                    }
+                  }}
                 >
-                  Angre vedtak
+                  Overfør sak til Gosys
                 </ActionMenu.Item>
-              )}
-            </ActionMenu.Group>
-          </>
+                {gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.MIDLERTIDIG_FERDIGSTILT) && (
+                  <ActionMenu.Item
+                    disabled={gjeldendeBehandling.operasjoner.angreVedtak.angringLåst.includes(
+                      AngringLåst.ANGRE_TID_UTLØPT
+                    )}
+                    onSelect={() => setAngreVedtakModalOpen(true)}
+                  >
+                    Angre vedtak
+                  </ActionMenu.Item>
+                )}
+              </ActionMenu.Group>
+            </>
+          )}
         </ActionMenu.Content>
       </ActionMenu>
       <OppgaveMenuModals oppgave={oppgave} />

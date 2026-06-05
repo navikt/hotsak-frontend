@@ -1,8 +1,11 @@
+import { Sakstype } from '../../../types/types.internal'
+
 export type WidthUnit = 'px' | '%' | 'rem' | 'em' | 'vw' | 'vh'
 
 export interface PanelDefinition {
   id: string
   defaultVisible: boolean
+  disabledForSakstyper?: Sakstype[]
   minWidth: number
   minWidthUnit: WidthUnit
   defaultSize: string
@@ -12,6 +15,7 @@ export const PANELS = [
   {
     id: 'behandlingspanel',
     defaultVisible: true,
+    disabledForSakstyper: [Sakstype.BESTILLING],
     minWidth: 220,
     minWidthUnit: 'px',
     defaultSize: '290px',
@@ -19,6 +23,7 @@ export const PANELS = [
   {
     id: 'brevpanel',
     defaultVisible: false,
+    disabledForSakstyper: [Sakstype.BESTILLING],
     minWidth: 320,
     minWidthUnit: 'px',
     defaultSize: '40%',

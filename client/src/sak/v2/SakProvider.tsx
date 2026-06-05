@@ -1,17 +1,18 @@
 import { ReactNode, useMemo, useReducer, useRef, useState } from 'react'
 import { HenleggFormHandle } from './behandling/HenleggForm'
 import {
+  createInitialPanelState,
   getTotalVisibleMinWidth,
   getVisiblePanels,
   hasMultiplePanelsOpen,
-  initialPanelState,
   panelReducer,
 } from './paneler/panelReducer'
 import { SidebarValg, VenstrekolonneTabs } from './SakPanelTabTypes'
 import { SakContext } from './SakV2ContextType'
+import { Sakstype } from '../../types/types.internal'
 
-function SakProvider({ children }: { children: ReactNode }) {
-  const [panelState, panelDispatch] = useReducer(panelReducer, initialPanelState)
+function SakProvider({ children, sakstype }: { children: ReactNode; sakstype: Sakstype }) {
+  const [panelState, panelDispatch] = useReducer(panelReducer, sakstype, createInitialPanelState)
   const [valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.HJELPEMIDDELOVERSIKT
   )

@@ -5,7 +5,7 @@ import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { Hast } from '../../saksbilde/hjelpemidler/Hast.tsx'
 import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
-import { Sak } from '../../types/types.internal.ts'
+import { Sak, Sakstype } from '../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import { FunksjonsbeskrivelseV2 } from './behovsmelding/FunksjonsbeksrivelseV2.tsx'
@@ -14,10 +14,12 @@ import { SignaturV2 } from './behovsmelding/signatur/SignaturV2.tsx'
 import { VilkårV2 } from './behovsmelding/VilkårV2.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
+import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('behovsmeldingspanel')
   const funksjonsbeskrivelse = behovsmelding.brukersituasjon.funksjonsbeskrivelse
+  const sakstype = sak.sakstype
 
   return (
     <Box
@@ -26,8 +28,12 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
       paddingInline="space-12 space-0"
       className={classes.container}
     >
-      <PanelTittel tittel="Søknad om hjelpemidler" lukkPanel={lukkPanel} />
-      <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-0 space-24">
+      <PanelTittel
+        icon={<Oppgaveetikett type={sakstype} />}
+        tittel={sakstype === Sakstype.SØKNAD ? 'Søknad' : 'Bestilling'}
+        lukkPanel={lukkPanel}
+      />
+      <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-4 space-24">
         <HStack gap="space-20">
           <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
           <Tekst textColor="subtle" spacing>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import {
+  createInitialPanelState,
   getTotalVisibleMinWidth,
   getVisiblePanels,
   hasMultiplePanelsOpen,
@@ -8,6 +9,7 @@ import {
   panelReducer,
 } from '../panelReducer'
 import type { PanelAction } from '../panelReducer'
+import { Sakstype } from '../../../../types/types.internal'
 
 describe('panelReducer', () => {
   describe('TOGGLE_PANEL', () => {
@@ -50,6 +52,26 @@ describe('panelReducer', () => {
       const state = initialPanelState
       const next = panelReducer(state, { type: 'UNKNOWN' } as unknown as PanelAction)
       expect(next).toBe(state)
+    })
+  })
+
+  describe('sakstype-regler', () => {
+    it('skjuler behandlingspanel og brevpanel som default for BESTILLING', () => {
+      const state = createInitialPanelState(Sakstype.BESTILLING)
+      expect(state.panels.behandlingspanel.visible).toBe(false)
+      expect(state.panels.brevpanel.visible).toBe(false)
+    })
+
+    it('tillater ikke å sette behandlingspanel synlig for BESTILLING', () => {
+      const state = createInitialPanelState(Sakstype.BESTILLING)
+      const next = panelReducer(state, { type: 'SET_PANEL_VISIBILITY', panelId: 'behandlingspanel', visible: true })
+      expect(next.panels.behandlingspanel.visible).toBe(false)
+    })
+
+    it('tillater ikke toggle av brevpanel for BESTILLING', () => {
+      const state = createInitialPanelState(Sakstype.BESTILLING)
+      const next = panelReducer(state, { type: 'TOGGLE_PANEL', panelId: 'brevpanel' })
+      expect(next.panels.brevpanel.visible).toBe(false)
     })
   })
 

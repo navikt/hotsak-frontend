@@ -5,14 +5,15 @@ import { useOppgaveContext } from '../../oppgave/OppgaveContext'
 import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import { useSakId } from '../../saksbilde/useSak'
 import globalStyles from '../../styles/shared.module.css'
+import { Sakstype } from '../../types/types.internal'
+import { useMiljø } from '../../utils/useMiljø'
 import { useNotater } from '../notat/useNotater'
 import { GjenståendeOverfør } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
 import classes from './SakKontrollPanel.module.css'
-import { useMiljø } from '../../utils/useMiljø'
 
-export const SakKontrollPanel = () => {
+export const SakKontrollPanel = ({ sakstype }: { sakstype: Sakstype }) => {
   const sakId = useSakId()
   const behandlingPanel = usePanel('behandlingspanel')
   const brevKolonne = usePanel('brevpanel')
@@ -31,6 +32,8 @@ export const SakKontrollPanel = () => {
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
 
+  const erSoknad = sakstype === Sakstype.SØKNAD
+
   if (harNotatUtkast && !gjenståendeForOverføringTilGosys.includes(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)) {
     gjenståendeForOverføringTilGosys.push(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)
   }
@@ -39,12 +42,16 @@ export const SakKontrollPanel = () => {
     <>
       <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
         <Chips size="small">
-          <ToggleKnapp selected={behandlingPanel.visible} onToggle={() => toggleBehandlingPanel()}>
-            Behandle sak
-          </ToggleKnapp>
-          <ToggleKnapp selected={brevKolonne.visible} onToggle={() => toggleBrevKolonne()}>
-            Brev
-          </ToggleKnapp>
+          {erSoknad && (
+            <ToggleKnapp selected={behandlingPanel.visible} onToggle={() => toggleBehandlingPanel()}>
+              Behandle sak
+            </ToggleKnapp>
+          )}
+          {erSoknad && (
+            <ToggleKnapp selected={brevKolonne.visible} onToggle={() => toggleBrevKolonne()}>
+              Brev
+            </ToggleKnapp>
+          )}
           <ToggleKnapp selected={søknadPanel.visible} onToggle={() => toggleSøknadPanel()}>
             Søknad
           </ToggleKnapp>

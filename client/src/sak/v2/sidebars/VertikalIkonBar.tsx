@@ -14,7 +14,8 @@ export interface SidebarProps {
 
 export function VertikalIkonBar({ oppgave }: SidebarProps) {
   const { sak } = useSak()
-  const { aktivSidebar, setAktivSidebar } = useSakContext()
+  const { aktivSidebar, setAktivSidebar, panelState } = useSakContext()
+  const sidePanel = panelState.panels.sidebarpanel
 
   return (
     <Box
@@ -31,7 +32,7 @@ export function VertikalIkonBar({ oppgave }: SidebarProps) {
             onClick={() => setAktivSidebar(SidebarValg.SAKSHISTORIKK)}
             size="small"
             style={
-              aktivSidebar === SidebarValg.SAKSHISTORIKK
+              sidePanel.visible && aktivSidebar === SidebarValg.SAKSHISTORIKK
                 ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
                 : {}
             }
@@ -46,7 +47,7 @@ export function VertikalIkonBar({ oppgave }: SidebarProps) {
             variant="tertiary"
             data-color="neutral"
             style={
-              aktivSidebar === SidebarValg.HJELPEMIDDELOVERSIKT
+              sidePanel.visible && aktivSidebar === SidebarValg.HJELPEMIDDELOVERSIKT
                 ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
                 : {}
             }
@@ -60,7 +61,7 @@ export function VertikalIkonBar({ oppgave }: SidebarProps) {
             variant="tertiary"
             data-color="neutral"
             style={
-              aktivSidebar === SidebarValg.NOTATER
+              sidePanel.visible && aktivSidebar === SidebarValg.NOTATER
                 ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
                 : {}
             }

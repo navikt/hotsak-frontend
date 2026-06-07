@@ -13,7 +13,11 @@ import type { History } from '@platejs/slate'
 import { KEYS, type Value } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+import { usePerson } from '../../personoversikt/usePerson.ts'
+import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
+import { type Brevdata } from '../brevTyper.ts'
 import './Breveditor.less'
 import { BreveditorContext } from './BreveditorContext.ts'
 import { useBeforeUnload } from './hooks.ts'
@@ -26,11 +30,9 @@ import { TabSyncPlugin } from './plugins/tab-sync/TabSyncPlugin.tsx'
 import { transformerPlaceholders } from './transformerPlaceholders.ts'
 import { useEditorScale } from './useEditorScale.ts'
 import { useLagreBrev } from './useLagreBrev.ts'
-import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
-import { usePerson } from '../../personoversikt/usePerson.ts'
-import { formaterNavn } from '../../utils/formater.ts'
+import { Verktøylinje } from './verktøylinje/Verktøylinje.tsx'
 
-export interface StateMangement {
+export interface BreveditorState extends Brevdata {
   value: Value
   valueAsHtml: string
   history: History
@@ -46,23 +48,18 @@ export interface Metadata {
   hjelpemiddelsentral: string
 }
 
-const Breveditor = ({
-  brevId,
-  metadata,
-  templateMarkdown,
-  initialState,
-  onStateChange,
-  onLagreBrev,
-  placeholder,
-}: {
+export interface BreveditorProps {
   brevId?: string
   metadata: Metadata
   templateMarkdown?: string
-  initialState?: StateMangement
-  onStateChange?: (newState: StateMangement) => void
-  onLagreBrev?: (newState: StateMangement) => Promise<void>
+  initialState?: BreveditorState
+  onStateChange?(newState: BreveditorState): void
+  onLagreBrev?(newState: BreveditorState): Promise<void>
   placeholder?: string
-}) => {
+}
+
+export function Breveditor(props: BreveditorProps) {
+  const { brevId, metadata, templateMarkdown, initialState, onStateChange, onLagreBrev, placeholder } = props
   const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
 
   const spesielleVerdier: PlaceholderSpesielleVerdier = {
@@ -126,7 +123,7 @@ const Breveditor = ({
   )
 
   // Diverse state
-  const state = useRef<StateMangement | undefined>(undefined)
+  const state = useRef<BreveditorState | undefined>(undefined)
   const [visMarger, settVisMarger] = useState(false)
   const [erPlateContentFokusert, settPlateContentFokusert] = useState(false)
   const [erVerktoylinjeFokusert, settVerktoylinjeFokusert] = useState(false)
@@ -194,7 +191,7 @@ const Breveditor = ({
     if (initialState?.value && onLagreBrev) {
       const ferskHtml = byggFullHtml(metadata, initialState.value, vergeNavn)
       if (initialState.valueAsHtml !== ferskHtml) {
-        const oppdatertState: StateMangement = {
+        const oppdatertState: BreveditorState = {
           value: initialState.value,
           valueAsHtml: ferskHtml,
           history: initialState.history,
@@ -204,6 +201,8 @@ const Breveditor = ({
         lagreMedDebounceOgRetry(oppdatertState)
       }
     }
+    // fixme
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -224,7 +223,7 @@ const Breveditor = ({
         editor={editor}
         onChange={({ editor: changedEditor, value: nyVerdi }) => {
           if ((onStateChange != undefined || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
-            const constructedState: StateMangement = {
+            const constructedState: BreveditorState = {
               value: nyVerdi,
               valueAsHtml: byggFullHtml(metadata, nyVerdi, vergeNavn),
               history: changedEditor.history,
@@ -301,5 +300,3 @@ const Breveditor = ({
     </BreveditorContext>
   )
 }
-
-export default Breveditor

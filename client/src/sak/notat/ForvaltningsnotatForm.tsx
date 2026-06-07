@@ -4,12 +4,11 @@ import { useState } from 'react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
-import { useBrev } from '../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
-import { ForhåndsvisningsModal } from '../../saksbilde/høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
+import { ForhåndsvisningModal } from '../../saksbilde/høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
 import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
-import { Brevtype, MålformType } from '../../types/types.internal.ts'
+import { MålformType } from '../../types/types.internal.ts'
 import { NotatForm } from './NotatForm.tsx'
 import { type ForvaltningsnotatFormValues, type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
 import { SlettUtkast } from './SlettUtkast.tsx'
@@ -29,7 +28,6 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
   const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
-  const { hentForhåndsvisning } = useBrev()
   const { ferdigstill } = useFerdigstillNotat()
 
   const form = useForm<ForvaltningsnotatFormValues>({
@@ -128,7 +126,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
               variant="tertiary"
               onClick={() => {
                 if (aktivtUtkast?.id) {
-                  hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
+                  // fixme hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
                   setVisForhåndsvisningsmodal(true)
                 } else {
                   setVisUtkastManglerModal(true)
@@ -204,10 +202,8 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
           <Tekst>Notatet kan ikke forhåndsvises før det er opprettet et utkast</Tekst>
         </InfoModal>
 
-        <ForhåndsvisningsModal
+        <ForhåndsvisningModal
           open={visForhåndsvisningsmodal}
-          sakId={sakId}
-          brevtype={Brevtype.JOURNALFØRT_NOTAT}
           onClose={() => {
             setVisForhåndsvisningsmodal(false)
           }}

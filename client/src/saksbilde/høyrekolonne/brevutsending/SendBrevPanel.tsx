@@ -1,90 +1,37 @@
-import { TrashIcon } from '@navikt/aksel-icons'
-import { Button, Heading, HStack, Radio, RadioGroup, Select, Skeleton, VStack } from '@navikt/ds-react'
-import { memo, useCallback, useEffect, useState } from 'react'
-import { mutate } from 'swr'
+import { Heading, Skeleton, VStack } from '@navikt/ds-react'
+import { memo } from 'react'
 
-import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
-import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
-import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../../../oppgave/useOppgaveregler.ts'
 import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
-import { type BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
-import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
-import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
-import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
-import { useBarnebrillesak } from '../../useBarnebrillesak'
-import { useBrevActions } from '../../useBrevActions.ts'
 import { useSakId } from '../../useSak.ts'
-import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
+import { SendBrevForm } from './SendBrevForm.tsx'
 import { UtgåendeBrev } from './UtgåendeBrev'
 
 export interface SendBrevProps {
   oppgave?: Saksbehandlingsoppgave
-  lesevisning: boolean
+  loading?: boolean
 }
 
 export const SendBrevPanel = memo((props: SendBrevProps) => {
-  const { oppgave, lesevisning } = props
-  const sakId = useSakId()
-  const { data, mutate: hentBrevtekst } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
-  const brevActions = useBrevActions(oppgave)
-  const brevtekst = data?.data.brevtekst
-  const [lagrer, setLagrer] = useState(false)
-  const [sletter, setSletter] = useState(false)
-  const [senderBrev, setSenderBrev] = useState(false)
-  const [visSendBrevModal, setVisSendBrevModal] = useState(false)
-  const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
-  const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
-  const [målform, setMålform] = useState(MålformType.BOKMÅL)
-  const [fritekst, setFritekst] = useState(brevtekst || '')
-  const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const { mutate: hentBarnebrillesak } = useBarnebrillesak()
-  const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
-  const { hentForhåndsvisning } = useBrev()
-  const { showSuccessToast } = useToast()
-  const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
+  const { oppgave, loading } = props
+  const sakId = useSakId(oppgave)
 
-  /* TODO: Ta i bruk react hook form i stedet */
-  useEffect(() => {
-    if (brevtekst) {
-      setFritekst(brevtekst)
-    }
-  }, [brevtekst])
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  if (!oppgaveErUnderBehandlingAvInnloggetAnsatt) {
+    return (
+      <>
+        <SidebarPanel tittel="Send brev">
+          <Tekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Tekst>
+        </SidebarPanel>
+        <UtgåendeBrev sakId={sakId} />
+      </>
+    )
+  }
 
-  const valider = useCallback(() => {
-    if (fritekst === '') {
-      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
-      return false
-    } else {
-      setValideringsfeil(undefined)
-      return true
-    }
-  }, [fritekst])
-
-  useEffect(() => {
-    if (submitAttempt) {
-      valider()
-    }
-  }, [submitAttempt, valider])
-
-  const lagreUtkast = useCallback(
-    async (tekst: string, valgtMålform?: MålformType) => {
-      setLagrer(true)
-      await brevActions.lagreBrevutkast(byggBrevPayload(tekst, valgtMålform))
-      setTimeout(() => {
-        setLagrer(false)
-      }, 500)
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sakId, målform, fritekst]
-  )
-
-  useDebounce(fritekst, lagreUtkast)
-
-  if (!data) {
+  // fixme
+  if (loading) {
     return (
       <SidebarPanel tittel="Send brev">
         <Heading level="2" as={Skeleton} size="small" spacing>
@@ -98,148 +45,10 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     )
   }
 
-  function byggBrevPayload(tekst?: string, valgtMålform?: MålformType): BrevTekst {
-    return {
-      sakId: sakId,
-      målform: valgtMålform || målform,
-      brevtype,
-      data: {
-        brevtekst: tekst != undefined ? tekst : fritekst,
-      },
-    }
-  }
-
-  const sendBrev = async () => {
-    setSenderBrev(true)
-    await brevActions.lagreBrevsending(byggBrevPayload())
-
-    setSenderBrev(false)
-    setVisSendBrevModal(false)
-    setSubmitAttempt(false)
-    setFritekst('')
-    showSuccessToast('Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.')
-    await Promise.all([hentBarnebrillesak(), mutate(`/api/oppgaver/${oppgave?.oppgaveId}`), hentSaksdokumenter()])
-
-    setTimeout(() => {
-      hentBarnebrillesak()
-      hentSaksdokumenter()
-    }, 3000)
-  }
-
-  const slettUtkast = async () => {
-    setSletter(true)
-    await brevActions.slettBrevutkast(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
-    setFritekst('')
-    setVisSlettUtkastModal(false)
-    showSuccessToast('Utkast slettet')
-    await hentBrevtekst()
-    setSletter(false)
-  }
-
   return (
     <>
-      <>
-        <SidebarPanel tittel="Send brev">
-          {lesevisning ? (
-            <Tekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Tekst>
-          ) : (
-            <form onSubmit={(e) => e.preventDefault()}>
-              <VStack gap="space-16">
-                <Select size="small" label="Velg brevmal">
-                  <option value={brevtype}>Innhente opplysninger</option>
-                </Select>
-                <RadioGroup
-                  legend="Målform"
-                  size="small"
-                  value={målform}
-                  onChange={(value: MålformType) => {
-                    setMålform(value)
-                    return lagreUtkast(fritekst, value)
-                  }}
-                >
-                  <Radio value={MålformType.BOKMÅL}>Bokmål</Radio>
-                  <Radio value={MålformType.NYNORSK}>Nynorsk</Radio>
-                </RadioGroup>
-                <Fritekst
-                  label="Fritekst"
-                  beskrivelse="Beskriv hva som mangler av dokumentasjon"
-                  fritekst={fritekst}
-                  valideringsfeil={valideringsfeil}
-                  lagrer={lagrer}
-                  onTextChange={setFritekst}
-                />
-              </VStack>
-              <HStack gap="space-8">
-                <Button
-                  type="submit"
-                  size="small"
-                  variant="tertiary"
-                  onClick={() => {
-                    hentForhåndsvisning(sakId, brevtype)
-                    setVisForhåndsvisningsmodal(true)
-                  }}
-                >
-                  Forhåndsvis
-                </Button>
-                <Button
-                  type="submit"
-                  size="small"
-                  variant="primary"
-                  onClick={() => {
-                    setSubmitAttempt(true)
-                    if (valider()) {
-                      setVisSendBrevModal(true)
-                    }
-                  }}
-                >
-                  Send brev
-                </Button>
-                <Button
-                  data-color="danger"
-                  icon={<TrashIcon />}
-                  variant="primary"
-                  size="small"
-                  onClick={() => {
-                    setVisSlettUtkastModal(true)
-                  }}
-                />
-              </HStack>
-            </form>
-          )}
-        </SidebarPanel>
-        <UtgåendeBrev sakId={sakId} />
-      </>
-      <ForhåndsvisningsModal
-        open={visForhåndsvisningsmodal}
-        sakId={sakId}
-        brevtype={brevtype}
-        onClose={() => {
-          setVisForhåndsvisningsmodal(false)
-        }}
-      />
-      <BekreftelseModal
-        heading="Vil du sende brevet?"
-        bekreftButtonLabel="Send brev"
-        open={visSendBrevModal}
-        loading={senderBrev}
-        onClose={() => setVisSendBrevModal(false)}
-        onBekreft={() => {
-          return sendBrev()
-        }}
-      >
-        <Tekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Tekst>
-      </BekreftelseModal>
-      <BekreftelseModal
-        heading="Vil du slette utkastet?"
-        bekreftButtonLabel="Slett utkast"
-        bekreftButtonVariant="danger"
-        open={visSlettUtkastModal}
-        loading={sletter}
-        onClose={() => setVisSlettUtkastModal(false)}
-        onBekreft={() => {
-          return slettUtkast()
-        }}
-      />
+      <SidebarPanel tittel="Send brev">{oppgave && <SendBrevForm oppgave={oppgave} />}</SidebarPanel>
+      <UtgåendeBrev sakId={sakId} />
     </>
   )
 })

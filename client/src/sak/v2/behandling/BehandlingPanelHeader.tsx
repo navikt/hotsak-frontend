@@ -1,10 +1,11 @@
-import { HStack, Box, Link, VStack } from '@navikt/ds-react'
-import { Tekst } from '../../../felleskomponenter/typografi'
-import { formaterDatoKort } from '../../../utils/dato'
-import { Sak } from '../../../types/types.internal'
-import { Oppgave } from '../../../oppgave/oppgaveTypes'
+import { Box, HStack, Link, VStack } from '@navikt/ds-react'
 
-export function BehandlingPanelHeader({ sak, oppgave }: { sak: Sak; oppgave: Oppgave }) {
+import { Tekst } from '../../../felleskomponenter/typografi'
+import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
+import { type Sak } from '../../../types/types.internal'
+import { formaterDatoKort } from '../../../utils/dato'
+
+export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: Sak }) {
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8" marginBlock="space-0 space-16">
       <HStack gap="space-20" paddingInline="space-8 space-0">

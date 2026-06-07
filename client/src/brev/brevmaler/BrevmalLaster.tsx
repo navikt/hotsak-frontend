@@ -1,9 +1,10 @@
-import useSWR from 'swr'
-import { useEffect } from 'react'
 import { Loader } from '@navikt/ds-react'
+import { useEffect } from 'react'
+import useSWR from 'swr'
+
 import classes from './BrevmalLaster.module.css'
 
-export const BrevmalLaster = ({ malKey, velgMal }: { malKey: string; velgMal: (mal: string) => void }) => {
+export function BrevmalLaster({ malKey, velgMal }: { malKey: string; velgMal(mal: string): void }) {
   let importer
   switch (malKey) {
     case 'innvilgelse':
@@ -43,6 +44,6 @@ export const BrevmalLaster = ({ malKey, velgMal }: { malKey: string; velgMal: (m
   )
 }
 
-const useImporterMal = (key: string | undefined, importer: Promise<{ default: string }> | undefined) => {
+function useImporterMal(key: string | undefined, importer: Promise<{ default: string }> | undefined) {
   return useSWR(key, importer === undefined ? null : async () => (await importer).default)
 }

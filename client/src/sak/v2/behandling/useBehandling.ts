@@ -1,30 +1,32 @@
-import useSwr, { KeyedMutator } from 'swr'
-import type { HttpError } from '../../../io/HttpError.ts'
+import useSwr, { mutate, type SWRResponse } from 'swr'
 
+import { type HttpError } from '../../../io/HttpError.ts'
 import { useSakId } from '../../../saksbilde/useSak.ts'
-import { BehandlingerForSak } from './behandlingTyper.ts'
+import { type Behandling, type BehandlingerForSak } from './behandlingTyper.ts'
 
-export interface DataResponse extends BehandlingerForSak {
-  error: HttpError
-  isLoading: boolean
-  mutate: KeyedMutator<DataResponse>
+export interface UseBehandlingResponse
+  extends Omit<SWRResponse<BehandlingerForSak, HttpError>, 'data'>, BehandlingerForSak {
+  gjeldendeBehandling?: Behandling
 }
 
-export function useBehandling(): DataResponse {
+export function useBehandling(): UseBehandlingResponse {
   const sakId = useSakId()
 
-  const {
-    data: behandling,
-    error,
-    isLoading,
-    mutate,
-  } = useSwr<DataResponse>(sakId ? `/api/sak/${sakId}/behandling` : null)
+  const { data = ingenBehandlinger, ...rest } = useSwr<BehandlingerForSak>(
+    sakId ? `/api/sak/${sakId}/behandling` : null
+  )
 
   return {
-    behandlinger: behandling?.behandlinger || [],
-    gjeldendeBehandling: behandling?.behandlinger[0],
-    error,
-    isLoading,
-    mutate,
+    behandlinger: data.behandlinger,
+    gjeldendeBehandling: data.behandlinger[0],
+    ...rest,
   }
+}
+
+const ingenBehandlinger: BehandlingerForSak = {
+  behandlinger: [],
+}
+
+export function mutateBehandling(sakId: string) {
+  return mutate<BehandlingerForSak>(`/api/sak/${sakId}/behandling`)
 }

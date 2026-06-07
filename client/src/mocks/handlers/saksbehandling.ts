@@ -1,13 +1,9 @@
 import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
-import {
-  BehandlingerResponse,
-  LagreBehandlingRequest,
-  VedtaksResultat,
-} from '../../sak/v2/behandling/behandlingTyper.ts'
+import { BehandlingerForSak, LagreBehandlingRequest, VedtaksResultat } from '../../sak/v2/behandling/behandlingTyper.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
-import { OppgaveStatusType, StegType, TilgangResultat, TilgangType } from '../../types/types.internal'
+import { OppgaveStatusType, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'
 import { type StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
@@ -136,11 +132,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     return respondNoContent()
   }),
 
-  http.post<SakParams>('/api/sak/:sakId/vilkarsvurdering', async ({ params }) => {
-    await sakStore.oppdaterSteg(params.sakId, StegType.FATTE_VEDTAK)
-    return respondNoContent()
-  }),
-
   http.post<SakParams>('/api/sak/:sakId/henleggelse', async ({ params }) => {
     await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.HENLAGT)
     return respondNoContent()
@@ -221,10 +212,12 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     await endreHjelpemiddelStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
   }),
+
   http.post<SakParams, LagreBehandlingRequest>('/api/sak/:sakId/behandling', async ({ params, request }) => {
     await sakStore.opprettBehandling(params.sakId, await request.json())
     return respondCreated()
   }),
+
   http.put<BehandlingParams, LagreBehandlingRequest>(
     '/api/sak/:sakId/behandling/:behandlingId',
     async ({ params, request }) => {
@@ -232,6 +225,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return respondNoContent()
     }
   ),
+
   http.post<BehandlingParams>('/api/sak/:sakId/behandling/:behandlingId/ferdigstilling', async ({ params }) => {
     const sakId = params.sakId
 
@@ -244,10 +238,12 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     await sakStore.ferdigstillBehandlingForSak(sakId)
     return respondNoContent()
   }),
-  http.get<SakParams, never, BehandlingerResponse>('/api/sak/:sakId/behandling', async ({ params }) => {
+
+  http.get<SakParams, never, BehandlingerForSak>('/api/sak/:sakId/behandling', async ({ params }) => {
     const behandlinger = await sakStore.hentBehandlinger(params.sakId)
     return HttpResponse.json({ behandlinger })
   }),
+
   http.post<BehandlingParams>('/api/sak/:sakId/behandling/:behandlingId/angring', async ({ params }) => {
     const sakId = params.sakId
 

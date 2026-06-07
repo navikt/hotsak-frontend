@@ -1,119 +1,90 @@
 import { Button, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
-import { type Oppgave, Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
-import { isBehandlingsutfallHenleggelse, VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
+import { Oppgavestatus, type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
+import {
+  type Behandling,
+  isBehandlingsutfallHenleggelse,
+  isBehandlingsutfallVedtak,
+  VedtaksResultat,
+} from '../sak/v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
-import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { useSak } from '../saksbilde/useSak.ts'
-import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less'
 import classes from './Brev.module.css'
 import { BrevContext } from './BrevContext.ts'
-import Breveditor from './breveditor/Breveditor.tsx'
+import { Breveditor, BreveditorState } from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
-import BrevForhåndsvisning from './BrevForhåndsvisning.tsx'
+import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
-import { Brevstatus } from './brevTyper.ts'
+import { Brevstatus, Brev as BrevType } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
-import { useBrevMetadata } from './useBrevMetadata.ts'
-import { useBrevutkast } from './useBrevutkast.ts'
-import { useVedtaksbrevActions } from './useVedtaksbrevActions.ts'
-import { useSakContext } from '../sak/v2/SakV2ContextType.ts'
+import { useBrev } from './useBrev.ts'
+import { useBrevActions } from './useBrevActions.ts'
 
 export interface BrevProps {
-  oppgave?: Oppgave
+  oppgave?: Saksbehandlingsoppgave
+  brevId?: string
 }
 
-export function Brev({ oppgave }: BrevProps) {
+export function Brev({ oppgave, brevId }: BrevProps) {
   const { sak } = useSak()
-  const { opprettBrevKlikket, setOpprettBrevKlikket } = useSakContext()
   const closePanel = useClosePanel('brevpanel')
   const [visSlettBrevModal, setVisSlettBrevModal] = useState(false)
 
-  const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
-  const { mutate: mutateBrevMetadata, gjeldendeBrev: brev } = useBrevMetadata()
+  const { brev, isLoading: brevIsLoading, error: brevError } = useBrev<BreveditorState>(brevId)
+
+  const { gjeldendeBehandling } = useBehandling()
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
 
-  const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
-  const erHenleggelse = isBehandlingsutfallHenleggelse(gjeldendeBehandling?.utfall)
   const datoSoknadMottatt = sak?.data.opprettet
   const hjelpemidlerSøktOm = sak?.data.søknadGjelder
     ? sak.data.søknadGjelder
-      .replace(/^Søknad om:\s*/i, '')
-      .split(',')
-      .map((h) => h.trim())
+        .replace(/^Søknad om:\s*/i, '')
+        .split(',')
+        .map((h) => h.trim())
     : undefined
 
-  const { brevutkast } = useBrevutkast()
-  const { lagreBrevutkast, ferdigstillBrevutkast, gjenåpneBrevutkast } = useVedtaksbrevActions({
-    onSuccess: () => brevutkast.mutate(),
-  })
+  const { oppdaterBrevutkast, slettBrevutkast, ferdigstillBrevutkast, redigerBrevutkast } = useBrevActions(
+    oppgave,
+    brev?.brevId
+  )
 
   const [valgtMal, velgMal] = useState<string>()
-  const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])
-  const brevSendt = useMemo(() => brev?.status == Brevstatus.SENDT, [brev])
+  const errorEr404 = useMemo(() => brev?.data?.value == null, [brev?.data])
+  const brevSendt = useMemo(() => brev?.status == Brevstatus.DISTRIBUERT, [brev]) // fixme
 
-  const malKey =
-    errorEr404 && opprettBrevKlikket
-      ? vedtaksResultat === VedtaksResultat.INNVILGET
-        ? 'innvilgelse'
-        : vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
-          ? 'delvis-innvilgelse-bruker-har-ikke-rett'
-          : vedtaksResultat === VedtaksResultat.AVSLÅTT
-            ? 'avslag-bruker-har-ikke-rett'
-            : erHenleggelse
-              ? 'henleggelse'
-              : undefined
-      : undefined
+  const malKey = utledMalKey(gjeldendeBehandling, brev)
 
-  const [prevBrevutkastValue, setPrevBrevutkastValue] = useState(brevutkast.data?.data?.value)
-  const currentValue = brevutkast.data?.data?.value
+  /* fixme
+  const [prevBrevutkastValue, setPrevBrevutkastValue] = useState(brev?.data?.value)
+  const currentValue = brev?.data?.value
+  // todo -> vi bør vel ikke endre state rett i render
   if (currentValue !== prevBrevutkastValue) {
     setPrevBrevutkastValue(currentValue)
     if (currentValue) {
       velgMal(undefined)
-      setOpprettBrevKlikket(false)
+      setOpprettBrevKlikket('')
       mutateGjeldendeBehandling()
-      mutateBrevMetadata()
+      // mutateBrevMetadata()
     }
   }
+  */
 
-  const { nullstillBrev: nullstillForhåndsvisning, hentForhåndsvisning, hentedeBrev } = useBrev()
-
-  useEffect(() => {
-    if (brevSendt || brevutkast.data?.ferdigstilt) {
-      if (hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.IKKE_HENTET) {
-        if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
-      }
-    } else {
-      if (hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status != RessursStatus.IKKE_HENTET) {
-        nullstillForhåndsvisning(Brevtype.BREVEDITOR_VEDTAKSBREV)
-      }
-    }
-  }, [
-    brevutkast.data?.ferdigstilt,
-    hentedeBrev,
-    sak?.data.sakId,
-    hentForhåndsvisning,
-    nullstillForhåndsvisning,
-    brevSendt,
-  ])
-
-  if (brevutkast.isLoading) {
+  if (brevIsLoading) {
     return (
       <div className={classes.loaderContainer}>
         <Loader title="Laster inn brevutkast..." />
       </div>
     )
-  } else if (brevutkast.error) {
+  } else if (brevError) {
     return (
       <div className={classes.loaderContainer}>
         <LocalAlert status="warning">
@@ -126,9 +97,27 @@ export function Brev({ oppgave }: BrevProps) {
     )
   }
 
+  const handleLagreBrev = async (state: BreveditorState) => {
+    if (!brev) return // Utkast må være opprettet først
+    await oppdaterBrevutkast.trigger({
+      brevutkast: {
+        brevmal: brev.brevmal,
+        brevmalVersjon: brev.brevmalVersjon,
+        målform: brev.målform,
+        data: state,
+      },
+    })
+  }
+
+  const handleSlettBrevutkast = async () => {
+    if (!brev) return
+    await slettBrevutkast.trigger()
+    closePanel()
+  }
+
   const markerKlart = async (klart: boolean) => {
     setSynligKryssKnapp(true)
-    const currentBrev = brevutkast.data?.data?.value
+    const currentBrev = brev?.data?.value
     if (!currentBrev) return
 
     const feil = validerPlaceholders(currentBrev)
@@ -138,20 +127,14 @@ export function Brev({ oppgave }: BrevProps) {
     }
     setPlaceholderFeil([])
     if (klart) {
-      await ferdigstillBrevutkast()
+      await ferdigstillBrevutkast.trigger()
     } else {
-      await gjenåpneBrevutkast()
-    }
-
-    await mutateGjeldendeBehandling()
-    await mutateBrevMetadata()
-    if (klart) {
-      if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
+      await redigerBrevutkast.trigger()
     }
   }
 
   return (
-    <BrevContext.Provider
+    <BrevContext
       value={{
         placeholderFeil,
         setPlaceholderFeil,
@@ -166,10 +149,10 @@ export function Brev({ oppgave }: BrevProps) {
           <div className={classes.panelHeader}>
             <PanelTittel tittel="Vedtaksbrev" lukkPanel={closePanel} />
           </div>
-          <BrevForhåndsvisning loaderTekst="Henter vedtaksbrev fra Joark..." />
+          <BrevForhåndsvisning brevId={brev?.brevId} />
         </>
       )}
-      {errorEr404 && valgtMal === undefined && malKey === undefined && !brevSendt && (
+      {errorEr404 && valgtMal == null && malKey == null && !brevSendt && (
         <VStack paddingInline="space-20" gap="space-16">
           <PanelTittel
             paddingInline="space-8 space-0"
@@ -185,20 +168,20 @@ export function Brev({ oppgave }: BrevProps) {
               </InfoCard.Header>
               <InfoCard.Content>
                 <Tekst>
-                  I fremtiden vil man kunne opprette brev underveis i saken her. For nå må du sette et vedtaksresultat i
-                  behandlingspanelet og velge om du vil opprette vedtaksbrev der.
+                  I fremtiden vil man kunne opprette brev underveis i saken her. Foreløpig må du sette et
+                  vedtaksresultat i behandlingspanelet og velge om du vil opprette vedtaksbrev der.
                 </Tekst>
               </InfoCard.Content>
             </InfoCard>
           </TextContainer>
         </VStack>
       )}
-      {errorEr404 && valgtMal === undefined && malKey !== undefined && !brevSendt && (
+      {errorEr404 && valgtMal == null && malKey != null && !brevSendt && (
         <BrevmalLaster malKey={malKey} velgMal={velgMal} />
       )}
-      {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && !brevSendt && (
+      {(!errorEr404 || valgtMal != null) && brev?.data && !brevSendt && (
         <div className="brev">
-          {oppgaveFerdigstilt && !brevutkast.data?.ferdigstilt && (
+          {oppgaveFerdigstilt && !brev?.data?.ferdigstilt && (
             <>
               <VStack paddingInline="space-20" gap="space-16">
                 <PanelTittel
@@ -225,7 +208,7 @@ export function Brev({ oppgave }: BrevProps) {
               </VStack>
             </>
           )}
-          {!oppgaveFerdigstilt && !brevutkast.data?.ferdigstilt && (
+          {!oppgaveFerdigstilt && !brev?.ferdigstilt && (
             <>
               <div className="brevtoolbar">
                 <div className="left">
@@ -235,7 +218,7 @@ export function Brev({ oppgave }: BrevProps) {
                 </div>
                 <div className="right">
                   <Button
-                    loading={brevutkast.isLoading || brevutkast.isValidating}
+                    loading={ferdigstillBrevutkast.isMutating}
                     variant="primary"
                     size="small"
                     onClick={() => markerKlart(true)}
@@ -257,14 +240,12 @@ export function Brev({ oppgave }: BrevProps) {
                 }}
                 brevId={sak!.data.sakId.toString()}
                 templateMarkdown={valgtMal}
-                initialState={brevutkast.data?.data}
-                onLagreBrev={async (state) => {
-                  await lagreBrevutkast(state)
-                }}
+                initialState={brev?.data}
+                onLagreBrev={handleLagreBrev}
               />
             </>
           )}
-          {brevutkast.data?.ferdigstilt && (
+          {brev?.ferdigstilt && (
             <>
               {!oppgaveFerdigstilt && (
                 <>
@@ -283,17 +264,45 @@ export function Brev({ oppgave }: BrevProps) {
                   <PanelTittel tittel="Vedtaksbrev" lukkPanel={closePanel} />
                 </div>
               )}
-              <BrevForhåndsvisning loaderTekst="Genererer forhåndsvisning av brev..." />
+              <BrevForhåndsvisning brevId={brevId} />
             </>
           )}
         </div>
       )}
       <SlettBrevModal
-        open={visSlettBrevModal}
-        onClose={() => setVisSlettBrevModal(false)}
         heading="Vil du slette brevutkastet?"
         tekst="Du er i ferd med å slette brevutkastet. Dette kan ikke angres."
+        width="700px"
+        loading={slettBrevutkast.isMutating}
+        open={visSlettBrevModal}
+        onClose={() => setVisSlettBrevModal(false)}
+        onBekreft={handleSlettBrevutkast}
       />
-    </BrevContext.Provider>
+    </BrevContext>
   )
+}
+
+function utledMalKey(behandling?: Behandling, brev?: BrevType<BreveditorState>): string | undefined {
+  if (!brev || brev?.data.value) return
+
+  const utfall = behandling?.utfall
+
+  if (isBehandlingsutfallVedtak(utfall)) {
+    switch (utfall.utfall) {
+      case VedtaksResultat.INNVILGET:
+        return 'innvilgelse'
+      case VedtaksResultat.DELVIS_INNVILGET:
+        return 'delvis-innvilgelse-bruker-har-ikke-rett'
+      case VedtaksResultat.AVSLÅTT:
+        return 'avslag-bruker-har-ikke-rett'
+      default:
+        return
+    }
+  }
+
+  if (isBehandlingsutfallHenleggelse(utfall)) {
+    return 'henleggelse'
+  }
+
+  return
 }

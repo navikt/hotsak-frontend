@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { toError } from '../utils/error.ts'
 
@@ -18,38 +18,25 @@ export interface ActionState {
 }
 
 export function useActionState() {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [state, setState] = useState<ActionState>({ loading: false })
 
-  const state: ActionState = {
-    loading,
-    error,
-  }
+  const execute = useCallback(async <T = unknown>(action: () => Promise<T>): ExecutionPromise<T> => {
+    setState({ loading: true })
+    try {
+      return await action()
+    } catch (err: unknown) {
+      console.error(err)
+      setState((current) => ({ ...current, error: toError(err) }))
+    } finally {
+      setState((current) => ({ ...current, loading: false }))
+    }
+  }, [])
 
   return {
-    setLoading,
-
     /**
-     * @param err som blir oversatt til `Error` hvis ikke den ikke er det alt.
+     * Funksjon som f.eks. kan brukes til kjøre et asynkront kall med håndtering av `isLoading` og `error`.
      */
-    setError(err: unknown) {
-      setError(toError(err))
-    },
-
-    /**
-     * Funksjon som f.eks. kan brukes til kjøre et asynkront kall med håndtering av `loading` og `error`.
-     */
-    async execute<T = unknown>(action: () => Promise<T>): ExecutionPromise<T> {
-      setLoading(true)
-      try {
-        return await action()
-      } catch (err: unknown) {
-        console.error(err)
-        setError(toError(err))
-      } finally {
-        setLoading(false)
-      }
-    },
+    execute,
 
     /**
      * Holder på tilstand og evt. `Error`.

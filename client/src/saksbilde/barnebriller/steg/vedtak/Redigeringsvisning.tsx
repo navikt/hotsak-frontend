@@ -1,8 +1,10 @@
 import { Button, Detail, HStack } from '@navikt/ds-react'
-import { useCallback, useEffect, useState } from 'react'
 
+import { useController, useForm } from 'react-hook-form'
+import { type Brev } from '../../../../brev/brevTyper.ts'
+import { mutateBrevUrl } from '../../../../brev/useBrev.ts'
+import { useBrevActions } from '../../../../brev/useBrevActions.ts'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
-import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
@@ -10,56 +12,41 @@ import { useNotater } from '../../../../sak/notat/useNotater'
 import {
   type Barnebrillesak,
   Brevkode,
-  BrevTekst,
-  Brevtype,
-  MålformType,
   OppgaveStatusType,
   StepType,
   VilkårsResultat,
 } from '../../../../types/types.internal'
-import { useBrevActions } from '../../../useBrevActions.ts'
 import { useSakActions } from '../../../useSakActions.ts'
 import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
-import { useBrevtekst } from '../../brevutkast/useBrevtekst'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
-import { useBrev } from './brev/useBrev'
 
-interface RedigeringsvisningProps {
+export interface RedigeringsvisningProps {
   oppgave: Saksbehandlingsoppgave
   sak: Barnebrillesak
+  vedtaksbrev?: Brev<{ brevtekst?: string }>
+  harBrevutkast?: boolean
 }
 
 export function Redigeringsvisning(props: RedigeringsvisningProps) {
-  const { oppgave, sak } = props
+  const { oppgave, sak, vedtaksbrev, harBrevutkast } = props
   const { setStep } = useManuellSaksbehandlingContext()
   const samletVurdering = useSamletVurdering(sak)
-  const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const { harUtkast: harNotatUtkast } = useNotater(sak?.sakId)
-  const { data } = useBrevtekst(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
-  const { data: utkastTilInnhenteOpplysningerBrev } = useBrevtekst(
-    sak.sakId,
-    Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
-  )
   const sakActions = useSakActions()
-  const [submitAttempt, setSubmitAttempt] = useState(false)
-  const brevtekst = data?.data.brevtekst
-  const [fritekst, setFritekst] = useState(brevtekst || '')
-  const { hentForhåndsvisning } = useBrev()
-  const brevActions = useBrevActions(oppgave)
+  const { oppdaterBrevutkast } = useBrevActions(oppgave, vedtaksbrev?.brevId)
 
   const { data: saksdokumenter } = useSaksdokumenter(
     sak.sakId,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
 
-  const usendtUtkastTilInnhenteOpplysningerBrev =
-    utkastTilInnhenteOpplysningerBrev?.data.brevtekst && utkastTilInnhenteOpplysningerBrev?.data.brevtekst !== ''
+  const { harUtkast: harNotatUtkast } = useNotater(oppgave.sakId)
+
+  // todo -> bør utledes og kontrolleres av backend
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksdokument) => saksdokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
-
   const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined
 
   const manglerPåkrevdEtterspørreOpplysningerBrev =
@@ -73,69 +60,49 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const visFritekstFelt =
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && !manglerPåkrevdEtterspørreOpplysningerBrev
 
-  const byggBrevPayload = (tekst?: string): BrevTekst => ({
-    sakId: sak.sakId,
-    målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-    brevtype: Brevtype.BARNEBRILLER_VEDTAK,
-    data: {
-      brevtekst: tekst ? tekst : fritekst,
+  const {
+    formState: { isSubmitting },
+    handleSubmit,
+    control,
+  } = useForm({
+    defaultValues: {
+      brevtekst: vedtaksbrev?.data?.brevtekst ?? '',
     },
   })
 
-  const valider = () => {
-    if (fritekst === '') {
-      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
-      return false
-    } else {
-      setValideringsfeil(undefined)
-      return true
-    }
-  }
+  const brevtekstController = useController({
+    name: 'brevtekst',
+    rules: {
+      required: !visFritekstFelt || 'Du kan ikke sende brevet uten å ha lagt til tekst',
+    },
+    control,
+  })
 
-  useEffect(() => {
-    if (brevtekst) {
-      // fixme
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFritekst(brevtekst)
-    }
-  }, [brevtekst])
-
-  useEffect(() => {
-    if (submitAttempt) {
-      // fixme
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      valider()
-    }
-  }, [fritekst, submitAttempt])
-
-  const lagreUtkast = useCallback(
-    (tekst: string) => brevActions.lagreBrevutkast(byggBrevPayload(tekst)),
-    [sak.sakId, fritekst]
-  )
-
-  useDebounce(fritekst, lagreUtkast)
+  const handleForhåndsvis = handleSubmit(async (values) => {
+    if (!vedtaksbrev) return
+    await oppdaterBrevutkast.trigger({
+      brevutkast: {
+        brevmal: vedtaksbrev.brevmal,
+        brevmalVersjon: vedtaksbrev.brevmalVersjon,
+        målform: vedtaksbrev.målform,
+        data: { brevtekst: values.brevtekst },
+      },
+    })
+    return mutateBrevUrl(vedtaksbrev.sakId, vedtaksbrev.brevId)
+  })
 
   return (
-    <>
+    <form>
       {visFritekstFelt && (
         <>
           <Fritekst
             label="Beskriv hvilke opplysninger som mangler"
-            beskrivelse="Vises i brevet som en del av begrunnelsen for avslaget"
-            valideringsfeil={valideringsfeil}
-            fritekst={fritekst}
-            lagrer={brevActions.state.loading}
-            onTextChange={setFritekst}
+            description="Vises i brevet som en del av begrunnelsen for avslaget"
+            error={brevtekstController.fieldState.error?.message}
+            {...brevtekstController.field}
           />
           <div>
-            <Button
-              loading={false}
-              size="small"
-              variant="secondary"
-              onClick={() => {
-                hentForhåndsvisning(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
-              }}
-            >
+            <Button size="small" type="button" variant="secondary" loading={isSubmitting} onClick={handleForhåndsvis}>
               Forhåndsvis
             </Button>
           </div>
@@ -151,16 +118,16 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
           </Detail>
         </SkjemaAlert>
       )}
-      {usendtUtkastTilInnhenteOpplysningerBrev && (
+      {harBrevutkast === true && (
         <SkjemaAlert variant="warning">
           <Detail>
             Det er laget et brev i saken som ikke er sendt ut. Gå til brev-fanen for å sende eller slette brevet.
           </Detail>
         </SkjemaAlert>
       )}
-      {submitAttempt && harNotatUtkast && <NotatUtkastVarsel />}
+      {harNotatUtkast && <NotatUtkastVarsel />}
       <HStack gap="space-8">
-        <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
+        <Button size="small" type="button" variant="secondary" onClick={() => setStep(StepType.VILKÅR)}>
           Forrige
         </Button>
         {!manglerPåkrevdEtterspørreOpplysningerBrev && !manglerPåkrevdUtbetalingsmottakerVedInnvilgelse && (
@@ -170,9 +137,8 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             size="small"
             variant="primary"
             onClick={async () => {
-              setSubmitAttempt(true)
-
-              if ((!visFritekstFelt || valider()) && !harNotatUtkast) {
+              // todo -> valider at brev har blitt oppdatert ved manglende opplysninger
+              if (!visFritekstFelt && !harNotatUtkast) {
                 await sakActions.opprettTotrinnskontroll()
               }
             }}
@@ -181,6 +147,6 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
           </Button>
         )}
       </HStack>
-    </>
+    </form>
   )
 }

@@ -91,11 +91,6 @@ export enum GjenståendeOverfør {
 
 export interface BehandlingerForSak {
   behandlinger: Behandling[]
-  gjeldendeBehandling?: Behandling
-}
-
-export interface BehandlingerResponse {
-  behandlinger: Behandling[]
 }
 
 // todo -> bruke samme navn som i backend `Vedtaksresultat`

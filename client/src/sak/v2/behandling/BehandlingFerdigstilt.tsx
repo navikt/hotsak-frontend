@@ -121,7 +121,7 @@ function BrevSendtStatus({
     )
   }
 
-  if (brevMetadata?.status === Brevstatus.SENDT) {
+  if (brevMetadata?.status === Brevstatus.DISTRIBUERT) {
     return (
       <InlineMessage status="info" size="small">
         {erHenleggelse ? 'Brevet ble sendt til bruker den ' : 'Vedtaksbrevet ble sendt til bruker den '}

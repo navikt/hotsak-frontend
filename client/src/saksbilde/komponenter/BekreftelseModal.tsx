@@ -1,35 +1,37 @@
-import { Button, ButtonProps, Heading, Modal, ModalProps } from '@navikt/ds-react'
+import { Button, ButtonProps, Heading, Modal, type ModalProps } from '@navikt/ds-react'
 import { ReactNode, useRef } from 'react'
 
 export interface BekreftelseModalProps {
+  avbrytButtonLabel?: string
+  avbrytButtonVariant?: ButtonProps['variant']
+  bekreftButtonLabel: string
+  bekreftButtonVariant?: ButtonProps['variant']
+  buttonSize?: ButtonProps['size']
+  children?: ReactNode
   heading: string
   loading?: boolean
   open?: boolean
-  bekreftButtonLabel: string
   reverserKnapperekkefølge?: boolean
-  bekreftButtonVariant?: ButtonProps['variant']
-  avbrytButtonLabel?: string
-  buttonSize?: ButtonProps['size']
-  avbrytButtonVariant?: ButtonProps['variant']
   width?: ModalProps['width']
-  children?: ReactNode
-  onBekreft(): any | Promise<void>
-  onClose(): void | Promise<void>
+
+  onBekreft(): void
+  onClose(): void
 }
 
 export function BekreftelseModal(props: BekreftelseModalProps) {
   const {
+    avbrytButtonLabel = 'Avbryt',
+    avbrytButtonVariant = 'secondary',
+    bekreftButtonLabel,
+    bekreftButtonVariant = 'primary',
+    buttonSize = 'small',
+    children,
     heading,
     loading,
     open,
-    bekreftButtonLabel,
     reverserKnapperekkefølge = false,
-    buttonSize = 'small',
-    bekreftButtonVariant = 'primary',
-    avbrytButtonLabel = 'Avbryt',
-    avbrytButtonVariant = 'secondary',
     width = '500px',
-    children,
+
     onBekreft,
     onClose,
   } = props

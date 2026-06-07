@@ -3,12 +3,16 @@ import { useState, type ReactNode } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
+import { isBrevmal } from '../../brev/brevSelectors.ts'
+import { Brevmal } from '../../brev/brevTyper.ts'
+import { useBrevForSak } from '../../brev/useBrev.ts'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
+import { useMiljø } from '../../utils/useMiljø.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
@@ -25,20 +29,18 @@ import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { OverførTilGosysModal } from './modaler/OverførTilGosysModal.tsx'
+import { OverførtilGosysValideringFeil } from './modaler/OverførtilGosysValideringFeil.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
+import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import classes from './SakV2.module.css'
-import { ResizablePanel } from './paneler/ResizablePanel.tsx'
-import { Sidebar } from './sidebars/Sidebar.tsx'
-import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useSakContext } from './SakV2ContextType.ts'
+import { Sidebar } from './sidebars/Sidebar.tsx'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
-import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
-
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
-import { useMiljø } from '../../utils/useMiljø.ts'
-import { OverførtilGosysValideringFeil } from './modaler/OverførtilGosysValideringFeil.tsx'
+import { StickyBunnlinje } from './StickyBunnlinje.tsx'
+import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
 
 function AvrundetPanel({ children }: { children: ReactNode }) {
   return (
@@ -79,6 +81,9 @@ function SakV2Content({
 
   const { gjeldendeBehandling } = useBehandling()
   const behandlingsutfall = gjeldendeBehandling?.utfall
+
+  const { finnBrev } = useBrevForSak(sak.sakId)
+  const vedtaksbrev = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV))
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
@@ -134,13 +139,13 @@ function SakV2Content({
               groupResizeBehavior="preserve-pixel-size"
             >
               <AvrundetPanel>
-                <BehandlingPanel sak={sak} behovsmelding={behovsmelding} />
+                <BehandlingPanel oppgave={oppgave} sak={sak} behovsmelding={behovsmelding} />
               </AvrundetPanel>
             </Panel>
           )}
           <ResizablePanel panelId="brevpanel" panel={brevPanel} visible={brevPanel.visible}>
             <AvrundetPanel>
-              <BrevPanel oppgave={oppgave} />
+              <BrevPanel oppgave={oppgave} brev={vedtaksbrev} />
             </AvrundetPanel>
           </ResizablePanel>
           <ResizablePanel

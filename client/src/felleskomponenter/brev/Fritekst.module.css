@@ -1,4 +1,5 @@
 .bakgrunnslagring {
+  /* fixme
   display: flex;
   justify-content: right;
   vertical-align: baseline;
@@ -7,4 +8,5 @@
   padding-right: 0.6rem;
   height: var(--ax-space-32);
   margin-left: auto;
+  */
 }

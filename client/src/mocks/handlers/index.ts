@@ -5,15 +5,15 @@ import { ansatteHandlers } from './ansatte.ts'
 import { behovsmeldingHandlers } from './behovsmelding.ts'
 import { bestillingHandlers } from './bestilling.ts'
 import { bildeHandlers } from './bilder.ts'
-import { modiaHandlers } from './modia.ts'
 import { brevHandlers } from './brev.ts'
-import { brevutkastHandlers } from './brevutkast.ts'
 import { brillekalkulatorHandlers } from './brillekalkulator.ts'
 import { dokumentHandlers } from './dokumenter.ts'
 import { endringsloggHandlers } from './endringslogg.ts'
 import { grunndataHandlers } from './grunndata.ts'
 import { hjelpemiddelHandlers } from './hjelpemiddel.ts'
 import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt.ts'
+import { kodeverkHandlers } from './kodeverk.ts'
+import { modiaHandlers } from './modia.ts'
 import { notatHandlers } from './notat.ts'
 import { oppgaveHandlers } from './oppgaver.ts'
 import { personHandlers } from './person.ts'
@@ -24,7 +24,6 @@ import { saksvarslerHandlers } from './saksvarsler.ts'
 import { totrinnskontrollHandlers } from './totrinnskontroll.ts'
 import { utbetalingsmottakerHandlers } from './utbetalingsmottaker.ts'
 import { vilkårsvurderingHandlers } from './vilkårsvurdering.ts'
-import { kodeverkHandlers } from './kodeverk.ts'
 
 export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...ansatteHandlers(store),
@@ -33,7 +32,6 @@ export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...bildeHandlers(),
   ...modiaHandlers(),
   ...brevHandlers(store),
-  ...brevutkastHandlers(store),
   ...brillekalkulatorHandlers(store),
   ...dokumentHandlers(store),
   ...endringsloggHandlers(store),

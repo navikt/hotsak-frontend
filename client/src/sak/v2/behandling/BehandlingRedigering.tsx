@@ -7,7 +7,8 @@ import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
-import { Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
+import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
+import { useErPilot } from '../../../tilgang/useTilgang.ts'
 import { useMiljø } from '../../../utils/useMiljø.ts'
 import { useClosePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakV2ContextType.ts'
@@ -109,9 +110,11 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
                 />
               )}
 
-              <Heading level="2" size="xsmall">
-                {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
-              </Heading>
+              {!isBehandlingsutfallOverføring(behandling?.utfall) && (
+                <Heading level="2" size="xsmall">
+                  {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
+                </Heading>
+              )}
 
               {!harBrevutkast && !erHenleggelse && <UnderrettBruker vedtaksresultat={vedtaksresultat} />}
 
@@ -125,7 +128,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
                 </TextContainer>
               )}
 
-              {kanOppretteBrev && (
+              {kanOppretteBrev && !isBehandlingsutfallOverføring(behandling?.utfall) && (
                 <div>
                   <Button
                     variant={
@@ -220,7 +223,8 @@ function VedtaksResultatVelger({
 }) {
   const { lagreBehandling } = useBehandlingActions()
   const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
-  const { erProd } = useMiljø()
+  const { erIkkeProd } = useMiljø()
+  const erPilot = useErPilot('hotsakEksperimenter') || erIkkeProd
 
   const HENLEGGELSE_VALUE = 'HENLEGGELSE'
   const erBehandlingsutfallOverføring = behandling?.utfall && isBehandlingsutfallOverføring(behandling.utfall)
@@ -266,7 +270,7 @@ function VedtaksResultatVelger({
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
-          {!erProd && <option value={HENLEGGELSE_VALUE}>Henlagt</option>}
+          {erPilot && <option value={HENLEGGELSE_VALUE}>Henlagt</option>}
           {erBehandlingsutfallOverføring && <option value={OverførtTil.GOSYS}>Overført til Gosys</option>}
         </Select>
         {harBrevutkast && (

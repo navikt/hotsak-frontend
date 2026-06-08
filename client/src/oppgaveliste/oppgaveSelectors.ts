@@ -70,6 +70,10 @@ export function selectIsHastesak(it: Oppgave): boolean {
   return it.prioritet === Oppgaveprioritet.KRITISK || it.prioritet === Oppgaveprioritet.HØY
 }
 
+export function selectIsAktiv(it: Oppgave): boolean {
+  return !it.isPåVent
+}
+
 export function selectIsPåVent(it: Oppgave): boolean {
   return it.isPåVent === true
 }

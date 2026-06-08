@@ -13,6 +13,7 @@ import { useOppgavelisteHotkeys } from './useOppgavelisteHotkeys.ts'
 export interface OppgaveToolbarProps {
   antallOppgaver: number
   antallHastesaker: number
+  antallAktive: number
   antallPåVent: number
   antallFerdigstilte?: number
   ferdigstilte?: boolean
@@ -20,7 +21,7 @@ export interface OppgaveToolbarProps {
 }
 
 export function OppgaveToolbar(props: OppgaveToolbarProps) {
-  const { antallOppgaver, antallHastesaker, antallPåVent, antallFerdigstilte, ferdigstilte, loading } = props
+  const { antallHastesaker, antallAktive, antallPåVent, antallFerdigstilte, ferdigstilte, loading } = props
   const { currentTab } = useOppgavelisteContext()
   const handleTabChanged = useOppgavelisteTabChangeHandler()
   const isDataGridFiltered = useIsDataGridFiltered(currentTab)
@@ -34,7 +35,7 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
           {!loading && (
             <Tabs value={currentTab} size="small" onChange={handleTabChanged}>
               <Tabs.List>
-                <Tabs.Tab value={OppgaveToolbarTab.ALLE} label={`Alle (${antallOppgaver})`} />
+                <Tabs.Tab value={OppgaveToolbarTab.AKTIVE} label={`Aktive (${antallAktive})`} />
                 <Tabs.Tab value={OppgaveToolbarTab.HASTESAKER} label={`Hastesaker (${antallHastesaker})`} />
                 <Tabs.Tab value={OppgaveToolbarTab.PÅ_VENT} label={`På vent (${antallPåVent})`} />
                 {ferdigstilte && (

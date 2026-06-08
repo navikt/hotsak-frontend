@@ -28,7 +28,13 @@ export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
 
   const alle = useMemo(() => {
     const kommentarerSomNotater = kommentarer?.map(kommentarTilNotat) ?? []
-    return [...notater, ...kommentarerSomNotater].sort(reverseComparator(naturalBy((notat) => notat.ferdigstilt)))
+    return [
+      ...notater.map((notat) => {
+        if (notat.type !== NotatType.INTERNT) return notat
+        return { ...notat, type: NotatType.KOMMENTAR }
+      }),
+      ...kommentarerSomNotater,
+    ].sort(reverseComparator(naturalBy((notat) => notat.ferdigstilt)))
   }, [notater, kommentarer])
   const filtrerte = useMemo(() => {
     return alle.filter((notat) => filter[0] === 'ALLE' || filter[0] === notat.type)
@@ -75,6 +81,5 @@ function kommentarTilNotat(kommentar: Oppgavekommentar): Notat {
 const filterOptions: FilterOption[] = [
   { key: 'ALLE', label: 'Alle' },
   { key: NotatType.KOMMENTAR, label: 'Kommentar' },
-  { key: NotatType.INTERNT, label: 'Internt arbeidsnotat' },
   { key: NotatType.JOURNALFØRT, label: 'Forvaltningsnotat' },
 ]

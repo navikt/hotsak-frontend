@@ -8,7 +8,7 @@ export interface OppgavelisteSortState extends SortState {
 }
 
 export const OppgaveToolbarTab = {
-  ALLE: 'ALLE',
+  AKTIVE: 'AKTIVE',
   HASTESAKER: 'HASTESAKER',
   PÅ_VENT: 'PÅ_VENT',
   FERDIGSTILTE: 'FERDIGSTILTE',
@@ -23,7 +23,7 @@ export interface OppgavelisteState {
 }
 
 export const initialState: OppgavelisteState = {
-  currentTab: OppgaveToolbarTab.ALLE,
+  currentTab: OppgaveToolbarTab.AKTIVE,
   currentPage: 1,
   sort: {
     orderBy: 'fristFerdigstillelse',

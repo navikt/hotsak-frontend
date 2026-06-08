@@ -27,6 +27,7 @@ export function MineOppgaver() {
   const toolbarProps: OppgaveToolbarProps = {
     antallOppgaver: åpneOppgaver.antallOppgaver,
     antallHastesaker: åpneOppgaver.antallHastesaker,
+    antallAktive: åpneOppgaver.antallAktive,
     antallPåVent: åpneOppgaver.antallPåVent,
     antallFerdigstilte: ferdigstilteOppgaver.antallOppgaver,
     ferdigstilte: true,

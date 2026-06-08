@@ -6,6 +6,7 @@ import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
+import { useErPilot } from '../../../tilgang/useTilgang.ts'
 import { useMiljø } from '../../../utils/useMiljø.ts'
 import { useClosePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakV2ContextType.ts'
@@ -85,9 +86,11 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
                 />
               )}
 
-              <Heading level="2" size="xsmall">
-                {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
-              </Heading>
+              {!isBehandlingsutfallOverføring(behandling?.utfall) && (
+                <Heading level="2" size="xsmall">
+                  {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
+                </Heading>
+              )}
 
               {!harBrevutkast && !erHenleggelse && <UnderrettBruker vedtaksresultat={vedtaksresultat} />}
 
@@ -101,7 +104,7 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
                 </TextContainer>
               )}
 
-              {kanOppretteBrev && (
+              {kanOppretteBrev && !isBehandlingsutfallOverføring(behandling?.utfall) && (
                 <div>
                   <Button
                     variant={
@@ -196,7 +199,8 @@ function VedtaksResultatVelger({
 }) {
   const { lagreBehandling } = useBehandlingActions()
   const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
-  const { erProd } = useMiljø()
+  const { erIkkeProd } = useMiljø()
+  const erPilot = useErPilot('hotsakEksperimenter') || erIkkeProd
 
   const HENLEGGELSE_VALUE = 'HENLEGGELSE'
   const erBehandlingsutfallOverføring = behandling?.utfall && isBehandlingsutfallOverføring(behandling.utfall)
@@ -242,7 +246,7 @@ function VedtaksResultatVelger({
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
-          {!erProd && <option value={HENLEGGELSE_VALUE}>Henlagt</option>}
+          {erPilot && <option value={HENLEGGELSE_VALUE}>Henlagt</option>}
           {erBehandlingsutfallOverføring && <option value={OverførtTil.GOSYS}>Overført til Gosys</option>}
         </Select>
         {harBrevutkast && (

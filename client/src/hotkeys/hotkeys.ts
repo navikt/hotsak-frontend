@@ -58,21 +58,21 @@ export const SAK_HOTKEYS = {
 } as const satisfies Record<string, HotkeyDefinition>
 
 export const OPPGAVELISTE_HOTKEYS = {
-  alle: {
+  aktive: {
     code: 'KeyA',
-    description: 'Vis alle oppgaver på valgt liste',
+    description: 'Vis aktive oppgaver i valgt liste',
   },
   hast: {
     code: 'KeyH',
-    description: 'Vis hastesaker på valgt liste',
+    description: 'Vis hastesaker i valgt liste',
   },
   venter: {
     code: 'KeyV',
-    description: 'Vis oppgaver vent på valgt liste',
+    description: 'Vis oppgaver på vent i valgt liste',
   },
   ferdigstilte: {
     code: 'KeyF',
-    description: 'Vis ferdigstilte oppgaver på valgt liste',
+    description: 'Vis ferdigstilte oppgaver i valgt liste',
   },
   fjernAlleFiltre: {
     code: 'KeyX',

@@ -13,6 +13,7 @@ import {
   selectBehandlingstypeTerm,
   selectBrukerKommuneNavn,
   selectInnsenderNavn,
+  selectIsAktiv,
   selectIsHastesak,
   selectIsPåVent,
   selectMappenavn,
@@ -37,6 +38,7 @@ export interface UseClientSideOppgaverResponse {
   filterOptions: OppgaveFilterOptions
   antallOppgaver: number
   antallHastesaker: number
+  antallAktive: number
   antallPåVent: number
 }
 
@@ -68,6 +70,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
       .filterBy(selectBrukerKommuneNavn, filterState.kommune)
       .filterBy(selectSaksstatus, filterState.saksstatus)
       .filterBy(selectPrioritet, hastesakFilter(currentTab))
+      .filterBy(selectIsAktiv, isAktivFilter(currentTab))
       .filterBy(selectIsPåVent, isPåVentFilter(currentTab))
       .toSorted(comparator)
       .toArray()
@@ -76,6 +79,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
   const filterOptions = useOppgaveFilterOptions(alleOppgaver)
   const totalElements = response.data ? response.data.totalElements : 0
   const antallHastesaker = useMemo(() => alleOppgaver.filter(selectIsHastesak).length, [alleOppgaver])
+  const antallAktive = useMemo(() => alleOppgaver.filter(selectIsAktiv).length, [alleOppgaver])
   const antallPåVent = useMemo(() => alleOppgaver.filter(selectIsPåVent).length, [alleOppgaver])
   return {
     oppgaver: filtrerteOppgaver,
@@ -86,6 +90,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
     filterOptions,
     antallOppgaver: totalElements, // filtrerteOppgaver.length
     antallHastesaker,
+    antallAktive,
     antallPåVent,
   }
 }
@@ -94,9 +99,14 @@ function hastesakFilter(currentTab: OppgaveToolbarTab): DataGridFilterValues | u
   if (currentTab === OppgaveToolbarTab.HASTESAKER) return hastesakValues
 }
 
+function isAktivFilter(currentTab: OppgaveToolbarTab): DataGridFilterValues | undefined {
+  if (currentTab === OppgaveToolbarTab.AKTIVE) return isAktivValues
+}
+
 function isPåVentFilter(currentTab: OppgaveToolbarTab): DataGridFilterValues | undefined {
   if (currentTab === OppgaveToolbarTab.PÅ_VENT) return isPåVentValues
 }
 
 const hastesakValues: DataGridFilterValues = { values: new Set([Oppgaveprioritet.HØY, Oppgaveprioritet.KRITISK]) }
+const isAktivValues: DataGridFilterValues = { values: new Set([true]) }
 const isPåVentValues: DataGridFilterValues = { values: new Set([true]) }

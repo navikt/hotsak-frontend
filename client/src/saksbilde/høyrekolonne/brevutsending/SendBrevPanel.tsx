@@ -13,7 +13,7 @@ import { type BrevTekst, Brevtype, MålformType } from '../../../types/types.int
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
+import { BekreftelsesDialog } from '../../komponenter/BekreftelsesDialog'
 import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { useBrevActions } from '../../useBrevActions.ts'
 import { useSakId } from '../../useSak.ts'
@@ -217,7 +217,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
           setVisForhåndsvisningsmodal(false)
         }}
       />
-      <BekreftelseModal
+      <BekreftelsesDialog
         heading="Vil du sende brevet?"
         bekreftButtonLabel="Send brev"
         open={visSendBrevModal}
@@ -228,8 +228,8 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
         }}
       >
         <Tekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Tekst>
-      </BekreftelseModal>
-      <BekreftelseModal
+      </BekreftelsesDialog>
+      <BekreftelsesDialog
         heading="Vil du slette utkastet?"
         bekreftButtonLabel="Slett utkast"
         bekreftButtonVariant="danger"

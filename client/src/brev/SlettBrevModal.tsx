@@ -1,6 +1,5 @@
-import { ModalProps } from '@navikt/ds-react'
 import { Tekst } from '../felleskomponenter/typografi'
-import { BekreftelseModal } from '../saksbilde/komponenter/BekreftelseModal'
+import { BekreftelsesDialog } from '../saksbilde/komponenter/BekreftelsesDialog'
 import { useSlettBrevUtkast } from './breveditor/hooks'
 
 type SlettBrevModalProps = {
@@ -8,13 +7,13 @@ type SlettBrevModalProps = {
   onClose: () => void
   heading: string
   tekst: string
-  width?: ModalProps['width']
+  width?: string
 }
 
 export function SlettBrevModal({ open, onClose, heading, tekst, width }: SlettBrevModalProps) {
   const slettBrevutkast = useSlettBrevUtkast()
   return (
-    <BekreftelseModal
+    <BekreftelsesDialog
       heading={heading}
       bekreftButtonLabel={'Slett utkast'}
       bekreftButtonVariant={'danger'}
@@ -27,6 +26,6 @@ export function SlettBrevModal({ open, onClose, heading, tekst, width }: SlettBr
       width={width}
     >
       <Tekst>{tekst}</Tekst>
-    </BekreftelseModal>
+    </BekreftelsesDialog>
   )
 }

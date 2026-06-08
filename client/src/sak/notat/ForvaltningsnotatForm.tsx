@@ -6,7 +6,7 @@ import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { useBrev } from '../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { ForhåndsvisningsModal } from '../../saksbilde/høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
-import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
+import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog.tsx'
 import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
 import { Brevtype, MålformType } from '../../types/types.internal.ts'
@@ -159,7 +159,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
           </div>
         </VStack>
 
-        <BekreftelseModal
+        <BekreftelsesDialog
           heading="Er du sikker på at du vil journalføre notatet?"
           bekreftButtonLabel="Ja, journalfør notatet"
           reverserKnapperekkefølge={true}
@@ -198,7 +198,7 @@ export function ForvaltningsnotatForm({ sakId, aktivtUtkast }: Forvaltningsnotat
               </CheckboxGroup>
             )}
           />
-        </BekreftelseModal>
+        </BekreftelsesDialog>
 
         <InfoModal heading="Ingen utkast" open={visUtkastManglerModal} onClose={() => setVisUtkastManglerModal(false)}>
           <Tekst>Notatet kan ikke forhåndsvises før det er opprettet et utkast</Tekst>

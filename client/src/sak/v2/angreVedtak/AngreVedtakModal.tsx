@@ -1,5 +1,5 @@
 import { InfoCard, Textarea } from '@navikt/ds-react'
-import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
+import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
 import { TextContainer } from '../../../felleskomponenter/typografi'
 import { useBehandling } from '../behandling/useBehandling'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
@@ -30,7 +30,7 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
   }
 
   return (
-    <BekreftelseModal
+    <BekreftelsesDialog
       heading={`Er du sikker på at du vil angre på vedtaket?`}
       open={open}
       width="700px"
@@ -80,6 +80,6 @@ export function AngreVedtakModal({ open, onClose }: { open: boolean; onClose: ()
         }}
         error={årsakError}
       />
-    </BekreftelseModal>
+    </BekreftelsesDialog>
   )
 }

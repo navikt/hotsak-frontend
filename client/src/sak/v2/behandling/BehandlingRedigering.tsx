@@ -3,8 +3,8 @@ import { useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
+import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
@@ -36,7 +36,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const { henleggFormRef } = useSakContext()
   const closePanel = useClosePanel('brevpanel')
   const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
-  const { harBrevISak } = useBrevMetadata()
+  const { harBrev } = useBrevForSak(behandling?.sakId)
   const { ferdigstillBehandling, lagreBehandling } = useBehandlingActions()
   const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave)
   const { showSuccessToast } = useToast()
@@ -75,7 +75,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
 
   const henlegg = async () => {
     await ferdigstillBehandling({})
-    if (!harBrevISak) closePanel()
+    if (!harBrev) closePanel()
     showSuccessToast('Saken er henlagt')
   }
 
@@ -143,7 +143,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
                 </div>
               )}
 
-              {harBrevISak && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
+              {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
 
               {brevutkastFerdigstilt && (
                 <InlineMessage status="info" size="small">

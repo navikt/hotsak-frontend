@@ -516,7 +516,7 @@ export class SakStore extends Dexie {
       behandlingId: request.behandlingId,
       opprettet: nåIso(),
       opprettetAv: Saksbehandlere.innlogget().id,
-      status: Brevstatus.UTKAST,
+      brevstatus: Brevstatus.UTKAST,
       distribusjon: [],
       data,
       ...rest,
@@ -607,7 +607,7 @@ export class SakStore extends Dexie {
     await this.brev.update(brevId, {
       ferdigstilt: nåIso(),
       ferdigstiltAv: Saksbehandlere.innlogget().id,
-      status: Brevstatus.FERDIGSTILT,
+      brevstatus: Brevstatus.FERDIGSTILT,
     })
 
     const brev = await this.hentBrev(brevId)
@@ -650,7 +650,7 @@ export class SakStore extends Dexie {
       endretAv: Saksbehandlere.innlogget().id,
       ferdigstilt: undefined,
       ferdigstiltAv: undefined,
-      status: Brevstatus.UTKAST,
+      brevstatus: Brevstatus.UTKAST,
     })
 
     const brev = await this.hentBrev(brevId)

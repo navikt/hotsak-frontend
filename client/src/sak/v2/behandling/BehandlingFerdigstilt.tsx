@@ -1,7 +1,7 @@
 import { Box, Heading, InlineMessage, VStack } from '@navikt/ds-react'
 
-import { Brevstatus } from '../../../brev/brevTyper.ts'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
+import { type Brev, Brevstatus } from '../../../brev/brevTyper.ts'
+import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useUtsendingsInfo } from '../../../brev/useUtsendingsInfo.ts'
 import { Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
@@ -24,7 +24,7 @@ export interface BehandlingFerdigstiltProps {
 }
 
 export function BehandlingFerdigstilt({ behandling }: BehandlingFerdigstiltProps) {
-  const { gjeldendeBrev: brevMetadata, harBrevISak } = useBrevMetadata()
+  const { brevForSak, harBrev } = useBrevForSak(behandling.sakId)
   const { varsler, harVarsler } = useSøknadsVarsler()
   const { datoEkspedert } = useUtsendingsInfo()
 
@@ -42,25 +42,21 @@ export function BehandlingFerdigstilt({ behandling }: BehandlingFerdigstiltProps
             <VStack gap="space-12">
               {henleggelseUtfall && <HenleggLesevisning utfall={henleggelseUtfall} />}
 
-              {harBrevISak && (
+              {harBrev && (
                 <Heading level="2" size="xsmall">
                   {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
                 </Heading>
               )}
 
-              <BrevSendtStatus
-                brevMetadata={brevMetadata}
-                datoEkspedert={datoEkspedert}
-                erHenleggelse={erHenleggelse}
-              />
+              <BrevSendtStatus brev={brevForSak?.brev[0]} datoEkspedert={datoEkspedert} erHenleggelse={erHenleggelse} />
 
-              {!harBrevISak && vedtaksresultat === VedtaksResultat.INNVILGET && (
+              {!harBrev && vedtaksresultat === VedtaksResultat.INNVILGET && (
                 <InlineMessage status="info" size="small">
                   Saken er innvilget uten å sende brev
                 </InlineMessage>
               )}
 
-              {harBrevISak && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
+              {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
             </VStack>
           </Box>
         </TextContainer>
@@ -105,15 +101,17 @@ function VedtaksResultatVisning({
 }
 
 function BrevSendtStatus({
-  brevMetadata,
+  brev,
   datoEkspedert,
   erHenleggelse,
 }: {
-  brevMetadata?: { status?: Brevstatus; sendt?: string } | null
+  brev?: Brev
   datoEkspedert?: string | null
   erHenleggelse: boolean
 }) {
-  if (brevMetadata?.status === Brevstatus.UTBOKS || brevMetadata?.status === Brevstatus.FERDIGSTILT) {
+  if (!brev) return null
+
+  if (brev.brevstatus === Brevstatus.TIL_DISTRIBUSJON || brev.brevstatus === Brevstatus.FERDIGSTILT) {
     return (
       <InlineMessage status="info" size="small">
         Brev lagt til utsending - sendes neste virkedag
@@ -121,11 +119,14 @@ function BrevSendtStatus({
     )
   }
 
-  if (brevMetadata?.status === Brevstatus.DISTRIBUERT) {
+  // fixme -> håndter at det kan være flere distribusjoner
+  if (brev.brevstatus === Brevstatus.DISTRIBUERT) {
     return (
       <InlineMessage status="info" size="small">
         {erHenleggelse ? 'Brevet ble sendt til bruker den ' : 'Vedtaksbrevet ble sendt til bruker den '}
-        {datoEkspedert ? formaterTidsstempelLang(datoEkspedert) : formaterTidsstempelLang(brevMetadata?.sendt)}
+        {datoEkspedert
+          ? formaterTidsstempelLang(datoEkspedert)
+          : formaterTidsstempelLang(brev.distribusjon[0]?.distribuert)}
       </InlineMessage>
     )
   }

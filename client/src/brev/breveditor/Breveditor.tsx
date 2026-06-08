@@ -108,15 +108,15 @@ export function Breveditor(props: BreveditorProps) {
         ],
       ],
       value: (editor) => {
+        if (initialState?.value != null) {
+          editor.history = initialState.history
+          return initialState.value
+        }
         if (templateMarkdown) {
           const deserialized = editor.getApi(MarkdownPlugin).markdown.deserialize(templateMarkdown)
           return transformerPlaceholders(deserialized, spesielleVerdier)
-        } else if (initialState?.value != undefined) {
-          editor.history = initialState.history
-          return initialState.value
-        } else {
-          return [{ type: 'h1', children: [{ text: '' }] }] as Value
         }
+        return [{ type: 'h1', children: [{ text: '' }] }]
       },
     },
     []
@@ -222,7 +222,7 @@ export function Breveditor(props: BreveditorProps) {
       <Plate
         editor={editor}
         onChange={({ editor: changedEditor, value: nyVerdi }) => {
-          if ((onStateChange != undefined || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
+          if ((onStateChange != null || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: BreveditorState = {
               value: nyVerdi,
               valueAsHtml: byggFullHtml(metadata, nyVerdi, vergeNavn),

@@ -1,6 +1,7 @@
 import { useSWRConfig } from 'swr'
-import { Actions, useActionState } from '../../../action/Actions.ts'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
+
+import { type Actions, useActionState } from '../../../action/Actions.ts'
+import { mutateBrevForSak } from '../../../brev/useBrev.ts'
 import { http } from '../../../io/HttpClient.ts'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../saksbilde/mutateSak.ts'
@@ -24,7 +25,6 @@ export function useBehandlingActions(): BehandlingActions {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
   const { oppgaveId, versjon, sakId } = oppgave ?? {}
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
-  const { mutate: muteBrevMetadata } = useBrevMetadata()
   const { execute, state } = useActionState()
   const { mutate } = useSWRConfig()
 
@@ -62,7 +62,7 @@ export function useBehandlingActions(): BehandlingActions {
         )
         await mutateBehandling()
         await mutateOppgaveOgSak()
-        await muteBrevMetadata()
+        await mutateBrevForSak(sakId!)
       })
     },
     state,

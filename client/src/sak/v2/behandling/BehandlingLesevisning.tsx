@@ -1,7 +1,7 @@
 import { Box, Heading, InlineMessage, VStack } from '@navikt/ds-react'
 
 import { Brevstatus } from '../../../brev/brevTyper.ts'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
+import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { isBehandlingsutfallHenleggelse, isBehandlingsutfallVedtak, type Behandling } from './behandlingTyper.ts'
 import { VisBrevKnapp } from './VisBrevKnapp.tsx'
@@ -11,7 +11,8 @@ export interface BehandlingLesevisningProps {
 }
 
 export function BehandlingLesevisning({ behandling }: BehandlingLesevisningProps) {
-  const { gjeldendeBrev: brevMetadata, harBrevISak } = useBrevMetadata()
+  const { brevForSak, harBrev } = useBrevForSak(behandling?.sakId)
+  const brev = brevForSak?.brev[0]
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined
   const erHenleggelse = isBehandlingsutfallHenleggelse(behandling?.utfall)
@@ -22,19 +23,19 @@ export function BehandlingLesevisning({ behandling }: BehandlingLesevisningProps
         <TextContainer>
           <Box paddingInline="space-8 space-0">
             <VStack gap="space-12">
-              {harBrevISak && (
+              {harBrev && (
                 <Heading level="2" size="xsmall">
                   {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
                 </Heading>
               )}
 
-              {(brevMetadata?.status === Brevstatus.UTBOKS || brevMetadata?.status === Brevstatus.FERDIGSTILT) && (
+              {(brev?.brevstatus === Brevstatus.TIL_DISTRIBUSJON || brev?.brevstatus === Brevstatus.FERDIGSTILT) && (
                 <InlineMessage status="info" size="small">
                   Brev lagt til utsending - sendes neste virkedag
                 </InlineMessage>
               )}
 
-              {harBrevISak && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
+              {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
             </VStack>
           </Box>
         </TextContainer>

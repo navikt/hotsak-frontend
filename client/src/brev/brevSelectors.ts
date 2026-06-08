@@ -10,7 +10,7 @@ export function isBrevmalOneOf(...brevmaler: Brevmal[]): Predicate<Brev> {
 }
 
 export function isBrevstatus(brevstatus: Brevstatus): Predicate<Brev> {
-  return (brev) => brev.status === brevstatus
+  return (brev) => brev.brevstatus === brevstatus
 }
 
 export const isBrevstatusUtkast: Predicate<Brev> = isBrevstatus(Brevstatus.UTKAST)

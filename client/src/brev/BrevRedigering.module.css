@@ -2,7 +2,3 @@
   text-align: center;
   padding: var(--ax-space-32);
 }
-
-.panelHeader {
-  padding: var(--ax-space-12) var(--ax-space-16);
-}

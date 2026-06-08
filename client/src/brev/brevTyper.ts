@@ -15,7 +15,8 @@ export interface BrevMetadata {
 export const Brevstatus = {
   UTKAST: 'UTKAST',
   FERDIGSTILT: 'FERDIGSTILT',
-  UTBOKS: 'UTBOKS', // fixme -> bedre navn
+  JOURNALFØRT: 'JOURNALFØRT',
+  TIL_DISTRIBUSJON: 'TIL_DISTRIBUSJON',
   DISTRIBUERT: 'DISTRIBUERT',
 } as const
 export type Brevstatus = Enum<typeof Brevstatus>
@@ -75,7 +76,7 @@ export interface Brev<T extends Brevdata = Brevdata> extends Brevutkast<T> {
   endretAv?: NavIdent
   ferdigstilt?: Instant
   ferdigstiltAv?: NavIdent
-  status: Brevstatus
+  brevstatus: Brevstatus
   distribusjon: Brevdistribusjon[]
 }
 

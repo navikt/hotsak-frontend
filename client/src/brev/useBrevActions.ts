@@ -66,7 +66,7 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
           return {
             ...it,
             ferdigstilt: new Date().toISOString(),
-            status: Brevstatus.FERDIGSTILT,
+            brevstatus: Brevstatus.FERDIGSTILT,
           }
         })
       },
@@ -85,7 +85,7 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
             ...it,
             ferdigstilt: undefined,
             ferdigstiltAv: undefined,
-            status: Brevstatus.UTKAST,
+            brevstatus: Brevstatus.UTKAST,
           }
         })
       },

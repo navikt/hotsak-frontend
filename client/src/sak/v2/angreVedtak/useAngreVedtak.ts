@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import { type Actions, useActionState } from '../../../action/Actions'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata'
+import { mutateBrevForSak } from '../../../brev/useBrev'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { http } from '../../../io/HttpClient'
 import { useOppgave } from '../../../oppgave/useOppgave'
@@ -25,7 +25,6 @@ export function useAngreVedtak(): AngreActions {
   const { showSuccessToast } = useToast()
   const navigate = useNavigate()
   // const { brevutkast } = { brevutkast: { mutate: () => {} } } // fixme
-  const { mutate: mutateBrevMetadata } = useBrevMetadata()
 
   return {
     async angreVedtak({ årsak }: { årsak: string }) {
@@ -41,7 +40,7 @@ export function useAngreVedtak(): AngreActions {
         await mutateBehandling()
         await mutateSak(sakId)
         // fixme -> await brevutkast.mutate(undefined, { revalidate: true })
-        await mutateBrevMetadata()
+        await mutateBrevForSak(sakId)
         showSuccessToast('Vedtaket er angret og ny oppgave er aktiv')
         navigate(`/oppgave/${response.nyOppgaveId}`)
       })

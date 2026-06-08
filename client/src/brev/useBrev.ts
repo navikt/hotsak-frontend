@@ -52,10 +52,15 @@ export function useBrevForSak(sakId?: string) {
     async (url: string) => {
       const brevForSak = await http.get<BrevForSak>(url)
       // prepopuler cache for hvert brev i saken
-      // todo -> await Promise.all(brevForSak.brev.map((brev) => mutateBrev(sakId!, brev.brevId, brev, { revalidate: false })))
+      await Promise.all(brevForSak.brev.map((brev) => mutateBrev(sakId!, brev.brevId, brev, { revalidate: false })))
       return brevForSak
     }
   )
+
+  const harBrev = useMemo(() => {
+    if (!brevForSak) return
+    return brevForSak.brev.length > 0
+  }, [brevForSak])
 
   const harBrevutkast = useMemo(() => {
     if (!brevForSak) return
@@ -70,7 +75,7 @@ export function useBrevForSak(sakId?: string) {
     [brevForSak]
   )
 
-  return { brevForSak, harBrevutkast, finnBrev, ...rest }
+  return { brevForSak, harBrev, harBrevutkast, finnBrev, ...rest }
 }
 
 export function preloadBrev<T extends Brevdata = Brevdata>(sakId: string, brevId: string) {

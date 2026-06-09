@@ -10,7 +10,6 @@ import { formaterTidsstempelLang } from '../../../utils/dato.ts'
 import { BehandlingsutfallTag } from '../BehandlingsutfallTag.tsx'
 import classes from './BehandlingPanel.module.css'
 import {
-  type BehandlingsutfallHenleggelse,
   type FerdigstiltBehandling,
   isBehandlingsutfallHenleggelse,
   isBehandlingsutfallVedtak,
@@ -34,7 +33,7 @@ export function BehandlingFerdigstilt({ behandling }: BehandlingFerdigstiltProps
 
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8">
-      <VedtaksResultatVisning utfall={vedtaksresultat} henleggelse={henleggelseUtfall} />
+      <VedtaksResultatVisning behandling={behandling} />
 
       {(vedtaksresultat || erHenleggelse) && (
         <TextContainer>
@@ -78,24 +77,28 @@ export function BehandlingFerdigstilt({ behandling }: BehandlingFerdigstiltProps
   )
 }
 
-function VedtaksResultatVisning({
-  utfall,
-  henleggelse,
-}: {
-  utfall?: VedtaksResultat
-  henleggelse?: BehandlingsutfallHenleggelse
-}) {
-  if (!utfall && !henleggelse) {
+function VedtaksResultatVisning({ behandling }: { behandling: FerdigstiltBehandling }) {
+  if (!behandling.utfall) {
     return null
   }
+
+  const header = (() => {
+    switch (behandling.utfall.type) {
+      case 'HENLEGGELSE':
+        return 'Henleggelsesresultat'
+      case 'VEDTAK':
+        return 'Vedtaksresultat'
+      default:
+        return 'Resultat'
+    }
+  })()
+
   return (
     <VStack gap="space-8">
       <Heading size="xsmall" level="2" spacing={false}>
-        {henleggelse ? 'Henleggelsesresultat' : 'Vedtaksresultat'}
+        {header}
       </Heading>
-      <div>
-        {utfall ? <BehandlingsutfallTag utfall={utfall} /> : <BehandlingsutfallTag utfall={henleggelse?.utfall} />}
-      </div>
+      <div>{<BehandlingsutfallTag utfall={behandling.utfall.utfall} />}</div>
     </VStack>
   )
 }

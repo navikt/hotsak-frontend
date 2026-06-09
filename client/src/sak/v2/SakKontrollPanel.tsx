@@ -4,8 +4,8 @@ import clsx from 'clsx'
 import { useOppgaveContext } from '../../oppgave/OppgaveContext'
 import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import { useSakId } from '../../saksbilde/useSak'
+import { useSaksregler } from '../../saksregler/useSaksregler'
 import globalStyles from '../../styles/shared.module.css'
-import { Sakstype } from '../../types/types.internal'
 import { useMiljø } from '../../utils/useMiljø'
 import { useNotater } from '../notat/useNotater'
 import { GjenståendeOverfør } from './behandling/behandlingTyper'
@@ -13,7 +13,7 @@ import { useBehandling } from './behandling/useBehandling'
 import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
 import classes from './SakKontrollPanel.module.css'
 
-export const SakKontrollPanel = ({ sakstype }: { sakstype: Sakstype }) => {
+export const SakKontrollPanel = () => {
   const sakId = useSakId()
   const behandlingPanel = usePanel('behandlingspanel')
   const brevKolonne = usePanel('brevpanel')
@@ -28,11 +28,10 @@ export const SakKontrollPanel = ({ sakstype }: { sakstype: Sakstype }) => {
   const { isOppgaveContext } = useOppgaveContext()
   const { gjeldendeBehandling } = useBehandling()
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
+  const { erBestilling } = useSaksregler()
   const { erProd } = useMiljø()
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
-
-  const erSoknad = sakstype === Sakstype.SØKNAD
 
   if (harNotatUtkast && !gjenståendeForOverføringTilGosys.includes(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)) {
     gjenståendeForOverføringTilGosys.push(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)
@@ -42,18 +41,18 @@ export const SakKontrollPanel = ({ sakstype }: { sakstype: Sakstype }) => {
     <>
       <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
         <Chips size="small">
-          {erSoknad && (
+          {!erBestilling && (
             <ToggleKnapp selected={behandlingPanel.visible} onToggle={() => toggleBehandlingPanel()}>
               Behandle sak
             </ToggleKnapp>
           )}
-          {erSoknad && (
+          {!erBestilling && (
             <ToggleKnapp selected={brevKolonne.visible} onToggle={() => toggleBrevKolonne()}>
               Brev
             </ToggleKnapp>
           )}
           <ToggleKnapp selected={søknadPanel.visible} onToggle={() => toggleSøknadPanel()}>
-            Søknad
+            {erBestilling ? 'Bestilling' : 'Søknad'}
           </ToggleKnapp>
           <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
             Kontaktinformasjon

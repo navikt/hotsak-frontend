@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import useSWR, { mutate, type MutatorCallback, type MutatorOptions, preload } from 'swr'
 
+import useSWRImmutable from 'swr/immutable'
 import { http, type RequestOptions } from '../io/HttpClient'
 import { type HttpError } from '../io/HttpError'
 import { useSakId } from '../saksbilde/useSak'
@@ -22,28 +23,30 @@ export function brevKeyOf(
 }
 
 async function brevFetcher<T>([url, accept]: BrevKey): Promise<T> {
-  if (accept === 'application/pdf') {
-    const data = await http.get<Blob>(url, { accept })
-    return window.URL.createObjectURL(data) as T
-  }
   return await http.get<T>(url, { accept })
 }
 
-function useBrevInternal<T>(brevId?: string, accept?: RequestOptions['accept']) {
+async function brevUrlFetcher([url, accept]: BrevKey): Promise<string> {
+  const data = await http.get<Blob>(url, { accept })
+  return window.URL.createObjectURL(data)
+}
+
+export function useBrev<T extends Brevdata = Brevdata>(brevId?: string) {
   const sakId = useSakId()
   const { data: brev, ...rest } = useSWR<T, HttpError, BrevKey | null>(
-    sakId && brevId ? brevKeyOf(sakId, brevId, accept) : null,
+    sakId && brevId ? brevKeyOf(sakId, brevId, 'application/json') : null,
     brevFetcher
   )
   return { brev, ...rest }
 }
 
-export function useBrev<T extends Brevdata = Brevdata>(brevId?: string) {
-  return useBrevInternal<Brev<T>>(brevId, 'application/json')
-}
-
 export function useBrevUrl(brevId?: string) {
-  return useBrevInternal<string>(brevId, 'application/pdf')
+  const sakId = useSakId()
+  const { data: brev, ...rest } = useSWRImmutable<string, HttpError, BrevKey | null>(
+    sakId && brevId ? brevKeyOf(sakId, brevId, 'application/pdf') : null,
+    brevUrlFetcher
+  )
+  return { brev, ...rest }
 }
 
 export function useBrevForSak(sakId?: string) {
@@ -83,7 +86,7 @@ export function preloadBrev<T extends Brevdata = Brevdata>(sakId: string, brevId
 }
 
 export function preloadBrevUrl(sakId: string, brevId: string) {
-  return preload<string, BrevKey>(brevKeyOf(sakId, brevId, 'application/pdf'), brevFetcher)
+  return preload<string, BrevKey>(brevKeyOf(sakId, brevId, 'application/pdf'), brevUrlFetcher)
 }
 
 export function mutateBrev<T extends Brevdata = Brevdata>(

@@ -13,7 +13,7 @@ import {
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
 } from './brevTyper.ts'
-import { brevKeyOf, mutateBrev, mutateBrevForSak, type BrevKey } from './useBrev.ts'
+import { brevKeyOf, mutateBrev, mutateBrevForSak, mutateBrevUrl, type BrevKey } from './useBrev.ts'
 
 export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: SaksbehandlingsoppgaveBase, brevId?: string) {
   const { oppgaveId = '', versjon, sakId } = oppgave ?? {}
@@ -60,15 +60,18 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     },
     {
       async onSuccess() {
-        await mutateBehandlingOgBrevForSak(sakId!)
-        await mutateBrev(sakId!, brevId!, (it) => {
-          if (!it) return it
-          return {
-            ...it,
-            ferdigstilt: new Date().toISOString(),
-            brevstatus: Brevstatus.FERDIGSTILT,
-          }
-        })
+        await Promise.all([
+          mutateBehandlingOgBrevForSak(sakId!),
+          mutateBrev(sakId!, brevId!, (it) => {
+            if (!it) return it
+            return {
+              ...it,
+              ferdigstilt: new Date().toISOString(),
+              brevstatus: Brevstatus.FERDIGSTILT,
+            }
+          }),
+          mutateBrevUrl(sakId!, brevId!),
+        ])
       },
     }
   )
@@ -78,16 +81,18 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     (url) => http.delete(url, { versjon }),
     {
       async onSuccess() {
-        await mutateBehandlingOgBrevForSak(sakId!)
-        await mutateBrev(sakId!, brevId!, (it) => {
-          if (!it) return it
-          return {
-            ...it,
-            ferdigstilt: undefined,
-            ferdigstiltAv: undefined,
-            brevstatus: Brevstatus.UTKAST,
-          }
-        })
+        await Promise.all([
+          mutateBehandlingOgBrevForSak(sakId!),
+          mutateBrev(sakId!, brevId!, (it) => {
+            if (!it) return it
+            return {
+              ...it,
+              ferdigstilt: undefined,
+              ferdigstiltAv: undefined,
+              brevstatus: Brevstatus.UTKAST,
+            }
+          }),
+        ])
       },
     }
   )

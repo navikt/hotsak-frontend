@@ -6,6 +6,7 @@ import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../../oppgave/useOppgaveregler.ts'
 import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { useSakId } from '../../useSak.ts'
+import { SendBrevForm } from './SendBrevForm.tsx'
 import { UtgåendeBrev } from './UtgåendeBrev'
 
 export interface SendBrevProps {

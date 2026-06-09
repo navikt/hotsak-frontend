@@ -1,8 +1,8 @@
 import { Tekst } from '../felleskomponenter/typografi'
-import { BekreftelseModal, type BekreftelseModalProps } from '../saksbilde/komponenter/BekreftelseModal'
+import { BekreftelsesDialog, type BekreftelsesDialogProps } from '../saksbilde/komponenter/BekreftelsesDialog'
 
 export interface SlettBrevModalProps extends Omit<
-  BekreftelseModalProps,
+  BekreftelsesDialogProps,
   'bekreftButtonLabel' | 'bekreftButtonVariant'
 > {
   tekst: string
@@ -10,8 +10,8 @@ export interface SlettBrevModalProps extends Omit<
 
 export function SlettBrevModal({ tekst, ...rest }: SlettBrevModalProps) {
   return (
-    <BekreftelseModal bekreftButtonLabel="Slett utkast" bekreftButtonVariant="danger" {...rest}>
+    <BekreftelsesDialog bekreftButtonLabel="Slett utkast" bekreftButtonVariant="danger" {...rest}>
       <Tekst>{tekst}</Tekst>
-    </BekreftelseModal>
+    </BekreftelsesDialog>
   )
 }

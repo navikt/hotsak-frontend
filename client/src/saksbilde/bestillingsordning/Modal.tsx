@@ -2,18 +2,18 @@ import { VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FritekstPanel } from '../../sak/felles/FritekstPanel'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { BekreftelseModal } from '../komponenter/BekreftelseModal'
+import { BekreftelsesDialog } from '../komponenter/BekreftelsesDialog'
 
 export interface OrdreModalProps {
   loading?: boolean
   open?: boolean
-  onBekreft(): any | Promise<any>
+  onBekreft(): void | Promise<void>
   onClose(): void | Promise<void>
 }
 
 export interface FormModalProps extends Omit<OrdreModalProps, 'onBekreft'> {
   leveringsmerknad?: string
-  onBekreft(merknad?: string): any | Promise<any>
+  onBekreft(merknad?: string): void | Promise<void>
 }
 
 export function BekreftAutomatiskOrdre({ open, onBekreft, loading, onClose, leveringsmerknad }: FormModalProps) {
@@ -23,7 +23,7 @@ export function BekreftAutomatiskOrdre({ open, onBekreft, loading, onClose, leve
 
   return (
     <FormProvider {...form}>
-      <BekreftelseModal
+      <BekreftelsesDialog
         width="700px"
         open={open}
         heading="Godkjenn bestillingen"
@@ -39,14 +39,14 @@ export function BekreftAutomatiskOrdre({ open, onBekreft, loading, onClose, leve
             gjøre noe mer med saken.
           </Tekst>
         </VStack>
-      </BekreftelseModal>
+      </BekreftelsesDialog>
     </FormProvider>
   )
 }
 
 export function BekreftManuellOrdre({ open, onBekreft, loading, onClose }: OrdreModalProps) {
   return (
-    <BekreftelseModal
+    <BekreftelsesDialog
       width="600px"
       open={open}
       heading="Opprett ordre i OeBS"
@@ -59,6 +59,6 @@ export function BekreftManuellOrdre({ open, onBekreft, loading, onClose }: Ordre
         Når du oppretter ordre i OeBS må du etterpå gå til OeBS for å fullføre den. Husk å utføre de nødvendige
         oppgavene i OeBS før du klargjør ordren. Ordrenummeret vil vises under Historikk i løpet av kort tid.
       </Tekst>
-    </BekreftelseModal>
+    </BekreftelsesDialog>
   )
 }

@@ -3,7 +3,6 @@
   flex: 0 0 var(--ax-space-16);
   position: relative;
   outline: none;
-  z-index: 1;
 }
 
 .resizeHandle:hover {

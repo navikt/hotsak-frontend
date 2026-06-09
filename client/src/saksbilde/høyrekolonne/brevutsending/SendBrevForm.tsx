@@ -14,7 +14,7 @@ import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { mutateOppgave } from '../../../oppgave/useOppgave'
 import { mutateSak } from '../../../sak/useSak'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
+import { BekreftelsesDialog } from '../../komponenter/BekreftelsesDialog'
 import { ForhåndsvisningModal } from './ForhåndsvisningModal'
 
 export interface SendBrevFormProps {
@@ -155,7 +155,7 @@ export function SendBrevForm(props: SendBrevFormProps) {
         onClose={() => setVisForhåndsvisningsmodal(false)}
       />
 
-      <BekreftelseModal
+      <BekreftelsesDialog
         heading="Vil du slette brevutkastet?"
         bekreftButtonLabel="Slett brevutkast"
         bekreftButtonVariant="danger"
@@ -169,7 +169,7 @@ export function SendBrevForm(props: SendBrevFormProps) {
         }}
       />
 
-      <BekreftelseModal
+      <BekreftelsesDialog
         heading="Vil du sende brevet?"
         bekreftButtonLabel="Send brev"
         open={visSendBrevModal}
@@ -178,7 +178,7 @@ export function SendBrevForm(props: SendBrevFormProps) {
         onBekreft={handleSendBrev}
       >
         <Tekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Tekst>
-      </BekreftelseModal>
+      </BekreftelsesDialog>
     </>
   )
 }

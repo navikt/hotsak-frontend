@@ -8,7 +8,7 @@ import { useActionState } from '../../action/Actions.ts'
 import { useToast } from '../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { http } from '../../io/HttpClient.ts'
-import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
+import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog.tsx'
 import { type Notat } from './notatTyper.ts'
 
 export interface NotaterProps {
@@ -56,7 +56,7 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
         </Button>
       </div>
 
-      <BekreftelseModal
+      <BekreftelsesDialog
         heading="Er du sikker på at du vil slette utkastet?"
         bekreftButtonLabel="Ja, slett utkastet"
         avbrytButtonLabel="Nei, behold utkastet"
@@ -69,7 +69,7 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
         onBekreft={slettUtkast}
       >
         <Tekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Tekst>
-      </BekreftelseModal>
+      </BekreftelsesDialog>
     </>
   )
 }

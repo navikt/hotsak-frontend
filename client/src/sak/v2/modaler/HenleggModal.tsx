@@ -1,10 +1,11 @@
 import { useState } from 'react'
 
 import { InfoCard } from '@navikt/ds-react'
+
 import { useBrevForSak } from '../../../brev/useBrev'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { usePerson } from '../../../personoversikt/usePerson'
-import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
+import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
 import { type Sak } from '../../../types/types.internal'
 import { useSakContext } from '../SakV2ContextType'
 
@@ -22,7 +23,7 @@ export function HenleggModal({ open, onClose, sak }: HenleggModalProps) {
   const vergemål = personInfo?.vergemål || []
 
   return (
-    <BekreftelseModal
+    <BekreftelsesDialog
       heading="Vil du henlegge saken?"
       loading={loading}
       open={open}
@@ -49,6 +50,6 @@ export function HenleggModal({ open, onClose, sak }: HenleggModalProps) {
           </InfoCard.Content>
         </InfoCard>
       )}
-    </BekreftelseModal>
+    </BekreftelsesDialog>
   )
 }

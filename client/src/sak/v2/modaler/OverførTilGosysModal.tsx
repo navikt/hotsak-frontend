@@ -5,7 +5,7 @@ import { type ISvar } from '../../../innsikt/Besvarelse'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { NotatType } from '../../notat/notatTyper'
 import { useNotater } from '../../notat/useNotater'
-import { BekreftelseModal } from '../../../saksbilde/komponenter/BekreftelseModal'
+import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
 import { useSakId } from '../../../saksbilde/useSak'
 import { useSakActions } from '../../../saksbilde/useSakActions'
 import { useBehandling } from '../behandling/useBehandling'
@@ -41,7 +41,7 @@ export function OverførTilGosysModal({ open, onClose }: OverførTilGosysModalPr
   }
 
   return (
-    <BekreftelseModal
+    <BekreftelsesDialog
       heading="Vil du overføre saken til Gosys?"
       loading={loading || state.loading}
       open={open}
@@ -66,6 +66,6 @@ export function OverførTilGosysModal({ open, onClose }: OverførTilGosysModalPr
           )}
         </VStack>
       )}
-    </BekreftelseModal>
+    </BekreftelsesDialog>
   )
 }

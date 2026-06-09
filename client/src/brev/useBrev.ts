@@ -33,7 +33,7 @@ async function brevUrlFetcher([url, accept]: BrevKey): Promise<string> {
 
 export function useBrev<T extends Brevdata = Brevdata>(brevId?: string) {
   const sakId = useSakId()
-  const { data: brev, ...rest } = useSWR<T, HttpError, BrevKey | null>(
+  const { data: brev, ...rest } = useSWR<Brev<T>, HttpError, BrevKey | null>(
     sakId && brevId ? brevKeyOf(sakId, brevId, 'application/json') : null,
     brevFetcher
   )

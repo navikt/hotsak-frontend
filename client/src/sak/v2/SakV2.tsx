@@ -1,5 +1,5 @@
 import { Box, HStack } from '@navikt/ds-react'
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
@@ -27,33 +27,19 @@ import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { OverførTilGosysModal } from './modaler/OverførTilGosysModal.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
+import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import classes from './SakV2.module.css'
-import { ResizablePanel } from './paneler/ResizablePanel.tsx'
-import { Sidebar } from './sidebars/Sidebar.tsx'
-import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useSakContext } from './SakV2ContextType.ts'
+import { Sidebar } from './sidebars/Sidebar.tsx'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
+import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
 
-import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { useMiljø } from '../../utils/useMiljø.ts'
 import { OverførtilGosysValideringFeil } from './modaler/OverførtilGosysValideringFeil.tsx'
-
-function AvrundetPanel({ children }: { children: ReactNode }) {
-  return (
-    <Box
-      background="default"
-      paddingBlock="space-12 space-0"
-      borderRadius="12 12 0 0"
-      height="100%"
-      borderColor="neutral-subtle"
-      borderWidth="1 1 0 1"
-    >
-      {children}
-    </Box>
-  )
-}
+import { AvrundetPanel } from './paneler/AvrundetPanel.tsx'
+import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 
 function SakV2Content({
   oppgave,
@@ -113,7 +99,7 @@ function SakV2Content({
     <Box background="neutral-moderate" className={classes.container} style={{ minWidth: `${totalVisibleMinWidth}px` }}>
       <HStack width="100%" wrap={false}>
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
-        <SakKontrollPanel sakstype={sak.sakstype} />
+        <SakKontrollPanel />
       </HStack>
       <Box
         marginBlock="space-8 space-0"

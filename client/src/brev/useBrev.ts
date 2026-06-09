@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import useSWR, { mutate, type MutatorCallback, type MutatorOptions, preload } from 'swr'
 
-import useSWRImmutable from 'swr/immutable'
 import { http, type RequestOptions } from '../io/HttpClient'
 import { type HttpError } from '../io/HttpError'
 import { useSakId } from '../saksbilde/useSak'
@@ -42,9 +41,12 @@ export function useBrev<T extends Brevdata = Brevdata>(brevId?: string) {
 
 export function useBrevUrl(brevId?: string) {
   const sakId = useSakId()
-  const { data: brev, ...rest } = useSWRImmutable<string, HttpError, BrevKey | null>(
+  const { data: brev, ...rest } = useSWR<string, HttpError, BrevKey | null>(
     sakId && brevId ? brevKeyOf(sakId, brevId, 'application/pdf') : null,
-    brevUrlFetcher
+    brevUrlFetcher,
+    {
+      revalidateOnFocus: false,
+    }
   )
   return { brev, ...rest }
 }

@@ -9,6 +9,7 @@ import { useUtførtAv, utførtAvNavn } from '../../tilgang/UtførtAv.ts'
 import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
 import { formaterDato } from '../../utils/dato'
 import {
+  type Behandlingsutfall,
   type FerdigstiltBehandling,
   Gjenstående,
   isBehandlingFerdigstilt,
@@ -16,7 +17,9 @@ import {
 } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { BehandlingsutfallTag } from './BehandlingsutfallTag.tsx'
+import { BestillingKnapper } from './bestilling/BestillingKnapper'
 import classes from './StickyBunnlinje.module.css'
+import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 
 export interface StickyBunnlinjeProps {
   oppgave?: Saksbehandlingsoppgave
@@ -27,6 +30,7 @@ export interface StickyBunnlinjeProps {
 export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps) {
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErPåVent } = useOppgaveregler(oppgave)
   const { gjeldendeBehandling } = useBehandling()
+  const { erBestilling } = useSaksregler()
 
   const knappevariant = useMemo(
     () =>
@@ -59,14 +63,14 @@ export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps)
         className={classes.root}
       >
         <HStack align="center" justify="space-between" gap="space-16">
-          {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-            <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
-              {isBehandlingsutfallOverføring(gjeldendeBehandling?.utfall)
-                ? 'Overfør til Gosys'
-                : gjeldendeBehandling?.utfall?.type === 'HENLEGGELSE'
-                  ? 'Ferdigstill'
-                  : 'Fatt vedtak'}
-            </Button>
+          {erBestilling ? (
+            <BestillingKnapper />
+          ) : (
+            oppgaveErUnderBehandlingAvInnloggetAnsatt && (
+              <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
+                {velgKnappetekst(gjeldendeBehandling?.utfall)}
+              </Button>
+            )
           )}
           {isBehandlingFerdigstilt(gjeldendeBehandling) && <Behandlingsutfall behandling={gjeldendeBehandling} />}
           {!oppgaveErPåVent && !oppgaveErAvsluttet && (
@@ -91,4 +95,10 @@ function Behandlingsutfall({ behandling }: { behandling: FerdigstiltBehandling }
       <Tekst>{`av: ${saksbehandler} ${formaterDato(ferdigstiltTidspunkt)}`}</Tekst>
     </HStack>
   )
+}
+
+function velgKnappetekst(utfall?: Behandlingsutfall): string {
+  if (isBehandlingsutfallOverføring(utfall)) return 'Overfør til Gosys'
+  if (utfall?.type === 'HENLEGGELSE') return 'Ferdigstill'
+  return 'Fatt vedtak'
 }

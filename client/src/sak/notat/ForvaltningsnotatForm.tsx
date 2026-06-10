@@ -4,7 +4,6 @@ import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 import { Målform } from '../../brev/brevTyper.ts'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog.tsx'
-import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
 import { useDialogToggle, useToggle } from '../../state/useToggle.ts'
 import { MålformType } from '../../types/types.internal.ts'
@@ -16,7 +15,7 @@ import { useNotat } from './useNotat.ts'
 
 export interface ForvaltningsnotatFormProps {
   sakId: string
-  gjeldendeUtkast?: Notat
+  gjeldendeUtkast: Notat
 }
 
 export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: ForvaltningsnotatFormProps) {
@@ -24,14 +23,13 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
 
   const forhåndsvisningModalProps = useDialogToggle()
   const [visJournalførNotatModal, toggleVisJournalførNotatModal] = useToggle()
-  const [visUtkastManglerModal, toggleVisUtkastManglerModal] = useToggle()
-  const { forhåndsvisNotat, oppdaterNotat, slettNotatutkast, ferdigstillNotat } = useNotat(sakId, gjeldendeUtkast?.id)
+  const { forhåndsvisNotat, oppdaterNotat, slettNotatutkast, ferdigstillNotat } = useNotat(sakId, gjeldendeUtkast.id)
 
   const form = useForm<ForvaltningsnotatFormValues>({
     defaultValues: {
-      tittel: gjeldendeUtkast?.tittel ?? '',
-      tekst: gjeldendeUtkast?.tekst ?? '',
-      klassifisering: gjeldendeUtkast?.klassifisering ?? null,
+      tittel: gjeldendeUtkast.tittel ?? '',
+      tekst: gjeldendeUtkast.tekst ?? '',
+      klassifisering: gjeldendeUtkast.klassifisering ?? null,
       bekreftSynlighet: false,
     },
   })
@@ -109,20 +107,16 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
               size="xsmall"
               variant="tertiary"
               onClick={async () => {
-                if (gjeldendeUtkast?.id) {
-                  const values = getValues()
-                  await oppdaterNotat.trigger({
-                    type: NotatType.JOURNALFØRT,
-                    tittel: values.tittel ?? '',
-                    tekst: values.tekst ?? '',
-                    målform: Målform.BOKMÅL,
-                    klassifisering: values.klassifisering || null,
-                  })
-                  await forhåndsvisNotat.trigger()
-                  forhåndsvisningModalProps.onOpenChange(true)
-                } else {
-                  toggleVisUtkastManglerModal()
-                }
+                const values = getValues()
+                await oppdaterNotat.trigger({
+                  type: NotatType.JOURNALFØRT,
+                  tittel: values.tittel ?? '',
+                  tekst: values.tekst ?? '',
+                  målform: Målform.BOKMÅL,
+                  klassifisering: values.klassifisering || null,
+                })
+                await forhåndsvisNotat.trigger()
+                forhåndsvisningModalProps.onOpenChange(true)
               }}
             >
               Forhåndsvis dokument
@@ -191,10 +185,6 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
             )}
           />
         </BekreftelsesDialog>
-
-        <InfoModal heading="Ingen utkast" open={visUtkastManglerModal} onClose={toggleVisUtkastManglerModal}>
-          <Tekst>Notatet kan ikke forhåndsvises før det er opprettet et utkast</Tekst>
-        </InfoModal>
       </form>
     </FormProvider>
   )

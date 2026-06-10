@@ -66,7 +66,7 @@ function BrevPanelLayout({ tittel = 'Brev', children }: { tittel?: string; child
   const closePanel = useClosePanel('brevpanel')
   return (
     <Box className={classes.container} background="default">
-      <VStack paddingInline="space-20" gap="space-16">
+      <VStack paddingInline="space-20" gap="space-16" height="100%">
         <PanelTittel paddingInline="space-8 space-0" tittel={tittel} lukkPanel={closePanel} />
         {children}
       </VStack>

@@ -2,6 +2,7 @@ import { Box, Button, Heading, HelpText, HStack, InfoCard, InlineMessage, Select
 import { useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
+import { isBrevstatusUtkast } from '../../../brev/brevSelectors.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
@@ -37,9 +38,10 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const { henleggFormRef } = useSakContext()
   const closePanel = useClosePanel('brevpanel')
   const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
-  const { harBrev } = useBrevForSak(behandling?.sakId)
+  const { harBrev, finnBrev } = useBrevForSak(behandling?.sakId)
   const { ferdigstillBehandling, lagreBehandling } = useBehandlingActions()
-  const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave)
+  const brevutkast = finnBrev(isBrevstatusUtkast)
+  const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave, brevutkast?.brevId)
   const { showSuccessToast } = useToast()
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined
@@ -54,7 +56,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   const handleSlettBrevutkast = async () => {
-    // if (!brev) return
+    if (!harBrev) return
     await slettBrevutkast.trigger()
     closePanel()
   }

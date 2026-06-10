@@ -1,10 +1,10 @@
 import { Alert, Heading, VStack } from '@navikt/ds-react'
 
 import { Tekst } from '../felleskomponenter/typografi'
-import type { Tilbakemelding } from '../innsikt/Besvarelse'
+import { type Tilbakemelding } from '../innsikt/Besvarelse'
 import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal'
-import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
-import { NotatType } from '../sak/notat/notatTyper'
+import { type SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
+import { isNotatTypeInternt, isNotatTypeJournalført } from '../sak/notat/notatSelectors'
 import { useNotater } from '../sak/notat/useNotater'
 import { useBehandling } from '../sak/v2/behandling/useBehandling'
 import { useSakId } from './useSak'
@@ -44,9 +44,9 @@ export function OverførSakTilGosysModal({
       onBesvar={onBesvar}
       onClose={onClose}
     >
-      {notater.length > 0 && (
+      {notater.ferdigstilte.length > 0 && (
         <VStack gap="space-12">
-          {notater.find((notat) => notat.type === NotatType.JOURNALFØRT) && (
+          {notater.ferdigstilte.find(isNotatTypeJournalført) && (
             <Alert variant="warning" size="small">
               <Heading size="xsmall" level="2" spacing>
                 Saken har forvaltningsnotat - kontakt DigiHoT for hjelp
@@ -59,7 +59,7 @@ export function OverførSakTilGosysModal({
               </Tekst>
             </Alert>
           )}
-          {notater.find((notat) => notat.type === NotatType.INTERNT) && (
+          {notater.ferdigstilte.find(isNotatTypeInternt) && (
             <Alert variant="warning" size="small">
               <Tekst>
                 Denne saken har et eller flere interne arbeidsnotater knyttet til seg. Disse notatene følger ikke med

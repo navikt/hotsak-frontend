@@ -1,50 +1,57 @@
-import { useCallback, useMemo } from 'react'
-import useSwr, { KeyedMutator } from 'swr'
+import { useMemo } from 'react'
+import useSwr, { useSWRConfig } from 'swr'
+import useSWRMutation from 'swr/mutation'
 
-import { HttpError } from '../../io/HttpError.ts'
-import { isAvventerJournalføring, isNotatFerdigstilt, isNotatType, isNotatUtkast } from './notatSelectors.ts'
-import { type Notat, NotatType, type Saksnotater } from './notatTyper.ts'
+import { http } from '../../io/HttpClient.ts'
+import { type HttpError } from '../../io/HttpError.ts'
+import { mutateBehandling } from '../v2/behandling/useBehandling.ts'
+import { isAvventerJournalføring, isNotatFerdigstilt, isNotatUtkast } from './notatSelectors.ts'
+import { OpprettNotatRequest, type Notat, type Saksnotater } from './notatTyper.ts'
 
-export interface UseNotaterResponse {
-  antallNotater: number
-  harUtkast: boolean
-  notater: Notat[]
-  mutate: KeyedMutator<Saksnotater>
-  isLoading: boolean
-  harLastet: boolean
-  finnAktivtUtkast(valgtType?: NotatType): Notat | undefined
-}
+export function useNotater(sakId?: string) {
+  const key = sakId ? `/api/sak/${sakId}/notater` : null
 
-export function useNotater(sakId?: string): UseNotaterResponse {
-  const { data, error, mutate, isLoading } = useSwr<Saksnotater, HttpError>(
-    sakId ? `/api/sak/${sakId}/notater` : null,
+  const { data, ...rest } = useSwr<Saksnotater, HttpError>(key, {
+    refreshInterval(latestData) {
+      if (!latestData) return 0
+      const avventerJournalføring = latestData.notater.some(isAvventerJournalføring)
+      return avventerJournalføring ? 2000 : 0
+    },
+  })
+
+  const { notater: alleNotater, totalElements: antallNotater } = data ?? noData
+
+  const opprettNotat = useSWRMutation<Notat, HttpError, string | null, OpprettNotatRequest>(
+    key,
+    (url, { arg: body }) => http.post<OpprettNotatRequest, Notat>(url, body),
     {
-      refreshInterval(latestData) {
-        if (!latestData) return 0
-        const avventerJournalføring = latestData.notater.some(isAvventerJournalføring)
-        return avventerJournalføring ? 2000 : 0
+      async onSuccess() {
+        await Promise.all([mutateBehandling(sakId!)])
       },
     }
   )
 
-  const { notater, totalElements } = data ?? noData
-
-  const harUtkast = useMemo(() => notater.some(isNotatUtkast), [notater])
-  const ferdigstilteNotater = useMemo(() => notater.filter(isNotatFerdigstilt), [notater])
-  const finnAktivtUtkast = useCallback(
-    (valgtType?: NotatType): Notat | undefined => notater.filter(isNotatUtkast).find(isNotatType(valgtType)),
-    [notater]
+  const notater = useMemo(
+    () => ({
+      utkast: alleNotater.filter(isNotatUtkast),
+      ferdigstilte: alleNotater.filter(isNotatFerdigstilt),
+    }),
+    [alleNotater]
   )
 
   return {
-    antallNotater: totalElements,
-    harUtkast,
-    notater: ferdigstilteNotater,
-    mutate,
-    isLoading,
-    harLastet: !isLoading && (data != null || error != null),
-    finnAktivtUtkast,
+    notater,
+    antallNotater,
+    harUtkast: notater.utkast.length > 0,
+    gjeldendeUtkast: notater.utkast[0], // antar at vi ikke har flere utkast pt.
+    opprettNotat,
+    ...rest,
   }
+}
+
+export function useMutateNotater() {
+  const { mutate } = useSWRConfig()
+  return (sakId: string) => mutate(`/api/sak/${sakId}/notater`)
 }
 
 const noData: Saksnotater = { notater: [], totalElements: 0 }

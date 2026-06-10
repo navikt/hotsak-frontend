@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
 import { Alert, Heading, VStack } from '@navikt/ds-react'
-import { type ISvar } from '../../../innsikt/Besvarelse'
 import { Tekst } from '../../../felleskomponenter/typografi'
-import { NotatType } from '../../notat/notatTyper'
-import { useNotater } from '../../notat/useNotater'
+import { type ISvar } from '../../../innsikt/Besvarelse'
 import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
 import { useSakId } from '../../../saksbilde/useSak'
 import { useSakActions } from '../../../saksbilde/useSakActions'
+import { isNotatTypeJournalført } from '../../notat/notatSelectors'
+import { useNotater } from '../../notat/useNotater'
 import { useBehandling } from '../behandling/useBehandling'
 
 export interface OverførTilGosysModalProps {
@@ -49,9 +49,9 @@ export function OverførTilGosysModal({ open, onClose }: OverførTilGosysModalPr
       onBekreft={onBekreft}
       onClose={onClose}
     >
-      {notater.length > 0 && (
+      {notater.ferdigstilte.length > 0 && (
         <VStack gap="space-12">
-          {notater.find((notat) => notat.type === NotatType.JOURNALFØRT) && (
+          {notater.ferdigstilte.find(isNotatTypeJournalført) && (
             <Alert variant="warning" size="small">
               <Heading size="xsmall" level="2" spacing>
                 Saken har forvaltningsnotat - kontakt DigiHoT for hjelp

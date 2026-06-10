@@ -3,22 +3,20 @@ import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel
 import { ActionMenu, Button, Tooltip } from '@navikt/ds-react'
 
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
-import { SpørreundersøkelseModal } from '../../innsikt/SpørreundersøkelseModal.tsx'
+import { SpørreundersøkelseModal, type SpørreundersøkelseModalProps } from '../../innsikt/SpørreundersøkelseModal.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import {
-  FeilregistrerJournalførtNotatModalProps,
-  useFeilregistrerJournalførtNotat,
-} from './feilregistering/useFeilregistrerJournalførtNotat.ts'
+import { useToggle } from '../../state/useToggle.ts'
 import { type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
+import { useNotat } from './useNotat.ts'
 
 export interface NotatActionsProps {
   notat: Notat
-  mutate(): void
 }
 
 export function NotatActions({ notat }: NotatActionsProps) {
   const { kanBehandleSak } = useSaksregler()
-  const { onOpen: visFeilregistrerNotat, ...feilregistrerJournalførtNotat } = useFeilregistrerJournalførtNotat(notat)
+  const [visFeilregistrerNotat, toggleVisFeilregistrerNotat] = useToggle()
+  const { feilregistrerNotat } = useNotat(notat.sakId, notat.id)
 
   // Skjuler interne notater actions for brukere uten tilgang
   const skjulActionMenu = notat.type === NotatType.INTERNT && !kanBehandleSak
@@ -54,46 +52,51 @@ export function NotatActions({ notat }: NotatActionsProps) {
               (notat.type === NotatType.JOURNALFØRT ? (
                 <ActionMenu.Item
                   disabled={!notat.journalpostId || !notat.dokumentId}
-                  onClick={() => visFeilregistrerNotat()}
+                  onClick={toggleVisFeilregistrerNotat}
                 >
                   Feilregistrer
                 </ActionMenu.Item>
               ) : (
-                <ActionMenu.Item onClick={() => visFeilregistrerNotat()}>Feilregistrer</ActionMenu.Item>
+                <ActionMenu.Item onClick={toggleVisFeilregistrerNotat}>Feilregistrer</ActionMenu.Item>
               ))}
           </ActionMenu.Content>
         </ActionMenu>
       )}
       <FeilregistrerNotatModal
-        {...feilregistrerJournalførtNotat}
-        onBekreft={async (tilbakemelding) => {
-          await feilregistrerJournalførtNotat.onBekreft(tilbakemelding)
+        notat={notat}
+        open={visFeilregistrerNotat}
+        loading={feilregistrerNotat.isMutating}
+        onBesvar={async (tilbakemelding) => {
+          await feilregistrerNotat.trigger({ tilbakemelding: tilbakemelding?.svar })
         }}
+        onClose={toggleVisFeilregistrerNotat}
       />
     </>
   )
 }
 
-function FeilregistrerNotatModal({
-  open,
-  loading,
-  spørreundersøkelseId,
-  notat,
-  onBekreft,
-  onClose,
-}: FeilregistrerJournalførtNotatModalProps) {
+interface FeilregistrerNotatModalProps extends Pick<
+  SpørreundersøkelseModalProps,
+  'open' | 'loading' | 'onBesvar' | 'onClose'
+> {
+  notat: Notat
+}
+
+function FeilregistrerNotatModal({ open, loading, notat, onBesvar, onClose }: FeilregistrerNotatModalProps) {
   return (
     <SpørreundersøkelseModal
       open={open}
       loading={loading}
-      spørreundersøkelseId={spørreundersøkelseId}
+      spørreundersøkelseId={
+        notat.type === NotatType.JOURNALFØRT ? 'journalført_notat_feilregistrert_v1' : 'internt_notat_feilregistrert_v1'
+      }
       size="small"
       knappetekst={`Ja, feilregistrer ${notat.type === NotatType.JOURNALFØRT ? 'forvaltningsnotatet' : 'internt notat'}`}
       bekreftKnappVariant="secondary"
       avbrytKnappVariant="primary"
       reverserKnapperekkefølge={true}
       avbrytKnappetekst="Nei, behold notatet"
-      onBesvar={onBekreft}
+      onBesvar={onBesvar}
       onClose={onClose}
     >
       {notat.type === NotatType.INTERNT && <Tekst>Notatet fjernes fra saken. Dette kan ikke angres.</Tekst>}
@@ -101,7 +104,6 @@ function FeilregistrerNotatModal({
         notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
           <Tekst>Forvaltningsnotatet feilregistreres på saken og blir ikke synlig for bruker på nav.no lenger.</Tekst>
         )}
-
       {notat.type === NotatType.JOURNALFØRT &&
         notat.klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
           <Tekst>Forvaltningsnotatet feilregistreres på saken.</Tekst>

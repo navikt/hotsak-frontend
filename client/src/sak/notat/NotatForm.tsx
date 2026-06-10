@@ -8,11 +8,11 @@ import { type Notat, type NotatFormValues } from './notatTyper.ts'
 
 export interface NotatFormProps {
   readOnly: boolean
-  aktivtUtkast?: Notat
+  gjeldendeUtkast?: Notat
   lagrerUtkast: boolean
 }
 
-export function NotatForm({ readOnly, aktivtUtkast, lagrerUtkast }: NotatFormProps) {
+export function NotatForm({ readOnly, gjeldendeUtkast, lagrerUtkast }: NotatFormProps) {
   const {
     control,
     formState: { errors },
@@ -59,7 +59,7 @@ export function NotatForm({ readOnly, aktivtUtkast, lagrerUtkast }: NotatFormPro
         />
         <Lagreindikator
           lagrerUtkast={lagrerUtkast}
-          sistLagretTidspunkt={aktivtUtkast?.oppdatert || aktivtUtkast?.opprettet}
+          sistLagretTidspunkt={gjeldendeUtkast?.oppdatert || gjeldendeUtkast?.opprettet}
         />
       </VStack>
     </>

@@ -17,18 +17,13 @@ export function Notater(props: NotaterProps) {
   const { oppgave } = props
   const sakId = useSakId(oppgave)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErAvsluttet } = useOppgaveregler(oppgave)
-  const { notater, mutate: mutateNotater, isLoading: notaterLaster, finnAktivtUtkast } = useNotater(sakId)
+  const { notater, isLoading: notaterIsLoading, gjeldendeUtkast, opprettNotat } = useNotater(sakId)
 
   if (!oppgave || oppgaveErAvsluttet) {
     return (
       <VStack gap="space-16" paddingBlock="space-12">
         <Notatinformasjon />
-        <FerdigstilteNotater
-          oppgaveId={oppgave?.oppgaveId}
-          loading={notaterLaster}
-          notater={notater}
-          mutateNotater={mutateNotater}
-        />
+        <FerdigstilteNotater oppgaveId={oppgave?.oppgaveId} loading={notaterIsLoading} notater={notater.ferdigstilte} />
       </VStack>
     )
   }
@@ -37,7 +32,7 @@ export function Notater(props: NotaterProps) {
     <VStack gap="space-16" paddingBlock="space-12">
       <Notatinformasjon />
       {oppgaveErUnderBehandlingAvInnloggetAnsatt ? (
-        <OpprettNotat oppgave={oppgave} finnAktivtUtkast={finnAktivtUtkast} />
+        <OpprettNotat oppgave={oppgave} opprettNotat={opprettNotat} gjeldendeUtkast={gjeldendeUtkast} />
       ) : (
         <div>
           <Label as="div" size="small" spacing>
@@ -46,12 +41,7 @@ export function Notater(props: NotaterProps) {
           <BodyShort size="small">Saken er i lesevisning. Du må ta saken for å kunne opprette notater.</BodyShort>
         </div>
       )}
-      <FerdigstilteNotater
-        oppgaveId={oppgave.oppgaveId}
-        loading={notaterLaster}
-        notater={notater}
-        mutateNotater={mutateNotater}
-      />
+      <FerdigstilteNotater oppgaveId={oppgave.oppgaveId} loading={notaterIsLoading} notater={notater.ferdigstilte} />
     </VStack>
   )
 }

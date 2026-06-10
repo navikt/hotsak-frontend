@@ -1,4 +1,6 @@
-import type { MålformType, Saksbehandler } from '../../types/types.internal'
+import { type Målform } from '../../brev/brevTyper'
+import { type ISvar } from '../../innsikt/Besvarelse'
+import { type Saksbehandler } from '../../types/types.internal'
 
 export const NotatKlassifisering = {
   INTERNE_SAKSOPPLYSNINGER: 'INTERNE_SAKSOPPLYSNINGER',
@@ -34,20 +36,7 @@ export interface Notat {
   feilregistrert?: string
   journalpostId?: string
   dokumentId?: string
-  målform: MålformType
-}
-
-export type FerdigstillNotatRequest = Omit<
-  Notat,
-  'opprettet' | 'oppdatert' | 'ferdigstilt' | 'feilregistrert' | 'journalpostId' | 'saksbehandler'
->
-
-export interface NotatUtkast {
-  id?: string
-  tittel?: string
-  tekst?: string
-  type: NotatType
-  klassifisering?: NotatKlassifisering | null
+  målform: Målform
 }
 
 export interface NotatFormValues {
@@ -58,4 +47,22 @@ export interface NotatFormValues {
 export interface ForvaltningsnotatFormValues extends NotatFormValues {
   klassifisering?: NotatKlassifisering | null
   bekreftSynlighet: boolean
+}
+
+interface NotatRequest {
+  type: NotatType
+  tittel: string
+  tekst: string
+  målform: Målform
+  klassifisering?: NotatKlassifisering | null
+}
+
+export type OpprettNotatRequest = NotatRequest
+
+export type OppdaterNotatRequest = NotatRequest
+
+export type FerdigstillNotatRequest = NotatRequest | undefined
+
+export interface FeilregistrerNotatRequest {
+  tilbakemelding?: ISvar[]
 }

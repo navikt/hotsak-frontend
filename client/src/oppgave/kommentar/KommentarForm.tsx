@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useToast } from '../../felleskomponenter/toast/useToast'
 import { useOppgaveContext, useOppgaveDispatch } from '../OppgaveContext'
-import type { Oppgave } from '../oppgaveTypes'
+import { type Oppgave } from '../oppgaveTypes'
 import { useOppgaveActions } from '../useOppgaveActions'
 
 export interface KommentarFormProps {
@@ -66,7 +66,7 @@ export function KommentarForm(props: KommentarFormProps) {
           })}
         />
         <div>
-          <Button type="submit" size="small" variant="secondary" loading={isSubmitting}>
+          <Button type="submit" size="small" variant="primary" loading={isSubmitting}>
             Lagre kommentar
           </Button>
         </div>

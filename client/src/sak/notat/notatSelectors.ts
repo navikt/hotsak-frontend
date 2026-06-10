@@ -12,7 +12,9 @@ export function isNotatType(type?: NotatType): (notat: Notat) => boolean {
   return (notat: Notat) => notat.type === type
 }
 
-const isNotatTypeJournalført = isNotatType(NotatType.JOURNALFØRT)
+export const isNotatTypeInternt = isNotatType(NotatType.INTERNT)
+export const isNotatTypeJournalført = isNotatType(NotatType.JOURNALFØRT)
+
 export function isAvventerJournalføring(notat: Notat): boolean {
   return isNotatTypeJournalført(notat) && isNotatFerdigstilt(notat) && (!notat.journalpostId || !notat.dokumentId)
 }

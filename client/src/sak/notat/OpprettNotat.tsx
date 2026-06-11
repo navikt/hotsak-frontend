@@ -1,17 +1,16 @@
 import { Button, ToggleGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { type SWRMutationResponse } from 'swr/mutation'
 
 import { Målform } from '../../brev/brevTyper'
-import { type HttpError } from '../../io/HttpError'
 import { KommentarForm } from '../../oppgave/kommentar/KommentarForm'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes'
 import { ForvaltningsnotatForm } from './ForvaltningsnotatForm'
 import { NotatType, type Notat, type OpprettNotatRequest } from './notatTyper'
+import type { OpprettNotatMutationResponse } from './useNotater'
 
 export interface OpprettNotatProps {
   oppgave: Saksbehandlingsoppgave
-  opprettNotat: SWRMutationResponse<Notat, HttpError, string | null, OpprettNotatRequest>
+  opprettNotat: OpprettNotatMutationResponse
   gjeldendeUtkast?: Notat
 }
 
@@ -19,9 +18,7 @@ export function OpprettNotat(props: OpprettNotatProps) {
   const { oppgave, opprettNotat, gjeldendeUtkast } = props
   const [type, setType] = useState<NotatType | string>(NotatType.KOMMENTAR)
 
-  const handleOpprettNotat = async () => {
-    await opprettNotat.trigger(defaultNotatRequest)
-  }
+  const handleOpprettNotat = () => opprettNotat.trigger(defaultNotatRequest)
 
   return (
     <VStack gap="space-16">

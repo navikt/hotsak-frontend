@@ -2,21 +2,19 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { type SWRMutationResponse } from 'swr/mutation'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
-import { type HttpError } from '../../io/HttpError.ts'
 import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog.tsx'
-import { type NotatKey } from './useNotat.ts'
+import { type SlettNotatUtkastMutationResponse } from './useNotat.ts'
 
 export interface NotaterProps {
-  slettNotatutkast: SWRMutationResponse<void, HttpError, NotatKey | null, never>
+  slettNotatUtkast: SlettNotatUtkastMutationResponse
   onReset(): void
 }
 
-export function SlettUtkast({ slettNotatutkast, onReset }: NotaterProps) {
+export function SlettNotatUtkast({ slettNotatUtkast, onReset }: NotaterProps) {
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const handleSlettNotatUtkast = async () => {
-    await slettNotatutkast.trigger()
+    await slettNotatUtkast.trigger()
     setVisSlettUtkastModal(false)
     onReset()
   }
@@ -45,7 +43,7 @@ export function SlettUtkast({ slettNotatutkast, onReset }: NotaterProps) {
         avbrytButtonVariant="primary"
         reverserKnapperekkefølge={true}
         open={visSlettUtkastModal}
-        loading={slettNotatutkast.isMutating}
+        loading={slettNotatUtkast.isMutating}
         onClose={() => setVisSlettUtkastModal(false)}
         onBekreft={handleSlettNotatUtkast}
       >

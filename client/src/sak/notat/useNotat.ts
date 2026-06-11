@@ -56,7 +56,7 @@ export function useNotat(sakId?: string, notatId?: string) {
     }
   )
 
-  const slettNotatutkast = useSWRMutation<void, HttpError, NotatKey | null>(notatKey, ([url]) => http.delete(url), {
+  const slettNotatUtkast = useSWRMutation<void, HttpError, NotatKey | null>(notatKey, ([url]) => http.delete(url), {
     async onSuccess() {
       showSuccessToast('Notatet er slettet')
       // todo -> usikker på om det gir mening å oppdatere behandling her,er det bedre å sjekke dette på notater enn gjenstående på behandling?
@@ -91,12 +91,16 @@ export function useNotat(sakId?: string, notatId?: string) {
     notat,
     oppdaterNotat,
     forhåndsvisNotat,
-    slettNotatutkast,
+    slettNotatUtkast,
     ferdigstillNotat,
     feilregistrerNotat,
     ...rest,
   }
 }
+
+export type UseNotatResponse = ReturnType<typeof useNotat>
+
+export type SlettNotatUtkastMutationResponse = UseNotatResponse['slettNotatUtkast']
 
 export function useMutateNotat(sakId: string, notatId: string, notat?: Notat) {
   const { mutate } = useSWRConfig()

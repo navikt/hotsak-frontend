@@ -11,7 +11,7 @@ import { OpprettNotatRequest, type Notat, type Saksnotater } from './notatTyper.
 export function useNotater(sakId?: string) {
   const key = sakId ? `/api/sak/${sakId}/notater` : null
 
-  const { data, ...rest } = useSwr<Saksnotater, HttpError>(key, {
+  const { data, ...rest } = useSwr<Saksnotater, HttpError, string | null>(key, {
     refreshInterval(latestData) {
       if (!latestData) return 0
       const avventerJournalføring = latestData.notater.some(isAvventerJournalføring)
@@ -48,6 +48,10 @@ export function useNotater(sakId?: string) {
     ...rest,
   }
 }
+
+export type UseNotaterResponse = ReturnType<typeof useNotater>
+
+export type OpprettNotatMutationResponse = UseNotaterResponse['opprettNotat']
 
 export function useMutateNotater() {
   const { mutate } = useSWRConfig()

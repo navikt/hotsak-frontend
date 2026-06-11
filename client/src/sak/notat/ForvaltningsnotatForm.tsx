@@ -10,7 +10,7 @@ import { MålformType } from '../../types/types.internal.ts'
 import { ForhåndsvisningModal } from './ForhåndsvisningModal.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { type ForvaltningsnotatFormValues, type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
-import { SlettUtkast } from './SlettUtkast.tsx'
+import { SlettNotatUtkast } from './SlettNotatUtkast.tsx'
 import { useNotat } from './useNotat.ts'
 
 export interface ForvaltningsnotatFormProps {
@@ -23,7 +23,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
 
   const forhåndsvisningModalProps = useDialogToggle()
   const [visJournalførNotatModal, toggleVisJournalførNotatModal] = useToggle()
-  const { forhåndsvisNotat, oppdaterNotat, slettNotatutkast, ferdigstillNotat } = useNotat(sakId, gjeldendeUtkast.id)
+  const { oppdaterNotat, forhåndsvisNotat, slettNotatUtkast, ferdigstillNotat } = useNotat(sakId, gjeldendeUtkast.id)
 
   const form = useForm<ForvaltningsnotatFormValues>({
     defaultValues: {
@@ -121,7 +121,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
             >
               Forhåndsvis dokument
             </Button>
-            <SlettUtkast slettNotatutkast={slettNotatutkast} onReset={resetForm} />
+            <SlettNotatUtkast slettNotatUtkast={slettNotatUtkast} onReset={resetForm} />
           </HStack>
 
           <div>

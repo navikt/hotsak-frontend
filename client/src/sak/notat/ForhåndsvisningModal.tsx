@@ -8,8 +8,8 @@ export interface ForhåndsvisningModalProps extends Omit<DialogProps, 'children'
 
 export function ForhåndsvisningModal({ data, ...rest }: ForhåndsvisningModalProps) {
   return (
-    <Dialog {...rest}>
-      <Dialog.Popup closeOnOutsideClick={true} width="large">
+    <Dialog size="small" {...rest}>
+      <Dialog.Popup closeOnOutsideClick={true} height="100%" width="80%">
         <Dialog.Header />
         <Dialog.Body>
           <DokumentFrame data={data} />

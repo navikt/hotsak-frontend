@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import {
   BehandlingerResponse,
+  isBehandlingsutfallBestilling,
   LagreBehandlingRequest,
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
@@ -222,7 +223,15 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     return respondNoContent()
   }),
   http.post<SakParams, LagreBehandlingRequest>('/api/sak/:sakId/behandling', async ({ params, request }) => {
-    await sakStore.opprettBehandling(params.sakId, await request.json())
+    const body = await request.json()
+    await sakStore.opprettBehandling(params.sakId, body)
+
+    if (isBehandlingsutfallBestilling(body.utfall)) {
+      await sakStore.ferdigstillBehandlingForSak(params.sakId)
+      await oppgaveStore.ferdigstillOppgave(body.oppgaveId)
+      await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.FERDIGSTILT)
+    }
+
     return respondCreated()
   }),
   http.put<BehandlingParams, LagreBehandlingRequest>(

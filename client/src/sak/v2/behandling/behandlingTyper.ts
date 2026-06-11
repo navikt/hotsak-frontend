@@ -43,8 +43,15 @@ interface Utfall<T extends BehandlingsutfallType | undefined> {
 
 export type BehandlingsutfallVedtak = Utfall<VedtaksResultat>
 
+export interface Avvisningsårsak {
+  årsak: string
+  begrunnelse?: string
+}
+
 export interface BehandlingsutfallBestilling extends Utfall<Bestillingsresultat> {
   type: 'BESTILLING'
+  utleveringsmerknad?: string
+  avvisningsårsak?: Avvisningsårsak
 }
 
 export interface BehandlingsutfallHenleggelse extends Utfall<Henleggelsesårsak | undefined> {

@@ -215,7 +215,9 @@ export class SakStore extends Dexie {
   }
 
   async opprettBehandling(sakId: string, request: LagreBehandlingRequest) {
-    const gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
+    const erBestilling = request.utfall?.type === 'BESTILLING'
+    const gjenstående =
+      erBestilling || request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
 
     const behandlingId = await this.behandlinger.put({
       gjenstående: gjenstående,

@@ -1,13 +1,13 @@
 import { VStack } from '@navikt/ds-react'
-import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { FritekstPanel } from '../../felles/FritekstPanel'
 import { Tekst } from '../../../felleskomponenter/typografi'
+import { useOppgave } from '../../../oppgave/useOppgave'
 import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
 import { useBehovsmelding } from '../../../saksbilde/useBehovsmelding'
-import { useSakActions } from '../../../saksbilde/useSakActions'
-import { useBehandling } from '../behandling/useBehandling'
+import { FritekstPanel } from '../../felles/FritekstPanel'
+import { Bestillingsresultat } from '../behandling/behandlingTyper'
+import { useBehandlingActions } from '../behandling/useBehandlingActions'
 
 export interface GodkjennBestillingModalV2Props {
   open: boolean
@@ -17,21 +17,21 @@ export interface GodkjennBestillingModalV2Props {
 export function GodkjennBestillingModalV2({ open, onClose }: GodkjennBestillingModalV2Props) {
   const { behovsmelding } = useBehovsmelding()
   const leveringsmerknad = behovsmelding?.levering.utleveringMerknad
-  const { godkjennBestilling, state } = useSakActions()
-  const { mutate: mutateBehandling } = useBehandling()
-  const [loading, setLoading] = useState(false)
+  const { oppgave } = useOppgave()
+  const { opprettOgferdigstillBestillingBehandling } = useBehandlingActions()
 
   const form = useForm({ defaultValues: { utleveringMerknad: leveringsmerknad ?? '' } })
 
   const handleBekreft = form.handleSubmit(async (data) => {
-    setLoading(true)
-    try {
-      await godkjennBestilling(data.utleveringMerknad)
-      await mutateBehandling()
-      onClose()
-    } finally {
-      setLoading(false)
-    }
+    await opprettOgferdigstillBestillingBehandling.trigger({
+      oppgaveId: oppgave?.oppgaveId,
+      utfall: {
+        type: 'BESTILLING',
+        utfall: Bestillingsresultat.GODKJENT,
+        utleveringsmerknad: data.utleveringMerknad,
+      },
+    })
+    onClose()
   })
 
   return (
@@ -42,7 +42,7 @@ export function GodkjennBestillingModalV2({ open, onClose }: GodkjennBestillingM
         heading="Godkjenn bestillingen"
         bekreftButtonLabel="Godkjenn bestillingen"
         onBekreft={handleBekreft}
-        loading={loading || state.loading}
+        loading={opprettOgferdigstillBestillingBehandling.isMutating}
         onClose={onClose}
       >
         <VStack gap="space-16">

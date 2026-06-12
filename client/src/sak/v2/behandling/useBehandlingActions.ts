@@ -29,7 +29,7 @@ export function useBehandlingActions() {
     LagreBehandlingRequest
   >(
     `/api/sak/${sakId}/behandling`,
-    (url, { arg: body }) => http.post<LagreBehandlingRequest, Behandlingsutfall>(url, body),
+    (url, { arg: body }) => http.post<LagreBehandlingRequest, Behandlingsutfall>(url, body, { versjon }),
     {
       async onSuccess() {
         await mutateOppgaveOgSak()

@@ -1,8 +1,6 @@
 import { useSWRConfig } from 'swr'
 import useSWRMutation from 'swr/mutation'
-
 import { useActionState } from '../../../action/Actions.ts'
-import { useMutateBrevForSak } from '../../../brev/useBrev.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast.ts'
 import { http } from '../../../io/HttpClient.ts'
 import { HttpError } from '../../../io/HttpError.ts'
@@ -10,15 +8,16 @@ import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../saksbilde/mutateSak.ts'
 import { Behandlingsutfall, LagreBehandlingRequest } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
+import { useMutateBrevForSak } from '../../../brev/useBrev.ts'
 
 export function useBehandlingActions() {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
   const { oppgaveId, versjon, sakId } = oppgave ?? {}
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
-  const mutateBrevForSak = useMutateBrevForSak()
   const { showSuccessToast } = useToast()
   const { execute, state } = useActionState()
   const { mutate } = useSWRConfig()
+  const mutateBrevForSak = useMutateBrevForSak()
 
   const mutateOppgaveOgSak = () => Promise.all([mutateOppgave(), mutateSak(sakId)])
 
@@ -30,7 +29,7 @@ export function useBehandlingActions() {
     LagreBehandlingRequest
   >(
     `/api/sak/${sakId}/behandling`,
-    (url, { arg: body }) => http.post<LagreBehandlingRequest, Behandlingsutfall>(url, body),
+    (url, { arg: body }) => http.post<LagreBehandlingRequest, Behandlingsutfall>(url, body, { versjon }),
     {
       async onSuccess() {
         await mutateOppgaveOgSak()

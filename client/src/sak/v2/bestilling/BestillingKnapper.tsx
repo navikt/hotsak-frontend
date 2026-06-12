@@ -15,10 +15,10 @@ export function BestillingKnapper() {
       {kanBehandleSak && (
         <HStack gap="space-8">
           <Button type="button" variant="primary" size="small" onClick={() => setVisGodkjennModal(true)}>
-            Godkjenn bestilling
+            Godkjenn
           </Button>
           <Button type="button" variant="secondary" size="small" onClick={() => setVisAvvisModal(true)}>
-            Avvis bestilling
+            Avvis
           </Button>
         </HStack>
       )}

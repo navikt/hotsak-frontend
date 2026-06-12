@@ -1,15 +1,17 @@
 import { HStack, Loader, LocalAlert } from '@navikt/ds-react'
 
 import { Etikett } from '../felleskomponenter/typografi'
+import { useObjectUrl } from '../io/HttpClient'
 import classes from './BrevForhåndsvisning.module.css'
-import { useBrevUrl } from './useBrev'
+import { useBrevPdf } from './useBrev'
 
 export interface BrevForhåndsvisningProps {
   brevId?: string
 }
 
 export function BrevForhåndsvisning({ brevId }: BrevForhåndsvisningProps) {
-  const { brev: brevUrl, error, isLoading } = useBrevUrl(brevId)
+  const { brev, error, isLoading } = useBrevPdf(brevId)
+  const url = useObjectUrl(brev)
 
   if (error) {
     return (
@@ -31,5 +33,5 @@ export function BrevForhåndsvisning({ brevId }: BrevForhåndsvisningProps) {
 
   // fixme -> "Henter vedtaksbrev fra Joark..."
 
-  return <iframe src={brevUrl} width="100%" height="100%" allow="fullscreen" className={classes.iframe} />
+  return <iframe src={url} width="100%" height="100%" allow="fullscreen" className={classes.root} />
 }

@@ -1,4 +1,4 @@
-.iframe {
+.root {
   border: none;
   margin-inline: calc(-1 * var(--ax-space-20));
   width: calc(100% + 2 * var(--ax-space-20));

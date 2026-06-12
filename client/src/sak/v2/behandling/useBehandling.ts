@@ -1,4 +1,4 @@
-import useSwr, { mutate, type SWRResponse } from 'swr'
+import useSwr, { useSWRConfig, type SWRResponse } from 'swr'
 
 import { type HttpError } from '../../../io/HttpError.ts'
 import { useSakId } from '../../../saksbilde/useSak.ts'
@@ -27,6 +27,7 @@ const ingenBehandlinger: BehandlingerForSak = {
   behandlinger: [],
 }
 
-export function mutateBehandling(sakId: string) {
-  return mutate<BehandlingerForSak>(`/api/sak/${sakId}/behandling`)
+export function useMutateBehandling() {
+  const { mutate } = useSWRConfig()
+  return (sakId: string) => mutate<BehandlingerForSak>(`/api/sak/${sakId}/behandling`)
 }

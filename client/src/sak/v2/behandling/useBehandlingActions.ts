@@ -2,7 +2,7 @@ import { useSWRConfig } from 'swr'
 import useSWRMutation from 'swr/mutation'
 
 import { useActionState } from '../../../action/Actions.ts'
-import { mutateBrevForSak } from '../../../brev/useBrev.ts'
+import { useMutateBrevForSak } from '../../../brev/useBrev.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast.ts'
 import { http } from '../../../io/HttpClient.ts'
 import { HttpError } from '../../../io/HttpError.ts'
@@ -15,6 +15,7 @@ export function useBehandlingActions() {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
   const { oppgaveId, versjon, sakId } = oppgave ?? {}
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
+  const mutateBrevForSak = useMutateBrevForSak()
   const { showSuccessToast } = useToast()
   const { execute, state } = useActionState()
   const { mutate } = useSWRConfig()
@@ -69,9 +70,7 @@ export function useBehandlingActions() {
           { problemsammendrag, postbegrunnelse, utleveringMerknad },
           { versjon }
         )
-        await mutateBehandling()
-        await mutateOppgaveOgSak()
-        await mutateBrevForSak(sakId!)
+        await Promise.all([mutateBehandling(), mutateOppgaveOgSak(), mutateBrevForSak(sakId!)])
       })
     },
     state,

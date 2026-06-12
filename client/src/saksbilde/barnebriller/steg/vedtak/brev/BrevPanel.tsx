@@ -1,9 +1,9 @@
 import { HStack, Loader } from '@navikt/ds-react'
 
-import { useBrevUrl } from '../../../../../brev/useBrev.ts'
+import { useBrevPdf } from '../../../../../brev/useBrev.ts'
+import { DokumentFrame } from '../../../../../felleskomponenter/dokument/DokumentFrame.tsx'
 import { FeilmeldingAlert } from '../../../../../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
-import classes from './BrevPanel.module.css'
 
 interface BrevPanelProps {
   brevId?: string
@@ -12,7 +12,7 @@ interface BrevPanelProps {
 
 export function BrevPanel(props: BrevPanelProps) {
   const { brevId, fullSize } = props
-  const { brev: brevUrl, error, isLoading } = useBrevUrl(brevId)
+  const { brev, error, isLoading } = useBrevPdf(brevId)
 
   if (error) {
     return <FeilmeldingAlert>Det oppstod en feil ved opprettelse av brev</FeilmeldingAlert>
@@ -27,24 +27,13 @@ export function BrevPanel(props: BrevPanelProps) {
     )
   }
 
-  if (!brevUrl) {
+  if (!brev) {
     return null
   }
 
   return (
     <div>
-      <DokumentIFrame fullSize={fullSize} dokumentData={brevUrl} />
+      <DokumentFrame data={brev} fullSize={fullSize} />
     </div>
   )
-}
-
-function DokumentIFrame({ fullSize, dokumentData }: { fullSize: boolean; dokumentData?: string }) {
-  if (fullSize) {
-    return (
-      <div className={classes.dokumentDiv}>
-        <iframe title="Dokument" src={dokumentData} width="100%" height="100%" />
-      </div>
-    )
-  }
-  return <iframe title="Dokument" src={dokumentData} className={classes.styledIFrame} tabIndex={0} />
 }

@@ -1,13 +1,14 @@
 import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
+import { useEffect } from 'react'
 import { Målform } from '../../brev/brevTyper.ts'
+import { ForhåndsvisDokumentModal } from '../../felleskomponenter/dokument/ForhåndsvisDokumentModal.tsx'
+import { useDebouncedWatch } from '../../felleskomponenter/skjema/useDebouncedWatch.ts'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
 import { useDialogToggle, useToggle } from '../../state/useToggle.ts'
-import { MålformType } from '../../types/types.internal.ts'
-import { ForhåndsvisningModal } from './ForhåndsvisningModal.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { type ForvaltningsnotatFormValues, type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
 import { SlettNotatUtkast } from './SlettNotatUtkast.tsx'
@@ -41,9 +42,21 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
     formState: { isSubmitting, errors },
   } = form
 
-  // const tittel = useWatch({ control, name: 'tittel' })
-  // const tekst = useWatch({ control, name: 'tekst' })
   const klassifisering = useWatch({ control, name: 'klassifisering' })
+
+  const [tittel, tekst] = useDebouncedWatch({ name: ['tittel', 'tekst'], control }, 1000)
+  const oppdaterNotatTrigger = oppdaterNotat.trigger
+  useEffect(() => {
+    if (tittel || tekst || klassifisering) {
+      oppdaterNotatTrigger({
+        type: NotatType.JOURNALFØRT,
+        tittel,
+        tekst,
+        målform: Målform.BOKMÅL,
+        klassifisering,
+      })
+    }
+  }, [tittel, tekst, klassifisering, oppdaterNotatTrigger])
 
   const resetForm = () =>
     reset({
@@ -58,7 +71,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
       type: NotatType.JOURNALFØRT,
       tittel: data.tittel,
       tekst: data.tekst,
-      målform: MålformType.BOKMÅL,
+      målform: Målform.BOKMÅL,
       klassifisering: data.klassifisering,
     })
     toggleVisJournalførNotatModal(false)
@@ -143,7 +156,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
           </div>
         </VStack>
 
-        <ForhåndsvisningModal data={forhåndsvisNotat.data} {...forhåndsvisningModalProps} />
+        <ForhåndsvisDokumentModal data={forhåndsvisNotat.data} {...forhåndsvisningModalProps} />
 
         <BekreftelsesDialog
           heading="Er du sikker på at du vil journalføre notatet?"

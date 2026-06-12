@@ -2,7 +2,7 @@ import { Button, Detail, HStack } from '@navikt/ds-react'
 
 import { useController, useForm } from 'react-hook-form'
 import { type Brev } from '../../../../brev/brevTyper.ts'
-import { mutateBrevUrl } from '../../../../brev/useBrev.ts'
+import { useMutateBrevPdf } from '../../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../../brev/useBrevActions.ts'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
@@ -35,6 +35,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const samletVurdering = useSamletVurdering(sak)
   const sakActions = useSakActions()
   const { oppdaterBrevutkast } = useBrevActions(oppgave, vedtaksbrev?.brevId)
+  const mutateBrevPdf = useMutateBrevPdf()
 
   const { data: saksdokumenter } = useSaksdokumenter(
     sak.sakId,
@@ -88,7 +89,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
         data: { brevtekst: values.brevtekst },
       },
     })
-    return mutateBrevUrl(vedtaksbrev.sakId, vedtaksbrev.brevId)
+    return mutateBrevPdf(vedtaksbrev.sakId, vedtaksbrev.brevId)
   })
 
   return (

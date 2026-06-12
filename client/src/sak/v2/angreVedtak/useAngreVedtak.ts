@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import { type Actions, useActionState } from '../../../action/Actions'
-import { mutateBrevForSak } from '../../../brev/useBrev'
+import { useMutateBrevForSak } from '../../../brev/useBrev'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { http } from '../../../io/HttpClient'
 import { useOppgave } from '../../../oppgave/useOppgave'
@@ -20,6 +20,7 @@ export interface AngreActions extends Actions {
 export function useAngreVedtak(): AngreActions {
   const { oppgave } = useOppgave()
   const { versjon, sakId } = oppgave ?? {}
+  const mutateBrevForSak = useMutateBrevForSak()
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
   const { execute, state } = useActionState()
   const { showSuccessToast } = useToast()

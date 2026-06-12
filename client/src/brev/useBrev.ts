@@ -1,49 +1,34 @@
 import { useCallback, useMemo } from 'react'
-import useSWR, { mutate, type MutatorCallback, type MutatorOptions, preload } from 'swr'
+import useSWR, { preload, useSWRConfig, type MutatorCallback, type MutatorOptions } from 'swr'
+import useSWRMutation from 'swr/mutation'
 
-import { http, type RequestOptions } from '../io/HttpClient'
+import { http, type HttpAccept, type HttpAcceptKey } from '../io/HttpClient'
 import { type HttpError } from '../io/HttpError'
+import { useMutateBehandling } from '../sak/v2/behandling/useBehandling'
 import { useSakId } from '../saksbilde/useSak'
 import { and, type Predicate } from '../utils/predicate'
 import { isBrevstatusUtkast } from './brevSelectors'
-import { type Brev, type Brevdata, type BrevForSak } from './brevTyper'
-
-export type BrevKey = [string, RequestOptions['accept']]
+import { type Brev, type Brevdata, type BrevForSak, type OpprettBrevutkastRequest } from './brevTyper'
 
 /**
  * Tar med accept i key slik at JSON- og PDF-versjon får hver sin cache.
  */
-export function brevKeyOf(
-  sakId: string,
-  brevId: string,
-  accept: RequestOptions['accept'] = 'application/json'
-): BrevKey {
+export function brevKeyOf(sakId: string, brevId: string, accept: HttpAccept = 'application/json'): HttpAcceptKey {
   return [`/api/sak/${sakId}/brev/${brevId}`, accept]
-}
-
-async function brevFetcher<T>([url, accept]: BrevKey): Promise<T> {
-  return await http.get<T>(url, { accept })
-}
-
-async function brevUrlFetcher([url, accept]: BrevKey): Promise<string> {
-  const data = await http.get<Blob>(url, { accept })
-  return window.URL.createObjectURL(data)
 }
 
 export function useBrev<T extends Brevdata = Brevdata>(brevId?: string) {
   const sakId = useSakId()
-  const { data: brev, ...rest } = useSWR<Brev<T>, HttpError, BrevKey | null>(
-    sakId && brevId ? brevKeyOf(sakId, brevId, 'application/json') : null,
-    brevFetcher
+  const { data: brev, ...rest } = useSWR<Brev<T>, HttpError, HttpAcceptKey | null>(
+    sakId && brevId ? brevKeyOf(sakId, brevId) : null
   )
   return { brev, ...rest }
 }
 
-export function useBrevUrl(brevId?: string) {
+export function useBrevPdf(brevId?: string) {
   const sakId = useSakId()
-  const { data: brev, ...rest } = useSWR<string, HttpError, BrevKey | null>(
+  const { data: brev, ...rest } = useSWR<Blob, HttpError, HttpAcceptKey | null>(
     sakId && brevId ? brevKeyOf(sakId, brevId, 'application/pdf') : null,
-    brevUrlFetcher,
     {
       revalidateOnFocus: false,
     }
@@ -52,15 +37,17 @@ export function useBrevUrl(brevId?: string) {
 }
 
 export function useBrevForSak(sakId?: string) {
-  const { data: brevForSak, ...rest } = useSWR<BrevForSak, HttpError, string | null>(
-    sakId ? `/api/sak/${sakId}/brev` : null,
-    async (url: string) => {
-      const brevForSak = await http.get<BrevForSak>(url)
-      // prepopuler cache for hvert brev i saken
-      await Promise.all(brevForSak.brev.map((brev) => mutateBrev(sakId!, brev.brevId, brev, { revalidate: false })))
-      return brevForSak
-    }
-  )
+  const mutateBrev = useMutateBrev()
+  const mutateBehandling = useMutateBehandling()
+
+  const key = sakId ? `/api/sak/${sakId}/brev` : null
+
+  const { data: brevForSak, ...rest } = useSWR<BrevForSak, HttpError, string | null>(key, async (url: string) => {
+    const brevForSak = await http.get<BrevForSak>(url)
+    // prepopuler cache for hvert brev i saken
+    await Promise.all(brevForSak.brev.map((brev) => mutateBrev(sakId!, brev.brevId, brev, { revalidate: false })))
+    return brevForSak
+  })
 
   const harBrev = useMemo(() => {
     if (!brevForSak) return
@@ -72,6 +59,16 @@ export function useBrevForSak(sakId?: string) {
     return brevForSak.brev.some(isBrevstatusUtkast)
   }, [brevForSak])
 
+  const opprettBrevutkast = useSWRMutation<Brev, HttpError, string | null, OpprettBrevutkastRequest>(
+    key,
+    (url, { arg: body }) => http.post<OpprettBrevutkastRequest, Brev>(url, body),
+    {
+      async onSuccess() {
+        await mutateBehandling(sakId!)
+      },
+    }
+  )
+
   const finnBrev = useCallback(
     <T extends Brevdata = Brevdata>(...predicates: Predicate<Brev>[]): Brev<T> | undefined => {
       if (!brevForSak) return
@@ -80,30 +77,33 @@ export function useBrevForSak(sakId?: string) {
     [brevForSak]
   )
 
-  return { brevForSak, harBrev, harBrevutkast, finnBrev, ...rest }
+  return { brevForSak, harBrev, harBrevutkast, opprettBrevutkast, finnBrev, ...rest }
 }
 
 export function preloadBrev<T extends Brevdata = Brevdata>(sakId: string, brevId: string) {
-  return preload<Brev<T>, BrevKey>(brevKeyOf(sakId, brevId, 'application/json'), brevFetcher)
+  return preload<Brev<T>, HttpAcceptKey>(brevKeyOf(sakId, brevId), http.get)
 }
 
-export function preloadBrevUrl(sakId: string, brevId: string) {
-  return preload<string, BrevKey>(brevKeyOf(sakId, brevId, 'application/pdf'), brevUrlFetcher)
+export function preloadBrevPdf(sakId: string, brevId: string) {
+  return preload<Blob, HttpAcceptKey>(brevKeyOf(sakId, brevId, 'application/pdf'), http.get)
 }
 
-export function mutateBrev<T extends Brevdata = Brevdata>(
-  sakId: string,
-  brevId: string,
-  brev?: Brev<T> | MutatorCallback<Brev<T>>,
-  options?: MutatorOptions<Brev<T>>
-) {
-  return mutate<Brev<T>>(brevKeyOf(sakId, brevId, 'application/json'), brev, options)
+export function useMutateBrev<T extends Brevdata = Brevdata>() {
+  const { mutate } = useSWRConfig()
+  return (
+    sakId: string,
+    brevId: string,
+    brev?: Brev<T> | MutatorCallback<Brev<T>>,
+    options?: MutatorOptions<Brev<T>>
+  ) => mutate<Brev<T>>(brevKeyOf(sakId, brevId), brev, options)
 }
 
-export function mutateBrevUrl(sakId: string, brevId: string) {
-  return mutate<string>(brevKeyOf(sakId, brevId, 'application/pdf'))
+export function useMutateBrevPdf() {
+  const { mutate } = useSWRConfig()
+  return (sakId: string, brevId: string) => mutate<Blob>(brevKeyOf(sakId, brevId, 'application/pdf'))
 }
 
-export function mutateBrevForSak(sakId: string) {
-  return mutate<BrevForSak>(`/api/sak/${sakId}/brev`)
+export function useMutateBrevForSak() {
+  const { mutate } = useSWRConfig()
+  return (sakId: string) => mutate<BrevForSak>(`/api/sak/${sakId}/brev`)
 }

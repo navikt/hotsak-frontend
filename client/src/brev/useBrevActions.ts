@@ -1,27 +1,31 @@
 import useSWRMutation from 'swr/mutation'
 
 import { useToast } from '../felleskomponenter/toast/useToast.ts'
-import { http } from '../io/HttpClient.ts'
+import { http, type HttpAcceptKey } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { type SaksbehandlingsoppgaveBase } from '../oppgave/oppgaveTypes.ts'
-import { mutateBehandling } from '../sak/v2/behandling/useBehandling.ts'
+import { useMutateBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import {
-  Brevstatus,
   type Brev,
   type Brevdata,
   type FerdigstillBrevutkastRequest,
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
 } from './brevTyper.ts'
-import { brevKeyOf, mutateBrev, mutateBrevForSak, mutateBrevUrl, type BrevKey } from './useBrev.ts'
+import { brevKeyOf, useMutateBrevForSak, useMutateBrevPdf } from './useBrev.ts'
 
 export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: SaksbehandlingsoppgaveBase, brevId?: string) {
   const { oppgaveId = '', versjon, sakId } = oppgave ?? {}
 
   const { showSuccessToast } = useToast()
 
+  const mutateBrevPdf = useMutateBrevPdf()
+  const mutateBehandling = useMutateBehandling()
+  const mutateBehandlingOgBrevForSak = useMutateBehandlingOgBrevForSak()
+
   const brevForSakKey = sakId ? `/api/sak/${sakId}/brev` : null
 
+  // todo -> flytt til useBrevForSak og bruk samme key
   const opprettBrevutkast = useSWRMutation<Brev<T>, HttpError, string | null, OpprettBrevutkastRequest>(
     brevForSakKey,
     (url, { arg: body }) => http.post<OpprettBrevutkastRequest, Brev<T>>(url, body, { versjon }),
@@ -34,12 +38,12 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
 
   const brevKey = sakId && brevId ? brevKeyOf(sakId, brevId) : null
 
-  const oppdaterBrevutkast = useSWRMutation<Brev<T>, HttpError, BrevKey | null, OppdaterBrevutkastRequest>(
+  const oppdaterBrevutkast = useSWRMutation<Brev<T>, HttpError, HttpAcceptKey | null, OppdaterBrevutkastRequest>(
     brevKey,
     ([url, accept], { arg: body }) => http.put<OppdaterBrevutkastRequest, Brev<T>>(url, body, { accept, versjon })
   )
 
-  const slettBrevutkast = useSWRMutation<void, HttpError, BrevKey | null>(
+  const slettBrevutkast = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
     brevKey,
     ([url]) => http.delete(url, { versjon }),
     {
@@ -50,49 +54,32 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     }
   )
 
-  // todo -> test ut å bruke samme key som brev
-  const ferdigstillingKey = sakId && brevId ? `/api/sak/${sakId}/brev/${brevId}/ferdigstilling` : null
+  const forhåndsvisBrev = useSWRMutation<Blob, HttpError, HttpAcceptKey | null>(
+    sakId && brevId ? brevKeyOf(sakId, brevId, 'application/pdf') : null,
+    async ([url, accept]) => http.get<Blob>(url, { accept }),
+    {
+      async onSuccess() {},
+    }
+  )
 
-  const ferdigstillBrevutkast = useSWRMutation<void, HttpError, string | null>(
-    ferdigstillingKey,
-    async (url) => {
-      await http.post<FerdigstillBrevutkastRequest>(url, { oppgaveId }, { versjon })
+  const ferdigstillBrevutkast = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
+    brevKey,
+    async ([url]) => {
+      await http.post<FerdigstillBrevutkastRequest>(`${url}/ferdigstilling`, { oppgaveId }, { versjon })
     },
     {
       async onSuccess() {
-        await Promise.all([
-          mutateBehandlingOgBrevForSak(sakId!),
-          mutateBrev(sakId!, brevId!, (it) => {
-            if (!it) return it
-            return {
-              ...it,
-              ferdigstilt: new Date().toISOString(),
-              brevstatus: Brevstatus.FERDIGSTILT,
-            }
-          }),
-          mutateBrevUrl(sakId!, brevId!),
-        ])
+        await Promise.all([mutateBehandlingOgBrevForSak(sakId!), mutateBrevPdf(sakId!, brevId!)])
       },
     }
   )
 
-  const redigerBrevutkast = useSWRMutation<void, HttpError, string | null>(
-    ferdigstillingKey,
-    (url) => http.delete(url, { versjon }),
+  const redigerBrevutkast = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
+    brevKey,
+    ([url]) => http.delete(`${url}/ferdigstilling`, { versjon }),
     {
       async onSuccess() {
-        await Promise.all([
-          mutateBehandlingOgBrevForSak(sakId!),
-          mutateBrev(sakId!, brevId!, (it) => {
-            if (!it) return it
-            return {
-              ...it,
-              ferdigstilt: undefined,
-              ferdigstiltAv: undefined,
-              brevstatus: Brevstatus.UTKAST,
-            }
-          }),
-        ])
+        await Promise.all([mutateBehandlingOgBrevForSak(sakId!)])
       },
     }
   )
@@ -101,11 +88,16 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     opprettBrevutkast,
     oppdaterBrevutkast,
     slettBrevutkast,
+    forhåndsvisBrev,
     ferdigstillBrevutkast,
     redigerBrevutkast,
   }
 }
 
-function mutateBehandlingOgBrevForSak(sakId: string) {
-  return Promise.all([mutateBehandling(sakId), mutateBrevForSak(sakId)])
+export type UseBrevActionsResponse<T extends Brevdata = Brevdata> = ReturnType<typeof useBrevActions<T>>
+
+function useMutateBehandlingOgBrevForSak() {
+  const mutateBehandling = useMutateBehandling()
+  const mutateBrevForSak = useMutateBrevForSak()
+  return (sakId: string) => Promise.all([mutateBehandling(sakId), mutateBrevForSak(sakId)])
 }

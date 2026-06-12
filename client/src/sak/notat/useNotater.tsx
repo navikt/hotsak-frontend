@@ -4,12 +4,14 @@ import useSWRMutation from 'swr/mutation'
 
 import { http } from '../../io/HttpClient.ts'
 import { type HttpError } from '../../io/HttpError.ts'
-import { mutateBehandling } from '../v2/behandling/useBehandling.ts'
+import { useMutateBehandling } from '../v2/behandling/useBehandling.ts'
 import { isAvventerJournalføring, isNotatFerdigstilt, isNotatUtkast } from './notatSelectors.ts'
 import { OpprettNotatRequest, type Notat, type Saksnotater } from './notatTyper.ts'
 
 export function useNotater(sakId?: string) {
   const key = sakId ? `/api/sak/${sakId}/notater` : null
+
+  const mutateBehandling = useMutateBehandling()
 
   const { data, ...rest } = useSwr<Saksnotater, HttpError, string | null>(key, {
     refreshInterval(latestData) {

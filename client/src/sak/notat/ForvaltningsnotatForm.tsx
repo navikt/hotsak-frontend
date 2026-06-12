@@ -119,6 +119,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
               type="button"
               size="xsmall"
               variant="tertiary"
+              loading={forhåndsvisNotat.isMutating}
               onClick={async () => {
                 const values = getValues()
                 await oppdaterNotat.trigger({

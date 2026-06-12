@@ -1,5 +1,6 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
 
+import { isBrevmalBarnebrillerVedtak } from '../../brev/brevSelectors.ts'
 import {
   Brev,
   Brevmal,
@@ -331,7 +332,11 @@ export class SakStore extends Dexie {
   async oppdaterSteg(sakId: string, steg: StegType) {
     if (steg === StegType.FATTE_VEDTAK) {
       const brev = await this.hentBrevForSak(sakId)
-      if (!brev.length) {
+      const vedtaksbrev = brev.filter(isBrevmalBarnebrillerVedtak)
+
+      // todo -> bruk riktig brevmal for vedtaksbrev for barnebriller
+
+      if (!vedtaksbrev.length) {
         await this.opprettBrevutkast(sakId, {
           brevutkast: {
             brevmal: Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE,
@@ -613,6 +618,12 @@ export class SakStore extends Dexie {
     })
 
     const brev = await this.hentBrev(brevId)
+    if (brev.brevmal === Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER) {
+      setTimeout(async () => {
+        await this.lagreSaksdokument(brev.sakId, 'Briller til barn: Nav etterspør opplysninger')
+      }, 3000)
+      return brev
+    }
     if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
       return brev
     }
@@ -774,7 +785,7 @@ export class SakStore extends Dexie {
       .reduce((samletStatus, vilkårOppfylt) => {
         if (samletStatus === VilkårsResultat.KANSKJE || samletStatus === VilkårsResultat.NEI) {
           return samletStatus
-        } else if (vilkårOppfylt === VilkårsResultat.NEI || vilkårOppfylt === VilkårsResultat.KANSKJE) {
+        } else if (vilkårOppfylt === VilkårsResultat.KANSKJE || vilkårOppfylt === VilkårsResultat.NEI) {
           return vilkårOppfylt
         } else if (vilkårOppfylt === VilkårsResultat.OPPLYSNINGER_MANGLER) {
           return VilkårsResultat.NEI

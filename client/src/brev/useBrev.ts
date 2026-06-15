@@ -1,14 +1,12 @@
 import { useCallback, useMemo } from 'react'
 import useSWR, { preload, useSWRConfig, type MutatorCallback, type MutatorOptions } from 'swr'
-import useSWRMutation from 'swr/mutation'
 
 import { http, type HttpAccept, type HttpAcceptKey } from '../io/HttpClient'
 import { type HttpError } from '../io/HttpError'
-import { useMutateBehandling } from '../sak/v2/behandling/useBehandling'
 import { useSakId } from '../saksbilde/useSak'
 import { and, type Predicate } from '../utils/predicate'
 import { isBrevstatusUtkast } from './brevSelectors'
-import { type Brev, type Brevdata, type BrevForSak, type OpprettBrevutkastRequest } from './brevTyper'
+import { type Brev, type Brevdata, type BrevForSak } from './brevTyper'
 
 /**
  * Tar med accept i key slik at JSON- og PDF-versjon får hver sin cache.
@@ -38,7 +36,6 @@ export function useBrevPdf(brevId?: string) {
 
 export function useBrevForSak(sakId?: string) {
   const mutateBrev = useMutateBrev()
-  const mutateBehandling = useMutateBehandling()
 
   const key = sakId ? `/api/sak/${sakId}/brev` : null
 
@@ -59,16 +56,6 @@ export function useBrevForSak(sakId?: string) {
     return brevForSak.brev.some(isBrevstatusUtkast)
   }, [brevForSak])
 
-  const opprettBrevutkast = useSWRMutation<Brev, HttpError, string | null, OpprettBrevutkastRequest>(
-    key,
-    (url, { arg: body }) => http.post<OpprettBrevutkastRequest, Brev>(url, body),
-    {
-      async onSuccess() {
-        await mutateBehandling(sakId!)
-      },
-    }
-  )
-
   const finnBrev = useCallback(
     <T extends Brevdata = Brevdata>(...predicates: Predicate<Brev>[]): Brev<T> | undefined => {
       if (!brevForSak) return
@@ -77,7 +64,7 @@ export function useBrevForSak(sakId?: string) {
     [brevForSak]
   )
 
-  return { brevForSak, harBrev, harBrevutkast, opprettBrevutkast, finnBrev, ...rest }
+  return { brevForSak, harBrev, harBrevutkast, finnBrev, ...rest }
 }
 
 export function preloadBrev<T extends Brevdata = Brevdata>(sakId: string, brevId: string) {

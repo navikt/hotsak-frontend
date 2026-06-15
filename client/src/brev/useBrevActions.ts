@@ -21,7 +21,9 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
 
   const mutateBrevPdf = useMutateBrevPdf()
   const mutateBehandling = useMutateBehandling()
-  const mutateBehandlingOgBrevForSak = useMutateBehandlingOgBrevForSak()
+  const mutateBrevForSak = useMutateBrevForSak()
+  const mutateBehandlingOgBrevForSak = (sakId: string) =>
+    Promise.all([mutateBehandling(sakId), mutateBrevForSak(sakId)])
 
   const brevForSakKey = sakId ? `/api/sak/${sakId}/brev` : null
 
@@ -30,8 +32,8 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     brevForSakKey,
     (url, { arg: body }) => http.post<OpprettBrevutkastRequest, Brev<T>>(url, body, { versjon }),
     {
-      async onSuccess() {
-        await mutateBehandling(sakId!)
+      async onSuccess(brev) {
+        await mutateBehandlingOgBrevForSak(brev.sakId)
       },
     }
   )
@@ -40,7 +42,12 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
 
   const oppdaterBrevutkast = useSWRMutation<Brev<T>, HttpError, HttpAcceptKey | null, OppdaterBrevutkastRequest>(
     brevKey,
-    ([url, accept], { arg: body }) => http.put<OppdaterBrevutkastRequest, Brev<T>>(url, body, { accept, versjon })
+    ([url, accept], { arg: body }) => http.put<OppdaterBrevutkastRequest, Brev<T>>(url, body, { accept, versjon }),
+    {
+      async onSuccess(brev) {
+        await mutateBrevForSak(brev.sakId)
+      },
+    }
   )
 
   const slettBrevutkast = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
@@ -79,7 +86,7 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     ([url]) => http.delete(`${url}/ferdigstilling`, { versjon }),
     {
       async onSuccess() {
-        await Promise.all([mutateBehandlingOgBrevForSak(sakId!)])
+        await mutateBehandlingOgBrevForSak(sakId!)
       },
     }
   )
@@ -95,9 +102,3 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
 }
 
 export type UseBrevActionsResponse<T extends Brevdata = Brevdata> = ReturnType<typeof useBrevActions<T>>
-
-function useMutateBehandlingOgBrevForSak() {
-  const mutateBehandling = useMutateBehandling()
-  const mutateBrevForSak = useMutateBrevForSak()
-  return (sakId: string) => Promise.all([mutateBehandling(sakId), mutateBrevForSak(sakId)])
-}

@@ -20,6 +20,7 @@ declare global {
 
       GOSYS_OPPGAVEBEHANDLING_URL?: string
       MODIA_URL?: string
+      SPORREUNDERSOKELSE_URL?: string
     }
     faro?: Faro
     store: {

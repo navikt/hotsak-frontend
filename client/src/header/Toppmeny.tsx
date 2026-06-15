@@ -16,6 +16,7 @@ import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
 import { useDarkMode } from './useDarkMode.ts'
 import { useModia } from './useModia.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
@@ -26,6 +27,7 @@ export function Toppmeny() {
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
+  const { erIkkeProd } = useMiljø()
   useGlobaleHotkeys({ visHurtigtaster: hurtigtaster.åpne })
 
   const handleSearch = (value: string) => {
@@ -99,6 +101,18 @@ export function Toppmeny() {
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
             </ActionMenu.Group>
+            {erIkkeProd && (
+              <ActionMenu.Group label="Tilbakemelding">
+                <ActionMenu.Item
+                  as="a"
+                  href={window.appSettings.SPORREUNDERSOKELSE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Gi tilbakemelding
+                </ActionMenu.Item>
+              </ActionMenu.Group>
+            )}
             <ActionMenu.Divider />
             <ActionMenu.Group label="Hjelp">
               <ActionMenu.Item onSelect={hurtigtaster.åpne} shortcut="Alt + H">

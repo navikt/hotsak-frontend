@@ -16,6 +16,7 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
             FARO_URL: '',
             GOSYS_OPPGAVEBEHANDLING_URL: 'https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling',
             MODIA_URL: 'https://modiapersonoversikt.intern.dev.nav.no',
+            SPORREUNDERSOKELSE_URL: 'https://feedback.skyra.no/s1/zivvC9ZPUrxEEekc14RLNA',
             IMAGE_PROXY_URL: ${proxy.grunndata ? "'https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d'" : "'http://localhost:3001/imageproxy'"},
             
             UMAMI_ENABLED: false,

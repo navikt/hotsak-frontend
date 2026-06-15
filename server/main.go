@@ -66,6 +66,7 @@ func main() {
 
 			"GOSYS_OPPGAVEBEHANDLING_URL",
 			"MODIA_URL",
+			"SPORREUNDERSOKELSE_URL",
 		},
 	}
 

@@ -2,7 +2,8 @@ import { Box, Button, Heading, HelpText, HStack, InfoCard, InlineMessage, Select
 import { useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
-import { isBrevstatusUtkast } from '../../../brev/brevSelectors.ts'
+import { isBrevmal } from '../../../brev/brevSelectors.ts'
+import { Brevmal } from '../../../brev/brevTyper.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
@@ -40,8 +41,8 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
   const { harBrev, finnBrev } = useBrevForSak(behandling?.sakId)
   const { ferdigstillBehandling, lagreBehandling } = useBehandlingActions()
-  const brevutkast = finnBrev(isBrevstatusUtkast)
-  const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave, brevutkast?.brevId)
+  const vedtaksbrevId = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV))?.brevId
+  const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave, vedtaksbrevId)
   const { showSuccessToast } = useToast()
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined

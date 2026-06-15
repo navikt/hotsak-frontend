@@ -1,6 +1,7 @@
 import { Button, Detail, HStack, VStack } from '@navikt/ds-react'
-
 import { useController, useForm } from 'react-hook-form'
+
+import useSWRMutation from 'swr/mutation'
 import { Brevmal, type Brev } from '../../../../brev/brevTyper.ts'
 import { useMutateBrevPdf } from '../../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../../brev/useBrevActions.ts'
@@ -92,11 +93,11 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     })
   }
 
-  const handleForhåndsvis = async () => {
+  const handleForhåndsvis = useSWRMutation<void, Error, string, unknown>('vedtaksbrev-barnebriller', async () => {
     if (!vedtaksbrev || !isVedtakAvslagManglendeOpplysninger) return
     await handleUpdateBrevutkast(getValues())
     await mutateBrevPdf(vedtaksbrev.sakId, vedtaksbrev.brevId)
-  }
+  })
 
   const handleSendTilGodkjenning = handleSubmit(async (values) => {
     if (!vedtaksbrev) return
@@ -120,7 +121,13 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
               {...brevtekstController.field}
             />
             <div>
-              <Button size="small" type="button" variant="secondary" loading={isSubmitting} onClick={handleForhåndsvis}>
+              <Button
+                size="small"
+                type="button"
+                variant="secondary"
+                loading={handleForhåndsvis.isMutating}
+                onClick={handleForhåndsvis.trigger}
+              >
                 Forhåndsvis
               </Button>
             </div>
@@ -145,7 +152,15 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
         )}
         {harNotatUtkast === true && <NotatUtkastVarsel />}
         <HStack gap="space-8">
-          <Button size="small" type="button" variant="secondary" onClick={() => setStep(StepType.VILKÅR)}>
+          <Button
+            size="small"
+            type="button"
+            variant="secondary"
+            onClick={() => {
+              setStep(StepType.VILKÅR)
+              return handleUpdateBrevutkast(getValues())
+            }}
+          >
             Forrige
           </Button>
           {!manglerPåkrevdEtterspørreOpplysningerBrev && !manglerPåkrevdUtbetalingsmottakerVedInnvilgelse && (

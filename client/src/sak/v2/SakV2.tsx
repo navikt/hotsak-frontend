@@ -41,6 +41,7 @@ import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
+import { useErPilot } from '../../tilgang/useTilgang.ts'
 
 function SakV2Content({
   oppgave,

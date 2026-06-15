@@ -31,8 +31,6 @@ export function useAngreVedtak(): AngreActions {
     async angreVedtak({ årsak }: { årsak: string }) {
       if (!sakId || !gjeldendeBehandling) return
       return execute(async () => {
-        // fixme -> kunne ikke backend gjort dette?
-        // await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
         const response = await http.post<unknown, AngreResponse>(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling.behandlingId}/angring`,
           { årsak },

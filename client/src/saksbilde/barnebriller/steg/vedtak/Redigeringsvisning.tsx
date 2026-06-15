@@ -10,11 +10,11 @@ import { Etikett } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import { useNotater } from '../../../../sak/notat/useNotater'
 import {
-  type Barnebrillesak,
   Brevkode,
   OppgaveStatusType,
   StepType,
   VilkårsResultat,
+  type Barnebrillesak,
 } from '../../../../types/types.internal'
 import { useSakActions } from '../../../useSakActions.ts'
 import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
@@ -48,7 +48,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksdokument) => saksdokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
-  const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined
+  const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev != null
 
   const manglerPåkrevdEtterspørreOpplysningerBrev =
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
@@ -62,6 +62,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     vedtaksbrev?.brevmal === Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER
 
   const {
+    getValues,
     formState: { isSubmitting },
     handleSubmit,
     control,
@@ -80,7 +81,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   })
 
   const handleUpdateBrevutkast = async (values: { brevtekst: string }) => {
-    if (!vedtaksbrev || !isVedtakAvslagManglendeOpplysninger) return
+    if (!vedtaksbrev) return
     await oppdaterBrevutkast.trigger({
       brevutkast: {
         brevmal: vedtaksbrev.brevmal,
@@ -91,15 +92,17 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     })
   }
 
-  const handleForhåndsvis = handleSubmit(async (values) => {
+  const handleForhåndsvis = async () => {
     if (!vedtaksbrev || !isVedtakAvslagManglendeOpplysninger) return
-    await handleUpdateBrevutkast(values)
-    return mutateBrevPdf(vedtaksbrev.sakId, vedtaksbrev.brevId)
-  })
+    await handleUpdateBrevutkast(getValues())
+    await mutateBrevPdf(vedtaksbrev.sakId, vedtaksbrev.brevId)
+  }
 
   const handleSendTilGodkjenning = handleSubmit(async (values) => {
     if (!vedtaksbrev) return
-    await handleUpdateBrevutkast(values)
+    if (isVedtakAvslagManglendeOpplysninger) {
+      await handleUpdateBrevutkast(values)
+    }
     if (!harNotatUtkast) {
       await sakActions.opprettTotrinnskontroll()
     }
@@ -146,13 +149,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             Forrige
           </Button>
           {!manglerPåkrevdEtterspørreOpplysningerBrev && !manglerPåkrevdUtbetalingsmottakerVedInnvilgelse && (
-            <Button
-              size="small"
-              type="submit"
-              variant="primary"
-              loading={sakActions.state.loading}
-              disabled={sakActions.state.loading}
-            >
+            <Button size="small" type="submit" variant="primary" loading={isSubmitting}>
               Send til godkjenning
             </Button>
           )}

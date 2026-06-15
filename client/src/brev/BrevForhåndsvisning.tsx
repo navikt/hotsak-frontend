@@ -7,9 +7,10 @@ import { useBrevPdf } from './useBrev'
 
 export interface BrevForhåndsvisningProps {
   brevId?: string
+  avsluttet?: boolean
 }
 
-export function BrevForhåndsvisning({ brevId }: BrevForhåndsvisningProps) {
+export function BrevForhåndsvisning({ brevId, avsluttet = false }: BrevForhåndsvisningProps) {
   const { brev, error, isLoading } = useBrevPdf(brevId)
   const url = useObjectUrl(brev)
 
@@ -33,5 +34,13 @@ export function BrevForhåndsvisning({ brevId }: BrevForhåndsvisningProps) {
 
   // fixme -> "Henter vedtaksbrev fra Joark..."
 
-  return <iframe src={url} width="100%" height="100%" allow="fullscreen" className={classes.root} />
+  return (
+    <iframe
+      src={url}
+      width="100%"
+      height="100%"
+      allow="fullscreen"
+      className={avsluttet ? classes.sendt : classes.root}
+    />
+  )
 }

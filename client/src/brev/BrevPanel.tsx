@@ -20,6 +20,7 @@ export interface BrevPanelProps {
 export function BrevPanel({ oppgave, brev }: BrevPanelProps) {
   const { gjeldendeBehandling } = useBehandling()
   const { oppgaveErAvsluttet } = useOppgaveregler(oppgave)
+
   if (oppgaveErAvsluttet || brev?.distribusjon.length) {
     return (
       <BrevPanelLayout tittel="Vedtaksbrev">
@@ -27,7 +28,7 @@ export function BrevPanel({ oppgave, brev }: BrevPanelProps) {
           Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet. Dersom du har angret på vedtaket finnes det
           en ny oppgave i din liste hvor du kan redigere brevet som tidligere var tilknyttet denne oppgaven.
         </BrevInfoCard>
-        <BrevForhåndsvisning brevId={brev?.brevId} />
+        <BrevForhåndsvisning brevId={brev?.brevId} avsluttet={oppgaveErAvsluttet} />
       </BrevPanelLayout>
     )
   }

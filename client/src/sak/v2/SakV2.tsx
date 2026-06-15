@@ -61,6 +61,8 @@ function SakV2Content({
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const erPilot = useErPilot('hotsakEksperimenter')
 
+  console.log('Er pilot:', erPilot)
+
   const { panelState, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } = useSakContext()
   const { panels } = panelState
 

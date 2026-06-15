@@ -67,5 +67,7 @@ export type PilotName = keyof typeof piloter
 
 export function useErPilot(name: PilotName): boolean {
   const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
+
+  console.log('Er gjeldenende enhet en av: ', piloter[name], ' - ', erGjeldendeEnhetEnAv(...piloter[name]))
   return erGjeldendeEnhetEnAv(...piloter[name])
 }

@@ -9,14 +9,14 @@ import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakProvider } from '../sak/v2/SakProvider'
+import { useSaksregler } from '../saksregler/useSaksregler.ts'
+import { useErPilot } from '../tilgang/useTilgang.ts'
 import { type SakBase, Sakstype } from '../types/types.internal'
 import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { useMiljø } from '../utils/useMiljø.ts'
-import { useSaksregler } from '../saksregler/useSaksregler.ts'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))
 const SakV2 = lazy(() => import('../sak/v2/SakV2'))
@@ -28,7 +28,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
-  const { erIkkeProd } = useMiljø()
+  const erPilot = useErPilot('hotsakEksperimenter')
 
   if (isSakLoading || isPersonLoading || isBehovsmeldingLoading) return <SakLoader />
 
@@ -48,7 +48,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
 
   const sakData = sak.data
 
-  if (sakData.sakstype === Sakstype.SØKNAD || (erIkkeProd && erBestilling)) {
+  if (sakData.sakstype === Sakstype.SØKNAD || (erPilot && erBestilling)) {
     return (
       <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sakData.sakId}`} />

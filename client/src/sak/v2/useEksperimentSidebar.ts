@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePanelCallbackRef, type PanelSize } from 'react-resizable-panels'
-import { useMiljø } from '../../utils/useMiljø'
+import { useErPilot } from '../../tilgang/useTilgang'
 
 interface UseEksperimentSidebarOptions {
   sidePanelVisible: boolean
@@ -10,14 +10,15 @@ interface UseEksperimentSidebarOptions {
 
 export function useEksperimentSidebar(options: UseEksperimentSidebarOptions) {
   const { sidePanelVisible, sidePanelDefaultSize, sidebarOpenDefaultSizeRequestId } = options
-  const { erProd } = useMiljø()
+
   const [sisteEksperimentSidebarBredde, setSisteEksperimentSidebarBredde] = useState<number | string>('20%')
   const [eksperimentSidebarPanel, setEksperimentSidebarPanel] = usePanelCallbackRef()
   const harInitialisertEksperimentSidebar = useRef(false)
   const sisteDefaultSizeRequestRef = useRef(0)
+  const erPilot = useErPilot('hotsakEksperimenter')
 
   useEffect(() => {
-    if (erProd || !eksperimentSidebarPanel) {
+    if (!erPilot || !eksperimentSidebarPanel) {
       harInitialisertEksperimentSidebar.current = false
       sisteDefaultSizeRequestRef.current = sidebarOpenDefaultSizeRequestId
       return
@@ -44,7 +45,7 @@ export function useEksperimentSidebar(options: UseEksperimentSidebarOptions) {
 
     sisteDefaultSizeRequestRef.current = sidebarOpenDefaultSizeRequestId
   }, [
-    erProd,
+    erPilot,
     eksperimentSidebarPanel,
     sidePanelDefaultSize,
     sidePanelVisible,

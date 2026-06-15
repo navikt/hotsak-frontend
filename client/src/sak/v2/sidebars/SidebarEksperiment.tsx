@@ -2,10 +2,12 @@ import { ChevronRightIcon, NotePencilIcon } from '@navikt/aksel-icons'
 import { Box, Button } from '@navikt/ds-react'
 
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
+import { Mellomtittel } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { useSak } from '../../../saksbilde/useSak'
+import { useErPilot } from '../../../tilgang/useTilgang'
 import { Notater } from '../../notat/Notater'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import { SidebarValg } from '../SakPanelTabTypes'
@@ -13,8 +15,6 @@ import { useSakContext } from '../SakV2ContextType'
 import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import { Mellomtittel } from '../../../felleskomponenter/typografi'
-import { useMiljø } from '../../../utils/useMiljø'
 
 export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave
@@ -25,7 +25,7 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
   const { sak } = useSak()
   useUtlånoversikt(sak?.data.bruker.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
   const closePanel = useClosePanel('sidebarpanel')
-  const { erProd } = useMiljø()
+  const erPilot = useErPilot('hotsakEksperimenter')
 
   function renderActivePanel() {
     switch (aktivSidebar) {
@@ -36,7 +36,7 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
       case SidebarValg.NOTATER:
         return (
           <SidebarPanel
-            tittel={erProd ? <Mellomtittel>Notater</Mellomtittel> : 'Notater'}
+            tittel={erPilot ? 'Notater' : <Mellomtittel>Notater</Mellomtittel>}
             icon={<NotePencilIcon title="Notater" />}
           >
             <Notater oppgave={oppgave} />

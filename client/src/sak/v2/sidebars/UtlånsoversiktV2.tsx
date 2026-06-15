@@ -1,16 +1,15 @@
+import { WheelchairIcon } from '@navikt/aksel-icons'
 import { BodyLong, Detail, HStack, Label, VStack } from '@navikt/ds-react'
+import { Skillelinje } from '../../../felleskomponenter/Strek'
+import { Mellomtittel, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
+import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { useSak } from '../../../saksbilde/useSak'
-import { useArtiklerByKategori } from './useArtiklerByKategori'
+import { useErPilot } from '../../../tilgang/useTilgang'
+import { formaterDato } from '../../../utils/dato'
+import { useMiljø } from '../../../utils/useMiljø'
 import { Artikler } from './Artikler'
 import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
-import { Mellomtittel, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
-import { formaterDato } from '../../../utils/dato'
-import { Skillelinje } from '../../../felleskomponenter/Strek'
-import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { useErPilot } from '../../../tilgang/useTilgang'
-import { useMiljø } from '../../../utils/useMiljø'
-import { WheelchairIcon } from '@navikt/aksel-icons'
-import { Sakstype } from '../../../types/types.internal'
+import { useArtiklerByKategori } from './useArtiklerByKategori'
 
 export function UtlånsoversiktV2() {
   const { sak } = useSak()
@@ -29,11 +28,11 @@ export function UtlånsoversiktV2() {
   const harHøreapparatVedtak = !!høreapparatVedtak?.harVedtak && !!høreapparatVedtak?.vedtaksdato
 
   const { erIkkeProd } = useMiljø()
+  const erPilot = useErPilot('hotsakEksperimenter')
   const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || erIkkeProd
-  const erBestilling = sak?.data?.sakstype === Sakstype.BESTILLING
   return (
     <>
-      {erIkkeProd && !erBestilling && (
+      {erPilot && (
         <SidebarPanelBox paddingBlock={'space-8 space-0'}>
           <SidebarPanelHeading tittel="Utlånsoversikt" icon={<WheelchairIcon title="Utlånsoversikt" />} />
         </SidebarPanelBox>

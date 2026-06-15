@@ -2,7 +2,15 @@
   "behovsmeldingId": "1e3f5513-a394-4f59-9020-07a35cb4c7e8",
   "beskrivelse": "behovsmelding_1",
   "behovsmelding": {
-    "saksbehandlingvarsel": [],
+    "saksbehandlingvarsel": [
+      {
+        "tekst": {
+          "nb": "Denne søknaden ble meldt inn sammen med et bytte, men ble automatisk delt opp i to saker. Sakene kan inneholde hjelpemidler som bør behandles samlet. Byttesaken inneholder følgende hjelpemidler: 199327 Dusj- og toalettstol M2 Multi-Tip",
+          "nn": "Denne søknaden vart meld inn saman med eit byte, men vart automatisk delt opp i to saker. Sakene kan innehalda hjelpemiddel som bør behandlast samla. Bytesaka inneheld følgjande hjelpemiddel: 199327 Dusj- og toalettstol M2 Multi-Tip"
+        },
+        "type": "WARNING"
+      }
+    ],
     "bruker": {
       "fnr": "13820599335",
       "navn": {
@@ -96,7 +104,10 @@
               ]
             },
             {
-              "key": { "id": "LAVERE_RANGERING_BEGRUNNELSE", "versjon": 1 },
+              "key": {
+                "id": "LAVERE_RANGERING_BEGRUNNELSE",
+                "versjon": 1
+              },
               "ledetekst": {
                 "nb": "Begrunnelse for lavere rangering",
                 "nn": "Grunngjeving for lågare rangering"
@@ -116,7 +127,6 @@
       "totaltAntall": 1,
       "tilbehør": []
     },
-
     "levering": {
       "hjelpemiddelformidler": {
         "navn": {
@@ -155,8 +165,14 @@
       },
       "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "annenUtleveringsadresse": null,
-      "annenUtleveringskommune": { "navn": "OSLO", "nummer": "0301" },
-      "annenUtleveringsbydel": { "navn": "Alna", "nummer": "030112" },
+      "annenUtleveringskommune": {
+        "navn": "OSLO",
+        "nummer": "0301"
+      },
+      "annenUtleveringsbydel": {
+        "navn": "Alna",
+        "nummer": "030112"
+      },
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,
       "utleveringMerknad": "Dette er en merknad til utlevering som skal på 5.17 på SF",

@@ -1,6 +1,6 @@
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Button, HStack, Radio, RadioGroup, Select, VStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useController, useForm, useWatch } from 'react-hook-form'
 
 import { isBrevmal, isBrevstatusUtkast } from '../../../brev/brevSelectors'
@@ -9,6 +9,7 @@ import { useBrevForSak } from '../../../brev/useBrev'
 import { useBrevActions } from '../../../brev/useBrevActions'
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { ForhåndsvisDokumentModal } from '../../../felleskomponenter/dokument/ForhåndsvisDokumentModal'
+import { useDebouncedWatch } from '../../../felleskomponenter/skjema/useDebouncedWatch'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
@@ -23,7 +24,7 @@ export interface SendBrevFormProps {
 
 export function SendBrevForm(props: SendBrevFormProps) {
   const { oppgave } = props
-  const { getValues, handleSubmit, control } = useForm<SendBrevFormValues>({
+  const { getValues, reset, handleSubmit, control } = useForm<SendBrevFormValues>({
     defaultValues: {
       brevmal: Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER,
       målform: Målform.BOKMÅL,
@@ -32,10 +33,31 @@ export function SendBrevForm(props: SendBrevFormProps) {
   })
 
   const brevmal = useWatch({ name: 'brevmal', control })
+  const målform = useWatch({ name: 'målform', control })
+  const brevtekst = useDebouncedWatch({ name: 'brevtekst', control }, 1_000)
+
   const { finnBrev } = useBrevForSak(oppgave.sakId)
-  const brevutkast = finnBrev(isBrevmal(brevmal), isBrevstatusUtkast)
+  const brevutkast = finnBrev<{ brevtekst?: string }>(isBrevmal(brevmal), isBrevstatusUtkast)
   const { opprettBrevutkast, oppdaterBrevutkast, slettBrevutkast, forhåndsvisBrev, ferdigstillBrevutkast } =
     useBrevActions(oppgave, brevutkast?.brevId)
+
+  const {
+    brevmal: lagretBrevmal,
+    målform: lagretMålform,
+    data: { brevtekst: lagretBrevtekst = '' },
+  } = brevutkast ?? { data: {} }
+  useEffect(() => {
+    if (lagretBrevmal || lagretMålform || lagretBrevtekst) {
+      reset(
+        {
+          brevmal: lagretBrevmal,
+          målform: lagretMålform,
+          brevtekst: lagretBrevtekst,
+        },
+        { keepDirtyValues: true }
+      )
+    }
+  }, [lagretBrevmal, lagretMålform, lagretBrevtekst, reset])
 
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
@@ -66,16 +88,26 @@ export function SendBrevForm(props: SendBrevFormProps) {
     showSuccessToast('Brevutkast opprettet.')
   })
 
-  const handleUpdateBrevutkast = async (values: SendBrevFormValues) => {
-    await oppdaterBrevutkast.trigger({
-      brevutkast: {
-        brevmal: values.brevmal,
-        brevmalVersjon: '0',
-        målform: values.målform,
-        data: { brevtekst: values.brevtekst },
-      },
-    })
-  }
+  const oppdaterBrevutkastTrigger = oppdaterBrevutkast.trigger
+  const handleUpdateBrevutkast = useCallback(
+    async (values: SendBrevFormValues) => {
+      await oppdaterBrevutkastTrigger({
+        brevutkast: {
+          brevmal: values.brevmal,
+          brevmalVersjon: '0',
+          målform: values.målform,
+          data: { brevtekst: values.brevtekst },
+        },
+      })
+    },
+    [oppdaterBrevutkastTrigger]
+  )
+
+  useEffect(() => {
+    if (målform || brevtekst) {
+      handleUpdateBrevutkast(getValues())
+    }
+  }, [målform, brevtekst, getValues, handleUpdateBrevutkast])
 
   const handleForhåndsvisBrev = async () => {
     if (!brevutkast) return
@@ -140,8 +172,11 @@ export function SendBrevForm(props: SendBrevFormProps) {
                 {...brevtekstController.field}
               />
               <HStack gap="space-8">
-                <Button type="button" size="small" variant="tertiary" onClick={handleForhåndsvisBrev}>
+                <Button type="button" size="small" variant="secondary" onClick={handleForhåndsvisBrev}>
                   Forhåndsvis
+                </Button>
+                <Button type="button" size="small" variant="primary" onClick={() => setVisSendBrevModal(true)}>
+                  Send brev
                 </Button>
                 <Button
                   type="button"
@@ -152,9 +187,6 @@ export function SendBrevForm(props: SendBrevFormProps) {
                   onClick={() => setVisSlettUtkastModal(true)}
                 >
                   Slett brevutkast
-                </Button>
-                <Button type="button" size="small" variant="primary" onClick={() => setVisSendBrevModal(true)}>
-                  Send brev
                 </Button>
               </HStack>
             </>
@@ -172,9 +204,9 @@ export function SendBrevForm(props: SendBrevFormProps) {
         heading="Vil du slette brevutkastet?"
         bekreftButtonLabel="Slett brevutkast"
         bekreftButtonVariant="danger"
-        open={visSlettUtkastModal}
         loading={slettBrevutkast.isMutating}
-        onClose={() => setVisSlettUtkastModal(false)}
+        open={visSlettUtkastModal}
+        onClose={setVisSlettUtkastModal}
         onBekreft={async () => {
           await slettBrevutkast.trigger()
           setVisSlettUtkastModal(false)
@@ -185,9 +217,9 @@ export function SendBrevForm(props: SendBrevFormProps) {
       <BekreftelsesDialog
         heading="Vil du sende brevet?"
         bekreftButtonLabel="Send brev"
-        open={visSendBrevModal}
         loading={ferdigstillBrevutkast.isMutating}
-        onClose={() => setVisSendBrevModal(false)}
+        open={visSendBrevModal}
+        onClose={setVisSendBrevModal}
         onBekreft={handleSendBrev}
       >
         <Tekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Tekst>

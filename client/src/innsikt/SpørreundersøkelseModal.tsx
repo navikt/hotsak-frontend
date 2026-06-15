@@ -1,11 +1,11 @@
-import { Alert, Button, ButtonProps, Dialog, Stack, VStack } from '@navikt/ds-react'
+import { Alert, Button, type ButtonProps, Dialog, Stack, VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { besvarelseToSvar, IBesvarelse, Tilbakemelding } from './Besvarelse'
+import { besvarelseToSvar, IBesvarelse, type Tilbakemelding } from './Besvarelse'
+import classes from './SpørreundersøkelseModal.module.css'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
 import { SpørreundersøkelseStack } from './SpørreundersøkelseStack'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
-import classes from './SpørreundersøkelseModal.module.css'
 
 export interface SpørreundersøkelseModalProps {
   open?: boolean
@@ -25,7 +25,7 @@ export interface SpørreundersøkelseModalProps {
     spørreundersøkelse: ISpørreundersøkelse
   ): void | Promise<void>
   error?: string | undefined
-  onClose?(): void
+  onClose?(nextOpen: false): void
 }
 
 export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps) {
@@ -55,7 +55,7 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
   }
 
   return (
-    <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && (resetForm(), onClose?.())}>
+    <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && (resetForm(), onClose?.(nextOpen))}>
       <Dialog.Popup closeOnOutsideClick={false} width="700px">
         <Dialog.Header>
           <Dialog.Title>{spørreundersøkelse.tittel}</Dialog.Title>
@@ -97,7 +97,7 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
                   variant={avbrytKnappVariant}
                   onClick={() => {
                     resetForm()
-                    if (onClose) onClose()
+                    if (onClose) onClose(false)
                   }}
                   disabled={loadingOrSubmitting}
                 >

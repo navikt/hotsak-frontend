@@ -1,11 +1,11 @@
 import '@mdxeditor/editor/style.css'
 import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, Tooltip } from '@navikt/ds-react'
+import { useState } from 'react'
 
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { SpørreundersøkelseModal, type SpørreundersøkelseModalProps } from '../../innsikt/SpørreundersøkelseModal.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import { useToggle } from '../../state/useToggle.ts'
 import { type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
 import { useNotat } from './useNotat.ts'
 
@@ -15,7 +15,7 @@ export interface NotatActionsProps {
 
 export function NotatActions({ notat }: NotatActionsProps) {
   const { kanBehandleSak } = useSaksregler()
-  const [visFeilregistrerNotat, toggleVisFeilregistrerNotat] = useToggle()
+  const [visFeilregistrerNotat, setVisFeilregistrerNotat] = useState(false)
   const { feilregistrerNotat } = useNotat(notat.sakId, notat.id)
 
   // Skjuler interne notater actions for brukere uten tilgang
@@ -52,12 +52,12 @@ export function NotatActions({ notat }: NotatActionsProps) {
               (notat.type === NotatType.JOURNALFØRT ? (
                 <ActionMenu.Item
                   disabled={!notat.journalpostId || !notat.dokumentId}
-                  onClick={toggleVisFeilregistrerNotat}
+                  onClick={() => setVisFeilregistrerNotat(true)}
                 >
                   Feilregistrer
                 </ActionMenu.Item>
               ) : (
-                <ActionMenu.Item onClick={toggleVisFeilregistrerNotat}>Feilregistrer</ActionMenu.Item>
+                <ActionMenu.Item onClick={() => setVisFeilregistrerNotat(true)}>Feilregistrer</ActionMenu.Item>
               ))}
           </ActionMenu.Content>
         </ActionMenu>
@@ -69,7 +69,7 @@ export function NotatActions({ notat }: NotatActionsProps) {
         onBesvar={async (tilbakemelding) => {
           await feilregistrerNotat.trigger({ tilbakemelding: tilbakemelding?.svar })
         }}
-        onClose={toggleVisFeilregistrerNotat}
+        onClose={setVisFeilregistrerNotat}
       />
     </>
   )

@@ -1,14 +1,13 @@
 import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
-import { useEffect } from 'react'
 import { Målform } from '../../brev/brevTyper.ts'
 import { ForhåndsvisDokumentModal } from '../../felleskomponenter/dokument/ForhåndsvisDokumentModal.tsx'
 import { useDebouncedWatch } from '../../felleskomponenter/skjema/useDebouncedWatch.ts'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
-import { useDialogToggle, useToggle } from '../../state/useToggle.ts'
 import { NotatForm } from './NotatForm.tsx'
 import { type ForvaltningsnotatFormValues, type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
 import { SlettNotatUtkast } from './SlettNotatUtkast.tsx'
@@ -22,8 +21,8 @@ export interface ForvaltningsnotatFormProps {
 export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: ForvaltningsnotatFormProps) {
   const { sak } = useSak()
 
-  const forhåndsvisningModalProps = useDialogToggle()
-  const [visJournalførNotatModal, toggleVisJournalførNotatModal] = useToggle()
+  const [visForhåndsvisning, setVisForhåndsvisning] = useState(false)
+  const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
   const { oppdaterNotat, forhåndsvisNotat, slettNotatUtkast, ferdigstillNotat } = useNotat(sakId, gjeldendeUtkast.id)
 
   const form = useForm<ForvaltningsnotatFormValues>({
@@ -42,12 +41,13 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
     formState: { isSubmitting, errors },
   } = form
 
-  const klassifisering = useWatch({ control, name: 'klassifisering' })
+  const klassifisering = useWatch({ name: 'klassifisering', control })
+  const tittel = useDebouncedWatch({ name: 'tittel', control }, 1_000)
+  const tekst = useDebouncedWatch({ name: 'tekst', control }, 1_000)
 
-  const [tittel, tekst] = useDebouncedWatch({ name: ['tittel', 'tekst'], control }, 1000)
   const oppdaterNotatTrigger = oppdaterNotat.trigger
   useEffect(() => {
-    if (tittel || tekst || klassifisering) {
+    if (klassifisering || tittel || tekst) {
       oppdaterNotatTrigger({
         type: NotatType.JOURNALFØRT,
         tittel,
@@ -56,7 +56,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
         klassifisering,
       })
     }
-  }, [tittel, tekst, klassifisering, oppdaterNotatTrigger])
+  }, [klassifisering, tittel, tekst, oppdaterNotatTrigger])
 
   const resetForm = () =>
     reset({
@@ -74,7 +74,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
       målform: Målform.BOKMÅL,
       klassifisering: data.klassifisering,
     })
-    toggleVisJournalførNotatModal(false)
+    setVisJournalførNotatModal(false)
     resetForm()
   })
 
@@ -130,7 +130,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
                   klassifisering: values.klassifisering || null,
                 })
                 await forhåndsvisNotat.trigger()
-                forhåndsvisningModalProps.onOpenChange(true)
+                setVisForhåndsvisning(true)
               }}
             >
               Forhåndsvis dokument
@@ -145,7 +145,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
               size="small"
               onClick={() => {
                 if (klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER) {
-                  toggleVisJournalførNotatModal()
+                  setVisJournalførNotatModal(true)
                 } else {
                   handleSubmit()
                 }
@@ -157,7 +157,11 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
           </div>
         </VStack>
 
-        <ForhåndsvisDokumentModal data={forhåndsvisNotat.data} {...forhåndsvisningModalProps} />
+        <ForhåndsvisDokumentModal
+          data={forhåndsvisNotat.data}
+          open={visForhåndsvisning}
+          onOpenChange={setVisForhåndsvisning}
+        />
 
         <BekreftelsesDialog
           heading="Er du sikker på at du vil journalføre notatet?"
@@ -168,7 +172,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
           width="660px"
           open={visJournalførNotatModal}
           loading={isSubmitting}
-          onClose={toggleVisJournalførNotatModal}
+          onClose={setVisJournalførNotatModal}
           onBekreft={handleSubmit}
         >
           <Controller

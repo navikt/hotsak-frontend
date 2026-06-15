@@ -25,7 +25,6 @@ export function useAngreVedtak(): AngreActions {
   const { execute, state } = useActionState()
   const { showSuccessToast } = useToast()
   const navigate = useNavigate()
-  // const { brevutkast } = { brevutkast: { mutate: () => {} } } // fixme
 
   return {
     async angreVedtak({ årsak }: { årsak: string }) {
@@ -38,7 +37,6 @@ export function useAngreVedtak(): AngreActions {
         )
         await mutateBehandling()
         await mutateSak(sakId)
-        // fixme -> await brevutkast.mutate(undefined, { revalidate: true })
         await mutateBrevForSak(sakId)
         showSuccessToast('Vedtaket er angret og ny oppgave er aktiv')
         navigate(`/oppgave/${response.nyOppgaveId}`)

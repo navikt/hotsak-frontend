@@ -12,7 +12,6 @@ import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
-import { useMiljø } from '../../utils/useMiljø.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
@@ -60,7 +59,7 @@ function SakV2Content({
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
-  const { erProd } = useMiljø()
+  const erPilot = useErPilot('hotsakEksperimenter')
 
   const { panelState, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } = useSakContext()
   const { panels } = panelState
@@ -115,7 +114,7 @@ function SakV2Content({
           orientation="horizontal"
           defaultLayout={defaultLayout}
           onLayoutChange={onLayoutChanged}
-          className={!erProd ? classes.eksperimentPanelGroup : undefined}
+          className={!erPilot ? classes.eksperimentPanelGroup : undefined}
         >
           {behandlingsPanel.visible && (
             <Panel
@@ -153,12 +152,12 @@ function SakV2Content({
               <KontaktinformasjonPanel sak={sak} behovsmelding={behovsmelding} />
             </AvrundetPanel>
           </ResizablePanel>
-          <ResizablePanel panelId="sidebarpanel" panel={sidePanel} visible={sidePanel.visible && erProd}>
+          <ResizablePanel panelId="sidebarpanel" panel={sidePanel} visible={sidePanel.visible && !erPilot}>
             <AvrundetPanel>
               <Sidebar oppgave={oppgave} />
             </AvrundetPanel>
           </ResizablePanel>
-          {!erProd && (
+          {erPilot && (
             <ResizablePanel
               panelId="sidebarpanel"
               panel={sidePanel}
@@ -185,7 +184,7 @@ function SakV2Content({
             </ResizablePanel>
           )}
         </Group>
-        {!erProd && <VertikalIkonBar />}
+        {erPilot && <VertikalIkonBar />}
       </Box>
       <StickyBunnlinje oppgave={oppgave} sak={sak} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />

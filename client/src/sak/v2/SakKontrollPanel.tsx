@@ -6,7 +6,7 @@ import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import { useSakId } from '../../saksbilde/useSak'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import globalStyles from '../../styles/shared.module.css'
-import { useMiljø } from '../../utils/useMiljø'
+import { useErPilot } from '../../tilgang/useTilgang'
 import { useNotater } from '../notat/useNotater'
 import { GjenståendeOverfør } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
@@ -29,7 +29,7 @@ export const SakKontrollPanel = () => {
   const { gjeldendeBehandling } = useBehandling()
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
   const { erBestilling } = useSaksregler()
-  const { erProd } = useMiljø()
+  const erPilot = useErPilot('hotsakEksperimenter')
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
 
@@ -57,7 +57,7 @@ export const SakKontrollPanel = () => {
           <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
             Kontaktinformasjon
           </ToggleKnapp>
-          {erProd && (
+          {!erPilot && (
             <ToggleKnapp selected={sidePanel.visible} onToggle={() => toggleSidePanel()}>
               Utlån, notater og historikk
             </ToggleKnapp>

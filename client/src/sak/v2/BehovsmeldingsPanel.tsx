@@ -15,6 +15,7 @@ import { VilkårV2 } from './behovsmelding/VilkårV2.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett.tsx'
+import { Varsler } from '../../saksbilde/hjelpemidler/Varsel.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('behovsmeldingspanel')
@@ -43,6 +44,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
 
         <VStack gap="space-16" paddingInline="space-4">
           {behovsmelding.levering.hast && <Hast hast={behovsmelding.levering.hast} />}
+          {behovsmelding.saksbehandlingvarsel.length > 0 && <Varsler varsler={behovsmelding.saksbehandlingvarsel} />}
           <section className={classes.panel}>
             <FunksjonsbeskrivelseV2 funksjonsbeskrivelse={funksjonsbeskrivelse} />
           </section>

@@ -9,7 +9,7 @@ export interface Endringsstatus {
 }
 
 export function useLagreBrev(onLagreBrev?: (state: BreveditorState) => Promise<void>) {
-  const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
+  const debounceLagring = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [endringsstatus, setEndringsstatus] = useState<Endringsstatus>({
     lagrerNå: false,
     erEndret: false,

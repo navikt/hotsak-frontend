@@ -5,13 +5,13 @@ export function useLogVinduStørrelse() {
   const { logVinduStørrelse, isReady } = useUmami()
 
   useEffect(() => {
-    // Logger størrelse på oppstart hvis umami er klar 
+    // Logger størrelse på oppstart hvis umami er klar
     if (!isReady) return
     logVinduStørrelse({
       tekst: 'Størrelse ved oppstart',
     })
 
-    let timeoutId: NodeJS.Timeout
+    let timeoutId: ReturnType<typeof setTimeout>
 
     const handleResize = () => {
       clearTimeout(timeoutId)

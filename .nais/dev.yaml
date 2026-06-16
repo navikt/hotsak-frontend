@@ -7,7 +7,7 @@ metadata:
   name: hotsak-frontend
   namespace: teamdigihot
   annotations:
-    snorlax.nais.io/enabled: "true"
+    snorlax.nais.io/enabled: 'true'
 spec:
   image: {{image}}
   port: 3000
@@ -50,9 +50,9 @@ spec:
       allowAllUsers: false
       claims:
         extra:
-          - "NAVident"
+          - 'NAVident'
         groups:
-          - id: "b9340050-ccb5-4de7-9d96-0fb2d9fb38eb"
+          - id: 'b9340050-ccb5-4de7-9d96-0fb2d9fb38eb'
     sidecar:
       enabled: true
       autoLogin: false
@@ -67,7 +67,7 @@ spec:
     - secret: hm-saksbehandling
   env:
     - name: PORT
-      value: "3000"
+      value: '3000'
     - name: HOTSAK_API_URL
       value: http://hm-saksbehandling.teamdigihot.svc.cluster.local
     - name: HOTSAK_API_SCOPE
@@ -79,11 +79,11 @@ spec:
     - name: BRILLE_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: USE_MSW
-      value: "false"
+      value: 'false'
     - name: USE_MSW_GRUNNDATA
-      value: "false"
+      value: 'false'
     - name: USE_MSW_ALTERNATIVPRODUKTER
-      value: "false"
+      value: 'false'
     - name: GIT_COMMIT
       value: {{commit}}
     - name: FARO_URL
@@ -93,10 +93,12 @@ spec:
     - name: UMAMI_WEBSITE_ID
       value: 6f5bb9df-1dfe-4d77-aa40-9cd5d88c7b24
     - name: UMAMI_ENABLED
-      value: "true"
+      value: 'true'
     - name: GOSYS_OPPGAVEBEHANDLING_URL
       value: https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling
     - name: MODIA_URL
       value: https://modiapersonoversikt.intern.dev.nav.no
     - name: MODIACONTEXTHOLDER_API_URL
       value: http://modiacontextholder.personoversikt.svc.cluster.local
+    - name: SPORREUNDERSOKELSE_URL
+      value: https://feedback.skyra.no/s1/zivvC9ZPUrxEEekc14RLNA

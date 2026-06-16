@@ -7,7 +7,7 @@ metadata:
   name: hotsak-frontend-labs
   namespace: teamdigihot
 spec:
-  image: {{image }}
+  image: {{image}}
   port: 3000
   ingresses:
     - https://hotsak.ekstern.dev.nav.no
@@ -41,7 +41,7 @@ spec:
     - secret: hm-saksbehandling
   env:
     - name: PORT
-      value: "3000"
+      value: '3000'
     - name: HOTSAK_API_URL
       value: http://hm-mocks
     - name: HOTSAK_API_SCOPE
@@ -53,11 +53,11 @@ spec:
     - name: BRILLE_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: USE_MSW
-      value: "true"
+      value: 'true'
     - name: USE_MSW_GRUNNDATA
-      value: "true"
+      value: 'true'
     - name: USE_MSW_ALTERNATIVPRODUKTER
-      value: "true"
+      value: 'true'
     - name: GIT_COMMIT
       value: {{commit}}
     - name: FARO_URL
@@ -65,10 +65,12 @@ spec:
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.nav.no/imageproxy/400d
     - name: UMAMI_WEBSITE_ID
-      value: ""
+      value: ''
     - name: UMAMI_ENABLED
-      value: "false"
+      value: 'false'
     - name: GOSYS_OPPGAVEBEHANDLING_URL
       value: https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling
     - name: MODIA_URL
       value: https://modiapersonoversikt.intern.dev.nav.no
+    - name: SPORREUNDERSOKELSE_URL
+      value: https://feedback.skyra.no/s1/zivvC9ZPUrxEEekc14RLNA

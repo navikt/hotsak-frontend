@@ -12,10 +12,10 @@ export function not<T>(predicate: Predicate<T>): Predicate<T> {
   return (item: T) => !predicate(item)
 }
 
-export function truePredicate(): boolean {
-  return true
+export function truePredicate<T>(): Predicate<T> {
+  return () => true
 }
 
-export function falsePredicate(): boolean {
-  return true
+export function falsePredicate<T>(): Predicate<T> {
+  return () => false
 }

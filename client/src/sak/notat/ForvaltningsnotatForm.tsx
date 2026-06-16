@@ -150,7 +150,7 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
                   handleSubmit()
                 }
               }}
-              loading={isSubmitting}
+              loading={!visJournalførNotatModal && isSubmitting}
             >
               Journalfør notat
             </Button>

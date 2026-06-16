@@ -11,12 +11,12 @@ import { usePersonContext } from '../personoversikt/PersonContext'
 import { useUmami } from '../sporing/useUmami.ts'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
+import { useIsLargeScreen } from '../utils/useViewportSize.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
 import { useDarkMode } from './useDarkMode.ts'
 import { useModia } from './useModia.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
@@ -27,7 +27,7 @@ export function Toppmeny() {
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
-  const { erIkkeProd } = useMiljø()
+  const isLargeScreen = useIsLargeScreen(1280)
   useGlobaleHotkeys({ visHurtigtaster: hurtigtaster.åpne })
 
   const handleSearch = (value: string) => {
@@ -52,7 +52,20 @@ export function Toppmeny() {
             <ToppmenyLinkButton to="/oppgaver/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
             <ToppmenyLinkButton to="/oppgaver/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
           </HStack>
-          <Søk onSearch={handleSearch} />
+          <HStack wrap={false} gap="space-4">
+            <Søk onSearch={handleSearch} />
+            {isLargeScreen && (
+              <InternalHeader.Button
+                as="a"
+                href={window.appSettings.SPORREUNDERSOKELSE_URL}
+                target="_blank"
+                rel="noreferrer"
+                className={classes.feedbackButton}
+              >
+                Gi tilbakemelding
+              </InternalHeader.Button>
+            )}
+          </HStack>
         </HStack>
         <ActionMenu>
           <ActionMenu.Trigger>
@@ -101,7 +114,7 @@ export function Toppmeny() {
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
             </ActionMenu.Group>
-            {erIkkeProd && (
+            {!isLargeScreen && (
               <ActionMenu.Group label="Tilbakemelding">
                 <ActionMenu.Item
                   as="a"

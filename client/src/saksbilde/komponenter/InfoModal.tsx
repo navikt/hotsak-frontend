@@ -4,22 +4,24 @@ import { useRef } from 'react'
 export interface InfoModalProps extends DialogProps {
   heading?: string
   width?: DialogPopupProps['width']
-  onClose?(): void | Promise<void>
+  onClose?(nextOpen: false): void | Promise<void>
 }
 
 export function InfoModal(props: InfoModalProps) {
   const { heading, width = '500px', onClose, onOpenChange, children, ...rest } = props
   const okKnappRef = useRef<HTMLButtonElement>(null)
 
+  const handleOpenChange: DialogProps['onOpenChange'] = (nextOpen, event) => {
+    if (onOpenChange) {
+      onOpenChange(nextOpen, event)
+    } else if (!nextOpen && onClose) {
+      onClose(nextOpen)
+    }
+  }
+
   return (
     <Dialog
-      onOpenChange={(nextOpen, event) => {
-        if (onOpenChange) {
-          onOpenChange(nextOpen, event)
-        } else if (!nextOpen && onClose) {
-          onClose()
-        }
-      }}
+      onOpenChange={handleOpenChange}
       onOpenChangeComplete={(open) => {
         if (open) {
           okKnappRef.current?.focus({ focusVisible: true } as FocusOptions & { focusVisible?: boolean })
@@ -35,7 +37,12 @@ export function InfoModal(props: InfoModalProps) {
         )}
         <Dialog.Body>{children}</Dialog.Body>
         <Dialog.Footer>
-          <Button ref={okKnappRef} variant="primary" size="small" onClick={onClose}>
+          <Button
+            ref={okKnappRef}
+            variant="primary"
+            size="small"
+            onClick={(event) => handleOpenChange(false, event.nativeEvent)}
+          >
             Ok
           </Button>
         </Dialog.Footer>

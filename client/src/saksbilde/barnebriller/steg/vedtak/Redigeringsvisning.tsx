@@ -1,7 +1,8 @@
 import { Button, Detail, HStack, VStack } from '@navikt/ds-react'
+import { useEffect } from 'react'
 import { useController, useForm } from 'react-hook-form'
-
 import useSWRMutation from 'swr/mutation'
+
 import { Brevmal, type Brev } from '../../../../brev/brevTyper.ts'
 import { useMutateBrevPdf } from '../../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../../brev/useBrevActions.ts'
@@ -65,6 +66,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const {
     getValues,
     formState: { isSubmitting },
+    reset,
     handleSubmit,
     control,
   } = useForm({
@@ -72,6 +74,15 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
       brevtekst: vedtaksbrev?.data?.brevtekst ?? '',
     },
   })
+
+  useEffect(() => {
+    reset(
+      {
+        brevtekst: vedtaksbrev?.data?.brevtekst ?? '',
+      },
+      { keepDirtyValues: true }
+    )
+  }, [vedtaksbrev, reset])
 
   const brevtekstController = useController({
     name: 'brevtekst',

@@ -15,13 +15,13 @@ import { type Notat, NotatKlassifisering, NotatType } from './notatTyper.ts'
 
 export interface NotatCardProps {
   notat: Notat
-  mutate(): void
 }
 
-export function NotatCard({ notat, mutate: mutateNotater }: NotatCardProps) {
+export function NotatCard({ notat }: NotatCardProps) {
   const [visFulltNotat, setVisFulltNotat] = useState(false)
   const textRef = useRef<HTMLDivElement>(null)
   const isClamped = useIsClamped(notat.tekst, textRef)
+
   return (
     <Box background="neutral-soft" padding="space-12" borderRadius="12" data-testid="notat-card">
       <VStack gap="space-12">
@@ -33,7 +33,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotatCardProps) {
             </Tag>
           )}
           <Spacer />
-          {notat.type !== NotatType.KOMMENTAR && <NotatActions notat={notat} mutate={mutateNotater} />}
+          {notat.type !== NotatType.KOMMENTAR && <NotatActions notat={notat} />}
         </HStack>
         {notat.tittel && (
           <Heading level="3" size="xsmall" className={classes.heading}>

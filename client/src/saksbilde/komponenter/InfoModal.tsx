@@ -1,41 +1,52 @@
-import { Button, Heading, Modal, ModalProps } from '@navikt/ds-react'
-import { ReactNode, useRef } from 'react'
+import { Button, Dialog, DialogPopupProps, type DialogProps } from '@navikt/ds-react'
+import { useRef } from 'react'
 
-export interface InfoModalProps {
+export interface InfoModalProps extends DialogProps {
   heading?: string
-  loading?: boolean
-  open: boolean
-  width?: ModalProps['width']
-  children: ReactNode
-  onClose(): void | Promise<void>
+  width?: DialogPopupProps['width']
+  onClose?(nextOpen: false): void | Promise<void>
 }
 
 export function InfoModal(props: InfoModalProps) {
-  const { heading, open, width = '500px', children, onClose } = props
-  const ref = useRef<HTMLDialogElement>(null)
+  const { heading, width = '500px', onClose, onOpenChange, children, ...rest } = props
+  const okKnappRef = useRef<HTMLButtonElement>(null)
+
+  const handleOpenChange: DialogProps['onOpenChange'] = (nextOpen, event) => {
+    if (onOpenChange) {
+      onOpenChange(nextOpen, event)
+    } else if (!nextOpen && onClose) {
+      onClose(nextOpen)
+    }
+  }
+
   return (
-    <Modal
-      ref={ref}
-      closeOnBackdropClick={true}
-      width={width}
-      open={open}
-      onClose={onClose}
-      size="small"
-      aria-label={heading || ''}
+    <Dialog
+      onOpenChange={handleOpenChange}
+      onOpenChangeComplete={(open) => {
+        if (open) {
+          okKnappRef.current?.focus({ focusVisible: true } as FocusOptions & { focusVisible?: boolean })
+        }
+      }}
+      {...rest}
     >
-      {heading && (
-        <Modal.Header>
-          <Heading level="1" size="small">
-            {heading}
-          </Heading>
-        </Modal.Header>
-      )}
-      {children && <Modal.Body>{children}</Modal.Body>}
-      <Modal.Footer>
-        <Button variant="primary" size="small" onClick={onClose}>
-          Ok
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      <Dialog.Popup initialFocusTo={okKnappRef} closeOnOutsideClick={true} width={width}>
+        {heading && (
+          <Dialog.Header>
+            <Dialog.Title>{heading}</Dialog.Title>
+          </Dialog.Header>
+        )}
+        <Dialog.Body>{children}</Dialog.Body>
+        <Dialog.Footer>
+          <Button
+            ref={okKnappRef}
+            variant="primary"
+            size="small"
+            onClick={(event) => handleOpenChange(false, event.nativeEvent)}
+          >
+            Ok
+          </Button>
+        </Dialog.Footer>
+      </Dialog.Popup>
+    </Dialog>
   )
 }

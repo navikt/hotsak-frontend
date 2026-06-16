@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
-import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { InfoCard } from '@navikt/ds-react'
+
+import { useBrevForSak } from '../../../brev/useBrev'
 import { Tekst } from '../../../felleskomponenter/typografi'
-import { Sak } from '../../../types/types.internal'
 import { usePerson } from '../../../personoversikt/usePerson'
+import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
+import { type Sak } from '../../../types/types.internal'
 import { useSakContext } from '../SakV2ContextType'
 
 export interface HenleggModalProps {
@@ -17,7 +18,7 @@ export interface HenleggModalProps {
 export function HenleggModal({ open, onClose, sak }: HenleggModalProps) {
   const [loading, setLoading] = useState(false)
   const { henleggFormRef } = useSakContext()
-  const { harBrevISak } = useBrevMetadata()
+  const { harBrev } = useBrevForSak(sak.sakId)
   const { personInfo } = usePerson(sak.bruker.fnr)
   const vergemål = personInfo?.vergemål || []
 
@@ -37,7 +38,7 @@ export function HenleggModal({ open, onClose, sak }: HenleggModalProps) {
       }}
       onClose={onClose}
     >
-      {harBrevISak && (
+      {harBrev && (
         <InfoCard data-color="info" size="small">
           <InfoCard.Header>
             <InfoCard.Title>

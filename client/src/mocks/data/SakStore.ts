@@ -1,12 +1,22 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
 
+import { isBrevmalBarnebrillerVedtak } from '../../brev/brevSelectors.ts'
+import {
+  Brev,
+  Brevmal,
+  Brevstatus,
+  Målform,
+  type OppdaterBrevutkastRequest,
+  type OpprettBrevutkastRequest,
+} from '../../brev/brevTyper.ts'
 import { type JournalførJournalpostRequest } from '../../journalføring/journalføringTypes.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
-  Behandling,
+  type Behandling,
   Gjenstående,
+  GjenståendeOverfør,
   Henleggelsesårsak,
-  LagreBehandlingRequest,
+  type LagreBehandlingRequest,
   UtfallLåst,
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
@@ -14,9 +24,7 @@ import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import {
   type Barnebrillesak,
   Brevkode,
-  type BrevTekst,
   Kjønn,
-  MålformType,
   type OppdaterVilkårRequest,
   OppgaveStatusType,
   type Sak,
@@ -59,7 +67,6 @@ import { lagTilfeldigNavn } from './navn.ts'
 import { PersonStore } from './PersonStore'
 import { Saksbehandlere } from './Saksbehandlere.ts'
 
-type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
   id: string
 }
@@ -71,7 +78,7 @@ interface LagretBehandling extends Behandling {
 type InsertSaksdokument = Omit<LagretSaksdokument, 'id'>
 
 export class SakStore extends Dexie {
-  private readonly brevtekst!: Table<LagretBrevtekst, string>
+  private readonly brev!: Table<Brev, number, Omit<Brev, 'brevId'>>
   private readonly hendelser!: Table<LagretSakshendelse, number, InsertSakshendelse>
   private readonly saker!: Table<LagretSak, string, InsertSak>
   private readonly saksdokumenter!: Table<LagretSaksdokument, number, InsertSaksdokument>
@@ -87,11 +94,11 @@ export class SakStore extends Dexie {
   ) {
     super('SakStore')
     this.version(1).stores({
-      brevtekst: 'sakId',
+      behandlinger: '++behandlingId,sakId',
+      brev: '++brevId,sakId',
       hendelser: '++id,sakId',
       saker: 'sakId,bruker.fnr',
       saksdokumenter: '++id,sakId',
-      behandlinger: '++behandlingId,sakId',
       vilkår: '++id,vilkårsvurderingId',
       vilkårsgrunnlag: 'sakId',
       vilkårsvurderinger: 'id,sakId',
@@ -323,6 +330,24 @@ export class SakStore extends Dexie {
   }
 
   async oppdaterSteg(sakId: string, steg: StegType) {
+    if (steg === StegType.FATTE_VEDTAK) {
+      const brev = await this.hentBrevForSak(sakId)
+      const vedtaksbrev = brev.filter(isBrevmalBarnebrillerVedtak)
+
+      // todo -> bruk riktig brevmal for vedtaksbrev for barnebriller
+
+      if (!vedtaksbrev.length) {
+        await this.opprettBrevutkast(sakId, {
+          brevutkast: {
+            brevmal: Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE,
+            brevmalVersjon: '0',
+            målform: Målform.BOKMÅL,
+            data: { brevtekst: '' },
+          },
+        })
+      }
+    }
+
     return this.oppdaterSak<LagretBarnebrillesak>(sakId, {
       steg,
     })
@@ -440,8 +465,8 @@ export class SakStore extends Dexie {
               (sak as Barnebrillesak)?.vilkårsvurdering?.resultat === 'JA'
                 ? VedtakStatusType.INNVILGET
                 : VedtakStatusType.AVSLÅTT,
-            saksbehandlerId: godkjenner.id, // fixme i virkeligheten er dette første saksbehandler, ikke godkjenner
-            saksbehandlerNavn: godkjenner.navn, // fixme i virkeligheten er dette første saksbehandler, ikke godkjenner
+            saksbehandlerId: godkjenner.id, // fixme -> i virkeligheten er dette første saksbehandler, ikke godkjenner
+            saksbehandlerNavn: godkjenner.navn, // fixme -> i virkeligheten er dette første saksbehandler, ikke godkjenner
             søknadId: '',
           },
           totrinnskontroll,
@@ -490,20 +515,183 @@ export class SakStore extends Dexie {
     })
   }
 
-  async lagreBrevtekst(sakId: string, brevtype: string, data: Record<string, unknown>) {
-    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, sakId }, sakId)
+  async opprettBrevutkast(sakId: string, request: OpprettBrevutkastRequest): Promise<Brev> {
+    const { data = {}, ...rest } = request.brevutkast
+
+    const brevId = await this.brev.add({
+      sakId,
+      behandlingId: request.behandlingId,
+      opprettet: nåIso(),
+      opprettetAv: Saksbehandlere.innlogget().id,
+      brevstatus: Brevstatus.UTKAST,
+      distribusjon: [],
+      data,
+      ...rest,
+    })
+
+    const brev = await this.hentBrev(brevId)
+    if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
+      return brev
+    }
+
+    const behandlingId = Number(request.behandlingId)
+    if (behandlingId) {
+      const behandling = await this.behandlinger.get(behandlingId)
+      if (behandling) {
+        await this.behandlinger.update(behandlingId, {
+          ...behandling,
+          gjenstående: [Gjenstående.BREV_IKKE_FERDIGSTILT],
+          utfallLåst: [UtfallLåst.HAR_VEDTAKSBREV],
+          operasjoner: {
+            ...behandling.operasjoner,
+            overfør: {
+              gjenstående: [...(behandling.operasjoner.overfør.gjenstående ?? []), GjenståendeOverfør.BREV_MÅ_SLETTES],
+            },
+          },
+        })
+      }
+    }
+
+    return brev
   }
 
-  async lagreBrevstatus(sakId: string, { ferdigstilt }: { ferdigstilt: boolean }) {
-    this.brevtekst.update(sakId, { ferdigstilt })
+  async oppdaterBrevutkast(brevId: ID, request: OppdaterBrevutkastRequest): Promise<Brev> {
+    brevId = Number(brevId)
+    const { data = {}, ...rest } = request.brevutkast
+
+    await this.brev.update(brevId, {
+      endret: nåIso(),
+      endretAv: Saksbehandlere.innlogget().id,
+      data,
+      ...rest,
+    })
+
+    return this.hentBrev(brevId)
   }
 
-  async fjernBrevtekst(sakId: string) {
-    this.brevtekst.delete(sakId)
+  async slettBrevutkast(brevId: ID): Promise<void> {
+    brevId = Number(brevId)
+    const brev = await this.hentBrev(brevId)
+    this.brev.delete(brevId)
+    if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
+      return
+    }
+
+    const behandlingId = Number(brev.behandlingId)
+    if (behandlingId) {
+      const behandling = await this.behandlinger.get(behandlingId)
+      if (behandling) {
+        const gjenståendeOverfør = (behandling.operasjoner.overfør.gjenstående || [])
+          .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES)
+          .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES)
+
+        const angringLåst = behandling.operasjoner.angreVedtak.angringLåst || []
+        console.log('Gjenstende ved slett av brev ', gjenståendeOverfør)
+
+        if (behandling.utfall?.utfall === VedtaksResultat.INNVILGET) {
+          console.log('Fjerner brevutkast når utfall innvilget')
+          await this.behandlinger.update(behandling.behandlingId, {
+            ...behandling,
+            gjenstående: [],
+            utfallLåst: [],
+            operasjoner: { overfør: { gjenstående: gjenståendeOverfør }, angreVedtak: { angringLåst } },
+          })
+        } else {
+          await this.behandlinger.update(behandling.behandlingId, {
+            ...behandling,
+            gjenstående: [Gjenstående.BREV_MANGLER],
+            utfallLåst: [],
+            operasjoner: { overfør: { gjenstående: gjenståendeOverfør }, angreVedtak: { angringLåst } },
+          })
+        }
+      }
+    }
   }
 
-  async hentBrevtekst(sakId: string) {
-    return this.brevtekst.where('sakId').equals(sakId).first()
+  async ferdigstillBrevutkast(brevId: ID): Promise<Brev> {
+    brevId = Number(brevId)
+
+    await this.brev.update(brevId, {
+      ferdigstilt: nåIso(),
+      ferdigstiltAv: Saksbehandlere.innlogget().id,
+      brevstatus: Brevstatus.FERDIGSTILT,
+    })
+
+    const brev = await this.hentBrev(brevId)
+    if (brev.brevmal === Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER) {
+      setTimeout(async () => {
+        await this.lagreSaksdokument(brev.sakId, 'Briller til barn: Nav etterspør opplysninger')
+      }, 3000)
+      return brev
+    }
+    if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
+      return brev
+    }
+
+    const behandlingId = Number(brev.behandlingId)
+    if (behandlingId) {
+      const behandling = await this.behandlinger.get(behandlingId)
+      if (behandling) {
+        await this.behandlinger.update(behandlingId, {
+          ...behandling,
+          gjenstående: [],
+          operasjoner: {
+            overfør: {
+              gjenstående: [
+                ...(behandling.operasjoner.overfør.gjenstående.filter(
+                  (gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES
+                ) ?? []),
+                GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES,
+              ],
+            },
+            angreVedtak: {
+              angringLåst: [],
+            },
+          },
+        })
+      }
+    }
+
+    return brev
+  }
+
+  async redigerBrevutkast(brevId: ID): Promise<Brev> {
+    brevId = Number(brevId)
+
+    await this.brev.update(brevId, {
+      endret: nåIso(),
+      endretAv: Saksbehandlere.innlogget().id,
+      ferdigstilt: undefined,
+      ferdigstiltAv: undefined,
+      brevstatus: Brevstatus.UTKAST,
+    })
+
+    const brev = await this.hentBrev(brevId)
+    if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
+      return brev
+    }
+
+    const behandlingId = Number(brev.behandlingId)
+    if (behandlingId) {
+      await this.behandlinger.update(behandlingId, {
+        gjenstående: [Gjenstående.BREV_IKKE_FERDIGSTILT],
+      })
+    }
+
+    return brev
+  }
+
+  async hentBrev(brevId: ID): Promise<Brev> {
+    brevId = Number(brevId)
+    const brev = await this.brev.get(brevId)
+    if (!brev) {
+      throw new Error(`Fant ikke brev med brevId: ${brevId}`)
+    }
+    return brev
+  }
+
+  async hentBrevForSak(sakId: string): Promise<Brev[]> {
+    return this.brev.where('sakId').equals(sakId).toArray()
   }
 
   async hentSaksdokumenter(sakId: string) {
@@ -574,9 +762,9 @@ export class SakStore extends Dexie {
         område: [],
         mottattTidspunkt: sak.opprettet,
         gjelder: sak.søknadGjelder,
-        behandletAv: Saksbehandlere.default.navn, // fixme bruk behandling
-        behandlingsutfall: sak.vedtak?.vedtaksstatus, // fixme bruk behandling
-        behandlingsutfallTidspunkt: sak.vedtak?.vedtaksdato, // fixme bruk behandling
+        behandletAv: Saksbehandlere.default.navn, // fixme -> bruk behandling
+        behandlingsutfall: sak.vedtak?.vedtaksstatus, // fixme -> bruk behandling
+        behandlingsutfallTidspunkt: sak.vedtak?.vedtaksdato, // fixme -> bruk behandling
         fagsaksystem: 'HOTSAK',
       })),
       barnebrillekrav: [],
@@ -593,11 +781,11 @@ export class SakStore extends Dexie {
 
   private beregnSamletVurdering(vilkår: InsertVilkår[]) {
     const samletVurdering = vilkår
-      .map((v) => v.vilkårOppfylt)
+      .map((it) => it.vilkårOppfylt)
       .reduce((samletStatus, vilkårOppfylt) => {
         if (samletStatus === VilkårsResultat.KANSKJE || samletStatus === VilkårsResultat.NEI) {
           return samletStatus
-        } else if (vilkårOppfylt === VilkårsResultat.NEI || vilkårOppfylt === VilkårsResultat.KANSKJE) {
+        } else if (vilkårOppfylt === VilkårsResultat.KANSKJE || vilkårOppfylt === VilkårsResultat.NEI) {
           return vilkårOppfylt
         } else if (vilkårOppfylt === VilkårsResultat.OPPLYSNINGER_MANGLER) {
           return VilkårsResultat.NEI
@@ -607,7 +795,7 @@ export class SakStore extends Dexie {
       }, VilkårsResultat.JA)
 
     if (!samletVurdering) {
-      throw Error('Feil med utledning av samlet status')
+      throw Error('Feil med utledning av samlet vurdering')
     }
 
     return samletVurdering

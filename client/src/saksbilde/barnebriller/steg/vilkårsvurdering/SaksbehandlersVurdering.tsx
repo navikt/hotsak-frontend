@@ -7,7 +7,7 @@ import { StepType, Vilkår } from '../../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurderingForm } from './SaksbehandlersVurderingForm'
 import { SaksbehandlersVurderingLesevisning } from './SaksbehandlersVurderingLesevisning'
-import { grunnlagMetadata, metadataFor } from './vilkårMetada'
+import { grunnlagMetadata, metadataFor } from './vilkårMetadata'
 
 export function SaksbehandlersVurdering({
   sakId,
@@ -53,7 +53,7 @@ export function SaksbehandlersVurdering({
               const verdi = transform ? transform(grunnlag[grunnlagKey]) : grunnlag[grunnlagKey]
 
               return (
-                <div>
+                <div key={grunnlagKey}>
                   <Label as="p" size="small">
                     {metadata?.etikett}
                   </Label>

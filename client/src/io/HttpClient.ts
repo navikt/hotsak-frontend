@@ -1,11 +1,18 @@
+import { useEffect, useMemo } from 'react'
 import { toWeakETag } from './etag.ts'
 import { HttpError } from './HttpError.ts'
 import { contentTypeIsJson, contentTypeIsPdf, contentTypeIsText } from './response.ts'
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
+export const validHttpAcceptValues = ['application/json', 'application/pdf'] as const
+
+export type HttpAccept = (typeof validHttpAcceptValues)[number]
+
+export type HttpAcceptKey = [string, HttpAccept]
+
 export interface RequestOptions {
-  accept?: 'application/json' | 'application/pdf'
+  accept?: HttpAccept
   versjon?: string | number
 }
 
@@ -46,7 +53,7 @@ async function request<ResponseBody = unknown>(
 }
 
 export interface HttpClient {
-  get<ResponseBody = unknown>(url: string, options?: RequestOptions): Promise<ResponseBody>
+  get<ResponseBody = unknown>(urlOrKey: string | HttpAcceptKey, options?: RequestOptions): Promise<ResponseBody>
   post<RequestBody = unknown, ResponseBody = unknown>(
     url: string,
     body?: RequestBody,
@@ -61,8 +68,17 @@ export interface HttpClient {
 }
 
 export const http: HttpClient = {
-  get<ResponseBody = unknown>(url: string, options?: RequestOptions): Promise<ResponseBody> {
-    return request('GET', url, undefined, options)
+  get<ResponseBody = unknown>(urlOrKey: string | HttpAcceptKey, options?: RequestOptions): Promise<ResponseBody> {
+    if (typeof urlOrKey === 'string') {
+      return request('GET', urlOrKey, undefined, options)
+    }
+    if (Array.isArray(urlOrKey) && urlOrKey.length > 1) {
+      const [url, accept] = urlOrKey
+      if (validHttpAcceptValues.includes(accept)) {
+        return request('GET', url, undefined, { ...options, accept })
+      }
+    }
+    throw new Error(`Invalid key: '${JSON.stringify(urlOrKey)}'`)
   },
   post<RequestBody = unknown, ResponseBody = unknown>(
     url: string,
@@ -116,4 +132,16 @@ function populateQueryParameters(destination: URLSearchParams, queryParameters: 
       }
     }
   })
+}
+
+export function useObjectUrl(data?: Blob) {
+  const url = useMemo(() => {
+    return data ? URL.createObjectURL(data) : undefined
+  }, [data])
+  useEffect(() => {
+    return () => {
+      if (url) URL.revokeObjectURL(url)
+    }
+  }, [url])
+  return url
 }

@@ -3,7 +3,7 @@ import { memo } from 'react'
 
 import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
-import { useOppgave } from '../../../oppgave/useOppgave.ts'
+import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../../oppgave/useOppgaveregler.ts'
 import { type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../../types/types.internal.ts'
@@ -11,19 +11,19 @@ import { useClosePanel } from '../paneler/usePanelHooks.ts'
 import { BehandlingFerdigstilt } from './BehandlingFerdigstilt.tsx'
 import { BehandlingLesevisning } from './BehandlingLesevisning.tsx'
 import classes from './BehandlingPanel.module.css'
+import { BehandlingPanelHeader } from './BehandlingPanelHeader.tsx'
 import { BehandlingRedigering } from './BehandlingRedigering.tsx'
 import { isBehandlingFerdigstilt } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
-import { BehandlingPanelHeader } from './BehandlingPanelHeader.tsx'
 
 export interface BehandlingPanelProps {
+  oppgave?: Saksbehandlingsoppgave
   sak: Sak
   behovsmelding: Innsenderbehovsmelding
 }
 
-function BehandlingPanel({ sak }: BehandlingPanelProps) {
+function BehandlingPanel({ oppgave, sak }: BehandlingPanelProps) {
   const lukkBehandlingsPanel = useClosePanel('behandlingspanel')
-  const { oppgave } = useOppgave()
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { gjeldendeBehandling } = useBehandling()
 
@@ -37,8 +37,9 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
         }}
       />
       <ScrollablePanel>
-        <BehandlingPanelHeader sak={sak} oppgave={oppgave} />
+        <BehandlingPanelHeader oppgave={oppgave} sak={sak} />
         <BehandlingPanelContentVelger
+          oppgave={oppgave}
           behandling={gjeldendeBehandling}
           erUnderBehandling={oppgaveErUnderBehandlingAvInnloggetAnsatt}
         />
@@ -48,9 +49,11 @@ function BehandlingPanel({ sak }: BehandlingPanelProps) {
 }
 
 function BehandlingPanelContentVelger({
+  oppgave,
   behandling,
   erUnderBehandling,
 }: {
+  oppgave?: Saksbehandlingsoppgave
   behandling?: ReturnType<typeof useBehandling>['gjeldendeBehandling']
   erUnderBehandling: boolean
 }) {
@@ -62,7 +65,7 @@ function BehandlingPanelContentVelger({
     return <BehandlingLesevisning behandling={behandling} />
   }
 
-  return <BehandlingRedigering behandling={behandling} />
+  return <BehandlingRedigering oppgave={oppgave} behandling={behandling} />
 }
 
 export default memo(BehandlingPanel)

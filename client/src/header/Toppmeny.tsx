@@ -133,7 +133,7 @@ export function Toppmeny() {
           <ActionMenu.Content>
             <ActionMenu.Group label="Andre enheter">
               {innloggetAnsatt.enheter
-                .filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
+                ?.filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
                 .map((enhet) => (
                   <ActionMenu.Item
                     key={enhet.nummer}

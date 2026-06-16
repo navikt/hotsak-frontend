@@ -1,21 +1,24 @@
-import { VStack } from '@navikt/ds-react/Stack'
-import { ToggleGroup } from '@navikt/ds-react/ToggleGroup'
+import { Button, ToggleGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
+import { Målform } from '../../brev/brevTyper'
 import { KommentarForm } from '../../oppgave/kommentar/KommentarForm'
-import type { Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes'
+import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes'
 import { ForvaltningsnotatForm } from './ForvaltningsnotatForm'
-import { NotatType, type Notat } from './notatTyper'
+import { NotatType, type Notat, type OpprettNotatRequest } from './notatTyper'
+import type { OpprettNotatMutationResponse } from './useNotater'
 
 export interface OpprettNotatProps {
   oppgave: Saksbehandlingsoppgave
-  finnAktivtUtkast(valgtType?: NotatType | string): Notat | undefined
+  opprettNotat: OpprettNotatMutationResponse
+  gjeldendeUtkast?: Notat
 }
 
 export function OpprettNotat(props: OpprettNotatProps) {
-  const { oppgave, finnAktivtUtkast } = props
+  const { oppgave, opprettNotat, gjeldendeUtkast } = props
   const [type, setType] = useState<NotatType | string>(NotatType.KOMMENTAR)
-  const aktivtUtkast = finnAktivtUtkast(type)
+
+  const handleOpprettNotat = () => opprettNotat.trigger(defaultNotatRequest)
 
   return (
     <VStack gap="space-16">
@@ -24,7 +27,26 @@ export function OpprettNotat(props: OpprettNotatProps) {
         <ToggleGroup.Item value={NotatType.JOURNALFØRT} label="Forvaltningsnotat" />
       </ToggleGroup>
       {type === NotatType.KOMMENTAR && <KommentarForm oppgave={oppgave} />}
-      {type === NotatType.JOURNALFØRT && <ForvaltningsnotatForm sakId={oppgave.sakId} aktivtUtkast={aktivtUtkast} />}
+      {type === NotatType.JOURNALFØRT && (
+        <>
+          {!gjeldendeUtkast && (
+            <div>
+              <Button size="small" loading={opprettNotat.isMutating} onClick={handleOpprettNotat}>
+                Opprett forvaltningsnotat
+              </Button>
+            </div>
+          )}
+          {gjeldendeUtkast && <ForvaltningsnotatForm sakId={oppgave.sakId} gjeldendeUtkast={gjeldendeUtkast} />}
+        </>
+      )}
     </VStack>
   )
+}
+
+const defaultNotatRequest: OpprettNotatRequest = {
+  type: NotatType.JOURNALFØRT,
+  tittel: '',
+  tekst: '',
+  målform: Målform.BOKMÅL,
+  klassifisering: null,
 }

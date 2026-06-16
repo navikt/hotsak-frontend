@@ -2,13 +2,13 @@ import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import {
-  BehandlingerResponse,
+  BehandlingerForSak,
   isBehandlingsutfallBestilling,
   LagreBehandlingRequest,
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
-import { OppgaveStatusType, StegType, TilgangResultat, TilgangType } from '../../types/types.internal'
+import { OppgaveStatusType, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'
 import { type StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
@@ -91,10 +91,10 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     }
 
     /*
-          Hvis ingen type er angitt som query param, bruker vi gammel oppførsel som henter journalposter fra sak.
-          Ligger her for å bevare bakoverkompatibilitet
-          På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra Joark.
-        */
+            Hvis ingen type er angitt som query param, bruker vi gammel oppførsel som henter journalposter fra sak.
+            Ligger her for å bevare bakoverkompatibilitet
+            På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra Joark.
+          */
     if (!dokumentType) {
       const sak = await sakStore.hent(sakId)
       if (!sak) {
@@ -134,11 +134,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const { status } = await request.json()
     await sakStore.oppdaterStatus(sakId, status)
     await sakStore.lagreHendelse(sakId, 'Fortsetter behandling av sak')
-    return respondNoContent()
-  }),
-
-  http.post<SakParams>('/api/sak/:sakId/vilkarsvurdering', async ({ params }) => {
-    await sakStore.oppdaterSteg(params.sakId, StegType.FATTE_VEDTAK)
     return respondNoContent()
   }),
 
@@ -253,10 +248,12 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     await sakStore.ferdigstillBehandlingForSak(sakId)
     return respondNoContent()
   }),
-  http.get<SakParams, never, BehandlingerResponse>('/api/sak/:sakId/behandling', async ({ params }) => {
+
+  http.get<SakParams, never, BehandlingerForSak>('/api/sak/:sakId/behandling', async ({ params }) => {
     const behandlinger = await sakStore.hentBehandlinger(params.sakId)
     return HttpResponse.json({ behandlinger })
   }),
+
   http.post<BehandlingParams>('/api/sak/:sakId/behandling/:behandlingId/angring', async ({ params }) => {
     const sakId = params.sakId
 

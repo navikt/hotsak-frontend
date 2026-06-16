@@ -1,11 +1,12 @@
-import { createContext, RefObject, useContext } from 'react'
-import { HenleggFormHandle } from './behandling/HenleggForm'
+import { createContext, type Dispatch, type RefObject, useContext } from 'react'
+
+import { type HenleggFormHandle } from './behandling/HenleggForm'
 import {
-  PanelState,
-  PanelAction,
-  getVisiblePanels,
   getTotalVisibleMinWidth,
+  getVisiblePanels,
   initialPanelState,
+  type PanelAction,
+  type PanelState,
 } from './paneler/panelReducer'
 import { SidebarValg, VenstrekolonneTabs } from './SakPanelTabTypes'
 
@@ -20,12 +21,9 @@ const initialState = {
   aktivSidebar: SidebarValg.HJELPEMIDDELOVERSIKT,
   setAktivSidebar() {},
   sidebarOpenDefaultSizeRequestId: 0,
-  opprettBrevKlikket: false,
-  setOpprettBrevKlikket() {},
   henleggFormRef: { current: null } as RefObject<HenleggFormHandle | null>,
-
   panelState: initialPanelState,
-  panelDispatch: () => {},
+  panelDispatch() {},
   totalVisibleMinWidth: getTotalVisibleMinWidth(initialPanelState),
   visiblePanels: [],
   harFlerePanelerÅpne: false,
@@ -34,23 +32,19 @@ const initialState = {
 export const SakContext = createContext<SakV2ContextType>(initialState)
 SakContext.displayName = 'SakV2'
 
-type SakV2ContextType = {
+export interface SakV2ContextType {
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs
   setValgtNedreVenstreKolonneTab(tab: VenstrekolonneTabs): void
   aktivSidebar: SidebarValg
   setAktivSidebar(sidebar: SidebarValg): void
   sidebarOpenDefaultSizeRequestId: number
+  henleggFormRef: RefObject<HenleggFormHandle | null>
   panelState: PanelState
-  panelDispatch: React.Dispatch<PanelAction>
+  panelDispatch: Dispatch<PanelAction>
   totalVisibleMinWidth: number
   visiblePanels: ReturnType<typeof getVisiblePanels>
   harFlerePanelerÅpne: boolean
-  opprettBrevKlikket: boolean
-  setOpprettBrevKlikket(klikket: boolean): void
-  henleggFormRef: RefObject<HenleggFormHandle | null>
 }
-
-export type { SakV2ContextType }
 
 export function useSakContext(): SakV2ContextType {
   const context = useContext(SakContext)

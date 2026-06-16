@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - henleggelse
+      - brev_v1
 
 jobs:
   test:

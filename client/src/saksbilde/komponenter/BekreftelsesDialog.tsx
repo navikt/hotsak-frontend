@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Dialog } from '@navikt/ds-react'
-import { ReactNode, useRef } from 'react'
+import { type ReactNode, useRef } from 'react'
 
 export interface BekreftelsesDialogProps {
   heading: string
@@ -14,7 +14,7 @@ export interface BekreftelsesDialogProps {
   width?: string
   children?: ReactNode
   onBekreft(): void | Promise<void>
-  onClose(): void | Promise<void>
+  onClose(nextOpen: false): void | Promise<void>
 }
 
 export function BekreftelsesDialog(props: BekreftelsesDialogProps) {
@@ -50,7 +50,7 @@ export function BekreftelsesDialog(props: BekreftelsesDialogProps) {
   )
 
   const avbrytKnapp = (
-    <Button variant={avbrytButtonVariant} size={buttonSize} onClick={onClose} disabled={loading}>
+    <Button variant={avbrytButtonVariant} size={buttonSize} onClick={() => onClose(false)} disabled={loading}>
       {avbrytButtonLabel}
     </Button>
   )
@@ -58,7 +58,7 @@ export function BekreftelsesDialog(props: BekreftelsesDialogProps) {
   return (
     <Dialog
       open={open}
-      onOpenChange={(nextOpen) => !nextOpen && onClose()}
+      onOpenChange={(nextOpen) => !nextOpen && onClose(nextOpen)}
       onOpenChangeComplete={(isOpen) => {
         if (isOpen) {
           bekreftKnappRef.current?.focus({ focusVisible: true } as FocusOptions & { focusVisible?: boolean })

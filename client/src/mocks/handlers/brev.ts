@@ -1,22 +1,76 @@
 import { http, HttpResponse } from 'msw'
 
+import {
+  type Brev,
+  Brevmal,
+  type FerdigstillBrevutkastRequest,
+  type OppdaterBrevutkastRequest,
+  type OpprettBrevutkastRequest,
+} from '../../brev/brevTyper'
 import { UtfallLåst } from '../../sak/v2/behandling/behandlingTyper'
-import { Brevtype, OppgaveStatusType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { lastDokument, lastDokumentBarnebriller, nåIso } from '../data/felles'
+import { lastDokument, lastDokumentBarnebriller } from '../data/felles'
 import type { SakParams } from './params'
-import { delay, respondNoContent, respondPdf } from './response'
-import { Brevstatus } from '../../brev/brevTyper'
+import { respondNoContent, respondPdf } from './response'
 
 interface BrevParams extends SakParams {
-  brevtype: string
+  brevId: string
 }
 
 export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
+  /**
+   * Opprett brevutkast.
+   */
+  http.post<SakParams, OpprettBrevutkastRequest>('/api/sak/:sakId/brev', async ({ params, request }) => {
+    const { sakId } = params
+    const brev = await sakStore.opprettBrevutkast(sakId, await request.json())
+    return HttpResponse.json(brev)
+  }),
+
+  /**
+   * Oppdater brevutkast.
+   */
+  http.put<BrevParams, OppdaterBrevutkastRequest>('/api/sak/:sakId/brev/:brevId', async ({ params, request }) => {
+    const { brevId } = params
+    const brev = await sakStore.oppdaterBrevutkast(brevId, await request.json())
+    return HttpResponse.json(brev)
+  }),
+
+  /**
+   * Slett brevutkast.
+   */
+  http.delete<BrevParams>('/api/sak/:sakId/brev/:brevId', async ({ params }) => {
+    const { brevId } = params
+    await sakStore.slettBrevutkast(brevId)
+    return respondNoContent()
+  }),
+
+  /**
+   * Ferdigstill brevutkast.
+   */
+  http.post<BrevParams, FerdigstillBrevutkastRequest>(
+    '/api/sak/:sakId/brev/:brevId/ferdigstilling',
+    async ({ params }) => {
+      const { brevId } = params
+      await sakStore.ferdigstillBrevutkast(brevId)
+      return respondNoContent()
+    }
+  ),
+
+  /**
+   * Rediger brevutkast.
+   */
+  http.delete<BrevParams>('/api/sak/:sakId/brev/:brevId/ferdigstilling', async ({ params }) => {
+    const { brevId } = params
+    await sakStore.redigerBrevutkast(brevId)
+    return respondNoContent()
+  }),
+
+  // fixme
   http.get<SakParams>('/api/sak/:sakId/brev/utsendingsinfo', async ({ params }) => {
     const { sakId } = params
 
-    const brev = await sakStore.hentBrevtekst(sakId)
+    const brev = null // await sakStore.hentBrevtekst(sakId)
 
     const behandlinger = await sakStore.hentBehandlinger(sakId)
     const gjeldendeBehandling = behandlinger.length > 0 ? behandlinger[0] : null
@@ -31,75 +85,35 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
       datoEkspedert: new Date().toISOString(),
     })
   }),
-  // dokumenter for saksbehandlers enhet hvor status != endelig journalført
-  http.get<BrevParams>(`/api/sak/:sakId/brev/:brevtype`, async ({ params }) => {
-    let buffer: ArrayBuffer
-    if (params.brevtype === Brevtype.BARNEBRILLER_VEDTAK) {
-      buffer = await lastDokumentBarnebriller('innvilgelsesbrev')
-    } else if (params.brevtype === Brevtype.BREVEDITOR_VEDTAKSBREV) {
-      const brevTekst = await sakStore.hentBrevtekst(params.sakId)
-      if (
-        brevTekst?.data?.value &&
-        brevTekst?.data?.value[0]?.children &&
-        brevTekst?.data?.value[0]?.children[0]?.text == 'Du får ikke låne hjelpemidler'
-      ) {
-        buffer = await lastDokument('breveditor_vedtaksbrev_avslaatt')
-      } else if (
-        brevTekst?.data?.value &&
-        brevTekst?.data?.value[0]?.children &&
-        brevTekst?.data?.value[0]?.children[0]?.text == 'Du får låne noen av hjelpemidlene du har søkt om'
-      ) {
-        buffer = await lastDokument('breveditor_vedtaksbrev_delvis_innvilget')
-      } else {
-        buffer = await lastDokument('breveditor_vedtaksbrev')
-      }
-    } else {
-      buffer = await lastDokumentBarnebriller('innhente_opplysninger')
-    }
-    await delay(1000)
-    return respondPdf(buffer)
-  }),
 
-  http.post<SakParams>('/api/sak/:sakId/brevsending', async ({ params }) => {
-    const { sakId } = params
-    await sakStore.lagreSaksdokument(sakId, 'Innhent opplysninger')
-    await sakStore.oppdaterStatus(sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
-    await sakStore.fjernBrevtekst(sakId)
-    await delay(500)
-    return respondNoContent()
-  }),
   http.get<SakParams>('/api/sak/:sakId/brev', async ({ params }) => {
     const { sakId } = params
+    const brev = await sakStore.hentBrevForSak(sakId)
+    return HttpResponse.json({ brev })
+  }),
 
-    const brev = await sakStore.hentBrevtekst(sakId)
-
-    if (!brev) {
-      return HttpResponse.json({ brev: [] })
+  http.get<BrevParams>('/api/sak/:sakId/brev/:brevId', async ({ params, request }) => {
+    const { brevId } = params
+    const brev = await sakStore.hentBrev(brevId)
+    if (request.headers.get('accept') === 'application/json') {
+      return HttpResponse.json(brev)
     }
 
-    const behandlinger = await sakStore.hentBehandlinger(sakId)
-    const gjeldendeBehandling = behandlinger.length > 0 ? behandlinger[0] : null
-
-    const behandlingFerdigstilt = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT)
-
-    const brevStatus = (() => {
-      if (behandlingFerdigstilt) return Brevstatus.SENDT
-      if (brev?.ferdigstilt) return Brevstatus.FERDIGSTILT
-      return Brevstatus.UTKAST
-    })()
-
-    return HttpResponse.json({
-      brev: [
-        {
-          id: '1',
-          type: brev?.brevtype,
-          status: brevStatus,
-          oppdatert: nåIso(),
-          opprettet: nåIso(),
-          behandlingId: gjeldendeBehandling?.behandlingId,
-          sendt: nåIso(),
-        },
-      ],
-    })
+    const buffer = await hentBrevSomPdf(brev)
+    return respondPdf(buffer)
   }),
 ]
+
+async function hentBrevSomPdf(brev: Brev): Promise<ArrayBuffer> {
+  switch (brev.brevmal) {
+    case Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER:
+      return lastDokumentBarnebriller('innhente_opplysninger')
+    case Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE:
+    case Brevmal.BARNEBRILLER_VEDTAK_AVSLAG:
+      return lastDokumentBarnebriller('innvilgelsesbrev')
+    case Brevmal.BREVEDITOR_VEDTAKSBREV:
+      return lastDokument('breveditor_vedtaksbrev')
+    default:
+      return lastDokument('breveditor_vedtaksbrev')
+  }
+}

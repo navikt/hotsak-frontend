@@ -2,10 +2,14 @@ import { Box, Button, Heading, HelpText, HStack, InfoCard, InlineMessage, Select
 import { useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
+import { isBrevmal } from '../../../brev/brevSelectors.ts'
+import { Brevmal } from '../../../brev/brevTyper.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
+import { useBrevForSak } from '../../../brev/useBrev.ts'
+import { useBrevActions } from '../../../brev/useBrevActions.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
+import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
 import { useErPilot } from '../../../tilgang/useTilgang.ts'
 import { useMiljø } from '../../../utils/useMiljø.ts'
 import { useClosePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
@@ -27,15 +31,18 @@ import { useBehandlingActions } from './useBehandlingActions.ts'
 import { VisBrevKnapp } from './VisBrevKnapp.tsx'
 
 export interface BehandlingRedigeringProps {
+  oppgave?: Saksbehandlingsoppgave
   behandling?: Behandling
 }
 
-export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) {
-  const { setOpprettBrevKlikket, henleggFormRef } = useSakContext()
+export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeringProps) {
+  const { henleggFormRef } = useSakContext()
   const closePanel = useClosePanel('brevpanel')
   const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
-  const { harBrevISak } = useBrevMetadata()
+  const { harBrev, finnBrev } = useBrevForSak(behandling?.sakId)
   const { ferdigstillBehandling, lagreBehandling } = useBehandlingActions()
+  const vedtaksbrevId = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV))?.brevId
+  const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave, vedtaksbrevId)
   const { showSuccessToast } = useToast()
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined
@@ -44,23 +51,42 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
   const erHenleggelse = henleggelseUtfall != null
   const gjenstående = behandling?.gjenstående || []
 
+  // todo -> sjekk brevene på saken direkte?
   const harBrevutkast = !!behandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
   const kanOppretteBrev = !harBrevutkast
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
+  const handleSlettBrevutkast = async () => {
+    if (!harBrev) return
+    await slettBrevutkast.trigger()
+    closePanel()
+  }
+
+  const handleOpprettBrevutkast = async () => {
+    if (behandling) {
+      await opprettBrevutkast.trigger({
+        brevutkast: {
+          brevmal: 'BREVEDITOR_VEDTAKSBREV',
+          brevmalVersjon: '0',
+          målform: 'BOKMÅL',
+          data: {},
+        },
+        behandlingId: behandling.behandlingId.toString(),
+      })
+      setBrevpanelVisibility(true)
+    }
+  }
+
   const henlegg = async () => {
     await ferdigstillBehandling({})
-    if (!harBrevISak) closePanel()
+    if (!harBrev) closePanel()
     showSuccessToast('Saken er henlagt')
   }
 
-  const lagreHenleggelse = async (utfall: Henleggelsesårsak | undefined, begrunnelse?: string) => {
-    await lagreBehandling({ type: 'HENLEGGELSE', utfall, begrunnelse })
-  }
+  const lagreHenleggelse = (utfall: Henleggelsesårsak | undefined, begrunnelse?: string) =>
+    lagreBehandling({ type: 'HENLEGGELSE', utfall, begrunnelse })
 
-  const lagreOverføring = async () => {
-    await lagreBehandling({ type: 'OVERFØRING', utfall: OverførtTil.GOSYS })
-  }
+  const lagreOverføring = () => lagreBehandling({ type: 'OVERFØRING', utfall: OverførtTil.GOSYS })
 
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8">
@@ -69,6 +95,7 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
         utfall={vedtaksresultat}
         erHenleggelse={erHenleggelse}
         harBrevutkast={harBrevutkast}
+        onSlettBrevutkast={handleSlettBrevutkast}
       />
       {(vedtaksresultat || erHenleggelse || erBehandlingsutfallOverføring) && (
         <TextContainer>
@@ -114,17 +141,15 @@ export function BehandlingRedigering({ behandling }: BehandlingRedigeringProps) 
                         : 'primary'
                     }
                     size="small"
-                    onClick={() => {
-                      setBrevpanelVisibility(true)
-                      setOpprettBrevKlikket(true)
-                    }}
+                    loading={opprettBrevutkast.isMutating}
+                    onClick={handleOpprettBrevutkast}
                   >
                     {erHenleggelse ? 'Opprett brev' : 'Opprett vedtaksbrev'}
                   </Button>
                 </div>
               )}
 
-              {harBrevISak && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
+              {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
 
               {brevutkastFerdigstilt && (
                 <InlineMessage status="info" size="small">
@@ -187,15 +212,17 @@ function UnderrettBruker({ vedtaksresultat }: { vedtaksresultat?: VedtaksResulta
 }
 
 function VedtaksResultatVelger({
+  behandling,
   utfall,
   erHenleggelse,
   harBrevutkast,
-  behandling,
+  onSlettBrevutkast,
 }: {
+  behandling?: Behandling
   utfall?: VedtaksResultat
   erHenleggelse: boolean
   harBrevutkast: boolean
-  behandling?: Behandling
+  onSlettBrevutkast(): Promise<void>
 }) {
   const { lagreBehandling } = useBehandlingActions()
   const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
@@ -258,12 +285,16 @@ function VedtaksResultatVelger({
         )}
       </VStack>
       <SlettBrevModal
+        heading="Du må slette brevutkastet ditt før du kan endre resultatet"
+        tekst="Du har begynt på et utkast til vedtaksbrev. Dette må slettes før du kan endre resultatet. Hvis du sletter brevet, kan det ikke gjenopprettes."
+        width="700px"
+        loading={false} // fixme
         open={visSlettBrevutkastModal}
         onClose={() => setVisSlettBrevutkastModal(false)}
-        heading="Du må slette brevutkastet ditt før du kan endre resultatet"
-        tekst="Du har begynt på et utkast til vedtaksbrev. Dette må slettes før du kan endre resultatet. Hvis du sletter
-        brevet, kan det ikke gjenopprettes."
-        width="700px"
+        onBekreft={async () => {
+          await onSlettBrevutkast()
+          setVisSlettBrevutkastModal(false)
+        }}
       />
     </>
   )

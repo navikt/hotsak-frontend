@@ -1,66 +1,55 @@
-import { Button, Detail, HStack } from '@navikt/ds-react'
-import { useCallback, useEffect, useState } from 'react'
+import { Button, Detail, HStack, VStack } from '@navikt/ds-react'
+import { useController, useForm } from 'react-hook-form'
 
+import useSWRMutation from 'swr/mutation'
+import { Brevmal, type Brev } from '../../../../brev/brevTyper.ts'
+import { useMutateBrevPdf } from '../../../../brev/useBrev.ts'
+import { useBrevActions } from '../../../../brev/useBrevActions.ts'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
-import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import { useNotater } from '../../../../sak/notat/useNotater'
 import {
-  type Barnebrillesak,
   Brevkode,
-  BrevTekst,
-  Brevtype,
-  MålformType,
   OppgaveStatusType,
   StepType,
   VilkårsResultat,
+  type Barnebrillesak,
 } from '../../../../types/types.internal'
-import { useBrevActions } from '../../../useBrevActions.ts'
 import { useSakActions } from '../../../useSakActions.ts'
 import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
-import { useBrevtekst } from '../../brevutkast/useBrevtekst'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
-import { useBrev } from './brev/useBrev'
 
-interface RedigeringsvisningProps {
+export interface RedigeringsvisningProps {
   oppgave: Saksbehandlingsoppgave
   sak: Barnebrillesak
+  vedtaksbrev?: Brev<{ brevtekst?: string }>
+  harBrevutkast?: boolean
 }
 
 export function Redigeringsvisning(props: RedigeringsvisningProps) {
-  const { oppgave, sak } = props
+  const { oppgave, sak, vedtaksbrev, harBrevutkast } = props
   const { setStep } = useManuellSaksbehandlingContext()
   const samletVurdering = useSamletVurdering(sak)
-  const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const { harUtkast: harNotatUtkast } = useNotater(sak?.sakId)
-  const { data } = useBrevtekst(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
-  const { data: utkastTilInnhenteOpplysningerBrev } = useBrevtekst(
-    sak.sakId,
-    Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
-  )
   const sakActions = useSakActions()
-  const [submitAttempt, setSubmitAttempt] = useState(false)
-  const brevtekst = data?.data.brevtekst
-  const [fritekst, setFritekst] = useState(brevtekst || '')
-  const { hentForhåndsvisning } = useBrev()
-  const brevActions = useBrevActions(oppgave)
+  const { oppdaterBrevutkast } = useBrevActions(oppgave, vedtaksbrev?.brevId)
+  const mutateBrevPdf = useMutateBrevPdf()
 
   const { data: saksdokumenter } = useSaksdokumenter(
     sak.sakId,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
 
-  const usendtUtkastTilInnhenteOpplysningerBrev =
-    utkastTilInnhenteOpplysningerBrev?.data.brevtekst && utkastTilInnhenteOpplysningerBrev?.data.brevtekst !== ''
+  const { harUtkast: harNotatUtkast } = useNotater(oppgave.sakId)
+
+  // todo -> bør utledes og kontrolleres av backend
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksdokument) => saksdokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
-
-  const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined
+  const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev != null
 
   const manglerPåkrevdEtterspørreOpplysningerBrev =
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
@@ -70,117 +59,117 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const manglerPåkrevdUtbetalingsmottakerVedInnvilgelse =
     sak.vilkårsvurdering?.resultat === VilkårsResultat.JA && !sak.utbetalingsmottaker?.kontonummer
 
-  const visFritekstFelt =
-    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && !manglerPåkrevdEtterspørreOpplysningerBrev
+  const isVedtakAvslagManglendeOpplysninger =
+    vedtaksbrev?.brevmal === Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER
 
-  const byggBrevPayload = (tekst?: string): BrevTekst => ({
-    sakId: sak.sakId,
-    målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-    brevtype: Brevtype.BARNEBRILLER_VEDTAK,
-    data: {
-      brevtekst: tekst ? tekst : fritekst,
+  const {
+    getValues,
+    formState: { isSubmitting },
+    handleSubmit,
+    control,
+  } = useForm({
+    defaultValues: {
+      brevtekst: vedtaksbrev?.data?.brevtekst ?? '',
     },
   })
 
-  const valider = () => {
-    if (fritekst === '') {
-      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
-      return false
-    } else {
-      setValideringsfeil(undefined)
-      return true
-    }
+  const brevtekstController = useController({
+    name: 'brevtekst',
+    rules: {
+      required: isVedtakAvslagManglendeOpplysninger ? 'Du kan ikke sende brevet uten å ha lagt til tekst' : false,
+    },
+    control,
+  })
+
+  const handleUpdateBrevutkast = async (values: { brevtekst: string }) => {
+    if (!vedtaksbrev) return
+    await oppdaterBrevutkast.trigger({
+      brevutkast: {
+        brevmal: vedtaksbrev.brevmal,
+        brevmalVersjon: vedtaksbrev.brevmalVersjon,
+        målform: vedtaksbrev.målform,
+        data: { brevtekst: values.brevtekst },
+      },
+    })
   }
 
-  useEffect(() => {
-    if (brevtekst) {
-      // fixme
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFritekst(brevtekst)
+  const handleForhåndsvis = useSWRMutation<void, Error, string, unknown>('vedtaksbrev-barnebriller', async () => {
+    if (!vedtaksbrev || !isVedtakAvslagManglendeOpplysninger) return
+    await handleUpdateBrevutkast(getValues())
+    await mutateBrevPdf(vedtaksbrev.sakId, vedtaksbrev.brevId)
+  })
+
+  const handleSendTilGodkjenning = handleSubmit(async (values) => {
+    if (!vedtaksbrev) return
+    if (isVedtakAvslagManglendeOpplysninger) {
+      await handleUpdateBrevutkast(values)
     }
-  }, [brevtekst])
-
-  useEffect(() => {
-    if (submitAttempt) {
-      // fixme
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      valider()
+    if (!harNotatUtkast) {
+      await sakActions.opprettTotrinnskontroll()
     }
-  }, [fritekst, submitAttempt])
-
-  const lagreUtkast = useCallback(
-    (tekst: string) => brevActions.lagreBrevutkast(byggBrevPayload(tekst)),
-    [sak.sakId, fritekst]
-  )
-
-  useDebounce(fritekst, lagreUtkast)
+  })
 
   return (
-    <>
-      {visFritekstFelt && (
-        <>
-          <Fritekst
-            label="Beskriv hvilke opplysninger som mangler"
-            beskrivelse="Vises i brevet som en del av begrunnelsen for avslaget"
-            valideringsfeil={valideringsfeil}
-            fritekst={fritekst}
-            lagrer={brevActions.state.loading}
-            onTextChange={setFritekst}
-          />
-          <div>
-            <Button
-              loading={false}
-              size="small"
-              variant="secondary"
-              onClick={() => {
-                hentForhåndsvisning(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
-              }}
-            >
-              Forhåndsvis
-            </Button>
-          </div>
-        </>
-      )}
-      {manglerPåkrevdEtterspørreOpplysningerBrev && (
-        <SkjemaAlert variant="warning" role="status">
-          <Etikett>Mangler innhente opplysninger brev</Etikett>
-          <Detail>
-            Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en sak på
-            grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende opplysninger og
-            bruker ikke har sendt inn dette før fristen på 3 uker.
-          </Detail>
-        </SkjemaAlert>
-      )}
-      {usendtUtkastTilInnhenteOpplysningerBrev && (
-        <SkjemaAlert variant="warning">
-          <Detail>
-            Det er laget et brev i saken som ikke er sendt ut. Gå til brev-fanen for å sende eller slette brevet.
-          </Detail>
-        </SkjemaAlert>
-      )}
-      {submitAttempt && harNotatUtkast && <NotatUtkastVarsel />}
-      <HStack gap="space-8">
-        <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
-          Forrige
-        </Button>
-        {!manglerPåkrevdEtterspørreOpplysningerBrev && !manglerPåkrevdUtbetalingsmottakerVedInnvilgelse && (
+    <form onSubmit={handleSendTilGodkjenning}>
+      <VStack gap="space-16">
+        {isVedtakAvslagManglendeOpplysninger && (
+          <>
+            <Fritekst
+              label="Beskriv hvilke opplysninger som mangler"
+              description="Vises i brevet som en del av begrunnelsen for avslaget"
+              error={brevtekstController.fieldState.error?.message}
+              {...brevtekstController.field}
+            />
+            <div>
+              <Button
+                size="small"
+                type="button"
+                variant="secondary"
+                loading={handleForhåndsvis.isMutating}
+                onClick={handleForhåndsvis.trigger}
+              >
+                Forhåndsvis
+              </Button>
+            </div>
+          </>
+        )}
+        {manglerPåkrevdEtterspørreOpplysningerBrev && (
+          <SkjemaAlert variant="warning" role="status">
+            <Etikett>Mangler innhente opplysninger brev</Etikett>
+            <Detail>
+              Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en sak på
+              grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende opplysninger og
+              bruker ikke har sendt inn dette før fristen på 3 uker.
+            </Detail>
+          </SkjemaAlert>
+        )}
+        {harBrevutkast === true && (
+          <SkjemaAlert variant="warning">
+            <Detail>
+              Det er laget et brev i saken som ikke er sendt ut. Gå til brev-fanen for å sende eller slette brevet.
+            </Detail>
+          </SkjemaAlert>
+        )}
+        {harNotatUtkast === true && <NotatUtkastVarsel />}
+        <HStack gap="space-8">
           <Button
-            loading={sakActions.state.loading}
-            disabled={sakActions.state.loading}
             size="small"
-            variant="primary"
-            onClick={async () => {
-              setSubmitAttempt(true)
-
-              if ((!visFritekstFelt || valider()) && !harNotatUtkast) {
-                await sakActions.opprettTotrinnskontroll()
-              }
+            type="button"
+            variant="secondary"
+            onClick={() => {
+              setStep(StepType.VILKÅR)
+              return handleUpdateBrevutkast(getValues())
             }}
           >
-            Send til godkjenning
+            Forrige
           </Button>
-        )}
-      </HStack>
-    </>
+          {!manglerPåkrevdEtterspørreOpplysningerBrev && !manglerPåkrevdUtbetalingsmottakerVedInnvilgelse && (
+            <Button size="small" type="submit" variant="primary" loading={isSubmitting}>
+              Send til godkjenning
+            </Button>
+          )}
+        </HStack>
+      </VStack>
+    </form>
   )
 }

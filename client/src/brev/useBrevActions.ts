@@ -3,7 +3,7 @@ import useSWRMutation from 'swr/mutation'
 import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { http, type HttpAcceptKey } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
-import { type SaksbehandlingsoppgaveBase } from '../oppgave/oppgaveTypes.ts'
+import { type OppgaveBase } from '../oppgave/oppgaveTypes.ts'
 import { useMutateBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import {
   type Brev,
@@ -14,7 +14,7 @@ import {
 } from './brevTyper.ts'
 import { brevKeyOf, useMutateBrevForSak, useMutateBrevPdf } from './useBrev.ts'
 
-export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: SaksbehandlingsoppgaveBase, brevId?: string) {
+export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: OppgaveBase, brevId?: string) {
   const { oppgaveId = '', versjon, sakId } = oppgave ?? {}
 
   const { showSuccessToast } = useToast()

@@ -187,7 +187,7 @@ function SakV2Content({
             </ResizablePanel>
           )}
         </Group>
-        {erPilot && <VertikalIkonBar />}
+        {erPilot && <VertikalIkonBar oppgave={oppgave} />}
       </Box>
       <StickyBunnlinje oppgave={oppgave} sak={sak} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />

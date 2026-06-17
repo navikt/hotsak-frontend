@@ -1,5 +1,5 @@
 import { ClockDashedIcon } from '@navikt/aksel-icons'
-import { Button, VStack, Box, Tooltip } from '@navikt/ds-react'
+import { Box, Button, Tooltip, VStack } from '@navikt/ds-react'
 
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { useSak } from '../../../saksbilde/useSak'

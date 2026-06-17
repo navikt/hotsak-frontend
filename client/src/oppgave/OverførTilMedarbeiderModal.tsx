@@ -2,10 +2,6 @@ import { Skeleton, Textarea, VStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { isBrevmal, isBrevstatusFerdigstilt } from '../brev/brevSelectors.ts'
-import { Brevmal } from '../brev/brevTyper.ts'
-import { useBrevForSak } from '../brev/useBrev.ts'
-import { useBrevActions } from '../brev/useBrevActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { useToast } from '../felleskomponenter/toast/useToast'
@@ -30,9 +26,6 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { harUtkast } = useNotater(sakId)
   const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { gjeldendeEnhet } = useInnloggetAnsatt()
-  const { finnBrev } = useBrevForSak(sakId)
-  const ferdigstiltVedtaksbrev = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV), isBrevstatusFerdigstilt)
-  const { redigerBrevutkast } = useBrevActions(oppgave, ferdigstiltVedtaksbrev?.brevId)
 
   const { åpenModal } = useOppgaveContext()
   const lukkModal = useOppgaveLukkModalHandler()
@@ -50,10 +43,6 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { logOppgaveOverførtTilMedarbeider } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
-    // fjerner ferdigstilling av brev
-    if (ferdigstiltVedtaksbrev) {
-      await redigerBrevutkast.trigger()
-    }
     await endreOppgavetildeling({
       saksbehandlerId: data.valgtSaksbehandler,
       kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,

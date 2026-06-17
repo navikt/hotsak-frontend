@@ -9,7 +9,7 @@ import {
 } from '../../brev/brevTyper'
 import { UtfallLåst } from '../../sak/v2/behandling/behandlingTyper'
 import type { StoreHandlersFactory } from '../data'
-import { lastDokument, lastDokumentBarnebriller } from '../data/felles'
+import { lastDokument } from '../data/felles'
 import type { SakParams } from './params'
 import { respondNoContent, respondPdf } from './response'
 
@@ -107,10 +107,10 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
 async function hentBrevSomPdf(brev: Brev): Promise<ArrayBuffer> {
   switch (brev.brevmal) {
     case Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER:
-      return lastDokumentBarnebriller('innhente_opplysninger')
+      return lastDokument('barnebriller_innhente_opplysninger')
     case Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE:
     case Brevmal.BARNEBRILLER_VEDTAK_AVSLAG:
-      return lastDokumentBarnebriller('innvilgelsesbrev')
+      return lastDokument('barnebriller_innvilgelsesbrev')
     case Brevmal.BREVEDITOR_VEDTAKSBREV:
       return lastDokument('breveditor_vedtaksbrev')
     default:

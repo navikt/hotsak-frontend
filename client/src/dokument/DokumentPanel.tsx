@@ -39,7 +39,13 @@ export function DokumentPanel() {
     return (
       <div className={classes.dokumentContainer}>
         {hentetDokument.status === RessursStatus.SUKSESS && (
-          <iframe title={'dokument'} src={hentetDokument.data} width={'100%'} height={'100%'}></iframe>
+          <iframe
+            className={classes.noBorder}
+            title={'dokument'}
+            src={hentetDokument.data}
+            width={'100%'}
+            height={'100%'}
+          ></iframe>
         )}
       </div>
     )

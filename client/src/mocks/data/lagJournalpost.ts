@@ -16,7 +16,10 @@ export interface LagretHendelse extends Hendelse {
 }
 export type InsertHendelse = Omit<LagretHendelse, 'id'>
 
-export function lagJournalpost(journalpostId: string): InsertJournalpost {
+export function lagJournalpost(
+  journalpostId: string,
+  tittel: string = 'Tilskudd ved kjøp av briller til barn'
+): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const journalpostOpprettetTid = lagTilfeldigDato(new Date().getFullYear()).toISOString()
   const journalposttyper = ['I', 'U', 'N'] as const
@@ -26,7 +29,7 @@ export function lagJournalpost(journalpostId: string): InsertJournalpost {
     journalstatus: JournalpostStatusType.MOTTATT,
     journalpostOpprettetTid,
     fnrInnsender,
-    tittel: 'Tilskudd ved kjøp av briller til barn',
+    tittel: tittel,
     bruker: {
       fnr: fnrInnsender,
       navn: lagTilfeldigNavn(),

@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.container {
+  flex: 1;
+  min-height: 0;
+}
+
+.panelGroup {
+  height: 100%;
+}
+
+.skjemaKolonne {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--ax-space-16);
+  border-right: 1px solid var(--ax-border-neutral-subtle);
+  background: var(--ax-bg-default);
+}
+
+.dokumentKolonne {
+  height: 100%;
+  background: var(--ax-bg-subtle);
+}

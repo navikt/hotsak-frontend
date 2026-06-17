@@ -3,13 +3,37 @@ import { lazy, useEffect } from 'react'
 import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
+import { useJournalpost } from '../saksbilde/useJournalpost.ts'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
-import { isJournalføringsoppgave, isSaksbehandlingsoppgave, type Oppgave } from './oppgaveTypes.ts'
+import {
+  isJournalføringsoppgave,
+  isSaksbehandlingsoppgave,
+  type Journalføringsoppgave,
+  type Oppgave,
+} from './oppgaveTypes.ts'
 import { useOppgave } from './useOppgave.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
+const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
 const Saksbilde = lazy(() => import('../saksbilde/Saksbilde.tsx'))
+
+const BREVKODE_JOURNALFØRING_V2 = 'NAV 10-07.03'
+
+function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) {
+  const { journalpost, isLoading } = useJournalpost(oppgave.journalpostId)
+  const { erIkkeProd } = useMiljø()
+  if (isLoading) {
+    return null
+  }
+
+  if (erIkkeProd && journalpost?.dokumenter[0]?.brevkode === BREVKODE_JOURNALFØRING_V2) {
+    return <JournalføringV2 oppgave={oppgave} />
+  }
+
+  return <Journalføring oppgave={oppgave} />
+}
 
 function OppgaveContent() {
   const { oppgave } = useOppgave()
@@ -34,7 +58,7 @@ function OppgavetypeSwitch({ oppgave }: { oppgave: Oppgave }) {
   if (isJournalføringsoppgave(oppgave)) {
     return (
       <DokumentProvider>
-        <Journalføring oppgave={oppgave} />
+        <JournalføringRouter oppgave={oppgave} />
       </DokumentProvider>
     )
   }

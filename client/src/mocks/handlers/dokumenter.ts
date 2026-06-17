@@ -6,7 +6,8 @@ import type {
   JournalførJournalpostResponse,
 } from '../../journalføring/journalføringTypes.ts'
 import type { StoreHandlersFactory } from '../data'
-import { lastDokument, lastDokumentBarnebriller } from '../data/felles.ts'
+import { velgDokumentFil } from '../data/dokumentvelger.ts'
+import { lastDokument } from '../data/felles.ts'
 import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response.ts'
 
 interface JournalpostParams {
@@ -40,27 +41,10 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
   }),
 
   http.get<DokumentParams>(`/api/journalpost/:journalpostId/:dokumentId`, async ({ params }) => {
-    const dokumentId = params.dokumentId
+    const { filsti } = velgDokumentFil(params.journalpostId, params.dokumentId)
+    const navn = filsti.replace('.pdf', '')
 
-    let buffer
-    switch (dokumentId) {
-      case '2':
-        buffer = await lastDokumentBarnebriller('kvittering')
-        break
-      case '3':
-        buffer = await lastDokumentBarnebriller('brilleseddel')
-        break
-      case '4':
-        buffer = await lastDokumentBarnebriller('kvitteringsside')
-        break
-      case '6':
-        buffer = await lastDokument('journalført_notat')
-        break
-      case '5':
-      default:
-        buffer = await lastDokumentBarnebriller('søknad')
-        break
-    }
+    const buffer = await lastDokument(navn)
 
     await delay(500)
     return respondPdf(buffer)

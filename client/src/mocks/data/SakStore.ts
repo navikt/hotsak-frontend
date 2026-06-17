@@ -284,6 +284,10 @@ export class SakStore extends Dexie {
     return this.behandlinger.where('sakId').equals(sakId).toArray()
   }
 
+  async hentBehandling(behandlingId: number) {
+    return this.behandlinger.get(behandlingId)
+  }
+
   async hentHendelser(sakId: string) {
     return this.hendelser.where('sakId').equals(sakId).toArray()
   }

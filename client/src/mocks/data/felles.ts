@@ -44,13 +44,13 @@ export async function lastTilfeldigProduktbilde(): Promise<ArrayBuffer> {
 }
 
 export async function lastDokumentBarnebriller(navn: string): Promise<ArrayBuffer> {
-  const dokument = await import(`./barnebriller_${navn}.pdf`)
+  const dokument = await import(`./pdf/barnebriller_${navn}.pdf`)
   const response = await fetch(dokument.default)
   return response.arrayBuffer()
 }
 
-export async function lastDokument(navn: string): Promise<ArrayBuffer> {
-  const dokument = await import(`../../mocks/data/${navn}.pdf`)
+export async function lastDokument(filnavn: string): Promise<ArrayBuffer> {
+  const dokument = await import(`../../mocks/data/pdf/${filnavn}.pdf`)
   const response = await fetch(dokument.default)
   return response.arrayBuffer()
 }

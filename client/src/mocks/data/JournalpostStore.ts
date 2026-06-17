@@ -34,7 +34,19 @@ export class JournalpostStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    return this.lagreAlle([lagJournalpost('9001'), lagJournalpost('9002'), lagJournalpost('9003')])
+
+    await this.lagreAlle([lagJournalpost('9001'), lagJournalpost('9002'), lagJournalpost('9003')])
+
+    const v2Post = lagJournalpost('9004', 'Søknad om hjelpemidler')
+    await this.journalposter.add(v2Post)
+    await this.dokumenter.add({
+      journalpostId: '9004',
+      tittel: 'Søknad om hjelpemidler',
+      brevkode: 'NAV 10-07.03',
+    } as InsertDokument)
+    await this.personStore.lagreAlle([{ ...lagPerson(), fnr: v2Post.fnrInnsender }])
+
+    return ['9004']
   }
 
   async lagreAlle(journalposter: InsertJournalpost[]) {

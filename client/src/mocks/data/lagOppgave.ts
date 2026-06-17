@@ -58,6 +58,9 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
 
 export function lagJournalføringsoppgave(journalføring: LagretJournalpost): InsertOppgave {
   const journalpostId = journalføring.journalpostId
+
+  // TODO: Litt hacky utledning av gjelder verdi på behandlingsteama. Når vi vet mer om hvordan vi vil gjøre det, bør logikken her også oppdateres. Sjekke på brevkode for eksempel
+
   return {
     oppgaveId: `I-${journalpostId}`,
     versjon: 1,
@@ -66,7 +69,10 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
     prioritet: Oppgaveprioritet.NORMAL,
     kategorisering: {
       oppgavetype: Oppgavetype.JOURNALFØRING,
-      behandlingstema: { kode: '', term: 'Briller til barn' },
+      behandlingstema: {
+        kode: '',
+        term: journalføring.tittel === 'Søknad om hjelpemidler' ? 'Hjelpemidler' : 'Briller til barn',
+      },
       behandlingstype: { kode: '', term: 'Søknad' },
       tema: 'HJE',
     },

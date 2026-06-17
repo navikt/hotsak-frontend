@@ -7,8 +7,33 @@ import { http } from '../../../io/HttpClient.ts'
 import { HttpError } from '../../../io/HttpError.ts'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../saksbilde/mutateSak.ts'
-import { Behandlingsutfall, LagreBehandlingRequest } from './behandlingTyper.ts'
+import {
+  Behandling,
+  Behandlingsutfall,
+  Bestillingsresultat,
+  isBehandlingsutfallBestilling,
+  isBehandlingsutfallVedtak,
+  LagreBehandlingRequest,
+  VedtaksResultat,
+} from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
+
+function lagUtfallToastTekst(utfall: Behandlingsutfall | undefined): string {
+  if (isBehandlingsutfallBestilling(utfall)) {
+    return utfall.utfall === Bestillingsresultat.GODKJENT ? 'Bestillingen ble godkjent' : 'Bestillingen ble avvist'
+  }
+  if (isBehandlingsutfallVedtak(utfall)) {
+    switch (utfall.utfall) {
+      case VedtaksResultat.INNVILGET:
+        return 'Søknaden ble innvilget'
+      case VedtaksResultat.AVSLÅTT:
+        return 'Søknaden ble avslått'
+      case VedtaksResultat.DELVIS_INNVILGET:
+        return 'Søknaden ble delvis innvilget'
+    }
+  }
+  return 'Behandlingen ble lagret'
+}
 
 export function useBehandlingActions() {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
@@ -22,18 +47,20 @@ export function useBehandlingActions() {
   const mutateOppgaveOgSak = () => Promise.all([mutateOppgave(), mutateSak(sakId)])
 
   // TODO: Håndtere feil i onError
+  // TODO Bruke swr mutate for alle funksjoner her og gjenbruke lagUtfallToastTekst
   const opprettOgferdigstillBestillingBehandling = useSWRMutation<
-    Behandlingsutfall,
+    Behandling,
     HttpError,
     string | null,
     LagreBehandlingRequest
   >(
     `/api/sak/${sakId}/behandling`,
-    (url, { arg: body }) => http.post<LagreBehandlingRequest, Behandlingsutfall>(url, body, { versjon }),
+    (url, { arg: body }) => http.post<LagreBehandlingRequest, Behandling>(url, body, { versjon }),
     {
-      async onSuccess() {
+      async onSuccess(data) {
         await mutateOppgaveOgSak()
-        showSuccessToast('Endringene ble lagret')
+
+        showSuccessToast(lagUtfallToastTekst(data.utfall))
       },
     }
   )

@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import {
+  Behandling,
   BehandlingerResponse,
   isBehandlingsutfallBestilling,
   LagreBehandlingRequest,
@@ -17,7 +18,6 @@ import { Saksbehandlere } from '../data/Saksbehandlere.ts'
 import { BehandlingParams, type SakParams } from './params'
 import {
   delay,
-  respondCreated,
   respondForbidden,
   respondInternalServerError,
   respondNoContent,
@@ -222,18 +222,22 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     await endreHjelpemiddelStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
   }),
-  http.post<SakParams, LagreBehandlingRequest>('/api/sak/:sakId/behandling', async ({ params, request }) => {
-    const body = await request.json()
-    await sakStore.opprettBehandling(params.sakId, body)
+  http.post<SakParams, LagreBehandlingRequest, Behandling>(
+    '/api/sak/:sakId/behandling',
+    async ({ params, request }) => {
+      const body = await request.json()
+      const behandlingId = await sakStore.opprettBehandling(params.sakId, body)
 
-    if (isBehandlingsutfallBestilling(body.utfall)) {
-      await sakStore.ferdigstillBehandlingForSak(params.sakId)
-      await oppgaveStore.ferdigstillOppgave(body.oppgaveId)
-      await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.FERDIGSTILT)
+      if (isBehandlingsutfallBestilling(body.utfall)) {
+        await sakStore.ferdigstillBehandlingForSak(params.sakId)
+        await oppgaveStore.ferdigstillOppgave(body.oppgaveId)
+        await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.FERDIGSTILT)
+      }
+
+      const behandling = await sakStore.hentBehandling(Number(behandlingId))
+      return HttpResponse.json(behandling, { status: 201 })
     }
-
-    return respondCreated()
-  }),
+  ),
   http.put<BehandlingParams, LagreBehandlingRequest>(
     '/api/sak/:sakId/behandling/:behandlingId',
     async ({ params, request }) => {

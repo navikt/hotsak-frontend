@@ -16,11 +16,10 @@ export interface FerdigstilteNotaterProps {
   oppgaveId?: OppgaveId
   loading?: boolean
   notater: Notat[]
-  mutateNotater(): void
 }
 
 export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
-  const { oppgaveId, notater, mutateNotater } = props
+  const { oppgaveId, notater } = props
   const { kommentarer, isLoading } = useOppgavekommentarer(oppgaveId)
   const loading = props.loading ?? isLoading
 
@@ -52,7 +51,7 @@ export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
           {alle.length === 0 && <Tekst>Ingen notater er tilknyttet saken</Tekst>}
           {alle.length > 0 && <FilterChips options={filterOptions} selected={filter} handleChange={setFilter} />}
           {filtrerte.map((notat) => (
-            <NotatCard key={notat.id} notat={notat} mutate={mutateNotater} />
+            <NotatCard key={notat.id} notat={notat} />
           ))}
         </>
       )}

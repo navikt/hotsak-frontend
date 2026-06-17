@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { StateMangement } from './Breveditor.tsx'
+import type { BreveditorState } from './Breveditor.tsx'
 
 // Interface for å tracke endringsstatus (er alle endringer lagret)
 export interface Endringsstatus {
@@ -8,8 +8,8 @@ export interface Endringsstatus {
   error?: string
 }
 
-export function useLagreBrev(onLagreBrev?: (state: StateMangement) => Promise<void>) {
-  const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
+export function useLagreBrev(onLagreBrev?: (state: BreveditorState) => Promise<void>) {
+  const debounceLagring = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [endringsstatus, setEndringsstatus] = useState<Endringsstatus>({
     lagrerNå: false,
     erEndret: false,
@@ -19,7 +19,7 @@ export function useLagreBrev(onLagreBrev?: (state: StateMangement) => Promise<vo
     return () => clearTimeout(debounceLagring.current)
   }, [])
 
-  const lagreMedDebounceOgRetry = (constructedState: StateMangement) => {
+  const lagreMedDebounceOgRetry = (constructedState: BreveditorState) => {
     if (onLagreBrev) {
       setEndringsstatus((prev) => ({ ...prev, erEndret: true })) // Behold evt. error men sett erEndret=true.
       clearTimeout(debounceLagring.current) // Kanseller pågående timere, enten de var startet på enste linjer eller i retry nedenfor

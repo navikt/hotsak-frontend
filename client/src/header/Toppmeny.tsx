@@ -11,6 +11,7 @@ import { usePersonContext } from '../personoversikt/PersonContext'
 import { useUmami } from '../sporing/useUmami.ts'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
+import { useIsLargeScreen } from '../utils/useViewportSize.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
@@ -26,6 +27,7 @@ export function Toppmeny() {
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
+  const isLargeScreen = useIsLargeScreen(1280)
   useGlobaleHotkeys({ visHurtigtaster: hurtigtaster.åpne })
 
   const handleSearch = (value: string) => {
@@ -50,7 +52,20 @@ export function Toppmeny() {
             <ToppmenyLinkButton to="/oppgaver/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
             <ToppmenyLinkButton to="/oppgaver/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
           </HStack>
-          <Søk onSearch={handleSearch} />
+          <HStack wrap={false} gap="space-4">
+            <Søk onSearch={handleSearch} />
+            {isLargeScreen && (
+              <InternalHeader.Button
+                as="a"
+                href={window.appSettings.SPORREUNDERSOKELSE_URL}
+                target="_blank"
+                rel="noreferrer"
+                className={classes.feedbackButton}
+              >
+                Gi tilbakemelding
+              </InternalHeader.Button>
+            )}
+          </HStack>
         </HStack>
         <ActionMenu>
           <ActionMenu.Trigger>
@@ -99,6 +114,18 @@ export function Toppmeny() {
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
             </ActionMenu.Group>
+            {!isLargeScreen && (
+              <ActionMenu.Group label="Tilbakemelding">
+                <ActionMenu.Item
+                  as="a"
+                  href={window.appSettings.SPORREUNDERSOKELSE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Gi tilbakemelding
+                </ActionMenu.Item>
+              </ActionMenu.Group>
+            )}
             <ActionMenu.Divider />
             <ActionMenu.Group label="Hjelp">
               <ActionMenu.Item onSelect={hurtigtaster.åpne} shortcut="Alt + H">
@@ -119,7 +146,7 @@ export function Toppmeny() {
           <ActionMenu.Content>
             <ActionMenu.Group label="Andre enheter">
               {innloggetAnsatt.enheter
-                .filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
+                ?.filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
                 .map((enhet) => (
                   <ActionMenu.Item
                     key={enhet.nummer}

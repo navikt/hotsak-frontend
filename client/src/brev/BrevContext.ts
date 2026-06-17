@@ -3,17 +3,18 @@ import { PlaceholderFeil } from './breveditor/plugins/placeholder/PlaceholderFei
 
 export interface BrevContextType {
   placeholderFeil: PlaceholderFeil[]
-  setPlaceholderFeil: (feil: PlaceholderFeil[]) => void
+  setPlaceholderFeil(feil: PlaceholderFeil[]): void
   synligKryssKnapp: boolean
-  setSynligKryssKnapp: (synlig: boolean) => void
+  setSynligKryssKnapp(synlig: boolean): void
   datoSoknadMottatt: string | undefined
   hjelpemidlerSøktOm: string[] | undefined
 }
 
 export const BrevContext = createContext<BrevContextType | undefined>(undefined)
+BrevContext.displayName = 'BrevContext'
 
-export const useBrevContext = () => {
-  const ctx = useContext(BrevContext)
-  if (!ctx) throw new Error('useBrevContext must be used within BrevContextProvider')
-  return ctx
+export function useBrevContext() {
+  const context = useContext(BrevContext)
+  if (!context) throw new Error('useBrevContext must be used within BrevContext')
+  return context
 }

@@ -1,12 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useSWRConfig } from 'swr'
-import { useSakId } from '../../saksbilde/useSak'
-import { useToast } from '../../felleskomponenter/toast/useToast'
-import { useBehandling } from '../../sak/v2/behandling/useBehandling'
-import { useBrevMetadata } from '../useBrevMetadata'
-import { useClosePanel } from '../../sak/v2/paneler/usePanelHooks'
 
-export const useRefSize = () => {
+export function useRefSize() {
   const ref = useRef<HTMLDivElement | null>(null)
   const [size, setSize] = useState<{ width: number; height: number }>()
   useLayoutEffect(() => {
@@ -25,7 +19,7 @@ export const useRefSize = () => {
   return { size, ref }
 }
 
-export const useBeforeUnload = (kreverBekreftelse: boolean, melding: string) => {
+export function useBeforeUnload(kreverBekreftelse: boolean, melding: string) {
   useEffect(() => {
     if (!kreverBekreftelse) return
     const listener = async (ev: BeforeUnloadEvent) => {
@@ -37,26 +31,4 @@ export const useBeforeUnload = (kreverBekreftelse: boolean, melding: string) => 
       window.removeEventListener('beforeunload', listener)
     }
   }, [kreverBekreftelse, melding])
-}
-
-export function useSlettBrevUtkast() {
-  const { mutate } = useSWRConfig()
-  const sakId = useSakId()
-  const { showSuccessToast } = useToast()
-  const { mutate: mutateGjeldendeBehandling } = useBehandling()
-  const { mutate: mutateBrevMetadata } = useBrevMetadata()
-  const closePanel = useClosePanel('brevpanel')
-
-  return async () => {
-    await fetch(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, {
-      method: 'delete',
-    }).then((res) => {
-      if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
-    })
-    await mutate(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`)
-    showSuccessToast('Brevutkast slettet')
-    mutateGjeldendeBehandling()
-    mutateBrevMetadata()
-    closePanel()
-  }
 }

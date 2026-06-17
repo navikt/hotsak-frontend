@@ -156,6 +156,10 @@ export type SaksbehandlingOppgavetype =
   | Oppgavetype.GODKJENNE_VEDTAK
   | Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
 
+export interface SaksbehandlingsoppgaveBase extends OppgaveBase {
+  sakId: string
+}
+
 export interface Saksbehandlingsoppgave extends Oppgave {
   kategorisering: Oppgavekategorisering<SaksbehandlingOppgavetype>
   sakId: string

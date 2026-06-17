@@ -10,3 +10,8 @@
 .menuIcon {
   font-size: 1.5rem;
 }
+
+.feedbackButton {
+  white-space: nowrap;
+  flex-shrink: 0;
+}

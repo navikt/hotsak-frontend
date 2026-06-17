@@ -10,9 +10,9 @@ export function Varsler({ varsler }: { varsler?: Varsel[] }) {
     <VStack gap="space-6" paddingBlock="space-6 space-0">
       {varsler.map((varsel) => {
         return varsel.type === Varseltype.WARNING ? (
-          <WarningTag>{varsel.tekst.nb}</WarningTag>
+          <WarningTag langTekst={varsel.tekst.nb.length > 50 ? true : false}>{varsel.tekst.nb}</WarningTag>
         ) : (
-          <InfoTag>{varsel.tekst.nb}</InfoTag>
+          <InfoTag langTekst={varsel.tekst.nb.length > 50 ? true : false}>{varsel.tekst.nb}</InfoTag>
         )
       })}
     </VStack>

@@ -1,6 +1,10 @@
 minimumReleaseAgeExclude:
-  - '@navikt/*'
-  - protobufjs@8.0.2
+  - '@navikt/aksel-icons@8.13.0'
+  - '@navikt/ds-css@8.13.0'
+  - '@navikt/ds-react@8.13.0'
+  - '@navikt/ds-tokens@8.13.0'
+  - js-yaml@4.1.2
+  - '@opentelemetry/core@2.8.0'
 
 onlyBuiltDependencies:
   - '@swc/core'
@@ -22,4 +26,5 @@ allowBuilds:
   protobufjs: false
 
 overrides:
-  protobufjs@>=8.0.0 <=8.0.1: ^8.0.2
+  '@opentelemetry/core@<2.8.0': ^2.8.0
+  js-yaml@<=4.1.1: ^4.1.2

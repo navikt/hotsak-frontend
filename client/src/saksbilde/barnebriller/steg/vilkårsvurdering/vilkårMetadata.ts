@@ -69,8 +69,8 @@ const vilkårMetadata = [
   },
 ]
 
-export function metadataFor(vilkårID: string) {
-  return vilkårMetadata.find((vilkår) => vilkår.vilkårId === vilkårID)
+export function metadataFor(vilkårId: string) {
+  return vilkårMetadata.find((vilkår) => vilkår.vilkårId === vilkårId)
 }
 
 export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([

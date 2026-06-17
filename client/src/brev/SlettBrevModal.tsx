@@ -1,30 +1,16 @@
 import { Tekst } from '../felleskomponenter/typografi'
-import { BekreftelsesDialog } from '../saksbilde/komponenter/BekreftelsesDialog'
-import { useSlettBrevUtkast } from './breveditor/hooks'
+import { BekreftelsesDialog, type BekreftelsesDialogProps } from '../saksbilde/komponenter/BekreftelsesDialog'
 
-type SlettBrevModalProps = {
-  open: boolean
-  onClose: () => void
-  heading: string
+export interface SlettBrevModalProps extends Omit<
+  BekreftelsesDialogProps,
+  'bekreftButtonLabel' | 'bekreftButtonVariant'
+> {
   tekst: string
-  width?: string
 }
 
-export function SlettBrevModal({ open, onClose, heading, tekst, width }: SlettBrevModalProps) {
-  const slettBrevutkast = useSlettBrevUtkast()
+export function SlettBrevModal({ tekst, ...rest }: SlettBrevModalProps) {
   return (
-    <BekreftelsesDialog
-      heading={heading}
-      bekreftButtonLabel={'Slett utkast'}
-      bekreftButtonVariant={'danger'}
-      onBekreft={() => {
-        slettBrevutkast()
-        onClose()
-      }}
-      open={open}
-      onClose={onClose}
-      width={width}
-    >
+    <BekreftelsesDialog bekreftButtonLabel="Slett utkast" bekreftButtonVariant="danger" {...rest}>
       <Tekst>{tekst}</Tekst>
     </BekreftelsesDialog>
   )

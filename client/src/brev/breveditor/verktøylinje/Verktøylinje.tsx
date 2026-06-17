@@ -14,7 +14,7 @@ import Skillelinje from './Skillelinje.tsx'
 import { useRefSize } from '../hooks.ts'
 import { useBreveditorContext } from '../BreveditorContext.ts'
 
-const Verktøylinje = () => {
+export function Verktøylinje() {
   const breveditor = useBreveditorContext()
 
   const { size: toolbarRefSize, ref: toolbarRef } = useRefSize()
@@ -109,5 +109,3 @@ const Verktøylinje = () => {
     </Box>
   )
 }
-
-export default Verktøylinje

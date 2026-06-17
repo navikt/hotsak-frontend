@@ -2,11 +2,14 @@ import { Skeleton, Textarea, VStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 
 import { FormProvider, useForm } from 'react-hook-form'
+import { isBrevmal, isBrevstatusFerdigstilt } from '../brev/brevSelectors.ts'
+import { Brevmal } from '../brev/brevTyper.ts'
+import { useBrevForSak } from '../brev/useBrev.ts'
+import { useBrevActions } from '../brev/useBrevActions.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { useToast } from '../felleskomponenter/toast/useToast'
 import { Tekst } from '../felleskomponenter/typografi.tsx'
-import { http } from '../io/HttpClient.ts'
 import { useNotater } from '../sak/notat/useNotater.tsx'
 import { InfoModal } from '../saksbilde/komponenter/InfoModal.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
@@ -27,6 +30,9 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { harUtkast } = useNotater(sakId)
   const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { gjeldendeEnhet } = useInnloggetAnsatt()
+  const { finnBrev } = useBrevForSak(sakId)
+  const ferdigstiltVedtaksbrev = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV), isBrevstatusFerdigstilt)
+  const { redigerBrevutkast } = useBrevActions(oppgave, ferdigstiltVedtaksbrev?.brevId)
 
   const { åpenModal } = useOppgaveContext()
   const lukkModal = useOppgaveLukkModalHandler()
@@ -45,7 +51,9 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
     // fjerner ferdigstilling av brev
-    await http.delete(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`)
+    if (ferdigstiltVedtaksbrev) {
+      await redigerBrevutkast.trigger()
+    }
     await endreOppgavetildeling({
       saksbehandlerId: data.valgtSaksbehandler,
       kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,

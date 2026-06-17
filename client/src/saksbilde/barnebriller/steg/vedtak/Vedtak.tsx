@@ -2,8 +2,11 @@ import { Alert, Box, Button, Detail, Heading, Skeleton, Tag, VStack } from '@nav
 
 import classes from './Vedtak.module.css'
 
+import { isBrevmalBarnebrillerVedtak, isBrevstatusUtkast } from '../../../../brev/brevSelectors.ts'
+import { useBrevForSak } from '../../../../brev/useBrev.ts'
+import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
+import { OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useSakId } from '../../../useSak.ts'
@@ -14,7 +17,6 @@ import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
-import { Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 
 export interface VedtakProps {
   oppgave?: Saksbehandlingsoppgave
@@ -31,6 +33,9 @@ export function Vedtak(props: VedtakProps) {
     sakId!,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
+
+  const { finnBrev } = useBrevForSak(sakId!)
+  const vedtaksbrev = finnBrev<{ brevtekst?: string }>(isBrevmalBarnebrillerVedtak, isBrevstatusUtkast)
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
@@ -83,7 +88,7 @@ export function Vedtak(props: VedtakProps) {
                 />
               )}
               {oppgave != null && saksbehandlerKanRedigereBarnebrillesak && (
-                <Redigeringsvisning oppgave={oppgave} sak={sak.data} />
+                <Redigeringsvisning oppgave={oppgave} sak={sak.data} vedtaksbrev={vedtaksbrev} />
               )}
               {visAlertGodkjenning && (
                 <Alert variant="info" size="small">
@@ -102,7 +107,7 @@ export function Vedtak(props: VedtakProps) {
         </div>
       )}
       <div className={classes.venstreKolonne}>
-        <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
+        <BrevPanel brevId={vedtaksbrev?.brevId} fullSize={true} />
       </div>
     </div>
   )

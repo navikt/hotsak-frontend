@@ -5,7 +5,8 @@ import {
   type Notat,
   NotatKlassifisering,
   NotatType,
-  type NotatUtkast,
+  type OppdaterNotatRequest,
+  type OpprettNotatRequest,
 } from '../../sak/notat/notatTyper'
 import { MålformType, Saksbehandler } from '../../types/types.internal.ts'
 import { nåIso } from './felles.ts'
@@ -42,17 +43,17 @@ export class NotatStore extends Dexie {
     return this.notater.toArray()
   }
 
-  async lagreUtkast(sakId: string, utkast: NotatUtkast) {
+  async lagreUtkast(sakId: string, request: OpprettNotatRequest) {
     const saksbehandler = Saksbehandlere.innlogget()
     try {
       return await this.notater.add({
         sakId,
         saksbehandler,
-        type: utkast.type,
-        tittel: utkast.tittel || '',
-        klassifisering: utkast.klassifisering,
+        type: request.type,
+        tittel: request.tittel || '',
+        klassifisering: request.klassifisering,
         målform: MålformType.BOKMÅL,
-        tekst: utkast.tekst || '',
+        tekst: request.tekst || '',
         opprettet: nåIso(),
         oppdatert: nåIso(),
       })
@@ -62,24 +63,14 @@ export class NotatStore extends Dexie {
     }
   }
 
-  async ferdigstillNotat(notatId: string | number, payload: FerdigstillNotatRequest) {
+  async ferdigstillNotat(notatId: ID, request: FerdigstillNotatRequest) {
     notatId = Number(notatId)
-    const notat = await this.notater.get(notatId)
-    if (!notat) {
-      throw new Error(`Notat med id: ${notatId} finnes ikke`)
-    }
-
     this.notater.update(notatId, {
-      ...notat,
-      type: payload.type,
-      tittel: payload.tittel,
-      tekst: payload.tekst,
-      klassifisering: payload.klassifisering,
-
+      ...request,
       ferdigstilt: nåIso(),
     })
-
-    if (payload.type === NotatType.JOURNALFØRT) {
+    const notat = await this.hentNotat(notatId)
+    if (notat.type === NotatType.JOURNALFØRT) {
       setTimeout(() => {
         console.log('Later som vi har fått melding fra Joark om at notatet er journalført')
         this.notater.update(notatId, {
@@ -91,21 +82,26 @@ export class NotatStore extends Dexie {
     }
   }
 
-  async oppdaterUtkast(sakId: string, notatId: string | number, utkast: NotatUtkast) {
+  async oppdaterUtkast(notatId: ID, request: OppdaterNotatRequest) {
     notatId = Number(notatId)
-    const notat = await this.notater.where({ sakId, id: notatId }).first()
     this.notater.update(notatId, {
-      ...notat,
-      tittel: utkast.tittel,
-      tekst: utkast.tekst,
-      klassifisering: utkast.klassifisering,
+      ...request,
       oppdatert: nåIso(),
     })
   }
 
-  async slettNotat(notatId: string | number) {
+  async slettNotat(notatId: ID) {
     notatId = Number(notatId)
     return this.notater.delete(notatId)
+  }
+
+  async hentNotat(notatId: ID) {
+    notatId = Number(notatId)
+    const notat = await this.notater.get(notatId)
+    if (!notat) {
+      throw new Error(`Fant ikke notat med notatId: ${notatId}`)
+    }
+    return notat
   }
 
   async hentNotater(sakId: string) {

@@ -21,11 +21,12 @@
 
 ## Code style
 
-- Bruk `function` for funksjoner på modul-nivå.
-- Bruk arrow functions for inline-funksjoner og callbacks.
-- Bruk alltid functional components i React.
-- Bruk CSS modules og importer som `import classes from './Component.module.css'`
-- Bruk named exports hvis mulig.
+- Use `function` for top-level functions in modules.
+- Use arrow functions for inline-functions and callbacks.
+- Always use functional components in React, with the `function` keyword.
+- Use CSS-modules and import as `import classes from './Component.module.css'`
+- Prefer named exports.
+- Always import types with `type` prefix, like `import { type Sak } from './sakTyper.ts'`
 
 ## Testing
 

@@ -1,19 +1,20 @@
-import useSWR from 'swr'
+import useSWR, { type SWRConfiguration } from 'swr'
 
-import { Saksdokument, SaksdokumentType } from '../../types/types.internal'
+import { type HttpError } from '../../io/HttpError'
+import { type Saksdokument, SaksdokumentType } from '../../types/types.internal'
 
 export function useSaksdokumenter(
   sakId: string | number,
   shouldFetch = true,
-  sakstype = SaksdokumentType.UTGÅENDE,
-  opts?: any
+  type = SaksdokumentType.UTGÅENDE,
+  options?: SWRConfiguration<Saksdokument[], HttpError>
 ) {
-  const url = `/api/sak/${sakId}/dokumenter?type=${encodeURIComponent(sakstype)}`
-  const { data = [], error, mutate, isLoading } = useSWR<Saksdokument[]>(() => (shouldFetch ? url : null), opts)
+  const url = `/api/sak/${sakId}/dokumenter?type=${encodeURIComponent(type)}`
+  const { data = ingenDokumenter, ...rest } = useSWR<Saksdokument[], HttpError>(shouldFetch ? url : null, options)
   return {
     data,
-    error,
-    isLoading,
-    mutate,
+    ...rest,
   }
 }
+
+const ingenDokumenter: Saksdokument[] = []

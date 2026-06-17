@@ -16,7 +16,7 @@ import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
 import { alertVariant } from './oppsummertStatus'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
-import { metadataFor } from './vilkårMetada'
+import { metadataFor } from './vilkårMetadata.ts'
 
 export function VurderVilkår() {
   const sakId = useSakId()
@@ -159,7 +159,7 @@ export function VurderVilkår() {
                       <Tekst>{beskrivelse}</Tekst>
                     </Table.DataCell>
                     <Table.DataCell scope="row" className={classes.basertPåCell}>
-                      {vilkårMetadata?.basertPå.map((metadata) => <Tekst key={`${metadata}`}>{metadata}</Tekst>) || '-'}
+                      {vilkårMetadata?.basertPå.map((metadata) => <Tekst key={metadata}>{metadata}</Tekst>) || '-'}
                     </Table.DataCell>
                     <Table.DataCell scope="row" className={classes.vurdertAvCell}>
                       <VurdertAv

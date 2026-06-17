@@ -1,41 +1,46 @@
 import { HStack, Loader, LocalAlert } from '@navikt/ds-react'
-import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev'
-import { Brevtype, RessursStatus } from '../types/types.internal'
+
 import { Etikett } from '../felleskomponenter/typografi'
+import { useObjectUrl } from '../io/HttpClient'
 import classes from './BrevForhåndsvisning.module.css'
+import { useBrevPdf } from './useBrev'
 
-const BrevForhåndsvisning = ({ loaderTekst }: { loaderTekst: string }) => {
-  const { hentedeBrev } = useBrev()
-  const brevForhåndsvisning = hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]
-
-  switch (brevForhåndsvisning?.status) {
-    case RessursStatus.HENTER:
-      return (
-        <HStack justify="center" gap="space-16" marginBlock="space-16">
-          <Loader size="medium" title="Henter brev..." />
-          <Etikett>{loaderTekst}</Etikett>
-        </HStack>
-      )
-    case RessursStatus.SUKSESS:
-      return (
-        <iframe
-          src={brevForhåndsvisning?.data}
-          width="100%"
-          height="100%"
-          allow="fullscreen"
-          className={classes.iframe}
-        />
-      )
-    case RessursStatus.FEILET:
-      return (
-        <LocalAlert status="warning">
-          <LocalAlert.Title>Kunne ikke hente brev</LocalAlert.Title>
-          <LocalAlert.Content>Prøv igjen senere.</LocalAlert.Content>
-        </LocalAlert>
-      )
-    default:
-      return null
-  }
+export interface BrevForhåndsvisningProps {
+  brevId?: string
+  avsluttet?: boolean
 }
 
-export default BrevForhåndsvisning
+export function BrevForhåndsvisning({ brevId, avsluttet = false }: BrevForhåndsvisningProps) {
+  const { brev, error, isLoading } = useBrevPdf(brevId)
+  const url = useObjectUrl(brev)
+
+  if (error) {
+    return (
+      <LocalAlert status="warning">
+        <LocalAlert.Title>Kunne ikke hente brev</LocalAlert.Title>
+        <LocalAlert.Content>Prøv igjen senere.</LocalAlert.Content>
+      </LocalAlert>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <HStack justify="center" gap="space-16" marginBlock="space-16">
+        <Loader size="medium" title="Henter brev..." />
+        <Etikett>Genererer forhåndsvisning av brev...</Etikett>
+      </HStack>
+    )
+  }
+
+  // fixme -> "Henter vedtaksbrev fra Joark..."
+
+  return (
+    <iframe
+      src={url}
+      width="100%"
+      height="100%"
+      allow="fullscreen"
+      className={avsluttet ? classes.sendt : classes.root}
+    />
+  )
+}

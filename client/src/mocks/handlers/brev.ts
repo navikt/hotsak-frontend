@@ -99,6 +99,19 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
       return HttpResponse.json(brev)
     }
 
+    const useGotenberg = import.meta.env.VITE_GOTENBERG === 'true'
+    if (useGotenberg && typeof brev.data.valueAsHtml === 'string') {
+      const htmlBlob = new Blob([brev.data.valueAsHtml], { type: 'text/html' })
+      const formData = new FormData()
+      formData.append('files', htmlBlob, 'index.html')
+      const response = await fetch('/gotenberg/forms/chromium/convert/html', {
+        method: 'POST',
+        body: formData,
+      })
+      const buffer = await response.arrayBuffer()
+      return respondPdf(buffer)
+    }
+
     const buffer = await hentBrevSomPdf(brev)
     return respondPdf(buffer)
   }),

@@ -1,9 +1,12 @@
 import { Button, Loader, LocalAlert } from '@navikt/ds-react'
-import { useState } from 'react'
+import { isToday } from 'date-fns'
+import { useEffect, useState } from 'react'
 
+import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import {
   type Behandling,
+  isBehandlingFerdigstilt,
   isBehandlingsutfallHenleggelse,
   isBehandlingsutfallVedtak,
   VedtaksResultat,
@@ -21,6 +24,7 @@ import classes from './BrevRedigering.module.css'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface BrevRedigeringProps {
   oppgave: Saksbehandlingsoppgave
@@ -39,6 +43,8 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
 
+  const { erIkkeProd } = useMiljø()
+
   const datoSoknadMottatt = sak?.data.opprettet
   const hjelpemidlerSøktOm = sak?.data.søknadGjelder
     ? sak.data.søknadGjelder
@@ -52,7 +58,20 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
     brev?.brevId
   )
 
+  const { showInfoToast } = useToast()
+
   const templateMarkdown = useBrevmal(utledBrevmal(behandling))
+
+  // sett brev tilbake til utkast hvis dato det ble ferdigstilt er før i dag, slik at det får dagens dato
+  useEffect(() => {
+    if (brev?.ferdigstilt && !isToday(brev.ferdigstilt) && !isBehandlingFerdigstilt(behandling) && erIkkeProd) {
+      redigerBrevutkast.trigger().then(() => {
+        showInfoToast(
+          'Brevet knyttet til denne behandlingen ble ferdigstilt før dagens dato og er nå satt tilbake til utkast. Ferdigstill brevet på nytt hvis du skal ferdigstille behandlingen.'
+        )
+      })
+    }
+  }, [brev?.ferdigstilt])
 
   if (brevIsLoading) {
     return (

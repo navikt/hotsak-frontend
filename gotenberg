@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-docker run --rm -d -p "3000:3000" gotenberg/gotenberg:8
+docker run -d --name gotenberg -p "3000:3000" gotenberg/gotenberg:8

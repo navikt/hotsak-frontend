@@ -1,20 +1,18 @@
 import { useSWRConfig } from 'swr'
 import useSWRMutation from 'swr/mutation'
 import { useActionState } from '../../../action/Actions.ts'
-import { useToast } from '../../../felleskomponenter/toast/useToast.ts'
+import { useMutateBrevForSak } from '../../../brev/useBrev.ts'
 import { http } from '../../../io/HttpClient.ts'
 import { HttpError } from '../../../io/HttpError.ts'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../saksbilde/mutateSak.ts'
 import { Behandlingsutfall, LagreBehandlingRequest } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
-import { useMutateBrevForSak } from '../../../brev/useBrev.ts'
 
 export function useBehandlingActions() {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
   const { oppgaveId, versjon, sakId } = oppgave ?? {}
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
-  const { showSuccessToast } = useToast()
   const { execute, state } = useActionState()
   const { mutate } = useSWRConfig()
   const mutateBrevForSak = useMutateBrevForSak()
@@ -31,9 +29,8 @@ export function useBehandlingActions() {
     `/api/sak/${sakId}/behandling`,
     (url, { arg: body }) => http.post<LagreBehandlingRequest, Behandlingsutfall>(url, body, { versjon }),
     {
-      async onSuccess() {
+      onSuccess: async () => {
         await mutateOppgaveOgSak()
-        showSuccessToast('Endringene ble lagret')
       },
     }
   )

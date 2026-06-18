@@ -8,11 +8,11 @@ import { UtlånsoversiktIcon } from '../../notat/UtlånsoversiktIcon'
 import { SidebarValg } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakV2ContextType'
 
-export interface SidebarProps {
+export interface VertikalIkonBarProps {
   oppgave?: Saksbehandlingsoppgave
 }
 
-export function VertikalIkonBar({ oppgave }: SidebarProps) {
+export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
   const { sak } = useSak()
   const { aktivSidebar, setAktivSidebar, panelState } = useSakContext()
   const sidePanel = panelState.panels.sidebarpanel

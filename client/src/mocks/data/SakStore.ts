@@ -135,7 +135,8 @@ export class SakStore extends Dexie {
   }
 
   async lagreAlle(saker: InsertSak[]) {
-    const journalposter = await this.journalpostStore.alle()
+    const barnebrilleJournalpostIder = await this.journalpostStore.hentBarnebrilleJournalpostIder()
+    let barnebrilleIndex = 0
     await this.personStore.lagreAlle(
       saker.map(({ bruker: { navn, kjønn, ...rest }, enhet }) => ({
         ...navn,
@@ -170,9 +171,11 @@ export class SakStore extends Dexie {
     return this.saker.bulkAdd(
       saker.map((sak) => {
         if (erInsertBarnebrillesak(sak)) {
+          const journalpostId = barnebrilleJournalpostIder[barnebrilleIndex % barnebrilleJournalpostIder.length]
+          barnebrilleIndex++
           return {
             ...sak,
-            journalposter: journalposter.map((it) => it.journalpostId),
+            journalposter: [journalpostId],
           }
         }
         return sak

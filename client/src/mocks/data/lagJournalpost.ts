@@ -3,6 +3,12 @@ import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 
+export const BARNEBRILLE_BREVKODE = 'NAV 10-07.34'
+export const HJELPEMIDDEL_BREVKODE = 'NAV 10-07.03'
+
+/** Journalpost-IDer som tilhører hjelpemiddelsaker (ikke barnebriller). */
+export const HJELPEMIDDEL_JOURNALPOST_IDS = ['9006'] as const
+
 export type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
 export type InsertJournalpost = LagretJournalpost
 
@@ -46,7 +52,27 @@ export function lagDokumenter(journalpostId: string): InsertDokument[] {
     {
       journalpostId,
       tittel: 'NAV 10-07.34: Tilskudd ved kjøp av briller til barn',
-      brevkode: 'NAV 10-07.34',
+      brevkode: BARNEBRILLE_BREVKODE,
+    },
+    {
+      journalpostId,
+      tittel: 'Brilleseddel',
+      brevkode: BARNEBRILLE_BREVKODE,
+    },
+    {
+      journalpostId,
+      tittel: 'Kvittering fra optiker',
+      brevkode: BARNEBRILLE_BREVKODE,
+    },
+  ]
+}
+
+export function lagHjelpemiddelDokumenter(journalpostId: string): InsertDokument[] {
+  return [
+    {
+      journalpostId,
+      tittel: 'NAV 10-07.03: Søknad om hjelpemidler',
+      brevkode: HJELPEMIDDEL_BREVKODE,
     },
   ]
 }

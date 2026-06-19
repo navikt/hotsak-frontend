@@ -3,10 +3,13 @@ import Dexie, { Table } from 'dexie'
 import { Journalpost } from '../../types/types.internal.ts'
 import { nåIso } from './felles.ts'
 import {
+  BARNEBRILLE_BREVKODE,
+  HJELPEMIDDEL_JOURNALPOST_IDS,
   InsertDokument,
   InsertHendelse,
   InsertJournalpost,
   lagDokumenter,
+  lagHjelpemiddelDokumenter,
   lagJournalpost,
   LagretDokument,
   LagretHendelse,
@@ -35,18 +38,22 @@ export class JournalpostStore extends Dexie {
       return []
     }
 
-    await this.lagreAlle([lagJournalpost('9001'), lagJournalpost('9002'), lagJournalpost('9003')])
+    // Fem barnebrille-journalposter — én dedikert per barnebrillesak (1001–1005)
+    await this.lagreAlle([
+      lagJournalpost('9001'),
+      lagJournalpost('9002'),
+      lagJournalpost('9003'),
+      lagJournalpost('9004'),
+      lagJournalpost('9005'),
+    ])
 
-    const v2Post = lagJournalpost('9004', 'Søknad om hjelpemidler')
+    // Hjelpemiddel-journalpost for søknadsaker
+    const v2Post = lagJournalpost('9006', 'Søknad om hjelpemidler')
     await this.journalposter.add(v2Post)
-    await this.dokumenter.add({
-      journalpostId: '9004',
-      tittel: 'Søknad om hjelpemidler',
-      brevkode: 'NAV 10-07.03',
-    } as InsertDokument)
+    await this.dokumenter.bulkAdd(lagHjelpemiddelDokumenter('9006') as LagretDokument[])
     await this.personStore.lagreAlle([{ ...lagPerson(), fnr: v2Post.fnrInnsender }])
 
-    return ['9004']
+    return ['9006']
   }
 
   async lagreAlle(journalposter: InsertJournalpost[]) {
@@ -80,6 +87,11 @@ export class JournalpostStore extends Dexie {
 
   async alle() {
     return this.journalposter.toArray()
+  }
+
+  async hentBarnebrilleJournalpostIder(): Promise<string[]> {
+    const barnebrilledokumenter = await this.dokumenter.filter((d) => d.brevkode === BARNEBRILLE_BREVKODE).toArray()
+    return [...new Set(barnebrilledokumenter.map((d) => d.journalpostId))]
   }
 
   async søk(): Promise<Journalpost[]> {

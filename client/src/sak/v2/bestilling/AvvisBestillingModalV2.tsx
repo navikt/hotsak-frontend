@@ -18,7 +18,7 @@ export interface AvvisBestillingModalV2Props {
 export function AvvisBestillingModalV2({ open, onClose }: AvvisBestillingModalV2Props) {
   const { oppgave } = useOppgave()
   const { opprettOgferdigstillBestillingBehandling } = useBehandlingActions()
-  const { showSuccessToast } = useToast()
+  const { showInfoToast } = useToast()
   const {
     control,
     handleSubmit,
@@ -38,7 +38,7 @@ export function AvvisBestillingModalV2({ open, onClose }: AvvisBestillingModalV2
         },
       },
     })
-    showSuccessToast('Bestilling avvist')
+    showInfoToast('Bestilling avvist')
     onClose()
   })
 

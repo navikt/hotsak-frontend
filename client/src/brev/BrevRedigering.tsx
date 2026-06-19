@@ -24,7 +24,6 @@ import classes from './BrevRedigering.module.css'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface BrevRedigeringProps {
   oppgave: Saksbehandlingsoppgave
@@ -42,8 +41,6 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
-
-  const { erIkkeProd } = useMiljø()
 
   const datoSoknadMottatt = sak?.data.opprettet
   const hjelpemidlerSøktOm = sak?.data.søknadGjelder
@@ -64,7 +61,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
 
   // sett brev tilbake til utkast hvis dato det ble ferdigstilt er før i dag, slik at det får dagens dato
   useEffect(() => {
-    if (brev?.ferdigstilt && !isToday(brev.ferdigstilt) && !isBehandlingFerdigstilt(behandling) && erIkkeProd) {
+    if (brev?.ferdigstilt && !isToday(brev.ferdigstilt) && !isBehandlingFerdigstilt(behandling)) {
       redigerBrevutkast.trigger().then(() => {
         showInfoToast(
           'Brevet knyttet til denne behandlingen ble ferdigstilt før dagens dato og er nå satt tilbake til utkast. Ferdigstill brevet på nytt hvis du skal ferdigstille behandlingen.'

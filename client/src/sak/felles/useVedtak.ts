@@ -34,18 +34,29 @@ export function useVedtak(sak: Sak) {
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
   )
 
-  const harEndretLavereRangertHjelpemiddel = artikler.artikler.some(
-    (artikkel) => artikkel.id === lavereRangertHjelpemiddel?.hjelpemiddelId && artikkel.endretArtikkel
-  )
-
-  const begrunnelseForLavereRangeringFritekst = lavereRangertHjelpemiddel?.opplysninger
-    .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
-    ?.innhold.at(0)?.fritekst
+  const lavereRangerteHjelpemidler =
+    behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.filter(
+      (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
+    ) ?? []
 
   const lavereRangertBegrunnelse =
-    begrunnelseForLavereRangeringFritekst && !harEndretLavereRangertHjelpemiddel
-      ? `POST ${begrunnelseForLavereRangeringFritekst}`
-      : undefined
+    lavereRangerteHjelpemidler
+      .flatMap((hjelpemiddel) => {
+        const harEndret = artikler.artikler.some(
+          (artikkel) => artikkel.id === hjelpemiddel.hjelpemiddelId && artikkel.endretArtikkel
+        )
+
+        if (harEndret) {
+          return []
+        }
+
+        const begrunnelseForLavereRangeringFritekstItem = hjelpemiddel.opplysninger
+          .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
+          ?.innhold.at(0)?.fritekst
+
+        return begrunnelseForLavereRangeringFritekstItem ? [`POST ${begrunnelseForLavereRangeringFritekstItem}`] : []
+      })
+      .join('\n\n') || undefined
 
   const form = useForm<VedtakFormValues>({
     values: {

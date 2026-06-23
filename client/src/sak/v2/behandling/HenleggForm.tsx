@@ -80,9 +80,7 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
               error={fieldState.error?.message}
             >
               <Radio value={Henleggelsesårsak.SØKNAD_TRUKKET}>Bruker ønsker å trekke søknaden</Radio>
-              <Radio value={Henleggelsesårsak.FEIL_HJELPEMIDDEL}>
-                Begrunner ønsker å trekke søknaden fordi det er søkt om feil hjelpemiddel/tilbehør
-              </Radio>
+              <Radio value={Henleggelsesårsak.TRUKKET_AV_BEGRUNNER}>Begrunner ønsker å trekke søknaden</Radio>
               <Radio value={Henleggelsesårsak.FLERE_SØKNADER_SAMME_BEHOV}>
                 Det er sendt inn flere søknader på brukeren om samme behov
               </Radio>

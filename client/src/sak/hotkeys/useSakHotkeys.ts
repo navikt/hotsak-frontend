@@ -3,6 +3,7 @@ import { useHotkey } from '../../hotkeys/useHotkey.ts'
 import { useOppgave } from '../../oppgave/useOppgave.ts'
 import { useOppgaveUrl } from '../../oppgave/useOppgaveUrl.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
+import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { Gjenstående, isBehandlingsutfallVedtak, VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../v2/behandling/useBehandling.ts'
@@ -20,6 +21,7 @@ export function useSakHotkeys({
   onFattVedtak: () => void
 }) {
   const { oppgave } = useOppgave()
+  const { erSøknad } = useSaksregler()
   const oppgaveUrl = useOppgaveUrl(oppgave?.oppgaveId)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { logOppgaveÅpnetIGosys } = useUmami()
@@ -50,7 +52,7 @@ export function useSakHotkeys({
         onFattVedtak()
       }
     },
-    { enabled: oppgaveErUnderBehandlingAvInnloggetAnsatt }
+    { enabled: oppgaveErUnderBehandlingAvInnloggetAnsatt  && erSøknad }
   )
 
   useHotkey(

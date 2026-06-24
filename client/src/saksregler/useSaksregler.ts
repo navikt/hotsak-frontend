@@ -10,5 +10,6 @@ export function useSaksregler() {
     kanBehandleSak: oppgaveErUnderBehandlingAvInnloggetAnsatt,
     kanEndreHjelpemiddel: oppgaveErUnderBehandlingAvInnloggetAnsatt,
     erBestilling: oppgave?.sak?.sakstype === Sakstype.BESTILLING,
+    erSøknad: oppgave?.sak?.sakstype === Sakstype.SØKNAD,
   }
 }

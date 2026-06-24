@@ -28,7 +28,10 @@
 - Prefer named exports.
 - Always import types with `type` prefix, like `import { type Sak } from './sakTyper.ts'`
 
-## Testing
+## Git
+
+- **Aldri kjør `git commit` eller `git push`** uten at brukeren eksplisitt ber om det.
+- Gjør ferdig alle kodeendringer, vis en oppsummering, og la brukeren selv gjennomgå og commite.
 
 - **Vitest** for unit tests (jsdom, globals enabled). Run: `pnpm run test`.
 - **Playwright** for E2E tests (Chromium, uses MSW in dev mode). Run: `pnpm run e2e`.

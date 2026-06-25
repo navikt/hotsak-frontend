@@ -180,8 +180,8 @@ export interface OppgaveKodeverk {
 }
 
 export interface KodeverkGjelder {
-  behandlingstema?: OppgaveKodeverk
-  behandlingstype?: OppgaveKodeverk
+  behandlingstema?: OppgaveKodeverk | null
+  behandlingstype?: OppgaveKodeverk | null
 }
 
 export interface Oppgavekategorisering<T extends Oppgavetype = Oppgavetype> {

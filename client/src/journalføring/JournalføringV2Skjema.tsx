@@ -81,7 +81,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
     defaultValues: {
       tema: 'HJE',
       prioritet: 'NORMAL',
-      tilordnetEnhet: 'minEnhet',
+      tilordnetEnhet: 'enhetensOppgaveliste',
       kommentar: ``,
       mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
       aktivFra: formatISO(mottattDatoDefault, { representation: 'date' }),
@@ -302,7 +302,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
             </HStack>
 
             {/* Teste å spitte behandlingstype og behandlingstema */}
-            <HStack gap="space-4" align="start">
+            <VStack gap="space-4" align="start">
               <SelectController
                 control={control}
                 name="behandlingstype"
@@ -347,12 +347,12 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
                 <option value="NORMAL">Normal</option>
                 <option value="LAV">Lav</option>
               </SelectController>
-            </HStack>
+            </VStack>
             {/* Slutt */}
 
             {/* Stønadsklassifisering */}
             <HStack gap="space-20">
-              <VStack gap="space-8">
+              {/*  <VStack gap="space-8">
                 <Label size="small">Stønadsklassifisering</Label>
                 <SelectController
                   control={control}
@@ -365,7 +365,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
                   <option value="DAGLIGLIV">Dagligliv</option>
                   <option value="FORFLYTNING">Forflytning</option>
                 </SelectController>
-              </VStack>
+              </VStack>*/}
 
               <VStack gap="space-8">
                 <Label size="small">Område</Label>

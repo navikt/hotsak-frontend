@@ -1,5 +1,4 @@
 import useSWRImmutable from 'swr/immutable'
-import type { SetRequired } from 'type-fest'
 
 import { createUrl } from '../io/HttpClient.ts'
 import type { KodeverkGjelder, OppgaveKodeverk } from './oppgaveTypes.ts'
@@ -31,12 +30,12 @@ const noData: ReadonlyArray<never> = []
 
 export function harBehandlingstema(
   gjelder: KodeverkGjelder
-): gjelder is SetRequired<KodeverkGjelder, 'behandlingstema'> {
+): gjelder is KodeverkGjelder & { behandlingstema: OppgaveKodeverk } {
   return gjelder.behandlingstema != null
 }
 
 export function harBehandlingstype(
   gjelder: KodeverkGjelder
-): gjelder is SetRequired<KodeverkGjelder, 'behandlingstype'> {
+): gjelder is KodeverkGjelder & { behandlingstype: OppgaveKodeverk } {
   return gjelder.behandlingstype != null
 }

@@ -4,6 +4,7 @@ import { Alert, Box, HStack, Loader } from '@navikt/ds-react'
 
 import { BrytbarBrødtekst, Tekst } from '../typografi'
 import classes from './Toast.module.css'
+import { ToastType } from './ToastContext'
 
 // TODO: Flytte denne og rename. Dette er ikke en Toast med en loding indikator
 export function Toast({ children }: { children: ReactNode }) {
@@ -26,16 +27,17 @@ export function Toast({ children }: { children: ReactNode }) {
   )
 }
 
-interface SuccessToastProps {
+interface GeneriskToastProps {
   children: ReactNode
+  variant: ToastType
   onRemove: () => void
 }
 
-export function SuccessToast({ children, onRemove }: SuccessToastProps) {
+export function GeneriskToast({ children, variant, onRemove }: GeneriskToastProps) {
   return (
     <Alert
       className={classes.toastAlert}
-      variant="success"
+      variant={variant}
       size="small"
       closeButton={true}
       onClose={onRemove}

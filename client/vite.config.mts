@@ -29,6 +29,13 @@ export default defineConfig((env) => {
     server: {
       port: 3001,
       proxy: {
+        '/gotenberg': {
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+          rewrite(path) {
+            return path.replace(/^\/gotenberg/, '')
+          },
+        },
         ...(proxy.api
           ? {
               '/api': {

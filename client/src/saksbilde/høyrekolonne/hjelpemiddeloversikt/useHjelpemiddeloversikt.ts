@@ -9,8 +9,6 @@ import {
   VedtaksgrunnlagHøreapparatvedtak,
   VedtaksgrunnlagType,
 } from '../../../types/types.internal.ts'
-import { useMiljø } from '../../../utils/useMiljø.ts'
-import { useErPilot } from '../../../tilgang/useTilgang.ts'
 import { useUtlånoversikt } from './useUtlånoversikt.ts'
 
 export interface UseHjelpemiddeloversiktResponse {
@@ -36,8 +34,6 @@ export function useHjelpemiddeloversikt(
     isFromVedtak,
   } = useUtlånoversikt(fnr, vedtaksgrunnlag)
 
-  const { erIkkeProd } = useMiljø()
-  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || erIkkeProd
   const høreapparatvedtakFraVedtak = vedtaksgrunnlag?.find(erHøreapparatVedtak)?.data
 
   const {
@@ -45,7 +41,7 @@ export function useHjelpemiddeloversikt(
     error: errorHaVedtak,
     isLoading: isLoadingHaVedtak,
   } = useSwr<HøreapparatVedtak, HttpError, [string, string] | null>(
-    fnr && erHørselshjelpemiddelPilot && !isFromVedtak ? ['/api/person/ha-vedtak', fnr] : null,
+    fnr && !isFromVedtak ? ['/api/person/ha-vedtak', fnr] : null,
     ([url, fnr]) => http.post<{ fnr: string }, HøreapparatVedtak>(url, { fnr })
   )
 

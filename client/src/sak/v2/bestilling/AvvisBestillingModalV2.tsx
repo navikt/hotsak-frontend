@@ -8,6 +8,7 @@ import { useOppgave } from '../../../oppgave/useOppgave'
 import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
 import { Bestillingsresultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
+import { useToast } from '../../../felleskomponenter/toast/useToast'
 
 export interface AvvisBestillingModalV2Props {
   open: boolean
@@ -17,6 +18,7 @@ export interface AvvisBestillingModalV2Props {
 export function AvvisBestillingModalV2({ open, onClose }: AvvisBestillingModalV2Props) {
   const { oppgave } = useOppgave()
   const { opprettOgferdigstillBestillingBehandling } = useBehandlingActions()
+  const { showInfoToast } = useToast()
   const {
     control,
     handleSubmit,
@@ -36,6 +38,7 @@ export function AvvisBestillingModalV2({ open, onClose }: AvvisBestillingModalV2
         },
       },
     })
+    showInfoToast('Bestilling avvist')
     onClose()
   })
 

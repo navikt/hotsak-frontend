@@ -244,8 +244,8 @@ function VedtaksResultatVelger({
           Vurderingen din
         </Heading>
         <HelpText title="Vurderingsinformasjon">
-          Vurder om søknaden skal innvilges, delvis innvilges eller avslås. Vurderingen blir ikke synlig for bruker før
-          etter at vedtaket er fattet.
+          Vurder om søknaden skal innvilges, delvis innvilges, avslås eller henlegges. Resultatet du setter blir først
+          synlig for brukeren dagen etter at du har ferdigstilt saken i Hotsak.
         </HelpText>
       </HStack>
       <VStack paddingInline="space-8 space-0" gap="space-12">

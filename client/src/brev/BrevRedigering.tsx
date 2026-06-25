@@ -1,9 +1,12 @@
 import { Button, Loader, LocalAlert } from '@navikt/ds-react'
-import { useState } from 'react'
+import { isToday } from 'date-fns'
+import { useEffect, useState } from 'react'
 
+import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import {
   type Behandling,
+  isBehandlingFerdigstilt,
   isBehandlingsutfallHenleggelse,
   isBehandlingsutfallVedtak,
   VedtaksResultat,
@@ -52,7 +55,20 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
     brev?.brevId
   )
 
+  const { showInfoToast } = useToast()
+
   const templateMarkdown = useBrevmal(utledBrevmal(behandling))
+
+  // sett brev tilbake til utkast hvis dato det ble ferdigstilt er før i dag, slik at det får dagens dato
+  useEffect(() => {
+    if (brev?.ferdigstilt && !isToday(brev.ferdigstilt) && !isBehandlingFerdigstilt(behandling)) {
+      redigerBrevutkast.trigger().then(() => {
+        showInfoToast(
+          'Brevet knyttet til denne behandlingen ble ferdigstilt før dagens dato og er nå satt tilbake til utkast. Ferdigstill brevet på nytt hvis du skal ferdigstille behandlingen.'
+        )
+      })
+    }
+  }, [brev?.ferdigstilt])
 
   if (brevIsLoading) {
     return (

@@ -1,7 +1,7 @@
 import { Stack } from '@navikt/ds-react'
 import { createContext, ReactNode, useCallback, useState } from 'react'
+import { GeneriskToast } from './Toast'
 import classes from './ToastContext.module.css'
-import { SuccessToast } from './Toast'
 
 export type ToastType = 'success' | 'info' | 'warning' | 'error'
 
@@ -70,9 +70,9 @@ function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
   return (
     <Stack className={classes.toastContainerWrapper} gap="space-8" direction={'column-reverse'}>
       {toasts.map((toast) => (
-        <SuccessToast key={toast.id} onRemove={() => onRemove(toast.id)}>
+        <GeneriskToast key={toast.id} variant={toast.type} onRemove={() => onRemove(toast.id)}>
           {toast.message}
-        </SuccessToast>
+        </GeneriskToast>
       ))}
     </Stack>
   )

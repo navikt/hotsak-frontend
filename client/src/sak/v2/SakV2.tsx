@@ -1,5 +1,5 @@
 import { Box, HStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
@@ -62,7 +62,8 @@ function SakV2Content({
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const erPilot = useErPilot('hotsakEksperimenter')
 
-  const { panelState, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } = useSakContext()
+  const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
+    useSakContext()
   const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
@@ -93,6 +94,14 @@ function SakV2Content({
   const kontaktinformasjonPanel = panels.kontaktinformasjonpanel
   const sidePanel = panels.sidebarpanel
   const brevPanel = panels.brevpanel
+  const harAutoÅpnetBrevpanel = useRef(false)
+
+  useEffect(() => {
+    if (vedtaksbrev && !harAutoÅpnetBrevpanel.current) {
+      harAutoÅpnetBrevpanel.current = true
+      panelDispatch({ type: 'SET_PANEL_VISIBILITY', panelId: 'brevpanel', visible: true })
+    }
+  }, [vedtaksbrev, panelDispatch])
 
   const { setEksperimentSidebarPanel, handleEksperimentSidebarResize } = useEksperimentSidebar({
     sidePanelVisible: sidePanel.visible,

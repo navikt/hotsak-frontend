@@ -74,6 +74,7 @@ export function Breveditor(props: BreveditorProps) {
 
   const editor = usePlateEditor(
     {
+      enabled: true as const,
       plugins: [
         ...[
           MarkdownPlugin.configure({

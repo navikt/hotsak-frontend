@@ -1,11 +1,11 @@
-import { LogLevel } from '@grafana/faro-web-sdk'
+import { type LogLevel } from '@grafana/faro-web-sdk'
 
 export async function initFaro(): Promise<void> {
   if (!import.meta.env.PROD || window.appSettings.USE_MSW || !window.appSettings.FARO_URL) {
     return
   }
 
-  const { initializeFaro } = await import('@grafana/faro-web-sdk')
+  const { initializeFaro, LogLevel } = await import('@grafana/faro-web-sdk')
   initializeFaro({
     url: window.appSettings.FARO_URL,
     app: {
@@ -24,13 +24,15 @@ export function pushError(err: unknown) {
   }
 }
 
-export function pushLog(message: string, level: LogLevel = LogLevel.INFO) {
+export function pushLog(message: string, level: LogLevel) {
   if (window.faro) {
     window.faro.api.pushLog([message], { level })
   }
 }
 
-// Usage pushEvent('toggle-panel', 'panels', { enabled: isEnabled.toString() });
+/**
+ * Usage: pushEvent('toggle-panel', 'panels', { enabled: isEnabled.toString() });
+ */
 export function pushEvent(name: string, domain: string, attributes?: Record<string, string>) {
   if (window.faro) {
     window.faro.api.pushEvent(name, { ...attributes, domain }, domain, { skipDedupe: true })

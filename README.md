@@ -94,3 +94,11 @@ Tester kjøres også automatisk i GitHub Actions ved push til main.
 
 Ved push til main kjøres det deploy til dev-gcp. Appen er tilgjenglig
 på [https://hotsak.intern.dev.nav.no/](https://hotsak.intern.dev.nav.no/).
+
+## Kjør Gotenberg lokalt for PDF-generering
+
+```sh
+./gotenberg
+```
+
+Sett `VITE_GOTENBERG = true` i `./client/.env.local`.

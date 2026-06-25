@@ -6,7 +6,6 @@ import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpe
 import { useSak } from '../../../saksbilde/useSak'
 import { useErPilot } from '../../../tilgang/useTilgang'
 import { formaterDato } from '../../../utils/dato'
-import { useMiljø } from '../../../utils/useMiljø'
 import { Artikler } from './Artikler'
 import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
 import { useArtiklerByKategori } from './useArtiklerByKategori'
@@ -27,9 +26,7 @@ export function UtlånsoversiktV2() {
 
   const harHøreapparatVedtak = !!høreapparatVedtak?.harVedtak && !!høreapparatVedtak?.vedtaksdato
 
-  const { erIkkeProd } = useMiljø()
   const erPilot = useErPilot('hotsakEksperimenter')
-  const erHørselshjelpemiddelPilot = useErPilot('hørselshjelpemiddel') || erIkkeProd
   return (
     <>
       {erPilot && (
@@ -45,7 +42,7 @@ export function UtlånsoversiktV2() {
         </SidebarPanelBox>
       )}
 
-      {erHørselshjelpemiddelPilot && (isLoadingHaVedtak || errorHaVedtak || harHøreapparatVedtak) && (
+      {(isLoadingHaVedtak || errorHaVedtak || harHøreapparatVedtak) && (
         <SidebarPanel
           tittel={<Mellomtittel>Tilskudd til høreapparat</Mellomtittel>}
           error={errorHaVedtak && 'Feil ved henting av høreapparatvedtak.'}

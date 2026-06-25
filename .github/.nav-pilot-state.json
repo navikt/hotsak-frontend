@@ -1,0 +1,121 @@
+{
+  "collection": "frontend",
+  "version": "2026.06.25-072030-1ae3959",
+  "scope": "repo",
+  "source_sha": "4babed1",
+  "installed_at": "2026-06-25T11:38:51Z",
+  "files": [
+    {
+      "path": ".github/agents/accessibility.agent.md",
+      "hash": "c35b6db4d15e6f9f"
+    },
+    {
+      "path": ".github/agents/aksel.agent.md",
+      "hash": "d190246642818387"
+    },
+    {
+      "path": ".github/agents/code-review.agent.md",
+      "hash": "3f32b4e215bca95d"
+    },
+    {
+      "path": ".github/agents/forfatter.agent.md",
+      "hash": "3dd47103e9bf04a8"
+    },
+    {
+      "path": ".github/agents/nav-pilot.agent.md",
+      "hash": "f490eb3f9ca1e9a3"
+    },
+    {
+      "path": ".github/skills/aksel-builder/",
+      "hash": "8093294c605378e1"
+    },
+    {
+      "path": ".github/skills/conventional-commit/",
+      "hash": "b81a4898fed3139d"
+    },
+    {
+      "path": ".github/skills/playwright-testing/",
+      "hash": "5c618cd99c79df64"
+    },
+    {
+      "path": ".github/skills/readme-review/",
+      "hash": "8051f0041095f50c"
+    },
+    {
+      "path": ".github/skills/web-design-reviewer/",
+      "hash": "07b2096b77bf5ae3"
+    },
+    {
+      "path": ".github/skills/nav-dekoratoren/",
+      "hash": "67a910485faaebff"
+    },
+    {
+      "path": ".github/skills/nav-plan/",
+      "hash": "0a160744cf2b4e82"
+    },
+    {
+      "path": ".github/skills/nav-deep-interview/",
+      "hash": "eeb3399ecd4e352c"
+    },
+    {
+      "path": ".github/skills/nav-architecture-review/",
+      "hash": "4618dec566442509"
+    },
+    {
+      "path": ".github/skills/nav-troubleshoot/",
+      "hash": "e9900d58d91ee0ee"
+    },
+    {
+      "path": ".github/skills/security-owasp/",
+      "hash": "6b06f512092bde91"
+    },
+    {
+      "path": ".github/skills/terse-mode/",
+      "hash": "133c50e8cd7769d2"
+    },
+    {
+      "path": ".github/instructions/code-review.instructions.md",
+      "hash": "76088d9c7d0e3909"
+    },
+    {
+      "path": ".github/instructions/deliberate-ai-use.instructions.md",
+      "hash": "a0999e3cc902f4f5"
+    },
+    {
+      "path": ".github/instructions/norwegian-text.instructions.md",
+      "hash": "890c8475efa051a5"
+    },
+    {
+      "path": ".github/instructions/testing.instructions.md",
+      "hash": "4a6a7547a3701ce1"
+    },
+    {
+      "path": ".github/instructions/testing-typescript.instructions.md",
+      "hash": "d3fd7e7d5f2ee256"
+    },
+    {
+      "path": ".github/instructions/accessibility.instructions.md",
+      "hash": "3f682e93474bfdd8"
+    },
+    {
+      "path": ".github/instructions/github-actions.instructions.md",
+      "hash": "bbef6f3e56b8b3b3"
+    },
+    {
+      "path": ".github/instructions/docker.instructions.md",
+      "hash": "32db7a2f8aaab2ac"
+    },
+    {
+      "path": ".github/instructions/security-owasp.instructions.md",
+      "hash": "3388700634dd315d"
+    },
+    {
+      "path": ".github/prompts/aksel-component.prompt.md",
+      "hash": "68c1da8a387cdffe"
+    },
+    {
+      "path": ".github/prompts/nais-manifest.prompt.md",
+      "hash": "8576571223ffef8a"
+    }
+  ]
+}

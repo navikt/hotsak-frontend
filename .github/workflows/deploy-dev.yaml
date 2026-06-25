@@ -125,6 +125,7 @@ jobs:
 
   deploy-labs:
     name: Deploy til labs-gcp
+    environment: 'labs-gcp:teamdigihot'
     runs-on: ubuntu-latest
     needs: [build]
     permissions:
@@ -145,6 +146,7 @@ jobs:
 
   deploy-dev:
     name: Deploy til dev-gcp
+    environment: 'dev-gcp:teamdigihot'
     runs-on: ubuntu-latest
     needs: [build]
     permissions:

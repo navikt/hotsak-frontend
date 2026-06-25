@@ -22,19 +22,23 @@ import { InlineKopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Skillelinje } from '../felleskomponenter/Strek.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
+import { usePost } from '../io/usePost.ts'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
+import { harBehandlingstema, useKodeverkBehandlingstyper, useKodeverkGjelder } from '../oppgave/useKodeverkOppgave.ts'
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { DokumentRad } from './DokumentRad.tsx'
+import { type JournalføringV2Request, type JournalføringV2Response } from './journalføringTypes.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 
 interface JournalføringV2SkjemaVerdier {
   tema: string
+  behandlingstype: string
+  behandlingstema: string
   stønadsklassifisering: string
   stønadsUnderkategori: string
   stønadType: string
-  gjelder: string
   prioritet: string
   kommentar: string
   mottattDato: string
@@ -42,6 +46,7 @@ interface JournalføringV2SkjemaVerdier {
   frist: string
   tilordnetEnhet: 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
   enhetsmappe: string
+  medarbeider: string
 }
 
 interface JournalføringV2SkjemaProps {
@@ -57,12 +62,19 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
   const fristDefault = addWeeks(mottattDatoDefault, 4)
 
+  const behandlingstyper = useKodeverkBehandlingstyper()
+
+  const { post } = usePost<JournalføringV2Request, JournalføringV2Response>(
+    `/api/journalpost/${journalpost.journalpostId}/journalforing`
+  )
+
   const {
     register,
     handleSubmit,
     control,
     setValue,
     getValues,
+    watch,
     trigger,
     formState: { errors },
   } = useForm<JournalføringV2SkjemaVerdier>({
@@ -76,6 +88,9 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
       frist: formatISO(fristDefault, { representation: 'date' }),
     },
   })
+
+  const valgtBehandlingstype = watch('behandlingstype')
+  const gjelderOptions = useKodeverkGjelder(valgtBehandlingstype || undefined).filter(harBehandlingstema)
 
   // Registrer datofelt manuelt for validering (ingen DOM-ref siden Aksel håndterer input)
   useEffect(() => {
@@ -134,8 +149,29 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
     },
   })
 
-  const onSubmit = (/*_verdier: JournalføringV2SkjemaVerdier*/) => {
-    // API-kall settes opp senere
+  const onSubmit = (verdier: JournalføringV2SkjemaVerdier) => {
+    const payload: JournalføringV2Request = {
+      saksgrunnlag: {
+        tema: verdier.tema,
+        prioritet: verdier.prioritet,
+        oppgavetype: 'BEHANDLE_SAK',
+        behandlingstype: verdier.behandlingstype,
+        behandlingstema: verdier.behandlingstema,
+        stønadsklassifisering: verdier.stønadsklassifisering,
+        stønad: verdier.stønadType,
+        kommentar: verdier.kommentar,
+        mottattDato: verdier.mottattDato,
+        aktivDato: verdier.aktivFra,
+        fristDato: verdier.frist,
+        tildeltEnhet: oppgave.tildeltEnhet.nummer,
+        tildeltSaksbehandler: verdier.tilordnetEnhet === 'enhetensOppgaveliste' ? verdier.medarbeider : undefined,
+      },
+      dokumenter: journalpost.dokumenter.map((dok: Dokument) => ({
+        dokumentId: dok.dokumentId,
+        tittel: dokumentTitler[dok.dokumentId] ?? dok.tittel,
+      })),
+    }
+    post(payload)
   }
 
   // TODO: Legge inn vertikal ikonlinje med dokumentoversikt, saksoversikt osv?
@@ -265,17 +301,38 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
               </VStack>
             </HStack>
 
+            {/* Teste å spitte behandlingstype og behandlingstema */}
             <HStack gap="space-4" align="start">
               <SelectController
                 control={control}
-                name="gjelder"
-                label="Gjelder"
+                name="behandlingstype"
+                label="Behandlingstype"
                 size="small"
-                rules={{ required: 'Du må velge hva saken gjelder' }}
+                rules={{ required: 'Du må velge behandlingstype' }}
                 style={{ flex: 2 }}
               >
                 <option value="">Velg</option>
-                <option value="MANUELL_RULLESTOL">Manuell rullestol | Dagligliv</option>
+                {behandlingstyper.map((bt) => (
+                  <option key={bt.kode} value={bt.kode}>
+                    {bt.term}
+                  </option>
+                ))}
+              </SelectController>
+              <SelectController
+                control={control}
+                name="behandlingstema"
+                label="Behandlingstema"
+                size="small"
+                rules={{ required: 'Du må velge behandlingstema' }}
+                style={{ flex: 2 }}
+                disabled={!valgtBehandlingstype}
+              >
+                <option value="">Velg</option>
+                {gjelderOptions.map((g) => (
+                  <option key={g.behandlingstema.kode} value={g.behandlingstema.kode}>
+                    {g.behandlingstema.term}
+                  </option>
+                ))}
               </SelectController>
               <SelectController
                 control={control}
@@ -291,6 +348,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
                 <option value="LAV">Lav</option>
               </SelectController>
             </HStack>
+            {/* Slutt */}
 
             {/* Stønadsklassifisering */}
             <HStack gap="space-20">

@@ -15,3 +15,30 @@ export interface JournalførJournalpostResponse {
   oppgaveId: OppgaveId
   sakId: string
 }
+
+export interface JournalføringV2Saksgrunnlag {
+  tema: string
+  prioritet: string
+  oppgavetype: string
+  behandlingstype: string
+  behandlingstema: string
+  stønadsklassifisering?: string
+  stønad?: string
+  kommentar?: string
+  mottattDato: string
+  aktivDato: string
+  fristDato: string
+  tildeltEnhet: string
+  tildeltSaksbehandler?: string
+}
+
+export interface JournalføringV2Request {
+  saksgrunnlag: JournalføringV2Saksgrunnlag
+  sakId?: string
+  dokumenter: Array<{ dokumentId: string; tittel: string }>
+}
+
+export interface JournalføringV2Response {
+  oppgaveId: OppgaveId
+  sakId: string
+}

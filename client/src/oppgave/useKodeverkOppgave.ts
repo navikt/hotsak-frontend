@@ -4,6 +4,11 @@ import type { SetRequired } from 'type-fest'
 import { createUrl } from '../io/HttpClient.ts'
 import type { KodeverkGjelder, OppgaveKodeverk } from './oppgaveTypes.ts'
 
+export function useKodeverkBehandlingstyper(): ReadonlyArray<OppgaveKodeverk> {
+  const { data } = useSWRImmutable<OppgaveKodeverk[]>('/api/kodeverk/behandlingstyper')
+  return data ?? noData
+}
+
 export function useKodeverkGjelder(behandlingstype?: string): ReadonlyArray<KodeverkGjelder> {
   const url = createUrl('/api/kodeverk/gjelder', { behandlingstype })
   const { data } = useSWRImmutable<KodeverkGjelder[]>(url)

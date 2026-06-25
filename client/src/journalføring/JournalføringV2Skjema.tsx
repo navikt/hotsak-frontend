@@ -9,22 +9,25 @@ import {
   Radio,
   RadioGroup,
   Select,
-  Tag,
   Textarea,
+  ToggleGroup,
   useDatepicker,
   VStack,
 } from '@navikt/ds-react'
-import { useState } from 'react'
+import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { InlineKopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Skillelinje } from '../felleskomponenter/Strek.tsx'
+import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
+import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
-import { AvrundetPanel } from '../sak/v2/paneler/AvrundetPanel.tsx'
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { DokumentRad } from './DokumentRad.tsx'
+import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 
 interface JournalføringV2SkjemaVerdier {
   tema: string
@@ -37,7 +40,7 @@ interface JournalføringV2SkjemaVerdier {
   mottattDato: string
   aktivFra: string
   frist: string
-  tilordnetEnhet: 'annenEnhet' | 'minEnhet' | 'minOppgaveliste'
+  tilordnetEnhet: 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
   enhetsmappe: string
 }
 
@@ -47,37 +50,104 @@ interface JournalføringV2SkjemaProps {
 }
 
 export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV2SkjemaProps) {
-  const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
+  const [sakType, setSakType] = useState<string>('ny')
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
-  console.log(oppgave.oppgaveId)
+  const { behandlere } = useOppgavebehandlere()
+  const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
+  const fristDefault = addWeeks(mottattDatoDefault, 4)
+
   const {
     register,
     handleSubmit,
     control,
+    setValue,
+    getValues,
+    trigger,
     formState: { errors },
   } = useForm<JournalføringV2SkjemaVerdier>({
     defaultValues: {
       tema: 'HJE',
       prioritet: 'NORMAL',
       tilordnetEnhet: 'minEnhet',
-      kommentar: `Tittel: ${journalpost.tittel}\nRegistrert dato: ${formaterDato(journalpost.journalpostOpprettetTid)}`,
+      kommentar: ``,
+      mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
+      aktivFra: formatISO(mottattDatoDefault, { representation: 'date' }),
+      frist: formatISO(fristDefault, { representation: 'date' }),
     },
   })
 
-  const { datepickerProps: mottattProps, inputProps: mottattInputProps } = useDatepicker({})
-  const { datepickerProps: aktivFraProps, inputProps: aktivFraInputProps } = useDatepicker({})
-  const { datepickerProps: fristProps, inputProps: fristInputProps } = useDatepicker({})
+  // Registrer datofelt manuelt for validering (ingen DOM-ref siden Aksel håndterer input)
+  useEffect(() => {
+    register('mottattDato')
+    register('frist')
+    register('aktivFra', {
+      validate: (value) => {
+        const fristVerdi = getValues('frist')
+        if (value && fristVerdi && isAfter(parseISO(value), parseISO(fristVerdi))) {
+          return 'Aktiv fra kan ikke være etter fristen'
+        }
+        return true
+      },
+    })
+  }, [register, getValues])
+
+  const { datepickerProps: mottattProps, inputProps: mottattInputProps } = useDatepicker({
+    defaultSelected: mottattDatoDefault,
+    onDateChange: (dato) => {
+      if (dato) {
+        const datoStr = formatISO(dato, { representation: 'date' })
+        setValue('mottattDato', datoStr)
+        setAktivFra(dato)
+        setValue('aktivFra', datoStr, { shouldValidate: true })
+        const nyFrist = addWeeks(dato, 4)
+        setFrist(nyFrist)
+        setValue('frist', formatISO(nyFrist, { representation: 'date' }), { shouldValidate: true })
+      }
+    },
+  })
+
+  const {
+    datepickerProps: aktivFraProps,
+    inputProps: aktivFraInputProps,
+    setSelected: setAktivFra,
+  } = useDatepicker({
+    defaultSelected: mottattDatoDefault,
+    onDateChange: (dato) => {
+      if (dato) {
+        setValue('aktivFra', formatISO(dato, { representation: 'date' }), { shouldValidate: true })
+      }
+    },
+  })
+
+  const {
+    datepickerProps: fristProps,
+    inputProps: fristInputProps,
+    setSelected: setFrist,
+  } = useDatepicker({
+    defaultSelected: fristDefault,
+    onDateChange: (dato) => {
+      if (dato) {
+        setValue('frist', formatISO(dato, { representation: 'date' }))
+        trigger('aktivFra')
+      }
+    },
+  })
 
   const onSubmit = (/*_verdier: JournalføringV2SkjemaVerdier*/) => {
     // API-kall settes opp senere
   }
+
+  // TODO: Legge inn vertikal ikonlinje med dokumentoversikt, saksoversikt osv?
+  // TODO: Sjekk tilgang og lag lesevisning
 
   const brukerNavn = journalpost.bruker ? formaterNavn(journalpost.bruker.navn) : ''
   const brukerFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender
   const avsenderNavn = journalpost.innsender ? formaterNavn(journalpost.innsender.navn) : ''
   const avsenderFnr = journalpost.innsender?.fnr ?? ''
   const registrertDato = formaterDato(journalpost.journalpostOpprettetTid)
+
+  const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -96,54 +166,58 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
           </HStack>
           <Skillelinje />
         </div>
+        <TextContainer>
+          <VStack gap="space-8">
+            <Heading level="2" size="small">
+              Gjelder
+            </Heading>
 
-        <VStack gap="space-8">
-          <Heading level="2" size="small">
-            Gjelder
-          </Heading>
+            <SelectController
+              control={control}
+              name="tema"
+              label="Tema"
+              size="small"
+              rules={{ required: 'Du må velge tema' }}
+            >
+              <option value="HJE">Hjelpemidler</option>
+            </SelectController>
 
-          <Select label="Tema" size="small" {...register('tema')}>
-            <option value="HJE">Hjelpemidler</option>
-          </Select>
+            <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
+              <HStack justify="space-between" align="start">
+                <VStack gap="space-1">
+                  <Label size="small">Bruker</Label>
+                  <HStack gap="space-1" align="center">
+                    <BodyShort size="small">{brukerNavn} - </BodyShort>
+                    <BodyShort size="small">{brukerFnr}</BodyShort>
+                    <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
+                  </HStack>
+                  <BodyShort size="small">{tildeltEnhet}</BodyShort>
+                </VStack>
+                <Button variant="tertiary" size="xsmall" type="button">
+                  Endre
+                </Button>
+              </HStack>
+            </Box>
 
-          <AvrundetPanel>
-            <HStack justify="space-between" align="start">
-              <VStack gap="space-1">
-                <Label size="small">Bruker</Label>
-                <HStack gap="space-1" align="center">
-                  <BodyShort size="small">{brukerNavn}</BodyShort>
-                  <BodyShort size="small"> - {brukerFnr}</BodyShort>
-                  <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
-                </HStack>
-                <BodyShort size="small">Nav Hobsyssel - 0523</BodyShort>
-              </VStack>
-              <Button variant="tertiary" size="xsmall" type="button">
-                Endre
-              </Button>
-            </HStack>
-          </AvrundetPanel>
+            <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
+              <HStack justify="space-between" align="start">
+                <VStack gap="space-1">
+                  <Label size="small">Avsender</Label>
+                  <HStack gap="space-1" align="center">
+                    <BodyShort size="small">{avsenderNavn} - </BodyShort>
+                    <BodyShort size="small">{avsenderFnr}</BodyShort>
+                    <InlineKopiknapp copyText={avsenderFnr} tooltip="Kopier fødselsnummer" />
+                  </HStack>
+                  <BodyShort size="small">{tildeltEnhet}</BodyShort>
+                </VStack>
+                <Button variant="tertiary" size="xsmall" type="button">
+                  Endre
+                </Button>
+              </HStack>
+            </Box>
+          </VStack>
+        </TextContainer>
 
-          <AvrundetPanel>
-            <HStack justify="space-between" align="start">
-              <VStack gap="space-1">
-                <Label size="small">Avsender</Label>
-                <HStack gap="space-1" align="center">
-                  <BodyShort size="small">{avsenderNavn}</BodyShort>
-                  <BodyShort size="small"> - {avsenderFnr}</BodyShort>
-                  <InlineKopiknapp copyText={avsenderFnr} tooltip="Kopier fødselsnummer" />
-                </HStack>
-                <BodyShort size="small">Nav Hobsyssel - 0523</BodyShort>
-              </VStack>
-              <Button variant="tertiary" size="xsmall" type="button">
-                Endre
-              </Button>
-            </HStack>
-          </AvrundetPanel>
-        </VStack>
-
-        {/* Dokumenter
-        TODO: Kan kanskje gjenbruke noe for briller for dokumentrad? Eller bare få barnebriller over til nytt journalføringsbilde?
-        */}
         <VStack gap="space-8">
           <Heading level="2" size="small">
             Dokumenter
@@ -162,45 +236,25 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
           ))}
         </VStack>
 
-        {/* Ny eller eksisterende sak */}
-        <VStack gap="space-8">
+        <VStack gap="space-8" paddingBlock="space-40 space-0">
           <Heading level="2" size="xsmall">
             Ny eller eksisterende sak
           </Heading>
           <HStack gap="space-2">
-            <Button
-              type="button"
-              size="small"
-              variant={sakType === 'ny' ? 'primary' : 'secondary'}
-              onClick={() => setSakType('ny')}
-            >
-              Opprett ny sak
-            </Button>
-            <Button
-              type="button"
-              size="small"
-              variant={sakType === 'eksisterende' ? 'primary' : 'secondary'}
-              onClick={() => setSakType('eksisterende')}
-              icon={
-                <Tag variant="warning" size="xsmall">
-                  2 åpne
-                </Tag>
-              }
-              iconPosition="right"
-            >
-              Koble til sak
-            </Button>
+            <ToggleGroup defaultValue="ny" size="small" onChange={(value) => setSakType(value)} value={sakType}>
+              <ToggleGroup.Item value="ny">Opprett ny sak</ToggleGroup.Item>
+              <ToggleGroup.Item value="eksisterende">Koble til sak</ToggleGroup.Item>
+            </ToggleGroup>
           </HStack>
         </VStack>
 
-        {/* Opprett ny sak i Hotsak */}
         {sakType === 'ny' && (
-          <VStack gap="space-12">
-            <Heading level="2" size="medium">
+          <VStack gap="space-20">
+            <Heading level="2" size="small">
               Opprett ny sak i Hotsak
             </Heading>
 
-            <HStack gap="space-16">
+            <HStack gap="space-32">
               <VStack gap="space-1">
                 <Label size="small">Tema</Label>
                 <BodyShort size="small">HJE</BodyShort>
@@ -211,56 +265,106 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
               </VStack>
             </HStack>
 
-            {/* Stønadsklassifisering */}
-            <VStack gap="space-2">
-              <Label size="small">Stønadsklassifisering</Label>
-              <HStack gap="space-2" align="end">
-                <Select label="Stønadsklassifisering" hideLabel size="small" {...register('stønadsklassifisering')}>
-                  <option value="DAGLIGLIV">Dagligliv</option>
-                  <option value="FORFLYTNING">Forflytning</option>
-                </Select>
-                <Select label="Underkategori" hideLabel size="small" {...register('stønadsUnderkategori')}>
-                  <option value="">Velg</option>
-                </Select>
-                <Select label="Stønadtype" hideLabel size="small" {...register('stønadType')}>
-                  <option value="SOKNAD">Søknad</option>
-                  <option value="BESTILLING">Bestilling</option>
-                </Select>
-              </HStack>
-            </VStack>
-
             <HStack gap="space-4" align="start">
-              <Select label="Gjelder" size="small" {...register('gjelder')} style={{ flex: 2 }}>
+              <SelectController
+                control={control}
+                name="gjelder"
+                label="Gjelder"
+                size="small"
+                rules={{ required: 'Du må velge hva saken gjelder' }}
+                style={{ flex: 2 }}
+              >
                 <option value="">Velg</option>
                 <option value="MANUELL_RULLESTOL">Manuell rullestol | Dagligliv</option>
-              </Select>
-              <Select label="Prioritet" size="small" {...register('prioritet')} style={{ flex: 1 }}>
-                <option value="NORMAL">Normal</option>
-                <option value="HOY">Høy</option>
+              </SelectController>
+              <SelectController
+                control={control}
+                name="prioritet"
+                label="Prioritet"
+                size="small"
+                rules={{ required: 'Du må velge prioritet' }}
+                style={{ flex: 1 }}
+              >
                 <option value="KRITISK">Kritisk</option>
-              </Select>
+                <option value="HOY">Høy</option>
+                <option value="NORMAL">Normal</option>
+                <option value="LAV">Lav</option>
+              </SelectController>
             </HStack>
 
-            <Controller
-              name="kommentar"
-              control={control}
-              render={({ field }) => (
-                <Textarea
-                  label="Kommentar"
+            {/* Stønadsklassifisering */}
+            <HStack gap="space-20">
+              <VStack gap="space-8">
+                <Label size="small">Stønadsklassifisering</Label>
+                <SelectController
+                  control={control}
+                  name="stønadsklassifisering"
+                  label="Stønadsklassifisering"
+                  hideLabel
                   size="small"
-                  maxLength={1000}
-                  {...field}
-                  error={errors.kommentar?.message}
-                />
-              )}
-            />
+                  rules={{ required: 'Du må velge stønadsklassifisering' }}
+                >
+                  <option value="DAGLIGLIV">Dagligliv</option>
+                  <option value="FORFLYTNING">Forflytning</option>
+                </SelectController>
+              </VStack>
+
+              <VStack gap="space-8">
+                <Label size="small">Område</Label>
+                <SelectController
+                  control={control}
+                  name="stønadsUnderkategori"
+                  label="Underkategori"
+                  hideLabel
+                  size="small"
+                  rules={{ required: 'Du må velge underkategori' }}
+                >
+                  <option value="">Velg</option>
+                </SelectController>
+              </VStack>
+              <VStack gap="space-8">
+                <Label size="small">Stønad</Label>
+                <SelectController
+                  control={control}
+                  name="stønadType"
+                  label="Stønadtype"
+                  hideLabel
+                  size="small"
+                  rules={{ required: 'Du må velge stønadtype' }}
+                >
+                  <option value="SOKNAD">Søknad</option>
+                  <option value="BESTILLING">Bestilling</option>
+                </SelectController>
+              </VStack>
+            </HStack>
+
+            <TextContainer>
+              <Controller
+                name="kommentar"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    label="Kommentar"
+                    size="small"
+                    maxLength={1000}
+                    {...field}
+                    error={errors.kommentar?.message}
+                  />
+                )}
+              />
+            </TextContainer>
 
             <HStack gap="space-4" align="start">
               <DatePicker {...mottattProps}>
                 <DatePicker.Input {...mottattInputProps} label="Mottatt dato" size="small" />
               </DatePicker>
               <DatePicker {...aktivFraProps}>
-                <DatePicker.Input {...aktivFraInputProps} label="Aktiv fra" size="small" />
+                <DatePicker.Input
+                  {...aktivFraInputProps}
+                  label="Aktiv fra"
+                  size="small"
+                  error={errors.aktivFra?.message}
+                />
               </DatePicker>
               <DatePicker {...fristProps}>
                 <DatePicker.Input {...fristInputProps} label="Frist" size="small" />
@@ -268,9 +372,9 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
             </HStack>
 
             {/* Tilordne oppgave */}
-            <VStack gap="space-4">
+            <VStack gap="space-4" paddingBlock="space-20 space-0">
               <Label size="small">Tilordne oppgave</Label>
-              <BodyShort size="small">Foreslått: 4714 - Nav hjelpemiddelsentral Vestland-Førde</BodyShort>
+              <BodyShort size="small">{tildeltEnhet}</BodyShort>
               <Controller
                 name="tilordnetEnhet"
                 control={control}
@@ -282,31 +386,42 @@ export function JournalføringV2Skjema({ oppgave, journalpost }: JournalføringV
                     value={field.value}
                     onChange={field.onChange}
                   >
-                    <Radio value="annenEnhet">Velg annen enhet</Radio>
-                    <Radio value="minEnhet">Min enhet: 2990 - Nav hjelpemiddelsentral Testeland</Radio>
-                    {field.value === 'minEnhet' && (
+                    <Radio value="minOppgaveliste">Min oppgaveliste</Radio>
+                    <Radio value="medarbeidersOppgaveliste">Medarbeiders oppgaveliste</Radio>
+                    {field.value === 'medarbeidersOppgaveliste' && (
                       <Box paddingInline="space-32 space-0">
                         <Select label="Enhetsmappe" size="small" {...register('enhetsmappe')}>
                           <option value="">Ingen mappe</option>
                         </Select>
                       </Box>
                     )}
-                    <Radio value="minOppgaveliste">Min oppgaveliste: 2990 | Silje Saksehandler</Radio>
+                    <Radio value="enhetensOppgaveliste">Min enhet: {tildeltEnhet}</Radio>
+                    {field.value === 'enhetensOppgaveliste' && (
+                      <Box paddingInline="space-32 space-0">
+                        <Select label="Medarbeider" size="small" {...register('medarbeider')}>
+                          <option value="">Velg medarbeider</option>
+                          {behandlere.map((behandler) => (
+                            <option key={behandler.id} value={behandler.id}>
+                              {behandler.navn}
+                            </option>
+                          ))}
+                        </Select>
+                      </Box>
+                    )}
                   </RadioGroup>
                 )}
               />
             </VStack>
           </VStack>
         )}
+        {sakType === 'eksisterende' && <div>TODO</div>}
 
         {/* Handlingsknapper */}
         <HStack gap="space-4" paddingBlock="space-8 space-0">
           <Button type="submit" variant="primary" size="small">
             Journalfør og opprett sak
           </Button>
-          <Button type="button" variant="secondary" size="small">
-            Lagre utkast
-          </Button>
+
           <Button type="button" variant="secondary" size="small">
             Overfør til Gosys
           </Button>

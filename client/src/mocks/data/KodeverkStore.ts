@@ -18,6 +18,59 @@ export class KodeverkStore {
     return KodeverkStore.oppgavetype
   }
 
+  dokumenttitler(): ReadonlyArray<string> {
+    return KodeverkStore.dokumenttitler
+  }
+
+  static readonly dokumenttitler: ReadonlyArray<string> = [
+    'Arbeidsforhold',
+    'Bestilling av hjelpemidler',
+    'Bytte av hjelpemiddel',
+    'Dokumentasjon av arbeid eller utdanning',
+    'Fullmakt',
+    'Henvisning generell',
+    'Hjelp til vurdering og utprøving av forflytningshjelpemidler',
+    'Hjelp til vurdering og utprøving av hjelpemidler til trening, aktivitet og stimulering',
+    'Hjelp til vurdering og utprøving av hørselshjelpemidler',
+    'Hjelp til vurdering og utprøving av ikt-hjelpemidler',
+    'Hjelp til vurdering og utprøving av kognisjonshjelpemidler',
+    'Hjelp til vurdering og utprøving av kommunikasjonshjelpemidler',
+    'Hjelp til vurdering og utprøving av motorkjøretøy eller annet transportmiddel',
+    'Hjelp til vurdering og utprøving av synshjelpemidler',
+    'Klage/anke',
+    'Medisinsk dokumentasjon',
+    'Pristilbud',
+    'Søknad om forflytningshjelpemidler',
+    'Søknad om hjelpemidler',
+    'Søknad om høreapparat',
+    'Søknad om hørselshjelpemidler',
+    'Søknad om ikt-hjelpemidler',
+    'Søknad om kognisjonshjelpemidler',
+    'Søknad om kommunikasjonshjelpemidler',
+    'Søknad om servicehund',
+    'Søknad om stønad til arbeids- og utdanningsreiser',
+    'Søknad om synshjelpemidler',
+    'Søknad om teknisk bistand',
+    'Søknad om tilpasningskurs for syns- og hørselshemmede',
+    'Søknad om tolk til døve, hørselshemmede og døvblinde',
+    'Tilleggsskjema for arbeidslogg for utprøving av Innowalk',
+    'Tilleggsskjema for elektrisk rullestol',
+    'Tilleggsskjema for hev- og senkbare kjøkkenløsninger',
+    'Tilleggsskjema for hjelpemiddel til trening, stimulering og aktivisering',
+    'Tilleggsskjema for hjelpemidler og tilrettelegging i arbeidslivet',
+    'Tilleggsskjema for hjelpemidler på bad',
+    'Tilleggsskjema for hørselshjelpemiddel',
+    'Tilleggsskjema for kognitivt hjelpemiddel',
+    'Tilleggsskjema for kommunikasjonshjelpemiddel',
+    'Tilleggsskjema for manuell rullestol',
+    'Tilleggsskjema for omgivelseskontroll',
+    'Tilleggsskjema for stasjonær personløfter',
+    'Tilleggsskjema for stol med oppreisningsfunksjon',
+    'Tilleggsskjema for synshjelpemiddel',
+    'Uttalelse fra fagperson i saken',
+    'Vedtak om hjelpemidler',
+  ]
+
   static readonly gjelder: ReadonlyArray<KodeverkGjelder> = [
     {
       behandlingstype: {

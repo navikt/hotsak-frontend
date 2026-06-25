@@ -10,6 +10,12 @@ export function useKodeverkGjelder(behandlingstype?: string): ReadonlyArray<Kode
   return data ?? noData
 }
 
+// TODO preload
+export function useKodeverkDokumenttitler(): ReadonlyArray<string> {
+  const { data } = useSWRImmutable<string[]>('/api/kodeverk/dokumenttitler')
+  return data ?? noData
+}
+
 export function useKodeverkOppgavetype(): ReadonlyArray<OppgaveKodeverk> {
   const url = createUrl('/api/kodeverk/oppgavetype')
   const { data } = useSWRImmutable<OppgaveKodeverk[]>(url)

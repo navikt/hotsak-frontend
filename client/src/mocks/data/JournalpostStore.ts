@@ -4,7 +4,6 @@ import { Journalpost } from '../../types/types.internal.ts'
 import { nåIso } from './felles.ts'
 import {
   BARNEBRILLE_BREVKODE,
-  HJELPEMIDDEL_JOURNALPOST_IDS,
   InsertDokument,
   InsertHendelse,
   InsertJournalpost,

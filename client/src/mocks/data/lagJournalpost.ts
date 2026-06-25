@@ -1,13 +1,14 @@
 import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
 import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
+import { HJELPEMIDDEL_JOURNALPOST_IDS as HJELPEMIDDEL_IDS } from './journalpostKonstanter.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 
 export const BARNEBRILLE_BREVKODE = 'NAV 10-07.34'
 export const HJELPEMIDDEL_BREVKODE = 'NAV 10-07.03'
 
 /** Journalpost-IDer som tilhører hjelpemiddelsaker (ikke barnebriller). */
-export const HJELPEMIDDEL_JOURNALPOST_IDS = ['9006'] as const
+export const HJELPEMIDDEL_JOURNALPOST_IDS = HJELPEMIDDEL_IDS
 
 export type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
 export type InsertJournalpost = LagretJournalpost

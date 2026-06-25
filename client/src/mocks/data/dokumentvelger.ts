@@ -1,4 +1,4 @@
-import { HJELPEMIDDEL_JOURNALPOST_IDS } from './lagJournalpost.ts'
+import { HJELPEMIDDEL_JOURNALPOST_IDS } from './journalpostKonstanter.ts'
 
 export interface DokumentFil {
   filsti: string // relativ til src/mocks/data/pdf/

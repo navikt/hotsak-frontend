@@ -1,7 +1,6 @@
 import { VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { useOppgave } from '../../../oppgave/useOppgave'
 import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
@@ -20,7 +19,6 @@ export function GodkjennBestillingModalV2({ open, onClose }: GodkjennBestillingM
   const leveringsmerknad = behovsmelding?.levering.utleveringMerknad
   const { oppgave } = useOppgave()
   const { opprettOgferdigstillBestillingBehandling } = useBehandlingActions()
-  const { showSuccessToast } = useToast()
 
   const form = useForm({ defaultValues: { utleveringMerknad: leveringsmerknad ?? '' } })
 
@@ -33,7 +31,6 @@ export function GodkjennBestillingModalV2({ open, onClose }: GodkjennBestillingM
         utleveringsmerknad: data.utleveringMerknad,
       },
     })
-    showSuccessToast('Bestilling godkjent')
     onClose()
   })
 

@@ -23,7 +23,7 @@ export function Notater(props: NotaterProps) {
     return (
       <VStack gap="space-16" paddingBlock="space-12">
         <Notatinformasjon />
-        <FerdigstilteNotater oppgaveId={oppgave?.oppgaveId} loading={notaterIsLoading} notater={notater.ferdigstilte} />
+        <FerdigstilteNotater sakId={sakId} loading={notaterIsLoading} notater={notater.ferdigstilte} />
       </VStack>
     )
   }
@@ -41,7 +41,7 @@ export function Notater(props: NotaterProps) {
           <BodyShort size="small">Saken er i lesevisning. Du må ta saken for å kunne opprette notater.</BodyShort>
         </div>
       )}
-      <FerdigstilteNotater oppgaveId={oppgave.oppgaveId} loading={notaterIsLoading} notater={notater.ferdigstilte} />
+      <FerdigstilteNotater sakId={sakId} loading={notaterIsLoading} notater={notater.ferdigstilte} />
     </VStack>
   )
 }

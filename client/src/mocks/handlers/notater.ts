@@ -16,7 +16,13 @@ interface NotatParams extends SakParams {
   notatId: string
 }
 
-export const notatHandlers: StoreHandlersFactory = ({ notatStore, sakStore }) => [
+export const notatHandlers: StoreHandlersFactory = ({ notatStore, oppgaveStore, sakStore }) => [
+  http.get<SakParams>(`/api/sak/:sakId/kommentarer`, async ({ params }) => {
+    const kommentarer = await oppgaveStore.finnKommentarerForSak(params.sakId)
+    await delay(500)
+    return HttpResponse.json(kommentarer)
+  }),
+
   http.get<SakParams>(`/api/sak/:sakId/notater`, async ({ params }) => {
     const notater = await notatStore.hentNotater(params.sakId)
     await delay(500)

@@ -1,7 +1,7 @@
 import { NotePencilIcon } from '@navikt/aksel-icons'
-import { Tag, VStack, HStack } from '@navikt/ds-react'
+import { HStack, Tag, VStack } from '@navikt/ds-react'
 
-import { useOppgavekommentarer } from '../../oppgave/kommentar/useOppgavekommentarer'
+import { useOppgavekommentarerForSak } from '../../oppgave/kommentar/useOppgavekommentarer'
 import { type OppgaveId } from '../../oppgave/oppgaveTypes'
 import classes from './NotaterIcon.module.css'
 
@@ -9,8 +9,8 @@ import { NotificationBadge } from './NotificationBadge'
 import { useNotater } from './useNotater'
 
 // TODO: Slå sammen denne eller se om vi skal bruke vertikal sidebar overalt i stedet.
-export function NotaterIconLegacy({ oppgaveId, sakId }: { oppgaveId?: OppgaveId; sakId?: string }) {
-  const { antallKommentarer } = useOppgavekommentarer(oppgaveId)
+export function NotaterIconLegacy({ sakId }: { oppgaveId?: OppgaveId; sakId?: string }) {
+  const { antallKommentarer } = useOppgavekommentarerForSak(sakId)
   const { antallNotater, harUtkast, isLoading } = useNotater(sakId)
 
   const antall = antallKommentarer + antallNotater
@@ -33,8 +33,8 @@ export function NotaterIconLegacy({ oppgaveId, sakId }: { oppgaveId?: OppgaveId;
   )
 }
 
-export function NotaterIcon({ oppgaveId, sakId }: { oppgaveId?: OppgaveId; sakId?: string }) {
-  const { antallKommentarer } = useOppgavekommentarer(oppgaveId)
+export function NotaterIcon({ sakId }: { oppgaveId?: OppgaveId; sakId?: string }) {
+  const { antallKommentarer } = useOppgavekommentarerForSak(sakId)
   const { antallNotater, harUtkast, isLoading } = useNotater(sakId)
 
   const antall = antallKommentarer + antallNotater

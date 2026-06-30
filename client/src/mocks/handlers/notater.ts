@@ -57,6 +57,12 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, oppgaveStore, 
     return HttpResponse.json(notat)
   }),
 
+  http.post<SakParams, OpprettNotatRequest>(`/api/sak/:sakId/notater/forhåndsvisning`, async () => {
+    const buffer = await lastDokument('journalført_notat')
+    await delay(500)
+    return respondPdf(buffer)
+  }),
+
   http.get<NotatParams>(`/api/sak/:sakId/notater/:notatId`, async () => {
     const buffer = await lastDokument('journalført_notat')
     await delay(500)

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import useSwr, { useSWRConfig } from 'swr'
 import useSWRMutation from 'swr/mutation'
 
-import { http } from '../../io/HttpClient.ts'
+import { http, HttpAcceptKey } from '../../io/HttpClient.ts'
 import { type HttpError } from '../../io/HttpError.ts'
 import { useMutateBehandling } from '../v2/behandling/useBehandling.ts'
 import { isAvventerJournalføring, isNotatFerdigstilt, isNotatUtkast } from './notatSelectors.ts'
@@ -33,6 +33,11 @@ export function useNotater(sakId?: string) {
     }
   )
 
+  const forhåndsvisning = useSWRMutation<Blob, HttpError, HttpAcceptKey | null, { tekst: string }>(
+    key ? [`${key}/forhåndsvisning`, 'application/pdf'] : null,
+    async ([url, accept], { arg: body }) => http.post<{ tekst: string }, Blob>(url, body, { accept })
+  )
+
   const notater = useMemo(
     () => ({
       utkast: alleNotater.filter(isNotatUtkast),
@@ -47,6 +52,7 @@ export function useNotater(sakId?: string) {
     harUtkast: notater.utkast.length > 0,
     gjeldendeUtkast: notater.utkast[0], // antar at vi ikke har flere utkast pt.
     opprettNotat,
+    forhåndsvisning,
     ...rest,
   }
 }

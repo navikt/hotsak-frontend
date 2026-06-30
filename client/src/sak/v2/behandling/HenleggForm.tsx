@@ -1,4 +1,4 @@
-import { Button, InlineMessage, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
+import { Box, Button, InlineMessage, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Henleggelsesårsak, OverførtTil } from './behandlingTyper'
@@ -106,52 +106,54 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
           )}
         />
         {!erOverføringEllerAvtaltMedBruker && (
-          <>
-            <Controller
-              name="begrunnelse"
-              control={control}
-              rules={{
-                validate: (value) => {
-                  if (
-                    getValues('årsak') === OverførtTil.GOSYS ||
-                    getValues('årsak') === Henleggelsesårsak.SØKNAD_TRUKKET
-                  )
-                    return true
-                  return value?.trim() ? true : 'Du må fylle ut en begrunnelse'
-                },
-              }}
-              render={({ field, fieldState }) => (
-                <Textarea
-                  label="Begrunn hvorfor saken lukkes"
-                  size="small"
-                  {...field}
-                  onBlur={(e) => {
-                    field.onBlur()
-                    onSave(getValues('årsak') as Henleggelsesårsak, e.target.value)
-                  }}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-            <InlineMessage status="info" size="small">
-              Begrunnelsen lagres som et internt forvaltningsnotat og kan bli utlevert til innbygger ved forespørsel om
-              innsyn
-            </InlineMessage>
-            <div>
-              <Button
-                type="button"
-                size="xsmall"
-                loading={forhåndsvisning.isMutating}
-                variant="tertiary"
-                onClick={async () => {
-                  await forhåndsvisning.trigger({ tekst: getValues('begrunnelse') })
-                  setVisForhåndsvisning(true)
+          <Box background="neutral-soft" padding="space-8" borderRadius="8">
+            <VStack gap="space-8">
+              <Controller
+                name="begrunnelse"
+                control={control}
+                rules={{
+                  validate: (value) => {
+                    if (
+                      getValues('årsak') === OverførtTil.GOSYS ||
+                      getValues('årsak') === Henleggelsesårsak.SØKNAD_TRUKKET
+                    )
+                      return true
+                    return value?.trim() ? true : 'Du må fylle ut en begrunnelse'
+                  },
                 }}
-              >
-                Forhåndsvis dokument
-              </Button>
-            </div>
-          </>
+                render={({ field, fieldState }) => (
+                  <Textarea
+                    label="Begrunn hvorfor saken lukkes"
+                    size="small"
+                    {...field}
+                    onBlur={(e) => {
+                      field.onBlur()
+                      onSave(getValues('årsak') as Henleggelsesårsak, e.target.value)
+                    }}
+                    error={fieldState.error?.message}
+                  />
+                )}
+              />
+              <InlineMessage status="info" size="small">
+                Begrunnelsen lagres som et internt forvaltningsnotat og kan bli utlevert til innbygger ved forespørsel
+                om innsyn
+              </InlineMessage>
+              <div>
+                <Button
+                  type="button"
+                  size="xsmall"
+                  loading={forhåndsvisning.isMutating}
+                  variant="tertiary"
+                  onClick={async () => {
+                    await forhåndsvisning.trigger({ tekst: getValues('begrunnelse') })
+                    setVisForhåndsvisning(true)
+                  }}
+                >
+                  Forhåndsvis dokument
+                </Button>
+              </div>
+            </VStack>
+          </Box>
         )}
         <ForhåndsvisDokumentModal
           data={forhåndsvisning.data}

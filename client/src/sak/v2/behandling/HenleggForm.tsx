@@ -141,6 +141,7 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
               <Button
                 type="button"
                 size="xsmall"
+                loading={forhåndsvisning.isMutating}
                 variant="tertiary"
                 onClick={async () => {
                   await forhåndsvisning.trigger({ tekst: getValues('begrunnelse') })

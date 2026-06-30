@@ -10,14 +10,9 @@ import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../../../../oppgave/useOppgaveregler.ts'
 import { useNotater } from '../../../../sak/notat/useNotater'
-import {
-  Brevkode,
-  OppgaveStatusType,
-  StepType,
-  VilkårsResultat,
-  type Barnebrillesak,
-} from '../../../../types/types.internal'
+import { Brevkode, StepType, VilkårsResultat, type Barnebrillesak } from '../../../../types/types.internal'
 import { useSakActions } from '../../../useSakActions.ts'
 import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -33,6 +28,7 @@ export interface RedigeringsvisningProps {
 
 export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const { oppgave, sak, vedtaksbrev, harBrevutkast } = props
+  const { oppgaveErUnderBehandling } = useOppgaveregler(oppgave)
   const { setStep } = useManuellSaksbehandlingContext()
   const samletVurdering = useSamletVurdering(sak)
   const sakActions = useSakActions()
@@ -53,9 +49,9 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev != null
 
   const manglerPåkrevdEtterspørreOpplysningerBrev =
+    oppgaveErUnderBehandling &&
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
-    !etterspørreOpplysningerBrevFinnes &&
-    sak.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    !etterspørreOpplysningerBrevFinnes
 
   const manglerPåkrevdUtbetalingsmottakerVedInnvilgelse =
     sak.vilkårsvurdering?.resultat === VilkårsResultat.JA && !sak.utbetalingsmottaker?.kontonummer

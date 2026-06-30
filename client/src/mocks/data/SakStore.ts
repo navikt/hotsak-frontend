@@ -239,7 +239,7 @@ export class SakStore extends Dexie {
     const behandling = await this.behandlinger.get(behandlingId)
     const gjenstående =
       request.utfall?.utfall === VedtaksResultat.INNVILGET ||
-      request.utfall?.utfall === Henleggelsesårsak.FEIL_HJELPEMIDDEL ||
+      request.utfall?.utfall === Henleggelsesårsak.TRUKKET_AV_BEGRUNNER ||
       request.utfall?.utfall === Henleggelsesårsak.FLERE_SØKNADER_SAMME_BEHOV ||
       request.utfall?.utfall === Henleggelsesårsak.ANNET ||
       request.utfall?.type === 'OVERFØRING'

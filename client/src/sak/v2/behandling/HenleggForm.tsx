@@ -12,7 +12,7 @@ interface HenleggFormProps {
   defaultÅrsak?: Henleggelsesårsak
   defaultBegrunnelse?: string
   overføringTilGosys?: boolean
-  sakId: string
+  sakId?: string
 }
 
 type FormÅrsak = Henleggelsesårsak | OverførtTil.GOSYS

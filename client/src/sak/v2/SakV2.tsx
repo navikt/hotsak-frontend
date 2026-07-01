@@ -226,7 +226,12 @@ function SakV2Content({
         />
       )}
       {isBehandlingsutfallHenleggelse(behandlingsutfall) && (
-        <HenleggModal open={visHenleggModal} onClose={() => setVisHenleggModal(false)} sak={sak} />
+        <HenleggModal
+          open={visHenleggModal}
+          onClose={() => setVisHenleggModal(false)}
+          sak={sak}
+          årsak={behandlingsutfall.utfall}
+        />
       )}
       <OverførTilGosysModal open={visOverførGosysModal} onClose={() => setVisOverførGosysModal(false)} />
       <OverførtilGosysValideringFeil

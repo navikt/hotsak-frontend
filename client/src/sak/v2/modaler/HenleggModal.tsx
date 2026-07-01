@@ -14,7 +14,7 @@ export interface HenleggModalProps {
   open: boolean
   onClose(): void
   sak: Sak
-  årsak: Henleggelsesårsak
+  årsak?: Henleggelsesårsak
 }
 
 export function HenleggModal({ open, onClose, sak, årsak }: HenleggModalProps) {
@@ -29,6 +29,7 @@ export function HenleggModal({ open, onClose, sak, årsak }: HenleggModalProps) 
     Henleggelsesårsak.FLERE_SØKNADER_SAMME_BEHOV,
     Henleggelsesårsak.ANNET,
   ]
+  const harBegrunnelse = årsak !== undefined && årsakerMedBegrunnelse.includes(årsak)
 
   return (
     <BekreftelsesDialog
@@ -37,7 +38,7 @@ export function HenleggModal({ open, onClose, sak, årsak }: HenleggModalProps) 
       width="800px"
       open={open}
       reverserKnapperekkefølge={true}
-      bekreftButtonLabel={`${årsakerMedBegrunnelse.includes(årsak) ? 'Journalfør notat og lukk saken' : 'Lukk saken'}`}
+      bekreftButtonLabel={`${harBegrunnelse ? 'Journalfør notat og lukk saken' : 'Lukk saken'}`}
       onBekreft={async () => {
         setLoading(true)
         const success = await henleggFormRef.current?.submit()
@@ -61,7 +62,7 @@ export function HenleggModal({ open, onClose, sak, årsak }: HenleggModalProps) 
             </InfoCard.Content>
           </InfoCard>
         )}
-        {årsakerMedBegrunnelse.includes(årsak) && (
+        {harBegrunnelse && (
           <InfoCard data-color="info" size="small">
             <InfoCard.Header>
               <InfoCard.Title>Husk at innbygger kan be om innsyn i begrunnelsen din</InfoCard.Title>

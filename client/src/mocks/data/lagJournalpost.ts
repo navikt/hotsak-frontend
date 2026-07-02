@@ -43,6 +43,7 @@ export function lagJournalpost(
     fnrInnsender,
     tittel: tittel,
     bruker: {
+      fnr: lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
       navn: lagTilfeldigNavn(),
     },
     innsender: {

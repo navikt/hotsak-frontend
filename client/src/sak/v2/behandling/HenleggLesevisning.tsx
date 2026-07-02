@@ -1,4 +1,4 @@
-import { VStack } from '@navikt/ds-react'
+import { Box, Tag, VStack } from '@navikt/ds-react'
 import { Etikett, Tekst } from '../../../felleskomponenter/typografi'
 import { BehandlingsutfallHenleggelse, Henleggelsesårsak } from './behandlingTyper'
 
@@ -20,19 +20,24 @@ const årsakLabels: Record<Henleggelsesårsak, string> = {
 
 export function HenleggLesevisning({ utfall }: HenleggLesevisningProps) {
   return (
-    <VStack gap="space-8" marginBlock="space-16 space-0">
-      {utfall.utfall && (
-        <div>
-          <Etikett>Årsak</Etikett>
-          <Tekst>{årsakLabels[utfall.utfall]}</Tekst>
-        </div>
-      )}
-      {utfall.begrunnelse && (
-        <div>
-          <Etikett>Begrunnelse</Etikett>
-          <Tekst>{utfall.begrunnelse}</Tekst>
-        </div>
-      )}
-    </VStack>
+    <Box borderWidth="1" borderRadius="8" borderColor="neutral-subtle" padding="space-12">
+      <Tag size="small" variant="error-moderate">
+        Henlagt
+      </Tag>
+      <VStack gap="space-8" marginBlock="space-16 space-0">
+        {utfall.utfall && (
+          <div>
+            <Etikett>Valgt årsak:</Etikett>
+            <Tekst>{årsakLabels[utfall.utfall]}</Tekst>
+          </div>
+        )}
+        {utfall.begrunnelse && (
+          <div>
+            <Etikett>Saksbehandlers begrunnelse:</Etikett>
+            <Tekst>"{utfall.begrunnelse}"</Tekst>
+          </div>
+        )}
+      </VStack>
+    </Box>
   )
 }

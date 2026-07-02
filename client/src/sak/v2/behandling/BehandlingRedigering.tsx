@@ -110,6 +110,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
                   defaultÅrsak={erBehandlingsutfallOverføring ? undefined : henleggelseUtfall?.utfall}
                   defaultBegrunnelse={erBehandlingsutfallOverføring ? undefined : henleggelseUtfall?.begrunnelse}
                   overføringTilGosys={erBehandlingsutfallOverføring === true}
+                  sakId={behandling?.sakId}
                 />
               )}
 

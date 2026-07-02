@@ -1,4 +1,4 @@
-import useSWR, { mutate, type SWRResponse } from 'swr'
+import useSWR, { mutate } from 'swr'
 
 import { type HttpError } from '../../io/HttpError.ts'
 import { type UtførtAv } from '../../tilgang/UtførtAv.ts'
@@ -11,14 +11,10 @@ export interface Oppgavekommentar {
   registrertAvEnhet: Enhet
   registrertAvSystem: string
   registrertTidspunkt: string
+  oppgaveId: OppgaveId
 }
 
-export interface UseOppgavekommentarerResponse extends Omit<SWRResponse<Oppgavekommentar[], HttpError>, 'data'> {
-  kommentarer: Oppgavekommentar[]
-  antallKommentarer: number
-}
-
-export function useOppgavekommentarer(oppgaveId?: Nullable<OppgaveId>): UseOppgavekommentarerResponse {
+export function useOppgavekommentarer(oppgaveId?: OppgaveId) {
   const { data: kommentarer = ingenKommentarer, ...rest } = useSWR<Oppgavekommentar[], HttpError>(
     oppgaveId ? `/api/oppgaver/${oppgaveId}/kommentarer` : null
   )
@@ -29,4 +25,15 @@ const ingenKommentarer: Oppgavekommentar[] = []
 
 export function mutateOppgavekommentarer(oppgaveId: OppgaveId, kommentarer?: Oppgavekommentar[]) {
   return mutate(`/api/oppgaver/${oppgaveId}/kommentarer`, kommentarer)
+}
+
+export function useOppgavekommentarerForSak(sakId?: ID) {
+  const { data: kommentarer = ingenKommentarer, ...rest } = useSWR<Oppgavekommentar[], HttpError>(
+    sakId ? `/api/sak/${sakId}/kommentarer` : null
+  )
+  return { kommentarer, antallKommentarer: kommentarer.length, ...rest }
+}
+
+export function mutateOppgavekommentarerForSak(sakId: ID, kommentarer?: Oppgavekommentar[]) {
+  return mutate(`/api/sak/${sakId}/kommentarer`, kommentarer)
 }

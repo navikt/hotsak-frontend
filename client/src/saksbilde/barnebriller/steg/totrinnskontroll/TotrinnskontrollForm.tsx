@@ -1,11 +1,11 @@
 import { Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Tekst } from '../../../../felleskomponenter/typografi'
 import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
-import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
+import { StegType, type TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { BekreftelsesDialog } from '../../../komponenter/BekreftelsesDialog'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useSakActions } from '../../../useSakActions.ts'
@@ -24,12 +24,14 @@ export function TotrinnskontrollForm() {
 
   const {
     control,
-    watch,
     formState: { errors },
     getValues,
   } = methods
 
-  const resultat = watch('resultat')
+  const resultat = useWatch({
+    control,
+    name: 'resultat',
+  })
 
   const fullførTotrinnskontroll = () => {
     return sakActions.fullførTotrinnskontroll(getValues())

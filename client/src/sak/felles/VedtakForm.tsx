@@ -19,10 +19,10 @@ export interface VedtakFormHandle {
 }
 
 export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
-  ({ sak, onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat }: VedtakFormProps, ref) => {
+  ({ onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
 
-    const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami } = useVedtak(sak)
+    const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami } = useVedtak()
 
     const validerProblemsammendrag = (value: string | undefined) => {
       if (!sammendragMedLavere) {

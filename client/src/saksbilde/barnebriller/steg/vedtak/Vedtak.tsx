@@ -5,6 +5,7 @@ import classes from './Vedtak.module.css'
 import { isBrevmalBarnebrillerVedtak, isBrevstatusUtkast } from '../../../../brev/brevSelectors.ts'
 import { useBrevForSak } from '../../../../brev/useBrev.ts'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../../../../oppgave/useOppgaveregler.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
@@ -24,6 +25,7 @@ export interface VedtakProps {
 
 export function Vedtak(props: VedtakProps) {
   const { oppgave } = props
+  const { oppgaveErUnderBehandling } = useOppgaveregler(oppgave)
   const sakId = useSakId()
   const { sak, mutate } = useBarnebrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()
@@ -47,9 +49,7 @@ export function Vedtak(props: VedtakProps) {
     sak.data.saksstatus === OppgaveStatusType.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
 
   const visSkeleton =
-    sak.data.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
-    henterSaksdokumenter
+    oppgaveErUnderBehandling && samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && henterSaksdokumenter
 
   return (
     <div className={classes.wrapper}>

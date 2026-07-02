@@ -4,8 +4,7 @@ import { useMemo, useState } from 'react'
 import { FilterChips } from '../../felleskomponenter/filter/FilterChips'
 import { type FilterOption } from '../../felleskomponenter/filter/filterTypes'
 import { Mellomtittel, Tekst } from '../../felleskomponenter/typografi'
-import { useOppgavekommentarer, type Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer'
-import { type OppgaveId } from '../../oppgave/oppgaveTypes'
+import { useOppgavekommentarerForSak, type Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer'
 import { isUtførtAvAnsatt, uførtAvId } from '../../tilgang/UtførtAv'
 import { MålformType } from '../../types/types.internal'
 import { naturalBy, reverseComparator } from '../../utils/array'
@@ -13,14 +12,14 @@ import { NotatCard } from './NotatCard'
 import { NotatType, type Notat } from './notatTyper'
 
 export interface FerdigstilteNotaterProps {
-  oppgaveId?: OppgaveId
+  sakId: ID
   loading?: boolean
   notater: Notat[]
 }
 
 export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
-  const { oppgaveId, notater } = props
-  const { kommentarer, isLoading } = useOppgavekommentarer(oppgaveId)
+  const { sakId, notater } = props
+  const { kommentarer, isLoading } = useOppgavekommentarerForSak(sakId)
   const loading = props.loading ?? isLoading
 
   const [filter, setFilter] = useState(['ALLE'])

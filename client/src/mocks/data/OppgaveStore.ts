@@ -27,7 +27,6 @@ import { SakStore } from './SakStore'
 
 interface LagretOppgavekommentar extends Oppgavekommentar {
   id: number
-  oppgaveId: OppgaveId
 }
 
 type InsertOppgavekommentar = Omit<LagretOppgavekommentar, 'id'>
@@ -44,7 +43,7 @@ export class OppgaveStore extends Dexie {
   ) {
     super('OppgaveStore')
     this.version(1).stores({
-      oppgaver: 'oppgaveId',
+      oppgaver: 'oppgaveId,sakId',
       kommentarer: '++id,oppgaveId',
     })
   }
@@ -227,8 +226,20 @@ export class OppgaveStore extends Dexie {
     }
   }
 
+  async finnOppgaverForSak(sakId?: ID) {
+    if (!sakId) return []
+    return this.oppgaver.where({ sakId }).toArray()
+  }
+
   async finnKommentarer(oppgaveId: OppgaveId): Promise<Oppgavekommentar[]> {
     return this.kommentarer.where({ oppgaveId }).toArray()
+  }
+
+  async finnKommentarerForSak(sakId?: ID): Promise<Oppgavekommentar[]> {
+    if (!sakId) return []
+    const oppgaver = await this.finnOppgaverForSak(sakId)
+    const oppgaveIder = oppgaver.map((oppgave) => oppgave.oppgaveId)
+    return this.kommentarer.where('oppgaveId').anyOf(oppgaveIder).toArray()
   }
 
   async lagreKommentar(oppgaveId: OppgaveId, kommentar: InsertOppgavekommentar) {

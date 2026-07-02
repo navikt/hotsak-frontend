@@ -99,6 +99,6 @@ function Behandlingsutfall({ behandling }: { behandling: FerdigstiltBehandling }
 
 function velgKnappetekst(utfall?: Behandlingsutfall): string {
   if (isBehandlingsutfallOverføring(utfall)) return 'Overfør til Gosys'
-  if (utfall?.type === 'HENLEGGELSE') return 'Ferdigstill'
+  if (utfall?.type === 'HENLEGGELSE') return 'Lukk saken'
   return 'Fatt vedtak'
 }

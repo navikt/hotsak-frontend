@@ -1,7 +1,9 @@
-import { Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
-import { forwardRef, useImperativeHandle } from 'react'
+import { Box, Button, InlineMessage, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
+import { forwardRef, useImperativeHandle, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Henleggelsesårsak, OverførtTil } from './behandlingTyper'
+import { ForhåndsvisDokumentModal } from '../../../felleskomponenter/dokument/ForhåndsvisDokumentModal'
+import { useNotater } from '../../notat/useNotater'
 
 interface HenleggFormProps {
   onHenleggelse(): void
@@ -10,6 +12,7 @@ interface HenleggFormProps {
   defaultÅrsak?: Henleggelsesårsak
   defaultBegrunnelse?: string
   overføringTilGosys?: boolean
+  sakId?: string
 }
 
 type FormÅrsak = Henleggelsesårsak | OverførtTil.GOSYS
@@ -26,8 +29,8 @@ export interface HenleggFormHandle {
 }
 
 export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
-  ({ onHenleggelse, onSave, onOverføringValgt, defaultÅrsak, defaultBegrunnelse, overføringTilGosys }, ref) => {
-    const { control, handleSubmit, getValues, watch } = useForm<HenleggFormValues>({
+  ({ onHenleggelse, onSave, onOverføringValgt, defaultÅrsak, defaultBegrunnelse, overføringTilGosys, sakId }, ref) => {
+    const { control, handleSubmit, getValues, watch, setValue } = useForm<HenleggFormValues>({
       defaultValues: {
         årsak: overføringTilGosys ? OverførtTil.GOSYS : (defaultÅrsak ?? undefined),
         begrunnelse: defaultBegrunnelse ?? '',
@@ -35,7 +38,15 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
     })
 
     const valgtÅrsak = watch('årsak')
-    const erOverføring = valgtÅrsak === OverførtTil.GOSYS
+    const erOverføringEllerAvtaltMedBruker =
+      valgtÅrsak === OverførtTil.GOSYS || valgtÅrsak === Henleggelsesårsak.SØKNAD_TRUKKET || valgtÅrsak == undefined
+    const årsakerMedBegrunnelse: FormÅrsak[] = [
+      Henleggelsesårsak.TRUKKET_AV_BEGRUNNER,
+      Henleggelsesårsak.FLERE_SØKNADER_SAMME_BEHOV,
+      Henleggelsesårsak.ANNET,
+    ]
+    const [visForhåndsvisning, setVisForhåndsvisning] = useState(false)
+    const { forhåndsvisning } = useNotater(sakId)
 
     useImperativeHandle(ref, () => ({
       validate: () =>
@@ -71,6 +82,9 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
               value={field.value ?? ''}
               onChange={(value: FormÅrsak) => {
                 field.onChange(value)
+                if (!årsakerMedBegrunnelse.includes(value)) {
+                  setValue('begrunnelse', '')
+                }
                 if (value === OverførtTil.GOSYS) {
                   onOverføringValgt()
                 } else {
@@ -91,30 +105,61 @@ export const HenleggForm = forwardRef<HenleggFormHandle, HenleggFormProps>(
             </RadioGroup>
           )}
         />
-        {!erOverføring && (
-          <Controller
-            name="begrunnelse"
-            control={control}
-            rules={{
-              validate: (value) => {
-                if (getValues('årsak') === OverførtTil.GOSYS) return true
-                return value?.trim() ? true : 'Du må fylle ut en begrunnelse'
-              },
-            }}
-            render={({ field, fieldState }) => (
-              <Textarea
-                label="Begrunnelse"
-                size="small"
-                {...field}
-                onBlur={(e) => {
-                  field.onBlur()
-                  onSave(getValues('årsak') as Henleggelsesårsak, e.target.value)
+        {!erOverføringEllerAvtaltMedBruker && (
+          <Box background="neutral-soft" padding="space-8" borderRadius="8">
+            <VStack gap="space-8">
+              <Controller
+                name="begrunnelse"
+                control={control}
+                rules={{
+                  validate: (value) => {
+                    if (
+                      getValues('årsak') === OverførtTil.GOSYS ||
+                      getValues('årsak') === Henleggelsesårsak.SØKNAD_TRUKKET
+                    )
+                      return true
+                    return value?.trim() ? true : 'Du må fylle ut en begrunnelse'
+                  },
                 }}
-                error={fieldState.error?.message}
+                render={({ field, fieldState }) => (
+                  <Textarea
+                    label="Begrunn hvorfor saken lukkes"
+                    size="small"
+                    {...field}
+                    onBlur={(e) => {
+                      field.onBlur()
+                      onSave(getValues('årsak') as Henleggelsesårsak, e.target.value)
+                    }}
+                    error={fieldState.error?.message}
+                  />
+                )}
               />
-            )}
-          />
+              <InlineMessage status="info" size="small">
+                Begrunnelsen lagres som et internt forvaltningsnotat og kan bli utlevert til innbygger ved forespørsel
+                om innsyn
+              </InlineMessage>
+              <div>
+                <Button
+                  type="button"
+                  size="xsmall"
+                  loading={forhåndsvisning.isMutating}
+                  variant="tertiary"
+                  onClick={async () => {
+                    await forhåndsvisning.trigger({ tekst: getValues('begrunnelse') })
+                    setVisForhåndsvisning(true)
+                  }}
+                >
+                  Forhåndsvis dokument
+                </Button>
+              </div>
+            </VStack>
+          </Box>
         )}
+        <ForhåndsvisDokumentModal
+          data={forhåndsvisning.data}
+          open={visForhåndsvisning}
+          onOpenChange={setVisForhåndsvisning}
+        />
       </VStack>
     )
   }

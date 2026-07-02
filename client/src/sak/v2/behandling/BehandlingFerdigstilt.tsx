@@ -94,11 +94,13 @@ function VedtaksResultatVisning({ behandling }: { behandling: FerdigstiltBehandl
   })()
 
   return (
-    <VStack gap="space-8">
+    <VStack gap="space-8" padding="space-8">
       <Heading size="xsmall" level="2" spacing={false}>
         {header}
       </Heading>
-      <div>{<BehandlingsutfallTag utfall={behandling.utfall.utfall} />}</div>
+      {behandling.utfall.type != 'HENLEGGELSE' && (
+        <div>{<BehandlingsutfallTag utfall={behandling.utfall.utfall} />}</div>
+      )}
     </VStack>
   )
 }

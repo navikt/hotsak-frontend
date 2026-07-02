@@ -3,7 +3,7 @@ import { http } from '../io/HttpClient.ts'
 import { mutateSak } from '../sak/useSak.ts'
 import { useUmami } from '../sporing/useUmami.ts'
 import { type NavIdent } from '../tilgang/Ansatt.ts'
-import { mutateOppgavekommentarer } from './kommentar/useOppgavekommentarer.ts'
+import { mutateOppgavekommentarer, mutateOppgavekommentarerForSak } from './kommentar/useOppgavekommentarer.ts'
 import { type OppgaveBase, type OppgaveId } from './oppgaveTypes.ts'
 import { mutateOppgave } from './useOppgave.ts'
 
@@ -123,7 +123,11 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
       return execute(async () => {
         await http.post(`/api/oppgaver/${oppgaveId}/kommentarer`, { tekst }, { versjon })
         if (isOppgaveContext) {
-          await mutateOppgavekommentarer(oppgaveId)
+          const promises = [mutateOppgavekommentarer(oppgaveId)]
+          if (sakId) {
+            promises.push(mutateOppgavekommentarerForSak(sakId))
+          }
+          await Promise.all(promises)
           logOppgaveKommentarLagret()
         }
       })

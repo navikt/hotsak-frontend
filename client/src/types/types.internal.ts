@@ -1,3 +1,4 @@
+import { OppgaveKodeverk } from '../oppgave/oppgaveTypes.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
 import type { Bydel, Enhet, HarPersonnavn, Kommune, Personnavn } from './hotlibs.ts'
 
@@ -390,6 +391,9 @@ export interface Journalpost {
   journalpostId: string
   journalpostOpprettetTid: string
   tittel: string
+  tema: OppgaveKodeverk
+  behandlingstema?: OppgaveKodeverk
+  kanal: OppgaveKodeverk
   fnrInnsender: string
   journalstatus: JournalpostStatusType
   journalposttype: 'I' | 'U' | 'N'

@@ -47,7 +47,7 @@ export class JournalpostStore extends Dexie {
     ])
 
     // Hjelpemiddel-journalpost for søknadsaker
-    const v2Post = lagJournalpost('9006', 'Søknad om hjelpemidler')
+    const v2Post = lagJournalpost('9006', 'Søknad om hjelpemidler', { kode: 'ae0034', term: 'Søknad' })
     await this.journalposter.add(v2Post)
     await this.dokumenter.bulkAdd(lagHjelpemiddelDokumenter('9006') as LagretDokument[])
     await this.personStore.lagreAlle([{ ...lagPerson(), fnr: v2Post.fnrInnsender }])

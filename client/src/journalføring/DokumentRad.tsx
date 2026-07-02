@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Select, UNSAFE_Combobox, VStack } from '@navikt/ds-react'
+import { Box, Button, HStack, UNSAFE_Combobox, VStack } from '@navikt/ds-react'
 
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { useKodeverkDokumenttitler } from '../oppgave/useKodeverkOppgave.ts'
@@ -12,6 +12,7 @@ interface DokumentRadProps {
   onTittelChange(tittel: string): void
   valgteChips: string[]
   onChipsChange(chips: string[]): void
+  readOnly?: boolean
 }
 
 export function DokumentRad({
@@ -22,6 +23,7 @@ export function DokumentRad({
   onTittelChange,
   valgteChips,
   onChipsChange,
+  readOnly = false,
 }: DokumentRadProps) {
   const dokumentTittelOptions = useKodeverkDokumenttitler()
 
@@ -30,19 +32,17 @@ export function DokumentRad({
       <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12" background="accent-soft">
         <VStack gap="space-6">
           <HStack align="end" gap="space-4">
-            <Select
+            <UNSAFE_Combobox
               label={`Dokumenttittel (${index + 1} av ${total})`}
               size="small"
-              value={valgtTittel}
-              onChange={(e) => onTittelChange(e.target.value)}
+              options={dokumentTittelOptions}
+              selectedOptions={valgtTittel ? [valgtTittel] : []}
+              onToggleSelected={(opt, isSelected) => onTittelChange(isSelected ? opt : '')}
+              shouldAutocomplete
+              allowNewValues={false}
+              readOnly={readOnly}
               style={{ flex: 1 }}
-            >
-              {dokumentTittelOptions.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </Select>
+            />
             <Button
               as="a"
               href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`}
@@ -65,6 +65,7 @@ export function DokumentRad({
               onChipsChange(isSelected ? [...valgteChips, option] : valgteChips.filter((c) => c !== option))
             }}
             isMultiSelect
+            readOnly={readOnly}
           />
         </VStack>
       </Box>

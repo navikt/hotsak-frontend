@@ -13,7 +13,7 @@ import { JournalføringV2Skjema } from './JournalføringV2Skjema.tsx'
 
 export function JournalføringV2({ oppgave }: { oppgave: Journalføringsoppgave }) {
   const { journalpostId } = oppgave
-  const { journalpost, error, isLoading } = useJournalpost(journalpostId)
+  const { journalpost, error, isLoading, mutate: mutateJournalpost } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
 
   const dokumenter = journalpost?.dokumenter
@@ -47,7 +47,11 @@ export function JournalføringV2({ oppgave }: { oppgave: Journalføringsoppgave 
                   <span>Henter journalpost...</span>
                 </HStack>
               ) : (
-                <JournalføringV2Skjema oppgave={oppgave} journalpost={journalpost} />
+                <JournalføringV2Skjema
+                  oppgave={oppgave}
+                  journalpost={journalpost}
+                  mutateJournalpost={mutateJournalpost}
+                />
               )}
             </div>
           </Panel>

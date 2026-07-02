@@ -1,3 +1,4 @@
+import { OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
 import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
 import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
@@ -25,20 +26,23 @@ export type InsertHendelse = Omit<LagretHendelse, 'id'>
 
 export function lagJournalpost(
   journalpostId: string,
-  tittel: string = 'Tilskudd ved kjøp av briller til barn'
+  tittel: string = 'Tilskudd ved kjøp av briller til barn',
+  behandlingstema: OppgaveKodeverk = { kode: 'ab0420', term: 'Briller til barn' }
 ): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const journalpostOpprettetTid = lagTilfeldigDato(new Date().getFullYear()).toISOString()
   const journalposttyper = ['I', 'U', 'N'] as const
   return {
     journalpostId,
+    tema: { kode: 'HJE', term: 'Hjelpemidler' },
+    behandlingstema: behandlingstema,
+    kanal: { kode: 'SKAN_IM', term: 'Skanning Iron Mountain' },
     journalposttype: journalposttyper[lagTilfeldigInteger(0, 2)],
     journalstatus: JournalpostStatusType.MOTTATT,
     journalpostOpprettetTid,
     fnrInnsender,
     tittel: tittel,
     bruker: {
-      fnr: fnrInnsender,
       navn: lagTilfeldigNavn(),
     },
     innsender: {

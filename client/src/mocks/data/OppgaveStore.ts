@@ -100,6 +100,10 @@ export class OppgaveStore extends Dexie {
     return this.oppgaver.bulkAdd(oppgaver, { allKeys: true })
   }
 
+  async lagreOppgave(oppgave: InsertOppgave): Promise<OppgaveId> {
+    return this.oppgaver.add(oppgave)
+  }
+
   async hent(oppgaveId: OppgaveId): Promise<Oppgave | undefined> {
     const oppgave = await this.oppgaver.get(oppgaveId)
     if (!oppgave) {

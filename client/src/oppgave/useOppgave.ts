@@ -1,10 +1,17 @@
 import { useDebugValue } from 'react'
 import { useParams } from 'react-router'
 import useSwr, { mutate, preload, type SWRResponse } from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 import { http } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
-import { erOppgaveId, type Oppgave, type OppgaveId } from './oppgaveTypes.ts'
+import {
+  erOppgaveId,
+  type Oppgave,
+  type OppgaveId,
+  type OppgaveMappe,
+  type OppgaveMapperResponse,
+} from './oppgaveTypes.ts'
 
 export function useOppgaveId(): OppgaveId | undefined {
   const { oppgaveId } = useParams<{ oppgaveId: OppgaveId | string }>()
@@ -29,6 +36,11 @@ export function useOppgave(): UseOppgaveResponse {
     oppgave: oppgave!!,
     ...rest,
   }
+}
+
+export function useOppgaveMapper(): ReadonlyArray<OppgaveMappe> {
+  const { data } = useSWRImmutable<OppgaveMapperResponse[]>('/api/oppgaver/mapper')
+  return data?.flatMap((page) => page.mapper) ?? []
 }
 
 export function preloadOppgave(oppgaveId: OppgaveId) {

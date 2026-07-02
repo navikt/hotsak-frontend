@@ -19,7 +19,8 @@ const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx')
 const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
 const Saksbilde = lazy(() => import('../saksbilde/Saksbilde.tsx'))
 
-const BREVKODE_JOURNALFØRING_V2 = 'NAV 10-07.03'
+//const BREVKODE_JOURNALFØRING_V2 = 'NAV 10-07.03'
+const BREVKODE_BRILLER_TIL_BARN = ['NAV 10-07.34', 'NAVe 10-07.34']
 
 function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) {
   const { journalpost, isLoading } = useJournalpost(oppgave.journalpostId)
@@ -28,7 +29,9 @@ function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) 
     return null
   }
 
-  if (erIkkeProd && journalpost?.dokumenter[0]?.brevkode === BREVKODE_JOURNALFØRING_V2) {
+  const brevkode = journalpost?.dokumenter[0]?.brevkode
+
+  if (erIkkeProd && brevkode && !BREVKODE_BRILLER_TIL_BARN.includes(brevkode)) {
     return <JournalføringV2 oppgave={oppgave} />
   }
 

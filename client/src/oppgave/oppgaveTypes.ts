@@ -146,6 +146,23 @@ export interface Oppgave extends OppgaveBase {
   isUlest?: boolean
 }
 
+export interface OppgaveMappe {
+  id: number
+  enhet: string
+  navn: string
+  tema: string
+  versjon: number
+  opprettetAv: string
+  opprettetTidspunkt: string
+  endretAv: string | null
+  endretTidspunkt: string | null
+}
+
+export interface OppgaveMapperResponse {
+  totalElements: number
+  mapper: OppgaveMappe[]
+}
+
 export interface Journalføringsoppgave extends Oppgave {
   kategorisering: Oppgavekategorisering<Oppgavetype.JOURNALFØRING>
   journalpostId: string

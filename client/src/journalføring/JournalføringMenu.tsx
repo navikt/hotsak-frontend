@@ -4,7 +4,6 @@ import { ActionMenu, Button, HStack } from '@navikt/ds-react'
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { OppgaveMenuModals } from '../oppgave/OppgaveMenuModals.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
-import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 
 export interface JournalføringMenuProps {
   oppgave: Journalføringsoppgave
@@ -12,11 +11,6 @@ export interface JournalføringMenuProps {
 }
 
 export function JournalføringMenu({ oppgave, onAction }: JournalføringMenuProps) {
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
-  if (!(oppgave && oppgaveErUnderBehandlingAvInnloggetAnsatt)) {
-    return null
-  }
-
   return (
     <HStack justify="end">
       <ActionMenu>
@@ -25,6 +19,7 @@ export function JournalføringMenu({ oppgave, onAction }: JournalføringMenuProp
             Meny
           </Button>
         </ActionMenu.Trigger>
+
         <ActionMenu.Content>
           <OppgaveMenu oppgave={oppgave} onAction={onAction} />
         </ActionMenu.Content>

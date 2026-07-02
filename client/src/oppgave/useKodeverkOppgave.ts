@@ -2,6 +2,12 @@ import useSWRImmutable from 'swr/immutable'
 
 import { createUrl } from '../io/HttpClient.ts'
 import type { KodeverkGjelder, OppgaveKodeverk } from './oppgaveTypes.ts'
+import type { Stønadsklassifisering } from '../journalføring/journalføringTypes.ts'
+
+export function useKodeverkStønadsklassifisering(): Stønadsklassifisering | undefined {
+  const { data } = useSWRImmutable<Stønadsklassifisering>('/api/kodeverk/stonadsklassifisering')
+  return data
+}
 
 export function useKodeverkBehandlingstyper(): ReadonlyArray<OppgaveKodeverk> {
   const { data } = useSWRImmutable<OppgaveKodeverk[]>('/api/kodeverk/behandlingstyper')
@@ -15,9 +21,9 @@ export function useKodeverkGjelder(behandlingstype?: string): ReadonlyArray<Kode
 }
 
 // TODO preload
-export function useKodeverkDokumenttitler(): ReadonlyArray<string> {
+export function useKodeverkDokumenttitler(): string[] {
   const { data } = useSWRImmutable<string[]>('/api/kodeverk/dokumenttitler')
-  return data ?? noData
+  return data ?? []
 }
 
 export function useKodeverkOppgavetype(): ReadonlyArray<OppgaveKodeverk> {

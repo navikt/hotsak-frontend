@@ -4,6 +4,10 @@ import type { StoreHandlersFactory } from '../data'
 import type { KodeverkGjelder } from '../../oppgave/oppgaveTypes.ts'
 
 export const kodeverkHandlers: StoreHandlersFactory = ({ kodeverkStore }) => [
+  http.get('/api/kodeverk/stonadsklassifisering', async () => {
+    return HttpResponse.json(kodeverkStore.stønadsklassifisering())
+  }),
+
   http.get('/api/kodeverk/behandlingstyper', async () => {
     return HttpResponse.json(kodeverkStore.behandlingstyper())
   }),

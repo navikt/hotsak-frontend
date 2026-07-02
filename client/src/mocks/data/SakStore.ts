@@ -9,7 +9,10 @@ import {
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
 } from '../../brev/brevTyper.ts'
-import { type JournalførJournalpostRequest } from '../../journalføring/journalføringTypes.ts'
+import {
+  type JournalførJournalpostRequest,
+  type JournalføringV2Request,
+} from '../../journalføring/journalføringTypes.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
   type Behandling,
@@ -28,6 +31,8 @@ import {
   type OppdaterVilkårRequest,
   OppgaveStatusType,
   type Sak,
+  SaksstatusKategori,
+  Sakstype,
   type Saksdokument,
   SaksdokumentType,
   StegType,
@@ -40,6 +45,7 @@ import {
   type VurderVilkårRequest,
 } from '../../types/types.internal'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
+import { enheter } from './enheter.ts'
 import { nåIso } from './felles.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import {
@@ -496,6 +502,37 @@ export class SakStore extends Dexie {
         this.lagreHendelse(sak.sakId, 'Sak returnert til saksbehandler')
       }
     })
+  }
+
+  async opprettJournalføringsSak(request: JournalføringV2Request): Promise<{ sakId: string; sak: Sak }> {
+    const count = await this.saker.count()
+    const sakId = String(count + 1)
+    const nå = nåIso()
+    const ingenAdressebeskyttelse = { skjermet: false }
+    const sak: Sak = {
+      sakId,
+      sakstype: Sakstype.SØKNAD,
+      saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+      saksstatusGyldigFra: nå,
+      statuskategori: SaksstatusKategori.ÅPEN,
+      opprettet: nå,
+      søknadGjelder: request.tittel,
+      bruker: {
+        fnr: request.journalføresPåFnr,
+        navn: { fornavn: 'Ukjent', etternavn: '' },
+        fødselsdato: '',
+        adressebeskyttelseOgSkjerming: ingenAdressebeskyttelse,
+      },
+      innsender: {
+        fnr: request.journalføresPåFnr,
+        navn: { fornavn: 'Ukjent', etternavn: '' },
+        adressebeskyttelseOgSkjerming: ingenAdressebeskyttelse,
+      },
+      enhet: enheter.agder,
+      greitÅViteFaktum: [],
+    }
+    await this.saker.add(sak as unknown as InsertSak)
+    return { sakId, sak }
   }
 
   async opprettSak(journalføring: JournalførJournalpostRequest) {

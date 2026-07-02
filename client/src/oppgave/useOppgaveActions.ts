@@ -74,7 +74,6 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
   const { oppgaveId, versjon, sakId } = oppgave
   const { execute, state } = useActionState()
   const { logOppgaveKommentarLagret } = useUmami()
-
   const mutateOppgaveOgSak = () => {
     if (sakId) {
       return Promise.all([mutateOppgave(oppgaveId), mutateSak(sakId)])

@@ -1,6 +1,6 @@
 import { OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
 import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
-import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
+import { lagTilfeldigInteger, nåIso } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { HJELPEMIDDEL_JOURNALPOST_IDS as HJELPEMIDDEL_IDS } from './journalpostKonstanter.ts'
 import { lagTilfeldigNavn } from './navn.ts'
@@ -30,7 +30,7 @@ export function lagJournalpost(
   behandlingstema: OppgaveKodeverk = { kode: 'ab0420', term: 'Briller til barn' }
 ): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
-  const journalpostOpprettetTid = lagTilfeldigDato(new Date().getFullYear()).toISOString()
+  const journalpostOpprettetTid = nåIso()
   const journalposttyper = ['I', 'U', 'N'] as const
   return {
     journalpostId,

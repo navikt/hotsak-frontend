@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   DatePicker,
-  Detail,
+  ErrorMessage,
   Heading,
   HStack,
   Label,
@@ -17,21 +17,23 @@ import {
   VStack,
 } from '@navikt/ds-react'
 import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { InlineKopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Skillelinje } from '../felleskomponenter/Strek.tsx'
-import { ComboboxController } from '../felleskomponenter/skjema/ComboboxController.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import {
-  harBehandlingstema,
-  useKodeverkBehandlingstyper,
-  useKodeverkGjelder,
-  useKodeverkStønadsklassifisering,
-} from '../oppgave/useKodeverkOppgave.ts'
+  type Journalføringsoppgave,
+  Oppgaveprioritet,
+  OppgaveprioritetLabel,
+  Oppgavetype,
+  OppgavetypeLabel,
+} from '../oppgave/oppgaveTypes.ts'
+import { stønadsklassifiseringData } from '../oppgave/stønadsklassifiseringData.ts'
+import { stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
+import { type GjelderOption, useGjelderOptions } from '../oppgave/useKodeverkOppgave.ts'
 import { useOppgaveMapper } from '../oppgave/useOppgave.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
@@ -39,11 +41,17 @@ import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { DokumentRad } from './DokumentRad.tsx'
+import { EndreDatoModal } from './EndreDatoModal.tsx'
+import { EndreBehandlingstypeModal } from './EndreBehandlingstypeModal.tsx'
+import { EndrePrioritetModal } from './EndrePrioritetModal.tsx'
+import { EndreStønadsklassifiseringModal } from './EndreStønadsklassifiseringModal.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
 import classes from './JournalføringV2Skjema.module.css'
 import { type JournalføringV2Response } from './journalføringTypes.ts'
+import { type SakstypeKode } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 interface JournalføringV2SkjemaVerdier {
   tema: string
@@ -68,14 +76,10 @@ interface JournalføringV2SkjemaProps {
   mutateJournalpost(): void
 }
 
-// TODO: Flytte sakstyper til kodeverk
-const SAKTYPE_LABELS: Record<string, string> = {
-  A: 'Anke',
-  K: 'Klage',
-  KT: 'Klage tilbakebetaling',
-  R: 'Revurdering',
-  S: 'Søknad',
-  T: 'Tilbakebetaling',
+function filtrertePåSøk(options: GjelderOption[], søk: string): GjelderOption[] {
+  if (!søk) return options
+  const ord = søk.toLowerCase().split(' ').filter(Boolean)
+  return options.filter((o) => ord.every((ord) => o.searchTerms.includes(ord)))
 }
 
 export function JournalføringV2Skjema({
@@ -87,16 +91,23 @@ export function JournalføringV2Skjema({
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
+  const [visStønadsklassifiseringsModal, setVisStønadsklassifiseringsModal] = useState(false)
+  const [visBehandlingstypeModal, setVisBehandlingstypeModal] = useState(false)
+  const [visMottattDatoModal, setVisMottattDatoModal] = useState(false)
+  const [visAktivFraModal, setVisAktivFraModal] = useState(false)
+  const [visPrioritetModal, setVisPrioritetModal] = useState(false)
   const { behandlere } = useOppgavebehandlere()
   const mapper = useOppgaveMapper()
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
+  const aktivFraDatoDefault = new Date()
   const fristDefault = addWeeks(mottattDatoDefault, 4)
-
-  const behandlingstyper = useKodeverkBehandlingstyper()
 
   const { journalførV2 } = useJournalføringActions(oppgave, journalpost.journalpostId)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const kanRedigere = oppgaveErUnderBehandlingAvInnloggetAnsatt
+  const { gjeldendeEnhet, navn } = useInnloggetAnsatt()
+
+  const gjelderOptions = useGjelderOptions()
 
   const {
     register,
@@ -114,8 +125,10 @@ export function JournalføringV2Skjema({
       tilordnetEnhet: 'enhetensOppgaveliste',
       kommentar: ``,
       behandlingstype: journalpost.behandlingstema?.kode ?? '',
+      stønadsklassifisering: 'DA',
+      stønadType: 'S' as SakstypeKode,
       mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
-      aktivFra: formatISO(mottattDatoDefault, { representation: 'date' }),
+      aktivFra: formatISO(aktivFraDatoDefault, { representation: 'date' }),
       frist: formatISO(fristDefault, { representation: 'date' }),
     },
   })
@@ -123,29 +136,33 @@ export function JournalføringV2Skjema({
   const valgtBehandlingstype = watch('behandlingstype')
   const valgtBehandlingstema = watch('behandlingstema')
   const valgtStønadsklassifisering = watch('stønadsklassifisering')
+  const valgtStønadType = watch('stønadType') as SakstypeKode
+  const valgtMottattDato = watch('mottattDato')
+  const valgtAktivFra = watch('aktivFra')
+  const valgtPrioritet = watch('prioritet')
 
-  const gjelderOptions = useKodeverkGjelder(valgtBehandlingstype || undefined)
-    .filter(harBehandlingstema)
-    .sort((a, b) => a.behandlingstema.term.localeCompare(b.behandlingstema.term))
+  const [gjelderSøk, setGjelderSøk] = useState('')
 
-  const alleGjelder = useKodeverkGjelder()
-  const stønadsklassifiseringData = useKodeverkStønadsklassifisering()
+  const filtrerteGjelderComboboxOptions = filtrertePåSøk(gjelderOptions, gjelderSøk).map(({ label, value }) => ({
+    label,
+    value,
+  }))
 
-  const valgtStk2 = stønadsklassifiseringData?.stk2.find((s) => s.kode === valgtStønadsklassifisering)
+  const valgtGjelderOptions = gjelderOptions.filter(
+    (o) => o.value === `${valgtBehandlingstema}|${valgtBehandlingstype}`
+  )
 
-  // Auto-set stønadsklassifisering basert på valgt behandlingstype
-  useEffect(() => {
-    if (!valgtBehandlingstype || !stønadsklassifiseringData) return
-    const match = stønadsklassifiseringData.stk2.find((stk2) => stk2.behandlingstype?.includes(valgtBehandlingstype))
-    if (match) setValue('stønadsklassifisering', match.kode)
-  }, [valgtBehandlingstype, stønadsklassifiseringData, setValue])
+  // UNSAFE_Combobox forventer {label, value}[] — searchTerms strippes ut
+  const gjelderComboboxOptions = useMemo(
+    () => gjelderOptions.map(({ label, value }) => ({ label, value })),
+    [gjelderOptions]
+  )
+  const valgtGjelderComboboxOptions = useMemo(
+    () => valgtGjelderOptions.map(({ label, value }) => ({ label, value })),
+    [valgtGjelderOptions]
+  )
 
-  // Auto-set stønadsklassifisering basert på valgt behandlingstema
-  useEffect(() => {
-    if (!valgtBehandlingstema || !stønadsklassifiseringData) return
-    const match = stønadsklassifiseringData.stk2.find((stk2) => stk2.behandlingstema?.includes(valgtBehandlingstema))
-    if (match) setValue('stønadsklassifisering', match.kode)
-  }, [valgtBehandlingstema, stønadsklassifiseringData, setValue])
+  const valgtStk2 = stønadsklassifiseringData.stk2.find((s) => s.kode === valgtStønadsklassifisering)!
 
   useEffect(() => {
     register('mottattDato')
@@ -161,34 +178,6 @@ export function JournalføringV2Skjema({
     })
   }, [register, getValues])
 
-  const { datepickerProps: mottattProps, inputProps: mottattInputProps } = useDatepicker({
-    defaultSelected: mottattDatoDefault,
-    onDateChange: (dato) => {
-      if (dato) {
-        const datoStr = formatISO(dato, { representation: 'date' })
-        setValue('mottattDato', datoStr)
-        setAktivFra(dato)
-        setValue('aktivFra', datoStr, { shouldValidate: true })
-        const nyFrist = addWeeks(dato, 4)
-        setFrist(nyFrist)
-        setValue('frist', formatISO(nyFrist, { representation: 'date' }), { shouldValidate: true })
-      }
-    },
-  })
-
-  const {
-    datepickerProps: aktivFraProps,
-    inputProps: aktivFraInputProps,
-    setSelected: setAktivFra,
-  } = useDatepicker({
-    defaultSelected: mottattDatoDefault,
-    onDateChange: (dato) => {
-      if (dato) {
-        setValue('aktivFra', formatISO(dato, { representation: 'date' }), { shouldValidate: true })
-      }
-    },
-  })
-
   const {
     datepickerProps: fristProps,
     inputProps: fristInputProps,
@@ -203,6 +192,7 @@ export function JournalføringV2Skjema({
     },
   })
 
+  // TODO Sjekk tildelt enhet vs gjeldende enhet for saksbehandler. Kan det være forskjell på dem?
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
     const tittel =
       dokumentTitler[journalpost.dokumenter[0]?.dokumentId ?? ''] ??
@@ -238,7 +228,6 @@ export function JournalføringV2Skjema({
   }
 
   // TODO: Legge inn vertikal ikonlinje med dokumentoversikt, saksoversikt osv?
-  // TODO: Sjekk tilgang og lag lesevisning
 
   const brukerNavn = journalpost.bruker ? formaterNavn(journalpost.bruker.navn) : ''
   const brukerFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender
@@ -249,384 +238,399 @@ export function JournalføringV2Skjema({
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <VStack gap="space-16">
-        <HStack justify="space-between" align="center">
-          <Heading level="1" size="xsmall">
-            Journalføring
-          </Heading>
-          <JournalføringMenu oppgave={oppgave} onAction={mutateJournalpost} />
-        </HStack>
-        <div>
-          <HStack gap="space-12" paddingBlock="space-0">
-            <BodyShort size="small">
-              <strong>Kilde:</strong>
-              {`${journalpost.kanal.kode === 'SKAN_IM' ? ' Skanning' : ` ${journalpost.kanal.term}`}`}
-            </BodyShort>
-            <BodyShort size="small">
-              <strong>Registrert dato:</strong> {registrertDato}
-            </BodyShort>
-          </HStack>
-          <Skillelinje />
-        </div>
-        <TextContainer>
+    <VStack gap="space-16">
+      <HStack justify="space-between" align="center">
+        <Heading level="1" size="xsmall">
+          Journalføring
+        </Heading>
+        <JournalføringMenu oppgave={oppgave} onAction={mutateJournalpost} />
+      </HStack>
+
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <VStack gap="space-16">
+          <div>
+            <HStack gap="space-12" paddingBlock="space-0">
+              <BodyShort size="small">
+                <strong>Kilde:</strong>
+                {`${journalpost.kanal.kode === 'SKAN_IM' ? ' Skanning' : ` ${journalpost.kanal.term}`}`}
+              </BodyShort>
+              <BodyShort size="small">
+                <strong>Registrert dato:</strong> {registrertDato}
+              </BodyShort>
+            </HStack>
+            <Skillelinje />
+          </div>
+          <TextContainer>
+            <VStack gap="space-8">
+              <Heading level="2" size="small">
+                Gjelder
+              </Heading>
+
+              <SelectController
+                control={control}
+                name="tema"
+                label="Tema"
+                size="small"
+                readOnly={!kanRedigere}
+                rules={{ required: 'Du må velge tema' }}
+              >
+                <option value="HJE">Hjelpemidler</option>
+              </SelectController>
+
+              <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
+                <HStack justify="space-between" align="start">
+                  <VStack gap="space-1">
+                    <Label size="small">Bruker</Label>
+                    <HStack gap="space-1" align="center">
+                      <BodyShort size="small">{brukerNavn} - </BodyShort>
+                      <BodyShort size="small">{brukerFnr}</BodyShort>
+                      <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
+                    </HStack>
+                    <BodyShort size="small">{tildeltEnhet}</BodyShort>
+                  </VStack>
+                  {kanRedigere && (
+                    <Button variant="tertiary" size="xsmall" type="button" hidden={!kanRedigere}>
+                      Endre
+                    </Button>
+                  )}
+                </HStack>
+              </Box>
+
+              <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
+                <HStack justify="space-between" align="start">
+                  <VStack gap="space-1">
+                    <Label size="small">Avsender</Label>
+                    <HStack gap="space-1" align="center">
+                      <BodyShort size="small">{avsenderNavn} - </BodyShort>
+                      <BodyShort size="small">{avsenderFnr}</BodyShort>
+                      <InlineKopiknapp copyText={avsenderFnr} tooltip="Kopier fødselsnummer" />
+                    </HStack>
+                    <BodyShort size="small">{tildeltEnhet}</BodyShort>
+                  </VStack>
+                  {kanRedigere && (
+                    <Button variant="tertiary" size="xsmall" type="button" hidden={!kanRedigere}>
+                      Endre
+                    </Button>
+                  )}
+                </HStack>
+              </Box>
+            </VStack>
+          </TextContainer>
+
           <VStack gap="space-8">
             <Heading level="2" size="small">
-              Gjelder
+              Dokumenter
             </Heading>
-
-            <SelectController
-              control={control}
-              name="tema"
-              label="Tema"
-              size="small"
-              readOnly={!kanRedigere}
-              rules={{ required: 'Du må velge tema' }}
-            >
-              <option value="HJE">Hjelpemidler</option>
-            </SelectController>
-
-            <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
-              <HStack justify="space-between" align="start">
-                <VStack gap="space-1">
-                  <Label size="small">Bruker</Label>
-                  <HStack gap="space-1" align="center">
-                    <BodyShort size="small">{brukerNavn} - </BodyShort>
-                    <BodyShort size="small">{brukerFnr}</BodyShort>
-                    <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
-                  </HStack>
-                  <BodyShort size="small">{tildeltEnhet}</BodyShort>
-                </VStack>
-                {kanRedigere && (
-                  <Button variant="tertiary" size="xsmall" type="button" hidden={!kanRedigere}>
-                    Endre
-                  </Button>
-                )}
-              </HStack>
-            </Box>
-
-            <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
-              <HStack justify="space-between" align="start">
-                <VStack gap="space-1">
-                  <Label size="small">Avsender</Label>
-                  <HStack gap="space-1" align="center">
-                    <BodyShort size="small">{avsenderNavn} - </BodyShort>
-                    <BodyShort size="small">{avsenderFnr}</BodyShort>
-                    <InlineKopiknapp copyText={avsenderFnr} tooltip="Kopier fødselsnummer" />
-                  </HStack>
-                  <BodyShort size="small">{tildeltEnhet}</BodyShort>
-                </VStack>
-                {kanRedigere && (
-                  <Button variant="tertiary" size="xsmall" type="button" hidden={!kanRedigere}>
-                    Endre
-                  </Button>
-                )}
-              </HStack>
-            </Box>
-          </VStack>
-        </TextContainer>
-
-        <VStack gap="space-8">
-          <Heading level="2" size="small">
-            Dokumenter
-          </Heading>
-          {journalpost.dokumenter.map((dok: Dokument, idx: number) => (
-            <DokumentRad
-              key={dok.dokumentId}
-              dokument={dok}
-              index={idx}
-              total={journalpost.dokumenter.length}
-              valgtTittel={dokumentTitler[dok.dokumentId] ?? dok.tittel}
-              onTittelChange={(tittel) => setDokumentTitler((prev) => ({ ...prev, [dok.dokumentId]: tittel }))}
-              valgteChips={annetInnhold[dok.dokumentId] ?? []}
-              onChipsChange={(chips) => setAnnetInnhold((prev) => ({ ...prev, [dok.dokumentId]: chips }))}
-              readOnly={!kanRedigere}
-            />
-          ))}
-        </VStack>
-
-        {kanRedigere && (
-          <VStack gap="space-8" paddingBlock="space-40 space-0">
-            <Heading level="2" size="xsmall">
-              Ny eller eksisterende sak
-            </Heading>
-            <HStack gap="space-2">
-              <ToggleGroup defaultValue="ny" size="small" onChange={(value) => setSakType(value)} value={sakType}>
-                <ToggleGroup.Item value="ny">Opprett ny sak</ToggleGroup.Item>
-                <ToggleGroup.Item value="eksisterende">Koble til sak</ToggleGroup.Item>
-              </ToggleGroup>
-            </HStack>
-          </VStack>
-        )}
-
-        {sakType === 'ny' && kanRedigere && (
-          <VStack gap="space-20">
-            <Heading level="2" size="small">
-              Opprett ny sak i Hotsak
-            </Heading>
-
-            <HStack gap="space-32">
-              <VStack gap="space-1">
-                <Label size="small">Tema</Label>
-                <BodyShort size="small">HJE</BodyShort>
-              </VStack>
-              <VStack gap="space-1">
-                <Label size="small">Oppgavetype</Label>
-                <BodyShort size="small">Behandle sak</BodyShort>
-              </VStack>
-            </HStack>
-
-            {/* Teste å spitte behandlingstype og behandlingstema */}
-            <VStack gap="space-12" align="start">
-              <ComboboxController
-                control={control}
-                name="behandlingstype"
-                label="Behandlingstype"
-                size="small"
+            {journalpost.dokumenter.map((dok: Dokument, idx: number) => (
+              <DokumentRad
+                key={dok.dokumentId}
+                dokument={dok}
+                index={idx}
+                total={journalpost.dokumenter.length}
+                valgtTittel={dokumentTitler[dok.dokumentId] ?? dok.tittel}
+                onTittelChange={(tittel) => setDokumentTitler((prev) => ({ ...prev, [dok.dokumentId]: tittel }))}
+                valgteChips={annetInnhold[dok.dokumentId] ?? []}
+                onChipsChange={(chips) => setAnnetInnhold((prev) => ({ ...prev, [dok.dokumentId]: chips }))}
                 readOnly={!kanRedigere}
-                rules={{ required: 'Du må velge behandlingstype' }}
-                className={classes.kodeverkSelect}
-                options={behandlingstyper.map((bt) => ({ label: bt.term, value: bt.kode }))}
               />
-              <ComboboxController
-                control={control}
-                name="behandlingstema"
-                label="Behandlingstema"
-                size="small"
-                readOnly={!kanRedigere}
-                rules={{ required: 'Du må velge behandlingstema' }}
-                className={classes.kodeverkSelect}
-                disabled={!valgtBehandlingstype}
-                options={gjelderOptions.map((g) => ({ label: g.behandlingstema.term, value: g.behandlingstema.kode }))}
-              />
-              {/* Demo: kombinert Gjelder-combobox */}
+            ))}
+          </VStack>
 
-              <Box padding="space-12" background="warning-soft">
+          {kanRedigere && (
+            <VStack gap="space-8" paddingBlock="space-40 space-0">
+              <Heading level="2" size="xsmall">
+                Ny eller eksisterende sak
+              </Heading>
+              <HStack gap="space-2">
+                <ToggleGroup defaultValue="ny" size="small" onChange={(value) => setSakType(value)} value={sakType}>
+                  <ToggleGroup.Item value="ny">Opprett ny sak</ToggleGroup.Item>
+                  <ToggleGroup.Item value="eksisterende">Koble til sak</ToggleGroup.Item>
+                </ToggleGroup>
+              </HStack>
+            </VStack>
+          )}
+
+          {sakType === 'ny' && kanRedigere && (
+            <VStack gap="space-20">
+              <Heading level="2" size="small">
+                Opprett ny sak i Hotsak
+              </Heading>
+
+              <div className={classes.metadataGrid}>
                 <VStack gap="space-1">
-                  <HStack gap="space-2" align="center" paddingBlock="space-4">
-                    <Label size="small" spacing>
-                      Gjelder
-                    </Label>
-                    <Detail spacing>
-                      Kun for testing. Kombinasjon av behandlingstema og behandlingstype som i Gosys{' '}
-                    </Detail>
+                  <Label size="small">Oppgavetype</Label>
+                  <BodyShort size="small">{OppgavetypeLabel[Oppgavetype.BEHANDLE_SAK]}</BodyShort>
+                </VStack>
+
+                <VStack gap="space-1">
+                  <Label size="small">Behandlingstype</Label>
+                  <HStack align="center">
+                    <BodyShort size="small">{stønadstype[valgtStønadType]}</BodyShort>
+                    <Button
+                      variant="tertiary"
+                      size="xsmall"
+                      type="button"
+                      hidden={!kanRedigere}
+                      onClick={() => setVisBehandlingstypeModal(true)}
+                    >
+                      Endre
+                    </Button>
                   </HStack>
-                  <UNSAFE_Combobox
-                    label="Gjelder"
-                    hideLabel
-                    size="small"
-                    shouldAutocomplete
-                    allowNewValues={false}
-                    readOnly={!kanRedigere}
-                    className={classes.kodeverkSelect}
-                    options={alleGjelder
-                      .filter((g) => g.behandlingstema != null || g.behandlingstype != null)
-                      .sort((a, b) => {
-                        const tmCmp = (a.behandlingstema?.term ?? '').localeCompare(b.behandlingstema?.term ?? '', 'nb')
-                        if (tmCmp !== 0) return tmCmp
-                        return (a.behandlingstype?.term ?? '').localeCompare(b.behandlingstype?.term ?? '', 'nb')
-                      })
-                      .map((g) => {
-                        const label =
-                          g.behandlingstema == null
-                            ? (g.behandlingstype?.term ?? '')
-                            : g.behandlingstype == null
-                              ? g.behandlingstema.term
-                              : `${g.behandlingstema.term} | ${g.behandlingstype.term}`
-                        return {
-                          label,
-                          value: `${g.behandlingstema?.kode ?? ''}|${g.behandlingstype?.kode ?? ''}`,
+                </VStack>
+                <VStack gap="space-1">
+                  <Label size="small">Stønadsklassifisering</Label>
+                  <HStack align="center">
+                    <BodyShort size="small">{valgtStk2.tekst}</BodyShort>
+                    <Button
+                      variant="tertiary"
+                      size="xsmall"
+                      type="button"
+                      hidden={!kanRedigere}
+                      onClick={() => setVisStønadsklassifiseringsModal(true)}
+                    >
+                      Endre
+                    </Button>
+                  </HStack>
+                  <input type="hidden" {...register('stønadsklassifisering')} />
+                </VStack>
+
+                <VStack gap="space-1">
+                  <Label size="small">Mottatt dato</Label>
+                  <HStack align="center">
+                    <BodyShort size="small">{formaterDato(valgtMottattDato)}</BodyShort>
+                    <Button
+                      variant="tertiary"
+                      size="xsmall"
+                      type="button"
+                      hidden={!kanRedigere}
+                      onClick={() => setVisMottattDatoModal(true)}
+                    >
+                      Endre
+                    </Button>
+                  </HStack>
+                </VStack>
+                <VStack gap="space-1">
+                  <Label size="small">Aktiv fra</Label>
+                  <HStack align="center">
+                    <BodyShort size="small">{formaterDato(valgtAktivFra)}</BodyShort>
+                    <Button
+                      variant="tertiary"
+                      size="xsmall"
+                      type="button"
+                      hidden={!kanRedigere}
+                      onClick={() => setVisAktivFraModal(true)}
+                    >
+                      Endre
+                    </Button>
+                  </HStack>
+                  {errors.aktivFra?.message && <ErrorMessage size="small">{errors.aktivFra.message}</ErrorMessage>}
+                </VStack>
+                <VStack gap="space-1">
+                  <Label size="small">Prioritet</Label>
+                  <HStack align="center">
+                    <BodyShort size="small">{OppgaveprioritetLabel[valgtPrioritet]}</BodyShort>
+                    <Button
+                      variant="tertiary"
+                      size="xsmall"
+                      type="button"
+                      hidden={!kanRedigere}
+                      onClick={() => setVisPrioritetModal(true)}
+                    >
+                      Endre
+                    </Button>
+                  </HStack>
+                </VStack>
+              </div>
+
+              {/* Gjelder — kombinasjon av behandlingstema og behandlingstype */}
+              <TextContainer>
+                <HStack gap="space-20" align="start" wrap={false}>
+                  <VStack gap="space-12" align="start">
+                    <UNSAFE_Combobox
+                      label="Gjelder"
+                      size="small"
+                      shouldAutocomplete
+                      allowNewValues={false}
+                      readOnly={!kanRedigere}
+                      className={classes.kodeverkSelect}
+                      options={gjelderComboboxOptions}
+                      filteredOptions={filtrerteGjelderComboboxOptions}
+                      selectedOptions={valgtGjelderComboboxOptions}
+                      value={gjelderSøk}
+                      onChange={(value) => setGjelderSøk(value)}
+                      onToggleSelected={(value, isSelected) => {
+                        if (isSelected) {
+                          const [tmKode, btKode] = value.split('|')
+                          setValue('behandlingstema', tmKode ?? '')
+                          setValue('behandlingstype', btKode ?? '')
+                        } else {
+                          setValue('behandlingstema', '')
+                          setValue('behandlingstype', '')
                         }
-                      })}
-                    selectedOptions={alleGjelder
-                      .filter(
-                        (g) =>
-                          g.behandlingstema?.kode === (valgtBehandlingstema || undefined) &&
-                          g.behandlingstype?.kode === (valgtBehandlingstype || undefined)
-                      )
-                      .map((g) => ({
-                        label:
-                          g.behandlingstema == null
-                            ? (g.behandlingstype?.term ?? '')
-                            : g.behandlingstype == null
-                              ? g.behandlingstema.term
-                              : `${g.behandlingstema.term} | ${g.behandlingstype.term}`,
-                        value: `${g.behandlingstema?.kode ?? ''}|${g.behandlingstype?.kode ?? ''}`,
-                      }))}
-                    onToggleSelected={(value, isSelected) => {
-                      if (isSelected) {
-                        const [tmKode, btKode] = value.split('|')
-                        setValue('behandlingstema', tmKode ?? '')
-                        setValue('behandlingstype', btKode ?? '')
-                      } else {
-                        setValue('behandlingstema', '')
-                        setValue('behandlingstype', '')
-                      }
-                    }}
-                  />
-                </VStack>
-              </Box>
-              <SelectController
-                control={control}
-                name="prioritet"
-                label="Prioritet"
-                size="small"
-                readOnly={!kanRedigere}
-                rules={{ required: 'Du må velge prioritet' }}
-                style={{ flex: 1 }}
-              >
-                <option value="KRITISK">Kritisk</option>
-                <option value="HOY">Høy</option>
-                <option value="NORMAL">Normal</option>
-                <option value="LAV">Lav</option>
-              </SelectController>
-            </VStack>
-            {/* Slutt */}
+                        setGjelderSøk('')
+                      }}
+                    />
+                  </VStack>
+                  <DatePicker {...fristProps}>
+                    <DatePicker.Input {...fristInputProps} label="Frist" size="small" readOnly={!kanRedigere} />
+                  </DatePicker>
+                </HStack>
+              </TextContainer>
 
-            {/* Stønadsklassifisering */}
-            <HStack gap="space-4" align="start">
-              <ComboboxController
-                control={control}
-                name="stønadsklassifisering"
-                label="Stønadsklassifisering"
-                size="small"
-                readOnly={!kanRedigere}
-                rules={{ required: 'Du må velge stønadsklassifisering' }}
-                className={classes.kodeverkSelect}
-                options={stønadsklassifiseringData?.stk2.map((s) => ({ label: s.tekst, value: s.kode })) ?? []}
-              />
-              <SelectController
-                control={control}
-                name="stønadsUnderkategori"
-                label="Område"
-                size="small"
-                readOnly={!kanRedigere}
-              >
-                <option value="">Velg</option>
-                {valgtStk2?.stk3 && <option value={valgtStk2.stk3.kode}>{valgtStk2.stk3.tekst}</option>}
-              </SelectController>
-              <SelectController
-                control={control}
-                name="stønadType"
-                label="Stønad"
-                size="small"
-                readOnly={!kanRedigere}
-                rules={{ required: 'Du må velge stønad' }}
-                disabled={!valgtStk2}
-              >
-                <option value="">Velg</option>
-                {valgtStk2?.sakstyper.map((kode) => (
-                  <option key={kode} value={kode}>
-                    {SAKTYPE_LABELS[kode] ?? kode}
-                  </option>
-                ))}
-              </SelectController>
-            </HStack>
-
-            <TextContainer>
-              <Controller
-                name="kommentar"
-                control={control}
-                render={({ field }) => (
-                  <Textarea
-                    label="Kommentar"
-                    size="small"
-                    maxLength={1000}
-                    readOnly={!kanRedigere}
-                    {...field}
-                    error={errors.kommentar?.message}
-                  />
-                )}
-              />
-            </TextContainer>
-
-            <HStack gap="space-4" align="start">
-              <DatePicker {...mottattProps}>
-                <DatePicker.Input {...mottattInputProps} label="Mottatt dato" size="small" readOnly={!kanRedigere} />
-              </DatePicker>
-              <DatePicker {...aktivFraProps}>
-                <DatePicker.Input
-                  {...aktivFraInputProps}
-                  label="Aktiv fra"
-                  size="small"
-                  readOnly={!kanRedigere}
-                  error={errors.aktivFra?.message}
+              <TextContainer>
+                <Controller
+                  name="kommentar"
+                  control={control}
+                  render={({ field }) => (
+                    <Textarea
+                      label="Kommentar"
+                      description="Her kan du informere om eventuelle mangler eller annet som bør sjekkes opp i saken"
+                      size="small"
+                      maxLength={1000}
+                      readOnly={!kanRedigere}
+                      {...field}
+                      error={errors.kommentar?.message}
+                    />
+                  )}
                 />
-              </DatePicker>
-              <DatePicker {...fristProps}>
-                <DatePicker.Input {...fristInputProps} label="Frist" size="small" readOnly={!kanRedigere} />
-              </DatePicker>
-            </HStack>
+              </TextContainer>
 
-            {/* Tilordne oppgave */}
-            <VStack gap="space-4" paddingBlock="space-20 space-0" hidden={!kanRedigere}>
-              <Label size="small">Tilordne oppgave</Label>
-              <BodyShort size="small">{tildeltEnhet}</BodyShort>
-              <Controller
-                name="tilordnetEnhet"
-                control={control}
-                render={({ field }) => (
-                  <RadioGroup
-                    legend="Tilordne oppgave"
-                    hideLegend
-                    size="small"
-                    value={field.value}
-                    onChange={field.onChange}
-                  >
-                    <Radio value="minOppgaveliste">Min oppgaveliste</Radio>
-                    <Radio value="medarbeidersOppgaveliste">Medarbeiders oppgaveliste</Radio>
-                    {field.value === 'medarbeidersOppgaveliste' && (
-                      <Box paddingInline="space-32 space-0">
-                        <Select label="Medarbeider" size="small" {...register('medarbeider')}>
-                          <option value="">Velg medarbeider</option>
-                          {behandlere.map((behandler) => (
-                            <option key={behandler.id} value={behandler.id}>
-                              {behandler.navn}
-                            </option>
-                          ))}
-                        </Select>
-                      </Box>
-                    )}
+              {/* Tilordne oppgave */}
+              <VStack gap="space-4" paddingBlock="space-20 space-0" hidden={!kanRedigere}>
+                <Label size="small">Tilordne oppgave</Label>
+                <Controller
+                  name="tilordnetEnhet"
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup
+                      legend="Tilordne oppgave"
+                      hideLegend
+                      size="small"
+                      value={field.value}
+                      onChange={field.onChange}
+                    >
+                      <Radio value="minOppgaveliste">
+                        Min oppgaveliste: {gjeldendeEnhet.nummer} | {navn}
+                      </Radio>
+                      <Radio value="medarbeidersOppgaveliste">Medarbeider sin oppgaveliste</Radio>
+                      {field.value === 'medarbeidersOppgaveliste' && (
+                        <Box paddingInline="space-32 space-0">
+                          <Select label="Medarbeider" size="small" {...register('medarbeider')}>
+                            <option value="">Velg medarbeider</option>
+                            {behandlere.map((behandler) => (
+                              <option key={behandler.id} value={behandler.id}>
+                                {behandler.navn}
+                              </option>
+                            ))}
+                          </Select>
+                        </Box>
+                      )}
 
-                    <Radio value="enhetensOppgaveliste">Min enhet: {tildeltEnhet}</Radio>
-                    {field.value === 'enhetensOppgaveliste' && (
-                      <Box paddingInline="space-32 space-0">
-                        <Select label="Enhetsmappe" size="small" {...register('enhetsmappe')}>
-                          <option value="">Ingen mappe</option>
-                          {mapper.map((mappe) => (
-                            <option key={mappe.id} value={mappe.id.toString()}>
-                              {mappe.navn}
-                            </option>
-                          ))}
-                        </Select>
-                      </Box>
-                    )}
-                  </RadioGroup>
-                )}
-              />
+                      <Radio value="enhetensOppgaveliste">Min enhet: {tildeltEnhet}</Radio>
+                      {field.value === 'enhetensOppgaveliste' && (
+                        <Box paddingInline="space-32 space-0">
+                          <Select label="Enhetsmappe" size="small" {...register('enhetsmappe')}>
+                            <option value="">Enhetens liste</option>
+                            {mapper.map((mappe) => (
+                              <option key={mappe.id} value={mappe.id.toString()}>
+                                {mappe.navn}
+                              </option>
+                            ))}
+                          </Select>
+                        </Box>
+                      )}
+                    </RadioGroup>
+                  )}
+                />
+              </VStack>
             </VStack>
-          </VStack>
-        )}
-        {sakType === 'eksisterende' && kanRedigere && <div>TODO</div>}
+          )}
+          {sakType === 'eksisterende' && kanRedigere && <div>TODO</div>}
 
-        {kanRedigere && (
-          <HStack gap="space-4" paddingBlock="space-8 space-0">
-            <Button type="submit" variant="primary" size="small">
-              Journalfør og opprett sak
-            </Button>
+          {kanRedigere && (
+            <HStack gap="space-4" paddingBlock="space-8 space-0">
+              <Button
+                type="submit"
+                variant="primary"
+                size="small"
+                loading={journalførV2.isMutating}
+                disabled={journalførV2.isMutating}
+              >
+                Journalfør og opprett sak
+              </Button>
 
-            <Button type="button" variant="secondary" size="small">
-              Overfør til Gosys
-            </Button>
-          </HStack>
-        )}
-      </VStack>
+              <Button type="button" variant="secondary" size="small">
+                Overfør til Gosys
+              </Button>
+            </HStack>
+          )}
+        </VStack>
+      </form>
+
+      <EndreStønadsklassifiseringModal
+        open={visStønadsklassifiseringsModal}
+        nåværendeKode={valgtStønadsklassifisering}
+        onBekreft={(kode) => {
+          setValue('stønadsklassifisering', kode)
+          setVisStønadsklassifiseringsModal(false)
+        }}
+        onClose={() => setVisStønadsklassifiseringsModal(false)}
+      />
+
+      <EndreDatoModal
+        key={`mottattdato-${valgtMottattDato}`}
+        open={visMottattDatoModal}
+        label="Mottatt dato"
+        defaultDate={parseISO(valgtMottattDato)}
+        onBekreft={(dato) => {
+          const datoStr = formatISO(dato, { representation: 'date' })
+          setValue('mottattDato', datoStr)
+          setValue('aktivFra', datoStr, { shouldValidate: true })
+          const nyFrist = addWeeks(dato, 4)
+          setFrist(nyFrist)
+          setValue('frist', formatISO(nyFrist, { representation: 'date' }), { shouldValidate: true })
+          setVisMottattDatoModal(false)
+        }}
+        onClose={() => setVisMottattDatoModal(false)}
+      />
+
+      <EndreDatoModal
+        key={`aktivfra-${valgtAktivFra}`}
+        open={visAktivFraModal}
+        label="Aktiv fra"
+        defaultDate={parseISO(valgtAktivFra)}
+        onBekreft={(dato) => {
+          setValue('aktivFra', formatISO(dato, { representation: 'date' }), { shouldValidate: true })
+          setVisAktivFraModal(false)
+        }}
+        onClose={() => setVisAktivFraModal(false)}
+      />
+
+      <EndrePrioritetModal
+        open={visPrioritetModal}
+        nåværendePrioritet={valgtPrioritet}
+        onBekreft={(prioritet) => {
+          setValue('prioritet', prioritet)
+          setVisPrioritetModal(false)
+        }}
+        onClose={() => setVisPrioritetModal(false)}
+      />
+
+      <EndreBehandlingstypeModal
+        open={visBehandlingstypeModal}
+        nåværendeKode={valgtStønadType}
+        onBekreft={(kode) => {
+          setValue('stønadType', kode)
+          setVisBehandlingstypeModal(false)
+        }}
+        onClose={() => setVisBehandlingstypeModal(false)}
+      />
 
       <JournalføringFerdigModal
         open={journalføringResultat != null}
         resultat={journalføringResultat}
         onClose={() => setJournalføringResultat(null)}
       />
-    </form>
+    </VStack>
   )
 }

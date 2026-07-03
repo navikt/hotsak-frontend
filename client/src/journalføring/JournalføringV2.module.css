@@ -17,9 +17,8 @@
 .skjemaKolonne {
   height: 100%;
   overflow-y: auto;
-  padding: var(--ax-space-16);
+  padding: var(--ax-space-16) var(--ax-space-16) var(--ax-space-96) var(--ax-space-16);
   border-right: 1px solid var(--ax-border-neutral-subtle);
-  background: var(--ax-bg-default);
 }
 
 .dokumentKolonne {

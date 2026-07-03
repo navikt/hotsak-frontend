@@ -1,3 +1,11 @@
 .kodeverkSelect {
   min-width: 26rem;
 }
+
+.metadataGrid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: var(--ax-space-32);
+  row-gap: var(--ax-space-20);
+  justify-content: start;
+}

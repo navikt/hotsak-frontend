@@ -1,9 +1,8 @@
 import useSWRMutation from 'swr/mutation'
 
 import { type Actions, type ExecutionPromise, useActionState } from '../action/Actions.ts'
-import { useToast } from '../felleskomponenter/toast/useToast.ts'
-import { type HttpError } from '../io/HttpError.ts'
 import { http } from '../io/HttpClient.ts'
+import { type HttpError } from '../io/HttpError.ts'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { mutateOppgave } from '../oppgave/useOppgave.ts'
 import type {
@@ -20,7 +19,6 @@ export interface JournalføringActions extends Actions {
 export function useJournalføringActions(oppgave: Oppgave, journalpostId?: string) {
   const { oppgaveId, versjon } = oppgave
   const { execute, state } = useActionState()
-  const { showSuccessToast } = useToast()
   if (!oppgaveId) {
     throw new Error('Mangler oppgaveId!')
   }
@@ -37,7 +35,6 @@ export function useJournalføringActions(oppgave: Oppgave, journalpostId?: strin
       }),
     {
       async onSuccess() {
-        showSuccessToast('Journalpost ferdig journalført')
         await mutateOppgave(oppgaveId)
       },
     }

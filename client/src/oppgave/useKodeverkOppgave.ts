@@ -1,13 +1,8 @@
+import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 
 import { createUrl } from '../io/HttpClient.ts'
 import type { KodeverkGjelder, OppgaveKodeverk } from './oppgaveTypes.ts'
-import type { Stønadsklassifisering } from '../journalføring/journalføringTypes.ts'
-
-export function useKodeverkStønadsklassifisering(): Stønadsklassifisering | undefined {
-  const { data } = useSWRImmutable<Stønadsklassifisering>('/api/kodeverk/stonadsklassifisering')
-  return data
-}
 
 export function useKodeverkBehandlingstyper(): ReadonlyArray<OppgaveKodeverk> {
   const { data } = useSWRImmutable<OppgaveKodeverk[]>('/api/kodeverk/behandlingstyper')
@@ -18,6 +13,46 @@ export function useKodeverkGjelder(behandlingstype?: string): ReadonlyArray<Kode
   const url = createUrl('/api/kodeverk/gjelder', { behandlingstype })
   const { data } = useSWRImmutable<KodeverkGjelder[]>(url)
   return data ?? noData
+}
+
+export interface GjelderOption {
+  label: string
+  value: string
+  /** Normalisert søketekst uten «|» for kryssfelt-søk (f.eks. «rullestol barn») */
+  searchTerms: string
+}
+
+/**
+ * Returnerer alle Gjelder-kombinasjoner som memoiserte {@link GjelderOption}-objekter,
+ * sortert alfabetisk på behandlingstema og deretter behandlingstype.
+ */
+export function useGjelderOptions(): GjelderOption[] {
+  const alleGjelder = useKodeverkGjelder()
+
+  return useMemo(
+    () =>
+      alleGjelder
+        .filter((gjelder) => gjelder.behandlingstema != null || gjelder.behandlingstype != null)
+        .sort((a, b) => {
+          const temasammenligning = (a.behandlingstema?.term ?? '').localeCompare(b.behandlingstema?.term ?? '', 'nb')
+          if (temasammenligning !== 0) return temasammenligning
+          return (a.behandlingstype?.term ?? '').localeCompare(b.behandlingstype?.term ?? '', 'nb')
+        })
+        .map((gjelder) => {
+          const behandlingstema = gjelder.behandlingstema?.term ?? ''
+          const behandlingstype = gjelder.behandlingstype?.term ?? ''
+          const label =
+            behandlingstema && behandlingstype
+              ? `${behandlingstema} | ${behandlingstype}`
+              : behandlingstema || behandlingstype
+          return {
+            label,
+            value: `${gjelder.behandlingstema?.kode ?? ''}|${gjelder.behandlingstype?.kode ?? ''}`,
+            searchTerms: `${behandlingstema} ${behandlingstype}`.toLowerCase().trim(),
+          }
+        }),
+    [alleGjelder]
+  )
 }
 
 // TODO preload

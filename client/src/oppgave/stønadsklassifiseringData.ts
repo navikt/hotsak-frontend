@@ -1,0 +1,102 @@
+import type { SakstypeKode, Stønadsklassifisering } from '../journalføring/journalføringTypes.ts'
+
+export const stønadstype: Record<SakstypeKode, string> = {
+  A: 'Anke',
+  K: 'Klage',
+  KT: 'Klage tilbakebetaling',
+  R: 'Revurdering',
+  S: 'Søknad',
+  T: 'Tilbakebetaling',
+}
+
+export const stønadsklassifiseringData: Stønadsklassifisering = {
+  tema: 'HJE',
+  stk1: 'HJ',
+  stk2: [
+    {
+      kode: 'AR',
+      tekst: 'Arbeidsliv',
+      behandlingstype: ['ae0275', 'ae0276'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'BD',
+      tekst: 'Bidrag',
+      behandlingstema: ['ab0328'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'DA',
+      tekst: 'Dagligliv',
+      behandlingstype: ['ae0223', 'ae0277', 'ae0278', 'ae0287'],
+      sakstyper: ['A', 'K', 'R', 'S'],
+      stk3: { kode: 'UL', tekst: 'Utland', behandlingstype: 'ae0106' },
+    },
+    {
+      kode: 'FØ',
+      tekst: 'Førerhund',
+      behandlingstema: ['ab0046'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'GM',
+      tekst: 'Grunnmønster',
+      behandlingstema: ['ab0242'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'HØ',
+      tekst: 'Høreapparat',
+      behandlingstema: ['ab0243'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+      stk3: { kode: 'UL', tekst: 'Utland', behandlingstype: 'ae0106' },
+    },
+    {
+      kode: 'IT',
+      tekst: 'IT',
+      behandlingstema: ['ab0373', 'ab0557', 'ab0560'],
+      sakstyper: ['A', 'K', 'S'],
+    },
+    {
+      kode: 'LS',
+      tekst: 'Lese- og sekretærhjelp',
+      behandlingstema: ['ab0245'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'OP',
+      tekst: 'Opplæringstiltak',
+      behandlingstema: ['ab0250'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'OT',
+      tekst: 'Ombygging/tilrettelegging av arbeidsplasser',
+      behandlingstema: ['ab0215'],
+      sakstyper: ['A', 'K', 'S'],
+    },
+    {
+      kode: 'SH',
+      tekst: 'Servicehund',
+      behandlingstema: ['ab0332'],
+      sakstyper: ['A', 'K', 'S'],
+    },
+    {
+      kode: 'TM',
+      tekst: 'Tinnitusmaskerer',
+      behandlingstema: ['ab0253'],
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'TH',
+      tekst: 'Tolkehjelp hørselshemmede',
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+    {
+      kode: 'TL',
+      tekst: 'Tolke/ledsagerhjelp døvblinde',
+      sakstyper: ['A', 'K', 'KT', 'S', 'T'],
+    },
+  ],
+  stk3: [],
+}

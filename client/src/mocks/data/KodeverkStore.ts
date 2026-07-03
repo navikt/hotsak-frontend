@@ -1,7 +1,5 @@
 import type { KodeverkGjelder, OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
-import type { Stønadsklassifisering } from '../../journalføring/journalføringTypes.ts'
 import behandlingstemaData from './behandlingstema.json'
-import stønadsklassifiseringData from './stønadsklassifisering.json'
 
 export class KodeverkStore {
   gjelder(behandlingstypeKode?: string): ReadonlyArray<KodeverkGjelder> {
@@ -9,10 +7,6 @@ export class KodeverkStore {
       return KodeverkStore.behandlingstema.filter((g) => g.behandlingstype?.kode === behandlingstypeKode)
     }
     return KodeverkStore.behandlingstema
-  }
-
-  stønadsklassifisering(): Stønadsklassifisering {
-    return KodeverkStore.stønadsklassifiseringData
   }
 
   behandlingstyper(): ReadonlyArray<OppgaveKodeverk> {
@@ -36,8 +30,6 @@ export class KodeverkStore {
   }
 
   static readonly behandlingstema: ReadonlyArray<KodeverkGjelder> = behandlingstemaData
-  static readonly stønadsklassifiseringData: Stønadsklassifisering =
-    stønadsklassifiseringData as unknown as Stønadsklassifisering
 
   static readonly dokumenttitler: ReadonlyArray<string> = [
     'Arbeidsforhold',

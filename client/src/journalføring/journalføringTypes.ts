@@ -1,5 +1,7 @@
 import type { OppgaveId, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 
+export type SakstypeKode = 'A' | 'K' | 'KT' | 'R' | 'S' | 'T'
+
 export interface Stk3 {
   kode: string
   tekst: string
@@ -12,7 +14,7 @@ export interface Stk2 {
   tekst: string
   behandlingstype?: string[]
   behandlingstema?: string[]
-  sakstyper: string[]
+  sakstyper: SakstypeKode[]
   stk3?: Stk3
 }
 

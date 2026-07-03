@@ -24,21 +24,24 @@ export function JournalføringFerdigModal({ open, resultat, onClose }: Journalf�
           <Dialog.Title>Journalpost ferdig journalført</Dialog.Title>
         </Dialog.Header>
         <Dialog.Body>
-          <BodyShort>Sak med {resultat?.sakId ?? '–'} ble opprettet.</BodyShort>
+          <BodyShort>Sak med sakId {resultat?.sakId ?? '–'} ble opprettet.</BodyShort>
         </Dialog.Body>
         <Dialog.Footer>
           <HStack gap="space-16" align="center" justify="center">
+            <Button variant="primary" size="small" onClick={() => resultat && onClose()}>
+              Lukk
+            </Button>
             <Button
-              variant="tertiary"
+              variant="secondary"
               size="small"
               onClick={() => resultat && navigerOgLukkModal(`/oppgave/${resultat.oppgaveId}`)}
             >
               Til saken
             </Button>
-            <Button variant="tertiary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/mine')}>
+            <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/mine')}>
               Til mine oppgaver
             </Button>
-            <Button variant="tertiary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/enhetens')}>
+            <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/enhetens')}>
               Til enhetens oppgaver
             </Button>
           </HStack>

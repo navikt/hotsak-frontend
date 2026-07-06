@@ -17,6 +17,7 @@ import {
 } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast.ts'
+import { useMutateNotater } from '../../notat/useNotater.tsx'
 
 function lagUtfallToastTekst(utfall: Behandlingsutfall | undefined): string {
   if (isBehandlingsutfallBestilling(utfall)) {
@@ -43,6 +44,7 @@ export function useBehandlingActions() {
   const { mutate } = useSWRConfig()
   const mutateBrevForSak = useMutateBrevForSak()
   const { showSuccessToast } = useToast()
+  const mutateNotater = useMutateNotater()
 
   const mutateOppgaveOgSak = () => Promise.all([mutateOppgave(), mutateSak(sakId)])
 
@@ -96,7 +98,7 @@ export function useBehandlingActions() {
           { problemsammendrag, postbegrunnelse, utleveringMerknad },
           { versjon }
         )
-        await Promise.all([mutateBehandling(), mutateOppgaveOgSak(), mutateBrevForSak(sakId!)])
+        await Promise.all([mutateBehandling(), mutateOppgaveOgSak(), mutateBrevForSak(sakId!), mutateNotater(sakId!)])
       })
     },
     state,

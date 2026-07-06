@@ -130,6 +130,9 @@ const columns: ReadonlyArray<DataGridColumn<SaksoversiktSak | SaksoversiktBarneb
         }
         return behandlingsutfall
       }
+      if (row.behandlingsutfall) {
+        return storForbokstavIOrd(row.behandlingsutfall)
+      }
       return OppgaveStatusLabel.get(row.saksstatus) || 'Ikke vurdert'
     },
   },

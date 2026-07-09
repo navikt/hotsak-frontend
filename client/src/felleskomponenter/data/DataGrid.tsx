@@ -45,6 +45,8 @@ export interface DataGridProps<T extends object, K extends string = string> exte
   pageNumber?: number
   pageSize?: number
 
+  filterMode?: 'matchet' | 'alle'
+
   keyFactory(row: T): Exclude<Key, bigint>
   renderContent?(props: DataGridContentProps<T>): ReactNode
 
@@ -68,6 +70,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     renderContent,
     onFilterChange,
     isHighlighted,
+    filterMode,
     ...tableProps
   } = props
   const visibleColumns = useMemo(() => columns.filter(notHidden), [columns])
@@ -110,6 +113,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
                         field={column.field}
                         filter={column.filter}
                         scope={scope}
+                        useAllOptions={filterMode === 'alle'}
                         onFilterChange={onFilterChange}
                       />
                     ) : null}

@@ -2,6 +2,7 @@ export type DataGridFilterValue = string | number | boolean
 
 export interface DataGridFilter<T extends DataGridFilterValue = DataGridFilterValue> {
   options: ReadonlySet<T> | ReadonlyMap<T, string>
+  allOptions?: ReadonlySet<T> | ReadonlyMap<T, string>
   sortOptions?: boolean
 }
 

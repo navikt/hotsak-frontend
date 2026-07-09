@@ -21,11 +21,16 @@ import {
   useOppgavelisteColumnsResetAllHandler,
   useOppgavelisteColumnToggleColumnHandler,
 } from './OppgavelisteColumnsContext.ts'
+import { useOppgavelisteContext, useOppgavelisteFilterModusToggleHandler } from './OppgavelisteContext.tsx'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export function OppgaveColumnMenu() {
   const columnsState = useOppgavelisteColumnsContext()
   const isOppgavelisteCustomized = useIsOppgavelisteCustomized()
   const handleResetAll = useOppgavelisteColumnsResetAllHandler()
+  const { filterModus } = useOppgavelisteContext()
+  const toggleFilterModus = useOppgavelisteFilterModusToggleHandler()
+  const { erIkkeProd } = useMiljø()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -46,6 +51,16 @@ export function OppgaveColumnMenu() {
         </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
+        {erIkkeProd && (
+          <>
+            <ActionMenu.Group label="Filterverdier">
+              <ActionMenu.CheckboxItem checked={filterModus === 'alle'} onCheckedChange={toggleFilterModus}>
+                Vis alle mulige verdier
+              </ActionMenu.CheckboxItem>
+            </ActionMenu.Group>
+            <ActionMenu.Divider />
+          </>
+        )}
         <ActionMenu.Group label="Velg kolonner">
           <DndContext
             sensors={sensors}

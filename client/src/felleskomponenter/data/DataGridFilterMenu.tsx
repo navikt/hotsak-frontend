@@ -22,17 +22,19 @@ export interface DataGridFilterMenuProps<
   field: K
   filter: DataGridFilter<V>
   scope: string
+  useAllOptions?: boolean
   onFilterChange?(action: DataGridFilterAction<string, K>): void
 }
 
 export function DataGridFilterMenu<K extends string = string, V extends DataGridFilterValue = DataGridFilterValue>(
   props: DataGridFilterMenuProps<K, V>
 ) {
-  const { field, filter, scope, onFilterChange } = props
+  const { field, filter, scope, useAllOptions, onFilterChange } = props
   const state = useDataGridFilterContext(scope)
   const current = state[field] ?? emptyDataGridFilterValues
   const options = useMemo(() => {
-    const result = mapOf(filter.options)
+    const activeOptions = useAllOptions && filter.allOptions ? filter.allOptions : filter.options
+    const result = mapOf(activeOptions)
     // legg til lagrede filterverdier som ikke lenger ligger i filter.options
     current.values.forEach((value) => {
       if (!result.has(value)) {
@@ -44,7 +46,7 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
     } else {
       return [...result.entries()]
     }
-  }, [filter.options, filter.sortOptions, current.values])
+  }, [filter.options, filter.allOptions, filter.sortOptions, current.values, useAllOptions])
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
   const handleFilterReset = useDataGridFilterResetHandler(field, scope)

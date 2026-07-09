@@ -46,6 +46,8 @@ function reducer(state: OppgavelisteState, action: OppgavePaginationAction): Opp
           direction: state.sort.direction === 'ascending' ? 'descending' : 'ascending',
         },
       }
+    case 'toggleFilterModus':
+      return { ...state, filterModus: state.filterModus === 'matchet' ? 'alle' : 'matchet' }
     default:
       return state
   }

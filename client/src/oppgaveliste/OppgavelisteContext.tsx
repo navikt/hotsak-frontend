@@ -20,6 +20,7 @@ export interface OppgavelisteState {
   currentTab: OppgaveToolbarTab
   currentPage: number
   sort: OppgavelisteSortState
+  filterModus: 'matchet' | 'alle'
 }
 
 export const initialState: OppgavelisteState = {
@@ -29,6 +30,7 @@ export const initialState: OppgavelisteState = {
     orderBy: 'fristFerdigstillelse',
     direction: 'ascending',
   },
+  filterModus: 'matchet',
 }
 
 export const OppgavelisteContext = createContext<OppgavelisteState>(initialState)
@@ -77,8 +79,15 @@ export function useOppgavelisteSortChangeHandler(): (sortKey: string) => void {
   )
 }
 
+export function useOppgavelisteFilterModusToggleHandler(): () => void {
+  const dispatch = useOppgavelisteDispatch()
+  return useCallback(() => {
+    dispatch({ type: 'toggleFilterModus' })
+  }, [dispatch])
+}
+
 interface OppgavelisteBaseAction {
-  type: 'changeTab' | 'changePage' | 'sort'
+  type: 'changeTab' | 'changePage' | 'sort' | 'toggleFilterModus'
 }
 
 export interface OppgavelisteChangeTabAction extends OppgavelisteBaseAction {
@@ -95,7 +104,12 @@ export interface OppgavelisteSortAction extends OppgavelisteBaseAction, Omit<Opp
   type: 'sort'
 }
 
+export interface OppgavelisteToggleFilterModusAction extends OppgavelisteBaseAction {
+  type: 'toggleFilterModus'
+}
+
 export type OppgavePaginationAction =
   | OppgavelisteChangeTabAction
   | OppgavelisteChangePageAction
   | OppgavelisteSortAction
+  | OppgavelisteToggleFilterModusAction

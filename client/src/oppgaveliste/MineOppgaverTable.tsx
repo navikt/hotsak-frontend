@@ -16,7 +16,7 @@ export interface MineOppgaverTableProps {
 export function MineOppgaverTable(props: MineOppgaverTableProps) {
   const { oppgaver, filterOptions, loading } = props
   const columns = useOppgaveColumns(filterOptions)
-  const { currentTab, sort } = useOppgavelisteContext()
+  const { currentTab, sort, filterModus } = useOppgavelisteContext()
   const handleSortChange = useOppgavelisteSortChangeHandler()
   const handleFilterChange = useOppgavelisteFiltrertHandler()
   return (
@@ -34,6 +34,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       sort={sort}
       onSortChange={handleSortChange}
       onFilterChange={handleFilterChange}
+      filterMode={filterModus}
       isHighlighted={selectIsUlest}
       zebraStripes
     />

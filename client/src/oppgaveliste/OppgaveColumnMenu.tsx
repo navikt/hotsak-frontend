@@ -8,7 +8,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { CogIcon, DragVerticalIcon, TrashIcon } from '@navikt/aksel-icons'
-import { ActionMenu, Button, HStack, VStack } from '@navikt/ds-react'
+import { ActionMenu, Button, HStack, Tooltip, VStack } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
 import classes from './OppgaveColumnMenu.module.css'
@@ -53,11 +53,13 @@ export function OppgaveColumnMenu() {
       <ActionMenu.Content>
         {erIkkeProd && (
           <>
-            <ActionMenu.Group label="Filterverdier">
-              <ActionMenu.CheckboxItem checked={filterModus === 'alle'} onCheckedChange={toggleFilterModus}>
-                Vis alle mulige verdier
-              </ActionMenu.CheckboxItem>
-            </ActionMenu.Group>
+            <Tooltip content="Vis alle mulige verdier for filtre, ikke kun de som har en match i tabellen. Gjelder kolonner: 'Gjelder', 'Saksbehandler' og 'Kommune / bydel'">
+              <ActionMenu.Group label="Filterverdier">
+                <ActionMenu.CheckboxItem checked={filterModus === 'alle'} onCheckedChange={toggleFilterModus}>
+                  Vis alle mulige verdier
+                </ActionMenu.CheckboxItem>
+              </ActionMenu.Group>
+            </Tooltip>
             <ActionMenu.Divider />
           </>
         )}

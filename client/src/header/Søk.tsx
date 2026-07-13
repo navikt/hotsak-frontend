@@ -25,6 +25,7 @@ export function Søk({ onSearch }: { onSearch: (value: string) => void }) {
         }}
         onClear={() => setSøketekst('')}
         value={søketekst}
+        autoComplete="off"
         onSubmit={() => {
           onSearch(søketekst)
         }}

@@ -46,7 +46,7 @@ export function OppgaveColumnMenu() {
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
-        <Button variant="tertiary" icon={<CogIcon />} size="xsmall">
+        <Button variant="tertiary" icon={<CogIcon aria-hidden="true" />} size="xsmall">
           Tilpass tabell
         </Button>
       </ActionMenu.Trigger>

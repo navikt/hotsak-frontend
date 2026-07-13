@@ -49,7 +49,7 @@ export function AppRoutes() {
 // TODO slå sammen PanelLayout og ScrollableLayout til en komponent som tar inn en prop for om den skal være scrollable eller ikke, så slipper vi å duplisere Outlet og Routes
 function PanelLayout() {
   return (
-    <main className={classes.panelLayout}>
+    <main id="hovedinnhold" className={classes.panelLayout}>
       <Outlet />
     </main>
   )
@@ -57,7 +57,7 @@ function PanelLayout() {
 
 function SideLayout() {
   return (
-    <main className={classes.sideLayout}>
+    <main id="hovedinnhold" className={classes.sideLayout}>
       <Outlet />
     </main>
   )

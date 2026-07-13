@@ -15,3 +15,7 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+.nav {
+  display: contents;
+}

@@ -47,11 +47,13 @@ export function Toppmeny() {
           Hotsak 1.5
         </InternalHeader.Title>
         <HStack justify="space-between" wrap={false} className={classes.navFlex}>
-          <HStack wrap={false}>
-            <ToppmenyLinkButton to="/oppgaver/mine">Mine oppgaver</ToppmenyLinkButton>
-            <ToppmenyLinkButton to="/oppgaver/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
-            <ToppmenyLinkButton to="/oppgaver/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
-          </HStack>
+          <nav aria-label="Hovedmeny" className={classes.nav}>
+            <HStack wrap={false}>
+              <ToppmenyLinkButton to="/oppgaver/mine">Mine oppgaver</ToppmenyLinkButton>
+              <ToppmenyLinkButton to="/oppgaver/enhetens">Enhetens oppgaver</ToppmenyLinkButton>
+              <ToppmenyLinkButton to="/oppgaver/medarbeiders">Medarbeiders oppgaver</ToppmenyLinkButton>
+            </HStack>
+          </nav>
           <HStack wrap={false} gap="space-4">
             <Søk onSearch={handleSearch} />
             {isLargeScreen && (

@@ -26,6 +26,9 @@ export function App() {
           <TilgangProvider>
             <PersonProvider>
               <ToastProvider>
+                <a href="#hovedinnhold" className="sr-only focusable">
+                  Hopp til hovedinnhold
+                </a>
                 <Toppmeny />
                 <Utviklingsverktøy />
                 <AppRoutes />

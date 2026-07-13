@@ -50,7 +50,7 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
               type="button"
               size="xsmall"
               variant="tertiary"
-              icon={<TrashIcon />}
+              icon={<TrashIcon aria-hidden="true" />}
               onClick={handleFilterResetAll}
               disabled={!isDataGridFiltered}
               title={isDataGridFiltered ? undefined : 'Ingen filtre valgt'}

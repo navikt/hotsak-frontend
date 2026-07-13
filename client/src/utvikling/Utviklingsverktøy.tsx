@@ -61,6 +61,7 @@ export function Utviklingsverktøy() {
           label="Innlogget saksbehandler"
           value={innloggetSaksbehandlerId}
           onChange={byttSaksbehandler}
+          autoComplete="off"
         >
           {Saksbehandlere.alle().map(({ id, navn }) => (
             <option key={id} value={id}>

@@ -35,7 +35,6 @@ const behandlingsutfallTagPropsByUtfall: Record<
   [Henleggelsesårsak.BRUKER_ER_DØD]: { label: 'Henlagt - Bruker er død', variant: 'neutral-moderate' },
   [Henleggelsesårsak.DUPLIKAT]: { label: 'Henlagt - Duplikat', variant: 'error-moderate' },
   [Henleggelsesårsak.FEIL_BRUKER]: { label: 'Henlagt - Feil bruker', variant: 'error-moderate' },
-  [Henleggelsesårsak.FEIL_HJELPEMIDDEL]: { label: 'Henlagt', variant: 'error-moderate' },
   [Henleggelsesårsak.TRUKKET_AV_BEGRUNNER]: { label: 'Henlagt', variant: 'error-moderate' },
   [Henleggelsesårsak.FLERE_SØKNADER_SAMME_BEHOV]: {
     label: 'Henlagt',

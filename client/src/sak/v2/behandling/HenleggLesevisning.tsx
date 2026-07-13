@@ -8,8 +8,6 @@ interface HenleggLesevisningProps {
 
 const årsakLabels: Record<Henleggelsesårsak, string> = {
   [Henleggelsesårsak.SØKNAD_TRUKKET]: 'Bruker ønsker å trekke søknaden',
-  [Henleggelsesårsak.FEIL_HJELPEMIDDEL]:
-    'Begrunner ønsker å trekke søknaden fordi det er søkt om feil hjelpemiddel/tilbehør',
   [Henleggelsesårsak.TRUKKET_AV_BEGRUNNER]: 'Begrunner ønsker å trekke søknaden',
   [Henleggelsesårsak.FLERE_SØKNADER_SAMME_BEHOV]: 'Det er sendt inn flere søknader på brukeren om samme behov',
   [Henleggelsesårsak.BRUKER_ER_DØD]: 'Bruker er død',

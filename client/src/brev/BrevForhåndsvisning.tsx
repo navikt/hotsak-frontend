@@ -36,6 +36,7 @@ export function BrevForhåndsvisning({ brevId, avsluttet = false }: BrevForhånd
 
   return (
     <iframe
+      title="Forhåndsvisning av brev"
       src={url}
       width="100%"
       height="100%"

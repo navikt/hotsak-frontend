@@ -1,5 +1,5 @@
 import { WheelchairIcon } from '@navikt/aksel-icons'
-import { BodyLong, Detail, HStack, Label, VStack } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail, HStack, VStack } from '@navikt/ds-react'
 import { Skillelinje } from '../../../felleskomponenter/Strek'
 import { Mellomtittel, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
 import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
@@ -78,7 +78,9 @@ export function UtlånsoversiktV2() {
           <>
             {artiklerByKategori.map(([kategori, artikler]) => (
               <VStack key={kategori} gap="space-2">
-                <Label size="small">{kategori}</Label>
+                <BodyShort as="span" size="small" weight="semibold">
+                  {kategori}
+                </BodyShort>
                 <Artikler artikler={artikler} />
                 <Skillelinje />
               </VStack>

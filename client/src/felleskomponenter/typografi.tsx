@@ -1,6 +1,6 @@
 import { type ReactNode, type Ref } from 'react'
 
-import { BodyLong, BodyShort, BodyShortProps, Detail, Heading, Label } from '@navikt/ds-react'
+import { BodyLong, BodyShort, BodyShortProps, Detail, Heading } from '@navikt/ds-react'
 import classes from './typografi.module.css'
 
 export function TextContainer({ children }: { children: ReactNode }) {
@@ -43,9 +43,9 @@ export function Etikett({
   children: ReactNode
 }) {
   return (
-    <Label spacing={spacing} size={size}>
+    <BodyShort as="span" spacing={spacing} size={size} weight="semibold">
       {children}
-    </Label>
+    </BodyShort>
   )
 }
 

@@ -51,6 +51,7 @@ export function NotaterIcon({ sakId }: { oppgaveId?: OppgaveId; sakId?: string }
           variant={`${antall > 0 ? 'info-moderate' : 'neutral-moderate'}`}
           className={classes.tag}
           data-testid="notatteller"
+          aria-hidden="true"
         >
           {antall}
         </Tag>

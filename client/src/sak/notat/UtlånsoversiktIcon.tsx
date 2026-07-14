@@ -16,7 +16,11 @@ export function UtlånsoversiktIcon() {
     <VStack align="center" gap="space-0">
       <WheelchairIcon title="Utlånsoversikt" />
       {!isLoading && !error && (
-        <Tag variant={`${antallUtlånteHjelpemidler > 0 ? 'info-moderate' : 'neutral-moderate'}`} size="xsmall">
+        <Tag
+          variant={`${antallUtlånteHjelpemidler > 0 ? 'info-moderate' : 'neutral-moderate'}`}
+          size="xsmall"
+          aria-hidden="true"
+        >
           {antallUtlånteHjelpemidler}
         </Tag>
       )}

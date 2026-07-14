@@ -601,20 +601,20 @@ export interface Person extends Personnavn, HarPersonnavn {
 }
 
 export interface Vergemål {
-  type?: string | null
+  type?: string
   vergeEllerFullmektig: VergeEllerFullmektig
 }
 
 export interface VergeEllerFullmektig {
-  motpartsPersonident?: string | null
-  omfang?: string | null
-  identifiserendeInformasjon?: IdentifiserendeInformasjon | null
-  tjenesteomraade?: Tjenesteomraade[] | null
+  motpartsPersonident?: string
+  omfang?: string
+  identifiserendeInformasjon?: IdentifiserendeInformasjon
+  tjenesteomraade?: Tjenesteomraade[]
 }
 
 export interface Tjenesteomraade {
-  tjenesteoppgave?: string | null
-  tjenestevirksomhet?: string | null
+  tjenesteoppgave?: string
+  tjenestevirksomhet?: string
 }
 
 export enum Mottaker {
@@ -624,7 +624,7 @@ export enum Mottaker {
 }
 
 export interface IdentifiserendeInformasjon {
-  navn?: Personnavn | null
+  navn?: Personnavn
 }
 
 export interface HjelpemiddelProdukt {

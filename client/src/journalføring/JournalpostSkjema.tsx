@@ -66,7 +66,7 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
                 defaultOpen={false}
                 tittel={
                   <HStack align="center" gap="space-4">
-                    <PersonEnvelopeIcon />
+                    <PersonEnvelopeIcon aria-hidden />
                     {`${formaterNavn(personInfo.navn)} | ${personInfo.fnr}`}
                   </HStack>
                 }

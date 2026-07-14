@@ -267,6 +267,7 @@ export function Breveditor(props: BreveditorProps) {
                       </div>
                       <PlateContainer>
                         <PlateContent
+                          aria-label="Breveditor"
                           ref={plateContentRef}
                           onBlur={() => settPlateContentFokusert(false)}
                           onFocus={() => {

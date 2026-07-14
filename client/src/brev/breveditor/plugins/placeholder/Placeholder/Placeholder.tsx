@@ -133,6 +133,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
           className={`${styles.placeholderElement} ${erTom ? styles.placeholderEmpty : styles.placeholderFilled}`}
           data-node-type={ELEMENT_PLACEHOLDER}
           data-placeholder={erTom ? element.placeholder : undefined}
+          role="textbox"
           onMouseDown={handleMouseDown}
           onPaste={handlePaste}
         >

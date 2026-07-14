@@ -256,6 +256,7 @@ function VedtaksResultatVelger({
           readOnly={harBrevutkast || erBehandlingsutfallOverføring}
           className={classes.selectAuto}
           value={currentValue}
+          autoComplete="off"
           onChange={async (e) => {
             const value = e.target.value
             if (value === currentValue) {

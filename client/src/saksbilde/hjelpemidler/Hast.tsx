@@ -7,7 +7,7 @@ export function Hast(props: { hast?: HastType }) {
   if (!hast) return null
   const { hasteårsaker, hastBegrunnelse } = hast
   return (
-    <InfoCard title="Haster" size="small" data-color="warning">
+    <InfoCard size="small" data-color="warning">
       <InfoCard.Header>
         <InfoCard.Title>Haster</InfoCard.Title>
       </InfoCard.Header>

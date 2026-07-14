@@ -33,7 +33,7 @@ const FormateringMeny = () => {
           <Button
             data-color="neutral"
             variant="tertiary"
-            icon={<MenuElipsisVerticalCircleIcon aria-hidden fontSize="1rem" />}
+            icon={<MenuElipsisVerticalCircleIcon aria-label="Formateringsmeny" fontSize="1rem" />}
             iconPosition="right"
             size="small"
             disabled={!breveditor.erBreveditorEllerVerktoylinjeFokusert}

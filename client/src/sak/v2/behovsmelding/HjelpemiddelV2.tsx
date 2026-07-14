@@ -59,7 +59,14 @@ export function HjelpemiddelV2({
 
   return (
     <>
-      <CompactExpandableCard tittel={produkt?.isotittel || 'Mangler kategori'}>
+      <CompactExpandableCard
+        tittel={
+          <>
+            {produkt?.isotittel || 'Mangler kategori'}
+            <span className="sr-only">: {hjelpemiddel.produkt.artikkelnavn}</span>
+          </>
+        }
+      >
         <ResponsiveStack>
           <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="space-12">
             <TextContainer>

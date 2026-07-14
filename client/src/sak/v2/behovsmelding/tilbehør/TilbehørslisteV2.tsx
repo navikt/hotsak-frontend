@@ -127,7 +127,7 @@ function Tilbehør({
                 <Button
                   variant="tertiary"
                   size="xsmall"
-                  icon={<PencilIcon />}
+                  icon={<PencilIcon aria-hidden />}
                   onClick={() => {
                     setVisAlternativerModal(true)
                   }}

@@ -6,7 +6,9 @@ import classes from './ResizeHandle.module.css'
 export const ResizeHandle = ({ retning = 'horisontal' }: { retning?: 'horisontal' | 'vertikal' }) => {
   return (
     <Separator className={classes.resizeHandle}>
-      <VStack>{retning === 'horisontal' ? <CaretLeftRightIcon /> : <CaretUpDownIcon />}</VStack>
+      <VStack>
+        {retning === 'horisontal' ? <CaretLeftRightIcon aria-hidden="true" /> : <CaretUpDownIcon aria-hidden="true" />}
+      </VStack>
     </Separator>
   )
 }

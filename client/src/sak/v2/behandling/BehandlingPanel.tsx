@@ -36,7 +36,7 @@ function BehandlingPanel({ oppgave, sak }: BehandlingPanelProps) {
           lukkBehandlingsPanel()
         }}
       />
-      <ScrollablePanel>
+      <ScrollablePanel aria-label="Behandlingspanel">
         <BehandlingPanelHeader oppgave={oppgave} sak={sak} />
         <BehandlingPanelContentVelger
           oppgave={oppgave}

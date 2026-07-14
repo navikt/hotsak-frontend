@@ -34,7 +34,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
         tittel={sakstype === Sakstype.SØKNAD ? 'Søknad' : 'Bestilling'}
         lukkPanel={lukkPanel}
       />
-      <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-4 space-24">
+      <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-4 space-24" aria-label="Behovsmeldingspanel">
         <HStack gap="space-20">
           <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
           <Tekst textColor="subtle" spacing>

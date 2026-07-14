@@ -21,7 +21,8 @@ export function CollapsiblePanel({ label, detaljer, defaultCollapsed = false, ch
         <Button
           variant="tertiary"
           size="small"
-          icon={collapsed ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          icon={collapsed ? <ChevronUpIcon aria-hidden="true" /> : <ChevronDownIcon aria-hidden="true" />}
+          aria-label={collapsed ? 'Vis detaljer' : 'Skjul detaljer'}
           onClick={() => setCollapsed(!collapsed)}
         />
       </HStack>

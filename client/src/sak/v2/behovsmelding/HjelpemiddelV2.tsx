@@ -118,7 +118,7 @@ export function HjelpemiddelV2({
                     variant="tertiary"
                     size="xsmall"
                     style={{ alignSelf: 'center' }}
-                    icon={<PencilIcon />}
+                    icon={<PencilIcon aria-hidden="true" />}
                     onClick={() => {
                       setVisAlternativerModal(true)
                     }}

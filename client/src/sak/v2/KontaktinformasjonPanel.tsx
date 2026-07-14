@@ -48,7 +48,11 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
       className={classes.container}
     >
       <PanelTittel tittel="Kontaktinformasjon" lukkPanel={lukkPanel} />
-      <ScrollablePanel paddingInline="space-0 space-4" paddingBlock="space-4 space-0">
+      <ScrollablePanel
+        paddingInline="space-0 space-4"
+        paddingBlock="space-4 space-0"
+        aria-label="Kontaktinformasjonspanel"
+      >
         <TextContainer>
           <VStack gap="space-32">
             <section className={classes.panel}>

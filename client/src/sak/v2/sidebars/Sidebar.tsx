@@ -75,7 +75,7 @@ export function Sidebar({ oppgave }: SidebarProps) {
             />
           </Tooltip>
         </Tabs.List>
-        <ScrollablePanel>
+        <ScrollablePanel aria-label="Sidepanel">
           <Tabs.Panel value={VenstrekolonneTabs.SAKSHISTORIKK.toString()}>
             <Historikk />
           </Tabs.Panel>

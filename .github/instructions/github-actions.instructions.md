@@ -26,8 +26,8 @@ Always set explicit permissions — never rely on defaults:
 
 ```yaml
 permissions:
-  contents: read       # Only read repo content
-  id-token: write      # For OIDC/Nais deploy
+  contents: read # Only read repo content
+  id-token: write # For OIDC/Nais deploy
 
 # ❌ Wrong — overly broad permissions
 permissions: write-all

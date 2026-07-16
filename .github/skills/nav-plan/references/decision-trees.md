@@ -200,7 +200,7 @@ accessPolicy:
 accessPolicy:
   outbound:
     rules:
-      - application: pdl-api  # Mangler namespace: pdl!
+      - application: pdl-api # Mangler namespace: pdl!
 ```
 
 ## Migreringsstrategi-beslutningstre

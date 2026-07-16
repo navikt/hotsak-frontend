@@ -47,6 +47,11 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
       async onSuccess(brev) {
         await mutateBrevForSak(brev.sakId)
       },
+      onError(error) {
+        if (error.isConflict()) {
+          console.warn(`Utdatert lagring av brevutkast forkastet, sakId: ${sakId}, brevId: ${brevId}`)
+        }
+      },
     }
   )
 

@@ -78,6 +78,7 @@ export interface Brev<T extends Brevdata = Brevdata> extends Brevutkast<T> {
   ferdigstiltAv?: NavIdent
   brevstatus: Brevstatus
   distribusjon: Brevdistribusjon[]
+  serienummer: number
 }
 
 export interface Brevdistribusjon {
@@ -98,6 +99,7 @@ export interface OpprettBrevutkastRequest<T extends Brevdata = Brevdata> {
 
 export interface OppdaterBrevutkastRequest<T extends Brevdata = Brevdata> {
   brevutkast: Brevutkast<T>
+  serienummer: number
 }
 
 export interface FerdigstillBrevutkastRequest {

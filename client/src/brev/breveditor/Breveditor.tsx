@@ -53,13 +53,23 @@ export interface BreveditorProps {
   metadata: Metadata
   templateMarkdown?: string
   initialState?: BreveditorState
+  initialSerienummer?: number
   onStateChange?(newState: BreveditorState): void
-  onLagreBrev?(newState: BreveditorState): Promise<void>
+  onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string
 }
 
 export function Breveditor(props: BreveditorProps) {
-  const { brevId, metadata, templateMarkdown, initialState, onStateChange, onLagreBrev, placeholder } = props
+  const {
+    brevId,
+    metadata,
+    templateMarkdown,
+    initialState,
+    initialSerienummer,
+    onStateChange,
+    onLagreBrev,
+    placeholder,
+  } = props
   const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
 
   const spesielleVerdier: PlaceholderSpesielleVerdier = {
@@ -125,6 +135,7 @@ export function Breveditor(props: BreveditorProps) {
 
   // Diverse state
   const state = useRef<BreveditorState | undefined>(undefined)
+  const serienummerRef = useRef(initialSerienummer ?? 0)
   const [visMarger, settVisMarger] = useState(false)
   const [erPlateContentFokusert, settPlateContentFokusert] = useState(false)
   const [erVerktoylinjeFokusert, settVerktoylinjeFokusert] = useState(false)
@@ -199,7 +210,8 @@ export function Breveditor(props: BreveditorProps) {
         }
         state.current = oppdatertState
         onStateChange?.(oppdatertState)
-        lagreMedDebounceOgRetry(oppdatertState)
+        serienummerRef.current += 1
+        lagreMedDebounceOgRetry(oppdatertState, serienummerRef.current)
       }
     }
     // fixme
@@ -233,7 +245,8 @@ export function Breveditor(props: BreveditorProps) {
               // On state-change
               state.current = constructedState
               if (onStateChange) onStateChange(constructedState)
-              lagreMedDebounceOgRetry(constructedState)
+              serienummerRef.current += 1
+              lagreMedDebounceOgRetry(constructedState, serienummerRef.current)
             }
           }
         }}

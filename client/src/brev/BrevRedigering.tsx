@@ -93,7 +93,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
 
   if (!brev || !templateMarkdown) return null
 
-  const handleLagreBrev = async (state: BreveditorState) => {
+  const handleLagreBrev = async (state: BreveditorState, serienummer: number) => {
     if (!brev) return // Utkast må være opprettet først
     await oppdaterBrevutkast.trigger({
       brevutkast: {
@@ -102,6 +102,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
         målform: brev.målform,
         data: state,
       },
+      serienummer,
     })
   }
 
@@ -186,6 +187,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
               brevId={brev.brevId}
               templateMarkdown={templateMarkdown}
               initialState={brev.data}
+              initialSerienummer={brev.serienummer}
               onLagreBrev={handleLagreBrev}
             />
           </>

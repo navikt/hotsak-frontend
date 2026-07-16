@@ -569,6 +569,7 @@ export class SakStore extends Dexie {
       opprettetAv: Saksbehandlere.innlogget().id,
       brevstatus: Brevstatus.UTKAST,
       distribusjon: [],
+      serienummer: 0,
       data,
       ...rest,
     })
@@ -599,13 +600,19 @@ export class SakStore extends Dexie {
     return brev
   }
 
-  async oppdaterBrevutkast(brevId: ID, request: OppdaterBrevutkastRequest): Promise<Brev> {
+  async oppdaterBrevutkast(brevId: ID, request: OppdaterBrevutkastRequest): Promise<Brev | null> {
     brevId = Number(brevId)
     const { data = {}, ...rest } = request.brevutkast
+
+    const eksisterendeBrev = await this.hentBrev(brevId)
+    if (request.serienummer <= eksisterendeBrev.serienummer) {
+      return null
+    }
 
     await this.brev.update(brevId, {
       endret: nåIso(),
       endretAv: Saksbehandlere.innlogget().id,
+      serienummer: request.serienummer,
       data,
       ...rest,
     })

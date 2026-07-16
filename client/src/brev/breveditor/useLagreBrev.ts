@@ -8,7 +8,7 @@ export interface Endringsstatus {
   error?: string
 }
 
-export function useLagreBrev(onLagreBrev?: (state: BreveditorState) => Promise<void>) {
+export function useLagreBrev(onLagreBrev?: (state: BreveditorState, serienummer: number) => Promise<void>) {
   const debounceLagring = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [endringsstatus, setEndringsstatus] = useState<Endringsstatus>({
     lagrerNå: false,
@@ -19,20 +19,23 @@ export function useLagreBrev(onLagreBrev?: (state: BreveditorState) => Promise<v
     return () => clearTimeout(debounceLagring.current)
   }, [])
 
-  const lagreMedDebounceOgRetry = (constructedState: BreveditorState) => {
+  const lagreMedDebounceOgRetry = (constructedState: BreveditorState, serienummer: number) => {
     if (onLagreBrev) {
       setEndringsstatus((prev) => ({ ...prev, erEndret: true })) // Behold evt. error men sett erEndret=true.
       clearTimeout(debounceLagring.current) // Kanseller pågående timere, enten de var startet på enste linjer eller i retry nedenfor
       debounceLagring.current = setTimeout(async () => {
         setEndringsstatus({ erEndret: true, lagrerNå: true, error: undefined }) // Vis at vi forsøker å lagre
-        await onLagreBrev(constructedState)
+        await onLagreBrev(constructedState, serienummer)
           .catch((e) => {
+            if (e?.status === 409) {
+              return
+            }
             setEndringsstatus({ erEndret: true, lagrerNå: false, error: e.toString() }) // Vis at vi feilet
             if (e?.status === 403) {
               return
             }
             debounceLagring.current = setTimeout(
-              () => lagreMedDebounceOgRetry(constructedState), // Try, try again...
+              () => lagreMedDebounceOgRetry(constructedState, serienummer), // Try, try again...
               2000
             )
             throw e // Hopp over then blokken under

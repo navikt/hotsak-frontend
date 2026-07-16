@@ -11,7 +11,7 @@ import { UtfallLåst } from '../../sak/v2/behandling/behandlingTyper'
 import type { StoreHandlersFactory } from '../data'
 import { lastDokument } from '../data/felles'
 import type { SakParams } from './params'
-import { respondNoContent, respondPdf } from './response'
+import { respondConflict, respondNoContent, respondPdf } from './response'
 
 interface BrevParams extends SakParams {
   brevId: string
@@ -33,6 +33,9 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.put<BrevParams, OppdaterBrevutkastRequest>('/api/sak/:sakId/brev/:brevId', async ({ params, request }) => {
     const { brevId } = params
     const brev = await sakStore.oppdaterBrevutkast(brevId, await request.json())
+    if (!brev) {
+      return respondConflict()
+    }
     return HttpResponse.json(brev)
   }),
 

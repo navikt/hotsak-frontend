@@ -97,6 +97,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
         målform: vedtaksbrev.målform,
         data: { brevtekst: values.brevtekst },
       },
+      serienummer: vedtaksbrev.serienummer,
     })
   }
 

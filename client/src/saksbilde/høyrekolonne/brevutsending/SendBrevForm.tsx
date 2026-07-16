@@ -84,15 +84,15 @@ export function SendBrevForm(props: SendBrevFormProps) {
   const oppdaterBrevutkastTrigger = oppdaterBrevutkast.trigger
   const handleUpdateBrevutkast = async (values: SendBrevFormValues) => {
     if (!brevutkast?.brevId) return
-    await oppdaterBrevutkastTrigger(lagRequest(values))
+    await oppdaterBrevutkastTrigger({ ...lagRequest(values), serienummer: brevutkast.serienummer })
   }
 
   useEffect(() => {
     if (!brevutkast?.brevId) return
     if (målform || brevtekst) {
-      oppdaterBrevutkastTrigger(lagRequest(getValues()))
+      oppdaterBrevutkastTrigger({ ...lagRequest(getValues()), serienummer: brevutkast.serienummer })
     }
-  }, [brevutkast?.brevId, målform, brevtekst, getValues, oppdaterBrevutkastTrigger])
+  }, [brevutkast?.brevId, brevutkast?.serienummer, målform, brevtekst, getValues, oppdaterBrevutkastTrigger])
 
   const handleForhåndsvisBrev = async () => {
     if (!brevutkast?.brevId) return

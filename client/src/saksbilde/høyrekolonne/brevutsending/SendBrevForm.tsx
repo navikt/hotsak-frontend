@@ -7,6 +7,7 @@ import { isBrevmal, isBrevstatusUtkast } from '../../../brev/brevSelectors'
 import { Brevmal, Målform, type Brevutkast } from '../../../brev/brevTyper'
 import { useBrevForSak } from '../../../brev/useBrev'
 import { useBrevActions } from '../../../brev/useBrevActions'
+import { useSerienummer } from '../../../brev/useSerienummer'
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { ForhåndsvisDokumentModal } from '../../../felleskomponenter/dokument/ForhåndsvisDokumentModal'
 import { useDebouncedWatch } from '../../../felleskomponenter/skjema/useDebouncedWatch'
@@ -63,6 +64,8 @@ export function SendBrevForm(props: SendBrevFormProps) {
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
 
+  const nesteSerienummer = useSerienummer(brevutkast?.brevId, brevutkast?.serienummer)
+
   const brevmalController = useController({ name: 'brevmal', control })
   const målformController = useController({ name: 'målform', control })
   const brevtekstController = useController({
@@ -84,15 +87,21 @@ export function SendBrevForm(props: SendBrevFormProps) {
   const oppdaterBrevutkastTrigger = oppdaterBrevutkast.trigger
   const handleUpdateBrevutkast = async (values: SendBrevFormValues) => {
     if (!brevutkast?.brevId) return
-    await oppdaterBrevutkastTrigger({ ...lagRequest(values), serienummer: brevutkast.serienummer })
+    await oppdaterBrevutkastTrigger({ ...lagRequest(values), serienummer: nesteSerienummer() }).catch((error) => {
+      if (error?.status === 409) return
+      throw error
+    })
   }
 
   useEffect(() => {
     if (!brevutkast?.brevId) return
     if (målform || brevtekst) {
-      oppdaterBrevutkastTrigger({ ...lagRequest(getValues()), serienummer: brevutkast.serienummer })
+      oppdaterBrevutkastTrigger({ ...lagRequest(getValues()), serienummer: nesteSerienummer() }).catch((error) => {
+        if (error?.status === 409) return
+        throw error
+      })
     }
-  }, [brevutkast?.brevId, brevutkast?.serienummer, målform, brevtekst, getValues, oppdaterBrevutkastTrigger])
+  }, [brevutkast?.brevId, målform, brevtekst, getValues, oppdaterBrevutkastTrigger, nesteSerienummer])
 
   const handleForhåndsvisBrev = async () => {
     if (!brevutkast?.brevId) return

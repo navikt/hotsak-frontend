@@ -18,6 +18,7 @@ import { usePerson } from '../../personoversikt/usePerson.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
 import { type Brevdata } from '../brevTyper.ts'
+import { useSerienummer } from '../useSerienummer.ts'
 import './Breveditor.less'
 import { BreveditorContext } from './BreveditorContext.ts'
 import { useBeforeUnload } from './hooks.ts'
@@ -135,7 +136,7 @@ export function Breveditor(props: BreveditorProps) {
 
   // Diverse state
   const state = useRef<BreveditorState | undefined>(undefined)
-  const serienummerRef = useRef(initialSerienummer ?? 0)
+  const nesteSerienummer = useSerienummer(brevId, initialSerienummer)
   const [visMarger, settVisMarger] = useState(false)
   const [erPlateContentFokusert, settPlateContentFokusert] = useState(false)
   const [erVerktoylinjeFokusert, settVerktoylinjeFokusert] = useState(false)
@@ -210,8 +211,7 @@ export function Breveditor(props: BreveditorProps) {
         }
         state.current = oppdatertState
         onStateChange?.(oppdatertState)
-        serienummerRef.current += 1
-        lagreMedDebounceOgRetry(oppdatertState, serienummerRef.current)
+        lagreMedDebounceOgRetry(oppdatertState, nesteSerienummer())
       }
     }
     // fixme
@@ -245,8 +245,7 @@ export function Breveditor(props: BreveditorProps) {
               // On state-change
               state.current = constructedState
               if (onStateChange) onStateChange(constructedState)
-              serienummerRef.current += 1
-              lagreMedDebounceOgRetry(constructedState, serienummerRef.current)
+              lagreMedDebounceOgRetry(constructedState, nesteSerienummer())
             }
           }
         }}

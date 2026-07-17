@@ -6,6 +6,7 @@ import useSWRMutation from 'swr/mutation'
 import { Brevmal, type Brev } from '../../../../brev/brevTyper.ts'
 import { useMutateBrevPdf } from '../../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../../brev/useBrevActions.ts'
+import { useSerienummer } from '../../../../brev/useSerienummer.ts'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
@@ -88,17 +89,24 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     control,
   })
 
+  const nesteSerienummer = useSerienummer(vedtaksbrev?.brevId, vedtaksbrev?.serienummer)
+
   const handleUpdateBrevutkast = async (values: { brevtekst: string }) => {
     if (!vedtaksbrev) return
-    await oppdaterBrevutkast.trigger({
-      brevutkast: {
-        brevmal: vedtaksbrev.brevmal,
-        brevmalVersjon: vedtaksbrev.brevmalVersjon,
-        målform: vedtaksbrev.målform,
-        data: { brevtekst: values.brevtekst },
-      },
-      serienummer: vedtaksbrev.serienummer,
-    })
+    await oppdaterBrevutkast
+      .trigger({
+        brevutkast: {
+          brevmal: vedtaksbrev.brevmal,
+          brevmalVersjon: vedtaksbrev.brevmalVersjon,
+          målform: vedtaksbrev.målform,
+          data: { brevtekst: values.brevtekst },
+        },
+        serienummer: nesteSerienummer(),
+      })
+      .catch((error) => {
+        if (error?.status === 409) return
+        throw error
+      })
   }
 
   const handleForhåndsvis = useSWRMutation<void, Error, string, unknown>('vedtaksbrev-barnebriller', async () => {

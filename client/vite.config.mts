@@ -45,6 +45,13 @@ export default defineConfig((env) => {
                   Authorization: `Bearer ${VITE_OBO_TOKEN}`,
                 },
               },
+              '/administrasjon': {
+                target: VITE_API_URL,
+                changeOrigin: true,
+                headers: {
+                  Authorization: `Bearer ${VITE_OBO_TOKEN}`,
+                },
+              },
             }
           : {}),
         ...(proxy.grunndata

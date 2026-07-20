@@ -45,7 +45,14 @@ export default defineConfig((env) => {
                   Authorization: `Bearer ${VITE_OBO_TOKEN}`,
                 },
               },
-              '/administrasjon': {
+              '/db-scheduler': {
+                target: VITE_API_URL,
+                changeOrigin: true,
+                headers: {
+                  Authorization: `Bearer ${VITE_OBO_TOKEN}`,
+                },
+              },
+              '/db-scheduler-api': {
                 target: VITE_API_URL,
                 changeOrigin: true,
                 headers: {

@@ -31,6 +31,7 @@ func main() {
 				StripPrefix: false,
 				IDPTarget:   os.Getenv("HOTSAK_API_SCOPE"),
 			},
+			// db-scheduler UI og API proxies til backend
 			"/db-scheduler/": &proxy.Options{
 				Target:      os.Getenv("HOTSAK_API_URL"),
 				StripPrefix: false,

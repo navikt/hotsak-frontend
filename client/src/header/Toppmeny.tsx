@@ -9,7 +9,9 @@ import { useGlobaleHotkeys } from '../hotkeys/useGlobaleHotkeys.ts'
 import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useUmami } from '../sporing/useUmami.ts'
-import { useTilgangContext } from '../tilgang/useTilgang.ts'
+import { useInnloggetAnsatt, useTilgangContext } from '../tilgang/useTilgang.ts'
+import { AnsattGruppe } from '../tilgang/Ansatt.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { useIsLargeScreen } from '../utils/useViewportSize.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
@@ -20,7 +22,10 @@ import { useModia } from './useModia.ts'
 
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
+  const { erMedlemAvEnAvGrupper } = useInnloggetAnsatt()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
+  const erTeamdigihot = erMedlemAvEnAvGrupper(AnsattGruppe.TEAMDIGIHOT)
+  const { erIkkeProd } = useMiljø()
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const [darkMode, setDarkMode] = useDarkMode()
@@ -94,6 +99,16 @@ export function Toppmeny() {
                 Modia
               </ActionMenu.Item>
             </ActionMenu.Group>
+            {(erIkkeProd || erTeamdigihot) && (
+              <>
+                <ActionMenu.Divider />
+                <ActionMenu.Group label="Administrasjon">
+                  <ActionMenu.Item as="a" href="/administrasjon/db-scheduler" target="_blank" rel="noreferrer">
+                    DB Scheduler
+                  </ActionMenu.Item>
+                </ActionMenu.Group>
+              </>
+            )}
             <ActionMenu.Divider />
             <ActionMenu.Group label="Utseende">
               <ActionMenu.Item

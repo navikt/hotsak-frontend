@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { isBrevmal } from '../../../brev/brevSelectors.ts'
 import { Brevmal } from '../../../brev/brevTyper.ts'
+import { GJELDENDE_STILARK_VERSJON } from '../../../brev/breveditor/html/byggDokument.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
@@ -67,7 +68,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
       await opprettBrevutkast.trigger({
         brevutkast: {
           brevmal: 'BREVEDITOR_VEDTAKSBREV',
-          brevmalVersjon: '0',
+          brevmalVersjon: GJELDENDE_STILARK_VERSJON,
           målform: 'BOKMÅL',
           data: {},
         },

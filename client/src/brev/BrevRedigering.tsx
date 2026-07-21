@@ -188,6 +188,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
               templateMarkdown={templateMarkdown}
               initialState={brev.data}
               initialSerienummer={brev.serienummer}
+              stilarkVersjon={brev.brevmalVersjon}
               onLagreBrev={handleLagreBrev}
             />
           </>

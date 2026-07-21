@@ -55,6 +55,7 @@ export interface BreveditorProps {
   templateMarkdown?: string
   initialState?: BreveditorState
   initialSerienummer?: number
+  stilarkVersjon: string
   onStateChange?(newState: BreveditorState): void
   onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string
@@ -67,6 +68,7 @@ export function Breveditor(props: BreveditorProps) {
     templateMarkdown,
     initialState,
     initialSerienummer,
+    stilarkVersjon,
     onStateChange,
     onLagreBrev,
     placeholder,
@@ -202,7 +204,7 @@ export function Breveditor(props: BreveditorProps) {
   // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
   useEffect(() => {
     if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(metadata, initialState.value, vergeNavn)
+      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn)
       if (initialState.valueAsHtml !== ferskHtml) {
         const oppdatertState: BreveditorState = {
           value: initialState.value,
@@ -238,7 +240,7 @@ export function Breveditor(props: BreveditorProps) {
           if ((onStateChange != null || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: BreveditorState = {
               value: nyVerdi,
-              valueAsHtml: byggFullHtml(metadata, nyVerdi, vergeNavn),
+              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn),
               history: changedEditor.history,
             }
             if (!state.current || state.current.value !== nyVerdi) {

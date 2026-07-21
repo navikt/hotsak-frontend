@@ -1,6 +1,4 @@
 import { Box } from '@navikt/ds-react'
-import BlokktypeMeny from './BlokktypeMeny.tsx'
-import LinkKnapp from './LinkKnapp/LinkKnapp.tsx'
 import { useRefSize } from '../hooks.ts'
 import { useBreveditorContext } from '../BreveditorContext.ts'
 import { AngreKnapp } from './AngreKnapp.tsx'
@@ -13,6 +11,8 @@ import { UnderlinjeKnapp } from './UnderlinjeKnapp.tsx'
 import { FormateringMeny } from './FormateringMeny.tsx'
 import { GjentaKnapp } from './GjentaKnapp.tsx'
 import { KursivKnapp } from './KursivKnapp.tsx'
+import { LinkKnapp } from './LinkKnapp/LinkKnapp.tsx'
+import { BlokktypeMeny } from './BlokktypeMeny.tsx'
 
 export function Verktøylinje() {
   const breveditor = useBreveditorContext()

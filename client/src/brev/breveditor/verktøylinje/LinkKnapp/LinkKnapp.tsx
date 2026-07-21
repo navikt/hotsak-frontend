@@ -2,7 +2,7 @@ import { LinkIcon } from '@navikt/aksel-icons'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { useLinkKnapp } from './useLinkKnapp'
 
-const LinkKnapp = () => {
+export function LinkKnapp() {
   const { disabled, active, onMouseDown, onClick } = useLinkKnapp()
   return (
     <Tooltip
@@ -23,5 +23,3 @@ const LinkKnapp = () => {
     </Tooltip>
   )
 }
-
-export default LinkKnapp

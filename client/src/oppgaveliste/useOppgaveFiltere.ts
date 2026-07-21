@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
+import { http } from '../io/HttpClient'
 
 interface OppgaveFiltereResponse {
   områder: string[]
@@ -20,13 +20,13 @@ const ingenFiltere: OppgaveFiltere = {
 }
 
 export function useOppgaveFiltere(): OppgaveFiltere {
-  const { data } = useSWRImmutable<OppgaveFiltereResponse>('/api/oppgaver/filtere')
-  return useMemo(() => {
-    if (!data) return ingenFiltere
+  const { data } = useSWRImmutable<OppgaveFiltere>('/api/oppgaver/filtere', async (url: string) => {
+    const result = await http.get<OppgaveFiltereResponse>(url)
     return {
-      områder: new Set(data.områder),
-      saksbehandlere: new Set(data.saksbehandlere),
-      gjelderVerdier: new Set(data.gjelderVerdier),
+      områder: new Set(result.områder),
+      saksbehandlere: new Set(result.saksbehandlere),
+      gjelderVerdier: new Set(result.gjelderVerdier),
     }
-  }, [data])
+  })
+  return data ?? ingenFiltere
 }

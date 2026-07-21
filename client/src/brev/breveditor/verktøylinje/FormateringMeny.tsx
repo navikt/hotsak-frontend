@@ -7,11 +7,11 @@ import {
   MenuElipsisVerticalCircleIcon,
   ShrinkIcon,
 } from '@navikt/aksel-icons'
-import { useAngreKnapp } from './AngreKnapp.tsx'
-import { useGjentaKnapp } from './GjentaKnapp.tsx'
 import { useBreveditorContext } from '../BreveditorContext.ts'
 import { useMarkKnapp } from './hjelpere/MarkKnapp/useMarkKnapp.ts'
 import { useLinkKnapp } from './LinkKnapp/useLinkKnapp.ts'
+import { useAngreKnapp } from './useAngreKnapp.ts'
+import { useGjentaKnapp } from './useGjentaKnapp.ts'
 
 const FormateringMeny = () => {
   const breveditor = useBreveditorContext()
@@ -42,6 +42,7 @@ const FormateringMeny = () => {
         <ActionMenu.Content>
           <ActionMenu.Group label="Historikk">
             <ActionMenu.Item
+              data-umami-event="Angreknapp"
               disabled={angreKnapp.disabled}
               icon={<ArrowUndoIcon fontSize="1rem" />}
               shortcut={erMac ? '⌘ + Z' : 'Ctrl + Z'}
@@ -50,6 +51,7 @@ const FormateringMeny = () => {
               Angre
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event="Gjentaknapp"
               disabled={gjentaKnapp.disabled}
               icon={<ArrowRedoIcon fontSize="1rem" />}
               shortcut={erMac ? '⌘ + Shift + Z' : 'Ctrl + Y'}
@@ -60,6 +62,7 @@ const FormateringMeny = () => {
           </ActionMenu.Group>
           <ActionMenu.Group label="Tekststil">
             <ActionMenu.Item
+              data-umami-event="Fetknapp"
               icon={<span style={{ fontWeight: 'bold' }}>F</span>}
               shortcut={erMac ? '⌘ + B' : 'Ctrl + B'}
               onSelect={fetKnapp.toggle}
@@ -67,6 +70,7 @@ const FormateringMeny = () => {
               Fet
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event="Kursivknapp"
               icon={
                 <span
                   style={{
@@ -82,6 +86,7 @@ const FormateringMeny = () => {
               Kursiv
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event="Underlinjeknapp"
               icon={
                 <span
                   style={{
@@ -97,6 +102,7 @@ const FormateringMeny = () => {
               Underlinje
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event="Linkknapp"
               icon={<LinkIcon fontSize="1rem" />}
               shortcut={erMac ? '⌘ + K' : 'Ctrl + K'}
               onSelect={linkKnapp.onClick}
@@ -106,6 +112,7 @@ const FormateringMeny = () => {
           </ActionMenu.Group>
           <ActionMenu.Group label="Annet">
             <ActionMenu.Item
+              data-umami-event="Svitsj marger knapp"
               icon={breveditor.visMarger ? <ExpandIcon fontSize="1rem" /> : <ShrinkIcon fontSize="1rem" />}
               onSelect={() => breveditor.settVisMarger(!breveditor.visMarger)}
             >

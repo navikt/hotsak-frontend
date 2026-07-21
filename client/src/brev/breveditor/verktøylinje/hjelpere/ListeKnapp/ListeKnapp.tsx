@@ -12,6 +12,7 @@ const ListeKnapp = ({ tittel, listeStilType, ikon }: { tittel: string; listeStil
         size="small"
         variant={active ? 'primary-neutral' : 'tertiary-neutral'}
         onClick={onClick}
+        data-umami-event={`Listeknapp-${listeStilType}`}
       />
     </Tooltip>
   )

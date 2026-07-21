@@ -3,6 +3,7 @@ import MarkKnapp from './hjelpere/MarkKnapp/MarkKnapp.tsx'
 const UnderlinjeKnapp = () => {
   return (
     <MarkKnapp
+      data-umami-event="Underlinjeknapp"
       tittel="Underlinje"
       markKey="underline"
       ikon={

@@ -12,6 +12,7 @@ const LinkKnapp = () => {
       }
     >
       <Button
+        data-umami-event="Linkknapp"
         disabled={disabled}
         variant={active ? 'primary-neutral' : 'tertiary-neutral'}
         size="small"

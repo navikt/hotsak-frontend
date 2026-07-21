@@ -3,6 +3,7 @@ import MarkKnapp from './hjelpere/MarkKnapp/MarkKnapp.tsx'
 const KursivKnapp = () => {
   return (
     <MarkKnapp
+      data-umami-event="Kursivknapp"
       tittel="Kursiv"
       markKey="italic"
       ikon={

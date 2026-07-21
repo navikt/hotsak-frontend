@@ -7,11 +7,13 @@ const MarkKnapp = ({
   markKey,
   ikon,
   shortcuts,
+  ...rest
 }: {
   tittel: string
   markKey: string
   ikon: ReactNode
   shortcuts?: string[]
+  [key: string]: unknown
 }) => {
   const { disabled, active, toggle } = useMarkKnapp(markKey)
   return (
@@ -25,6 +27,7 @@ const MarkKnapp = ({
         variant={active ? 'primary-neutral' : 'tertiary-neutral'}
         size="small"
         icon={ikon}
+        {...rest}
       />
     </Tooltip>
   )

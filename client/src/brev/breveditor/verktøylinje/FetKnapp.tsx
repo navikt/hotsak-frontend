@@ -3,6 +3,7 @@ import MarkKnapp from './hjelpere/MarkKnapp/MarkKnapp.tsx'
 const FetKnapp = () => {
   return (
     <MarkKnapp
+      data-umami-event="Fetknapp"
       tittel="Fet"
       markKey="bold"
       ikon={<span style={{ fontWeight: 'bold', fontSize: '1rem' }}>F</span>}

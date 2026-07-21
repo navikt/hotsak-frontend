@@ -104,33 +104,45 @@ const BlokktypeMeny = () => {
         </ActionMenu.Trigger>
         <ActionMenu.Content>
           <ActionMenu.Group label="Størrelser">
-            <ActionMenu.Item icon={<PencilWritingFillIcon fontSize="1rem" />} onSelect={() => turnInto(KEYS.h1)}>
+            <ActionMenu.Item
+              data-umami-event="Tittelknapp"
+              icon={<PencilWritingFillIcon fontSize="1rem" />}
+              onSelect={() => turnInto(KEYS.h1)}
+            >
               Tittel
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event="H1knapp"
               icon={<TypeH1 fontSize="1rem" style={{ scale: '0.7' }} />}
               onSelect={() => turnInto(KEYS.h2)}
             >
               Overskrift 1
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event="H2knapp"
               icon={<TypeH2 title="Overskrift 2" fontSize="1rem" style={{ scale: '0.7' }} />}
               onSelect={() => turnInto(KEYS.h3)}
             >
               Overskrift 2
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event="H3knapp"
               icon={<TypeH3 title="Overskrift 3" fontSize="1rem" style={{ scale: '0.7' }} />}
               onSelect={() => turnInto(KEYS.h4)}
             >
               Overskrift 3
             </ActionMenu.Item>
-            <ActionMenu.Item icon={<Density3Icon fontSize="1rem" />} onSelect={() => turnInto(KEYS.p)}>
+            <ActionMenu.Item
+              data-umami-event="Brødtekstknapp"
+              icon={<Density3Icon fontSize="1rem" />}
+              onSelect={() => turnInto(KEYS.p)}
+            >
               Brødtekst
             </ActionMenu.Item>
           </ActionMenu.Group>
           <ActionMenu.Group label="Lister">
             <ActionMenu.Item
+              data-umami-event={`Listeknapp-ul`}
               icon={<BulletListIcon fontSize="1rem" />}
               onSelect={() =>
                 !punktlistePressed &&
@@ -142,6 +154,7 @@ const BlokktypeMeny = () => {
               Punktliste
             </ActionMenu.Item>
             <ActionMenu.Item
+              data-umami-event={`Listeknapp-ol`}
               icon={<NumberListIcon fontSize="1rem" />}
               onSelect={() =>
                 !nummerertListePressed &&

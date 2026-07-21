@@ -15,6 +15,7 @@ const SettInnDelmalKnapp = () => {
     <>
       <Tooltip content={'Sett inn delmal'} keys={[]}>
         <Button
+          data-umami-event="Sett-inn-delmal-knapp"
           data-color="neutral"
           disabled={!breveditor.erBreveditorEllerVerktoylinjeFokusert || !editor.selection}
           onMouseDown={(event: { preventDefault: () => void }) => {

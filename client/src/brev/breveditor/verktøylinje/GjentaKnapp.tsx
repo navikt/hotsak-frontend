@@ -1,6 +1,6 @@
-import { Button, Tooltip } from '@navikt/ds-react'
-import { useEditorState } from 'platejs/react'
 import { ArrowRedoIcon } from '@navikt/aksel-icons'
+import { Button, Tooltip } from '@navikt/ds-react'
+import { useGjentaKnapp } from './useGjentaKnapp'
 
 const GjentaKnapp = () => {
   const { disabled, redo } = useGjentaKnapp()
@@ -15,6 +15,7 @@ const GjentaKnapp = () => {
       }
     >
       <Button
+        data-umami-event="Gjentaknapp"
         data-color="neutral"
         disabled={disabled}
         onMouseDown={(event: { preventDefault: () => void }) => {
@@ -30,11 +31,3 @@ const GjentaKnapp = () => {
 }
 
 export default GjentaKnapp
-
-export const useGjentaKnapp = () => {
-  const editor = useEditorState()
-  return {
-    redo: () => editor.redo(),
-    disabled: editor.history.redos.length == 0,
-  }
-}

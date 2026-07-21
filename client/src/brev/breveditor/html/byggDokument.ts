@@ -5,11 +5,14 @@ import { serialiserTilHtml } from './serialiserTilHtml'
 
 export const GJELDENDE_STILARK_VERSJON = 'v1' as const
 
-const STILARK_PER_VERSJON: Record<string, string> = {
+const STILARK_PER_VERSJON = {
   v1: versjonertStilarkV1,
-}
+  '0': versjonertStilarkV1,
+} as const satisfies Record<string, string>
 
-function hentStilark(versjon: string): string {
+export type StilarkVersjon = keyof typeof STILARK_PER_VERSJON
+
+function hentStilark(versjon: StilarkVersjon): string {
   const stilark = STILARK_PER_VERSJON[versjon]
   if (!stilark) throw new Error(`Ukjent stilarkversjon: ${versjon}`)
   return stilark
@@ -46,7 +49,12 @@ export function byggFooterHtml(metadata: Metadata): string {
       </footer>`
 }
 
-export function byggFullHtml(metadata: Metadata, nyVerdi: Value, stilarkVersjon: string, vergeNavn?: string): string {
+export function byggFullHtml(
+  metadata: Metadata,
+  nyVerdi: Value,
+  stilarkVersjon: StilarkVersjon,
+  vergeNavn?: string
+): string {
   const stilark = hentStilark(stilarkVersjon)
   return (
     `<html lang="nb">

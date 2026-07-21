@@ -13,7 +13,6 @@ import type { History } from '@platejs/slate'
 import { KEYS, type Value } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
@@ -22,7 +21,7 @@ import { useSerienummer } from '../useSerienummer.ts'
 import './Breveditor.less'
 import { BreveditorContext } from './BreveditorContext.ts'
 import { useBeforeUnload } from './hooks.ts'
-import { byggFullHtml } from './html/byggDokument.ts'
+import { byggFullHtml, type StilarkVersjon } from './html/byggDokument.ts'
 import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøylinje/FlytendeLinkVerktøylinjeKit.tsx'
 import { PlaceholderSpesielleVerdier } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
 import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary/PlaceholderErrorSummary.tsx'
@@ -55,7 +54,7 @@ export interface BreveditorProps {
   templateMarkdown?: string
   initialState?: BreveditorState
   initialSerienummer?: number
-  stilarkVersjon: string
+  stilarkVersjon: StilarkVersjon
   onStateChange?(newState: BreveditorState): void
   onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string

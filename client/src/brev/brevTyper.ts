@@ -1,3 +1,4 @@
+import type { StilarkVersjon } from './breveditor/html/byggDokument.ts'
 import type { OppgaveId } from '../oppgave/oppgaveTypes'
 import type { NavIdent } from '../tilgang/Ansatt'
 import type { Brevtype } from '../types/types.internal'
@@ -61,7 +62,7 @@ export type Brevdata = Record<string, unknown>
 
 export interface Brevutkast<T extends Brevdata = Brevdata> {
   brevmal: Brevmal
-  brevmalVersjon: '0' | string
+  brevmalVersjon: StilarkVersjon
   målform: Målform
   data: T
 }

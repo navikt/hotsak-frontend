@@ -2,7 +2,7 @@ import { ArrowRedoIcon } from '@navikt/aksel-icons'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { useGjentaKnapp } from './useGjentaKnapp'
 
-const GjentaKnapp = () => {
+export function GjentaKnapp() {
   const { disabled, redo } = useGjentaKnapp()
   return (
     <Tooltip
@@ -29,5 +29,3 @@ const GjentaKnapp = () => {
     </Tooltip>
   )
 }
-
-export default GjentaKnapp

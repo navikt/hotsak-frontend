@@ -2,7 +2,7 @@ import { Button, Tooltip } from '@navikt/ds-react'
 import { ReactNode } from 'react'
 import { useMarkKnapp } from './useMarkKnapp'
 
-const MarkKnapp = ({
+export function MarkKnapp({
   tittel,
   markKey,
   ikon,
@@ -14,7 +14,7 @@ const MarkKnapp = ({
   ikon: ReactNode
   shortcuts?: string[]
   [key: string]: unknown
-}) => {
+}) {
   const { disabled, active, toggle } = useMarkKnapp(markKey)
   return (
     <Tooltip content={tittel} keys={shortcuts}>
@@ -32,5 +32,3 @@ const MarkKnapp = ({
     </Tooltip>
   )
 }
-
-export default MarkKnapp

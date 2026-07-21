@@ -2,7 +2,7 @@ import { Button, Tooltip } from '@navikt/ds-react'
 import { ExpandIcon, ShrinkIcon } from '@navikt/aksel-icons'
 import { useBreveditorContext } from '../BreveditorContext'
 
-const SvitsjMargerKnapp = () => {
+export function SvitsjMargerKnapp() {
   const breveditor = useBreveditorContext()
   return (
     <Tooltip content={!breveditor.visMarger ? 'Vis marger' : 'Skjul marger'} keys={[]}>
@@ -16,5 +16,3 @@ const SvitsjMargerKnapp = () => {
     </Tooltip>
   )
 }
-
-export default SvitsjMargerKnapp

@@ -13,7 +13,7 @@ import { someList, toggleList } from '@platejs/list-classic'
 import { TypeH1, TypeH2, TypeH3 } from '@styled-icons/bootstrap'
 import { useBreveditorContext } from '../BreveditorContext'
 
-const BlokktypeMeny = () => {
+function BlokktypeMeny() {
   const breveditor = useBreveditorContext()
   const editor = useEditorState()
 

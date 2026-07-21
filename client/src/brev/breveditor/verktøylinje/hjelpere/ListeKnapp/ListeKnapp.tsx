@@ -2,7 +2,15 @@ import { Button, Tooltip } from '@navikt/ds-react'
 import type { ReactNode } from 'react'
 import { useListeKnapp } from './useListeKnapp'
 
-const ListeKnapp = ({ tittel, listeStilType, ikon }: { tittel: string; listeStilType: string; ikon: ReactNode }) => {
+export function ListeKnapp({
+  tittel,
+  listeStilType,
+  ikon,
+}: {
+  tittel: string
+  listeStilType: string
+  ikon: ReactNode
+}) {
   const { disabled, onClick, active } = useListeKnapp(listeStilType)
   return (
     <Tooltip content={tittel} keys={[]}>
@@ -17,5 +25,3 @@ const ListeKnapp = ({ tittel, listeStilType, ikon }: { tittel: string; listeStil
     </Tooltip>
   )
 }
-
-export default ListeKnapp

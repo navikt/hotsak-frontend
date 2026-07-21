@@ -13,7 +13,7 @@ import { useLinkKnapp } from './LinkKnapp/useLinkKnapp.ts'
 import { useAngreKnapp } from './useAngreKnapp.ts'
 import { useGjentaKnapp } from './useGjentaKnapp.ts'
 
-const FormateringMeny = () => {
+export function FormateringMeny() {
   const breveditor = useBreveditorContext()
   const erMac = window.navigator.platform.startsWith('Mac') || window.navigator.platform === 'iPhone'
   const angreKnapp = useAngreKnapp()
@@ -124,5 +124,3 @@ const FormateringMeny = () => {
     </>
   )
 }
-
-export default FormateringMeny

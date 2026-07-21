@@ -1,7 +1,7 @@
 import { useEditorState } from 'platejs/react'
 import { useBreveditorContext } from '../../../BreveditorContext'
 
-export const useMarkKnapp = (markKey: string) => {
+export function useMarkKnapp(markKey: string) {
   const editor = useEditorState()
   const breveditor = useBreveditorContext()
 

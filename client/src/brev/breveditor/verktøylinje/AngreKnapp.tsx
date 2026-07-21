@@ -2,7 +2,7 @@ import { ArrowUndoIcon } from '@navikt/aksel-icons'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { useAngreKnapp } from './useAngreKnapp'
 
-const AngreKnapp = () => {
+export function AngreKnapp() {
   const { disabled, undo } = useAngreKnapp()
   return (
     <Tooltip
@@ -26,5 +26,3 @@ const AngreKnapp = () => {
     </Tooltip>
   )
 }
-
-export default AngreKnapp

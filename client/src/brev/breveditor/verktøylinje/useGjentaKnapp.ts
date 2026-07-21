@@ -1,6 +1,6 @@
 import { useEditorState } from 'platejs/react'
 
-export const useGjentaKnapp = () => {
+export function useGjentaKnapp() {
   const editor = useEditorState()
   return {
     redo: () => editor.redo(),

@@ -1,6 +1,6 @@
-import MarkKnapp from './hjelpere/MarkKnapp/MarkKnapp.tsx'
+import { MarkKnapp } from './hjelpere/MarkKnapp/MarkKnapp'
 
-const KursivKnapp = () => {
+export function KursivKnapp() {
   return (
     <MarkKnapp
       data-umami-event="Kursivknapp"
@@ -22,5 +22,3 @@ const KursivKnapp = () => {
     />
   )
 }
-
-export default KursivKnapp

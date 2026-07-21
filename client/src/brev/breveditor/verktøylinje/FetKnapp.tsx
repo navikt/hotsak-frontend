@@ -1,6 +1,6 @@
-import MarkKnapp from './hjelpere/MarkKnapp/MarkKnapp.tsx'
+import { MarkKnapp } from './hjelpere/MarkKnapp/MarkKnapp'
 
-const FetKnapp = () => {
+export function FetKnapp() {
   return (
     <MarkKnapp
       data-umami-event="Fetknapp"
@@ -13,5 +13,3 @@ const FetKnapp = () => {
     />
   )
 }
-
-export default FetKnapp

@@ -7,7 +7,7 @@ import avslagDetYtesIkkeStonadTilSengForSmertelindringOgAvlasting from '../../br
 import avslagDyneKuledyne from '../../brevmaler/delmaler/avslag-dyne-kulekjededyne.md?raw'
 import { useBreveditorContext } from '../BreveditorContext'
 
-const SettInnDelmalKnapp = () => {
+export function SettInnDelmalKnapp() {
   const breveditor = useBreveditorContext()
   const editor = useEditorState()
   const [visModal, settVisModal] = useState(false)
@@ -32,9 +32,7 @@ const SettInnDelmalKnapp = () => {
   )
 }
 
-export default SettInnDelmalKnapp
-
-export const SettInnDelmalModal = ({ onClose }: { onClose: () => void }) => {
+export function SettInnDelmalModal({ onClose }: { onClose: () => void }) {
   const editor = useEditorRef()
   const [selection, settSelection] = useState<string>()
 

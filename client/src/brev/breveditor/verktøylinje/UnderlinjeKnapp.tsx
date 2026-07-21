@@ -1,6 +1,6 @@
-import MarkKnapp from './hjelpere/MarkKnapp/MarkKnapp.tsx'
+import { MarkKnapp } from './hjelpere/MarkKnapp/MarkKnapp'
 
-const UnderlinjeKnapp = () => {
+export function UnderlinjeKnapp() {
   return (
     <MarkKnapp
       data-umami-event="Underlinjeknapp"
@@ -22,5 +22,3 @@ const UnderlinjeKnapp = () => {
     />
   )
 }
-
-export default UnderlinjeKnapp

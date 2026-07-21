@@ -1,6 +1,6 @@
 import { useEditorState } from 'platejs/react'
 
-export const useAngreKnapp = () => {
+export function useAngreKnapp() {
   const editor = useEditorState()
   return {
     undo: () => editor.undo(),

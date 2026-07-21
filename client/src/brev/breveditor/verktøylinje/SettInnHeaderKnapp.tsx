@@ -3,7 +3,7 @@ import { PlusIcon } from '@navikt/aksel-icons'
 import { useEditorRef } from 'platejs/react'
 import { useBreveditorContext } from '../BreveditorContext'
 
-const SettInnHeaderKnapp = () => {
+export function SettInnHeaderKnapp() {
   const breveditor = useBreveditorContext()
   const editor = useEditorRef()
   return (
@@ -25,5 +25,3 @@ const SettInnHeaderKnapp = () => {
     </Tooltip>
   )
 }
-
-export default SettInnHeaderKnapp

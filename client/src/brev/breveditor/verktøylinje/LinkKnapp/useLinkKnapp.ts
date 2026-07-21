@@ -1,7 +1,7 @@
 import { useLinkToolbarButton, useLinkToolbarButtonState } from '@platejs/link/react'
 import { useBreveditorContext } from '../../BreveditorContext'
 
-export const useLinkKnapp = () => {
+export function useLinkKnapp() {
   const breveditor = useBreveditorContext()
   const state = useLinkToolbarButtonState()
   const {

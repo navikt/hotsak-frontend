@@ -19,7 +19,7 @@ export interface BrevPanelProps {
 
 export function BrevPanel({ oppgave, brev }: BrevPanelProps) {
   const { gjeldendeBehandling } = useBehandling()
-  const { oppgaveErAvsluttet } = useOppgaveregler(oppgave)
+  const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
 
   if (oppgaveErAvsluttet || brev?.distribusjon.length) {
     return (
@@ -40,6 +40,14 @@ export function BrevPanel({ oppgave, brev }: BrevPanelProps) {
           I fremtiden vil man kunne opprette brev underveis i saken her. Foreløpig må du sette et vedtaksresultat i
           behandlingspanelet og velge om du vil opprette vedtaksbrev der.
         </BrevInfoCard>
+      </BrevPanelLayout>
+    )
+  }
+
+  if (!oppgaveErUnderBehandlingAvInnloggetAnsatt) {
+    return (
+      <BrevPanelLayout>
+        <BrevForhåndsvisning brevId={brev?.brevId} avsluttet={oppgaveErAvsluttet} />
       </BrevPanelLayout>
     )
   }

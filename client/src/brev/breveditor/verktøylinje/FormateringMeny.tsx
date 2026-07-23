@@ -112,7 +112,7 @@ export function FormateringMeny() {
           </ActionMenu.Group>
           <ActionMenu.Group label="Annet">
             <ActionMenu.Item
-              data-umami-event="Svitsj marger knapp"
+              data-umami-event="Svitsj-marger-knapp"
               icon={breveditor.visMarger ? <ExpandIcon fontSize="1rem" /> : <ShrinkIcon fontSize="1rem" />}
               onSelect={() => breveditor.settVisMarger(!breveditor.visMarger)}
             >

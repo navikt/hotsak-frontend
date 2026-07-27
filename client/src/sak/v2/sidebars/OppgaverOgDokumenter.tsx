@@ -6,7 +6,7 @@ import { Oppgave } from '../../../oppgave/oppgaveTypes'
 import { useOpppgavesøk } from '../../../oppgave/useOppgavesøk'
 import { oppgaveColumns } from '../../../oppgaveliste/oppgaveColumns'
 import { selectOppgaveId } from '../../../oppgaveliste/oppgaveSelectors'
-import { dokumentColumns, journalpostKey } from '../../../personoversikt/dokumentColumns'
+import { dokumentColumns, journalpostKey, journalposttypeTagKort } from '../../../personoversikt/dokumentColumns'
 import { useSak } from '../../../saksbilde/useSak'
 import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
 
@@ -35,9 +35,13 @@ export function OppgaverOgDokumenter() {
   ]
 
   const dokuCols = [
-    dokumentColumns.journalpostId,
-    dokumentColumns.journalposttype,
-    dokumentColumns.journalpostOpprettetTid,
+    { ...dokumentColumns.journalpostId, width: 50, header: 'ID' },
+    {
+      ...dokumentColumns.journalposttype,
+      width: 50,
+      renderCell: ({ journalposttype }) => journalposttypeTagKort(journalposttype),
+    },
+    { ...dokumentColumns.journalpostOpprettetTid, formatDate: true, width: 100 },
     dokumentColumns.tittel,
     dokumentColumns.dokumenter,
     dokumentColumns.sakId,

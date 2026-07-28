@@ -1,4 +1,4 @@
-import Dexie, { Table, UpdateSpec } from 'dexie'
+import Dexie, { Table, type UpdateSpec } from 'dexie'
 
 import { isBrevmalBarnebrillerVedtak } from '../../brev/brevSelectors.ts'
 import {
@@ -10,8 +10,8 @@ import {
   type OpprettBrevutkastRequest,
 } from '../../brev/brevTyper.ts'
 import {
-  type JournalførJournalpostRequest,
   type JournalføringV2Request,
+  type JournalførJournalpostRequest,
 } from '../../journalføring/journalføringTypes.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
@@ -31,10 +31,10 @@ import {
   type OppdaterVilkårRequest,
   OppgaveStatusType,
   type Sak,
-  SaksstatusKategori,
-  Sakstype,
   type Saksdokument,
   SaksdokumentType,
+  SaksstatusKategori,
+  Sakstype,
   StegType,
   type Totrinnskontroll,
   type TotrinnskontrollData,
@@ -144,31 +144,18 @@ export class SakStore extends Dexie {
     const barnebrilleJournalpostIder = await this.journalpostStore.hentBarnebrilleJournalpostIder()
     let barnebrilleIndex = 0
     await this.personStore.lagreAlle(
-      saker.map(({ bruker: { navn, kjønn, ...rest }, enhet }) => ({
-        ...navn,
+      saker.map(({ bruker: { navn, kjønn, ...rest } }) => ({
         ...rest,
         navn,
         kjønn: kjønn || Kjønn.UKJENT,
-        enhet,
+        isSkjermet: false,
         vergemål: [
           {
             type: 'voksen',
-            vergeEllerFullmektig: {
-              motpartsPersonident: '30466942398',
-              omfang: 'personligeOgOekonomiskeInteresser',
-              identifiserendeInformasjon: {
-                navn: {
-                  fornavn: 'Streng',
-                  mellomnavn: undefined,
-                  etternavn: 'Malerbukse',
-                },
-              },
-              tjenesteomraade: [
-                {
-                  tjenesteoppgave: 'hjelpemidler',
-                  tjenestevirksomhet: 'nav',
-                },
-              ],
+            fnr: '30466942398',
+            navn: {
+              fornavn: 'Streng',
+              etternavn: 'Malerbukse',
             },
           },
         ],
@@ -508,7 +495,6 @@ export class SakStore extends Dexie {
     const count = await this.saker.count()
     const sakId = String(count + 1)
     const nå = nåIso()
-    const ingenAdressebeskyttelse = { skjermet: false }
     const sak: Sak = {
       sakId,
       sakstype: Sakstype.SØKNAD,
@@ -521,12 +507,10 @@ export class SakStore extends Dexie {
         fnr: request.journalføresPåFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },
         fødselsdato: '',
-        adressebeskyttelseOgSkjerming: ingenAdressebeskyttelse,
       },
       innsender: {
         fnr: request.journalføresPåFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },
-        adressebeskyttelseOgSkjerming: ingenAdressebeskyttelse,
       },
       enhet: enheter.agder,
       greitÅViteFaktum: [],

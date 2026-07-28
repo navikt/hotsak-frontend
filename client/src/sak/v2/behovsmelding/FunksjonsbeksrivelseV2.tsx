@@ -1,5 +1,6 @@
 import { Box, Heading, Label, List, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
+
 import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard'
 import { Skillelinje } from '../../../felleskomponenter/Strek'
 import { BrytbarBrødtekst, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
@@ -105,22 +106,20 @@ function VergemålInfo({ vergemål }: { vergemål: Vergemål[] }) {
         Vergemål
       </Label>
       <WarningTag>{vergemål.length > 1 ? 'Personen har verger' : 'Personen har verge'}</WarningTag>
-      {vergemål.map((v, index) => (
+      {vergemål.map((it, index) => (
         <VStack key={index} gap="space-0" marginBlock="space-4 space-0">
           {vergemål.length > 1 && <Label size="small" as="h3">{`Verge ${index + 1}`}</Label>}
           <List as="ul" size="small">
             <ListItem>
               <strong>Type: </strong>
-              {v.type ? storForbokstavIOrd(v.type) : '-'}
+              {it.type ? storForbokstavIOrd(it.type) : '-'}
             </ListItem>
             <ListItem>
               <strong>Tjenesteområde: </strong> Hjelpemidler (Nav)
             </ListItem>
             <ListItem>
               <strong>Vergens navn: </strong>
-              {v.vergeEllerFullmektig.identifiserendeInformasjon?.navn
-                ? formaterNavn(v.vergeEllerFullmektig.identifiserendeInformasjon.navn)
-                : '-'}
+              {it.navn ? formaterNavn(it.navn) : '-'}
             </ListItem>
           </List>
         </VStack>

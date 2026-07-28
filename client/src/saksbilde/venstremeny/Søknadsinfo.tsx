@@ -32,7 +32,7 @@ export const Søknadsinfo = memo(() => {
         søknadGjelder={sak.data.søknadGjelder}
         søknadMottatt={sak.data.opprettet}
         funksjonsnedsettelser={behovsmelding.brukersituasjon.funksjonsnedsettelser}
-        telefon={sak?.data.bruker.telefon}
+        telefon={sak?.data.bruker.telefonnummer}
       />
       <FormidlerCard
         tittel="Bestiller"

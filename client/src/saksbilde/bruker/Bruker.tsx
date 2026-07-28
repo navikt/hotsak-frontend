@@ -18,8 +18,8 @@ import {
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
 } from '../../utils/formater'
-import { Leveringinfo } from './Leveringinfo'
 import { Fullmakt } from './Fullmakt'
+import { Leveringinfo } from './Leveringinfo'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
@@ -41,7 +41,7 @@ export function Bruker({
   const formatertNavn = formaterNavn(bruker)
   const adresseBruker = formaterAdresse(behovsmeldingsbruker.veiadresse)
   const formatertFnr = formaterFødselsnummer(bruker.fnr)
-  const formatertTlf = formaterTelefonnummer(bruker.telefon)
+  const formatertTlf = formaterTelefonnummer(bruker.telefonnummer)
 
   return (
     <>

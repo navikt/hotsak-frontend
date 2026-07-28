@@ -3,7 +3,6 @@ import Dexie, { Table } from 'dexie'
 
 import type { Person } from '../../types/types.internal'
 import { lagTilfeldigBosted } from './bosted'
-import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
 import { kjønnFraFødselsnummer, lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
@@ -32,21 +31,16 @@ export class PersonStore extends Dexie {
       etternavn: 'Person',
     }
     const stabilPerson: Person = {
-      ...navn,
       fnr,
       navn,
       fødselsdato: formatISO(lagTilfeldigFødselsdato(9), { representation: 'date' }),
-      telefon: lagTilfeldigTelefonnummer(),
+      telefonnummer: lagTilfeldigTelefonnummer(),
       kjønn: kjønnFraFødselsnummer(fnr),
-      enhet: enheter.agder,
       kommune: {
         nummer: '9999',
         navn: lagTilfeldigBosted(),
       },
-      adressebeskyttelseOgSkjerming: {
-        gradering: [],
-        skjermet: false,
-      },
+      isSkjermet: false,
       vergemål: [],
     }
 
@@ -68,21 +62,16 @@ export function lagPerson(alder: number = lagTilfeldigInteger(5, 95)): Person {
   const fnr = lagTilfeldigFødselsnummer(fødselsdato)
   const navn = lagTilfeldigNavn()
   return {
-    ...navn,
     fnr,
     navn,
     fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
-    telefon: lagTilfeldigTelefonnummer(),
+    telefonnummer: lagTilfeldigTelefonnummer(),
     kjønn: kjønnFraFødselsnummer(fnr),
-    enhet: enheter.agder,
     kommune: {
       nummer: '9999',
       navn: lagTilfeldigBosted(),
     },
-    adressebeskyttelseOgSkjerming: {
-      gradering: [],
-      skjermet: false,
-    },
+    isSkjermet: false,
     vergemål: [],
   }
 }

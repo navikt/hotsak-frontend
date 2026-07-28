@@ -162,7 +162,7 @@ export function Breveditor(props: BreveditorProps) {
   const vergemål = personInfo?.vergemål || []
   const harVerge = vergemål.length > 0
   const vergeNavn = vergemål
-    .map((v) => v.vergeEllerFullmektig.identifiserendeInformasjon?.navn)
+    .map((it) => it.navn)
     .filter((navn): navn is NonNullable<typeof navn> => !!navn)
     .map((navn) => formaterNavn(navn))
     .join(', ')

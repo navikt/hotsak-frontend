@@ -263,11 +263,9 @@ export interface AdressebeskyttelseOgSkjerming {
   skjermet: boolean
 }
 
-export interface Innsender {
+export interface Innsender extends HarPersonnavn {
   fnr: string
-  navn: Personnavn
   fulltNavn?: string
-  adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
 export interface Bruker extends HarPersonnavn {
@@ -277,10 +275,9 @@ export interface Bruker extends HarPersonnavn {
   kommune?: Kommune
   bydel?: Bydel
   kjønn?: Kjønn
-  telefon?: string
+  telefonnummer?: string
   brukernummer?: string
   kontonummer?: string
-  adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
 export enum Adressebeskyttelse {
@@ -597,45 +594,30 @@ export interface AvvisBestilling {
   begrunnelse: string
 }
 
-export interface Person extends Personnavn, HarPersonnavn {
+export interface Person extends HarPersonnavn {
   fnr: string
   fødselsdato?: string
-  telefon?: string
+  dødsdato?: string
   brukernummer?: string
+  telefonnummer?: string
   kjønn: Kjønn
-  enhet: Enhet
   kommune?: Kommune
   bydel?: Bydel
-  adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
-  dødsdato?: string
+  gradering?: Adressebeskyttelse
+  isSkjermet: boolean
   vergemål?: Vergemål[]
 }
 
 export interface Vergemål {
   type?: string
-  vergeEllerFullmektig: VergeEllerFullmektig
-}
-
-export interface VergeEllerFullmektig {
-  motpartsPersonident?: string
-  omfang?: string
-  identifiserendeInformasjon?: IdentifiserendeInformasjon
-  tjenesteomraade?: Tjenesteomraade[]
-}
-
-export interface Tjenesteomraade {
-  tjenesteoppgave?: string
-  tjenestevirksomhet?: string
+  fnr?: string
+  navn?: Personnavn
 }
 
 export enum Mottaker {
   VERGE = 'VERGE',
   BRUKER = 'BRUKER',
   FORMIDLER = 'FORMIDLER',
-}
-
-export interface IdentifiserendeInformasjon {
-  navn?: Personnavn
 }
 
 export interface HjelpemiddelProdukt {

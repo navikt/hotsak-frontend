@@ -30,10 +30,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />
 
-  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming, vergemål = [] } = person
-  const [adressebeskyttelse] = (adressebeskyttelseOgSkjerming?.gradering || []).filter(
-    (gradering) => gradering !== Adressebeskyttelse.UGRADERT
-  )
+  const { fnr, fødselsdato, dødsdato, brukernummer, telefonnummer, vergemål = [], gradering, isSkjermet } = person
 
   return (
     <Container>
@@ -66,10 +63,10 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           <Kopiknapp tooltip="Kopier brukernummer" copyText={brukernummer} placement="bottom" />
         </Element>
       )}
-      {!skjulTelefonnummer && telefon && (
+      {!skjulTelefonnummer && telefonnummer && (
         <Element>
-          <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
-          <Kopiknapp tooltip="Kopier telefonnummer" copyText={telefon} placement="bottom" />
+          <Tekst>{`Tlf: ${formaterTelefonnummer(telefonnummer)}`}</Tekst>
+          <Kopiknapp tooltip="Kopier telefonnummer" copyText={telefonnummer} placement="bottom" />
         </Element>
       )}
       {dødsdato && (
@@ -77,12 +74,12 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           Død {formaterDato(dødsdato)}
         </Tag>
       )}
-      {adressebeskyttelse && (
+      {gradering && gradering !== Adressebeskyttelse.UGRADERT && (
         <Tag data-color="danger" size="small" variant="outline">
-          {AdressebeskyttelseAlert[adressebeskyttelse]}
+          {AdressebeskyttelseAlert[gradering]}
         </Tag>
       )}
-      {adressebeskyttelseOgSkjerming?.skjermet && (
+      {isSkjermet && (
         <Tag data-color="danger" size="small" variant="outline">
           Skjermet
         </Tag>

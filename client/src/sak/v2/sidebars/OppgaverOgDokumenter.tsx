@@ -9,6 +9,7 @@ import { selectOppgaveId } from '../../../oppgaveliste/oppgaveSelectors'
 import { dokumentColumns, journalpostKey, journalposttypeTagKort } from '../../../personoversikt/dokumentColumns'
 import { useSak } from '../../../saksbilde/useSak'
 import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
+import { Journalpost } from '../../../types/types.internal'
 
 export function OppgaverOgDokumenter() {
   const { sak } = useSak()
@@ -32,6 +33,7 @@ export function OppgaverOgDokumenter() {
     { ...oppgaveColumns.behandlingstema, filter: undefined },
     { ...oppgaveColumns.behandlingstype, filter: undefined },
     { ...oppgaveColumns.ferdigstiltTidspunkt },
+    { ...oppgaveColumns.saksbehandlerKort },
   ]
 
   const dokuCols = [
@@ -39,11 +41,12 @@ export function OppgaverOgDokumenter() {
     {
       ...dokumentColumns.journalposttype,
       width: 50,
-      renderCell: ({ journalposttype }) => journalposttypeTagKort(journalposttype),
+      renderCell: ({ journalposttype }: Journalpost) => journalposttypeTagKort(journalposttype),
     },
     { ...dokumentColumns.journalpostOpprettetTid, formatDate: true, width: 100 },
     dokumentColumns.tittel,
     dokumentColumns.dokumenter,
+    dokumentColumns.journalstatus,
     dokumentColumns.sakId,
   ]
 

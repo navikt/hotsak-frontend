@@ -1,4 +1,4 @@
-import { ClockDashedIcon, TimerPauseIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, PersonCircleIcon, TimerPauseIcon } from '@navikt/aksel-icons'
 import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
@@ -332,6 +332,14 @@ export const oppgaveColumns = {
     width: 50,
     renderCell(row) {
       return <MineOppgaverMenu oppgave={row} />
+    },
+  },
+  saksbehandlerKort: {
+    field: 'saksbehandler',
+    header: '',
+    width: 30,
+    renderCell(row) {
+      return <PersonCircleIcon fontSize="1.3rem" title={row.tildeltSaksbehandler?.navn ?? 'Ukjent'} />
     },
   },
 } satisfies OppgaveColumns

@@ -58,6 +58,12 @@ export const dokumentColumns = {
         </Button>
       ) : null,
   },
+  journalstatus: {
+    field: 'journalstatus',
+    header: 'Status',
+    width: 100,
+    renderCell: ({ journalstatus }) => (journalstatus ? <Tag size="small">{journalstatus}</Tag> : null),
+  },
 } satisfies DokumentColumns
 
 export function journalpostKey(journalpost: Journalpost): string {

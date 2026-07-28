@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import type { DokumentsøkRequest } from '../../dokument/useDokumentsøk.ts'
+import type { DokumentsøkRequest, DokumentsøkResponse } from '../../dokument/useDokumentsøk.ts'
 import type {
   JournalførJournalpostRequest,
   JournalføringV2Request,
@@ -23,10 +23,19 @@ interface DokumentParams extends JournalpostParams {
 }
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakStore, oppgaveStore }) => [
-  http.post<never, DokumentsøkRequest>(`/api/dokumenter/sok`, async () => {
-    const journalposter = await journalpostStore.søk()
+  http.post<never, DokumentsøkRequest, DokumentsøkResponse>(`/api/dokumenter/sok`, async ({ request }) => {
+    const { første = 100, etter = null } = await request.json()
+    const alle = await journalpostStore.søk()
+    const start = etter ? alle.findIndex((j) => j.journalpostId === etter) + 1 : 0
+    const side = alle.slice(start, start + første)
+    const sideInfo = {
+      sluttpeker: side[side.length - 1]?.journalpostId ?? null,
+      finnesNesteSide: start + første < alle.length,
+      antall: side.length,
+      totaltAntall: alle.length,
+    }
     await delay(200)
-    return HttpResponse.json({ journalposter })
+    return HttpResponse.json({ journalposter: side, sideInfo })
   }),
 
   http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {

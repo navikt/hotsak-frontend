@@ -101,16 +101,16 @@ export function journalposttypeTagKort(type: Journalpost['journalposttype']) {
 export function journalpoststatusTagKort(type: Journalpost['journalstatus']) {
   const config: Record<typeof type, { label: string; color: TagProps['data-color']; tooltip: string }> = {
     MOTTATT: { label: 'M', color: 'neutral', tooltip: 'Mottatt' },
-    JOURNALFØRT: { label: 'JF', color: 'neutral', tooltip: 'Journalført' },
+    JOURNALFOERT: { label: 'JF', color: 'neutral', tooltip: 'Journalført' },
     FERDIGSTILT: { label: 'F', color: 'neutral', tooltip: 'Ferdigstilt' },
     EKSPEDERT: { label: 'E', color: 'neutral', tooltip: 'Ekspedert' },
-    'UNDER ARBEID': { label: 'UA', color: 'neutral', tooltip: 'Under arbeid' },
+    UNDER_ARBEID: { label: 'UA', color: 'neutral', tooltip: 'Under arbeid' },
     FEILREGISTRERT: { label: 'FR', color: 'neutral', tooltip: 'Feilregistrert' },
-    UTGÅR: { label: 'U', color: 'neutral', tooltip: 'Utgår' },
+    UTGAAR: { label: 'U', color: 'neutral', tooltip: 'Utgår' },
     AVBRUTT: { label: 'A', color: 'neutral', tooltip: 'Avbrutt' },
-    'UKJENT BRUKER': { label: 'UB', color: 'neutral', tooltip: 'Ukjent bruker' },
+    UKJENT_BRUKER: { label: 'UB', color: 'neutral', tooltip: 'Ukjent bruker' },
     RESERVERT: { label: 'R', color: 'neutral', tooltip: 'Reservert' },
-    'OPPLASTING DOKUMENT': { label: 'OD', color: 'neutral', tooltip: 'Opplasting dokument' },
+    OPPLASTING_DOKUMENT: { label: 'OD', color: 'neutral', tooltip: 'Opplasting dokument' },
     UKJENT: { label: '?', color: 'neutral', tooltip: 'Ukjent' },
   }
   const { label, color, tooltip } = config[type]

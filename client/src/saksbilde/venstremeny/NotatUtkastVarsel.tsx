@@ -1,6 +1,6 @@
 import { ErrorSummary } from '@navikt/ds-react'
+import { createSearchParams, useNavigate } from 'react-router'
 
-import { createSearchParams, useNavigate } from 'react-router-dom'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 
 export function NotatUtkastVarsel() {

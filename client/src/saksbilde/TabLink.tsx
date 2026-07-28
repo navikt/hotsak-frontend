@@ -1,7 +1,6 @@
 import { Tabs } from '@navikt/ds-react'
 import type { ReactNode } from 'react'
-import { useLocation } from 'react-router'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 
 export interface TabLinkProps {
   children?: string | ReactNode

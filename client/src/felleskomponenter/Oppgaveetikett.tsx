@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
 import { BodyShort, Detail, HStack, Tag } from '@navikt/ds-react'
+import type { ReactNode } from 'react'
+import { Link } from 'react-router'
+
 import { Sakstype } from '../types/types.internal'
 import { storForbokstavIAlleOrd } from '../utils/formater'
 import classes from './Oppgaveetikett.module.css'

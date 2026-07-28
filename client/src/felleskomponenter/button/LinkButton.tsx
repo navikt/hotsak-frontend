@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from '@navikt/ds-react'
-import { type NavigateOptions, type To, useNavigate } from 'react-router-dom'
+import { type NavigateOptions, type To, useNavigate } from 'react-router'
 
 export interface LinkButtonProps extends ButtonProps {
   to: To

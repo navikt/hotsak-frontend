@@ -1,6 +1,6 @@
 import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
 import { Children, ReactNode, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'

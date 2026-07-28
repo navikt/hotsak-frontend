@@ -1,6 +1,6 @@
 import { Box } from '@navikt/ds-react'
 import { useMemo } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router'
 
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'

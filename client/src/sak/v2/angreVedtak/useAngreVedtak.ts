@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import { type Actions, useActionState } from '../../../action/Actions'
 import { useMutateBrevForSak } from '../../../brev/useBrev'

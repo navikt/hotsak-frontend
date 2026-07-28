@@ -123,7 +123,7 @@ function SakV2Content({
         <Group
           orientation="horizontal"
           defaultLayout={defaultLayout}
-          onLayoutChange={onLayoutChanged}
+          onLayoutChanged={onLayoutChanged}
           className={!erPilot ? classes.eksperimentPanelGroup : undefined}
         >
           {behandlingsPanel.visible && (

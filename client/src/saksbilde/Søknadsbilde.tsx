@@ -1,7 +1,6 @@
 import { Box, HGrid } from '@navikt/ds-react'
 import { memo } from 'react'
-import { Navigate } from 'react-router'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router'
 
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { ScrollContainer } from '../felleskomponenter/ScrollContainer'

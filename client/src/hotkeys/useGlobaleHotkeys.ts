@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import { useModia } from '../header/useModia.ts'
 import { GLOBALE_HOTKEYS } from './hotkeys.ts'

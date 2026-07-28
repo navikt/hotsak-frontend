@@ -1,7 +1,6 @@
-import { memo } from 'react'
-import { Link } from 'react-router-dom'
-
 import { Link as ExternalLink } from '@navikt/ds-react'
+import { memo } from 'react'
+import { Link } from 'react-router'
 
 import { TooltipWrapper } from '../TooltipWrapper'
 import { Tekst, TekstMedEllipsis } from '../typografi'

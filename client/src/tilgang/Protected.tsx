@@ -1,5 +1,5 @@
-import { Navigate } from 'react-router'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router'
+
 import { useInnloggetAnsatt } from './useTilgang.ts'
 
 export function Protected() {

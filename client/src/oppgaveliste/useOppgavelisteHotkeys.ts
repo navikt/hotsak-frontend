@@ -1,4 +1,4 @@
-import { useMatch } from 'react-router-dom'
+import { useMatch } from 'react-router'
 
 import { useDataGridFilterResetAllHandler } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { OPPGAVELISTE_HOTKEYS } from '../hotkeys/hotkeys.ts'

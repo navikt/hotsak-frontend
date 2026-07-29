@@ -3,7 +3,7 @@ minimumReleaseAgeExclude:
   - '@navikt/ds-css@8.13.0'
   - '@navikt/ds-react@8.13.0'
   - '@navikt/ds-tokens@8.13.0'
-  - js-yaml@4.1.2
+  - js-yaml@4.1.2 || 4.3.0
   - '@opentelemetry/core@2.8.0'
 
 onlyBuiltDependencies:
@@ -29,3 +29,4 @@ overrides:
   '@opentelemetry/core@<2.8.0': ^2.8.0
   js-yaml@<=4.1.1: ^4.1.2
   brace-expansion: "^5.0.8"
+  js-yaml@>=4.0.0 <4.3.0: ^4.3.0

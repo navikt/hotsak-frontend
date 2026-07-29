@@ -2,4 +2,7 @@ updateConfig:
   ignoreDependencies:
     - '@types/node'
 
-overrides: { }
+overrides: { brace-expansion@<=5.0.7: ^5.0.8 }
+
+minimumReleaseAgeExclude:
+  - brace-expansion@5.0.8

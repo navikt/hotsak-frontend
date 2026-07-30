@@ -128,7 +128,9 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
               )}
               {oppfølging.erGjortOppmerksomPåOpplæringsansvar && (
                 <HStack gap="space-6">
-                  <Etikett>Gjort oppmerksom på opplæringsansvar</Etikett>
+                  <Etikett>
+                    Opplæringsansvarlig er gjort oppmerksom på at vedkommende er oppført som opplæringsansvarlig i saken
+                  </Etikett>
                   <Tekst>Ja</Tekst>
                 </HStack>
               )}

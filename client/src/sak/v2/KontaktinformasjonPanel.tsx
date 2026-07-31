@@ -126,10 +126,10 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
                         />
                       )}
                       {oppfølgingsansvarlig.erGjortOppmerksomPåOpplæringsansvar && (
-                        <KopierbarFelt
-                          etikett="Opplæringsansvarlig er gjort oppmerksom på at vedkommende er oppført som opplæringsansvarlig i saken"
-                          tekst="Ja"
-                        />
+                        <Tekst textColor="subtle">
+                          Opplæringsansvarlig er gjort oppmerksom på at vedkommende er oppført som opplæringsansvarlig i
+                          saken
+                        </Tekst>
                       )}
                     </VStack>
                   </ReadMore>

@@ -127,12 +127,9 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
                 <Tekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Tekst>
               </HStack>
               {oppfølging.erGjortOppmerksomPåOpplæringsansvar && (
-                <HStack gap="space-6">
-                  <Etikett>
-                    Opplæringsansvarlig er gjort oppmerksom på at vedkommende er oppført som opplæringsansvarlig i saken
-                  </Etikett>
-                  <Tekst>Ja</Tekst>
-                </HStack>
+                <Tekst textColor="subtle">
+                  Opplæringsansvarlig er gjort oppmerksom på at vedkommende er oppført som opplæringsansvarlig i saken
+                </Tekst>
               )}
             </VStack>
           </Box>

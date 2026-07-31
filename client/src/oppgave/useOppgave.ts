@@ -39,8 +39,8 @@ export function useOppgave(): UseOppgaveResponse {
 }
 
 export function useOppgaveMapper(): ReadonlyArray<OppgaveMappe> {
-  const { data } = useSWRImmutable<OppgaveMapperResponse[]>('/api/oppgaver/mapper')
-  return data?.flatMap((page) => page.mapper) ?? []
+  const { data } = useSWRImmutable<OppgaveMapperResponse>('/api/oppgaver/mapper')
+  return data?.mapper ?? []
 }
 
 export function preloadOppgave(oppgaveId: OppgaveId) {

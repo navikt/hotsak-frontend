@@ -116,11 +116,20 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
                         tekst={formaterTelefonnummer(oppfølgingsansvarlig.telefon)}
                         copyText={oppfølgingsansvarlig.telefon}
                       />
+                      {oppfølgingsansvarlig.epost && (
+                        <KopierbarFelt etikett="E-post" tekst={oppfølgingsansvarlig.epost} />
+                      )}
                       {oppfølgingsansvarlig.ansvarFor && (
                         <KopierbarFelt
                           etikett="Ansvar"
                           tekst={storForbokstavIAlleOrd(oppfølgingsansvarlig.ansvarFor)}
                         />
+                      )}
+                      {oppfølgingsansvarlig.erGjortOppmerksomPåOpplæringsansvar && (
+                        <Tekst textColor="subtle">
+                          Opplæringsansvarlig er gjort oppmerksom på at vedkommende er oppført som opplæringsansvarlig i
+                          saken
+                        </Tekst>
                       )}
                     </VStack>
                   </ReadMore>

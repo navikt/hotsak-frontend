@@ -29,6 +29,8 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
           stilling: annenOppfølgingsansvarlig!.stilling,
           telefon: annenOppfølgingsansvarlig!.telefon,
           ansvarFor: annenOppfølgingsansvarlig!.ansvarFor,
+          epost: annenOppfølgingsansvarlig!.epost,
+          erGjortOppmerksomPåOpplæringsansvar: annenOppfølgingsansvarlig!.erGjortOppmerksomPåOpplæringsansvar,
         }
 
   return (
@@ -111,10 +113,24 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
                   <Kopiknapp tooltip="Kopier telefon" copyText={oppfølging.telefon} placement="bottom" />
                 </HStack>
               </HStack>
+              {oppfølging.epost && (
+                <HStack gap="space-6">
+                  <Etikett>E-post</Etikett>
+                  <HStack align="center" wrap={false}>
+                    <Tekst>{oppfølging.epost}</Tekst>
+                    <Kopiknapp tooltip="Kopier e-post" copyText={oppfølging.epost} placement="bottom" />
+                  </HStack>
+                </HStack>
+              )}
               <HStack gap="space-6">
                 <Etikett>Ansvar</Etikett>
                 <Tekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Tekst>
               </HStack>
+              {oppfølging.erGjortOppmerksomPåOpplæringsansvar && (
+                <Tekst textColor="subtle">
+                  Opplæringsansvarlig er gjort oppmerksom på at vedkommende er oppført som opplæringsansvarlig i saken
+                </Tekst>
+              )}
             </VStack>
           </Box>
         </Box>

@@ -113,10 +113,6 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
                   <Kopiknapp tooltip="Kopier telefon" copyText={oppfølging.telefon} placement="bottom" />
                 </HStack>
               </HStack>
-              <HStack gap="space-6">
-                <Etikett>Ansvar</Etikett>
-                <Tekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Tekst>
-              </HStack>
               {oppfølging.epost && (
                 <HStack gap="space-6">
                   <Etikett>E-post</Etikett>
@@ -126,6 +122,10 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
                   </HStack>
                 </HStack>
               )}
+              <HStack gap="space-6">
+                <Etikett>Ansvar</Etikett>
+                <Tekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Tekst>
+              </HStack>
               {oppfølging.erGjortOppmerksomPåOpplæringsansvar && (
                 <HStack gap="space-6">
                   <Etikett>

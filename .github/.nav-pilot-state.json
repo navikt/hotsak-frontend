@@ -1,8 +1,8 @@
 {
   "collection": "frontend",
-  "version": "2026.07.26-074941-46bcf6b",
+  "version": "2026.07.31-143403-5ce3c3b",
   "scope": "repo",
-  "source_sha": "46bcf6b",
+  "source_sha": "5ce3c3b",
   "installed_at": "2026-06-25T11:38:51Z",
   "files": [
     {

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@11.17.0+sha512.cca3cea332ad254bb84145f966d19f4879615210346fc92c79a047f23a0d7b3cca3c3792f0076ba1f1831d277efbcf0a9119b31a9a60eca7fb3d6231f331ef72",
+  "packageManager": "pnpm@11.18.0",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -12,7 +12,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^10.8.0",
     "husky": "^9.1.7",
-    "lint-staged": "^17.2.0",
+    "lint-staged": "^17.3.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.9.6"
   },

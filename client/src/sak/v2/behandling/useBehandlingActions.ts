@@ -75,7 +75,7 @@ export function useBehandlingActions() {
         return execute(async () => {
           await http.put(`/api/sak/${sakId}/behandling/${behandlingId}`, { utfall })
           await mutateBehandling()
-          mutate(`/api/sak/${sakId}/serviceforesporsel`)
+          await mutate(`/api/sak/${sakId}/serviceforesporsel`)
         })
       }
       return execute(async () => {

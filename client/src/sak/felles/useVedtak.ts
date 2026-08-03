@@ -23,7 +23,7 @@ export interface UseVedtakReturn {
 
 export function useVedtak() {
   const behovsmelding = useBehovsmelding()
-  const { problemsammendrag, sammendragMedLavere, postbegrunnelser } = useServiceforespørsel()
+  const { problemsammendrag, sammendragMedLavere, postbegrunnelser, isLoading } = useServiceforespørsel()
   const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
   const utleveringsmerknad = behovsmelding.behovsmelding?.levering.utleveringMerknad
 
@@ -71,6 +71,7 @@ export function useVedtak() {
     sammendragMedLavere,
     originalePostbegrunnelser,
     utleveringsmerknad,
+    isLoading,
     harEndretPostbegrunnelse,
     harEndretProblemsammendrag,
     logTilUmami,

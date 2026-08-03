@@ -1,4 +1,4 @@
-import { Button, HelpText, HStack, InlineMessage, Textarea, TextField, VStack } from '@navikt/ds-react'
+import { Button, HelpText, HStack, InlineMessage, Loader, Textarea, TextField, VStack } from '@navikt/ds-react'
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import { Controller, FormProvider } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
@@ -22,7 +22,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
   ({ onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
 
-    const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami } = useVedtak()
+    const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami, isLoading } = useVedtak()
 
     const validerProblemsammendrag = (value: string | undefined) => {
       if (!sammendragMedLavere) {
@@ -59,112 +59,119 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
     }
 
     useImperativeHandle(ref, () => ({
-      submit: () => form.handleSubmit(handleSubmit)(),
+      submit: () => {
+        if (isLoading) return Promise.resolve()
+        return form.handleSubmit(handleSubmit)()
+      },
     }))
 
     return (
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <VStack gap="space-16">
-            <Controller
-              name="problemsammendrag"
-              control={form.control}
-              rules={{
-                validate: validerProblemsammendrag,
-              }}
-              render={({ field, fieldState }) => (
-                <TextField
-                  label={
-                    <HStack wrap={false} gap="space-8" align="center">
-                      <Etikett>Problemsammendrag til OeBS </Etikett>
-                      <HelpText strategy="fixed">
-                        <Tekst>
-                          Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
-                          problemsammendraget dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken
-                          innvilges eller inne på SF i OeBS som tidligere.
-                        </Tekst>
-                      </HelpText>
-                    </HStack>
-                  }
-                  size="small"
-                  {...field}
-                  value={field.value ?? ''}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-            {postbegrunnelsePåkrevd && sammendragMedLavere && (
-              <VStack gap="space-8">
-                <Textarea
-                  readOnly={harLagretPostbegrunnelse}
-                  label={
-                    <HStack wrap={false} gap="space-8" align="center">
-                      <Etikett>Begrunnelse for lavere rangering</Etikett>
-                      <HelpText strategy="fixed">
-                        <Tekst>
-                          Faglig begrunnelse for hvorfor det velges et hjelpemiddel med lavere rangering
-                          ("postbegrunnelse"). En faglig begrunnelse skal skrives slik at utenforstående forstår hvorfor
-                          produktet er valgt. Det er ikke nødvendig å begrunne hvorfor produktet som er rangert som nr.
-                          1 ikke velges. Teksten overføres til OeBS.
-                        </Tekst>
-                      </HelpText>
-                    </HStack>
-                  }
-                  description="Se over begrunnelsen og fjern sensitive opplysninger"
-                  size="small"
-                  error={form.formState.errors.postbegrunnelse?.message}
-                  {...form.register('postbegrunnelse', {
-                    validate: (value) => {
-                      if (!harLagretPostbegrunnelse) {
-                        return 'Du må godkjenne begrunnelsen før søknaden kan innvilges'
-                      }
-                      return validerPostbegrunnelse(value)
-                    },
-                  })}
-                />
-                <HStack align="center" gap="space-8">
-                  {harLagretPostbegrunnelse ? (
-                    <>
-                      <InlineMessage status="success" size="small">
-                        Du har godkjent begrunnelsen
-                      </InlineMessage>
+          {isLoading ? (
+            <Loader size="small" />
+          ) : (
+            <VStack gap="space-16">
+              <Controller
+                name="problemsammendrag"
+                control={form.control}
+                rules={{
+                  validate: validerProblemsammendrag,
+                }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    label={
+                      <HStack wrap={false} gap="space-8" align="center">
+                        <Etikett>Problemsammendrag til OeBS </Etikett>
+                        <HelpText strategy="fixed">
+                          <Tekst>
+                            Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
+                            problemsammendraget dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken
+                            innvilges eller inne på SF i OeBS som tidligere.
+                          </Tekst>
+                        </HelpText>
+                      </HStack>
+                    }
+                    size="small"
+                    {...field}
+                    value={field.value ?? ''}
+                    error={fieldState.error?.message}
+                  />
+                )}
+              />
+              {postbegrunnelsePåkrevd && sammendragMedLavere && (
+                <VStack gap="space-8">
+                  <Textarea
+                    readOnly={harLagretPostbegrunnelse}
+                    label={
+                      <HStack wrap={false} gap="space-8" align="center">
+                        <Etikett>Begrunnelse for lavere rangering</Etikett>
+                        <HelpText strategy="fixed">
+                          <Tekst>
+                            Faglig begrunnelse for hvorfor det velges et hjelpemiddel med lavere rangering
+                            ("postbegrunnelse"). En faglig begrunnelse skal skrives slik at utenforstående forstår
+                            hvorfor produktet er valgt. Det er ikke nødvendig å begrunne hvorfor produktet som er
+                            rangert som nr. 1 ikke velges. Teksten overføres til OeBS.
+                          </Tekst>
+                        </HelpText>
+                      </HStack>
+                    }
+                    description="Se over begrunnelsen og fjern sensitive opplysninger"
+                    size="small"
+                    error={form.formState.errors.postbegrunnelse?.message}
+                    {...form.register('postbegrunnelse', {
+                      validate: (value) => {
+                        if (!harLagretPostbegrunnelse) {
+                          return 'Du må godkjenne begrunnelsen før søknaden kan innvilges'
+                        }
+                        return validerPostbegrunnelse(value)
+                      },
+                    })}
+                  />
+                  <HStack align="center" gap="space-8">
+                    {harLagretPostbegrunnelse ? (
+                      <>
+                        <InlineMessage status="success" size="small">
+                          Du har godkjent begrunnelsen
+                        </InlineMessage>
+                        <Button
+                          type="button"
+                          variant="tertiary"
+                          size="small"
+                          onClick={() => {
+                            form.clearErrors('postbegrunnelse')
+                            setHarLagretPostbegrunnelse(false)
+                          }}
+                        >
+                          Angre
+                        </Button>
+                      </>
+                    ) : (
                       <Button
                         type="button"
-                        variant="tertiary"
+                        variant="secondary"
                         size="small"
                         onClick={() => {
-                          form.clearErrors('postbegrunnelse')
-                          setHarLagretPostbegrunnelse(false)
+                          const value = form.getValues('postbegrunnelse')
+                          const valideringResultat = validerPostbegrunnelse(value)
+                          if (valideringResultat !== true) {
+                            form.setError('postbegrunnelse', { message: valideringResultat })
+                          } else {
+                            form.clearErrors('postbegrunnelse')
+                            setHarLagretPostbegrunnelse(true)
+                          }
                         }}
                       >
-                        Angre
+                        Godkjenn begrunnelse
                       </Button>
-                    </>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      size="small"
-                      onClick={() => {
-                        const value = form.getValues('postbegrunnelse')
-                        const valideringResultat = validerPostbegrunnelse(value)
-                        if (valideringResultat !== true) {
-                          form.setError('postbegrunnelse', { message: valideringResultat })
-                        } else {
-                          form.clearErrors('postbegrunnelse')
-                          setHarLagretPostbegrunnelse(true)
-                        }
-                      }}
-                    >
-                      Godkjenn begrunnelse
-                    </Button>
-                  )}
-                </HStack>
-              </VStack>
-            )}
-            {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
-          </VStack>
-          <button type="submit" style={{ display: 'none' }} />
+                    )}
+                  </HStack>
+                </VStack>
+              )}
+              {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
+            </VStack>
+          )}
+          <button type="submit" style={{ display: 'none' }} disabled={isLoading} />
         </form>
       </FormProvider>
     )

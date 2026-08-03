@@ -7,6 +7,7 @@ interface UseServiceforespørselResponse {
   sammendragMedLavere: boolean
   problemsammendrag: string
   postbegrunnelser: string[]
+  isLoading: boolean
 }
 
 interface ServiceforespørselResponse {
@@ -16,13 +17,14 @@ interface ServiceforespørselResponse {
 
 export function useServiceforespørsel(): UseServiceforespørselResponse {
   const sakId = useSakId()
-  const { data, ...rest } = useSwr<ServiceforespørselResponse, HttpError>(
+  const { data, isLoading, ...rest } = useSwr<ServiceforespørselResponse, HttpError>(
     sakId ? `/api/sak/${sakId}/serviceforesporsel` : null
   )
   return {
     sammendragMedLavere: data?.problemsammendrag?.startsWith('POST ') ?? false,
     problemsammendrag: data?.problemsammendrag ?? '',
     postbegrunnelser: data?.postbegrunnelser ?? [],
+    isLoading,
     ...rest,
   }
 }

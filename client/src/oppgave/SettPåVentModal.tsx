@@ -1,6 +1,6 @@
 import { Checkbox, DatePicker, Textarea, useDatepicker, VStack } from '@navikt/ds-react'
-import { addDays } from 'date-fns'
-import { useMemo } from 'react'
+import { addDays, isBefore } from 'date-fns'
+import { useEffect, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
@@ -30,23 +30,47 @@ export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
     },
   })
 
+  const aktivDato = form.watch('aktivDato')
+  const fristFerdigstillelse = form.watch('fristFerdigstillelse')
+
   const { datepickerProps: datepickerPropsAktivDato, inputProps: inputPropsAktivDato } = useDatepicker({
     fromDate: tomorrow,
     defaultSelected: tomorrow,
     onDateChange: (date) => form.setValue('aktivDato', date ?? tomorrow),
   })
 
-  const { datepickerProps: datepickerPropsFristFerdigstillelse, inputProps: inputPropsFristFerdigstillelse } =
-    useDatepicker({
-      fromDate: tomorrow,
-      defaultSelected: tomorrow,
-      onDateChange: (date) => form.setValue('fristFerdigstillelse', date ?? tomorrow),
-    })
+  const {
+    datepickerProps: datepickerPropsFristFerdigstillelse,
+    inputProps: inputPropsFristFerdigstillelse,
+    setSelected: setSelectedFristFerdigstillelse,
+  } = useDatepicker({
+    fromDate: aktivDato,
+    defaultSelected: tomorrow,
+    onDateChange: (date) => {
+      form.setValue('fristFerdigstillelse', date ?? tomorrow)
+      form.clearErrors('fristFerdigstillelse')
+    },
+  })
+
+  useEffect(() => {
+    if (isBefore(fristFerdigstillelse, aktivDato)) {
+      form.setValue('fristFerdigstillelse', aktivDato)
+      setSelectedFristFerdigstillelse(aktivDato)
+      form.clearErrors('fristFerdigstillelse')
+    }
+  }, [aktivDato, fristFerdigstillelse, form, setSelectedFristFerdigstillelse])
 
   const { endreOppgave } = useOppgaveActions(oppgave)
   const { logOppgaveSattPåVent } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
+    if (isBefore(data.fristFerdigstillelse, data.aktivDato)) {
+      form.setError('fristFerdigstillelse', {
+        type: 'manual',
+        message: 'Frist kan ikke være før dato for «Sett på vent til»',
+      })
+      return
+    }
     await endreOppgave({
       aktivDato: tilLocalDateString(data.aktivDato),
       fristFerdigstillelse: tilLocalDateString(data.fristFerdigstillelse),
@@ -74,7 +98,12 @@ export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
             <DatePicker.Input {...inputPropsAktivDato} label="Sett på vent til" size="small" />
           </DatePicker>
           <DatePicker {...datepickerPropsFristFerdigstillelse}>
-            <DatePicker.Input {...inputPropsFristFerdigstillelse} label="Frist" size="small" />
+            <DatePicker.Input
+              {...inputPropsFristFerdigstillelse}
+              label="Frist"
+              size="small"
+              error={form.formState.errors.fristFerdigstillelse?.message}
+            />
           </DatePicker>
           <Eksperiment>
             <Checkbox size="small">{`Legg tilbake til ${gjeldendeEnhet.navn}`}</Checkbox>

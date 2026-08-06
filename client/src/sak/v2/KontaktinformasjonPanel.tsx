@@ -26,20 +26,22 @@ import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
 import { useExpandedSection } from './SakbrukerinnstillingerContext.ts'
 
-function GodkjenningskursTag({ resultat }: Readonly<{ resultat: GodkjenningskursSjekk[] | undefined }>) {
-  if (resultat === undefined) {
-    return <WarningTag langTekst>Vi klarte ikke hente kursinfo, må sjekkes manuelt</WarningTag>
+function GodkjenningskursTag({ resultat }: Readonly<{ resultat: GodkjenningskursSjekk[] | null | undefined }>) {
+  if (resultat == null) {
+    return null
   }
   if (resultat.length === 0) {
     return <InfoTag>Ingen påkrevde kurs</InfoTag>
   }
-  const ikkeFunnet = resultat.filter((k) => !k.gjennomført)
+  const ikkeFunnet = resultat.filter((kurs) => !kurs.gjennomført)
   if (ikkeFunnet.length > 0) {
     return (
-      <WarningTag langTekst>{ikkeFunnet.map((k) => k.tittel).join(', ')}: ikke funnet, må sjekkes manuelt</WarningTag>
+      <WarningTag langTekst>
+        {ikkeFunnet.map((kurs) => kurs.tittel).join(', ')}: ikke funnet, må sjekkes manuelt
+      </WarningTag>
     )
   }
-  return <InfoTag langTekst>Godkjenningskurs bekreftet: {resultat.map((k) => k.tittel).join(', ')}</InfoTag>
+  return <InfoTag langTekst>Godkjenningskurs bekreftet: {resultat.map((kurs) => kurs.tittel).join(', ')}</InfoTag>
 }
 
 export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {

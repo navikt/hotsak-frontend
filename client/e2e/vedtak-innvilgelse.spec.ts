@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test'
 
-import { klikkFattVedtak, settBehandlingsresultat, åpneSak } from './helpers'
+import {
+  fyllUtBegrunnelse,
+  klikkFattVedtak,
+  klikkGodkjennBegrunnelse,
+  klikkGodkjennBeskjed,
+  settBehandlingsresultat,
+  åpneSak,
+} from './helpers'
 
 test.describe('Vedtak: Innvilgelse', () => {
   test('kan innvilge en søknad', async ({ page }) => {
@@ -43,5 +50,47 @@ test.describe('Vedtak: Innvilgelse', () => {
 
     // Button should say "Innvilg og send brev" since brev exists
     await expect(modal.getByRole('button', { name: /Innvilg og send brev/i })).toBeVisible()
+  })
+
+  test('submitter ikke før problemsammendrag er lastet i modalen', async ({ page }) => {
+    let release!: () => void
+    const gate = new Promise<void>((resolve) => (release = resolve))
+
+    await page.route('**/api/sak/*/serviceforesporsel', async (route) => {
+      await gate
+      await route.continue()
+    })
+
+    let ferdigstillingCalls = 0
+    page.on('request', (req) => {
+      if (req.method() === 'POST' && req.url().includes('/behandling/') && req.url().includes('/ferdigstilling')) {
+        ferdigstillingCalls++
+      }
+    })
+
+    await åpneSak(page)
+    await settBehandlingsresultat(page, 'Innvilget')
+    await klikkFattVedtak(page)
+
+    const modal = page.getByRole('dialog', { name: /Vil du innvilge søknaden/i })
+    await expect(modal).toBeVisible()
+
+    await modal.getByRole('button', { name: /^Innvilg$/i }).click()
+    await expect.poll(() => ferdigstillingCalls).toBe(0)
+
+    release()
+
+    await fyllUtBegrunnelse(page)
+    await klikkGodkjennBegrunnelse(page)
+    await klikkGodkjennBeskjed(page)
+
+    const ferdigstillingRequest = page.waitForRequest(
+      (r) => r.method() === 'POST' && r.url().includes('/behandling/') && r.url().includes('/ferdigstilling')
+    )
+
+    await modal.getByRole('button', { name: /^Innvilg$/i }).click()
+
+    const body = (await ferdigstillingRequest).postDataJSON() as { problemsammendrag?: string }
+    expect(body.problemsammendrag?.trim().length).toBeGreaterThan(0)
   })
 })

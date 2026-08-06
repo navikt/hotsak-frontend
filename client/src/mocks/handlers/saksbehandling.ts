@@ -91,10 +91,10 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     }
 
     /*
-            Hvis ingen type er angitt som query param, bruker vi gammel oppførsel som henter journalposter fra sak.
-            Ligger her for å bevare bakoverkompatibilitet
-            På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra Joark.
-          */
+              Hvis ingen type er angitt som query param, bruker vi gammel oppførsel som henter journalposter fra sak.
+              Ligger her for å bevare bakoverkompatibilitet
+              På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra Joark.
+            */
     if (!dokumentType) {
       const sak = await sakStore.hent(sakId)
       if (!sak) {
@@ -126,6 +126,14 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   http.put<SakParams>('/api/sak/:sakId/tilbakeforing', async ({ params }) => {
     const sakId = params.sakId
     await sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
+
+    const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
+    const gjeldendeBehandling = behandlingerForSak[0]!
+
+    const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
+    await oppgaveStore.ferdigstillOppgave(gjeldendeBehandling!.oppgaveId)
+    await sakStore.fattVedtak(sakId, OppgaveStatusType.SENDT_GOSYS, vedtaksResultat)
+    await sakStore.ferdigstillBehandlingForSak(sakId)
     return respondNoContent()
   }),
 

@@ -400,6 +400,11 @@ export interface Journalpost {
   sakId?: string
 }
 
+export enum Kanal {
+  NAV_NO = 'NAV_NO',
+  SKAN_IM = 'SKAN_IM',
+}
+
 export interface FødselsnummerOgNavn {
   fnr: string
   navn: Personnavn
@@ -411,6 +416,12 @@ export interface Dokument {
   dokumentId: string
   tittel: string
   brevkode: string
+  logiskeVedlegg: LogiskVedlegg[]
+}
+
+export interface LogiskVedlegg {
+  vedleggId: string
+  tittel: string
 }
 
 export enum SaksdokumentType {

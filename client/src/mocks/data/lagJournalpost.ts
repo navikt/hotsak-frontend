@@ -59,16 +59,19 @@ export function lagDokumenter(journalpostId: string): InsertDokument[] {
       journalpostId,
       tittel: 'NAV 10-07.34: Tilskudd ved kjøp av briller til barn',
       brevkode: BARNEBRILLE_BREVKODE,
+      logiskeVedlegg: [],
     },
     {
       journalpostId,
       tittel: 'Brilleseddel',
       brevkode: BARNEBRILLE_BREVKODE,
+      logiskeVedlegg: [],
     },
     {
       journalpostId,
       tittel: 'Kvittering fra optiker',
       brevkode: BARNEBRILLE_BREVKODE,
+      logiskeVedlegg: [],
     },
   ]
 }
@@ -79,6 +82,7 @@ export function lagHjelpemiddelDokumenter(journalpostId: string): InsertDokument
       journalpostId,
       tittel: 'NAV 10-07.03: Søknad om hjelpemidler',
       brevkode: HJELPEMIDDEL_BREVKODE,
+      logiskeVedlegg: [],
     },
   ]
 }

@@ -36,7 +36,7 @@ export function erInsertBarnebrillesak(sak?: InsertSak | null): sak is InsertBar
   return sak != null && sak.sakstype === Sakstype.BARNEBRILLER
 }
 
-export type LagretHjelpemiddelsak = Sak
+export type LagretHjelpemiddelsak = Sak & { journalposter?: string[] }
 export type InsertHjelpemiddelsak = LagretHjelpemiddelsak & { behovsmeldingCasePath: string }
 
 export function lagHjelpemiddelsakForBehovsmeldingCase(

@@ -18,17 +18,19 @@ export const SakKontrollPanel = () => {
   const behandlingPanel = usePanel('behandlingspanel')
   const brevKolonne = usePanel('brevpanel')
   const søknadPanel = usePanel('behovsmeldingspanel')
+  const dokumentPanel = usePanel('dokumentpanel')
   const oebsPanel = usePanel('kontaktinformasjonpanel')
   const sidePanel = usePanel('sidebarpanel')
   const toggleBehandlingPanel = useTogglePanel('behandlingspanel')
   const toggleBrevKolonne = useTogglePanel('brevpanel')
   const toggleSøknadPanel = useTogglePanel('behovsmeldingspanel')
+  const toggleDokumentPanel = useTogglePanel('dokumentpanel')
   const toggleOebsPanel = useTogglePanel('kontaktinformasjonpanel')
   const toggleSidePanel = useTogglePanel('sidebarpanel')
   const { isOppgaveContext } = useOppgaveContext()
   const { gjeldendeBehandling } = useBehandling()
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
-  const { erBestilling } = useSaksregler()
+  const { erBestilling, erPapirsøknad } = useSaksregler()
   const erPilot = useErPilot('hotsakEksperimenter')
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
@@ -51,12 +53,26 @@ export const SakKontrollPanel = () => {
               Brev
             </ToggleKnapp>
           )}
-          <ToggleKnapp selected={søknadPanel.visible} onToggle={() => toggleSøknadPanel()}>
-            {erBestilling ? 'Bestilling' : 'Søknad'}
-          </ToggleKnapp>
-          <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
-            Kontaktinformasjon
-          </ToggleKnapp>
+          {!erBestilling && !erPapirsøknad && (
+            <ToggleKnapp selected={søknadPanel.visible} onToggle={() => toggleSøknadPanel()}>
+              Søknad
+            </ToggleKnapp>
+          )}
+          {erPapirsøknad && (
+            <ToggleKnapp selected={dokumentPanel.visible} onToggle={() => toggleDokumentPanel()}>
+              Dokument
+            </ToggleKnapp>
+          )}
+          {erBestilling && !erPapirsøknad && (
+            <ToggleKnapp selected={søknadPanel.visible} onToggle={() => toggleSøknadPanel()}>
+              Bestilling
+            </ToggleKnapp>
+          )}
+          {!erPapirsøknad && (
+            <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
+              Kontaktinformasjon
+            </ToggleKnapp>
+          )}
           {!erPilot && (
             <ToggleKnapp selected={sidePanel.visible} onToggle={() => toggleSidePanel()}>
               Utlån, notater og historikk

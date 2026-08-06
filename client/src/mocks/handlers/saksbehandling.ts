@@ -104,6 +104,8 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       let journalposter: string[]
       if (erLagretBarnebrillesak(sak)) {
         journalposter = sak.journalposter
+      } else if (erLagretHjelpemiddelsak(sak)) {
+        journalposter = sak.journalposter ?? []
       } else {
         journalposter = []
       }

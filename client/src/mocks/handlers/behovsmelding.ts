@@ -1,9 +1,11 @@
 import { http, HttpResponse } from 'msw'
-import { Sakstype } from '../../types/types.internal.ts'
+import { Kanal, Sakstype } from '../../types/types.internal.ts'
 
 import type { StoreHandlersFactory } from '../data'
 import type { SakParams } from './params'
 import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondUnauthorized } from './response'
+import { lagUUID } from '../data/felles.ts'
+import { BehovsmeldingType } from '../../types/BehovsmeldingTypes.ts'
 
 export const behovsmeldingHandlers: StoreHandlersFactory = ({ sakStore, behovsmeldingStore }) => [
   http.get<SakParams>(`/api/sak/:sakId/behovsmelding`, async ({ params }) => {
@@ -29,7 +31,13 @@ export const behovsmeldingHandlers: StoreHandlersFactory = ({ sakStore, behovsme
     }
     const behovsmeldingCase = await behovsmeldingStore.hentForSak(sak)
     if (!behovsmeldingCase) {
-      return respondNotFound()
+      return HttpResponse.json({
+        kanal: Kanal.SKAN_IM.toString(),
+        id: lagUUID(),
+        type: BehovsmeldingType.SØKNAD,
+        innsendingsdato: new Date().toISOString(),
+      })
+      //return respondNotFound()
     }
     return HttpResponse.json(behovsmeldingCase.behovsmelding)
   }),

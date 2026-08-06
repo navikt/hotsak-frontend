@@ -10,6 +10,7 @@ import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
+import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useErPilot } from '../../tilgang/useTilgang.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
@@ -34,6 +35,7 @@ import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { AvrundetPanel } from './paneler/AvrundetPanel.tsx'
 import { ResizablePanel } from './paneler/ResizablePanel.tsx'
+import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import classes from './SakV2.module.css'
 import { useSakContext } from './SakV2ContextType.ts'
@@ -60,6 +62,7 @@ function SakV2Content({
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
+  const { erPapirsøknad } = useSaksregler()
   const erPilot = useErPilot('hotsakEksperimenter')
 
   const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
@@ -91,6 +94,7 @@ function SakV2Content({
 
   const behandlingsPanel = panels.behandlingspanel
   const behovsmeldingsPanel = panels.behovsmeldingspanel
+  const dokumentPanel = panels.dokumentpanel
   const kontaktinformasjonPanel = panels.kontaktinformasjonpanel
   const sidePanel = panels.sidebarpanel
   const brevPanel = panels.brevpanel
@@ -146,16 +150,25 @@ function SakV2Content({
           <ResizablePanel
             panelId="behovsmeldingspanel"
             panel={behovsmeldingsPanel}
-            visible={behovsmeldingsPanel.visible}
+            visible={behovsmeldingsPanel.visible && !erPapirsøknad}
           >
             <AvrundetPanel>
               <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
             </AvrundetPanel>
           </ResizablePanel>
           <ResizablePanel
+            panelId="dokumentpanel"
+            panel={dokumentPanel}
+            visible={dokumentPanel.visible && erPapirsøknad}
+          >
+            <AvrundetPanel>
+              <PapirsøknadPanel />
+            </AvrundetPanel>
+          </ResizablePanel>
+          <ResizablePanel
             panelId="kontaktinformasjonpanel"
             panel={kontaktinformasjonPanel}
-            visible={kontaktinformasjonPanel.visible}
+            visible={kontaktinformasjonPanel.visible && !erPapirsøknad}
             groupResizeBehavior="preserve-pixel-size"
           >
             <AvrundetPanel>

@@ -71,18 +71,29 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
 
       // V2 journalføring — har saksgrunnlag, oppretter ny hjelpemiddelsak og behandle-sak-oppgave
       if ('saksgrunnlag' in body) {
-        const v2 = body as JournalføringV2Request
-        await journalpostStore.journalfør(v2.journalpostId, v2.tittel)
-        const { sakId, sak } = await sakStore.opprettJournalføringsSak(v2)
+        const journalføringRequest = body as JournalføringV2Request
+
+        if (!journalføringRequest) {
+          throw new Error('Journalføring request payload mangler')
+        }
+
+        await journalpostStore.journalførV2(journalføringRequest)
+        const { sakId, sak } = await sakStore.opprettJournalføringsSak(journalføringRequest)
         const nyOppgave = lagOppgave(sak as LagretHjelpemiddelsak, {
           oppgavetype: Oppgavetype.BEHANDLE_SAK,
-          behandlingstema: { kode: v2.saksgrunnlag.behandlingstema, term: v2.saksgrunnlag.behandlingstema },
-          behandlingstype: { kode: v2.saksgrunnlag.behandlingstype, term: v2.saksgrunnlag.behandlingstype },
-          tema: v2.saksgrunnlag.tema,
+          behandlingstema: {
+            kode: journalføringRequest.saksgrunnlag.behandlingstema,
+            term: journalføringRequest.saksgrunnlag.behandlingstema,
+          },
+          behandlingstype: {
+            kode: journalføringRequest.saksgrunnlag.behandlingstype,
+            term: journalføringRequest.saksgrunnlag.behandlingstype,
+          },
+          tema: journalføringRequest.saksgrunnlag.tema,
         })
         const [oppgaveId] = await Promise.all([
           oppgaveStore.lagreOppgave(nyOppgave),
-          oppgaveStore.ferdigstillOppgave(v2.oppgaveId),
+          oppgaveStore.ferdigstillOppgave(journalføringRequest.oppgaveId),
         ])
         return HttpResponse.json<JournalføringV2Response>({ sakId, oppgaveId: String(oppgaveId) })
       }

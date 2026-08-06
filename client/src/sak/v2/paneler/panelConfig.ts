@@ -37,6 +37,13 @@ export const PANELS = [
   },
   { id: 'kontaktinformasjonpanel', defaultVisible: true, minWidth: 220, minWidthUnit: 'px', defaultSize: '300px' },
   {
+    id: 'dokumentpanel',
+    defaultVisible: true,
+    minWidth: 300,
+    minWidthUnit: 'px',
+    defaultSize: '40%',
+  },
+  {
     id: 'sidebarpanel',
     defaultVisible: true,
     minWidth: 230,

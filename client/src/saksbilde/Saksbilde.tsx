@@ -54,7 +54,9 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
         <Sidetittel tittel={`Sak ${sakData.sakId}`} />
         <SakProvider sakstype={sakData.sakstype}>
           <SakbrukerinnstillingerProvider>
-            <SakV2 oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
+            <DokumentProvider>
+              <SakV2 oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
+            </DokumentProvider>
           </SakbrukerinnstillingerProvider>
         </SakProvider>
       </div>

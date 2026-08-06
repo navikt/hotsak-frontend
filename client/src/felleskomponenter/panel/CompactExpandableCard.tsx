@@ -1,6 +1,7 @@
 import { ExpansionCard } from '@navikt/ds-react'
 import classes from './CompactExpadableCard.module.css'
 import clsx from 'clsx'
+import { useId } from 'react'
 
 interface CompactExpandableCardProps {
   tittel: React.ReactNode
@@ -15,15 +16,17 @@ export function CompactExpandableCard({
   variant = 'subtle',
   defaultOpen = true,
 }: CompactExpandableCardProps & { defaultOpen?: boolean }) {
+  const headingId = useId()
+
   return (
     <ExpansionCard
       size="small"
-      aria-label="Hjelpemiddel"
       className={clsx(variant !== 'default' && classes.box)}
       defaultOpen={defaultOpen}
+      aria-labelledby={headingId}
     >
       <ExpansionCard.Header className={clsx(variant !== 'default' ? classes.root : classes.rootDefault)}>
-        <ExpansionCard.Title className={classes.heading} size="small">
+        <ExpansionCard.Title id={headingId} className={classes.heading} size="small">
           {tittel}
         </ExpansionCard.Title>
       </ExpansionCard.Header>

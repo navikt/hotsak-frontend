@@ -16,6 +16,7 @@ import {
 } from './lagJournalpost.ts'
 import { lagPerson, PersonStore } from './PersonStore.ts'
 import { Saksbehandlere } from './Saksbehandlere.ts'
+import type { JournalføringV2Request } from '../../journalføring/journalføringTypes.ts'
 
 export class JournalpostStore extends Dexie {
   private readonly journalposter!: Table<LagretJournalpost, string, InsertJournalpost>
@@ -37,7 +38,6 @@ export class JournalpostStore extends Dexie {
       return []
     }
 
-    // Fem barnebrille-journalposter — én dedikert per barnebrillesak (1001–1005)
     await this.lagreAlle([
       lagJournalpost('9001'),
       lagJournalpost('9002'),
@@ -46,11 +46,13 @@ export class JournalpostStore extends Dexie {
       lagJournalpost('9005'),
     ])
 
-    // Hjelpemiddel-journalpost for søknadsaker
     const v2Post = lagJournalpost('9006', 'Søknad om hjelpemidler', { kode: 'ae0034', term: 'Søknad' })
     await this.journalposter.add(v2Post)
     await this.dokumenter.bulkAdd(lagHjelpemiddelDokumenter('9006') as LagretDokument[])
-    await this.personStore.lagreAlle([{ ...lagPerson(), fnr: v2Post.fnrInnsender }])
+    await this.personStore.lagreAlle([
+      { ...lagPerson(), fnr: v2Post.fnrInnsender },
+      { ...lagPerson(), fnr: v2Post.bruker?.fnr!! },
+    ])
 
     return ['9006']
   }
@@ -118,11 +120,31 @@ export class JournalpostStore extends Dexie {
     return this.hendelser.where('sakId').equals(sakId).toArray()
   }
 
+  // TODO Denne kan fjernes når all journalføring er over på ny måte å journalføre på
   async journalfør(journalpostId: string, tittel: string) {
     const dokument = await this.dokumenter.where('journalpostId').equals(journalpostId).first()
     const dokumentId = Number(dokument?.dokumentId)
 
     await this.dokumenter.update(dokumentId, { ...dokument, tittel })
+
+    return this.journalposter.update(journalpostId, {
+      tittel,
+    })
+  }
+
+  async journalførV2(journalføringRequest: JournalføringV2Request) {
+    const { journalpostId, tittel, dokumenter } = journalføringRequest
+    const dokument = await this.dokumenter.where('journalpostId').equals(journalpostId).first()
+    const dokumentId = Number(dokument?.dokumentId)
+
+    const annetInnhold =
+      dokumenter.find((d) => String(d.dokumentId) === String(dokument?.dokumentId))?.annetInnhold || []
+
+    await this.dokumenter.update(dokumentId, {
+      ...dokument,
+      tittel,
+      logiskeVedlegg: annetInnhold.map((tittel, index) => ({ vedleggId: `${dokumentId}-${index}`, tittel })),
+    })
 
     return this.journalposter.update(journalpostId, {
       tittel,

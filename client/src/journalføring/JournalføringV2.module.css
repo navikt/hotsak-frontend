@@ -23,5 +23,6 @@
 
 .dokumentKolonne {
   height: 100%;
+  overflow: hidden;
   background: var(--ax-bg-subtle);
 }

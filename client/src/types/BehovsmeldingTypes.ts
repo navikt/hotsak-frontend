@@ -1,4 +1,5 @@
 import type { Bydel, Kommune, Personnavn, Veiadresse } from './hotlibs.ts'
+import type { Kanal } from './types.internal.ts'
 
 export interface Innsenderbehovsmelding {
   id: string
@@ -11,6 +12,7 @@ export interface Innsenderbehovsmelding {
   hjelpemidler: Hjelpemidler
   levering: Levering
   saksbehandlingvarsel: Varsel[]
+  kanal: Kanal
 }
 
 export enum BehovsmeldingType {

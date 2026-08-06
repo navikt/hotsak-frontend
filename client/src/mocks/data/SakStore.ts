@@ -57,6 +57,7 @@ import {
   lagBarnebrillesak,
   lagHjelpemiddelsakForBehovsmeldingCase,
   type LagretBarnebrillesak,
+  type LagretHjelpemiddelsak,
   type LagretSak,
   type LagretSakshendelse,
 } from './lagSak.ts'
@@ -495,7 +496,7 @@ export class SakStore extends Dexie {
     const count = await this.saker.count()
     const sakId = String(count + 1)
     const nå = nåIso()
-    const sak: Sak = {
+    const sak: LagretHjelpemiddelsak = {
       sakId,
       sakstype: Sakstype.SØKNAD,
       saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
@@ -514,6 +515,7 @@ export class SakStore extends Dexie {
       },
       enhet: enheter.agder,
       greitÅViteFaktum: [],
+      journalposter: [request.journalpostId],
     }
     await this.saker.add(sak as unknown as InsertSak)
     return { sakId, sak }

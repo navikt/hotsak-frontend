@@ -10,7 +10,7 @@ on:
     branches:
       - main
       - brev_v1
-      - opfEpostOgInformert
+      - opf-sjekk-kurs
 
 jobs:
   test:

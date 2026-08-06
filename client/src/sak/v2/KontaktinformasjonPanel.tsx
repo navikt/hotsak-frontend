@@ -7,6 +7,7 @@ import { lagKontaktpersonTekst } from '../../saksbilde/bruker/lagKontaktpersonTe
 import { lagLeveringsmåteTekst } from '../../saksbilde/venstremeny/lagLeveringsmåteTekst.ts'
 import {
   Brukerkilde,
+  GodkjenningskursSjekk,
   Innsenderbehovsmelding,
   Oppfølgingsansvarlig,
   Utleveringsmåte,
@@ -19,11 +20,27 @@ import {
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
 } from '../../utils/formater.ts'
-import { WarningTag } from '../felles/AlertTag.tsx'
+import { InfoTag, WarningTag } from '../felles/AlertTag.tsx'
 import { KopierbarFelt } from '../felles/KopierbartFelt.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
 import { useExpandedSection } from './SakbrukerinnstillingerContext.ts'
+
+function GodkjenningskursTag({ resultat }: Readonly<{ resultat: GodkjenningskursSjekk[] | undefined }>) {
+  if (resultat === undefined) {
+    return <WarningTag langTekst>Vi klarte ikke hente kursinfo, må sjekkes manuelt</WarningTag>
+  }
+  if (resultat.length === 0) {
+    return <InfoTag>Ingen påkrevde kurs</InfoTag>
+  }
+  const ikkeFunnet = resultat.filter((k) => !k.gjennomført)
+  if (ikkeFunnet.length > 0) {
+    return (
+      <WarningTag langTekst>{ikkeFunnet.map((k) => k.tittel).join(', ')}: ikke funnet, må sjekkes manuelt</WarningTag>
+    )
+  }
+  return <InfoTag langTekst>Godkjenningskurs bekreftet: {resultat.map((k) => k.tittel).join(', ')}</InfoTag>
+}
 
 export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('kontaktinformasjonpanel')
@@ -99,7 +116,7 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
               {behovsmelding.levering.oppfølgingsansvarlig === Oppfølgingsansvarlig.ANNEN_OPPFØLGINGSANSVARLIG &&
               oppfølgingsansvarlig ? (
                 <VStack gap="space-12">
-                  <WarningTag>Annen oppfølgingsansvarlig</WarningTag>
+                  <GodkjenningskursTag resultat={oppfølgingsansvarlig.godkjenningskursResultat} />
                   <Tekst textColor="subtle">{`${formaterNavn(oppfølgingsansvarlig.navn)} - ${oppfølgingsansvarlig.stilling} - ${oppfølgingsansvarlig.arbeidssted} - Tlf: ${formaterTelefonnummer(oppfølgingsansvarlig.telefon)}`}</Tekst>
                   <ReadMore
                     size="small"

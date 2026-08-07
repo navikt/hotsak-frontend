@@ -87,14 +87,14 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={onSubmit}>
-        <Dialog open={åpen} onOpenChange={(nextOpen) => !nextOpen && onLukk()} size="small">
-          <Dialog.Popup
-            closeOnOutsideClick={false}
-            width="1200px"
-            aria-label="Endre tilbehør"
-            style={{ marginBlockStart: '2em' }}
-          >
+      <Dialog open={åpen} onOpenChange={(nextOpen) => !nextOpen && onLukk()} size="small">
+        <Dialog.Popup
+          closeOnOutsideClick={false}
+          width="1200px"
+          aria-label="Endre tilbehør"
+          style={{ marginBlockStart: '2em' }}
+        >
+          <form onSubmit={onSubmit} className={classes.form}>
             <Dialog.Header>
               <Dialog.Title>Endre tilbehør</Dialog.Title>
             </Dialog.Header>
@@ -130,9 +130,9 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
                 Avbryt
               </Button>
             </Dialog.Footer>
-          </Dialog.Popup>
-        </Dialog>
-      </form>
+          </form>
+        </Dialog.Popup>
+      </Dialog>
     </FormProvider>
   )
 }

@@ -17,7 +17,9 @@ export function BrevForhåndsvisning({ brevId, avsluttet = false }: BrevForhånd
   if (error) {
     return (
       <LocalAlert status="warning">
-        <LocalAlert.Title>Kunne ikke hente brev</LocalAlert.Title>
+        <LocalAlert.Header>
+          <LocalAlert.Title>Kunne ikke hente brev</LocalAlert.Title>
+        </LocalAlert.Header>
         <LocalAlert.Content>Prøv igjen senere.</LocalAlert.Content>
       </LocalAlert>
     )

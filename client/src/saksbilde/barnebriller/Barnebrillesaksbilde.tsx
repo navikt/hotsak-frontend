@@ -1,4 +1,4 @@
-import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
+import { HGrid, HStack, InfoCard, Spacer } from '@navikt/ds-react'
 import { memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 
@@ -56,9 +56,11 @@ const BarnebrillesakContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppg
       </HStack>
       {saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
         <AlertContainerMedium>
-          <Alert variant="info" size="small">
-            Saken avventer opplysninger, og er satt på vent. Fortsett behandlingen av saken via menyen til høyre.
-          </Alert>
+          <InfoCard size="small">
+            <InfoCard.Content>
+              Saken avventer opplysninger, og er satt på vent. Fortsett behandlingen av saken via menyen til høyre.
+            </InfoCard.Content>
+          </InfoCard>
         </AlertContainerMedium>
       )}
       <Steg aktivtSteg={step} oppgave={oppgave} />

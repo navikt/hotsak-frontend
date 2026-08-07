@@ -1,4 +1,4 @@
-import { Alert, Box, HStack, Loader, TextField } from '@navikt/ds-react'
+import { Box, HStack, InlineMessage, Loader, TextField } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import { useHjelpemiddel } from '../useHjelpemiddel.ts'
@@ -58,9 +58,11 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
             )}
             {!hjelpemiddel && error && (
               <Box marginBlock={'space-0 space-4'}>
-                <Alert variant="error" inline title="Fant ikke hjelpemiddel" size="small">
-                  <Tekst>HMS-nummer ikke funnet i FinnHjelpemiddel eller OeBS</Tekst>
-                </Alert>
+                <InlineMessage status="error" size="small">
+                  <Tekst>
+                    <strong>Fant ikke hjelpemiddel.</strong> HMS-nummer ikke funnet i FinnHjelpemiddel eller OeBS
+                  </Tekst>
+                </InlineMessage>
               </Box>
             )}
           </HStack>

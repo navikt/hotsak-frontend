@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Detail, Heading, Skeleton, Tag, VStack } from '@navikt/ds-react'
+import { Box, Button, Detail, Heading, InlineMessage, Skeleton, Tag, VStack } from '@navikt/ds-react'
 
 import classes from './Vedtak.module.css'
 
@@ -91,9 +91,9 @@ export function Vedtak(props: VedtakProps) {
                 <Redigeringsvisning oppgave={oppgave} sak={sak.data} vedtaksbrev={vedtaksbrev} />
               )}
               {visAlertGodkjenning && (
-                <Alert variant="info" size="small">
+                <InlineMessage status="info" size="small">
                   {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
-                </Alert>
+                </InlineMessage>
               )}
               {!saksbehandlerKanRedigereBarnebrillesak && (
                 <div>

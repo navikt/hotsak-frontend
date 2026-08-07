@@ -1,7 +1,5 @@
-import { Box, Button, HStack, TextField } from '@navikt/ds-react'
+import { Box, Button, HStack, InlineMessage, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
-
-import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { formaterKontonummer } from '../../../../utils/formater'
 import { useKontonummer } from './useKontonummer'
 import { useSakId } from '../../../useSak.ts'
@@ -43,21 +41,21 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
       </HStack>
       <Box marginBlock="space-12">
         {kontoinformasjon && !kontonummerFunnet && (
-          <SkjemaAlert variant="error">
+          <InlineMessage status="error">
             {`Fant ikke kontonummer for ${
               kontoinformasjon?.navn && kontoinformasjon.navn !== '' ? kontoinformasjon.navn : innsenderFnr
             }. Kontakt personen og be dem legge inn kontonummer hos Nav.`}
-          </SkjemaAlert>
+          </InlineMessage>
         )}
         {error?.isNotFound() && (
-          <SkjemaAlert variant="error">
+          <InlineMessage status="error">
             {`Klarte ikke å hente kontonummer for ${innsenderFnr}. Prøv igjen om noen minutter. Hvis problemet ikke løser seg, kontakt DigiHoT.`}
-          </SkjemaAlert>
+          </InlineMessage>
         )}
         {kontonummerFunnet && (
-          <SkjemaAlert variant="info">{`Kontonummer for ${kontoinformasjon.navn}: ${formaterKontonummer(
+          <InlineMessage status="info">{`Kontonummer for ${kontoinformasjon.navn}: ${formaterKontonummer(
             kontoinformasjon?.kontonummer
-          )}`}</SkjemaAlert>
+          )}`}</InlineMessage>
         )}
       </Box>
     </div>

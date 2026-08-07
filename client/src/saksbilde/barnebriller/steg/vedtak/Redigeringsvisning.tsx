@@ -1,14 +1,12 @@
-import { Button, Detail, HStack, VStack } from '@navikt/ds-react'
+import { Button, Detail, HStack, LocalAlert, VStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import { useController, useForm } from 'react-hook-form'
 import useSWRMutation from 'swr/mutation'
-
 import { Brevmal, type Brev } from '../../../../brev/brevTyper.ts'
 import { useMutateBrevPdf } from '../../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../../brev/useBrevActions.ts'
 import { useSerienummer } from '../../../../brev/useSerienummer.ts'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
-import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../../../oppgave/useOppgaveregler.ts'
@@ -150,21 +148,29 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
           </>
         )}
         {manglerPåkrevdEtterspørreOpplysningerBrev && (
-          <SkjemaAlert variant="warning" role="status">
-            <Etikett>Mangler innhente opplysninger brev</Etikett>
-            <Detail>
-              Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en sak på
-              grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende opplysninger og
-              bruker ikke har sendt inn dette før fristen på 3 uker.
-            </Detail>
-          </SkjemaAlert>
+          <LocalAlert status="warning" role="status">
+            <LocalAlert.Header>
+              <LocalAlert.Title as="div">
+                <Etikett>Mangler innhente opplysninger brev</Etikett>
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+              <Detail>
+                Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en sak
+                på grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende
+                opplysninger og bruker ikke har sendt inn dette før fristen på 3 uker.
+              </Detail>
+            </LocalAlert.Content>
+          </LocalAlert>
         )}
         {harBrevutkast === true && (
-          <SkjemaAlert variant="warning">
-            <Detail>
-              Det er laget et brev i saken som ikke er sendt ut. Gå til brev-fanen for å sende eller slette brevet.
-            </Detail>
-          </SkjemaAlert>
+          <LocalAlert status="warning">
+            <LocalAlert.Content>
+              <Detail>
+                Det er laget et brev i saken som ikke er sendt ut. Gå til brev-fanen for å sende eller slette brevet.
+              </Detail>
+            </LocalAlert.Content>
+          </LocalAlert>
         )}
         {harNotatUtkast === true && <NotatUtkastVarsel />}
         <HStack gap="space-8">

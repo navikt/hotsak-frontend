@@ -1,4 +1,4 @@
-import { Alert, InfoCard, VStack } from '@navikt/ds-react'
+import { InfoCard, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
 import { useBrevForSak } from '../../../brev/useBrev'
@@ -143,10 +143,12 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       )}
       {erAvslag && (
         <VStack gap="space-16">
-          <Alert variant="info" size="small" className={classes.alertSpacing}>
-            Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}. Brevet vil bli sendt
-            ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.
-          </Alert>
+          <InfoCard size="small" className={classes.alertSpacing}>
+            <InfoCard.Content>
+              Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}. Brevet vil bli
+              sendt ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.
+            </InfoCard.Content>
+          </InfoCard>
         </VStack>
       )}
     </BekreftelsesDialog>

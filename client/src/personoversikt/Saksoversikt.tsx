@@ -1,5 +1,5 @@
 import { FileIcon } from '@navikt/aksel-icons'
-import { Alert, Link } from '@navikt/ds-react'
+import { InlineMessage, Link, LocalAlert } from '@navikt/ds-react'
 
 import { DataGrid, type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
@@ -30,14 +30,18 @@ export function Saksoversikt(props: SaksoversiktProps) {
       ) : (
         <>
           {barnebrillekravHentet === false && (
-            <Alert size="small" variant="warning" className={classes.warningAlert}>
-              Vi kan for øyeblikket ikke vise barnebrillesaker fra direkteoppgjørsløsningen for optikere.
-            </Alert>
+            <LocalAlert size="small" status="warning" className={classes.warningAlert}>
+              <LocalAlert.Header>
+                <LocalAlert.Title>
+                  Vi kan for øyeblikket ikke vise barnebrillesaker fra direkteoppgjørsløsningen for optikere.
+                </LocalAlert.Title>
+              </LocalAlert.Header>
+            </LocalAlert>
           )}
           <div>
-            <Alert size="small" variant="info" className={classes.infoAlert} inline>
+            <InlineMessage size="small" status="info" className={classes.infoAlert}>
               Her ser du saker for brukeren i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd.
-            </Alert>
+            </InlineMessage>
           </div>
           <DataGrid
             rows={sakerOgBarnebrillekrav}

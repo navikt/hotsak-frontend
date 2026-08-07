@@ -1,4 +1,4 @@
-import { Alert, Heading, VStack } from '@navikt/ds-react'
+import { LocalAlert, VStack } from '@navikt/ds-react'
 
 import { Tekst } from '../felleskomponenter/typografi'
 import { type Tilbakemelding } from '../innsikt/Besvarelse'
@@ -47,26 +47,30 @@ export function OverførSakTilGosysModal({
       {notater.ferdigstilte.length > 0 && (
         <VStack gap="space-12">
           {notater.ferdigstilte.find(isNotatTypeJournalført) && (
-            <Alert variant="warning" size="small">
-              <Heading size="xsmall" level="2" spacing>
-                Saken har forvaltningsnotat - kontakt DigiHoT for hjelp
-              </Heading>
-              <Tekst>
-                Denne saken har et eller flere forvaltningsnotater knyttet til seg. Når saken overføres til Gosys vil
-                disse notatene bli feilregistrert og miste knytning til den nye saken. Hvis dere har behov for å knytte
-                disse notatene til den nye saken i Gosys, ta kontakt med DigiHoT på teamskanalen "DigiHoT - innspill,
-                spørsmål og info", så hjelper vi dere.
-              </Tekst>
-            </Alert>
+            <LocalAlert status="warning" size="small">
+              <LocalAlert.Header>
+                <LocalAlert.Title>Saken har forvaltningsnotat - kontakt DigiHoT for hjelp</LocalAlert.Title>
+              </LocalAlert.Header>
+              <LocalAlert.Content>
+                <Tekst>
+                  Denne saken har et eller flere forvaltningsnotater knyttet til seg. Når saken overføres til Gosys vil
+                  disse notatene bli feilregistrert og miste knytning til den nye saken. Hvis dere har behov for å
+                  knytte disse notatene til den nye saken i Gosys, ta kontakt med DigiHoT på teamskanalen "DigiHoT -
+                  innspill, spørsmål og info", så hjelper vi dere.
+                </Tekst>
+              </LocalAlert.Content>
+            </LocalAlert>
           )}
           {notater.ferdigstilte.find(isNotatTypeInternt) && (
-            <Alert variant="warning" size="small">
-              <Tekst>
-                Denne saken har et eller flere interne arbeidsnotater knyttet til seg. Disse notatene følger ikke med
-                til Gosys hvis du overfører saken. Hvis du har behov for å overføre disse notatene til oppgaven i Gosys,
-                må du gjøre dette manuelt ved å kopiere notatteksten fra Hotsak og lime inn i Gosys.
-              </Tekst>
-            </Alert>
+            <LocalAlert status="warning" size="small">
+              <LocalAlert.Content>
+                <Tekst>
+                  Denne saken har et eller flere interne arbeidsnotater knyttet til seg. Disse notatene følger ikke med
+                  til Gosys hvis du overfører saken. Hvis du har behov for å overføre disse notatene til oppgaven i
+                  Gosys, må du gjøre dette manuelt ved å kopiere notatteksten fra Hotsak og lime inn i Gosys.
+                </Tekst>
+              </LocalAlert.Content>
+            </LocalAlert>
           )}
         </VStack>
       )}

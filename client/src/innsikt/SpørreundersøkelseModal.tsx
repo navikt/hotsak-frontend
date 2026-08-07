@@ -1,4 +1,4 @@
-import { Alert, Button, type ButtonProps, Dialog, Stack, VStack } from '@navikt/ds-react'
+import { Button, type ButtonProps, Dialog, LocalAlert, Stack, VStack } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { besvarelseToSvar, IBesvarelse, type Tilbakemelding } from './Besvarelse'
@@ -105,9 +105,13 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
                 </Button>
               </Stack>
               {error && (
-                <Alert variant="error" inline>
-                  Klarte ikke å sende inn svaret ditt. Prøv igjen senere.
-                </Alert>
+                <LocalAlert status="error" size="small" as="div">
+                  <LocalAlert.Header>
+                    <LocalAlert.Title as="div">
+                      Klarte ikke å sende inn svaret ditt. Prøv igjen senere.
+                    </LocalAlert.Title>
+                  </LocalAlert.Header>
+                </LocalAlert>
               )}
             </Dialog.Footer>
           </form>

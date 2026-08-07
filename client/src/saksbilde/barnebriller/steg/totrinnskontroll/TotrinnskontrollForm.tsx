@@ -1,8 +1,6 @@
-import { Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
+import { Button, LocalAlert, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
-
-import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Tekst } from '../../../../felleskomponenter/typografi'
 import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 import { StegType, type TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
@@ -42,7 +40,11 @@ export function TotrinnskontrollForm() {
   return (
     <>
       {!totrinnskontrollMulig ? (
-        <SkjemaAlert variant="info">Det er ikke mulig å godkjenne totrinnskontroll for egen sak</SkjemaAlert>
+        <LocalAlert status="announcement" size="small">
+          <LocalAlert.Header>
+            <LocalAlert.Title>Det er ikke mulig å godkjenne totrinnskontroll for egen sak</LocalAlert.Title>
+          </LocalAlert.Header>
+        </LocalAlert>
       ) : (
         <FormProvider {...methods}>
           <form

@@ -20,28 +20,34 @@ import {
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
 } from '../../utils/formater.ts'
-import { InfoTag, WarningTag } from '../felles/AlertTag.tsx'
+import { WarningTag } from '../felles/AlertTag.tsx'
 import { KopierbarFelt } from '../felles/KopierbartFelt.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
 import { useExpandedSection } from './SakbrukerinnstillingerContext.ts'
 
-function GodkjenningskursTag({ resultat }: Readonly<{ resultat: GodkjenningskursSjekk[] | null | undefined }>) {
+function GodkjenningskursInfo({ resultat }: Readonly<{ resultat: GodkjenningskursSjekk[] | null | undefined }>) {
   if (resultat == null) {
     return null
   }
   if (resultat.length === 0) {
-    return <InfoTag>Ingen påkrevde kurs</InfoTag>
+    return <Tekst>Ingen påkrevde kurs</Tekst>
   }
+  const gjennomførte = resultat.filter((kurs) => kurs.gjennomført)
   const ikkeFunnet = resultat.filter((kurs) => !kurs.gjennomført)
-  if (ikkeFunnet.length > 0) {
-    return (
-      <WarningTag langTekst>
-        {ikkeFunnet.map((kurs) => kurs.tittel).join(', ')}: ikke funnet, må sjekkes manuelt
-      </WarningTag>
-    )
-  }
-  return <InfoTag langTekst>Godkjenningskurs bekreftet: {resultat.map((kurs) => kurs.tittel).join(', ')}</InfoTag>
+  return (
+    <VStack gap="space-4">
+      <Tekst>
+        <strong>Krav om kurs</strong>
+      </Tekst>
+      {gjennomførte.length > 0 && (
+        <Tekst textColor="subtle">Gjennomført: {gjennomførte.map((kurs) => kurs.tittel).join(', ')}</Tekst>
+      )}
+      {ikkeFunnet.length > 0 && (
+        <WarningTag langTekst>Må sjekkes: {ikkeFunnet.map((kurs) => kurs.tittel).join(', ')}</WarningTag>
+      )}
+    </VStack>
+  )
 }
 
 export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
@@ -118,8 +124,8 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
               {behovsmelding.levering.oppfølgingsansvarlig === Oppfølgingsansvarlig.ANNEN_OPPFØLGINGSANSVARLIG &&
               oppfølgingsansvarlig ? (
                 <VStack gap="space-12">
-                  <GodkjenningskursTag resultat={oppfølgingsansvarlig.godkjenningskursResultat} />
                   <Tekst textColor="subtle">{`${formaterNavn(oppfølgingsansvarlig.navn)} - ${oppfølgingsansvarlig.stilling} - ${oppfølgingsansvarlig.arbeidssted} - Tlf: ${formaterTelefonnummer(oppfølgingsansvarlig.telefon)}`}</Tekst>
+                  <GodkjenningskursInfo resultat={oppfølgingsansvarlig.godkjenningskursResultat} />
                   <ReadMore
                     size="small"
                     header="Mer om oppfølgingsansvarlig"

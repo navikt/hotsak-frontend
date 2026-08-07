@@ -82,7 +82,9 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
     return (
       <div className={classes.loaderContainer}>
         <LocalAlert status="warning">
-          <LocalAlert.Title>Feil med lagring av utkast</LocalAlert.Title>
+          <LocalAlert.Header>
+            <LocalAlert.Title>Feil med lagring av utkast</LocalAlert.Title>
+          </LocalAlert.Header>
           <LocalAlert.Content>
             Får ikke kontakt med tjeneren, brev ikke tilgjengelig. Prøv igjen senere.
           </LocalAlert.Content>

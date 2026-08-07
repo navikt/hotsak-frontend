@@ -1,4 +1,4 @@
-import { Alert, VStack } from '@navikt/ds-react'
+import { InlineMessage, VStack } from '@navikt/ds-react'
 
 import { Etikett, Tekst } from '../../../../felleskomponenter/typografi'
 import { OppgaveStatusType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
@@ -22,15 +22,15 @@ export function TotrinnskontrollLesevisning() {
         </div>
       )}
       {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT && (
-        <Alert role="status" size="small" variant="info">
+        <InlineMessage role="status" size="small" status="info">
           Sendt i retur til saksbehandler {formaterDato(sak?.data.totrinnskontroll?.opprettet)}
-        </Alert>
+        </InlineMessage>
       )}
       {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT &&
         sak.data.saksstatus === OppgaveStatusType.VEDTAK_FATTET && (
-          <Alert role="status" size="small" variant="success">
+          <InlineMessage role="status" size="small" status="success">
             Vedtaket er fattet {formaterDato(sak?.data.vedtak?.vedtaksdato)}
-          </Alert>
+          </InlineMessage>
         )}
     </VStack>
   )

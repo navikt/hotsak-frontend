@@ -1,13 +1,14 @@
-import { Alert } from '@navikt/ds-react'
+import { LocalAlert } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 
-import { Tekst } from '../typografi'
 import classes from './FeilmeldingAlert.module.css'
 
 export function FeilmeldingAlert({ children }: { children: ReactNode }) {
   return (
-    <Alert className={classes.root} size="small" variant="error">
-      <Tekst>{children}</Tekst>
-    </Alert>
+    <LocalAlert className={classes.root} status="error" size="small">
+      <LocalAlert.Header>
+        <LocalAlert.Title>{children}</LocalAlert.Title>
+      </LocalAlert.Header>
+    </LocalAlert>
   )
 }

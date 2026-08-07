@@ -2,17 +2,15 @@ import { Box, Button, Heading, HelpText, HStack, InfoCard, InlineMessage, Select
 import { useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
+import { GJELDENDE_STILARK_VERSJON } from '../../../brev/breveditor/html/byggDokument.ts'
 import { isBrevmal } from '../../../brev/brevSelectors.ts'
 import { Brevmal } from '../../../brev/brevTyper.ts'
-import { GJELDENDE_STILARK_VERSJON } from '../../../brev/breveditor/html/byggDokument.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
-import { useErPilot } from '../../../tilgang/useTilgang.ts'
-import { useMiljø } from '../../../utils/useMiljø.ts'
 import { useClosePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakV2ContextType.ts'
 import classes from './BehandlingPanel.module.css'
@@ -228,8 +226,6 @@ function VedtaksResultatVelger({
 }) {
   const { lagreBehandling } = useBehandlingActions()
   const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
-  const { erIkkeProd } = useMiljø()
-  const erPilot = useErPilot('hotsakEksperimenter') || erIkkeProd
 
   const HENLEGGELSE_VALUE = 'HENLEGGELSE'
   const erBehandlingsutfallOverføring = behandling?.utfall && isBehandlingsutfallOverføring(behandling.utfall)
@@ -276,7 +272,7 @@ function VedtaksResultatVelger({
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
-          {erPilot && <option value={HENLEGGELSE_VALUE}>Henlagt</option>}
+          <option value={HENLEGGELSE_VALUE}>Henlagt</option>
           {erBehandlingsutfallOverføring && <option value={OverførtTil.GOSYS}>Overført til Gosys</option>}
         </Select>
         {harBrevutkast && (

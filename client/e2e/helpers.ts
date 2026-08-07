@@ -43,6 +43,27 @@ export async function klikkFattVedtak(page: Page) {
 }
 
 /**
+ * Click the "Godkjenn begrunnelse" button.
+ */
+export async function klikkGodkjennBegrunnelse(page: Page) {
+  await page.getByRole('button', { name: /Godkjenn begrunnelse/i }).click()
+}
+
+/**
+ * Fill out the begrunnelse form.
+ */
+export async function fyllUtBegrunnelse(page: Page) {
+  await page.getByRole('textbox', { name: /Begrunnelse/i }).fill('POST Dette er en begrunnelse.')
+}
+
+/**
+ * Click the "Godkjenn begrunnelse" button.
+ */
+export async function klikkGodkjennBeskjed(page: Page) {
+  await page.getByRole('button', { name: /Godkjenn beskjed/i }).click()
+}
+
+/**
  * Create a vedtaksbrev by clicking "Opprett vedtaksbrev".
  */
 export async function opprettVedtaksbrev(page: Page) {

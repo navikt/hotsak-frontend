@@ -1,5 +1,5 @@
-import { Box, Button, Modal, Tabs } from '@navikt/ds-react'
-import { useRef, useState } from 'react'
+import { Box, Button, Dialog, Tabs } from '@navikt/ds-react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import classes from './EndreModal.module.css'
@@ -49,7 +49,6 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   const [produktValgt, setProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const { logSkjemaFullført } = useUmami()
-  const ref = useRef<HTMLDialogElement>(null)
   const { logKnappKlikket } = useUmami()
 
   const {
@@ -136,87 +135,85 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={onSubmit}>
-        <Modal
-          ref={ref}
-          placement="top"
-          closeOnBackdropClick={false}
+      <Dialog open={åpen} onOpenChange={(nextOpen) => !nextOpen && onLukk()} size="small">
+        <Dialog.Popup
+          closeOnOutsideClick={false}
           width="1200px"
-          open={åpen}
-          onClose={() => {
-            onLukk()
-          }}
-          header={{ heading: 'Endre hjelpemiddel' }}
-          size="small"
-          aria-label={'Endre hjelpemiddel'}
+          aria-label="Endre hjelpemiddel"
+          style={{ marginBlockStart: '2em' }}
         >
-          <Modal.Body className={classes.modalBody}>
-            <Box paddingBlock="space-24 space-0" paddingInline="space-16">
-              <OriginaltHjelpemiddel
-                navn={hjelpemiddel.produkt.artikkelnavn}
-                hmsnr={hjelpemiddel.produkt.hmsArtNr}
-                opplysninger={hjelpemiddel.opplysninger}
-                grunndataProdukt={grunndataProdukt}
-              />
-
-              {harAlternativeProdukter ? (
-                <Box paddingBlock="space-24 space-0">
-                  <Tabs value={activeTab} onChange={handleTabChange}>
-                    <Tabs.List>
-                      <Tabs.Tab value="alternativer" label="Alternativer på lager" />
-                      <Tabs.Tab value="manuelt" label="Søk manuelt" />
-                    </Tabs.List>
-
-                    <Tabs.Panel value="alternativer">
-                      <AlternativeProdukterTabPanel
-                        alternativeProdukter={alternativeProdukter}
-                        isLoading={isLoading}
-                        harPaginering={harPaginering}
-                        pageNumber={pageNumber}
-                        pageSize={pageSize}
-                        totalElements={totalElements}
-                        onPageChange={onPageChange}
-                        produktValgt={produktValgt}
-                      />
-                    </Tabs.Panel>
-                    <Tabs.Panel value="manuelt">
-                      <ManueltSøkPanel
-                        hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-                        hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
-                        nåværendeHmsnr={nåværendeHmsnr}
-                        produktValgt={produktValgt}
-                      />
-                    </Tabs.Panel>
-                  </Tabs>
-                </Box>
-              ) : (
-                <ManueltSøkPanel
-                  hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-                  hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
-                  nåværendeHmsnr={nåværendeHmsnr}
-                  produktValgt={produktValgt}
+          <form onSubmit={onSubmit} className={classes.form}>
+            <Dialog.Header>
+              <Dialog.Title>Endre hjelpemiddel</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.Body className={classes.modalBody}>
+              <Box paddingBlock="space-24 space-0" paddingInline="space-16">
+                <OriginaltHjelpemiddel
+                  navn={hjelpemiddel.produkt.artikkelnavn}
+                  hmsnr={hjelpemiddel.produkt.hmsArtNr}
+                  opplysninger={hjelpemiddel.opplysninger}
+                  grunndataProdukt={grunndataProdukt}
                 />
-              )}
-            </Box>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button type="submit" variant="primary" size="small" loading={submitting}>
-              {!produktValgt ? 'Lagre endring' : 'Ferdig'}
-            </Button>
-            <Button
-              type="button"
-              variant="tertiary"
-              size="small"
-              onClick={() => {
-                setProduktValgt(false)
-                handleCancel()
-              }}
-            >
-              Avbryt
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </form>
+
+                {harAlternativeProdukter ? (
+                  <Box paddingBlock="space-24 space-0">
+                    <Tabs value={activeTab} onChange={handleTabChange}>
+                      <Tabs.List>
+                        <Tabs.Tab value="alternativer" label="Alternativer på lager" />
+                        <Tabs.Tab value="manuelt" label="Søk manuelt" />
+                      </Tabs.List>
+
+                      <Tabs.Panel value="alternativer">
+                        <AlternativeProdukterTabPanel
+                          alternativeProdukter={alternativeProdukter}
+                          isLoading={isLoading}
+                          harPaginering={harPaginering}
+                          pageNumber={pageNumber}
+                          pageSize={pageSize}
+                          totalElements={totalElements}
+                          onPageChange={onPageChange}
+                          produktValgt={produktValgt}
+                        />
+                      </Tabs.Panel>
+                      <Tabs.Panel value="manuelt">
+                        <ManueltSøkPanel
+                          hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+                          hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+                          nåværendeHmsnr={nåværendeHmsnr}
+                          produktValgt={produktValgt}
+                        />
+                      </Tabs.Panel>
+                    </Tabs>
+                  </Box>
+                ) : (
+                  <ManueltSøkPanel
+                    hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+                    hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+                    nåværendeHmsnr={nåværendeHmsnr}
+                    produktValgt={produktValgt}
+                  />
+                )}
+              </Box>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Button type="submit" variant="primary" size="small" loading={submitting}>
+                {!produktValgt ? 'Lagre endring' : 'Ferdig'}
+              </Button>
+              <Button
+                type="button"
+                variant="tertiary"
+                size="small"
+                onClick={() => {
+                  setProduktValgt(false)
+                  handleCancel()
+                }}
+              >
+                Avbryt
+              </Button>
+            </Dialog.Footer>
+          </form>
+        </Dialog.Popup>
+      </Dialog>
     </FormProvider>
   )
 }

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Alert, Box, HStack, Loader } from '@navikt/ds-react'
+import { Box, HStack, LocalAlert, Loader } from '@navikt/ds-react'
 
 import { BrytbarBrødtekst, Tekst } from '../typografi'
 import classes from './Toast.module.css'
@@ -34,16 +34,16 @@ interface GeneriskToastProps {
 }
 
 export function GeneriskToast({ children, variant, onRemove }: GeneriskToastProps) {
+  const status = variant === 'info' ? 'announcement' : variant
+
   return (
-    <Alert
-      className={classes.toastAlert}
-      variant={variant}
-      size="small"
-      closeButton={true}
-      onClose={onRemove}
-      aria-live="polite"
-    >
-      <BrytbarBrødtekst>{children}</BrytbarBrødtekst>
-    </Alert>
+    <LocalAlert className={classes.toastAlert} status={status} size="small" as="div">
+      <LocalAlert.Header>
+        <LocalAlert.Title as="div">
+          <BrytbarBrødtekst>{children}</BrytbarBrødtekst>
+        </LocalAlert.Title>
+        <LocalAlert.CloseButton onClick={onRemove} />
+      </LocalAlert.Header>
+    </LocalAlert>
   )
 }

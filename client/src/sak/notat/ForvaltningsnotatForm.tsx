@@ -1,4 +1,4 @@
-import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
+import { Button, Checkbox, CheckboxGroup, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
 
@@ -100,16 +100,16 @@ export function ForvaltningsnotatForm({ sakId, gjeldendeUtkast }: Forvaltningsno
               )}
             />
             {klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
-              <Alert variant="info" size="small" inline>
+              <InlineMessage status="info" size="small">
                 Notatet blir journalført. Bruker vil få innsyn i notatet på innlogget side på nav.no fra første virkedag
                 etter at det er ferdigstilt.
-              </Alert>
+              </InlineMessage>
             )}
             {klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
-              <Alert variant="info" size="small" inline>
+              <InlineMessage status="info" size="small">
                 Notatet blir journalført. Notatet vil ikke være tilgjengelig på innlogget side på nav.no, men bruker kan
                 be om innsyn i det.
-              </Alert>
+              </InlineMessage>
             )}
             <NotatForm readOnly={isSubmitting} gjeldendeUtkast={gjeldendeUtkast} lagrerUtkast={false} />
           </VStack>

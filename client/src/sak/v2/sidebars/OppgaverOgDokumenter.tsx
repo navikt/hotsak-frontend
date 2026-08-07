@@ -25,7 +25,7 @@ const oppgaveCols = [
   { ...oppgaveColumns.oppgavetype, filter: undefined },
   { ...oppgaveColumns.behandlingstema, filter: undefined },
   { ...oppgaveColumns.behandlingstype, filter: undefined },
-  { ...oppgaveColumns.ferdigstiltTidspunkt },
+  { ...oppgaveColumns.ferdigstiltTidspunkt, sortKey: undefined },
   { ...oppgaveColumns.saksbehandlerKort },
 ]
 

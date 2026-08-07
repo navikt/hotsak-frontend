@@ -1,3 +1,7 @@
 .modalBody {
   scrollbar-gutter: stable both-edges;
 }
+
+.form {
+  display: contents;
+}

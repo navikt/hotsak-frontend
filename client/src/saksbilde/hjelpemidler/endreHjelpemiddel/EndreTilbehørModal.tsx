@@ -1,5 +1,5 @@
-import { Box, Button, Modal } from '@navikt/ds-react'
-import { useRef, useState } from 'react'
+import { Box, Button, Dialog } from '@navikt/ds-react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import classes from './EndreModal.module.css'
@@ -29,7 +29,6 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
   const [produktValgt, setProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const { logSkjemaFullført } = useUmami()
-  const ref = useRef<HTMLDialogElement>(null)
 
   const form = useForm<EndreArtikkelData>({
     defaultValues: {
@@ -88,54 +87,52 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={onSubmit}>
-        <Modal
-          ref={ref}
-          placement="top"
-          closeOnBackdropClick={false}
+      <Dialog open={åpen} onOpenChange={(nextOpen) => !nextOpen && onLukk()} size="small">
+        <Dialog.Popup
+          closeOnOutsideClick={false}
           width="1200px"
-          open={åpen}
-          onClose={() => {
-            onLukk()
-          }}
-          header={{ heading: 'Endre tilbehør' }}
-          size="small"
-          aria-label={'Endre tilbehør'}
+          aria-label="Endre tilbehør"
+          style={{ marginBlockStart: '2em' }}
         >
-          <Modal.Body className={classes.modalBody}>
-            <Box paddingBlock="space-24 space-0" paddingInline="space-16">
-              <OriginaltHjelpemiddel
-                navn={tilbehør.navn}
-                hmsnr={tilbehør.hmsArtNr}
-                opplysninger={tilbehør.opplysninger}
-                grunndataProdukt={grunndataProdukt}
-              />
-              <ManueltSøkPanel
-                hjelpemiddelId={tilbehør.tilbehørId!}
-                hmsArtNr={tilbehør.hmsArtNr}
-                nåværendeHmsnr={nåværendeHmsnr}
-                produktValgt={produktValgt}
-              />
-            </Box>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button type="submit" variant="primary" size="small" loading={submitting}>
-              {!produktValgt ? 'Lagre endring' : 'Ferdig'}
-            </Button>
-            <Button
-              type="button"
-              variant="tertiary"
-              size="small"
-              onClick={() => {
-                setProduktValgt(false)
-                handleCancel()
-              }}
-            >
-              Avbryt
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </form>
+          <form onSubmit={onSubmit} className={classes.form}>
+            <Dialog.Header>
+              <Dialog.Title>Endre tilbehør</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.Body className={classes.modalBody}>
+              <Box paddingBlock="space-24 space-0" paddingInline="space-16">
+                <OriginaltHjelpemiddel
+                  navn={tilbehør.navn}
+                  hmsnr={tilbehør.hmsArtNr}
+                  opplysninger={tilbehør.opplysninger}
+                  grunndataProdukt={grunndataProdukt}
+                />
+                <ManueltSøkPanel
+                  hjelpemiddelId={tilbehør.tilbehørId!}
+                  hmsArtNr={tilbehør.hmsArtNr}
+                  nåværendeHmsnr={nåværendeHmsnr}
+                  produktValgt={produktValgt}
+                />
+              </Box>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Button type="submit" variant="primary" size="small" loading={submitting}>
+                {!produktValgt ? 'Lagre endring' : 'Ferdig'}
+              </Button>
+              <Button
+                type="button"
+                variant="tertiary"
+                size="small"
+                onClick={() => {
+                  setProduktValgt(false)
+                  handleCancel()
+                }}
+              >
+                Avbryt
+              </Button>
+            </Dialog.Footer>
+          </form>
+        </Dialog.Popup>
+      </Dialog>
     </FormProvider>
   )
 }

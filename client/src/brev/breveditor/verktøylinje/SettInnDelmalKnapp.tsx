@@ -1,4 +1,4 @@
-import { Button, Modal, Tooltip, UNSAFE_Combobox } from '@navikt/ds-react'
+import { Button, Dialog, Tooltip, UNSAFE_Combobox } from '@navikt/ds-react'
 import { useEditorRef, useEditorState } from 'platejs/react'
 import { FileParagraphIcon } from '@navikt/aksel-icons'
 import { useState } from 'react'
@@ -57,9 +57,12 @@ export function SettInnDelmalModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Modal header={{ heading: 'Sett inn delmal' }} open={true} onClose={onCloseInner}>
-      <Modal.Body style={{ maxWidth: '650px', width: '90vw' }}>
-        <>
+    <Dialog open={true} onOpenChange={(nextOpen) => !nextOpen && onCloseInner()}>
+      <Dialog.Popup width="min(650px, 90vw)" aria-label="Sett inn delmal">
+        <Dialog.Header>
+          <Dialog.Title>Sett inn delmal</Dialog.Title>
+        </Dialog.Header>
+        <Dialog.Body>
           <UNSAFE_Combobox
             label="Velg delmal"
             options={Object.keys(delmaler)}
@@ -76,16 +79,16 @@ export function SettInnDelmalModal({ onClose }: { onClose: () => void }) {
           <div style={{ padding: '2em 0.5em', whiteSpace: 'pre-wrap' }}>
             {selection && delmaler[selection as keyof typeof delmaler]}
           </div>
-        </>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button type="button" disabled={!selection} onClick={onInsert}>
-          Sett inn
-        </Button>
-        <Button type="button" variant="secondary" onClick={onClose}>
-          Avbryt
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </Dialog.Body>
+        <Dialog.Footer>
+          <Button type="button" disabled={!selection} onClick={onInsert}>
+            Sett inn
+          </Button>
+          <Button type="button" variant="secondary" onClick={onClose}>
+            Avbryt
+          </Button>
+        </Dialog.Footer>
+      </Dialog.Popup>
+    </Dialog>
   )
 }

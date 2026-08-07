@@ -1,4 +1,14 @@
-import { Alert, Button, HelpText, HGrid, HGridProps, HStack, HStackProps, Loader, VStack } from '@navikt/ds-react'
+import {
+  Button,
+  HelpText,
+  HGrid,
+  HGridProps,
+  HStack,
+  HStackProps,
+  InlineMessage,
+  Loader,
+  VStack,
+} from '@navikt/ds-react'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { FeilmeldingAlert } from '../../../../felleskomponenter/feil/FeilmeldingAlert.tsx'
@@ -67,7 +77,7 @@ export function RegistrerSøknadLesevisning() {
         </Tekst>
       </HGrid>
       {vilkårsvurdering && vilkårsgrunnlag?.data.brilleseddel && (
-        <Alert variant="info" role="alert">
+        <InlineMessage status="info" role="alert">
           <Tekst>
             {vilkårsvurdering?.data?.sats === SatsType.INGEN
               ? 'Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt'
@@ -82,7 +92,7 @@ export function RegistrerSøknadLesevisning() {
               <strong>{`${formaterBeløp(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
             </Tekst>
           )}
-        </Alert>
+        </InlineMessage>
       )}
       <div>
         <Etikett>Brillens bestillingsdato</Etikett>

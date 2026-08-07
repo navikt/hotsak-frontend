@@ -1,4 +1,4 @@
-import { Alert, Box, Button, HStack, Radio, RadioGroup, Table } from '@navikt/ds-react'
+import { Box, Button, HStack, InlineMessage, Radio, RadioGroup, Table } from '@navikt/ds-react'
 
 import classes from './KnyttTilEksisterendeSak.module.css'
 
@@ -70,12 +70,12 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
           </RadioGroup>
         )}
         {valgtEksisterendeSakId !== '' && (
-          <Alert variant="info" size="small">
+          <InlineMessage status="info" size="small">
             <Tekst>Dokumentene du journalfører vil knyttes til saken du har valgt i liste over.</Tekst>
             <Button variant="tertiary" size="small" onClick={() => onChange('')}>
               Fjern knytning til sak
             </Button>
-          </Alert>
+          </InlineMessage>
         )}
       </HStack>
     </Box>

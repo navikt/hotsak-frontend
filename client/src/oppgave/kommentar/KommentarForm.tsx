@@ -1,4 +1,4 @@
-import { Alert, Button, Textarea, VStack } from '@navikt/ds-react'
+import { Button, InlineMessage, Textarea, VStack } from '@navikt/ds-react'
 
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -44,9 +44,9 @@ export function KommentarForm(props: KommentarFormProps) {
   return (
     <div>
       <VStack as="form" gap="space-16" onSubmit={handleSubmit}>
-        <Alert variant="info" size="small" inline>
+        <InlineMessage size="small" status="info">
           Kommentarene kan bli utlevert til innbygger ved forespørsel om innsyn
-        </Alert>
+        </InlineMessage>
         <Textarea
           label="Kommentar"
           size="small"

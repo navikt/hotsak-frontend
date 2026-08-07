@@ -1,7 +1,6 @@
-import { Box, Heading, VStack } from '@navikt/ds-react'
+import { Box, Heading, InlineMessage, VStack } from '@navikt/ds-react'
 
 import { Dokumenter } from '../dokument/Dokumenter'
-import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
 import { Tekst } from '../felleskomponenter/typografi'
 import { type Journalføringsoppgave, Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
@@ -63,7 +62,7 @@ function JournalpostStatus({ oppgave }: { oppgave: Journalføringsoppgave }) {
   }
 
   if (oppgave.oppgavestatus === Oppgavestatus.FERDIGSTILT) {
-    return <SkjemaAlert variant="info">Journalposten er sendt til journalføring</SkjemaAlert>
+    return <InlineMessage status="info">Journalposten er sendt til journalføring</InlineMessage>
   }
 
   return null

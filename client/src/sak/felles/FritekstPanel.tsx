@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Heading, HStack, InlineMessage, Textarea, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HStack, InlineMessage, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
@@ -15,9 +15,9 @@ export function FritekstPanel() {
         <Heading level="2" size="xsmall" spacing>
           Beskjed fra formidler til kommunen om utlevering
         </Heading>
-        <Alert variant="info" size="small" inline>
+        <InlineMessage status="info" size="small">
           Beskjeden fra formidler vil vises på følgeseddelen til hjelpemidlene, på 5.17-skjema.
-        </Alert>
+        </InlineMessage>
 
         <Controller
           name="utleveringMerknad"

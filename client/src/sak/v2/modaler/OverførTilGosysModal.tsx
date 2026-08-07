@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Alert, Heading, VStack } from '@navikt/ds-react'
+import { LocalAlert, VStack } from '@navikt/ds-react'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { type ISvar } from '../../../innsikt/Besvarelse'
 import { BekreftelsesDialog } from '../../../saksbilde/komponenter/BekreftelsesDialog'
@@ -52,17 +52,19 @@ export function OverførTilGosysModal({ open, onClose }: OverførTilGosysModalPr
       {notater.ferdigstilte.length > 0 && (
         <VStack gap="space-12">
           {notater.ferdigstilte.find(isNotatTypeJournalført) && (
-            <Alert variant="warning" size="small">
-              <Heading size="xsmall" level="2" spacing>
-                Saken har forvaltningsnotat - kontakt DigiHoT for hjelp
-              </Heading>
-              <Tekst>
-                Denne saken har et eller flere forvaltningsnotater knyttet til seg. Når saken overføres til Gosys vil
-                disse notatene bli feilregistrert og miste knytning til den nye saken. Hvis dere har behov for å knytte
-                disse notatene til den nye saken i Gosys, ta kontakt med DigiHoT på teamskanalen "DigiHoT - innspill,
-                spørsmål og info", så hjelper vi dere.
-              </Tekst>
-            </Alert>
+            <LocalAlert status="warning" size="small">
+              <LocalAlert.Header>
+                <LocalAlert.Title>Saken har forvaltningsnotat - kontakt DigiHoT for hjelp</LocalAlert.Title>
+              </LocalAlert.Header>
+              <LocalAlert.Content>
+                <Tekst>
+                  Denne saken har et eller flere forvaltningsnotater knyttet til seg. Når saken overføres til Gosys vil
+                  disse notatene bli feilregistrert og miste knytning til den nye saken. Hvis dere har behov for å
+                  knytte disse notatene til den nye saken i Gosys, ta kontakt med DigiHoT på teamskanalen "DigiHoT -
+                  innspill, spørsmål og info", så hjelper vi dere.
+                </Tekst>
+              </LocalAlert.Content>
+            </LocalAlert>
           )}
         </VStack>
       )}

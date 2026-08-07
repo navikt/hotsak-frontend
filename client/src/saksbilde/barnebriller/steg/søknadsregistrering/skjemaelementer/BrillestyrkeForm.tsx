@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Box, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, InlineMessage, VStack } from '@navikt/ds-react'
 
 import { Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
 import { SatsType } from '../../../../../types/types.internal'
@@ -18,16 +18,16 @@ export function BrillestyrkeForm() {
       {beregning && (
         <Box paddingBlock="space-12 space-4">
           {beregning.sats === SatsType.INGEN ? (
-            <Alert variant="warning">
+            <InlineMessage status="warning">
               <BodyLong>Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt</BodyLong>
-            </Alert>
+            </InlineMessage>
           ) : (
-            <Alert variant="info" role="alert">
+            <InlineMessage status="info" role="alert">
               <Etikett>{`Brillestøtte på opp til ${formaterBeløp(beregning.satsBeløp)} kroner`}</Etikett>
               <Tekst>
                 {`Barnet kan få tilskudd fra sats ${beregning.sats.replace('SATS_', '')}: ${beregning.satsBeskrivelse}`}
               </Tekst>
-            </Alert>
+            </InlineMessage>
           )}
         </Box>
       )}

@@ -1,8 +1,10 @@
 import {
+  Alert,
   BodyShort,
   Box,
   Button,
   DatePicker,
+  Dialog,
   ErrorMessage,
   Heading,
   HStack,
@@ -17,7 +19,7 @@ import {
   VStack,
 } from '@navikt/ds-react'
 import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
+import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { InlineKopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
@@ -31,27 +33,21 @@ import {
   Oppgavetype,
   OppgavetypeLabel,
 } from '../oppgave/oppgaveTypes.ts'
-import { stønadsklassifiseringData } from '../oppgave/stønadsklassifiseringData.ts'
-import { stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
+import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
 import { type GjelderOption, useGjelderOptions } from '../oppgave/useKodeverkOppgave.ts'
 import { useOppgaveMapper } from '../oppgave/useOppgave.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { DokumentRad } from './DokumentRad.tsx'
-import { EndreDatoModal } from './EndreDatoModal.tsx'
-import { EndreBehandlingstypeModal } from './EndreBehandlingstypeModal.tsx'
-import { EndrePrioritetModal } from './EndrePrioritetModal.tsx'
-import { EndreStønadsklassifiseringModal } from './EndreStønadsklassifiseringModal.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
-import classes from './JournalføringV2Skjema.module.css'
-import { type JournalføringV2Response } from './journalføringTypes.ts'
-import { type SakstypeKode } from './journalføringTypes.ts'
-import { useJournalføringActions } from './useJournalføringActions.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
-import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import classes from './JournalføringV2Skjema.module.css'
+import { type JournalføringV2Response, type SakstypeKode } from './journalføringTypes.ts'
+import { useJournalføringActions } from './useJournalføringActions.ts'
 
 interface JournalføringV2SkjemaVerdier {
   tema: string
@@ -82,6 +78,9 @@ function filtrertePåSøk(options: GjelderOption[], søk: string): GjelderOption
   return options.filter((o) => ord.every((ord) => o.searchTerms.includes(ord)))
 }
 
+const IKKE_JOURNALFØRING_MELDING =
+  'Søknaden kan ikke journalføres i Hotsak. Foreløpig behandler Hotsak kun søknader av typen «Søknad» med stønadsklassifisering «Dagligliv». Oppgaven må overføres til Gosys for videre behandling.'
+
 export function JournalføringV2Skjema({
   oppgave,
   journalpost,
@@ -91,11 +90,7 @@ export function JournalføringV2Skjema({
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
-  const [visStønadsklassifiseringsModal, setVisStønadsklassifiseringsModal] = useState(false)
-  const [visBehandlingstypeModal, setVisBehandlingstypeModal] = useState(false)
-  const [visMottattDatoModal, setVisMottattDatoModal] = useState(false)
-  const [visAktivFraModal, setVisAktivFraModal] = useState(false)
-  const [visPrioritetModal, setVisPrioritetModal] = useState(false)
+  const [visIkkeJournalføringModal, setVisIkkeJournalføringModal] = useState(false)
   const { behandlere } = useOppgavebehandlere()
   const mapper = useOppgaveMapper()
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
@@ -163,6 +158,7 @@ export function JournalføringV2Skjema({
   )
 
   const valgtStk2 = stønadsklassifiseringData.stk2.find((s) => s.kode === valgtStønadsklassifisering)!
+  const kanIkkeJournalføresIHotsak = valgtStønadType !== 'S' || valgtStønadsklassifisering !== 'DA'
 
   useEffect(() => {
     register('mottattDato')
@@ -279,7 +275,7 @@ export function JournalføringV2Skjema({
 
               <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
                 <HStack justify="space-between" align="start">
-                  <VStack gap="space-1">
+                  <VStack gap="space-4">
                     <Label size="small">Bruker</Label>
                     <HStack gap="space-1" align="center">
                       <BodyShort size="small">{brukerNavn} - </BodyShort>
@@ -298,7 +294,7 @@ export function JournalføringV2Skjema({
 
               <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
                 <HStack justify="space-between" align="start">
-                  <VStack gap="space-1">
+                  <VStack gap="space-4">
                     <Label size="small">Avsender</Label>
                     <HStack gap="space-1" align="center">
                       <BodyShort size="small">{avsenderNavn} - </BodyShort>
@@ -357,88 +353,95 @@ export function JournalføringV2Skjema({
               </Heading>
 
               <div className={classes.metadataGrid}>
-                <VStack gap="space-1">
+                <VStack gap="space-4">
                   <Label size="small">Oppgavetype</Label>
                   <BodyShort size="small">{OppgavetypeLabel[Oppgavetype.BEHANDLE_SAK]}</BodyShort>
                 </VStack>
 
-                <VStack gap="space-1">
+                <VStack gap="space-4">
                   <Label size="small">Behandlingstype</Label>
-                  <HStack align="center">
-                    <BodyShort size="small">{stønadstype[valgtStønadType]}</BodyShort>
-                    <Button
-                      variant="tertiary"
-                      size="xsmall"
-                      type="button"
-                      hidden={!kanRedigere}
-                      onClick={() => setVisBehandlingstypeModal(true)}
-                    >
-                      Endre
-                    </Button>
-                  </HStack>
+                  <InlineRedigerbarSelect
+                    verdi={valgtStønadType}
+                    tekst={stønadstype[valgtStønadType]}
+                    kanRedigere={kanRedigere}
+                    onLagre={(kode) => setValue('stønadType', kode as SakstypeKode)}
+                  >
+                    {(Object.entries(stønadstype) as [SakstypeKode, string][]).map(([kode, tekst]) => (
+                      <option key={kode} value={kode}>
+                        {tekst}
+                      </option>
+                    ))}
+                  </InlineRedigerbarSelect>
                 </VStack>
-                <VStack gap="space-1">
+                <VStack gap="space-4">
                   <Label size="small">Stønadsklassifisering</Label>
-                  <HStack align="center">
-                    <BodyShort size="small">{valgtStk2.tekst}</BodyShort>
-                    <Button
-                      variant="tertiary"
-                      size="xsmall"
-                      type="button"
-                      hidden={!kanRedigere}
-                      onClick={() => setVisStønadsklassifiseringsModal(true)}
-                    >
-                      Endre
-                    </Button>
-                  </HStack>
-                  <input type="hidden" {...register('stønadsklassifisering')} />
+                  <InlineRedigerbarSelect
+                    verdi={valgtStønadsklassifisering}
+                    tekst={valgtStk2.tekst}
+                    kanRedigere={kanRedigere}
+                    onLagre={(kode) => setValue('stønadsklassifisering', kode)}
+                  >
+                    {stønadsklassifiseringData.stk2.map((s) => (
+                      <option key={s.kode} value={s.kode}>
+                        {s.tekst}
+                      </option>
+                    ))}
+                  </InlineRedigerbarSelect>
                 </VStack>
 
-                <VStack gap="space-1">
+                {kanIkkeJournalføresIHotsak && (
+                  <div className={classes.alertRad}>
+                    <TextContainer>
+                      <Alert variant="error" size="small">
+                        Søknaden kan ikke journalføres i Hotsak. Foreløpig behandler Hotsak kun søknader av typen
+                        «Søknad» med stønadsklassifisering «Dagligliv». Oppgaven må overføres til Gosys for videre
+                        behandling.
+                      </Alert>
+                    </TextContainer>
+                  </div>
+                )}
+
+                <VStack gap="space-4">
                   <Label size="small">Mottatt dato</Label>
-                  <HStack align="center">
-                    <BodyShort size="small">{formaterDato(valgtMottattDato)}</BodyShort>
-                    <Button
-                      variant="tertiary"
-                      size="xsmall"
-                      type="button"
-                      hidden={!kanRedigere}
-                      onClick={() => setVisMottattDatoModal(true)}
-                    >
-                      Endre
-                    </Button>
-                  </HStack>
+                  <InlineRedigerbarDato
+                    verdi={parseISO(valgtMottattDato)}
+                    kanRedigere={kanRedigere}
+                    onLagre={(dato) => {
+                      const datoStr = formatISO(dato, { representation: 'date' })
+                      setValue('mottattDato', datoStr)
+                      setValue('aktivFra', datoStr, { shouldValidate: true })
+                      const nyFrist = addWeeks(dato, 4)
+                      setFrist(nyFrist)
+                      setValue('frist', formatISO(nyFrist, { representation: 'date' }), { shouldValidate: true })
+                    }}
+                  />
                 </VStack>
-                <VStack gap="space-1">
+                <VStack gap="space-4">
                   <Label size="small">Aktiv fra</Label>
-                  <HStack align="center">
-                    <BodyShort size="small">{formaterDato(valgtAktivFra)}</BodyShort>
-                    <Button
-                      variant="tertiary"
-                      size="xsmall"
-                      type="button"
-                      hidden={!kanRedigere}
-                      onClick={() => setVisAktivFraModal(true)}
-                    >
-                      Endre
-                    </Button>
-                  </HStack>
+                  <InlineRedigerbarDato
+                    verdi={parseISO(valgtAktivFra)}
+                    kanRedigere={kanRedigere}
+                    onLagre={(dato) => {
+                      setValue('aktivFra', formatISO(dato, { representation: 'date' }), { shouldValidate: true })
+                    }}
+                  />
                   {errors.aktivFra?.message && <ErrorMessage size="small">{errors.aktivFra.message}</ErrorMessage>}
                 </VStack>
-                <VStack gap="space-1">
+
+                <VStack gap="space-4">
                   <Label size="small">Prioritet</Label>
-                  <HStack align="center">
-                    <BodyShort size="small">{OppgaveprioritetLabel[valgtPrioritet]}</BodyShort>
-                    <Button
-                      variant="tertiary"
-                      size="xsmall"
-                      type="button"
-                      hidden={!kanRedigere}
-                      onClick={() => setVisPrioritetModal(true)}
-                    >
-                      Endre
-                    </Button>
-                  </HStack>
+                  <InlineRedigerbarSelect
+                    verdi={valgtPrioritet}
+                    tekst={OppgaveprioritetLabel[valgtPrioritet]}
+                    kanRedigere={kanRedigere}
+                    onLagre={(prioritet) => setValue('prioritet', prioritet as Oppgaveprioritet)}
+                  >
+                    {Object.values(Oppgaveprioritet).map((p) => (
+                      <option key={p} value={p}>
+                        {OppgaveprioritetLabel[p]}
+                      </option>
+                    ))}
+                  </InlineRedigerbarSelect>
                 </VStack>
               </div>
 
@@ -483,7 +486,7 @@ export function JournalføringV2Skjema({
                   control={control}
                   render={({ field }) => (
                     <Textarea
-                      label="Kommentar"
+                      label="Kommentar til saksbehandler (valgfritt)"
                       description="Her kan du informere om eventuelle mangler eller annet som bør sjekkes opp i saken"
                       size="small"
                       maxLength={1000}
@@ -550,11 +553,12 @@ export function JournalføringV2Skjema({
           {kanRedigere && (
             <HStack gap="space-4" paddingBlock="space-8 space-0">
               <Button
-                type="submit"
+                type={kanIkkeJournalføresIHotsak ? 'button' : 'submit'}
                 variant="primary"
                 size="small"
                 loading={journalførV2.isMutating}
                 disabled={journalførV2.isMutating}
+                onClick={kanIkkeJournalføresIHotsak ? () => setVisIkkeJournalføringModal(true) : undefined}
               >
                 Journalfør og opprett sak
               </Button>
@@ -567,70 +571,107 @@ export function JournalføringV2Skjema({
         </VStack>
       </form>
 
-      <EndreStønadsklassifiseringModal
-        open={visStønadsklassifiseringsModal}
-        nåværendeKode={valgtStønadsklassifisering}
-        onBekreft={(kode) => {
-          setValue('stønadsklassifisering', kode)
-          setVisStønadsklassifiseringsModal(false)
-        }}
-        onClose={() => setVisStønadsklassifiseringsModal(false)}
-      />
-
-      <EndreDatoModal
-        key={`mottattdato-${valgtMottattDato}`}
-        open={visMottattDatoModal}
-        label="Mottatt dato"
-        defaultDate={parseISO(valgtMottattDato)}
-        onBekreft={(dato) => {
-          const datoStr = formatISO(dato, { representation: 'date' })
-          setValue('mottattDato', datoStr)
-          setValue('aktivFra', datoStr, { shouldValidate: true })
-          const nyFrist = addWeeks(dato, 4)
-          setFrist(nyFrist)
-          setValue('frist', formatISO(nyFrist, { representation: 'date' }), { shouldValidate: true })
-          setVisMottattDatoModal(false)
-        }}
-        onClose={() => setVisMottattDatoModal(false)}
-      />
-
-      <EndreDatoModal
-        key={`aktivfra-${valgtAktivFra}`}
-        open={visAktivFraModal}
-        label="Aktiv fra"
-        defaultDate={parseISO(valgtAktivFra)}
-        onBekreft={(dato) => {
-          setValue('aktivFra', formatISO(dato, { representation: 'date' }), { shouldValidate: true })
-          setVisAktivFraModal(false)
-        }}
-        onClose={() => setVisAktivFraModal(false)}
-      />
-
-      <EndrePrioritetModal
-        open={visPrioritetModal}
-        nåværendePrioritet={valgtPrioritet}
-        onBekreft={(prioritet) => {
-          setValue('prioritet', prioritet)
-          setVisPrioritetModal(false)
-        }}
-        onClose={() => setVisPrioritetModal(false)}
-      />
-
-      <EndreBehandlingstypeModal
-        open={visBehandlingstypeModal}
-        nåværendeKode={valgtStønadType}
-        onBekreft={(kode) => {
-          setValue('stønadType', kode)
-          setVisBehandlingstypeModal(false)
-        }}
-        onClose={() => setVisBehandlingstypeModal(false)}
-      />
-
       <JournalføringFerdigModal
         open={journalføringResultat != null}
         resultat={journalføringResultat}
         onClose={() => setJournalføringResultat(null)}
       />
+
+      <IkkeJournalføringIHotsakModal
+        open={visIkkeJournalføringModal}
+        onClose={() => setVisIkkeJournalføringModal(false)}
+      />
     </VStack>
+  )
+}
+
+function InlineRedigerbarSelect({
+  verdi,
+  tekst,
+  kanRedigere,
+  onLagre,
+  children,
+}: {
+  verdi: string
+  tekst: string
+  kanRedigere: boolean
+  onLagre: (ny: string) => void
+  children: ReactNode
+}) {
+  const [redigerer, setRedigerer] = useState(false)
+
+  if (redigerer) {
+    return (
+      <Select label="" hideLabel size="small" defaultValue={verdi} autoFocus onChange={(e) => onLagre(e.target.value)}>
+        {children}
+      </Select>
+    )
+  }
+
+  return (
+    <HStack align="center">
+      <BodyShort size="small">{tekst}</BodyShort>
+      {kanRedigere && (
+        <Button variant="tertiary" size="xsmall" type="button" onClick={() => setRedigerer(true)}>
+          Endre
+        </Button>
+      )}
+    </HStack>
+  )
+}
+
+function InlineRedigerbarDato({
+  verdi,
+  kanRedigere,
+  onLagre,
+}: {
+  verdi: Date
+  kanRedigere: boolean
+  onLagre: (dato: Date) => void
+}) {
+  const [redigerer, setRedigerer] = useState(false)
+
+  const { datepickerProps, inputProps } = useDatepicker({
+    defaultSelected: verdi,
+    onDateChange: (dato) => {
+      if (dato) onLagre(dato)
+    },
+  })
+
+  if (redigerer) {
+    return (
+      <DatePicker {...datepickerProps}>
+        <DatePicker.Input {...inputProps} label="" hideLabel size="small" autoFocus />
+      </DatePicker>
+    )
+  }
+
+  return (
+    <HStack align="center">
+      <BodyShort size="small">{formaterDato(formatISO(verdi, { representation: 'date' }))}</BodyShort>
+      {kanRedigere && (
+        <Button variant="tertiary" size="xsmall" type="button" onClick={() => setRedigerer(true)}>
+          Endre
+        </Button>
+      )}
+    </HStack>
+  )
+}
+
+function IkkeJournalføringIHotsakModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  return (
+    <Dialog open={open} onOpenChange={(next) => !next && onClose()} size="medium">
+      <Dialog.Popup>
+        <Dialog.Header>
+          <Dialog.Title>Kan ikke journalføres i Hotsak</Dialog.Title>
+        </Dialog.Header>
+        <Dialog.Body>{IKKE_JOURNALFØRING_MELDING}</Dialog.Body>
+        <Dialog.Footer>
+          <Button variant="primary" size="small" type="button" onClick={onClose}>
+            Lukk
+          </Button>
+        </Dialog.Footer>
+      </Dialog.Popup>
+    </Dialog>
   )
 }

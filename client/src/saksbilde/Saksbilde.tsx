@@ -1,5 +1,6 @@
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
+import { OverførtGosysVisning } from './OverførtGosysVisning'
 
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
@@ -7,6 +8,8 @@ import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson'
+import { Behandlingsutfall, isBehandlingsutfallOverføring } from '../sak/v2/behandling/behandlingTyper.ts'
+import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakProvider } from '../sak/v2/SakProvider'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
@@ -17,6 +20,7 @@ import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))
 const SakV2 = lazy(() => import('../sak/v2/SakV2'))
@@ -29,6 +33,8 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
   const erPilot = useErPilot('hotsakEksperimenter')
+  const { erProd } = useMiljø()
+  const { gjeldendeBehandling } = useBehandling()
 
   if (isSakLoading || isPersonLoading || isBehovsmeldingLoading) return <SakLoader />
 
@@ -47,6 +53,10 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   if (!sak || !behovsmelding) return <div>Fant ikke sak eller behovsmelding</div>
 
   const sakData = sak.data
+
+  if (erFerdigstiltOppgaveOgOverførtTilGosys(oppgave, sakData, erProd, gjeldendeBehandling?.utfall)) {
+    return <OverførtGosysVisning />
+  }
 
   if (sakData.sakstype === Sakstype.SØKNAD || (erPilot && erBestilling)) {
     return (
@@ -92,5 +102,19 @@ export default function Saksbilde({ oppgave }: { oppgave?: Saksbehandlingsoppgav
     <AsyncBoundary name="Saksbilde" suspenseFallback={<SakLoader />}>
       <SaksbildeContent oppgave={oppgave} />
     </AsyncBoundary>
+  )
+}
+
+function erFerdigstiltOppgaveOgOverførtTilGosys(
+  oppgave?: Saksbehandlingsoppgave,
+  sak?: SakBase,
+  erProd?: boolean,
+  utfall?: Behandlingsutfall
+) {
+  if (!oppgave || !sak || erProd) return false
+
+  return (
+    (oppgave.oppgavestatus === 'FERDIGSTILT' || oppgave.oppgavestatus === 'FEILREGISTRERT') &&
+    isBehandlingsutfallOverføring(utfall)
   )
 }

@@ -9,6 +9,10 @@ import {
   åpneSak,
 } from './helpers'
 
+function finnInnvilgelsesModal(page: Parameters<typeof åpneSak>[0]) {
+  return page.getByRole('dialog').filter({ hasText: /Når du går videre blir det opprettet en serviceforespørsel/i })
+}
+
 test.describe('Vedtak: Innvilgelse', () => {
   test('kan innvilge en søknad', async ({ page }) => {
     await åpneSak(page)
@@ -23,7 +27,7 @@ test.describe('Vedtak: Innvilgelse', () => {
     await klikkFattVedtak(page)
 
     // Verify FattVedtakModal opens
-    const modal = page.getByRole('dialog', { name: /Vil du innvilge søknaden/i })
+    const modal = finnInnvilgelsesModal(page)
     await expect(modal).toBeVisible()
 
     // Verify button text does NOT contain "send brev" (no brev created)
@@ -45,7 +49,7 @@ test.describe('Vedtak: Innvilgelse', () => {
     // Now fatt vedtak
     await klikkFattVedtak(page)
 
-    const modal = page.getByRole('dialog', { name: /Vil du innvilge søknaden/i })
+    const modal = finnInnvilgelsesModal(page)
     await expect(modal).toBeVisible()
 
     // Button should say "Innvilg og send brev" since brev exists
@@ -72,7 +76,7 @@ test.describe('Vedtak: Innvilgelse', () => {
     await settBehandlingsresultat(page, 'Innvilget')
     await klikkFattVedtak(page)
 
-    const modal = page.getByRole('dialog', { name: /Vil du innvilge søknaden/i })
+    const modal = finnInnvilgelsesModal(page)
     await expect(modal).toBeVisible()
 
     await modal.getByRole('button', { name: /^Innvilg$/i }).click()

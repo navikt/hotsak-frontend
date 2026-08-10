@@ -28,11 +28,15 @@ export function useJournalføringActions(oppgave: Oppgave, journalpostId?: strin
   const journalførV2 = useSWRMutation<JournalføringV2Response, HttpError, string | null, JournalføringV2Arg>(
     journalpostKey,
     (url, { arg }) =>
-      http.post<JournalføringV2Request, JournalføringV2Response>(url, {
-        ...arg,
-        oppgaveId,
-        journalpostId: journalpostId!,
-      }),
+      http.post<JournalføringV2Request, JournalføringV2Response>(
+        url,
+        {
+          ...arg,
+          oppgaveId,
+          journalpostId: journalpostId!,
+        },
+        { versjon }
+      ),
     {
       async onSuccess() {
         await mutateOppgave(oppgaveId)
@@ -52,7 +56,6 @@ export function useJournalføringActions(oppgave: Oppgave, journalpostId?: strin
         )
       )
     },
-
     journalførV2,
     state,
   }

@@ -1,3 +1,5 @@
+import useSWRMutation, { type SWRMutationResponse } from 'swr/mutation'
+
 import { Actions, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
 import { mutateSak } from '../sak/useSak.ts'
@@ -62,6 +64,8 @@ export interface OppgaveActions extends Actions {
    * @param tekst
    */
   lagreKommentar(tekst: string): Promise<void>
+
+  overførOppgave: SWRMutationResponse
 }
 
 /**
@@ -80,6 +84,23 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
     }
     return mutateOppgave(oppgaveId)
   }
+
+  const oppgaveKey = oppgaveId ? `/api/oppgaver/${oppgaveId}` : null
+
+  const overførOppgave = useSWRMutation(
+    oppgaveKey,
+    (url) =>
+      http.post(
+        `${url}/overforing`,
+        {
+          oppgaveId,
+        },
+        { versjon }
+      ),
+    {
+      async onSuccess() {},
+    }
+  )
 
   return {
     async endreOppgavetildeling(request) {
@@ -132,6 +153,8 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
         }
       })
     },
+
+    overførOppgave,
 
     state,
   }

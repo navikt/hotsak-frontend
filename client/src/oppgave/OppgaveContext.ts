@@ -5,6 +5,7 @@ export enum OppgaveModalType {
   FORTSETT_BEHANDLING,
   ENDRE_GJELDER,
   OVERFØR_TIL_MEDARBEIDER,
+  OVERFØR_TIL_GOSYS,
   LEGG_TILBAKE,
 }
 
@@ -85,7 +86,4 @@ export interface OppgaveSakEndretAction extends OppgaveBaseAction {
 }
 
 export type OppgaveAction =
-  | OppgaveÅpneModalAction
-  | OppgaveLukkModalAction
-  | OppgaveKommentarAction
-  | OppgaveSakEndretAction
+  OppgaveÅpneModalAction | OppgaveLukkModalAction | OppgaveKommentarAction | OppgaveSakEndretAction

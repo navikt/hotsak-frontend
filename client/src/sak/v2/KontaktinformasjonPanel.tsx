@@ -20,7 +20,7 @@ import {
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
 } from '../../utils/formater.ts'
-import { InfoTag, WarningTag } from '../felles/AlertTag.tsx'
+import { WarningTag } from '../felles/AlertTag.tsx'
 import { KopierbarFelt } from '../felles/KopierbartFelt.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
@@ -31,7 +31,7 @@ function GodkjenningskursInfo({ resultat }: Readonly<{ resultat: Godkjenningskur
     return null
   }
   if (resultat.length === 0) {
-    return <InfoTag>Ingen påkrevde kurs</InfoTag>
+    return null
   }
   const gjennomførte = resultat.filter((kurs) => kurs.gjennomført)
   const ikkeFunnet = resultat.filter((kurs) => !kurs.gjennomført)

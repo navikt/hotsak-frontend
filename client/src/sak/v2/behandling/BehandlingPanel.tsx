@@ -38,6 +38,7 @@ function BehandlingPanel({ oppgave, sak }: BehandlingPanelProps) {
       />
       <ScrollablePanel aria-label="Behandlingspanel">
         <BehandlingPanelHeader oppgave={oppgave} sak={sak} />
+
         <BehandlingPanelContentVelger
           oppgave={oppgave}
           behandling={gjeldendeBehandling}

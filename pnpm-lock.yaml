@@ -18,8 +18,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0
       eslint:
-        specifier: ^10.8.0
-        version: 10.8.0(supports-color@5.5.0)
+        specifier: ^10.8.1
+        version: 10.8.1(supports-color@5.5.0)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -329,8 +329,8 @@ packages:
     resolution: {integrity: sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  eslint@10.8.0:
-    resolution: {integrity: sha512-nuKKvN+oIBO0koN7Tm7dlkmnkc21mtt0QJLwAKzjLq14y6lRTdVG36MZHJ8eQHwdJMwZbQNMlPOYedMq/oVJvQ==}
+  eslint@10.8.1:
+    resolution: {integrity: sha512-wqA7W2jbsC/BnV9Iv1UZpKVFkO1AdNoSmYW8NWG4HNOBbkAMvIqDZ27pI2f07dqn583NcIC44ckjAcOXDL1QbQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     hasBin: true
     peerDependencies:
@@ -1008,9 +1008,9 @@ snapshots:
 
   '@epic-web/invariant@1.0.0': {}
 
-  '@eslint-community/eslint-utils@4.10.1(eslint@10.8.0(supports-color@5.5.0))':
+  '@eslint-community/eslint-utils@4.10.1(eslint@10.8.1(supports-color@5.5.0))':
     dependencies:
-      eslint: 10.8.0(supports-color@5.5.0)
+      eslint: 10.8.1(supports-color@5.5.0)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.2': {}
@@ -1331,9 +1331,9 @@ snapshots:
 
   eslint-visitor-keys@5.0.1: {}
 
-  eslint@10.8.0(supports-color@5.5.0):
+  eslint@10.8.1(supports-color@5.5.0):
     dependencies:
-      '@eslint-community/eslint-utils': 4.10.1(eslint@10.8.0(supports-color@5.5.0))
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.8.1(supports-color@5.5.0))
       '@eslint-community/regexpp': 4.12.2
       '@eslint/config-array': 0.23.5(supports-color@5.5.0)
       '@eslint/config-helpers': 0.7.0

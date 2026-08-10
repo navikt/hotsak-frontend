@@ -7,11 +7,11 @@ import { lagKontaktpersonTekst } from '../../saksbilde/bruker/lagKontaktpersonTe
 import { lagLeveringsmåteTekst } from '../../saksbilde/venstremeny/lagLeveringsmåteTekst.ts'
 import {
   Brukerkilde,
-  GodkjenningskursSjekk,
   Innsenderbehovsmelding,
   Oppfølgingsansvarlig,
   Utleveringsmåte,
 } from '../../types/BehovsmeldingTypes.ts'
+import type { GodkjenningskursSjekk } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import {
   formaterAdresse,
@@ -34,7 +34,7 @@ function GodkjenningskursInfo({ resultat }: Readonly<{ resultat: Godkjenningskur
     return null
   }
   const gjennomførte = resultat.filter((kurs) => kurs.gjennomført)
-  const ikkeFunnet = resultat.filter((kurs) => !kurs.gjennomført)
+  const ikkeGjennomførte = resultat.filter((kurs) => !kurs.gjennomført)
   return (
     <VStack gap="space-4">
       <Tekst>
@@ -43,8 +43,8 @@ function GodkjenningskursInfo({ resultat }: Readonly<{ resultat: Godkjenningskur
       {gjennomførte.length > 0 && (
         <Tekst textColor="subtle">Gjennomført: {gjennomførte.map((kurs) => kurs.tittel).join(', ')}</Tekst>
       )}
-      {ikkeFunnet.length > 0 && (
-        <WarningTag langTekst>Må sjekkes: {ikkeFunnet.map((kurs) => kurs.tittel).join(', ')}</WarningTag>
+      {ikkeGjennomførte.length > 0 && (
+        <WarningTag langTekst>Må sjekkes: {ikkeGjennomførte.map((kurs) => kurs.tittel).join(', ')}</WarningTag>
       )}
     </VStack>
   )

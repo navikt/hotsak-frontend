@@ -23,7 +23,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
     oppgaveErPåVent,
     gjeldendeEnhet,
   } = useOppgaveregler(oppgave)
-  const { endreOppgavetildeling, fjernOppgavetildeling, overførOppgave } = useOppgaveActions(oppgave)
+  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { logOppgaveLagtTilbake } = useUmami()
 
   if (!oppgave) {
@@ -79,15 +79,12 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
         Overfør til medarbeider
       </OppgaveModalActionMenuItem>
       {isJournalføring && (
-        <ActionMenu.Item
-          disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
-          onSelect={async () => {
-            await overførOppgave.trigger()
-            if (onAction) return onAction()
-          }}
+        <OppgaveModalActionMenuItem
+          modal={OppgaveModalType.OVERFØR_TIL_GOSYS}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
         >
           Overfør til Gosys
-        </ActionMenu.Item>
+        </OppgaveModalActionMenuItem>
       )}
       <ActionMenu.Item
         disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}

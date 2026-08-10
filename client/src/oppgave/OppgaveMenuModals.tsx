@@ -1,6 +1,7 @@
 import { EndreGjelderModal } from './EndreGjelderModal.tsx'
 import { FortsettBehandlingModal } from './FortsettBehandlingModal.tsx'
 import { type Oppgave } from './oppgaveTypes.ts'
+import { OverførOppgaveTilGosysModal } from './OverførOppgaveTilGosysModal.tsx'
 import { OverførTilMedarbeiderModal } from './OverførTilMedarbeiderModal.tsx'
 import { SettPåVentModal } from './SettPåVentModal.tsx'
 
@@ -16,6 +17,7 @@ export function OppgaveMenuModals(props: OppgaveMenuModalsProps) {
       <FortsettBehandlingModal oppgave={oppgave} />
       <EndreGjelderModal oppgave={oppgave} />
       <OverførTilMedarbeiderModal oppgave={oppgave} />
+      <OverførOppgaveTilGosysModal oppgave={oppgave} />
     </>
   )
 }

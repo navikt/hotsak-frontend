@@ -5,21 +5,12 @@ import useSWRImmutable from 'swr/immutable'
 
 import { http } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
-import {
-  erOppgaveId,
-  type Oppgave,
-  type OppgaveId,
-  type OppgaveMappe,
-  type OppgaveMapperResponse,
-} from './oppgaveTypes.ts'
+import { type Oppgave, type OppgaveId, type OppgaveMappe, type OppgaveMapperResponse } from './oppgaveTypes.ts'
 
 export function useOppgaveId(): OppgaveId | undefined {
   const { oppgaveId } = useParams<{ oppgaveId: OppgaveId | string }>()
   useDebugValue(oppgaveId)
-  if (erOppgaveId(oppgaveId)) {
-    return oppgaveId
-  }
-  return
+  return oppgaveId
 }
 
 export interface UseOppgaveResponse extends Omit<SWRResponse<Oppgave, HttpError>, 'data'> {

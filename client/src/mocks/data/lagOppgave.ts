@@ -53,6 +53,8 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
     sak: { sakId, sakstype: sak.sakstype, saksstatus: sak.saksstatus, søknadId: '', søknadGjelder: sak.søknadGjelder },
     behandlesAvApplikasjon: 'HOTSAK',
     isUlest: true,
+    isBehandlesAvApplikasjonHotsak: true,
+    isJournalføringsoppgave: false,
   }
 }
 
@@ -62,7 +64,7 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
   // TODO: Litt hacky utledning av gjelder verdi på behandlingsteama. Når vi vet mer om hvordan vi vil gjøre det, bør logikken her også oppdateres. Sjekke på brevkode for eksempel
 
   return {
-    oppgaveId: `I-${journalpostId}`,
+    oppgaveId: `10${journalpostId}`,
     versjon: 1,
     statuskategori: Statuskategori.ÅPEN,
     oppgavestatus: Oppgavestatus.OPPRETTET,
@@ -91,5 +93,9 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
       fulltNavn: formaterNavn(journalføring.bruker!.navn),
     },
     journalpostId: journalpostId,
+    behandlesAvApplikasjon: 'HOTSAK',
+    isUlest: true,
+    isBehandlesAvApplikasjonHotsak: true,
+    isJournalføringsoppgave: true,
   }
 }

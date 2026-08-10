@@ -1,7 +1,10 @@
-import useSWRMutation, { type SWRMutationResponse } from 'swr/mutation'
+import useSWRMutation from 'swr/mutation'
 
-import { Actions, useActionState } from '../action/Actions.ts'
+import { useActionState } from '../action/Actions.ts'
+import { useToast } from '../felleskomponenter/toast/useToast.ts'
+import type { Tilbakemelding } from '../innsikt/Besvarelse.ts'
 import { http } from '../io/HttpClient.ts'
+import type { HttpError } from '../io/HttpError.ts'
 import { mutateSak } from '../sak/useSak.ts'
 import { useUmami } from '../sporing/useUmami.ts'
 import { type NavIdent } from '../tilgang/Ansatt.ts'
@@ -18,54 +21,11 @@ export interface EndreOppgavetildelingRequest {
   kommentar?: string
 }
 
-export interface FjernOppgavetildelingRequest {
-  kommentar?: string
-}
-
 export interface EndreOppgaveRequest {
   behandlingstema?: string
   aktivDato?: string
   fristFerdigstillelse?: string
   kommentar?: string
-}
-
-export interface OppgaveActions extends Actions {
-  /**
-   * Endre tildeling av oppgave. Støtter også overtagelse av oppgave.
-   *
-   * @param request
-   * @param onConflict
-   */
-  endreOppgavetildeling(
-    request: Omit<EndreOppgavetildelingRequest, 'oppgaveId'>,
-    onConflict?: () => void | Promise<void>
-  ): Promise<void>
-
-  /**
-   * Fjern tildeling av oppgave/sak. Setter behandlende saksbehandler til `null`.
-   */
-  fjernOppgavetildeling(request?: FjernOppgavetildelingRequest): Promise<void>
-
-  /**
-   * Endre oppgave.
-   *
-   * @param request
-   */
-  endreOppgave(request: EndreOppgaveRequest): Promise<void>
-
-  /**
-   * Merk oppgave som lest.
-   */
-  merkSomLest(): Promise<void>
-
-  /**
-   * Lagre en kommentar til oppgaven.
-   *
-   * @param tekst
-   */
-  lagreKommentar(tekst: string): Promise<void>
-
-  overførOppgave: SWRMutationResponse
 }
 
 /**
@@ -74,10 +34,11 @@ export interface OppgaveActions extends Actions {
  * @param oppgave
  * @param isOppgaveContext
  */
-export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true): OppgaveActions {
+export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true) {
   const { oppgaveId, versjon, sakId } = oppgave
   const { execute, state } = useActionState()
   const { logOppgaveKommentarLagret } = useUmami()
+  const { showSuccessToast, showErrorToast } = useToast()
   const mutateOppgaveOgSak = () => {
     if (sakId) {
       return Promise.all([mutateOppgave(oppgaveId), mutateSak(sakId)])
@@ -85,25 +46,36 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
     return mutateOppgave(oppgaveId)
   }
 
-  const oppgaveKey = oppgaveId ? `/api/oppgaver/${oppgaveId}` : null
+  const oppgaveKey = oppgave ? `/api/oppgaver/${oppgaveId}` : null
 
-  const overførOppgave = useSWRMutation(
+  const overførOppgave = useSWRMutation<void, HttpError, string | null, { tilbakemelding: Tilbakemelding }>(
     oppgaveKey,
-    (url) =>
+    (url, { arg }) =>
       http.post(
         `${url}/overforing`,
         {
+          ...arg,
           oppgaveId,
         },
         { versjon }
       ),
     {
-      async onSuccess() {},
+      async onSuccess() {
+        showSuccessToast('Oppgaven ble overført til Gosys')
+      },
+      async onError() {
+        showErrorToast('Oppgaven ble ikke overført til Gosys')
+      },
     }
   )
 
   return {
-    async endreOppgavetildeling(request) {
+    /**
+     * Endre tildeling av oppgave. Støtter også overtagelse av oppgave.
+     *
+     * @param request
+     */
+    async endreOppgavetildeling(request: Omit<EndreOppgavetildelingRequest, 'oppgaveId'>): Promise<void> {
       return execute(async () => {
         await http.post(`/api/oppgaver/${oppgaveId}/tildeling`, request, {
           versjon,
@@ -114,7 +86,10 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
       })
     },
 
-    async fjernOppgavetildeling() {
+    /**
+     * Fjern tildeling av oppgave/sak. Setter behandlende saksbehandler til `null`.
+     */
+    async fjernOppgavetildeling(): Promise<void> {
       return execute(async () => {
         await http.delete(`/api/oppgaver/${oppgaveId}/tildeling`, {
           versjon,
@@ -125,7 +100,12 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
       })
     },
 
-    async endreOppgave(request) {
+    /**
+     * Endre oppgave.
+     *
+     * @param request
+     */
+    async endreOppgave(request: EndreOppgaveRequest): Promise<void> {
       return execute(async () => {
         await http.put(`/api/oppgaver/${oppgaveId}`, request, {
           versjon,
@@ -136,11 +116,19 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
       })
     },
 
-    async merkSomLest() {
+    /**
+     * Merk oppgave som lest.
+     */
+    async merkSomLest(): Promise<void> {
       return execute(() => http.put(`/api/oppgaver/${oppgaveId}/leste`))
     },
 
-    async lagreKommentar(tekst: string) {
+    /**
+     * Lagre en kommentar til oppgaven.
+     *
+     * @param tekst
+     */
+    async lagreKommentar(tekst: string): Promise<void> {
       return execute(async () => {
         await http.post(`/api/oppgaver/${oppgaveId}/kommentarer`, { tekst }, { versjon })
         if (isOppgaveContext) {
@@ -154,6 +142,9 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
       })
     },
 
+    /**
+     * Overfør oppgaven til behandling i Gosys.
+     */
     overførOppgave,
 
     state,

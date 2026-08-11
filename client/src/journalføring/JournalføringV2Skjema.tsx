@@ -348,78 +348,73 @@ export function JournalføringV2Skjema({
                   <BodyShort size="small">{OppgavetypeLabel[Oppgavetype.BEHANDLE_SAK]}</BodyShort>
                 </VStack>
 
-                <VStack gap="space-4">
-                  <Label size="small">Behandlingstype</Label>
-                  <Controller
-                    name="stønadType"
-                    control={control}
-                    rules={{
-                      validate: (v) => v === 'S' || 'Hotsak kan kun behandle søknader. Du må overføre saken til Gosys',
-                    }}
-                    render={({ field, fieldState }) => (
-                      <InlineRedigerbarSelect
-                        verdi={field.value}
-                        tekst={stønadstype[field.value as SakstypeKode]}
-                        kanRedigere={kanRedigere}
-                        error={fieldState.error?.message}
-                        className={classes.stønadTypeSelect}
-                        onLagre={(kode) => field.onChange(kode)}
-                      >
-                        {(Object.entries(stønadstype) as [SakstypeKode, string][]).map(([kode, tekst]) => (
-                          <option key={kode} value={kode}>
-                            {tekst}
-                          </option>
-                        ))}
-                      </InlineRedigerbarSelect>
-                    )}
-                  />
-                </VStack>
-                <VStack gap="space-4">
-                  <Label size="small">Stønadsklassifisering</Label>
-                  <Controller
-                    name="stønadsklassifisering"
-                    control={control}
-                    rules={{
-                      validate: (v) =>
-                        v === 'DA' || 'Hotsak kan kun behandle dagligliv. Du må overføre saken til Gosys',
-                    }}
-                    render={({ field, fieldState }) => (
-                      <InlineRedigerbarSelect
-                        verdi={field.value}
-                        tekst={stønadsklassifiseringData.stk2.find((s) => s.kode === field.value)?.tekst ?? ''}
-                        kanRedigere={kanRedigere}
-                        error={fieldState.error?.message}
-                        className={classes.stønadsklassifiseringSelect}
-                        onLagre={(kode) => field.onChange(kode)}
-                      >
-                        {stønadsklassifiseringData.stk2.map((s) => (
-                          <option key={s.kode} value={s.kode}>
-                            {s.tekst}
-                          </option>
-                        ))}
-                      </InlineRedigerbarSelect>
-                    )}
-                  />
-                </VStack>
+                <Controller
+                  name="stønadType"
+                  control={control}
+                  rules={{
+                    validate: (v) => v === 'S' || 'Hotsak kan kun behandle søknader. Du må overføre saken til Gosys',
+                  }}
+                  render={({ field, fieldState }) => (
+                    <InlineRedigerbarSelect
+                      label="Behandlingstype"
+                      verdi={field.value}
+                      tekst={stønadstype[field.value as SakstypeKode]}
+                      kanRedigere={kanRedigere}
+                      error={fieldState.error?.message}
+                      className={classes.stønadTypeSelect}
+                      onLagre={(kode) => field.onChange(kode)}
+                    >
+                      {(Object.entries(stønadstype) as [SakstypeKode, string][]).map(([kode, tekst]) => (
+                        <option key={kode} value={kode}>
+                          {tekst}
+                        </option>
+                      ))}
+                    </InlineRedigerbarSelect>
+                  )}
+                />
+
+                <Controller
+                  name="stønadsklassifisering"
+                  control={control}
+                  rules={{
+                    validate: (v) => v === 'DA' || 'Hotsak kan kun behandle dagligliv. Du må overføre saken til Gosys',
+                  }}
+                  render={({ field, fieldState }) => (
+                    <InlineRedigerbarSelect
+                      label="Stønadsklassifisering"
+                      verdi={field.value}
+                      tekst={stønadsklassifiseringData.stk2.find((s) => s.kode === field.value)?.tekst ?? ''}
+                      kanRedigere={kanRedigere}
+                      error={fieldState.error?.message}
+                      className={classes.stønadsklassifiseringSelect}
+                      onLagre={(kode) => field.onChange(kode)}
+                    >
+                      {stønadsklassifiseringData.stk2.map((s) => (
+                        <option key={s.kode} value={s.kode}>
+                          {s.tekst}
+                        </option>
+                      ))}
+                    </InlineRedigerbarSelect>
+                  )}
+                />
+
+                <InlineRedigerbarDato
+                  label="Mottatt dato"
+                  verdi={parseISO(valgtMottattDato)}
+                  kanRedigere={kanRedigere}
+                  onLagre={(dato) => {
+                    const datoStr = formatISO(dato, { representation: 'date' })
+                    setValue('mottattDato', datoStr)
+                    setValue('aktivFra', datoStr, { shouldValidate: true })
+                    const nyFrist = addWeeks(dato, 4)
+                    setFrist(nyFrist)
+                    setValue('frist', formatISO(nyFrist, { representation: 'date' }), { shouldValidate: true })
+                  }}
+                />
 
                 <VStack gap="space-4">
-                  <Label size="small">Mottatt dato</Label>
                   <InlineRedigerbarDato
-                    verdi={parseISO(valgtMottattDato)}
-                    kanRedigere={kanRedigere}
-                    onLagre={(dato) => {
-                      const datoStr = formatISO(dato, { representation: 'date' })
-                      setValue('mottattDato', datoStr)
-                      setValue('aktivFra', datoStr, { shouldValidate: true })
-                      const nyFrist = addWeeks(dato, 4)
-                      setFrist(nyFrist)
-                      setValue('frist', formatISO(nyFrist, { representation: 'date' }), { shouldValidate: true })
-                    }}
-                  />
-                </VStack>
-                <VStack gap="space-4">
-                  <Label size="small">Aktiv fra</Label>
-                  <InlineRedigerbarDato
+                    label="Aktiv fra"
                     verdi={parseISO(valgtAktivFra)}
                     kanRedigere={kanRedigere}
                     onLagre={(dato) => {
@@ -429,21 +424,19 @@ export function JournalføringV2Skjema({
                   {errors.aktivFra?.message && <ErrorMessage size="small">{errors.aktivFra.message}</ErrorMessage>}
                 </VStack>
 
-                <VStack gap="space-4">
-                  <Label size="small">Prioritet</Label>
-                  <InlineRedigerbarSelect
-                    verdi={valgtPrioritet}
-                    tekst={OppgaveprioritetLabel[valgtPrioritet]}
-                    kanRedigere={kanRedigere}
-                    onLagre={(prioritet) => setValue('prioritet', prioritet as Oppgaveprioritet)}
-                  >
-                    {Object.values(Oppgaveprioritet).map((p) => (
-                      <option key={p} value={p}>
-                        {OppgaveprioritetLabel[p]}
-                      </option>
-                    ))}
-                  </InlineRedigerbarSelect>
-                </VStack>
+                <InlineRedigerbarSelect
+                  label="Prioritet"
+                  verdi={valgtPrioritet}
+                  tekst={OppgaveprioritetLabel[valgtPrioritet]}
+                  kanRedigere={kanRedigere}
+                  onLagre={(prioritet) => setValue('prioritet', prioritet as Oppgaveprioritet)}
+                >
+                  {Object.values(Oppgaveprioritet).map((p) => (
+                    <option key={p} value={p}>
+                      {OppgaveprioritetLabel[p]}
+                    </option>
+                  ))}
+                </InlineRedigerbarSelect>
               </div>
 
               <TextContainer>
@@ -580,6 +573,7 @@ export function JournalføringV2Skjema({
 }
 
 function InlineRedigerbarSelect({
+  label,
   verdi,
   tekst,
   kanRedigere,
@@ -588,6 +582,7 @@ function InlineRedigerbarSelect({
   className,
   children,
 }: {
+  label: string
   verdi: string
   tekst: string
   kanRedigere: boolean
@@ -600,39 +595,49 @@ function InlineRedigerbarSelect({
 
   if (redigerer) {
     return (
-      <div className={className}>
-        <Select
-          label=""
-          hideLabel
-          size="small"
-          defaultValue={verdi}
-          autoFocus
-          error={error ? <span style={{ display: 'block', overflowWrap: 'break-word' }}>{error}</span> : undefined}
-          onChange={(e) => onLagre(e.target.value)}
-        >
-          {children}
-        </Select>
-      </div>
+      <VStack gap="space-4">
+        <Label size="small">{label}</Label>
+        <div className={className}>
+          <Select
+            label=""
+            hideLabel
+            size="small"
+            defaultValue={verdi}
+            autoFocus
+            error={error ? <span className={classes.errorWrap}>{error}</span> : undefined}
+            onChange={(e) => {
+              onLagre(e.target.value)
+            }}
+          >
+            {children}
+          </Select>
+        </div>
+      </VStack>
     )
   }
 
   return (
-    <HStack align="center">
-      <BodyShort size="small">{tekst}</BodyShort>
-      {kanRedigere && (
-        <Button variant="tertiary" size="xsmall" type="button" onClick={() => setRedigerer(true)}>
-          Endre
-        </Button>
-      )}
-    </HStack>
+    <VStack gap="space-4">
+      <Label size="small">{label}</Label>
+      <HStack align="center">
+        <BodyShort size="small">{tekst}</BodyShort>
+        {kanRedigere && (
+          <Button variant="tertiary" size="xsmall" type="button" onClick={() => setRedigerer(true)}>
+            Endre
+          </Button>
+        )}
+      </HStack>
+    </VStack>
   )
 }
 
 function InlineRedigerbarDato({
+  label,
   verdi,
   kanRedigere,
   onLagre,
 }: {
+  label: string
   verdi: Date
   kanRedigere: boolean
   onLagre: (dato: Date) => void
@@ -642,26 +647,34 @@ function InlineRedigerbarDato({
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: verdi,
     onDateChange: (dato) => {
-      if (dato) onLagre(dato)
+      if (dato) {
+        onLagre(dato)
+      }
     },
   })
 
   if (redigerer) {
     return (
-      <DatePicker {...datepickerProps}>
-        <DatePicker.Input {...inputProps} label="" hideLabel size="small" autoFocus />
-      </DatePicker>
+      <VStack gap="space-4">
+        <Label size="small">{label}</Label>
+        <DatePicker {...datepickerProps}>
+          <DatePicker.Input {...inputProps} label="" hideLabel size="small" autoFocus />
+        </DatePicker>
+      </VStack>
     )
   }
 
   return (
-    <HStack align="center">
-      <BodyShort size="small">{formaterDato(formatISO(verdi, { representation: 'date' }))}</BodyShort>
-      {kanRedigere && (
-        <Button variant="tertiary" size="xsmall" type="button" onClick={() => setRedigerer(true)}>
-          Endre
-        </Button>
-      )}
-    </HStack>
+    <VStack gap="space-4">
+      <Label size="small">{label}</Label>
+      <HStack align="center">
+        <BodyShort size="small">{formaterDato(formatISO(verdi, { representation: 'date' }))}</BodyShort>
+        {kanRedigere && (
+          <Button variant="tertiary" size="xsmall" type="button" onClick={() => setRedigerer(true)}>
+            Endre
+          </Button>
+        )}
+      </HStack>
+    </VStack>
   )
 }

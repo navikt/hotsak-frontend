@@ -19,3 +19,8 @@
 .stønadsklassifiseringSelect {
   width: 22rem;
 }
+
+.errorWrap {
+  display: block;
+  overflow-wrap: break-word;
+}

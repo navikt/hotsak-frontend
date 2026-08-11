@@ -1,21 +1,21 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyShort, HStack, VStack } from '@navikt/ds-react'
 
+import { type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
 import { FormatFødselsnummer } from '../felleskomponenter/format/FormatFødselsnummer.tsx'
 import { FormatPersonnavn } from '../felleskomponenter/format/FormatPersonnavn.tsx'
+import { IconLink } from '../felleskomponenter/IconLink.tsx'
 import { Strek } from '../felleskomponenter/Strek.tsx'
-import { type Oppgave, type OppgaveBruker, oppgaveIdUtenPrefix, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
+import { type Oppgave, type OppgaveBruker, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
+import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { Sakstype } from '../types/types.internal.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
-import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
-import { type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
-import { IconLink } from '../felleskomponenter/IconLink.tsx'
 
 export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) {
-  const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
+  const oppgaveId = oppgave.oppgaveId
   const { kategorisering, bruker, sak } = oppgave
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
   const { id: saksbehandlerId } = useInnloggetAnsatt()

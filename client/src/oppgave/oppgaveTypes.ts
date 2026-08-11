@@ -2,45 +2,11 @@ import type { PageResponse } from '../felleskomponenter/Page.ts'
 import type { Bydel, Enhet, Kommune, Personnavn } from '../types/hotlibs.ts'
 import type { OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
 import type { IntervalString } from '../utils/dato.ts'
-import { isInteger, isString } from '../utils/type.ts'
 
 /**
- * Oppgaven er opprettet i felles oppgaveløsning.
+ * Oppgave-ID fra Oppgave-API.
  */
-type EksternOppgaveId = string
-
-/**
- * Oppgaven er kun opprettet i Hotsak-tabellen `oppgave_v1`.
- */
-type InternOppgaveId = `I-${number}`
-
-/**
- * Vi har to ulike typer `OppgaveId`. Typen forteller oss hvor oppgaven er lagret.
- */
-export type OppgaveId = EksternOppgaveId | InternOppgaveId
-
-export function erEksternOppgaveId(value: unknown): value is EksternOppgaveId {
-  return isInteger(value)
-}
-
-export function erInternOppgaveId(value: unknown): value is InternOppgaveId {
-  return isString(value) && value.substring(0, 2) === 'I-'
-}
-
-export function erOppgaveId(value: unknown): value is OppgaveId {
-  return erInternOppgaveId(value) || erEksternOppgaveId(value)
-}
-
-export function erOppgaveIdNull(value: unknown): value is '0' {
-  return value === '0'
-}
-
-export function oppgaveIdUtenPrefix(oppgaveId: OppgaveId): string {
-  if (isString(oppgaveId) && oppgaveId.charAt(1) == '-') {
-    return oppgaveId.substring(2)
-  }
-  return oppgaveId.toString()
-}
+export type OppgaveId = string
 
 export enum Oppgavetype {
   JOURNALFØRING = 'JOURNALFØRING',
@@ -144,6 +110,9 @@ export interface Oppgave extends OppgaveBase {
   // oppgavebehandling
   sistLest?: string
   isUlest?: boolean
+
+  isBehandlesAvApplikasjonHotsak: boolean
+  isJournalføringsoppgave: boolean
 }
 
 export interface OppgaveMappe {
@@ -169,9 +138,7 @@ export interface Journalføringsoppgave extends Oppgave {
 }
 
 export type SaksbehandlingOppgavetype =
-  | Oppgavetype.BEHANDLE_SAK
-  | Oppgavetype.GODKJENNE_VEDTAK
-  | Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
+  Oppgavetype.BEHANDLE_SAK | Oppgavetype.GODKJENNE_VEDTAK | Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
 
 export interface SaksbehandlingsoppgaveBase extends OppgaveBase {
   sakId: string

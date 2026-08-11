@@ -49,7 +49,7 @@ export function useOppgaveregler(oppgave?: Oppgave): UseOppgavereglerResponse {
     if (!oppgave) return initialResponse
     const { tildeltSaksbehandler } = oppgave
     const statuskategori = oppgave.statuskategori
-    const oppgaveErÅpen = statuskategori === Statuskategori.ÅPEN
+    const oppgaveErÅpen = statuskategori === Statuskategori.ÅPEN && oppgave.isBehandlesAvApplikasjonHotsak
     const oppgaveErAvsluttet = statuskategori === Statuskategori.AVSLUTTET
     const oppgaveErKlarTilBehandling = oppgaveErÅpen && tildeltSaksbehandler == null
     const oppgaveErUnderBehandling = oppgaveErÅpen && tildeltSaksbehandler != null

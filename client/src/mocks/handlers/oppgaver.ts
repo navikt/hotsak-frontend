@@ -2,11 +2,9 @@ import { http, HttpResponse } from 'msw'
 
 import { type Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer.ts'
 import {
-  erInternOppgaveId,
   type FinnOppgaverRequest,
   type FinnOppgaverResponse,
   type OppgaveId,
-  oppgaveIdUtenPrefix,
   type OppgaveMapperResponse,
 } from '../../oppgave/oppgaveTypes.ts'
 import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
@@ -120,12 +118,16 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
     return respondNoContent()
   }),
 
+  http.post<OppgaveParams>(`/api/oppgaver/:oppgaveId/overforing`, async ({ params }) => {
+    const { oppgaveId } = params
+    await oppgaveStore.overfør(oppgaveId)
+    return respondNoContent()
+  }),
+
   http.post<OppgaveParams>(`/api/oppgaver/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
     await oppgaveStore.tildel(oppgaveId)
-    if (!erInternOppgaveId(oppgaveId)) {
-      await sakStore.tildel(oppgaveIdUtenPrefix(oppgaveId))
-    }
+    await sakStore.tildel(oppgaveId)
     await delay(200)
     return respondNoContent()
   }),
@@ -133,9 +135,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
   http.delete<OppgaveParams>(`/api/oppgaver/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
     await oppgaveStore.fjernTildeling(oppgaveId)
-    if (!erInternOppgaveId(oppgaveId)) {
-      await sakStore.fjernTildeling(oppgaveIdUtenPrefix(oppgaveId))
-    }
+    await sakStore.fjernTildeling(oppgaveId)
     await delay(200)
     return respondNoContent()
   }),

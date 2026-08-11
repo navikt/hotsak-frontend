@@ -78,6 +78,14 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       >
         Overfør til medarbeider
       </OppgaveModalActionMenuItem>
+      {isJournalføring && (
+        <OppgaveModalActionMenuItem
+          modal={OppgaveModalType.OVERFØR_TIL_GOSYS}
+          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
+        >
+          Overfør til Gosys
+        </OppgaveModalActionMenuItem>
+      )}
       <ActionMenu.Item
         disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
         onSelect={async () => {

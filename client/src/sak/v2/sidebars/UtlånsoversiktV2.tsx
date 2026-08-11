@@ -26,14 +26,11 @@ export function UtlånsoversiktV2() {
 
   const harHøreapparatVedtak = !!høreapparatVedtak?.harVedtak && !!høreapparatVedtak?.vedtaksdato
 
-  const erPilot = useErPilot('hotsakEksperimenter')
   return (
     <>
-      {erPilot && (
-        <SidebarPanelBox paddingBlock={'space-8 space-0'}>
-          <SidebarPanelHeading tittel="Utlånsoversikt" icon={<WheelchairIcon title="Utlånsoversikt" />} />
-        </SidebarPanelBox>
-      )}
+      <SidebarPanelBox paddingBlock={'space-8 space-0'}>
+        <SidebarPanelHeading tittel="Utlånsoversikt" icon={<WheelchairIcon title="Utlånsoversikt" />} />
+      </SidebarPanelBox>
       {isFromVedtak && (
         <SidebarPanelBox paddingBlock={'space-16 space-0'}>
           <Detail spacing color="subtle">

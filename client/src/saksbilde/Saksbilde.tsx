@@ -13,26 +13,22 @@ import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakProvider } from '../sak/v2/SakProvider'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
-import { useErPilot } from '../tilgang/useTilgang.ts'
-import { type SakBase, Sakstype } from '../types/types.internal'
-import { Personlinje } from './Personlinje'
+import { type SakBase } from '../types/types.internal'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))
 const SakV2 = lazy(() => import('../sak/v2/SakV2'))
-const Søknadsbilde = lazy(() => import('./Søknadsbilde'))
 
 const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading, error: sakError } = useSak()
-  const { erBestilling } = useSaksregler()
+  const { erBarnebrillesak } = useSaksregler()
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
-  const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
-  const erPilot = useErPilot('hotsakEksperimenter')
+  const { error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
   const { erProd } = useMiljø()
   const { gjeldendeBehandling } = useBehandling()
 
@@ -58,46 +54,27 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
     return <OverførtGosysVisning />
   }
 
-  if (sakData.sakstype === Sakstype.SØKNAD || (erPilot && erBestilling)) {
+  if (erBarnebrillesak) {
     return (
-      <div className={classes.wrapper}>
-        <Sidetittel tittel={`Sak ${sakData.sakId}`} />
-        <SakProvider sakstype={sakData.sakstype}>
-          <SakbrukerinnstillingerProvider>
-            <DokumentProvider>
-              <SakV2 oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
-            </DokumentProvider>
-          </SakbrukerinnstillingerProvider>
-        </SakProvider>
-      </div>
+      <DokumentProvider>
+        <Barnebrillesaksbilde oppgave={oppgave} />
+      </DokumentProvider>
     )
   }
 
   return (
     <div className={classes.wrapper}>
       <Sidetittel tittel={`Sak ${sakData.sakId}`} />
-      <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
-      <SakstypeSwitch oppgave={oppgave} sak={sakData} />
+      <SakProvider sakstype={sakData.sakstype}>
+        <SakbrukerinnstillingerProvider>
+          <DokumentProvider>
+            <SakV2 oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
+          </DokumentProvider>
+        </SakbrukerinnstillingerProvider>
+      </SakProvider>
     </div>
   )
 })
-
-function SakstypeSwitch({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: SakBase }) {
-  switch (sak.sakstype) {
-    case Sakstype.BARNEBRILLER:
-      return (
-        <DokumentProvider>
-          <Barnebrillesaksbilde oppgave={oppgave} />
-        </DokumentProvider>
-      )
-    case Sakstype.BESTILLING:
-      return (
-        <DokumentProvider>
-          <Søknadsbilde oppgave={oppgave} />
-        </DokumentProvider>
-      )
-  }
-}
 
 export default function Saksbilde({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) {
   return (

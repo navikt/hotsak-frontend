@@ -11,7 +11,6 @@ import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import { useErPilot } from '../../tilgang/useTilgang.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
@@ -44,6 +43,7 @@ import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
+import { useErPilot } from '../../tilgang/useTilgang.ts'
 
 function SakV2Content({
   oppgave,
@@ -64,7 +64,6 @@ function SakV2Content({
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erPapirsøknad } = useSaksregler()
   const erPilot = useErPilot('hotsakEksperimenter')
-
   const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
     useSakContext()
   const { panels } = panelState
@@ -124,12 +123,7 @@ function SakV2Content({
         marginInline="space-8"
         className={`${classes.resizableArea} ${classes.sakHovedLayout}`}
       >
-        <Group
-          orientation="horizontal"
-          defaultLayout={defaultLayout}
-          onLayoutChanged={onLayoutChanged}
-          className={!erPilot ? classes.eksperimentPanelGroup : undefined}
-        >
+        <Group orientation="horizontal" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
           {behandlingsPanel.visible && (
             <Panel
               id="behandlingspanel"
@@ -175,39 +169,33 @@ function SakV2Content({
               <KontaktinformasjonPanel sak={sak} behovsmelding={behovsmelding} />
             </AvrundetPanel>
           </ResizablePanel>
-          <ResizablePanel panelId="sidebarpanel" panel={sidePanel} visible={sidePanel.visible && !erPilot}>
-            <AvrundetPanel>
-              <Sidebar oppgave={oppgave} />
-            </AvrundetPanel>
+
+          <ResizablePanel
+            panelId="sidebarpanel"
+            panel={sidePanel}
+            canShowResizeHandle={sidePanel.visible}
+            panelRef={setEksperimentSidebarPanel}
+            defaultSize={sidePanel.visible ? sidePanel.defaultSize : 0}
+            collapsible
+            collapsedSize={0}
+            groupResizeBehavior="preserve-pixel-size"
+            onResize={handleEksperimentSidebarResize}
+          >
+            <div className={classes.eksperimentSidebarPanel}>
+              <Box
+                background="default"
+                paddingBlock="space-12 space-0"
+                borderRadius="12 0 0 0"
+                height="100%"
+                borderColor="neutral-subtle"
+                borderWidth="1 0 0 1"
+              >
+                <SidebarEksperiment oppgave={oppgave} />
+              </Box>
+            </div>
           </ResizablePanel>
-          {erPilot && (
-            <ResizablePanel
-              panelId="sidebarpanel"
-              panel={sidePanel}
-              canShowResizeHandle={sidePanel.visible}
-              panelRef={setEksperimentSidebarPanel}
-              defaultSize={sidePanel.visible ? sidePanel.defaultSize : 0}
-              collapsible
-              collapsedSize={0}
-              groupResizeBehavior="preserve-pixel-size"
-              onResize={handleEksperimentSidebarResize}
-            >
-              <div className={classes.eksperimentSidebarPanel}>
-                <Box
-                  background="default"
-                  paddingBlock="space-12 space-0"
-                  borderRadius="12 0 0 0"
-                  height="100%"
-                  borderColor="neutral-subtle"
-                  borderWidth="1 0 0 1"
-                >
-                  <SidebarEksperiment oppgave={oppgave} />
-                </Box>
-              </div>
-            </ResizablePanel>
-          )}
         </Group>
-        {erPilot && <VertikalIkonBar oppgave={oppgave} />}
+        <VertikalIkonBar oppgave={oppgave} />
       </Box>
       <StickyBunnlinje oppgave={oppgave} sak={sak} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />

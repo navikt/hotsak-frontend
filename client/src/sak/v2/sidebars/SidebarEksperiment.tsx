@@ -7,15 +7,14 @@ import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
 import { useSak } from '../../../saksbilde/useSak'
-import { useErPilot } from '../../../tilgang/useTilgang'
 import { Notater } from '../../notat/Notater'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import { SidebarValg } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakV2ContextType'
+import { OppgaverOgDokumenter } from './OppgaverOgDokumenter'
 import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import { OppgaverOgDokumenter } from './OppgaverOgDokumenter'
 
 export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave
@@ -26,7 +25,6 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
   const { sak } = useSak()
   useUtlånoversikt(sak?.data.bruker.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
   const closePanel = useClosePanel('sidebarpanel')
-  const erPilot = useErPilot('hotsakEksperimenter')
 
   function renderActivePanel() {
     switch (aktivSidebar) {
@@ -36,10 +34,7 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
         return <UtlånsoversiktV2 />
       case SidebarValg.NOTATER:
         return (
-          <SidebarPanel
-            tittel={erPilot ? 'Notater' : <Mellomtittel>Notater</Mellomtittel>}
-            icon={<NotePencilIcon title="Notater" />}
-          >
+          <SidebarPanel tittel="Notater" icon={<NotePencilIcon title="Notater" />}>
             <Notater oppgave={oppgave} />
           </SidebarPanel>
         )

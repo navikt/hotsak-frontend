@@ -14,6 +14,7 @@ export function useSaksregler() {
     kanEndreHjelpemiddel: oppgaveErUnderBehandlingAvInnloggetAnsatt,
     erBestilling: oppgave?.sak?.sakstype === Sakstype.BESTILLING,
     erSøknad: oppgave?.sak?.sakstype === Sakstype.SØKNAD,
+    erBarnebrillesak: oppgave?.sak?.sakstype === Sakstype.BARNEBRILLER,
     erPapirsøknad: behovsmelding?.kanal === Kanal.SKAN_IM,
   }
 }

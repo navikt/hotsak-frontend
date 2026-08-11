@@ -4,6 +4,7 @@ import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { useJournalpost } from '../saksbilde/useJournalpost.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
 import {
   isJournalføringsoppgave,
@@ -13,7 +14,6 @@ import {
 } from './oppgaveTypes.ts'
 import { useOppgave } from './useOppgave.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
 const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
@@ -43,7 +43,7 @@ function OppgaveContent() {
   const { merkSomLest } = useOppgaveActions(oppgave)
   useEffect(() => {
     if (oppgave) {
-      merkSomLest()
+      merkSomLest.trigger()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oppgave.oppgaveId])

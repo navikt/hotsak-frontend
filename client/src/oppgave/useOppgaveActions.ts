@@ -1,6 +1,5 @@
 import useSWRMutation from 'swr/mutation'
 
-import { useActionState } from '../action/Actions.ts'
 import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import type { Tilbakemelding } from '../innsikt/Besvarelse.ts'
 import { http } from '../io/HttpClient.ts'
@@ -9,11 +8,9 @@ import { mutateSak } from '../sak/useSak.ts'
 import { useUmami } from '../sporing/useUmami.ts'
 import { type NavIdent } from '../tilgang/Ansatt.ts'
 import { mutateOppgavekommentarer, mutateOppgavekommentarerForSak } from './kommentar/useOppgavekommentarer.ts'
-import { type OppgaveBase, type OppgaveId } from './oppgaveTypes.ts'
-import { mutateOppgave } from './useOppgave.ts'
+import { type OppgaveBase } from './oppgaveTypes.ts'
 
 export interface EndreOppgavetildelingRequest {
-  oppgaveId?: OppgaveId
   /**
    * Angis hvis en spesifikk ansatt skal bli saksbehandler.
    */
@@ -36,29 +33,85 @@ export interface EndreOppgaveRequest {
  */
 export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true) {
   const { oppgaveId, versjon, sakId } = oppgave
-  const { execute, state } = useActionState()
-  const { logOppgaveKommentarLagret } = useUmami()
+  const { logOppgaveLagtTilbake, logOppgaveKommentarLagret } = useUmami()
   const { showSuccessToast, showErrorToast } = useToast()
-  const mutateOppgaveOgSak = () => {
-    if (sakId) {
-      return Promise.all([mutateOppgave(oppgaveId), mutateSak(sakId)])
-    }
-    return mutateOppgave(oppgaveId)
-  }
 
   const oppgaveKey = oppgave ? `/api/oppgaver/${oppgaveId}` : null
 
-  const overførOppgave = useSWRMutation<void, HttpError, string | null, { tilbakemelding: Tilbakemelding }>(
+  const endreOppgavetildeling = useSWRMutation<void, HttpError, typeof oppgaveKey, EndreOppgavetildelingRequest>(
     oppgaveKey,
-    (url, { arg }) =>
+    (url, { arg: body }) => http.post(`${url}/tildeling`, body, { versjon }),
+    {
+      async onSuccess() {
+        if (isOppgaveContext) {
+          mutateSak(sakId)
+        }
+      },
+    }
+  )
+
+  const fjernOppgavetildeling = useSWRMutation<void, HttpError, typeof oppgaveKey>(
+    oppgaveKey,
+    (url) => http.delete(`${url}/tildeling`, { versjon }),
+    {
+      async onSuccess() {
+        logOppgaveLagtTilbake()
+        showSuccessToast('Oppgaven ble lagt tilbake til felles oppgavekø')
+        if (isOppgaveContext) {
+          mutateSak(sakId)
+        }
+      },
+    }
+  )
+
+  const endreOppgave = useSWRMutation<void, HttpError, typeof oppgaveKey, EndreOppgaveRequest>(
+    oppgaveKey,
+    (url, { arg: body }) => http.put(url, body, { versjon }),
+    {
+      async onSuccess() {
+        if (isOppgaveContext) {
+          mutateSak(sakId)
+        }
+      },
+    }
+  )
+
+  const merkSomLest = useSWRMutation<void, HttpError, typeof oppgaveKey>(
+    oppgaveKey,
+    (url) => http.put(`${url}/leste`),
+    {
+      async onSuccess() {},
+    }
+  )
+
+  const lagreKommentar = useSWRMutation<void, HttpError, typeof oppgaveKey, string>(
+    oppgaveKey,
+    (url, { arg: tekst }) =>
       http.post(
-        `${url}/overforing`,
+        `${url}/kommentarer`,
         {
-          ...arg,
-          oppgaveId,
+          tekst,
         },
         { versjon }
       ),
+    {
+      async onSuccess() {
+        logOppgaveKommentarLagret()
+        showSuccessToast('Kommentaren ble lagret')
+        if (isOppgaveContext) {
+          const promises = [mutateOppgavekommentarer(oppgaveId)]
+          if (sakId) {
+            promises.push(mutateOppgavekommentarerForSak(sakId))
+          }
+          await Promise.all(promises)
+        }
+      },
+    }
+  )
+
+  const overførOppgave = useSWRMutation<void, HttpError, typeof oppgaveKey, { tilbakemelding: Tilbakemelding }>(
+    oppgaveKey,
+    (url, { arg: body }) => http.post(`${url}/overforing`, body, { versjon }),
     {
       async onSuccess() {
         showSuccessToast('Oppgaven ble overført til Gosys')
@@ -72,81 +125,32 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
   return {
     /**
      * Endre tildeling av oppgave. Støtter også overtagelse av oppgave.
-     *
-     * @param request
      */
-    async endreOppgavetildeling(request: Omit<EndreOppgavetildelingRequest, 'oppgaveId'>): Promise<void> {
-      return execute(async () => {
-        await http.post(`/api/oppgaver/${oppgaveId}/tildeling`, request, {
-          versjon,
-        })
-        if (isOppgaveContext) {
-          await mutateOppgaveOgSak()
-        }
-      })
-    },
+    endreOppgavetildeling,
 
     /**
-     * Fjern tildeling av oppgave/sak. Setter behandlende saksbehandler til `null`.
+     * Fjern tildeling av oppgave. Setter behandlende saksbehandler til `null`.
      */
-    async fjernOppgavetildeling(): Promise<void> {
-      return execute(async () => {
-        await http.delete(`/api/oppgaver/${oppgaveId}/tildeling`, {
-          versjon,
-        })
-        if (isOppgaveContext) {
-          await mutateOppgaveOgSak()
-        }
-      })
-    },
+    fjernOppgavetildeling,
 
     /**
      * Endre oppgave.
-     *
-     * @param request
      */
-    async endreOppgave(request: EndreOppgaveRequest): Promise<void> {
-      return execute(async () => {
-        await http.put(`/api/oppgaver/${oppgaveId}`, request, {
-          versjon,
-        })
-        if (isOppgaveContext) {
-          await mutateOppgaveOgSak()
-        }
-      })
-    },
+    endreOppgave,
 
     /**
      * Merk oppgave som lest.
      */
-    async merkSomLest(): Promise<void> {
-      return execute(() => http.put(`/api/oppgaver/${oppgaveId}/leste`))
-    },
+    merkSomLest,
 
     /**
      * Lagre en kommentar til oppgaven.
-     *
-     * @param tekst
      */
-    async lagreKommentar(tekst: string): Promise<void> {
-      return execute(async () => {
-        await http.post(`/api/oppgaver/${oppgaveId}/kommentarer`, { tekst }, { versjon })
-        if (isOppgaveContext) {
-          const promises = [mutateOppgavekommentarer(oppgaveId)]
-          if (sakId) {
-            promises.push(mutateOppgavekommentarerForSak(sakId))
-          }
-          await Promise.all(promises)
-          logOppgaveKommentarLagret()
-        }
-      })
-    },
+    lagreKommentar,
 
     /**
      * Overfør oppgaven til behandling i Gosys.
      */
     overførOppgave,
-
-    state,
   }
 }

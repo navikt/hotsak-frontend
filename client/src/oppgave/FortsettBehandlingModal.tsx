@@ -32,7 +32,7 @@ export function FortsettBehandlingModal({ oppgave }: { oppgave: Oppgave }) {
   const { logOppgaveGjenopptatt } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
-    await endreOppgave({
+    await endreOppgave.trigger({
       aktivDato: tilLocalDateString(today),
       fristFerdigstillelse: tilLocalDateString(data.fristFerdigstillelse),
     })

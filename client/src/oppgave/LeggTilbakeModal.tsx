@@ -2,8 +2,6 @@ import { Textarea } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
-import { useToast } from '../felleskomponenter/toast/useToast'
-import { useUmami } from '../sporing/useUmami.ts'
 import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
 import { type Oppgave } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
@@ -19,12 +17,8 @@ export function LeggTilbakeModal({ oppgave }: { oppgave: Oppgave }) {
   })
 
   const { fjernOppgavetildeling } = useOppgaveActions(oppgave)
-  const { logOppgaveLagtTilbake } = useUmami()
-  const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async () => {
-    await fjernOppgavetildeling()
-    logOppgaveLagtTilbake()
-    showSuccessToast('Oppgaven ble lagt tilbake til felles oppgavekø')
+    await fjernOppgavetildeling.trigger()
     lukkModal()
   })
 

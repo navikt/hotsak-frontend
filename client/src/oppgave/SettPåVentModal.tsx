@@ -2,6 +2,7 @@ import { Checkbox, DatePicker, Textarea, useDatepicker, VStack } from '@navikt/d
 import { addDays, isBefore } from 'date-fns'
 import { useEffect, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { useToast } from '../felleskomponenter/toast/useToast'
@@ -71,7 +72,7 @@ export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
       })
       return
     }
-    await endreOppgave({
+    await endreOppgave.trigger({
       aktivDato: tilLocalDateString(data.aktivDato),
       fristFerdigstillelse: tilLocalDateString(data.fristFerdigstillelse),
       kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,

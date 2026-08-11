@@ -38,12 +38,10 @@ import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import classes from './SakV2.module.css'
 import { useSakContext } from './SakV2ContextType.ts'
-import { Sidebar } from './sidebars/Sidebar.tsx'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
-import { useErPilot } from '../../tilgang/useTilgang.ts'
 
 function SakV2Content({
   oppgave,
@@ -63,7 +61,6 @@ function SakV2Content({
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erPapirsøknad } = useSaksregler()
-  const erPilot = useErPilot('hotsakEksperimenter')
   const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
     useSakContext()
   const { panels } = panelState

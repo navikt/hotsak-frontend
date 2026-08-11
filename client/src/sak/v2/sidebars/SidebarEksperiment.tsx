@@ -2,7 +2,6 @@ import { ChevronRightIcon, NotePencilIcon } from '@navikt/aksel-icons'
 import { Box, Button } from '@navikt/ds-react'
 
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
-import { Mellomtittel } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useUtlånoversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'

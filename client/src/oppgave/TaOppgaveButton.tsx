@@ -15,11 +15,11 @@ export interface TaOppgaveButtonProps {
 
 export function TaOppgaveButton(props: TaOppgaveButtonProps) {
   const { oppgave, variant = 'secondary', size = 'small', children = 'Ta oppgave', onOppgavetildeling } = props
-  const { endreOppgavetildeling, state } = useOppgaveActions(oppgave, false)
+  const { endreOppgavetildeling } = useOppgaveActions(oppgave, false)
 
   const onClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation()
-    await endreOppgavetildeling({})
+    await endreOppgavetildeling.trigger({})
     if (onOppgavetildeling) {
       return onOppgavetildeling(oppgave.oppgaveId)
     }
@@ -32,8 +32,8 @@ export function TaOppgaveButton(props: TaOppgaveButtonProps) {
       name={children}
       variant={variant}
       size={size}
-      disabled={state.loading}
-      loading={state.loading}
+      disabled={endreOppgavetildeling.isMutating}
+      loading={endreOppgavetildeling.isMutating}
       onClick={onClick}
     >
       {children}

@@ -43,7 +43,7 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { logOppgaveOverførtTilMedarbeider } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
-    await endreOppgavetildeling({
+    await endreOppgavetildeling.trigger({
       saksbehandlerId: data.valgtSaksbehandler,
       kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,
     })

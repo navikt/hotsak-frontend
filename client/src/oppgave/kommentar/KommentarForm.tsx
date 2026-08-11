@@ -2,7 +2,6 @@ import { Button, InlineMessage, Textarea, VStack } from '@navikt/ds-react'
 
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useToast } from '../../felleskomponenter/toast/useToast'
 import { useOppgaveContext, useOppgaveDispatch } from '../OppgaveContext'
 import { type Oppgave } from '../oppgaveTypes'
 import { useOppgaveActions } from '../useOppgaveActions'
@@ -23,10 +22,8 @@ export function KommentarForm(props: KommentarFormProps) {
   } = form
 
   const { lagreKommentar } = useOppgaveActions(oppgave)
-  const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async ({ tekst }) => {
-    await lagreKommentar(tekst)
-    showSuccessToast('Kommentaren ble lagret')
+    await lagreKommentar.trigger(tekst)
     form.reset({ tekst: '' })
   })
 

@@ -35,7 +35,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       <OppgaveMenuGroup>
         <ActionMenu.Item
           onSelect={async () => {
-            await endreOppgavetildeling({})
+            await endreOppgavetildeling.trigger({})
             if (onAction) return onAction()
           }}
         >
@@ -89,7 +89,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       <ActionMenu.Item
         disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
         onSelect={async () => {
-          await fjernOppgavetildeling()
+          await fjernOppgavetildeling.trigger()
           logOppgaveLagtTilbake()
           if (onAction) return onAction()
         }}

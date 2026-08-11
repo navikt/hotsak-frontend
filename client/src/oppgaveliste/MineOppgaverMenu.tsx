@@ -18,7 +18,7 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
       <ActionMenu.Item
         disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
         onSelect={async () => {
-          await fjernOppgavetildeling()
+          await fjernOppgavetildeling.trigger()
           await mutateOppgaver()
         }}
       >

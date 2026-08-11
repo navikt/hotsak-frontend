@@ -44,7 +44,7 @@ export function EndreGjelderModal(props: EndreGjelderModalProps) {
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
     const { behandlingstema: nyBehandlingstemaKode } = data
-    await endreOppgave({ behandlingstema: nyBehandlingstemaKode })
+    await endreOppgave.trigger({ behandlingstema: nyBehandlingstemaKode })
     logOppgaveGjelderEndret({
       fra: gjeldendeBehandlingstema?.term,
       til: behandlingstemaTermByKode.get(nyBehandlingstemaKode),

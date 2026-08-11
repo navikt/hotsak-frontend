@@ -1,10 +1,8 @@
 import {
-  Alert,
   BodyShort,
   Box,
   Button,
   DatePicker,
-  Dialog,
   ErrorMessage,
   Heading,
   HStack,
@@ -78,9 +76,6 @@ function filtrertePåSøk(options: GjelderOption[], søk: string): GjelderOption
   return options.filter((o) => ord.every((ord) => o.searchTerms.includes(ord)))
 }
 
-const IKKE_JOURNALFØRING_MELDING =
-  'Søknaden kan ikke journalføres i Hotsak. Foreløpig behandler Hotsak kun søknader av typen «Søknad» med stønadsklassifisering «Dagligliv». Oppgaven må overføres til Gosys for videre behandling.'
-
 export function JournalføringV2Skjema({
   oppgave,
   journalpost,
@@ -90,7 +85,6 @@ export function JournalføringV2Skjema({
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
-  const [visIkkeJournalføringModal, setVisIkkeJournalføringModal] = useState(false)
   const { behandlere } = useOppgavebehandlere()
   const mapper = useOppgaveMapper()
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
@@ -114,6 +108,7 @@ export function JournalføringV2Skjema({
     trigger,
     formState: { errors },
   } = useForm<JournalføringV2SkjemaVerdier>({
+    mode: 'onChange',
     defaultValues: {
       tema: 'HJE',
       prioritet: Oppgaveprioritet.NORMAL,
@@ -130,8 +125,6 @@ export function JournalføringV2Skjema({
 
   const valgtBehandlingstype = watch('behandlingstype')
   const valgtBehandlingstema = watch('behandlingstema')
-  const valgtStønadsklassifisering = watch('stønadsklassifisering')
-  const valgtStønadType = watch('stønadType') as SakstypeKode
   const valgtMottattDato = watch('mottattDato')
   const valgtAktivFra = watch('aktivFra')
   const valgtPrioritet = watch('prioritet')
@@ -156,9 +149,6 @@ export function JournalføringV2Skjema({
     () => valgtGjelderOptions.map(({ label, value }) => ({ label, value })),
     [valgtGjelderOptions]
   )
-
-  const valgtStk2 = stønadsklassifiseringData.stk2.find((s) => s.kode === valgtStønadsklassifisering)!
-  const kanIkkeJournalføresIHotsak = valgtStønadType !== 'S' || valgtStønadsklassifisering !== 'DA'
 
   useEffect(() => {
     register('mottattDato')
@@ -360,46 +350,57 @@ export function JournalføringV2Skjema({
 
                 <VStack gap="space-4">
                   <Label size="small">Behandlingstype</Label>
-                  <InlineRedigerbarSelect
-                    verdi={valgtStønadType}
-                    tekst={stønadstype[valgtStønadType]}
-                    kanRedigere={kanRedigere}
-                    onLagre={(kode) => setValue('stønadType', kode as SakstypeKode)}
-                  >
-                    {(Object.entries(stønadstype) as [SakstypeKode, string][]).map(([kode, tekst]) => (
-                      <option key={kode} value={kode}>
-                        {tekst}
-                      </option>
-                    ))}
-                  </InlineRedigerbarSelect>
+                  <Controller
+                    name="stønadType"
+                    control={control}
+                    rules={{
+                      validate: (v) => v === 'S' || 'Hotsak kan kun behandle søknader. Du må overføre saken til Gosys',
+                    }}
+                    render={({ field, fieldState }) => (
+                      <InlineRedigerbarSelect
+                        verdi={field.value}
+                        tekst={stønadstype[field.value as SakstypeKode]}
+                        kanRedigere={kanRedigere}
+                        error={fieldState.error?.message}
+                        className={classes.stønadTypeSelect}
+                        onLagre={(kode) => field.onChange(kode)}
+                      >
+                        {(Object.entries(stønadstype) as [SakstypeKode, string][]).map(([kode, tekst]) => (
+                          <option key={kode} value={kode}>
+                            {tekst}
+                          </option>
+                        ))}
+                      </InlineRedigerbarSelect>
+                    )}
+                  />
                 </VStack>
                 <VStack gap="space-4">
                   <Label size="small">Stønadsklassifisering</Label>
-                  <InlineRedigerbarSelect
-                    verdi={valgtStønadsklassifisering}
-                    tekst={valgtStk2.tekst}
-                    kanRedigere={kanRedigere}
-                    onLagre={(kode) => setValue('stønadsklassifisering', kode)}
-                  >
-                    {stønadsklassifiseringData.stk2.map((s) => (
-                      <option key={s.kode} value={s.kode}>
-                        {s.tekst}
-                      </option>
-                    ))}
-                  </InlineRedigerbarSelect>
+                  <Controller
+                    name="stønadsklassifisering"
+                    control={control}
+                    rules={{
+                      validate: (v) =>
+                        v === 'DA' || 'Hotsak kan kun behandle dagligliv. Du må overføre saken til Gosys',
+                    }}
+                    render={({ field, fieldState }) => (
+                      <InlineRedigerbarSelect
+                        verdi={field.value}
+                        tekst={stønadsklassifiseringData.stk2.find((s) => s.kode === field.value)?.tekst ?? ''}
+                        kanRedigere={kanRedigere}
+                        error={fieldState.error?.message}
+                        className={classes.stønadsklassifiseringSelect}
+                        onLagre={(kode) => field.onChange(kode)}
+                      >
+                        {stønadsklassifiseringData.stk2.map((s) => (
+                          <option key={s.kode} value={s.kode}>
+                            {s.tekst}
+                          </option>
+                        ))}
+                      </InlineRedigerbarSelect>
+                    )}
+                  />
                 </VStack>
-
-                {kanIkkeJournalføresIHotsak && (
-                  <div className={classes.alertRad}>
-                    <TextContainer>
-                      <Alert variant="error" size="small">
-                        Søknaden kan ikke journalføres i Hotsak. Foreløpig behandler Hotsak kun søknader av typen
-                        «Søknad» med stønadsklassifisering «Dagligliv». Oppgaven må overføres til Gosys for videre
-                        behandling.
-                      </Alert>
-                    </TextContainer>
-                  </div>
-                )}
 
                 <VStack gap="space-4">
                   <Label size="small">Mottatt dato</Label>
@@ -445,7 +446,6 @@ export function JournalføringV2Skjema({
                 </VStack>
               </div>
 
-              {/* Gjelder — kombinasjon av behandlingstema og behandlingstype */}
               <TextContainer>
                 <HStack gap="space-20" align="start" wrap={false}>
                   <VStack gap="space-12" align="start">
@@ -553,12 +553,11 @@ export function JournalføringV2Skjema({
           {kanRedigere && (
             <HStack gap="space-4" paddingBlock="space-8 space-0">
               <Button
-                type={kanIkkeJournalføresIHotsak ? 'button' : 'submit'}
+                type="submit"
                 variant="primary"
                 size="small"
                 loading={journalførV2.isMutating}
                 disabled={journalførV2.isMutating}
-                onClick={kanIkkeJournalføresIHotsak ? () => setVisIkkeJournalføringModal(true) : undefined}
               >
                 Journalfør og opprett sak
               </Button>
@@ -576,11 +575,6 @@ export function JournalføringV2Skjema({
         resultat={journalføringResultat}
         onClose={() => setJournalføringResultat(null)}
       />
-
-      <IkkeJournalføringIHotsakModal
-        open={visIkkeJournalføringModal}
-        onClose={() => setVisIkkeJournalføringModal(false)}
-      />
     </VStack>
   )
 }
@@ -590,21 +584,35 @@ function InlineRedigerbarSelect({
   tekst,
   kanRedigere,
   onLagre,
+  error,
+  className,
   children,
 }: {
   verdi: string
   tekst: string
   kanRedigere: boolean
   onLagre: (ny: string) => void
+  error?: string
+  className?: string
   children: ReactNode
 }) {
   const [redigerer, setRedigerer] = useState(false)
 
   if (redigerer) {
     return (
-      <Select label="" hideLabel size="small" defaultValue={verdi} autoFocus onChange={(e) => onLagre(e.target.value)}>
-        {children}
-      </Select>
+      <div className={className}>
+        <Select
+          label=""
+          hideLabel
+          size="small"
+          defaultValue={verdi}
+          autoFocus
+          error={error ? <span style={{ display: 'block', overflowWrap: 'break-word' }}>{error}</span> : undefined}
+          onChange={(e) => onLagre(e.target.value)}
+        >
+          {children}
+        </Select>
+      </div>
     )
   }
 
@@ -655,23 +663,5 @@ function InlineRedigerbarDato({
         </Button>
       )}
     </HStack>
-  )
-}
-
-function IkkeJournalføringIHotsakModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  return (
-    <Dialog open={open} onOpenChange={(next) => !next && onClose()} size="medium">
-      <Dialog.Popup>
-        <Dialog.Header>
-          <Dialog.Title>Kan ikke journalføres i Hotsak</Dialog.Title>
-        </Dialog.Header>
-        <Dialog.Body>{IKKE_JOURNALFØRING_MELDING}</Dialog.Body>
-        <Dialog.Footer>
-          <Button variant="primary" size="small" type="button" onClick={onClose}>
-            Lukk
-          </Button>
-        </Dialog.Footer>
-      </Dialog.Popup>
-    </Dialog>
   )
 }

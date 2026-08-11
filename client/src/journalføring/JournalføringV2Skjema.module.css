@@ -10,6 +10,12 @@
   justify-content: start;
 }
 
-.alertRad {
-  grid-column: 1 / -1;
+/* "Klage tilbakebetaling" er lengste verdi */
+.stønadTypeSelect {
+  width: 14rem;
+}
+
+/* "Ombygging/tilrettelegging av arbeidsplasser" er lengste verdi */
+.stønadsklassifiseringSelect {
+  width: 22rem;
 }

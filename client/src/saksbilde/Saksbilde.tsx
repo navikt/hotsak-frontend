@@ -18,7 +18,6 @@ import { useMiljø } from '../utils/useMiljø.ts'
 import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
-const { personInfo, isLoading: personInfoLoading } = usePerson(sak.bruker.fnr)
 import { useSak } from './useSak'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))
@@ -29,7 +28,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   const { erBarnebrillesak } = useSaksregler()
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
-  const { error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
+  const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
   const { erProd } = useMiljø()
   const { gjeldendeBehandling } = useBehandling()
 

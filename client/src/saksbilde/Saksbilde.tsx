@@ -1,7 +1,7 @@
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 import { OverførtGosysVisning } from './OverførtGosysVisning'
-import { Personlinje } from '../../saksbilde/Personlinje.tsx'
+import { Personlinje } from './Personlinje'
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'

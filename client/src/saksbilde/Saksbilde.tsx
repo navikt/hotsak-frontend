@@ -1,7 +1,7 @@
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 import { OverførtGosysVisning } from './OverførtGosysVisning'
-
+import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
@@ -18,6 +18,7 @@ import { useMiljø } from '../utils/useMiljø.ts'
 import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
+const { personInfo, isLoading: personInfoLoading } = usePerson(sak.bruker.fnr)
 import { useSak } from './useSak'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))

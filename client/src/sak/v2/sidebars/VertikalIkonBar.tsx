@@ -17,7 +17,7 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
   const { sak } = useSak()
   const { aktivSidebar, setAktivSidebar, panelState } = useSakContext()
   const sidePanel = panelState.panels.sidebarpanel
-  const erIkkeProd = useMiljø()
+  const { erIkkeProd } = useMiljø()
 
   return (
     <Box

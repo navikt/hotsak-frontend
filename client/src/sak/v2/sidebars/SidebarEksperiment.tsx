@@ -13,6 +13,7 @@ import { useSakContext } from '../SakV2ContextType'
 import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
+import { OppgaverOgDokumenter } from './OppgaverOgDokumenter'
 
 export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave
@@ -36,6 +37,8 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
             <Notater oppgave={oppgave} />
           </SidebarPanel>
         )
+      case SidebarValg.OPPGAVER_OG_DOKUMENTER:
+        return <OppgaverOgDokumenter />
       default:
         return null
     }

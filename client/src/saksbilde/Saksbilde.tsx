@@ -55,10 +55,15 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   }
 
   if (erBarnebrillesak) {
+
     return (
-      <DokumentProvider>
-        <Barnebrillesaksbilde oppgave={oppgave} />
+      <div className={classes.wrapper}>
+        <Sidetittel tittel={`Sak ${sakData.sakId}`} />
+        <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
+        <DokumentProvider>
+          <Barnebrillesaksbilde oppgave={oppgave} />
       </DokumentProvider>
+      </div>
     )
   }
 

@@ -37,8 +37,6 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
             <Notater oppgave={oppgave} />
           </SidebarPanel>
         )
-      case SidebarValg.OPPGAVER_OG_DOKUMENTER:
-        return <OppgaverOgDokumenter />
       default:
         return null
     }

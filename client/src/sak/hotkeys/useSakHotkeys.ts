@@ -14,14 +14,16 @@ export function useSakHotkeys({
   onBrevMangler,
   onNotatIkkeFerdigstilt,
   onFattVedtak,
+  onGodkjenneBestilling,
 }: {
   onAnnetResultat: () => void
   onBrevMangler: () => void
   onNotatIkkeFerdigstilt: () => void
   onFattVedtak: () => void
+  onGodkjenneBestilling: () => void
 }) {
   const { oppgave } = useOppgave()
-  const { erSøknad } = useSaksregler()
+  const { erSøknad, erBestilling } = useSaksregler()
   const oppgaveUrl = useOppgaveUrl(oppgave?.oppgaveId)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { logOppgaveÅpnetIGosys } = useUmami()
@@ -53,6 +55,14 @@ export function useSakHotkeys({
       }
     },
     { enabled: oppgaveErUnderBehandlingAvInnloggetAnsatt && erSøknad }
+  )
+
+  useHotkey(
+    SAK_HOTKEYS.innvilgeUtenBrev,
+    () => {
+      onGodkjenneBestilling()
+    },
+    { enabled: oppgaveErUnderBehandlingAvInnloggetAnsatt && erBestilling }
   )
 
   useHotkey(

@@ -24,6 +24,7 @@ import {
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
+import { GodkjennBestillingModalV2 } from './bestilling/GodkjennBestillingModalV2.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
@@ -52,6 +53,7 @@ function SakV2Content({
   sak: Sak
   behovsmelding: Innsenderbehovsmelding
 }) {
+  const [visGodkjennBestillingModal, setVisGodkjennBestillingModal] = useState(false)
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
   const [visHenleggModal, setVisHenleggModal] = useState(false)
   const [visOverførGosysModal, setVisOverførGosysModal] = useState(false)
@@ -80,6 +82,7 @@ function SakV2Content({
     onBrevMangler: () => setVisBrevMangler(true),
     onNotatIkkeFerdigstilt: () => setVisNotatIkkeFerdigstilt(true),
     onFattVedtak: () => setVisFerdigstillModal(true),
+    onGodkjenneBestilling: () => setVisGodkjennBestillingModal(true),
   })
 
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
@@ -195,6 +198,10 @@ function SakV2Content({
         <VertikalIkonBar oppgave={oppgave} />
       </Box>
       <StickyBunnlinje oppgave={oppgave} sak={sak} onClick={() => modalVelger()} />
+      <GodkjennBestillingModalV2
+        open={visGodkjennBestillingModal}
+        onClose={() => setVisGodkjennBestillingModal(false)}
+      />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <BrevManglerModal

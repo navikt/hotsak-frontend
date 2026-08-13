@@ -11,6 +11,7 @@ import {
   Oppfølgingsansvarlig,
   Utleveringsmåte,
 } from '../../types/BehovsmeldingTypes.ts'
+import type { GodkjenningskursSjekk } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import {
   formaterAdresse,
@@ -24,6 +25,30 @@ import { KopierbarFelt } from '../felles/KopierbartFelt.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
 import { useExpandedSection } from './SakbrukerinnstillingerContext.ts'
+
+function GodkjenningskursInfo({ resultat }: Readonly<{ resultat: GodkjenningskursSjekk[] | null | undefined }>) {
+  if (resultat == null) {
+    return null
+  }
+  if (resultat.length === 0) {
+    return null
+  }
+  const gjennomførte = resultat.filter((kurs) => kurs.gjennomført)
+  const ikkeGjennomførte = resultat.filter((kurs) => !kurs.gjennomført)
+  return (
+    <VStack gap="space-4">
+      <Tekst>
+        <strong>Krav om kurs</strong>
+      </Tekst>
+      {gjennomførte.length > 0 && (
+        <Tekst textColor="subtle">Gjennomført: {gjennomførte.map((kurs) => kurs.tittel).join(', ')}</Tekst>
+      )}
+      {ikkeGjennomførte.length > 0 && (
+        <WarningTag langTekst>Må sjekkes: {ikkeGjennomførte.map((kurs) => kurs.tittel).join(', ')}</WarningTag>
+      )}
+    </VStack>
+  )
+}
 
 export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('kontaktinformasjonpanel')
@@ -99,8 +124,8 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
               {behovsmelding.levering.oppfølgingsansvarlig === Oppfølgingsansvarlig.ANNEN_OPPFØLGINGSANSVARLIG &&
               oppfølgingsansvarlig ? (
                 <VStack gap="space-12">
-                  <WarningTag>Annen oppfølgingsansvarlig</WarningTag>
                   <Tekst textColor="subtle">{`${formaterNavn(oppfølgingsansvarlig.navn)} - ${oppfølgingsansvarlig.stilling} - ${oppfølgingsansvarlig.arbeidssted} - Tlf: ${formaterTelefonnummer(oppfølgingsansvarlig.telefon)}`}</Tekst>
+                  <GodkjenningskursInfo resultat={oppfølgingsansvarlig.godkjenningskursResultat} />
                   <ReadMore
                     size="small"
                     header="Mer om oppfølgingsansvarlig"

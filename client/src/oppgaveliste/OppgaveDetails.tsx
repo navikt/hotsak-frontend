@@ -13,6 +13,7 @@ import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) {
   const oppgaveId = oppgave.oppgaveId
@@ -20,8 +21,9 @@ export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) 
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
   const { id: saksbehandlerId } = useInnloggetAnsatt()
   const isTildeltSaksbehandler = oppgave.tildeltSaksbehandler?.id === saksbehandlerId
+  const { erIkkeProd } = useMiljø()
 
-  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
+  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS && erIkkeProd) {
     return (
       <VStack gap="space-12">
         <BodyShort size="small">Denne oppgaven er overført til Gosys.</BodyShort>

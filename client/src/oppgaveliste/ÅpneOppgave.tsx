@@ -7,6 +7,7 @@ import { mutateOppgave } from '../oppgave/useOppgave.ts'
 import { preloadBehandling, preloadBehovsmelding, preloadSak } from '../sak/useSak.ts'
 import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
 import classes from './ÅpneOppgave.module.css'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface ÅpneOppgaveProps {
   oppgave: Oppgave
@@ -14,6 +15,7 @@ export interface ÅpneOppgaveProps {
 
 export function ÅpneOppgave(props: ÅpneOppgaveProps) {
   const { oppgave } = props
+  const { erIkkeProd } = useMiljø()
 
   // fungerer ikke siden komponenten heter ÅpneOppgave
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -28,7 +30,7 @@ export function ÅpneOppgave(props: ÅpneOppgaveProps) {
     }
   }, [oppgave])
 
-  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
+  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS && erIkkeProd) {
     return (
       <Tooltip content="Overført til Gosys. Oppgaven blir borte fra listen over ferdigstilte oppgaver etter 10 dager.">
         <Tag size="xsmall" variant="neutral">

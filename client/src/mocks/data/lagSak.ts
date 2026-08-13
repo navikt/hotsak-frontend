@@ -86,7 +86,6 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
       fulltNavn: 'Frank Formidler',
     },
     enhet: enheter.itAvdelingen,
-    greitÅViteFaktum: [],
     hast: levering.hast
       ? {
           årsaker: levering.hast.hasteårsaker,

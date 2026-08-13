@@ -41,7 +41,6 @@ export interface SakBase {
  */
 export interface Sak extends SakBase {
   sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
-  greitÅViteFaktum: GreitÅViteFaktum[]
   hast?: Hast
 }
 
@@ -373,17 +372,6 @@ export enum FritakFraBegrunnelseÅrsak {
   ER_SELVFORKLARENDE_TILBEHØR = 'ER_SELVFORKLARENDE_TILBEHØR',
 }
 
-export interface GreitÅViteFaktum {
-  beskrivelse: string
-  type: GreitÅViteType
-}
-
-export enum GreitÅViteType {
-  ADVARSEL = 'ADVARSEL',
-  INFO = 'INFO',
-  MERKNAD = 'MERKNAD',
-}
-
 export interface Journalpost {
   journalpostId: string
   journalpostOpprettetTid: string
@@ -598,11 +586,6 @@ export enum Brevtype {
   BARNEBRILLER_INNHENTE_OPPLYSNINGER = 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
   JOURNALFØRT_NOTAT = 'JOURNALFØRT_NOTAT',
   BREVEDITOR_VEDTAKSBREV = 'BREVEDITOR_VEDTAKSBREV',
-}
-
-export interface AvvisBestilling {
-  valgtArsak: string
-  begrunnelse: string
 }
 
 export interface Person extends HarPersonnavn {

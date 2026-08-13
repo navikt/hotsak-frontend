@@ -1,17 +1,6 @@
 import type { StilarkVersjon } from './breveditor/html/byggDokument.ts'
 import type { OppgaveId } from '../oppgave/oppgaveTypes'
 import type { NavIdent } from '../tilgang/Ansatt'
-import type { Brevtype } from '../types/types.internal'
-
-export interface BrevMetadata {
-  id: string
-  type: Brevtype
-  status: Brevstatus
-  oppdatert?: string
-  opprettet: string
-  behandlingId: string
-  sendt?: string
-}
 
 export const Brevstatus = {
   UTKAST: 'UTKAST',

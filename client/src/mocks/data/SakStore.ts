@@ -514,7 +514,6 @@ export class SakStore extends Dexie {
         navn: { fornavn: 'Ukjent', etternavn: '' },
       },
       enhet: enheter.agder,
-      greitÅViteFaktum: [],
       journalposter: [request.journalpostId],
     }
     await this.saker.add(sak as unknown as InsertSak)

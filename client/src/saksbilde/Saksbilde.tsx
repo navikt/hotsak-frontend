@@ -13,7 +13,7 @@ import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakProvider } from '../sak/v2/SakProvider'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
-import { type SakBase } from '../types/types.internal'
+import { OppgaveStatusType, type SakBase } from '../types/types.internal'
 import { useMiljø } from '../utils/useMiljø.ts'
 import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
@@ -55,14 +55,13 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   }
 
   if (erBarnebrillesak) {
-
     return (
       <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sakData.sakId}`} />
         <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
         <DokumentProvider>
           <Barnebrillesaksbilde oppgave={oppgave} />
-      </DokumentProvider>
+        </DokumentProvider>
       </div>
     )
   }
@@ -95,7 +94,11 @@ function erFerdigstiltOppgaveOgOverførtTilGosys(
   erProd?: boolean,
   utfall?: Behandlingsutfall
 ) {
-  if (!oppgave || !sak || erProd) return false
+  if (!sak || erProd) return false
+
+  if (!oppgave && sak.saksstatus == OppgaveStatusType.SENDT_GOSYS) return true
+
+  if (!oppgave) return false
 
   return (
     (oppgave.oppgavestatus === 'FERDIGSTILT' || oppgave.oppgavestatus === 'FEILREGISTRERT') &&

@@ -1,7 +1,7 @@
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 import { OverførtGosysVisning } from './OverførtGosysVisning'
-
+import { Personlinje } from './Personlinje'
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
@@ -28,7 +28,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   const { erBarnebrillesak } = useSaksregler()
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
-  const { error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
+  const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
   const { erProd } = useMiljø()
   const { gjeldendeBehandling } = useBehandling()
 
@@ -55,10 +55,15 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   }
 
   if (erBarnebrillesak) {
+
     return (
-      <DokumentProvider>
-        <Barnebrillesaksbilde oppgave={oppgave} />
+      <div className={classes.wrapper}>
+        <Sidetittel tittel={`Sak ${sakData.sakId}`} />
+        <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
+        <DokumentProvider>
+          <Barnebrillesaksbilde oppgave={oppgave} />
       </DokumentProvider>
+      </div>
     )
   }
 

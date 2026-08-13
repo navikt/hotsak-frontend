@@ -161,7 +161,12 @@
           "postnummer": "2424",
           "poststed": "ØSTBY"
         },
-        "epost": "a@b.com"
+        "epost": "a@b.com",
+        "godkjenningskursResultat": [
+          { "kursId": 7, "tittel": "Personløfter og seil", "gjennomført": true },
+          { "kursId": 8, "tittel": "Elektrisk seng", "gjennomført": false },
+          { "kursId": 5, "tittel": "Elektrisk rullestol", "gjennomført": false }
+        ]
       },
       "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "annenUtleveringsadresse": null,

@@ -48,6 +48,7 @@ import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { enheter } from './enheter.ts'
 import { nåIso } from './felles.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
+import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
@@ -56,6 +57,7 @@ import {
   type InsertSakshendelse,
   lagBarnebrillesak,
   lagHjelpemiddelsakForBehovsmeldingCase,
+  lagJournalføringssaker,
   type LagretBarnebrillesak,
   type LagretHjelpemiddelsak,
   type LagretSak,
@@ -133,6 +135,7 @@ export class SakStore extends Dexie {
 
     return this.lagreAlle([
       ...hjelpemiddelsaker,
+      ...lagJournalføringssaker(JOURNALFOERING_V2_BRUKER_FNR),
       lagBarnebrillesak('1001'),
       lagBarnebrillesak('1002'),
       lagBarnebrillesak('1003'),
@@ -162,7 +165,7 @@ export class SakStore extends Dexie {
         ],
       }))
     )
-    return this.saker.bulkAdd(
+    return this.saker.bulkPut(
       saker.map((sak) => {
         if (erInsertBarnebrillesak(sak)) {
           const journalpostId = barnebrilleJournalpostIder[barnebrilleIndex % barnebrilleJournalpostIder.length]

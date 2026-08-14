@@ -14,6 +14,7 @@ import {
   LagretHendelse,
   LagretJournalpost,
 } from './lagJournalpost.ts'
+import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { lagPerson, PersonStore } from './PersonStore.ts'
 import { Saksbehandlere } from './Saksbehandlere.ts'
 import type { JournalføringV2Request } from '../../journalføring/journalføringTypes.ts'
@@ -46,7 +47,12 @@ export class JournalpostStore extends Dexie {
       lagJournalpost('9005'),
     ])
 
-    const v2Post = lagJournalpost('9006', 'Søknad om hjelpemidler', { kode: 'ae0034', term: 'Søknad' })
+    const v2Post = lagJournalpost(
+      '9006',
+      'Søknad om hjelpemidler',
+      { kode: 'ae0034', term: 'Søknad' },
+      { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
+    )
     await this.journalposter.add(v2Post)
     await this.dokumenter.bulkAdd(lagHjelpemiddelDokumenter('9006') as LagretDokument[])
     await this.personStore.lagreAlle([

@@ -27,7 +27,8 @@ export type InsertHendelse = Omit<LagretHendelse, 'id'>
 export function lagJournalpost(
   journalpostId: string,
   tittel: string = 'Tilskudd ved kjøp av briller til barn',
-  behandlingstema: OppgaveKodeverk = { kode: 'ab0420', term: 'Briller til barn' }
+  behandlingstema: OppgaveKodeverk = { kode: 'ab0420', term: 'Briller til barn' },
+  options?: { brukerFnr?: string }
 ): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const journalpostOpprettetTid = nåIso()
@@ -43,7 +44,7 @@ export function lagJournalpost(
     fnrInnsender,
     tittel: tittel,
     bruker: {
-      fnr: lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
+      fnr: options?.brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
       navn: lagTilfeldigNavn(),
     },
     innsender: {

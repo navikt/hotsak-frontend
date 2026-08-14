@@ -69,27 +69,26 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
       const body = await request.json()
       await delay(500)
 
-      // V2 journalføring — har saksgrunnlag, oppretter ny hjelpemiddelsak og behandle-sak-oppgave
+      // V2 ny sak — har saksgrunnlag, oppretter ny hjelpemiddelsak og behandle-sak-oppgave
       if ('saksgrunnlag' in body) {
         const journalføringRequest = body as JournalføringV2Request
-
-        if (!journalføringRequest) {
-          throw new Error('Journalføring request payload mangler')
-        }
-
         await journalpostStore.journalførV2(journalføringRequest)
         const { sakId, sak } = await sakStore.opprettJournalføringsSak(journalføringRequest)
+        const { saksgrunnlag } = journalføringRequest
+        if (!saksgrunnlag) {
+          throw new Error('saksgrunnlag mangler i V2-journalføringsrequest med ny sak')
+        }
         const nyOppgave = lagOppgave(sak as LagretHjelpemiddelsak, {
           oppgavetype: Oppgavetype.BEHANDLE_SAK,
           behandlingstema: {
-            kode: journalføringRequest.saksgrunnlag.behandlingstema,
-            term: journalføringRequest.saksgrunnlag.behandlingstema,
+            kode: saksgrunnlag.behandlingstema,
+            term: saksgrunnlag.behandlingstema,
           },
           behandlingstype: {
-            kode: journalføringRequest.saksgrunnlag.behandlingstype,
-            term: journalføringRequest.saksgrunnlag.behandlingstype,
+            kode: saksgrunnlag.behandlingstype,
+            term: saksgrunnlag.behandlingstype,
           },
-          tema: journalføringRequest.saksgrunnlag.tema,
+          tema: saksgrunnlag.tema,
         })
         const [oppgaveId] = await Promise.all([
           oppgaveStore.lagreOppgave(nyOppgave),
@@ -98,7 +97,18 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
         return HttpResponse.json<JournalføringV2Response>({ sakId, oppgaveId: String(oppgaveId) })
       }
 
-      // Eksisterende barnebrille-journalføring — uendret
+      // V2 koble til eksisterende sak — har dokumenter-array og sakId, ingen saksgrunnlag
+      if ('dokumenter' in body) {
+        const v2Request = body as JournalføringV2Request
+        if (!v2Request.sakId) {
+          throw new Error('sakId mangler i V2-koble-til-sak-request')
+        }
+        await journalpostStore.journalførV2(v2Request)
+        await oppgaveStore.ferdigstillOppgave(v2Request.oppgaveId)
+        return HttpResponse.json<JournalføringV2Response>({ sakId: v2Request.sakId, oppgaveId: v2Request.oppgaveId })
+      }
+
+      // V1 legacy — barnebriller og gammel journalføring
       const journalføring = body as JournalførJournalpostRequest
       const eksisterendeSakId = journalføring.sakId
       const tittel = journalføring.tittel

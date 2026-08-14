@@ -62,7 +62,8 @@ function SakV2Content({
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
-  const { erPapirsøknad } = useSaksregler()
+  const { erPapirsøknad, erBestilling } = useSaksregler()
+
   const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
     useSakContext()
   const { panels } = panelState
@@ -198,10 +199,12 @@ function SakV2Content({
         <VertikalIkonBar oppgave={oppgave} />
       </Box>
       <StickyBunnlinje oppgave={oppgave} sak={sak} onClick={() => modalVelger()} />
-      <GodkjennBestillingModalV2
-        open={visGodkjennBestillingModal}
-        onClose={() => setVisGodkjennBestillingModal(false)}
-      />
+      {erBestilling && (
+        <GodkjennBestillingModalV2
+          open={visGodkjennBestillingModal}
+          onClose={() => setVisGodkjennBestillingModal(false)}
+        />
+      )}
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <BrevManglerModal

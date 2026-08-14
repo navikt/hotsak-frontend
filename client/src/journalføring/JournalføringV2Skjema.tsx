@@ -43,6 +43,7 @@ import { formaterNavn } from '../utils/formater.ts'
 import { DokumentRad } from './DokumentRad.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
+import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import classes from './JournalføringV2Skjema.module.css'
 import { type JournalføringV2Response, type SakstypeKode } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
@@ -81,7 +82,9 @@ export function JournalføringV2Skjema({
   journalpost,
   mutateJournalpost,
 }: JournalføringV2SkjemaProps & { mutateJournalpost: () => void }) {
-  const [sakType, setSakType] = useState<string>('ny')
+  const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
+  const [valgtSakId, setValgtSakId] = useState<string | null>(null)
+  const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
@@ -178,15 +181,26 @@ export function JournalføringV2Skjema({
     },
   })
 
-  // TODO Sjekk tildelt enhet vs gjeldende enhet for saksbehandler. Kan det være forskjell på dem?
-  const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
+  function byggJournalføringPayload() {
     const tittel =
       dokumentTitler[journalpost.dokumenter[0]?.dokumentId ?? ''] ??
       journalpost.dokumenter[0]?.tittel ??
       journalpost.tittel
+    const journalføresPåFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender ?? ''
+    const dokumenter = journalpost.dokumenter.map((dok: Dokument) => ({
+      dokumentId: dok.dokumentId,
+      tittel: dokumentTitler[dok.dokumentId] ?? dok.tittel,
+      annetInnhold: annetInnhold[dok.dokumentId] ?? [],
+    }))
+    return { tittel, journalføresPåFnr, dokumenter }
+  }
+
+  // TODO Sjekk tildelt enhet vs gjeldende enhet for saksbehandler. Kan det være forskjell på dem?
+  const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
+    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalførV2.trigger({
       tittel,
-      journalføresPåFnr: journalpost.bruker?.fnr ?? journalpost.fnrInnsender ?? '',
+      journalføresPåFnr,
       saksgrunnlag: {
         tema: verdier.tema,
         prioritet: verdier.prioritet,
@@ -202,12 +216,20 @@ export function JournalføringV2Skjema({
         tildeltEnhet: oppgave.tildeltEnhet.nummer,
         tildeltSaksbehandler: verdier.tilordnetEnhet === 'medarbeidersOppgaveliste' ? verdier.medarbeider : undefined,
       },
-      dokumenter: journalpost.dokumenter.map((dok: Dokument) => ({
-        dokumentId: dok.dokumentId,
-        tittel: dokumentTitler[dok.dokumentId] ?? dok.tittel,
-        annetInnhold: annetInnhold[dok.dokumentId] ?? [],
-      })),
+      dokumenter,
     })
+    if (resultat) {
+      setJournalføringResultat(resultat)
+    }
+  }
+
+  const onSubmitKobleTilSak = async () => {
+    if (!valgtSakId) {
+      setValgtSakIdFeil('Du må velge en sak å koble til')
+      return
+    }
+    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
+    const resultat = await journalførV2.trigger({ tittel, journalføresPåFnr, sakId: valgtSakId, dokumenter })
     if (resultat) {
       setJournalføringResultat(resultat)
     }
@@ -328,7 +350,18 @@ export function JournalføringV2Skjema({
                 Ny eller eksisterende sak
               </Heading>
               <HStack gap="space-2">
-                <ToggleGroup defaultValue="ny" size="small" onChange={(value) => setSakType(value)} value={sakType}>
+                <ToggleGroup
+                  defaultValue="ny"
+                  size="small"
+                  onChange={(value) => {
+                    setSakType(value as 'ny' | 'eksisterende')
+                    if (value === 'ny') {
+                      setValgtSakId(null)
+                      setValgtSakIdFeil(null)
+                    }
+                  }}
+                  value={sakType}
+                >
                   <ToggleGroup.Item value="ny">Opprett ny sak</ToggleGroup.Item>
                   <ToggleGroup.Item value="eksisterende">Koble til sak</ToggleGroup.Item>
                 </ToggleGroup>
@@ -541,18 +574,34 @@ export function JournalføringV2Skjema({
               </VStack>
             </VStack>
           )}
-          {sakType === 'eksisterende' && kanRedigere && <div>TODO</div>}
+          {sakType === 'eksisterende' && kanRedigere && brukerFnr && (
+            <VStack gap="space-8" paddingBlock="space-20 space-0">
+              <Heading level="2" size="small">
+                Koble til eksisterende sak
+              </Heading>
+              <KobleTilSakKort
+                fnr={brukerFnr}
+                valgtSakId={valgtSakId}
+                onChange={(sakId) => {
+                  setValgtSakId(sakId)
+                  if (sakId) setValgtSakIdFeil(null)
+                }}
+                feilmelding={valgtSakIdFeil ?? undefined}
+              />
+            </VStack>
+          )}
 
           {kanRedigere && (
             <HStack gap="space-4" paddingBlock="space-8 space-0">
               <Button
-                type="submit"
+                type={sakType === 'eksisterende' ? 'button' : 'submit'}
                 variant="primary"
                 size="small"
                 loading={journalførV2.isMutating}
                 disabled={journalførV2.isMutating}
+                onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
               >
-                Journalfør og opprett sak
+                {sakType === 'eksisterende' ? 'Journalfør' : 'Journalfør og opprett sak'}
               </Button>
 
               <Button type="button" variant="secondary" size="small">
@@ -566,6 +615,7 @@ export function JournalføringV2Skjema({
       <JournalføringFerdigModal
         open={journalføringResultat != null}
         resultat={journalføringResultat}
+        sakType={sakType}
         onClose={() => setJournalføringResultat(null)}
       />
     </VStack>

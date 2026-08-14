@@ -6,10 +6,11 @@ import { type JournalføringV2Response } from './journalføringTypes.ts'
 interface JournalføringFerdigModalProps {
   open: boolean
   resultat: JournalføringV2Response | null
+  sakType: 'ny' | 'eksisterende'
   onClose(): void
 }
 
-export function JournalføringFerdigModal({ open, resultat, onClose }: JournalføringFerdigModalProps) {
+export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: JournalføringFerdigModalProps) {
   const navigate = useNavigate()
 
   function navigerOgLukkModal(sti: string) {
@@ -24,7 +25,11 @@ export function JournalføringFerdigModal({ open, resultat, onClose }: Journalf�
           <Dialog.Title>Journalpost ferdig journalført</Dialog.Title>
         </Dialog.Header>
         <Dialog.Body>
-          <BodyShort>Sak med sakId {resultat?.sakId ?? '–'} ble opprettet.</BodyShort>
+          {sakType === 'eksisterende' ? (
+            <BodyShort>Journalposten ble koblet til sak {resultat?.sakId ?? '–'}.</BodyShort>
+          ) : (
+            <BodyShort>Sak med sakId {resultat?.sakId ?? '–'} ble opprettet.</BodyShort>
+          )}
         </Dialog.Body>
         <Dialog.Footer>
           <HStack gap="space-16" align="center" justify="center">

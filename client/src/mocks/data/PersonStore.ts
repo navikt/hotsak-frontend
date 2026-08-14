@@ -49,7 +49,7 @@ export class PersonStore extends Dexie {
 
   async lagreAlle(personer: Person[]) {
     const unikePersoner = [...new Map(personer.map((person) => [person.fnr, person])).values()]
-    return this.personer.bulkAdd(unikePersoner, { allKeys: true })
+    return this.personer.bulkPut(unikePersoner, { allKeys: true })
   }
 
   async hent(fnr: string) {

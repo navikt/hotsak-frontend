@@ -1,9 +1,10 @@
-import { formatISO } from 'date-fns'
+import { formatISO, subMonths } from 'date-fns'
 
 import { BehovsmeldingType } from '../../types/BehovsmeldingTypes.ts'
 import {
   type Barnebrillesak,
   type Hendelse,
+  Kjønn,
   OppgaveStatusType,
   type Sak,
   SaksstatusKategori,
@@ -133,6 +134,68 @@ export function lagBarnebrillesak(sakId: string): InsertBarnebrillesak {
 }
 
 // END Barnebrillesak
+
+/**
+ * Lager mock-saker for brukeren på journalføringssaken (9006),
+ * slik at "Koble til sak"-funksjonaliteten i JournalføringV2 har data å vise.
+ */
+export function lagJournalføringssaker(brukerFnr: string): InsertHjelpemiddelsak[] {
+  const bruker = {
+    fnr: brukerFnr,
+    navn: { fornavn: 'Test', etternavn: 'Bruker' },
+    fulltNavn: 'Test Bruker',
+    fødselsdato: '1990-01-01',
+    kjønn: Kjønn.UKJENT,
+    telefonnummer: '99999999',
+  }
+  const innsender = {
+    fnr: lagTilfeldigFødselsnummer(40),
+    navn: { fornavn: 'Frank', etternavn: 'Formidler' },
+    fulltNavn: 'Frank Formidler',
+  }
+
+  return [
+    {
+      behovsmeldingCasePath: '',
+      sakId: '9901',
+      sakstype: Sakstype.SØKNAD,
+      saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+      saksstatusGyldigFra: new Date().toISOString(),
+      statuskategori: SaksstatusKategori.ÅPEN,
+      opprettet: new Date().toISOString(),
+      søknadGjelder: 'Søknad om: rullestol',
+      bruker,
+      innsender,
+      enhet: enheter.agder,
+    },
+    {
+      behovsmeldingCasePath: '',
+      sakId: '9902',
+      sakstype: Sakstype.SØKNAD,
+      saksstatus: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
+      saksstatusGyldigFra: subMonths(new Date(), 2).toISOString(),
+      statuskategori: SaksstatusKategori.ÅPEN,
+      opprettet: subMonths(new Date(), 2).toISOString(),
+      søknadGjelder: 'Søknad om: elektrisk rullestol',
+      bruker,
+      innsender,
+      enhet: enheter.agder,
+    },
+    {
+      behovsmeldingCasePath: '',
+      sakId: '9903',
+      sakstype: Sakstype.BESTILLING,
+      saksstatus: OppgaveStatusType.FERDIGSTILT,
+      saksstatusGyldigFra: subMonths(new Date(), 6).toISOString(),
+      statuskategori: SaksstatusKategori.LUKKET,
+      opprettet: subMonths(new Date(), 6).toISOString(),
+      søknadGjelder: 'Bestilling av: krykker',
+      bruker,
+      innsender,
+      enhet: enheter.agder,
+    },
+  ]
+}
 
 export interface LagretSakshendelse extends Hendelse {
   sakId: string

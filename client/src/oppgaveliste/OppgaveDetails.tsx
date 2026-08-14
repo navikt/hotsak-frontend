@@ -13,7 +13,6 @@ import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) {
   const oppgaveId = oppgave.oppgaveId
@@ -21,7 +20,7 @@ export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) 
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
   const { id: saksbehandlerId } = useInnloggetAnsatt()
   const isTildeltSaksbehandler = oppgave.tildeltSaksbehandler?.id === saksbehandlerId
-  const { erIkkeProd } = useMiljø()
+  const erIkkeProd = window.appSettings.NAIS_CLUSTER_NAME !== 'prod-gcp'
 
   if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS && erIkkeProd) {
     return (

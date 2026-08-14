@@ -10,6 +10,7 @@ import { type Oppgave, type OppgaveBruker, Oppgavetype } from '../oppgave/oppgav
 import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
@@ -20,7 +21,7 @@ export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) 
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
   const { id: saksbehandlerId } = useInnloggetAnsatt()
   const isTildeltSaksbehandler = oppgave.tildeltSaksbehandler?.id === saksbehandlerId
-  const erIkkeProd = window.appSettings.NAIS_CLUSTER_NAME !== 'prod-gcp'
+  const { erIkkeProd } = useMiljø()
 
   if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS && erIkkeProd) {
     return (

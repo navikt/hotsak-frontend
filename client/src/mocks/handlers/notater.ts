@@ -6,7 +6,7 @@ import {
   type OppdaterNotatRequest,
   type OpprettNotatRequest,
 } from '../../sak/notat/notatTyper'
-import { GjenståendeOverfør } from '../../sak/v2/behandling/behandlingTyper'
+import { Gjenstående, GjenståendeOverfør } from '../../sak/v2/behandling/behandlingTyper'
 import { type StoreHandlersFactory } from '../data'
 import { lastDokument } from '../data/felles'
 import { type SakParams } from './params'
@@ -39,6 +39,10 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, oppgaveStore, 
 
       await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
         ...gjeldendeBehandling,
+        gjenstående: [
+          ...gjeldendeBehandling.gjenstående.filter((g) => g !== Gjenstående.NOTAT_IKKE_FERDIGSTILT),
+          Gjenstående.NOTAT_IKKE_FERDIGSTILT,
+        ],
         operasjoner: {
           ...gjeldendeBehandling.operasjoner,
           overfør: {
@@ -82,7 +86,7 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, oppgaveStore, 
       const body = await request.json()
 
       await notatStore.ferdigstillNotat(params.notatId, body)
-      const notater = await notatStore.alle()
+      const notater = await notatStore.hentNotater(params.sakId)
 
       if (notater.filter((notat) => !notat.ferdigstilt).length === 0) {
         const behandlinger = await sakStore.hentBehandlinger(params.sakId)
@@ -92,6 +96,7 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, oppgaveStore, 
 
           await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
             ...gjeldendeBehandling,
+            gjenstående: gjeldendeBehandling.gjenstående.filter((g) => g !== Gjenstående.NOTAT_IKKE_FERDIGSTILT),
             operasjoner: {
               ...gjeldendeBehandling.operasjoner,
               overfør: {
@@ -123,7 +128,7 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, oppgaveStore, 
   http.delete<NotatParams>(`/api/sak/:sakId/notater/:notatId`, async ({ params }) => {
     await notatStore.slettNotat(params.notatId)
 
-    const notater = await notatStore.alle()
+    const notater = await notatStore.hentNotater(params.sakId)
 
     if (notater.filter((notat) => !notat.ferdigstilt).length === 0) {
       const behandlinger = await sakStore.hentBehandlinger(params.sakId)
@@ -133,6 +138,7 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, oppgaveStore, 
 
         await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
           ...gjeldendeBehandling,
+          gjenstående: gjeldendeBehandling.gjenstående.filter((g) => g !== Gjenstående.NOTAT_IKKE_FERDIGSTILT),
           operasjoner: {
             ...gjeldendeBehandling.operasjoner,
             overfør: {

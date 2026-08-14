@@ -32,7 +32,15 @@ export async function ventPåSaksbilde(page: Page) {
  * Set the behandlingsresultat (vedtaksresultat) in SakV2.
  */
 export async function settBehandlingsresultat(page: Page, resultat: 'Innvilget' | 'Delvis innvilget' | 'Avslått') {
+  const lagret = page.waitForResponse((r) => {
+    const path = new URL(r.url()).pathname
+    return (
+      (r.request().method() === 'PUT' && /\/behandling\/\d+$/.test(path)) ||
+      (r.request().method() === 'POST' && /\/behandling$/.test(path))
+    )
+  })
   await page.getByRole('combobox', { name: /resultat/i }).selectOption(resultat)
+  await lagret
 }
 
 /**
@@ -74,6 +82,14 @@ export async function opprettVedtaksbrev(page: Page) {
  * Ferdigstill the brevutkast in the brev panel.
  */
 export async function ferdigstillBrevutkast(page: Page) {
+  await page.getByRole('button', { name: /Ferdigstill utkast/i }).click()
+}
+
+export async function fyllPlaceholder(page: Page, placeholderNavn: RegExp, tekst: string) {
+  await page.getByRole('link', { name: placeholderNavn }).first().click()
+  await page.waitForTimeout(150)
+  await page.keyboard.type(tekst)
+  await page.getByText('Lagret').waitFor({ state: 'visible' })
   await page.getByRole('button', { name: /Ferdigstill utkast/i }).click()
 }
 

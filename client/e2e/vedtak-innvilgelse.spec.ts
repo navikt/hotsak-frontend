@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import {
+  fyllPlaceholder,
   fyllUtBegrunnelse,
   klikkFattVedtak,
   klikkGodkjennBegrunnelse,
@@ -34,26 +35,41 @@ test.describe('Vedtak: Innvilgelse', () => {
     await expect(modal.getByRole('button', { name: /^Innvilg$/i })).toBeVisible()
   })
 
-  test.skip('kan innvilge en søknad med brev', async ({ page }) => {
+  test('kan innvilge en søknad med brev og godkjenne begrunnelse', async ({ page }) => {
+    test.slow()
     await åpneSak(page)
 
     await settBehandlingsresultat(page, 'Innvilget')
 
-    // Create a brev (optional for innvilgelse)
     await page.getByRole('button', { name: /Opprett vedtaksbrev/i }).click()
-
-    // Wait for brev panel to load and ferdigstill
     await page.getByRole('button', { name: /Ferdigstill utkast/i }).waitFor({ state: 'visible', timeout: 10_000 })
     await page.getByRole('button', { name: /Ferdigstill utkast/i }).click()
+    await fyllPlaceholder(
+      page,
+      /Forklar hvilke opplysninger du har lagt vekt på når du har vurdert om vilkårene er oppfylt/i,
+      'Vilkårene er vurdert som oppfylt basert på innsendt dokumentasjon.'
+    )
+    await page.getByRole('button', { name: /^Rediger$/i }).waitFor({ state: 'visible', timeout: 10_000 })
 
-    // Now fatt vedtak
     await klikkFattVedtak(page)
 
     const modal = finnInnvilgelsesModal(page)
     await expect(modal).toBeVisible()
 
-    // Button should say "Innvilg og send brev" since brev exists
-    await expect(modal.getByRole('button', { name: /Innvilg og send brev/i })).toBeVisible()
+    const bekreftButton = modal.getByRole('button', { name: /Innvilg og send brev/i })
+    await expect(bekreftButton).toBeVisible()
+    await bekreftButton.click()
+
+    await fyllUtBegrunnelse(page)
+    await klikkGodkjennBegrunnelse(page)
+    await klikkGodkjennBeskjed(page)
+    await bekreftButton.click()
+
+    await expect(modal).not.toBeVisible({ timeout: 10_000 })
+
+    await expect(page.getByText('Innvilget').first()).toBeVisible()
+    await expect(page.getByRole('combobox', { name: /resultat/i })).not.toBeVisible()
+    await expect(page.getByText(/Brev lagt til utsending/i)).toBeVisible()
   })
 
   test('submitter ikke før problemsammendrag er lastet i modalen', async ({ page }) => {

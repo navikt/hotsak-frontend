@@ -250,12 +250,13 @@ function ExpandableRow<T extends object>({
   children: ReactNode
 }) {
   const [visible, setVisible] = useState(false)
+  const Content = renderContent
   return (
     <Table.ExpandableRow
       className={className}
       open={visible}
       onOpenChange={setVisible}
-      content={visible ? renderContent({ row }) : null}
+      content={visible ? <Content row={row} /> : null}
     >
       {children}
     </Table.ExpandableRow>

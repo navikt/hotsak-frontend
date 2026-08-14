@@ -1,10 +1,13 @@
-import { BodyShort, Box, ErrorMessage, Heading, HGrid, HStack, Loader, Tag, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
+import { BodyShort, Box, Button, ErrorMessage, Heading, HGrid, HStack, Loader, Tag, VStack } from '@navikt/ds-react'
 
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
 import { OmrådeFilterLabel, OppgaveStatusLabel, OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import classes from './KobleTilSakKort.module.css'
+
+const MAKS_SAKER_SYNLIG = 10
 
 interface KobleTilSakKortProps {
   fnr: string
@@ -49,6 +52,7 @@ function formaterOmråde(område: string[]): string {
 
 export function KobleTilSakKort({ fnr, valgtSakId, onChange, feilmelding }: KobleTilSakKortProps) {
   const { saksoversikt, isLoading, error } = useSaksoversikt(fnr)
+  const [visAlle, setVisAlle] = useState(false)
 
   if (isLoading) {
     return (
@@ -63,17 +67,25 @@ export function KobleTilSakKort({ fnr, valgtSakId, onChange, feilmelding }: Kobl
     return <ErrorMessage>Feil med hending av saker</ErrorMessage>
   }
 
-  const saker = sorterSaker((saksoversikt?.saker ?? []).filter((sak) => sak.sakstype !== Sakstype.BARNEBRILLER))
+  const alleSaker = sorterSaker((saksoversikt?.saker ?? []).filter((sak) => sak.sakstype !== Sakstype.BARNEBRILLER))
 
-  if (saker.length === 0) {
+  if (alleSaker.length === 0) {
     return <BodyShort size="small">Ingen saker funnet for denne brukeren.</BodyShort>
   }
 
+  const synligeSaker = visAlle ? alleSaker : alleSaker.slice(0, MAKS_SAKER_SYNLIG)
+  const harFlere = alleSaker.length > MAKS_SAKER_SYNLIG
+
   return (
     <VStack gap="space-4" className={classes.kortListe}>
-      {saker.map((sak) => (
+      {synligeSaker.map((sak) => (
         <SakKort key={sak.sakId} sak={sak} valgt={sak.sakId === valgtSakId} onVelg={() => onChange(sak.sakId)} />
       ))}
+      {harFlere && (
+        <Button variant="tertiary" size="small" type="button" onClick={() => setVisAlle((prev) => !prev)}>
+          {visAlle ? 'Vis færre' : `Vis alle (${alleSaker.length})`}
+        </Button>
+      )}
       <div role="alert" aria-live="polite">
         {feilmelding && <ErrorMessage size="small">{feilmelding}</ErrorMessage>}
       </div>

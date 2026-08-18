@@ -18,6 +18,7 @@ import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { lagPerson, PersonStore } from './PersonStore.ts'
 import { Saksbehandlere } from './Saksbehandlere.ts'
 import type { JournalføringV2Request } from '../../journalføring/journalføringTypes.ts'
+import { formaterNavn } from '../../utils/formater.ts'
 
 export class JournalpostStore extends Dexie {
   private readonly journalposter!: Table<LagretJournalpost, string, InsertJournalpost>
@@ -140,11 +141,18 @@ export class JournalpostStore extends Dexie {
 
   async journalførV2(journalføringRequest: JournalføringV2Request) {
     const { journalpostId, tittel, dokumenter } = journalføringRequest
+    const journalpost = await this.journalposter.get(journalpostId)
     const dokument = await this.dokumenter.where('journalpostId').equals(journalpostId).first()
     const dokumentId = Number(dokument?.dokumentId)
 
     const annetInnhold =
       dokumenter.find((d) => String(d.dokumentId) === String(dokument?.dokumentId))?.annetInnhold || []
+    const person = await this.personStore.hent(journalføringRequest.journalføresPåFnr)
+    const oppdatertBruker = {
+      fnr: person?.fnr ?? journalføringRequest.journalføresPåFnr,
+      navn: person?.navn ?? journalpost?.bruker?.navn ?? { fornavn: 'Ukjent', etternavn: '' },
+      fulltNavn: person ? formaterNavn(person.navn) : journalpost?.bruker?.fulltNavn,
+    }
 
     await this.dokumenter.update(dokumentId, {
       ...dokument,
@@ -154,6 +162,7 @@ export class JournalpostStore extends Dexie {
 
     return this.journalposter.update(journalpostId, {
       tittel,
+      bruker: oppdatertBruker,
     })
   }
 }

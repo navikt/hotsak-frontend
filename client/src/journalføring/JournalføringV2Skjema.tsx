@@ -10,11 +10,13 @@ import {
   Radio,
   RadioGroup,
   Select,
+  TextField,
   Textarea,
   ToggleGroup,
   UNSAFE_Combobox,
   useDatepicker,
   VStack,
+  Detail,
 } from '@navikt/ds-react'
 import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
 import { type ReactNode, useEffect, useMemo, useState } from 'react'
@@ -37,9 +39,11 @@ import { useOppgaveMapper } from '../oppgave/useOppgave.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { type Dokument, type Journalpost } from '../types/types.internal.ts'
+import { type Dokument, type Journalpost, type Person } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { formaterNavn } from '../utils/formater.ts'
+import { http } from '../io/HttpClient.ts'
+import { usePerson } from '../personoversikt/usePerson.ts'
 import { DokumentRad } from './DokumentRad.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
@@ -60,6 +64,7 @@ interface JournalføringV2SkjemaVerdier {
   mottattDato: string
   aktivFra: string
   frist: string
+  journalføresPåFnr: string
   tilordnetEnhet: 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
   enhetsmappe: string
   medarbeider: string
@@ -88,11 +93,16 @@ export function JournalføringV2Skjema({
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
+  const [redigererBruker, setRedigererBruker] = useState(false)
+  const [brukerInputFnr, setBrukerInputFnr] = useState('')
+  const [brukerFeil, setBrukerFeil] = useState<string | null>(null)
+  const [oppslagLaster, setOppslagLaster] = useState(false)
   const { behandlere } = useOppgavebehandlere()
   const mapper = useOppgaveMapper()
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
   const aktivFraDatoDefault = new Date()
   const fristDefault = addWeeks(mottattDatoDefault, 4)
+  const opprinneligJournalføresPåFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender ?? ''
 
   const { journalførV2 } = useJournalføringActions(oppgave, journalpost.journalpostId)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
@@ -120,11 +130,14 @@ export function JournalføringV2Skjema({
       behandlingstype: journalpost.behandlingstema?.kode ?? '',
       stønadsklassifisering: 'DA',
       stønadType: 'S' as SakstypeKode,
+      journalføresPåFnr: opprinneligJournalføresPåFnr,
       mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
       aktivFra: formatISO(aktivFraDatoDefault, { representation: 'date' }),
       frist: formatISO(fristDefault, { representation: 'date' }),
     },
   })
+  const journalføresPåFnr = watch('journalføresPåFnr')
+  const { personInfo: valgtBruker } = usePerson(journalføresPåFnr || undefined)
 
   const valgtBehandlingstype = watch('behandlingstype')
   const valgtBehandlingstema = watch('behandlingstema')
@@ -154,6 +167,7 @@ export function JournalføringV2Skjema({
   )
 
   useEffect(() => {
+    register('journalføresPåFnr')
     register('mottattDato')
     register('frist')
     register('aktivFra', {
@@ -186,7 +200,7 @@ export function JournalføringV2Skjema({
       dokumentTitler[journalpost.dokumenter[0]?.dokumentId ?? ''] ??
       journalpost.dokumenter[0]?.tittel ??
       journalpost.tittel
-    const journalføresPåFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender ?? ''
+    const journalføresPåFnr = getValues('journalføresPåFnr')
     const dokumenter = journalpost.dokumenter.map((dok: Dokument) => ({
       dokumentId: dok.dokumentId,
       tittel: dokumentTitler[dok.dokumentId] ?? dok.tittel,
@@ -219,6 +233,7 @@ export function JournalføringV2Skjema({
       dokumenter,
     })
     if (resultat) {
+      mutateJournalpost()
       setJournalføringResultat(resultat)
     }
   }
@@ -231,16 +246,48 @@ export function JournalføringV2Skjema({
     const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalførV2.trigger({ tittel, journalføresPåFnr, sakId: valgtSakId, dokumenter })
     if (resultat) {
+      mutateJournalpost()
       setJournalføringResultat(resultat)
+    }
+  }
+
+  function visBrukerIkkeFunnet() {
+    setBrukerFeil('Bruker ikke funnet i PDL')
+    setBrukerInputFnr('')
+  }
+
+  async function velgBruker() {
+    const fnr = brukerInputFnr.trim()
+    setBrukerFeil(null)
+    if (!fnr) {
+      visBrukerIkkeFunnet()
+      return
+    }
+    setOppslagLaster(true)
+    try {
+      const person = await http.post<{ fnr: string }, Person>('/api/person', { fnr })
+      if (!person) {
+        visBrukerIkkeFunnet()
+        return
+      }
+      setValue('journalføresPåFnr', person.fnr, { shouldDirty: true })
+      setBrukerInputFnr('')
+      setRedigererBruker(false)
+    } catch {
+      visBrukerIkkeFunnet()
+    } finally {
+      setOppslagLaster(false)
     }
   }
 
   // TODO: Legge inn vertikal ikonlinje med dokumentoversikt, saksoversikt osv?
 
-  const brukerNavn = journalpost.bruker ? formaterNavn(journalpost.bruker.navn) : ''
-  const brukerFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender
-  const avsenderNavn = journalpost.innsender ? formaterNavn(journalpost.innsender.navn) : ''
-  const avsenderFnr = journalpost.innsender?.fnr ?? ''
+  const brukerNavn = valgtBruker
+    ? formaterNavn(valgtBruker.navn)
+    : journalpost.bruker
+      ? formaterNavn(journalpost.bruker.navn)
+      : ''
+  const brukerFnr = valgtBruker?.fnr ?? journalføresPåFnr
   const registrertDato = formaterDato(journalpost.journalpostOpprettetTid)
 
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
@@ -287,39 +334,86 @@ export function JournalføringV2Skjema({
 
               <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
                 <HStack justify="space-between" align="start">
-                  <VStack gap="space-4">
-                    <Label size="small">Bruker</Label>
-                    <HStack gap="space-1" align="center">
-                      <BodyShort size="small">{brukerNavn} - </BodyShort>
-                      <BodyShort size="small">{brukerFnr}</BodyShort>
-                      <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
-                    </HStack>
+                  <VStack gap="space-12">
+                    <VStack gap="space-4">
+                      <Label size="small">Bruker</Label>
+                      {redigererBruker ? (
+                        <VStack gap="space-4">
+                          <HStack gap="space-12" align="end">
+                            <TextField
+                              label="Fødselsnummer"
+                              size="small"
+                              value={brukerInputFnr}
+                              onChange={(e) => setBrukerInputFnr(e.target.value)}
+                              autoFocus
+                            />
+                            <HStack gap="space-4">
+                              <Button
+                                variant="primary"
+                                size="small"
+                                type="button"
+                                loading={oppslagLaster}
+                                onClick={velgBruker}
+                              >
+                                Velg
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                size="small"
+                                type="button"
+                                onClick={() => {
+                                  setRedigererBruker(false)
+                                  setBrukerFeil(null)
+                                  setBrukerInputFnr('')
+                                }}
+                              >
+                                Avbryt
+                              </Button>
+                            </HStack>
+                          </HStack>
+                          {brukerFeil && <ErrorMessage size="small">{brukerFeil}</ErrorMessage>}
+                        </VStack>
+                      ) : (
+                        <HStack gap="space-1" align="center">
+                          <BodyShort size="small">{brukerNavn} - </BodyShort>
+                          <BodyShort size="small">{brukerFnr}</BodyShort>
+                          <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
+                        </HStack>
+                      )}
+                    </VStack>
                     <BodyShort size="small">{tildeltEnhet}</BodyShort>
                   </VStack>
-                  {kanRedigere && (
-                    <Button variant="tertiary" size="xsmall" type="button" hidden={!kanRedigere}>
-                      Endre
-                    </Button>
-                  )}
+                  {kanRedigere &&
+                    (redigererBruker ? null : (
+                      <Button
+                        variant="tertiary"
+                        size="xsmall"
+                        type="button"
+                        onClick={() => {
+                          setRedigererBruker(true)
+                          setBrukerFeil(null)
+                          setBrukerInputFnr(brukerFnr)
+                        }}
+                      >
+                        Endre
+                      </Button>
+                    ))}
                 </HStack>
               </Box>
 
               <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
                 <HStack justify="space-between" align="start">
                   <VStack gap="space-4">
-                    <Label size="small">Avsender</Label>
+                    <VStack gap="space-2">
+                      <Label size="small">Avsender</Label>
+                      <Detail>Avsender er bruker</Detail>
+                    </VStack>
                     <HStack gap="space-1" align="center">
-                      <BodyShort size="small">{avsenderNavn} - </BodyShort>
-                      <BodyShort size="small">{avsenderFnr}</BodyShort>
-                      <InlineKopiknapp copyText={avsenderFnr} tooltip="Kopier fødselsnummer" />
+                      <BodyShort size="small">{brukerNavn} - </BodyShort>
+                      <BodyShort size="small">{brukerFnr}</BodyShort>
+                      <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
                     </HStack>
-                    <BodyShort size="small">{tildeltEnhet}</BodyShort>
                   </VStack>
-                  {kanRedigere && (
-                    <Button variant="tertiary" size="xsmall" type="button" hidden={!kanRedigere}>
-                      Endre
-                    </Button>
-                  )}
                 </HStack>
               </Box>
             </VStack>

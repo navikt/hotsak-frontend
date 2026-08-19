@@ -6,6 +6,7 @@ import { Sak } from '../../types/types.internal'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
 import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
+import { log } from 'debug'
 
 interface VedtakFormProps {
   sak: Sak
@@ -25,13 +26,14 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
     const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami, isLoading } = useVedtak()
 
     const validerProblemsammendrag = (value: string | undefined) => {
+      if (!value || value.trim() === '') {
+        return 'Problemsammendrag er påkrevd når det er søkt om lavere rangerte hjelpemidler'
+      }
+
       if (!sammendragMedLavere) {
         return true
       }
-      if (!value || value.trim() === '') {
-        //denne kan vel flyttes over early return siden alle problemsammendrag skal ha en verdi
-        return 'Problemsammendrag er påkrevd når det er søkt om lavere rangerte hjelpemidler'
-      }
+
       if (!value.trim().startsWith('POST ')) {
         return 'Problemsammendraget må starte med "POST"'
       }

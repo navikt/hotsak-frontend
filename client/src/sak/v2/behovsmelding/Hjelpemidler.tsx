@@ -24,8 +24,8 @@ interface HjelpemidlerProps {
 }
 
 function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
-  const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
-  const tilbehør = behovsmelding.hjelpemidler.tilbehør
+  const hjelpemidler = behovsmelding?.hjelpemidler?.hjelpemidler ?? []
+  const tilbehør = behovsmelding?.hjelpemidler?.tilbehør ?? []
 
   const alleHmsNr = useMemo(() => {
     return [

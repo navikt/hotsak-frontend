@@ -7,8 +7,8 @@ import { type OppgaveId } from '../oppgaveTypes.ts'
 
 export interface Oppgavekommentar {
   tekst: string
-  registrertAv: UtførtAv
-  registrertAvEnhet: Enhet
+  registrertAv?: UtførtAv
+  registrertAvEnhet?: Enhet
   registrertAvSystem: string
   registrertTidspunkt: string
   oppgaveId: OppgaveId

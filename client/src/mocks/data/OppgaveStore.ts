@@ -68,8 +68,8 @@ export class OppgaveStore extends Dexie {
           behandlingstype = { kode: '', term: 'Søknad' }
         } else {
           const behovsmeldingCase = await this.behovsmeldingStore.hentForSak(sak)
-          if (behovsmeldingCase && behovsmeldingCase.behovsmelding.hjelpemidler.hjelpemidler.length) {
-            const isoKategoriKode = behovsmeldingCase.behovsmelding.hjelpemidler.hjelpemidler[0].produkt.iso8
+          if (behovsmeldingCase && behovsmeldingCase?.behovsmelding.hjelpemidler?.hjelpemidler?.length) {
+            const isoKategoriKode = behovsmeldingCase?.behovsmelding.hjelpemidler?.hjelpemidler?.[0]?.produkt?.iso8
             const isokategorisering = isokategoriseringByKode[isoKategoriKode]
             const { behandlingstema_kode: kode, behandlingstema_term: term } = isokategorisering ?? {
               behandlingstema_kode: '',

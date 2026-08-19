@@ -24,7 +24,7 @@ export const problemsammendragHandlers: StoreHandlersFactory = ({
       return HttpResponse.json({})
     }
     const behovsmelding = await behovsmeldingStore.hentForSak(sak)
-    const hjelpemidler = behovsmelding?.behovsmelding.hjelpemidler.hjelpemidler ?? []
+    const hjelpemidler = behovsmelding?.behovsmelding?.hjelpemidler?.hjelpemidler ?? []
 
     const lavereRangerteHjelpemidler = hjelpemidler.filter((hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1)
 

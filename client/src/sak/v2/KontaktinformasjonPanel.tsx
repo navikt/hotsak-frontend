@@ -55,10 +55,10 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
   const [merOmFormidlerÅpen, setMerOmFormidlerÅpen] = useExpandedSection('merOmFormidler')
   const [merOmOppfølgingsansvarligÅpen, setMerOmOppfølgingsansvarligÅpen] =
     useExpandedSection('merOmOppfølgingsansvarlig')
-  const { hjelpemiddelformidler: formidler } = behovsmelding.levering
-  const levering = behovsmelding.levering
+  const { hjelpemiddelformidler: formidler } = behovsmelding.levering!!
+  const levering = behovsmelding.levering!!
   const bruker = behovsmelding.bruker
-  const oppfølgingsansvarlig = behovsmelding.levering.annenOppfølgingsansvarlig
+  const oppfølgingsansvarlig = behovsmelding.levering?.annenOppfølgingsansvarlig
   const adresseBruker = formaterAdresse(behovsmelding.bruker.veiadresse)
   const leveringsmåteTekst = lagLeveringsmåteTekst(levering, adresseBruker)
   const formatertNavn = formaterNavn(bruker)
@@ -121,7 +121,7 @@ export function KontaktinformasjonPanel({ behovsmelding }: { sak: Sak; behovsmel
             </section>
             <section className={classes.panel}>
               <Tittel spacing={true}>OPPFØLGING OG OPPLÆRING</Tittel>
-              {behovsmelding.levering.oppfølgingsansvarlig === Oppfølgingsansvarlig.ANNEN_OPPFØLGINGSANSVARLIG &&
+              {behovsmelding.levering!!.oppfølgingsansvarlig === Oppfølgingsansvarlig.ANNEN_OPPFØLGINGSANSVARLIG &&
               oppfølgingsansvarlig ? (
                 <VStack gap="space-12">
                   <Tekst textColor="subtle">{`${formaterNavn(oppfølgingsansvarlig.navn)} - ${oppfølgingsansvarlig.stilling} - ${oppfølgingsansvarlig.arbeidssted} - Tlf: ${formaterTelefonnummer(oppfølgingsansvarlig.telefon)}`}</Tekst>

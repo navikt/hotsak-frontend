@@ -1,6 +1,7 @@
 import type { Bydel, Kommune, Personnavn, Veiadresse } from './hotlibs.ts'
 import type { Kanal } from './types.internal.ts'
 
+// TODO Lage en type for tynn behovsmelding?
 export interface Innsenderbehovsmelding {
   id: string
   type: BehovsmeldingType

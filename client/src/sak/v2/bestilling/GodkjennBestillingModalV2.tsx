@@ -16,7 +16,7 @@ export interface GodkjennBestillingModalV2Props {
 
 export function GodkjennBestillingModalV2({ open, onClose }: GodkjennBestillingModalV2Props) {
   const { behovsmelding } = useBehovsmelding()
-  const leveringsmerknad = behovsmelding?.levering.utleveringMerknad
+  const leveringsmerknad = behovsmelding?.levering?.utleveringMerknad
   const { oppgave } = useOppgave()
   const { opprettOgferdigstillBestillingBehandling } = useBehandlingActions()
 

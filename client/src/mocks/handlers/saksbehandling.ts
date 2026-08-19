@@ -178,7 +178,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
       const { endredeHjelpemidler } = await endreHjelpemiddelStore.hent(params.sakId)
       const endredeHjelpemidlerById = associateBy(endredeHjelpemidler, (it) => it.id)
-      const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler.flatMap((hjelpemiddel): ArtikkellinjeSak[] => {
+      const hjelpemidler = behovsmelding?.hjelpemidler?.hjelpemidler?.flatMap((hjelpemiddel): ArtikkellinjeSak[] => {
         const endretHjelpemiddel = endredeHjelpemidlerById[hjelpemiddel.hjelpemiddelId]
         return [
           {
@@ -218,7 +218,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         ]
       })
 
-      const frittståendeTilbehør = behovsmelding.hjelpemidler.tilbehør.map((tilbehør): ArtikkellinjeSak => {
+      const frittståendeTilbehør = behovsmelding?.hjelpemidler?.tilbehør?.map((tilbehør): ArtikkellinjeSak => {
         const id = tilbehør.tilbehørId ?? ''
         const endretTilbehør = endredeHjelpemidlerById[id]
         return {
@@ -238,7 +238,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         }
       })
 
-      return HttpResponse.json([...hjelpemidler, ...frittståendeTilbehør])
+      return HttpResponse.json([...(hjelpemidler ?? []), ...(frittståendeTilbehør ?? [])])
     }),
 
     http.put<SakParams, EndreHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {

@@ -18,21 +18,21 @@ export function useSøknadsVarsler(): VarslerDataResponse {
 
   const erSøknad = behovsmelding?.type === BehovsmeldingType.SØKNAD
   const harAnnenLeveringsadresse =
-    erSøknad && behovsmelding?.levering.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE
-  const harAnnenKontaktperson = erSøknad && !!behovsmelding?.levering.annenKontaktperson
+    erSøknad && behovsmelding?.levering?.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE
+  const harAnnenKontaktperson = erSøknad && !!behovsmelding?.levering?.annenKontaktperson
 
   const skalHentesPåHjelpemiddelsentralen =
-    erSøknad && behovsmelding?.levering.utleveringsmåte === Utleveringsmåte.HJELPEMIDDELSENTRALEN
+    erSøknad && behovsmelding?.levering?.utleveringsmåte === Utleveringsmåte.HJELPEMIDDELSENTRALEN
 
   const harAlleredeUtleveteHjelpemidler =
     erSøknad &&
-    behovsmelding?.hjelpemidler.hjelpemidler.some(
+    behovsmelding?.hjelpemidler?.hjelpemidler.some(
       (hjelpemiddel) => hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen
     )
 
   const alleHjelpemidlerErUtlevert =
     erSøknad &&
-    behovsmelding.levering.automatiskUtledetTilleggsinfo.includes(LeveringTilleggsinfo.ALLE_HJELPEMIDLER_ER_UTLEVERT)
+    behovsmelding?.levering?.automatiskUtledetTilleggsinfo.includes(LeveringTilleggsinfo.ALLE_HJELPEMIDLER_ER_UTLEVERT)
 
   if (harAnnenLeveringsadresse) {
     beskrivelser.push('Det er levering til en annen adresse. Denne må registreres.')
@@ -65,7 +65,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
   return {
     harAnnenLeveringsadresse,
     harAnnenKontaktperson,
-    alleHjelpemidlerErUtlevert,
+    alleHjelpemidlerErUtlevert: alleHjelpemidlerErUtlevert || false,
     varsler,
     harVarsler: erSøknad && beskrivelser.length > 0,
     isLoading: false,

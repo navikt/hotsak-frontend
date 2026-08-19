@@ -9,8 +9,8 @@ export interface Innsenderbehovsmelding {
   innsendingsdato: string
   bruker: Bruker
   brukersituasjon: Brukersituasjon
-  hjelpemidler: Hjelpemidler
-  levering: Levering
+  hjelpemidler?: Hjelpemidler
+  levering?: Levering
   saksbehandlingvarsel: Varsel[]
   kanal: Kanal
 }

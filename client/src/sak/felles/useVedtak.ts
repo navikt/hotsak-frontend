@@ -25,9 +25,9 @@ export function useVedtak() {
   const behovsmelding = useBehovsmelding()
   const { problemsammendrag, sammendragMedLavere, postbegrunnelser, isLoading } = useServiceforespørsel()
   const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
-  const utleveringsmerknad = behovsmelding.behovsmelding?.levering.utleveringMerknad
+  const utleveringsmerknad = behovsmelding.behovsmelding?.levering?.utleveringMerknad || ''
 
-  const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
+  const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler?.hjelpemidler.find(
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
   )
 

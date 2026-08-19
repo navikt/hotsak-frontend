@@ -6,7 +6,6 @@ import { Sak } from '../../types/types.internal'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
 import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
-import { log } from 'debug'
 
 interface VedtakFormProps {
   sak: Sak

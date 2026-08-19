@@ -1,5 +1,23 @@
 import type { OppgaveId, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 
+export interface JournalføringV2SkjemaVerdier {
+  tema: string
+  behandlingstype: string
+  behandlingstema: string
+  stønadsklassifisering: string
+  stønadsUnderkategori: string
+  stønadType: string
+  prioritet: Oppgaveprioritet
+  kommentar: string
+  mottattDato: string
+  aktivFra: string
+  frist: string
+  journalføresPåFnr: string
+  tilordnetEnhet: 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
+  enhetsmappe: string
+  medarbeider: string
+}
+
 export type SakstypeKode = 'A' | 'K' | 'KT' | 'R' | 'S' | 'T'
 
 export interface Stk3 {

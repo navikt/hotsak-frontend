@@ -157,6 +157,58 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return respondNoContent()
     }),
 
+    http.get<SakParams>('/api/sak/:sakId/tilbakemelding', async ({ params }) => {
+      const sakId = params.sakId
+      const tilbakemeldinger = [
+        {
+          sakId,
+          skjema: 'tilbakemelding',
+          svar: {
+            type: 'FRITEKST',
+            spørsmål: 'Hva synes du om saksbehandlingen?',
+            sti: ['tilbakemelding'],
+            svar: 'Veldig bra!',
+          },
+          opprettet: new Date().toISOString(),
+        },
+        {
+          sakId,
+          skjema: 'sak_overført_gosys_v1',
+          svar: {
+            type: 'FRITEKST',
+            spørsmål: 'Hva synes du om saksbehandlingen?',
+            sti: ['tilbakemelding'],
+            svar: 'Veldig bra!',
+          },
+          opprettet: new Date().toISOString(),
+        },
+        {
+          sakId,
+          skjema: 'sak_overført_gosys_v1',
+          svar: {
+            type: 'FRITEKST',
+            spørsmål: 'Hva synes du om saksbehandlingen?',
+            sti: ['tilbakemelding'],
+            svar: 'Veldig bra men også dårlig!',
+          },
+          opprettet: new Date().toISOString(),
+        },
+        {
+          sakId,
+          skjema: 'sak_overført_gosys_v1',
+          svar: {
+            type: 'FRITEKST',
+            spørsmål: 'Hva synes du om hotsak?',
+            sti: ['tilbakemelding'],
+            svar: 'Veldig bra men også dårlig!',
+          },
+          opprettet: new Date().toISOString(),
+        },
+      ]
+      await delay(500)
+      return HttpResponse.json(tilbakemeldinger)
+    }),
+
     http.put<SakParams, { status: OppgaveStatusType }>('/api/sak/:sakId/status', async ({ request, params }) => {
       const sakId = params.sakId
       const { status } = await request.json()

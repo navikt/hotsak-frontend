@@ -59,7 +59,7 @@ export function FerdigstilteNotater(props: FerdigstilteNotaterProps) {
 }
 
 function kommentarTilNotat(kommentar: Oppgavekommentar): Notat {
-  const { registrertAv, registrertTidspunkt } = kommentar
+  const { registrertAv = 'Ukjent', registrertTidspunkt } = kommentar
   return {
     id: `${uførtAvId(registrertAv)}_${registrertTidspunkt}`,
     sakId: '',

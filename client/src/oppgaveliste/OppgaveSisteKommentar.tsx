@@ -1,6 +1,7 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail, HStack, Loader, VStack } from '@navikt/ds-react'
 
+import { joinElements } from '../felleskomponenter/elements.ts'
 import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
 import { Strek } from '../felleskomponenter/Strek.tsx'
 import { useOppgavekommentarer } from '../oppgave/kommentar/useOppgavekommentarer.ts'
@@ -16,6 +17,19 @@ export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {
   const { oppgaveId } = props
   const { kommentarer = [], isLoading } = useOppgavekommentarer(oppgaveId)
   const sisteKommentar = kommentarer[0]
+
+  const detaljer = sisteKommentar
+    ? [
+        sisteKommentar.registrertAv && <Detail key="registrertAv">{utførtAvNavn(sisteKommentar.registrertAv)}</Detail>,
+        sisteKommentar.registrertAvEnhet && (
+          <Detail key="registrertAvEnhet">{sisteKommentar.registrertAvEnhet.navn}</Detail>
+        ),
+        <Detail key="registrertTidspunkt">
+          <FormatDateTime dateTime={sisteKommentar.registrertTidspunkt} />
+        </Detail>,
+      ].filter(Boolean)
+    : []
+
   return (
     <div>
       <Strek />
@@ -27,13 +41,7 @@ export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {
             {sisteKommentar ? (
               <VStack gap="space-8">
                 <HStack gap="space-8" align="center">
-                  <Detail>{utførtAvNavn(sisteKommentar.registrertAv)}</Detail>
-                  <Detail>|</Detail>
-                  <Detail>{sisteKommentar.registrertAvEnhet.navn}</Detail>
-                  <Detail>|</Detail>
-                  <Detail>
-                    <FormatDateTime dateTime={sisteKommentar.registrertTidspunkt} />
-                  </Detail>
+                  {joinElements(detaljer, <Detail>|</Detail>)}
                 </HStack>
                 <BodyShort size="small">{sisteKommentar.tekst}</BodyShort>
               </VStack>

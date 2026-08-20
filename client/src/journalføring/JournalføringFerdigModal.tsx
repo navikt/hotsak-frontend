@@ -1,6 +1,7 @@
 import { BodyShort, Button, Dialog, HStack } from '@navikt/ds-react'
 import { useNavigate } from 'react-router'
 
+import { Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { type JournalføringV2Response } from './journalføringTypes.ts'
 
 interface JournalføringFerdigModalProps {
@@ -8,6 +9,18 @@ interface JournalføringFerdigModalProps {
   resultat: JournalføringV2Response | null
   sakType: 'ny' | 'eksisterende'
   onClose(): void
+}
+
+export function finnOppgaveIdForSak(resultat: JournalføringV2Response | null) {
+  return resultat?.oppgaver.find(
+    ({ oppgavetype, statuskategori }) =>
+      oppgavetype === Oppgavetype.BEHANDLE_SAK && statuskategori === Statuskategori.ÅPEN
+  )?.oppgaveId
+}
+
+export function finnStiTilSak(resultat: JournalføringV2Response) {
+  const oppgaveIdForSak = finnOppgaveIdForSak(resultat)
+  return oppgaveIdForSak ? `/oppgave/${oppgaveIdForSak}` : `/sak/${resultat.sakId}`
 }
 
 export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: JournalføringFerdigModalProps) {
@@ -36,13 +49,15 @@ export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: 
             <Button variant="primary" size="small" onClick={() => resultat && onClose()}>
               Lukk
             </Button>
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={() => resultat && navigerOgLukkModal(`/oppgave/${resultat.oppgaveId}`)}
-            >
-              Til saken
-            </Button>
+            {sakType === 'eksisterende' && (
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => resultat && navigerOgLukkModal(finnStiTilSak(resultat))}
+              >
+                Til saken
+              </Button>
+            )}
             <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/mine')}>
               Til mine oppgaver
             </Button>

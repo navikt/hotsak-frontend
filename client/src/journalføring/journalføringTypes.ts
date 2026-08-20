@@ -1,4 +1,4 @@
-import type { OppgaveId, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
+import type { OppgaveId, Oppgaveprioritet, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 
 export interface JournalføringV2SkjemaVerdier {
   tema: string
@@ -89,4 +89,11 @@ export interface JournalføringV2Request {
 export interface JournalføringV2Response {
   oppgaveId: OppgaveId
   sakId: string
+  oppgaver: Array<{
+    oppgaveId: OppgaveId
+    oppgavetype: Oppgavetype
+    statuskategori: Statuskategori
+    isÅpen: boolean
+    isAvsluttet: boolean
+  }>
 }

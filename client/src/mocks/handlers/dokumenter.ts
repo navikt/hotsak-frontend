@@ -6,7 +6,7 @@ import type {
   JournalføringV2Request,
   JournalføringV2Response,
 } from '../../journalføring/journalføringTypes.ts'
-import { Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
+import { type Oppgave, Oppgavetype, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import type { StoreHandlersFactory } from '../data'
 import { velgDokumentFil } from '../data/dokumentvelger.ts'
 import { lastDokument } from '../data/felles.ts'
@@ -20,6 +20,16 @@ interface JournalpostParams {
 
 interface DokumentParams extends JournalpostParams {
   dokumentId: string
+}
+
+function tilJournalføringOppgave(oppgave: Oppgave): JournalføringV2Response['oppgaver'][number] {
+  return {
+    oppgaveId: oppgave.oppgaveId,
+    oppgavetype: oppgave.kategorisering.oppgavetype,
+    statuskategori: oppgave.statuskategori,
+    isÅpen: oppgave.statuskategori === Statuskategori.ÅPEN,
+    isAvsluttet: oppgave.statuskategori === Statuskategori.AVSLUTTET,
+  }
 }
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakStore, oppgaveStore }) => [
@@ -94,7 +104,12 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
           oppgaveStore.lagreOppgave(nyOppgave),
           oppgaveStore.ferdigstillOppgave(journalføringRequest.oppgaveId),
         ])
-        return HttpResponse.json<JournalføringV2Response>({ sakId, oppgaveId: String(oppgaveId) })
+        const oppgaver = await oppgaveStore.finnOppgaverForSak(sakId)
+        return HttpResponse.json<JournalføringV2Response>({
+          sakId,
+          oppgaveId: String(oppgaveId),
+          oppgaver: oppgaver.map(tilJournalføringOppgave),
+        })
       }
 
       // V2 koble til eksisterende sak — har dokumenter-array og sakId, ingen saksgrunnlag
@@ -105,7 +120,12 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
         }
         await journalpostStore.journalførV2(v2Request)
         await oppgaveStore.ferdigstillOppgave(v2Request.oppgaveId)
-        return HttpResponse.json<JournalføringV2Response>({ sakId: v2Request.sakId, oppgaveId: v2Request.oppgaveId })
+        const oppgaver = await oppgaveStore.finnOppgaverForSak(v2Request.sakId)
+        return HttpResponse.json<JournalføringV2Response>({
+          sakId: v2Request.sakId,
+          oppgaveId: v2Request.oppgaveId,
+          oppgaver: oppgaver.map(tilJournalføringOppgave),
+        })
       }
 
       // V1 legacy — barnebriller og gammel journalføring

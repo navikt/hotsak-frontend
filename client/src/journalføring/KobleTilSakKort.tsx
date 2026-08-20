@@ -67,7 +67,11 @@ export function KobleTilSakKort({ fnr, valgtSakId, onChange, feilmelding }: Kobl
     return <ErrorMessage>Feil med hending av saker</ErrorMessage>
   }
 
-  const alleSaker = sorterSaker((saksoversikt?.saker ?? []).filter((sak) => sak.sakstype !== Sakstype.BARNEBRILLER))
+  const alleSaker = sorterSaker(
+    (saksoversikt?.saker ?? []).filter(
+      (sak) => sak.sakstype !== Sakstype.BARNEBRILLER && sak.sakstype !== Sakstype.BESTILLING
+    )
+  )
 
   if (alleSaker.length === 0) {
     return <BodyShort size="small">Ingen saker funnet for denne brukeren.</BodyShort>

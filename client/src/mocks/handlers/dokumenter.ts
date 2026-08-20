@@ -100,14 +100,13 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
           },
           tema: saksgrunnlag.tema,
         })
-        const [oppgaveId] = await Promise.all([
+        await Promise.all([
           oppgaveStore.lagreOppgave(nyOppgave),
           oppgaveStore.ferdigstillOppgave(journalføringRequest.oppgaveId),
         ])
         const oppgaver = await oppgaveStore.finnOppgaverForSak(sakId)
         return HttpResponse.json<JournalføringV2Response>({
           sakId,
-          oppgaveId: String(oppgaveId),
           oppgaver: oppgaver.map(tilJournalføringOppgave),
         })
       }
@@ -123,7 +122,6 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
         const oppgaver = await oppgaveStore.finnOppgaverForSak(v2Request.sakId)
         return HttpResponse.json<JournalføringV2Response>({
           sakId: v2Request.sakId,
-          oppgaveId: v2Request.oppgaveId,
           oppgaver: oppgaver.map(tilJournalføringOppgave),
         })
       }

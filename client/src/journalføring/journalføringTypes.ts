@@ -87,8 +87,9 @@ export interface JournalføringV2Request {
 }
 
 export interface JournalføringV2Response {
-  oppgaveId: OppgaveId
   sakId: string
+  journalpostId?: string
+  oppgavegrunnlagId?: string
   oppgaver: Array<{
     oppgaveId: OppgaveId
     oppgavetype: Oppgavetype

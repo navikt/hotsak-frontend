@@ -6,25 +6,27 @@ import { finnOppgaveIdForSak, finnStiTilSak } from './JournalføringFerdigModal.
 
 const resultat: JournalføringV2Response = {
   sakId: 'sak-1',
-  oppgaveId: 'ny-sak-oppgave',
   oppgaver: [
     {
       oppgaveId: 'ferdig-behandle-sak',
       oppgavetype: Oppgavetype.BEHANDLE_SAK,
       statuskategori: Statuskategori.AVSLUTTET,
       isÅpen: false,
+      isAvsluttet: true,
     },
     {
       oppgaveId: 'annen-oppgave',
       oppgavetype: Oppgavetype.GODKJENNE_VEDTAK,
       statuskategori: Statuskategori.ÅPEN,
       isÅpen: true,
+      isAvsluttet: false,
     },
     {
       oppgaveId: 'åpen-behandle-sak',
       oppgavetype: Oppgavetype.BEHANDLE_SAK,
       statuskategori: Statuskategori.ÅPEN,
       isÅpen: true,
+      isAvsluttet: false,
     },
   ],
 }
@@ -32,10 +34,6 @@ const resultat: JournalføringV2Response = {
 describe('finnOppgaveIdForSak', () => {
   it('finner den åpne behandle-sak-oppgaven for eksisterende sak', () => {
     expect(finnOppgaveIdForSak(resultat)).toBe('åpen-behandle-sak')
-  })
-
-  it('bruker oppgaven som ble opprettet for ny sak', () => {
-    expect(finnOppgaveIdForSak(resultat)).toBe('ny-sak-oppgave')
   })
 
   it('navigerer til saken når det ikke finnes en åpen behandle-sak-oppgave', () => {

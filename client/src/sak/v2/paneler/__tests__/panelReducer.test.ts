@@ -56,10 +56,11 @@ describe('panelReducer', () => {
   })
 
   describe('sakstype-regler', () => {
-    it('skjuler behandlingspanel og brevpanel som default for BESTILLING', () => {
+    it('skjuler behandlingspanel, brevpanel og dokumentpanel som default for BESTILLING', () => {
       const state = createInitialPanelState(Sakstype.BESTILLING)
       expect(state.panels.behandlingspanel.visible).toBe(false)
       expect(state.panels.brevpanel.visible).toBe(false)
+      expect(state.panels.dokumentpanel.visible).toBe(false)
     })
 
     it('tillater ikke å sette behandlingspanel synlig for BESTILLING', () => {
@@ -72,6 +73,17 @@ describe('panelReducer', () => {
       const state = createInitialPanelState(Sakstype.BESTILLING)
       const next = panelReducer(state, { type: 'TOGGLE_PANEL', panelId: 'brevpanel' })
       expect(next.panels.brevpanel.visible).toBe(false)
+    })
+
+    it('tillater ikke å åpne dokumentpanelet for BESTILLING', () => {
+      const state = createInitialPanelState(Sakstype.BESTILLING)
+      const next = panelReducer(state, { type: 'SET_PANEL_VISIBILITY', panelId: 'dokumentpanel', visible: true })
+      expect(next.panels.dokumentpanel.visible).toBe(false)
+    })
+
+    it('skjuler dokumentpanelet som default for digitale søknader', () => {
+      const state = createInitialPanelState(Sakstype.SØKNAD)
+      expect(state.panels.dokumentpanel.visible).toBe(false)
     })
   })
 

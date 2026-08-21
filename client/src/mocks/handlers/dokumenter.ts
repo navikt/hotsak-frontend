@@ -118,6 +118,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
           throw new Error('sakId mangler i V2-koble-til-sak-request')
         }
         await journalpostStore.journalførV2(v2Request)
+        await sakStore.knyttJournalpostTilSak(v2Request)
         await oppgaveStore.ferdigstillOppgave(v2Request.oppgaveId)
         const oppgaver = await oppgaveStore.finnOppgaverForSak(v2Request.sakId)
         return HttpResponse.json<JournalføringV2Response>({

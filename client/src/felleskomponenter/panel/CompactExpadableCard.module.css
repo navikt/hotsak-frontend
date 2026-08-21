@@ -31,12 +31,10 @@
   /*border-color: var(--ax-border-accent-subtle);*/
 }
 
-/* TODO: Bruk Aksel variabler */
 .heading {
-  font-size: 18px;
-  font-weight: 600;
+  padding: var(--ax-space-0);
 }
 
 .content {
-  padding: 0px;
+  padding: var(--ax-space-0);
 }

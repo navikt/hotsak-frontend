@@ -4,11 +4,13 @@ import { Tekst } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { type Sak } from '../../../types/types.internal'
 import { formaterDatoKort } from '../../../utils/dato'
+import { useMiljø } from '../../../utils/useMiljø.ts'
 import { JournalpostCard } from './JournalpostCard'
 import { useSaksregler } from '../../../saksregler/useSaksregler'
 
 export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: Sak }) {
-  const { erPapirsøknad } = useSaksregler()
+  const { erBestilling } = useSaksregler()
+  const { erIkkeProd } = useMiljø()
 
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8" marginBlock="space-0 space-16">
@@ -18,16 +20,17 @@ export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandli
           <Tekst textColor="subtle">Frist: {formaterDatoKort(oppgave.fristFerdigstillelse)}</Tekst>
         )}
       </HStack>
-      {erPapirsøknad ? (
-        <JournalpostCard />
-      ) : (
-        <Box paddingInline="space-8 space-0">
-          <Tekst>
-            <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
-              Slå opp folketrygdlovens § 10-6 i Lovdata
-            </Link>
-          </Tekst>
-        </Box>
+      {!erBestilling && (
+        <>
+          <Box paddingInline="space-8 space-0">
+            <Tekst>
+              <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
+                Slå opp folketrygdlovens § 10-6 i Lovdata
+              </Link>
+            </Tekst>
+          </Box>
+          {erIkkeProd && <JournalpostCard />}
+        </>
       )}
     </VStack>
   )

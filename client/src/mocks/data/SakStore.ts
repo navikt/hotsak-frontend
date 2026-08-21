@@ -52,7 +52,9 @@ import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
+  erLagretHjelpemiddelsak,
   type InsertBarnebrillesak,
+  type InsertHjelpemiddelsak,
   type InsertSak,
   type InsertSakshendelse,
   lagBarnebrillesak,
@@ -537,14 +539,28 @@ export class SakStore extends Dexie {
     }
 
     const eksisterendeSak = await this.hent(sakId)
-    if (!erLagretBarnebrillesak(eksisterendeSak)) {
+    if (!eksisterendeSak) {
       return
     }
 
-    const eksisterendeJournalposter = eksisterendeSak.journalposter
-    this.oppdaterSak<InsertBarnebrillesak>(eksisterendeSak.sakId, {
-      journalposter: [...eksisterendeJournalposter, journalføring.journalpostId],
-    })
+    if (erLagretBarnebrillesak(eksisterendeSak)) {
+      if (eksisterendeSak.journalposter.includes(journalføring.journalpostId)) {
+        return
+      }
+      return this.oppdaterSak<InsertBarnebrillesak>(eksisterendeSak.sakId, {
+        journalposter: [...eksisterendeSak.journalposter, journalføring.journalpostId],
+      })
+    }
+
+    if (erLagretHjelpemiddelsak(eksisterendeSak)) {
+      const eksisterendeJournalposter = eksisterendeSak.journalposter ?? []
+      if (eksisterendeJournalposter.includes(journalføring.journalpostId)) {
+        return
+      }
+      return this.oppdaterSak<InsertHjelpemiddelsak>(eksisterendeSak.sakId, {
+        journalposter: [...eksisterendeJournalposter, journalføring.journalpostId],
+      })
+    }
   }
 
   async opprettBrevutkast(sakId: string, request: OpprettBrevutkastRequest): Promise<Brev> {

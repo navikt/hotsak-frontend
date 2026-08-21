@@ -1,63 +1,89 @@
-import { Box, HStack, Link, Tag, VStack } from '@navikt/ds-react'
-import { BodyShort, Label } from '@navikt/ds-react'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
+import { Box, Detail, Link, Table, Tooltip, VStack, HStack, Label } from '@navikt/ds-react'
+import { Tekst } from '../../../felleskomponenter/typografi'
 import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard'
-import { useJournalpost } from '../../../saksbilde/useJournalpost'
+import { useDokumentContext } from '../../../dokument/DokumentContext.tsx'
 import { useJournalposter } from '../../../saksbilde/useJournalposter'
+import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
+import type { LogiskVedlegg } from '../../../types/types.internal.ts'
+import { useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
+
+export function formaterLogiskeVedlegg(logiskeVedlegg: LogiskVedlegg[]) {
+  return logiskeVedlegg.length === 0 ? 'Ingen logiske vedlegg' : logiskeVedlegg.map(({ tittel }) => tittel).join(', ')
+}
+
+export function skalDokumentkortVæreÅpent(erPapirsøknad: boolean, antallDokumenter: number) {
+  return erPapirsøknad || antallDokumenter > 1
+}
 
 export function JournalpostCard() {
   const { dokumenter } = useJournalposter()
-  const journalpostId = dokumenter[0]?.journalpostId
-  const { journalpost } = useJournalpost(journalpostId)
+  const { valgtDokument, setValgtDokument } = useDokumentContext()
+  const { erPapirsøknad } = useSaksregler()
+  const setDokumentpanelSynlig = useSetPanelVisibility('dokumentpanel')
+
+  if (dokumenter.length === 0) {
+    return null
+  }
 
   return (
-    journalpost && (
-      <Box>
-        <CompactExpandableCard variant="subtle" tittel="Journalpost">
-          <VStack gap="space-16" padding="space-12">
-            <HStack gap="space-20" wrap>
-              <VStack gap="space-4">
-                <Label size="small">Tittel</Label>
-                <BodyShort size="small">{journalpost.tittel}</BodyShort>
-              </VStack>
-              <VStack gap="space-4">
-                <Label size="small">Tema</Label>
-                <BodyShort size="small">{journalpost.tema.term}</BodyShort>
-              </VStack>
-              <VStack gap="space-4">
-                <Label size="small">Journalpost-ID</Label>
-                <BodyShort size="small">{journalpost.journalpostId}</BodyShort>
-              </VStack>
-            </HStack>
+    <Box>
+      <CompactExpandableCard
+        variant="subtle"
+        tittel="Dokumenter"
+        defaultOpen={skalDokumentkortVæreÅpent(erPapirsøknad, dokumenter.length)}
+      >
+        <Table size="small">
+          <Table.Body>
+            {dokumenter.map((dokument) => {
+              const dokumentUrl = `/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`
+              const erValgtDokument =
+                valgtDokument.journalpostId === dokument.journalpostId &&
+                valgtDokument.dokumentId === dokument.dokumentId
 
-            <VStack gap="space-12">
-              <Label size="small">Dokumenter</Label>
-              {journalpost.dokumenter.map((dokument) => (
-                <VStack key={dokument.dokumentId} gap="space-8">
-                  <HStack gap="space-12" align="center">
-                    <BodyShort size="small">{dokument.tittel}</BodyShort>
-                    <Link
-                      href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <BodyShort size="small">Åpne</BodyShort>
-                    </Link>
-                  </HStack>
-                  {dokument.logiskeVedlegg.length > 0 && (
-                    <HStack gap="space-8" wrap>
-                      {dokument.logiskeVedlegg.map((vedlegg) => (
-                        <Tag key={vedlegg.vedleggId} variant="neutral" size="xsmall">
-                          {vedlegg.tittel}
-                        </Tag>
-                      ))}
-                    </HStack>
-                  )}
-                </VStack>
-              ))}
-            </VStack>
-          </VStack>
-        </CompactExpandableCard>
-      </Box>
-    )
+              return (
+                <Table.ExpandableRow
+                  key={`${dokument.journalpostId}-${dokument.dokumentId}`}
+                  content={
+                    <VStack gap="space-4" paddingBlock="space-0" paddingInline="space-0">
+                      <HStack gap="space-4">
+                        <Label size="small">Vedlegg:</Label>
+                        <Detail>{formaterLogiskeVedlegg(dokument.logiskeVedlegg)}</Detail>
+                      </HStack>
+                      <HStack gap="space-4">
+                        <Label size="small">Journalpost:</Label>
+                        <Detail>{dokument.journalpostId}</Detail>
+                      </HStack>
+                    </VStack>
+                  }
+                >
+                  <Table.DataCell scope="row">
+                    <Tekst>
+                      <Link
+                        href={dokumentUrl}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setValgtDokument({ journalpostId: dokument.journalpostId, dokumentId: dokument.dokumentId })
+                          setDokumentpanelSynlig(true)
+                        }}
+                      >
+                        {erValgtDokument ? <strong>{dokument.tittel}</strong> : dokument.tittel}
+                      </Link>
+                    </Tekst>
+                  </Table.DataCell>
+                  <Table.DataCell>
+                    <Tooltip content="Åpne i ny fane">
+                      <Link href={dokumentUrl} target="_blank" rel="noopener noreferrer">
+                        <ExternalLinkIcon title={`Åpne ${dokument.tittel} i ny fane`} />
+                      </Link>
+                    </Tooltip>
+                  </Table.DataCell>
+                </Table.ExpandableRow>
+              )
+            })}
+          </Table.Body>
+        </Table>
+      </CompactExpandableCard>
+    </Box>
   )
 }

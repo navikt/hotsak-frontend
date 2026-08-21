@@ -1,4 +1,4 @@
-import { ExpansionCard } from '@navikt/ds-react'
+import { ExpansionCard, Label } from '@navikt/ds-react'
 import classes from './CompactExpadableCard.module.css'
 import clsx from 'clsx'
 import { useId } from 'react'
@@ -27,7 +27,7 @@ export function CompactExpandableCard({
     >
       <ExpansionCard.Header className={clsx(variant !== 'default' ? classes.root : classes.rootDefault)}>
         <ExpansionCard.Title id={headingId} className={classes.heading} size="small">
-          {tittel}
+          <Label size="small">{tittel}</Label>
         </ExpansionCard.Title>
       </ExpansionCard.Header>
       <ExpansionCard.Content className={clsx(variant !== 'default' && classes.content)}>

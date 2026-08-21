@@ -6,13 +6,16 @@ import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { isBrevmal } from '../../brev/brevSelectors.ts'
 import { Brevmal } from '../../brev/brevTyper.ts'
 import { useBrevForSak } from '../../brev/useBrev.ts'
+import { useDokumentContext } from '../../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
+import { useJournalposter } from '../../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
+import { useMiljø } from '../../utils/useMiljø.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
@@ -63,6 +66,7 @@ function SakV2Content({
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erPapirsøknad, erBestilling } = useSaksregler()
+  const { erIkkeProd } = useMiljø()
 
   const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
     useSakContext()
@@ -119,6 +123,7 @@ function SakV2Content({
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
+      {erIkkeProd && <DokumentpanelInitialisering />}
       <Box
         marginBlock="space-8 space-0"
         marginInline="space-8"
@@ -154,7 +159,7 @@ function SakV2Content({
           <ResizablePanel
             panelId="dokumentpanel"
             panel={dokumentPanel}
-            visible={dokumentPanel.visible && erPapirsøknad}
+            visible={erIkkeProd && dokumentPanel.visible && !erBestilling}
           >
             <AvrundetPanel>
               <PapirsøknadPanel />
@@ -288,4 +293,30 @@ export default function SakV2({
       <SakV2Content oppgave={oppgave} sak={sak} behovsmelding={behovsmelding} />
     </AsyncBoundary>
   )
+}
+
+function DokumentpanelInitialisering() {
+  const { dokumenter } = useJournalposter()
+  const { setValgtDokument } = useDokumentContext()
+  const { erPapirsøknad } = useSaksregler()
+  const { panelDispatch } = useSakContext()
+  const harAutoÅpnetDokumentpanel = useRef(false)
+  const harValgtDokumentForPapirsøknad = useRef(false)
+
+  useEffect(() => {
+    if (erPapirsøknad && !harAutoÅpnetDokumentpanel.current) {
+      harAutoÅpnetDokumentpanel.current = true
+      panelDispatch({ type: 'SET_PANEL_VISIBILITY', panelId: 'dokumentpanel', visible: true })
+    }
+  }, [erPapirsøknad, panelDispatch])
+
+  useEffect(() => {
+    const førsteDokument = dokumenter[0]
+    if (erPapirsøknad && førsteDokument && !harValgtDokumentForPapirsøknad.current) {
+      harValgtDokumentForPapirsøknad.current = true
+      setValgtDokument({ journalpostId: førsteDokument.journalpostId, dokumentId: førsteDokument.dokumentId })
+    }
+  }, [dokumenter, erPapirsøknad, setValgtDokument])
+
+  return null
 }

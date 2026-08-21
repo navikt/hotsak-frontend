@@ -38,7 +38,8 @@ export const PANELS = [
   { id: 'kontaktinformasjonpanel', defaultVisible: true, minWidth: 220, minWidthUnit: 'px', defaultSize: '300px' },
   {
     id: 'dokumentpanel',
-    defaultVisible: true,
+    defaultVisible: false,
+    disabledForSakstyper: [Sakstype.BESTILLING],
     minWidth: 300,
     minWidthUnit: 'px',
     defaultSize: '40%',

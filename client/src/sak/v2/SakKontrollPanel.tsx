@@ -6,6 +6,7 @@ import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import { useSakId } from '../../saksbilde/useSak'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import globalStyles from '../../styles/shared.module.css'
+import { useMiljø } from '../../utils/useMiljø.ts'
 import { useNotater } from '../notat/useNotater'
 import { GjenståendeOverfør } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
@@ -28,6 +29,7 @@ export const SakKontrollPanel = () => {
   const { gjeldendeBehandling } = useBehandling()
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
   const { erBestilling, erPapirsøknad } = useSaksregler()
+  const { erIkkeProd } = useMiljø()
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
 
@@ -54,7 +56,7 @@ export const SakKontrollPanel = () => {
               Søknad
             </ToggleKnapp>
           )}
-          {erPapirsøknad && (
+          {erIkkeProd && !erBestilling && (
             <ToggleKnapp selected={dokumentPanel.visible} onToggle={() => toggleDokumentPanel()}>
               Dokument
             </ToggleKnapp>

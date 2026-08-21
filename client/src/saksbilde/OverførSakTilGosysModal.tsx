@@ -31,13 +31,19 @@ export function OverførSakTilGosysModal({
   const { notater } = useNotater(sakId)
   const { mutate: mutateBehandling } = useBehandling()
   const navigate = useNavigate()
-  const { showSuccessToast } = useToast()
+  const { showSuccessToast, showErrorToast } = useToast()
 
   async function onBesvar(tilbakemelding: Tilbakemelding) {
-    await onBekreft(tilbakemelding)
-    showSuccessToast('Saken er overført til Gosys')
+    onClose()
     navigate('/', { replace: true })
-    mutateBehandling()
+    try {
+      await onBekreft(tilbakemelding)
+      showSuccessToast('Saken ble overført til Gosys')
+    } catch {
+      showErrorToast('Saken ble ikke overført til Gosys. Prøv igjen.')
+    } finally {
+      void mutateBehandling()
+    }
   }
 
   return (

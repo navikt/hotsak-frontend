@@ -46,10 +46,12 @@ export function JournalpostCard() {
                   key={`${dokument.journalpostId}-${dokument.dokumentId}`}
                   content={
                     <VStack gap="space-4" paddingBlock="space-0" paddingInline="space-0">
-                      <HStack gap="space-4">
-                        <Label size="small">Vedlegg:</Label>
-                        <Detail>{formaterLogiskeVedlegg(dokument.logiskeVedlegg)}</Detail>
-                      </HStack>
+                      {dokument.logiskeVedlegg && (
+                        <HStack gap="space-4">
+                          <Label size="small">Vedlegg:</Label>
+                          <Detail>{formaterLogiskeVedlegg(dokument.logiskeVedlegg)}</Detail>
+                        </HStack>
+                      )}
                       <HStack gap="space-4">
                         <Label size="small">Journalpost:</Label>
                         <Detail>{dokument.journalpostId}</Detail>

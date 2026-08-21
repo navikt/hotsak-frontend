@@ -35,9 +35,9 @@ export function OverførSakTilGosysModal({
 
   async function onBesvar(tilbakemelding: Tilbakemelding) {
     await onBekreft(tilbakemelding)
-    await mutateBehandling()
     showSuccessToast('Saken er overført til Gosys')
-    navigate('/')
+    navigate('/', { replace: true })
+    mutateBehandling()
   }
 
   return (

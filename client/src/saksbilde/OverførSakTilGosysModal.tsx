@@ -1,5 +1,7 @@
 import { LocalAlert, VStack } from '@navikt/ds-react'
 
+import { useNavigate } from 'react-router'
+import { useToast } from '../felleskomponenter/toast/useToast'
 import { Tekst } from '../felleskomponenter/typografi'
 import { type Tilbakemelding } from '../innsikt/Besvarelse'
 import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal'
@@ -28,10 +30,14 @@ export function OverførSakTilGosysModal({
   const sakId = useSakId()
   const { notater } = useNotater(sakId)
   const { mutate: mutateBehandling } = useBehandling()
+  const navigate = useNavigate()
+  const { showSuccessToast } = useToast()
 
   async function onBesvar(tilbakemelding: Tilbakemelding) {
     await onBekreft(tilbakemelding)
     await mutateBehandling()
+    showSuccessToast('Saken er overført til Gosys')
+    navigate('/')
   }
 
   return (

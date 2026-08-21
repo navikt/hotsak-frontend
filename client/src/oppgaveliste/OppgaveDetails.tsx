@@ -1,9 +1,7 @@
-import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, InlineMessage, VStack } from '@navikt/ds-react'
+import { BodyShort, HStack, InlineMessage, Link, VStack } from '@navikt/ds-react'
 import { type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
 import { FormatFødselsnummer } from '../felleskomponenter/format/FormatFødselsnummer.tsx'
 import { FormatPersonnavn } from '../felleskomponenter/format/FormatPersonnavn.tsx'
-import { IconLink } from '../felleskomponenter/IconLink.tsx'
 import { Strek } from '../felleskomponenter/Strek.tsx'
 import { type Oppgave, type OppgaveBruker, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
@@ -42,14 +40,20 @@ export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) 
                 <BodyShort size="small">
                   <strong>{tilbakemelding.spørsmål}</strong>
                 </BodyShort>
-                {tilbakemelding.svar.map((svar) => (
-                  <BodyShort key={svar} size="small">
-                    {svar}
-                  </BodyShort>
-                ))}
+                {tilbakemelding.svar.length > 1 ? (
+                  <ul style={{ margin: '0' }}>
+                    {tilbakemelding.svar.map((svar, index) => (
+                      <BodyShort key={`${tilbakemelding.spørsmål}-${svar}-${index}`} as="li" size="small">
+                        {svar}
+                      </BodyShort>
+                    ))}
+                  </ul>
+                ) : (
+                  tilbakemelding.svar[0] && <BodyShort size="small">{tilbakemelding.svar[0]}</BodyShort>
+                )}
               </VStack>
             ))}
-          <BodyShort as={IconLink} icon={<ExternalLinkIcon />} href={oppgaveUrl} size="small" target="_blank" spacing>
+          <BodyShort as={Link} href={oppgaveUrl} size="small" target="_blank" spacing>
             Åpne i Gosys
           </BodyShort>
         </div>
@@ -77,7 +81,7 @@ export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) 
         <OppgaveSisteKommentar oppgaveId={oppgave.oppgaveId} />
         <div>
           <Strek />
-          <BodyShort as={IconLink} icon={<ExternalLinkIcon />} href={oppgaveUrl} size="small" target="_blank" spacing>
+          <BodyShort as={Link} href={oppgaveUrl} size="small" target="_blank" spacing>
             Åpne i Gosys
           </BodyShort>
         </div>

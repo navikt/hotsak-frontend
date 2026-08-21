@@ -162,32 +162,10 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       const tilbakemeldinger = [
         {
           sakId,
-          skjema: 'tilbakemelding',
-          svar: {
-            type: 'FRITEKST',
-            spørsmål: 'Hva synes du om saksbehandlingen?',
-            sti: ['tilbakemelding'],
-            svar: 'Veldig bra!',
-          },
-          opprettet: new Date().toISOString(),
-        },
-        {
-          sakId,
           skjema: 'sak_overført_gosys_v1',
           svar: {
             type: 'FRITEKST',
-            spørsmål: 'Hva synes du om saksbehandlingen?',
-            sti: ['tilbakemelding'],
-            svar: 'Veldig bra!',
-          },
-          opprettet: new Date().toISOString(),
-        },
-        {
-          sakId,
-          skjema: 'sak_overført_gosys_v1',
-          svar: {
-            type: 'FRITEKST',
-            spørsmål: 'Hva synes du om saksbehandlingen?',
+            spørsmål: 'Hvorfor overfører du saken til Gosys?',
             sti: ['tilbakemelding'],
             svar: 'Veldig bra men også dårlig!',
           },
@@ -195,10 +173,32 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         },
         {
           sakId,
+          skjema: 'tilbakemelding',
+          svar: {
+            type: 'FRITEKST',
+            spørsmål: 'Hvorfor overfører du saken til Gosys?',
+            sti: ['tilbakemelding'],
+            svar: 'Veldig bra!',
+          },
+          opprettet: new Date().toISOString(),
+        },
+        {
+          sakId,
           skjema: 'sak_overført_gosys_v1',
           svar: {
             type: 'FRITEKST',
-            spørsmål: 'Hva synes du om hotsak?',
+            spørsmål: 'Hva har du behov for å kunne gjøre i Hotsak for å behandle denne saken?',
+            sti: ['tilbakemelding'],
+            svar: 'Veldig bra!',
+          },
+          opprettet: new Date().toISOString(),
+        },
+        {
+          sakId,
+          skjema: 'sak_overført_gosys_v1',
+          svar: {
+            type: 'FRITEKST',
+            spørsmål: 'Hva har du behov for å kunne gjøre i Hotsak for å behandle denne saken?',
             sti: ['tilbakemelding'],
             svar: 'Veldig bra men også dårlig!',
           },

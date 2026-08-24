@@ -1,15 +1,19 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Box, Detail, Link, Table, Tooltip, VStack, HStack, Label } from '@navikt/ds-react'
-import { Tekst } from '../../../felleskomponenter/typografi'
-import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard'
+import { Box, HStack, Label, Link, Table, Tooltip, VStack } from '@navikt/ds-react'
 import { useDokumentContext } from '../../../dokument/DokumentContext.tsx'
+import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard'
+import { Tekst } from '../../../felleskomponenter/typografi'
 import { useJournalposter } from '../../../saksbilde/useJournalposter'
 import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
 import type { LogiskVedlegg } from '../../../types/types.internal.ts'
 import { useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 
-export function formaterLogiskeVedlegg(logiskeVedlegg: LogiskVedlegg[]) {
-  return logiskeVedlegg.length === 0 ? 'Ingen logiske vedlegg' : logiskeVedlegg.map(({ tittel }) => tittel).join(', ')
+export function LogiskeVedlegg({ vedlegg }: { vedlegg: LogiskVedlegg[] }) {
+  return vedlegg.length === 0 ? (
+    <Tekst>Ingen logiske vedlegg</Tekst>
+  ) : (
+    vedlegg.map(({ tittel }) => <Tekst key={tittel}>{tittel}</Tekst>)
+  )
 }
 
 export function skalDokumentkortVæreÅpent(erPapirsøknad: boolean, antallDokumenter: number) {
@@ -46,16 +50,16 @@ export function JournalpostCard() {
                   key={`${dokument.journalpostId}-${dokument.dokumentId}`}
                   content={
                     <VStack gap="space-4" paddingBlock="space-0" paddingInline="space-0">
-                      {dokument.logiskeVedlegg && (
-                        <HStack gap="space-4">
-                          <Label size="small">Vedlegg:</Label>
-                          <Detail>{formaterLogiskeVedlegg(dokument.logiskeVedlegg)}</Detail>
-                        </HStack>
-                      )}
                       <HStack gap="space-4">
                         <Label size="small">Journalpost:</Label>
-                        <Detail>{dokument.journalpostId}</Detail>
+                        <Tekst>{dokument.journalpostId}</Tekst>
                       </HStack>
+                      {dokument.logiskeVedlegg && (
+                        <>
+                          <Label size="small">Vedlegg:</Label>
+                          <LogiskeVedlegg vedlegg={dokument.logiskeVedlegg} />
+                        </>
+                      )}
                     </VStack>
                   }
                 >

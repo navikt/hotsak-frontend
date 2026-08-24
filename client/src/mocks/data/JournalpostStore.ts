@@ -48,18 +48,35 @@ export class JournalpostStore extends Dexie {
       lagJournalpost('9005'),
     ])
 
-    const v2Post = lagJournalpost(
-      '9006',
-      'Søknad om hjelpemidler',
-      { kode: 'ae0034', term: 'Søknad' },
-      { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
-    )
-    await this.journalposter.add(v2Post)
-    await this.dokumenter.bulkAdd(lagHjelpemiddelDokumenter('9006') as LagretDokument[])
-    await this.personStore.lagreAlle([
-      { ...lagPerson(), fnr: v2Post.fnrInnsender },
-      { ...lagPerson(), fnr: v2Post.bruker?.fnr!! },
-    ])
+    const v2Poster = [
+      lagJournalpost(
+        '9006',
+        'Søknad om hjelpemidler',
+        { kode: 'ae0034', term: 'Søknad' },
+        { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
+      ),
+      lagJournalpost(
+        '9007',
+        'Søknad om hjelpemidler',
+        { kode: 'ae0034', term: 'Søknad' },
+        { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
+      ),
+      lagJournalpost(
+        '9008',
+        'Søknad om hjelpemidler',
+        { kode: 'ae0034', term: 'Søknad' },
+        { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
+      ),
+    ]
+
+    v2Poster.forEach(async (v2Post) => {
+      await this.journalposter.add(v2Post)
+      await this.dokumenter.bulkAdd(lagHjelpemiddelDokumenter(v2Post.journalpostId) as LagretDokument[])
+      await this.personStore.lagreAlle([
+        { ...lagPerson(), fnr: v2Post.fnrInnsender },
+        { ...lagPerson(), fnr: v2Post.bruker?.fnr!! },
+      ])
+    })
 
     return ['9006']
   }

@@ -403,7 +403,7 @@ export interface Dokument {
   journalpostId: string
   dokumentId: string
   tittel: string
-  brevkode: string
+  brevkode?: string
   logiskeVedlegg: LogiskVedlegg[]
 }
 

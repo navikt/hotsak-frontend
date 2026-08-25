@@ -148,15 +148,6 @@ function SakV2Content({
             </AvrundetPanel>
           </ResizablePanel>
           <ResizablePanel
-            panelId="behovsmeldingspanel"
-            panel={behovsmeldingsPanel}
-            visible={behovsmeldingsPanel.visible && !erPapirsøknad}
-          >
-            <AvrundetPanel>
-              <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
-            </AvrundetPanel>
-          </ResizablePanel>
-          <ResizablePanel
             panelId="dokumentpanel"
             panel={dokumentPanel}
             visible={erIkkeProd && dokumentPanel.visible && !erBestilling}
@@ -165,6 +156,16 @@ function SakV2Content({
               <PapirsøknadPanel />
             </AvrundetPanel>
           </ResizablePanel>
+          <ResizablePanel
+            panelId="behovsmeldingspanel"
+            panel={behovsmeldingsPanel}
+            visible={behovsmeldingsPanel.visible && !erPapirsøknad}
+          >
+            <AvrundetPanel>
+              <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
+            </AvrundetPanel>
+          </ResizablePanel>
+
           <ResizablePanel
             panelId="kontaktinformasjonpanel"
             panel={kontaktinformasjonPanel}

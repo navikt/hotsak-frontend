@@ -1,5 +1,4 @@
-import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Box, HStack, Label, Link, Table, Tooltip, VStack } from '@navikt/ds-react'
+import { Box, Button, HStack, Label, Link, Table, VStack } from '@navikt/ds-react'
 import { useDokumentContext } from '../../../dokument/DokumentContext.tsx'
 import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard'
 import { Tekst } from '../../../felleskomponenter/typografi'
@@ -7,6 +6,7 @@ import { useJournalposter } from '../../../saksbilde/useJournalposter'
 import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
 import type { LogiskVedlegg } from '../../../types/types.internal.ts'
 import { useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
+import classes from './JournalpostCard.module.css'
 
 export function LogiskeVedlegg({ vedlegg }: { vedlegg: LogiskVedlegg[] }) {
   return vedlegg.length === 0 ? (
@@ -65,24 +65,22 @@ export function JournalpostCard() {
                 >
                   <Table.DataCell scope="row">
                     <Tekst>
-                      <Link
-                        href={dokumentUrl}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setValgtDokument({ journalpostId: dokument.journalpostId, dokumentId: dokument.dokumentId })
-                          setDokumentpanelSynlig(true)
-                        }}
-                      >
+                      <Link href={dokumentUrl} target="_blank" rel="noopener noreferrer">
                         {erValgtDokument ? <strong>{dokument.tittel}</strong> : dokument.tittel}
                       </Link>
                     </Tekst>
                   </Table.DataCell>
                   <Table.DataCell>
-                    <Tooltip content="Åpne i ny fane">
-                      <Link href={dokumentUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLinkIcon title={`Åpne ${dokument.tittel} i ny fane`} />
-                      </Link>
-                    </Tooltip>
+                    <Button
+                      variant="tertiary"
+                      size="small"
+                      onClick={() => {
+                        setValgtDokument({ journalpostId: dokument.journalpostId, dokumentId: dokument.dokumentId })
+                        setDokumentpanelSynlig(true)
+                      }}
+                    >
+                      Vis
+                    </Button>
                   </Table.DataCell>
                 </Table.ExpandableRow>
               )

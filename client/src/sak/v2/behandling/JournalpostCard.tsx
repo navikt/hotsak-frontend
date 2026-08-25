@@ -2,7 +2,7 @@ import { Box, Button, HStack, Label, Link, Table, VStack } from '@navikt/ds-reac
 import { useDokumentContext } from '../../../dokument/DokumentContext.tsx'
 import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard'
 import { Tekst } from '../../../felleskomponenter/typografi'
-import { useJournalposterInngående } from '../../../saksbilde/useJournalposter.ts'
+import { useJournalposterInngående } from '../../../saksbilde/useJournalposter'
 import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
 import type { LogiskVedlegg } from '../../../types/types.internal.ts'
 import { useSetPanelVisibility } from '../paneler/usePanelHooks.ts'

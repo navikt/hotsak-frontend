@@ -1,6 +1,7 @@
 import { ClockDashedIcon, PersonCircleIcon, TimerPauseIcon } from '@navikt/aksel-icons'
 import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
+import { Link } from 'react-router'
 
 import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilter.ts'
@@ -85,6 +86,22 @@ export const oppgaveColumns = {
     },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
+    },
+  },
+  oppgavetypeÅpneOppgave: {
+    field: 'oppgavetype',
+    header: 'Oppgavetype',
+    width: 175,
+    filter: {
+      options: new Set(),
+      sortOptions: true,
+    },
+    renderCell(row) {
+      return (
+        <Link to={`/oppgave/${row.oppgaveId}`} target="_blank" rel="noreferrer">
+          {OppgavetypeLabel[row.kategorisering.oppgavetype]}
+        </Link>
+      )
     },
   },
   behandlingstema: {
@@ -326,6 +343,22 @@ export const oppgaveColumns = {
     sortKey: 'ferdigstiltTidspunkt',
     width: 125,
     formatDateTime: true,
+  },
+  ferdigstilt: {
+    field: 'ferdigstiltTidspunkt',
+    header: 'Ferdigstilt',
+    width: 125,
+    formatDateTime: true,
+    renderCell(row) {
+      if (!row.ferdigstiltTidspunkt) {
+        return (
+          <Tag size="small" data-color="info">
+            Åpen
+          </Tag>
+        )
+      }
+      return <FormatDate date={row.ferdigstiltTidspunkt} />
+    },
   },
   mineOppgaverMenu: {
     field: 'mineOppgaverMenu',

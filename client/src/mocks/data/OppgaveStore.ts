@@ -117,6 +117,7 @@ export class OppgaveStore extends Dexie {
     return this.oppgaver.update(oppgaveId, {
       statuskategori: Statuskategori.AVSLUTTET,
       oppgavestatus: Oppgavestatus.FERDIGSTILT,
+      ferdigstiltTidspunkt: new Date().toISOString(),
     })
   }
 
@@ -179,6 +180,7 @@ export class OppgaveStore extends Dexie {
     const alleOppgaver = await this.alle()
     const filtrerteOppgaver = alleOppgaver
       .filter(({ oppgavestatus }) => {
+        if (!request.statuskategori) return true
         if (request.statuskategori === Statuskategori.AVSLUTTET) {
           return oppgavestatus === Oppgavestatus.FERDIGSTILT
         } else {
@@ -201,6 +203,12 @@ export class OppgaveStore extends Dexie {
           default:
             return true
         }
+      })
+      .filter(({ opprettetTidspunkt }) => {
+        if (!opprettetTidspunkt) return true
+        if (!request.opprettetIntervall) return true
+        const [fra, til] = request.opprettetIntervall.split('/')
+        return opprettetTidspunkt >= fra && opprettetTidspunkt <= til
       })
       .sort((a, b) => {
         let key: 'fristFerdigstillelse' | 'opprettetTidspunkt' = 'fristFerdigstillelse'

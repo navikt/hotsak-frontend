@@ -17,7 +17,7 @@ import { SatsType, StegType, StepType, VilkårsResultat } from '../../../../type
 import { formaterDato } from '../../../../utils/dato'
 import { formaterBeløp, storForbokstavIAlleOrd } from '../../../../utils/formater'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
-import { useJournalposter } from '../../../useJournalposter'
+import { useJournalposterInngående } from '../../../useJournalposter'
 import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { FormatertStyrke } from './FormatertStyrke'
@@ -26,7 +26,7 @@ export function RegistrerSøknadLesevisning() {
   const sakId = useSakId()
   const { sak, isLoading } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
-  const { dokumenter } = useJournalposter()
+  const { dokumenter } = useJournalposterInngående()
 
   if (isLoading) {
     return (

@@ -432,6 +432,7 @@ export interface Saksdokument {
   saksbehandler: Saksbehandler
   tittel: string
   brevkode?: string
+  logiskeVedlegg: LogiskVedlegg[]
 }
 
 export interface SaksdokumentOriginalTekst {

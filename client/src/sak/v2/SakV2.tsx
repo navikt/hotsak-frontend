@@ -11,7 +11,7 @@ import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
-import { useJournalposter } from '../../saksbilde/useJournalposter.ts'
+import { useJournalposterInngående } from '../../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
@@ -26,8 +26,8 @@ import {
 } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
-import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { GodkjennBestillingModalV2 } from './bestilling/GodkjennBestillingModalV2.tsx'
+import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
@@ -297,7 +297,7 @@ export default function SakV2({
 }
 
 function DokumentpanelInitialisering() {
-  const { dokumenter } = useJournalposter()
+  const { dokumenter } = useJournalposterInngående()
   const { setValgtDokument } = useDokumentContext()
   const { erPapirsøknad } = useSaksregler()
   const { panelDispatch } = useSakContext()

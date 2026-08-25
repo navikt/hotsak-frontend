@@ -1,5 +1,6 @@
 import { http, HttpResponse, sse } from 'msw'
 
+import { isNotatUtkast } from '../../sak/notat/notatSelectors.ts'
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import {
   Behandling,
@@ -9,7 +10,6 @@ import {
   LagreBehandlingRequest,
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
-import { isNotatUtkast } from '../../sak/notat/notatSelectors.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 import { OppgaveStatusType, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'

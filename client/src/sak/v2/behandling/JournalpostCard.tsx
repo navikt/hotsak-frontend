@@ -6,7 +6,6 @@ import { useJournalposter } from '../../../saksbilde/useJournalposter'
 import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
 import type { LogiskVedlegg } from '../../../types/types.internal.ts'
 import { useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
-import classes from './JournalpostCard.module.css'
 
 export function LogiskeVedlegg({ vedlegg }: { vedlegg: LogiskVedlegg[] }) {
   return vedlegg.length === 0 ? (

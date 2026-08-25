@@ -1,16 +1,29 @@
-import { Box, Button, Heading, HelpText, HStack, InfoCard, InlineMessage, Select, VStack } from '@navikt/ds-react'
+import {
+  Box,
+  Button,
+  Heading,
+  HelpText,
+  HStack,
+  InfoCard,
+  InlineMessage,
+  Radio,
+  RadioGroup,
+  Select,
+  VStack,
+} from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { GJELDENDE_STILARK_VERSJON } from '../../../brev/breveditor/html/byggDokument.ts'
 import { isBrevmal } from '../../../brev/brevSelectors.ts'
-import { Brevmal } from '../../../brev/brevTyper.ts'
+import { Brevmal, Målform } from '../../../brev/brevTyper.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
+import { useMiljø } from '../../../utils/useMiljø.ts'
 import { useClosePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakV2ContextType.ts'
 import classes from './BehandlingPanel.module.css'
@@ -43,6 +56,8 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const vedtaksbrevId = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV))?.brevId
   const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave, vedtaksbrevId)
   const { showSuccessToast } = useToast()
+  const { erIkkeProd } = useMiljø()
+  const [målform, setMålform] = useState<Målform>(Målform.BOKMÅL)
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined
   const henleggelseUtfall = isBehandlingsutfallHenleggelse(behandling?.utfall) ? behandling.utfall : undefined
@@ -67,7 +82,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
         brevutkast: {
           brevmal: 'BREVEDITOR_VEDTAKSBREV',
           brevmalVersjon: GJELDENDE_STILARK_VERSJON,
-          målform: 'BOKMÅL',
+          målform,
           data: {},
         },
         behandlingId: behandling.behandlingId.toString(),
@@ -132,21 +147,35 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
               )}
 
               {kanOppretteBrev && !isBehandlingsutfallOverføring(behandling?.utfall) && (
-                <div>
-                  <Button
-                    variant={
-                      vedtaksresultat === VedtaksResultat.INNVILGET ||
-                      henleggelseUtfall?.utfall !== Henleggelsesårsak.SØKNAD_TRUKKET
-                        ? 'secondary'
-                        : 'primary'
-                    }
-                    size="small"
-                    loading={opprettBrevutkast.isMutating}
-                    onClick={handleOpprettBrevutkast}
-                  >
-                    {erHenleggelse ? 'Opprett brev' : 'Opprett vedtaksbrev'}
-                  </Button>
-                </div>
+                <VStack gap="space-8">
+                  {erIkkeProd && (
+                    <RadioGroup
+                      legend="Målform"
+                      size="small"
+                      value={målform}
+                      onChange={(value: Målform) => setMålform(value)}
+                    >
+                      <Radio value={Målform.BOKMÅL}>Bokmål</Radio>
+                      <Radio value={Målform.NYNORSK}>Nynorsk</Radio>
+                    </RadioGroup>
+                  )}
+                  <div>
+                    <Button
+                      variant={
+                        vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET ||
+                        vedtaksresultat === VedtaksResultat.AVSLÅTT ||
+                        henleggelseUtfall?.utfall === Henleggelsesårsak.SØKNAD_TRUKKET
+                          ? 'primary'
+                          : 'secondary'
+                      }
+                      size="small"
+                      loading={opprettBrevutkast.isMutating}
+                      onClick={handleOpprettBrevutkast}
+                    >
+                      {erHenleggelse ? 'Opprett brev' : 'Opprett vedtaksbrev'}
+                    </Button>
+                  </div>
+                </VStack>
               )}
 
               {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}

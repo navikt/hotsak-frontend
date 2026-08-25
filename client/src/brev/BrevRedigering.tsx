@@ -57,7 +57,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
 
   const { showInfoToast } = useToast()
 
-  const templateMarkdown = useBrevmal(utledBrevmal(behandling))
+  const templateMarkdown = useBrevmal(utledBrevmal(behandling), brev?.målform)
 
   // sett brev tilbake til utkast hvis dato det ble ferdigstilt er før i dag, slik at det får dagens dato
   useEffect(() => {
@@ -191,6 +191,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
               initialState={brev.data}
               initialSerienummer={brev.serienummer}
               stilarkVersjon={brev.brevmalVersjon}
+              målform={brev.målform}
               onLagreBrev={handleLagreBrev}
             />
           </>

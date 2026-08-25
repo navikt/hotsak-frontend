@@ -16,12 +16,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
-import { type Brevdata } from '../brevTyper.ts'
+import { type Brevdata, type Målform } from '../brevTyper.ts'
 import { useSerienummer } from '../useSerienummer.ts'
 import './Breveditor.less'
 import { BreveditorContext } from './BreveditorContext.ts'
 import { useBeforeUnload } from './hooks.ts'
-import { byggFullHtml, type StilarkVersjon } from './html/byggDokument.ts'
+import { byggFullHtml, hentMålformTekster, type StilarkVersjon } from './html/byggDokument.ts'
 import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøylinje/FlytendeLinkVerktøylinjeKit.tsx'
 import { PlaceholderSpesielleVerdier } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
 import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary/PlaceholderErrorSummary.tsx'
@@ -55,6 +55,7 @@ export interface BreveditorProps {
   initialState?: BreveditorState
   initialSerienummer?: number
   stilarkVersjon: StilarkVersjon
+  målform?: Målform
   onStateChange?(newState: BreveditorState): void
   onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string
@@ -68,6 +69,7 @@ export function Breveditor(props: BreveditorProps) {
     initialState,
     initialSerienummer,
     stilarkVersjon,
+    målform,
     onStateChange,
     onLagreBrev,
     placeholder,
@@ -166,6 +168,7 @@ export function Breveditor(props: BreveditorProps) {
     .filter((navn): navn is NonNullable<typeof navn> => !!navn)
     .map((navn) => formaterNavn(navn))
     .join(', ')
+  const målformTekster = hentMålformTekster(målform)
 
   // Stopp refresh/lukking av nettsiden hvis man har ulagrede endringer
   useBeforeUnload(
@@ -203,7 +206,7 @@ export function Breveditor(props: BreveditorProps) {
   // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
   useEffect(() => {
     if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn)
+      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn, målform)
       if (initialState.valueAsHtml !== ferskHtml) {
         const oppdatertState: BreveditorState = {
           value: initialState.value,
@@ -239,7 +242,7 @@ export function Breveditor(props: BreveditorProps) {
           if ((onStateChange != null || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: BreveditorState = {
               value: nyVerdi,
-              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn),
+              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn, målform),
               history: changedEditor.history,
             }
             if (!state.current || state.current.value !== nyVerdi) {
@@ -264,15 +267,15 @@ export function Breveditor(props: BreveditorProps) {
                           <dl>
                             {harVerge && (
                               <>
-                                <dt>Verge:</dt>
+                                <dt>{målformTekster.verge}:</dt>
                                 <dd>{vergeNavn}</dd>
                               </>
                             )}
-                            <dt> {harVerge ? 'Saken gjelder' : 'Navn'}:</dt>
+                            <dt> {harVerge ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
                             <dd>{metadata.brukersNavn}</dd>
-                            <dt>Fødselsnummer:</dt>
+                            <dt>{målformTekster.fødselsnummer}:</dt>
                             <dd>{metadata.brukersFødselsnummer}</dd>
-                            <dt>Saksnummer:</dt>
+                            <dt>{målformTekster.saksnummer}:</dt>
                             <dd>{metadata.saksnummer}</dd>
                           </dl>
                           <span>{metadata.brevOpprettet}</span>
@@ -298,7 +301,7 @@ export function Breveditor(props: BreveditorProps) {
                         />
                       </PlateContainer>
                       <p>
-                        Med vennlig hilsen <br />
+                        {målformTekster.medVennligHilsen} <br />
                         {metadata.saksbehandlerNavn}
                         {metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />
                         {metadata.hjelpemiddelsentral}

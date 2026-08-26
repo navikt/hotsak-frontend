@@ -1,4 +1,4 @@
-import { BodyShort, HStack, Link, Tag, VStack } from '@navikt/ds-react'
+import { BodyShort, HStack, InlineMessage, Link, Tag, VStack } from '@navikt/ds-react'
 import { DataGridContentProps } from '../../../felleskomponenter/data/DataGrid'
 import { Oppgave } from '../../../oppgave/oppgaveTypes'
 import { useAlleJournalposterForSak } from '../../../saksbilde/useJournalposter'
@@ -6,8 +6,13 @@ import { storForbokstavIOrd } from '../../../utils/formater'
 
 export function OppgaveDetailsSaksbilde({ row: oppgave }: DataGridContentProps<Oppgave>) {
   const { dokumenter } = useAlleJournalposterForSak(oppgave.sakId)
+
   if (dokumenter.length === 0) {
-    return null
+    return (
+      <VStack>
+        <InlineMessage status="info">Fant ingen dokumenter for saken</InlineMessage>
+      </VStack>
+    )
   }
 
   return (

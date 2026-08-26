@@ -1,4 +1,5 @@
-import { BodyShort, HStack, InlineMessage, Link, Tag, VStack } from '@navikt/ds-react'
+import { Fragment } from 'react'
+import { BodyShort, HGrid, InlineMessage, Link, Tag, VStack } from '@navikt/ds-react'
 import { DataGridContentProps } from '../../../felleskomponenter/data/DataGrid'
 import { Oppgave } from '../../../oppgave/oppgaveTypes'
 import { useAlleJournalposterForSak } from '../../../saksbilde/useJournalposter'
@@ -19,20 +20,19 @@ export function OppgaveDetailsSaksbilde({ row: oppgave }: DataGridContentProps<O
     <VStack>
       <BodyShort>
         <strong>Dokumenter i saken:</strong>
-        <ul>
+        <HGrid columns="min-content max-content max-content" gap="space-4 space-12">
           {dokumenter.map((dokument) => (
-            <li key={dokument.dokumentId} style={{ marginBottom: '0.2rem' }}>
-              <HStack justify="space-between" width="50%">
-                <Link href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`} target="_blank">
-                  {dokument.tittel}
-                </Link>
-                <Tag size="small" variant="outline">
-                  {storForbokstavIOrd(dokument.type)}
-                </Tag>
-              </HStack>
-            </li>
+            <Fragment key={dokument.dokumentId}>
+              <span aria-hidden>•</span>
+              <Link href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`} target="_blank">
+                {dokument.tittel}
+              </Link>
+              <Tag size="small" variant="outline">
+                {storForbokstavIOrd(dokument.type)}
+              </Tag>
+            </Fragment>
           ))}
-        </ul>
+        </HGrid>
       </BodyShort>
     </VStack>
   )

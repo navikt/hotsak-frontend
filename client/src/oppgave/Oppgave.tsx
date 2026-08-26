@@ -45,7 +45,6 @@ function OppgaveContent() {
     if (oppgave) {
       merkSomLest.trigger()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oppgave.oppgaveId])
   return (
     <>

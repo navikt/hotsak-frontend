@@ -23,7 +23,6 @@ export function useOppgave(): UseOppgaveResponse {
     suspense: true,
   })
   return {
-    // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
     oppgave: oppgave!!,
     ...rest,
   }

@@ -169,8 +169,6 @@ function Tilbehør({
   )
 }
 
-// fixme
-// eslint-disable-next-line react-refresh/only-export-components
 function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
   return (
     <>

@@ -15,10 +15,12 @@ export interface ÅpneOppgaveProps {
 
 export function ÅpneOppgave(props: ÅpneOppgaveProps) {
   const { oppgave } = props
+  // 'Å' i 'ÅpneOppgave' regnes ikke som uppercase av oxlint
+  // oxlint-disable-next-line react-hooks/rules-of-hooks
   const { erIkkeProd } = useMiljø()
 
-  // fungerer ikke siden komponenten heter ÅpneOppgave
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // 'Å' i 'ÅpneOppgave' regnes ikke som uppercase av oxlint
+  // oxlint-disable-next-line react-hooks/rules-of-hooks
   const preload = useCallback(() => {
     if (oppgave.sak) {
       const sakId = oppgave.sak.sakId

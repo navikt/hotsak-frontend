@@ -35,7 +35,6 @@ export function KommentarForm(props: KommentarFormProps) {
         tekst: form.getValues('tekst'),
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

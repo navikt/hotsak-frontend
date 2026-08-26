@@ -50,13 +50,10 @@ export function VurderVilkår() {
 
   useEffect(() => {
     if (submitAttempt) {
-      // fixme
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       valider()
     } else if (sak?.data.vilkårsvurdering?.resultat !== VilkårsResultat.KANSKJE) {
       clearErrors()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitAttempt, sak?.data.vilkårsvurdering?.resultat])
 
   function gåTilNesteSteg(sakId: number | string, steg: StegType) {

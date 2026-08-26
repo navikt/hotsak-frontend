@@ -451,7 +451,6 @@ export enum Sakstype {
   TILSKUDD = 'TILSKUDD',
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface Saksbehandler extends Ansatt {}
 
 export enum JournalpostStatusType {

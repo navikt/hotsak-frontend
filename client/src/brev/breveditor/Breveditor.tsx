@@ -218,8 +218,6 @@ export function Breveditor(props: BreveditorProps) {
         lagreMedDebounceOgRetry(oppdatertState, nesteSerienummer())
       }
     }
-    // fixme
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

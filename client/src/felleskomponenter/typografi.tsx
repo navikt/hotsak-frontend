@@ -23,8 +23,6 @@ export function TekstMedEllipsis({ children, ref, ...rest }: { children: ReactNo
   )
 }
 
-/* Falsk positiv, liker ikke non ascii karakterer i navnet på komponenten (å) */
-// eslint-disable-next-line react-refresh/only-export-components
 export function BrytbarBrødtekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
   return (
     <BodyLong className={classes.flytendeBrytbarTekst} size="small" spacing={spacing}>

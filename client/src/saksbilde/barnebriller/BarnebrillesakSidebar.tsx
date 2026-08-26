@@ -23,7 +23,6 @@ export function BarnebrillesakSidebar({ oppgave }: { oppgave?: Saksbehandlingsop
     if (sak?.data.steg === StegType.GODKJENNE) {
       setValgtSidebarTab(HøyrekolonneTabs.TOTRINNSKONTROLL)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!sak) {

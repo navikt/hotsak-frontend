@@ -6,6 +6,9 @@ import { storForbokstavIOrd } from '../../../utils/formater'
 
 export function OppgaveDetailsSaksbilde({ row: oppgave }: DataGridContentProps<Oppgave>) {
   const { dokumenter } = useAlleJournalposterForSak(oppgave.sakId)
+  if (dokumenter.length === 0) {
+    return null
+  }
 
   return (
     <VStack>

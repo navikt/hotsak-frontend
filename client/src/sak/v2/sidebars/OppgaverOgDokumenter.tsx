@@ -7,12 +7,7 @@ import { type Oppgave } from '../../../oppgave/oppgaveTypes'
 import { useOpppgavesøk } from '../../../oppgave/useOppgavesøk'
 import { oppgaveColumns } from '../../../oppgaveliste/oppgaveColumns'
 import { selectOppgaveId } from '../../../oppgaveliste/oppgaveSelectors'
-import {
-  dokumentColumns,
-  journalpostKey,
-  journalpoststatusTagKort,
-  journalposttypeTagKort,
-} from '../../../personoversikt/dokumentColumns'
+import { dokumentColumns, journalpostKey, journalposttypeTagKort } from '../../../personoversikt/dokumentColumns'
 import { useSak } from '../../../saksbilde/useSak'
 import { Journalpost } from '../../../types/types.internal'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
@@ -37,21 +32,15 @@ const oppgaveCols = [
 ]
 
 const dokuCols = [
-  { ...dokumentColumns.journalpostId, width: 50, header: 'ID' },
+  dokumentColumns.tittelMedLink,
+  dokumentColumns.sakIdKunTekst,
+  { ...dokumentColumns.journalpostId },
+  { ...dokumentColumns.journalpostOpprettetTid, formatDate: true, width: 100 },
   {
     ...dokumentColumns.journalposttype,
     width: 50,
     renderCell: ({ journalposttype }: Journalpost) => journalposttypeTagKort(journalposttype),
   },
-  { ...dokumentColumns.journalpostOpprettetTid, formatDate: true, width: 100 },
-  dokumentColumns.tittel,
-  dokumentColumns.dokumenter,
-  {
-    ...dokumentColumns.journalstatus,
-    width: 50,
-    renderCell: ({ journalstatus }: Journalpost) => journalpoststatusTagKort(journalstatus),
-  },
-  dokumentColumns.sakId,
 ]
 
 export function OppgaverOgDokumenter() {

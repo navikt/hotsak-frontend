@@ -15,9 +15,16 @@ import {
 } from '../../../personoversikt/dokumentColumns'
 import { useSak } from '../../../saksbilde/useSak'
 import { Journalpost } from '../../../types/types.internal'
-import { type IntervalString, intervalString } from '../../../utils/dato'
-import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
+import {
+  datoIntervallForFilter,
+  OppgaverOgDokumenterFilter,
+  OppgaverOgDokumenterFilterValue,
+  OppgaverOgDokumenterTab,
+  OppgaverOgDokumenterTabs,
+  opprettetIntervallForFilter,
+} from './OppgaverOgDokumenterUtils'
+import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
 
 const ingenOppgaver: Oppgave[] = []
 
@@ -55,7 +62,8 @@ export function OppgaverOgDokumenter() {
   const fnr = sak?.data.bruker.fnr
   const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([null])
   const etter = cursorHistory[cursorHistory.length - 1]
-  const { journalposter, isLoading, sideInfo } = useDokumentsøk({ fnr, første: 5, etter: etter })
+  const { fraDato, tilDato } = useMemo(() => datoIntervallForFilter(filter), [filter])
+  const { journalposter, isLoading, sideInfo } = useDokumentsøk({ fnr, første: 5, etter, fraDato, tilDato })
   const opprettetIntervall = useMemo(() => opprettetIntervallForFilter(filter), [filter])
   const oppgaverResponse = useOpppgavesøk({
     brukerId: fnr,
@@ -109,9 +117,10 @@ export function OppgaverOgDokumenter() {
               hideLabel
               size="small"
               value={filter}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                 setFilter(e.target.value as OppgaverOgDokumenterFilterValue)
-              }
+                setCursorHistory([null])
+              }}
             >
               <option value={OppgaverOgDokumenterFilter.ALLE}>Vis alle</option>
               <option value={OppgaverOgDokumenterFilter.SISTE_2_UKER}>Siste 2 uker</option>
@@ -176,48 +185,4 @@ export function OppgaverOgDokumenter() {
       </Tabs>
     </>
   )
-}
-
-export const OppgaverOgDokumenterTabs = {
-  OPPGAVER: 'OPPGAVER',
-  DOKUMENTER: 'DOKUMENTER',
-} as const
-
-export const OppgaverOgDokumenterFilter = {
-  SISTE_2_UKER: 'siste2uker',
-  SISTE_6_MND: 'siste6mnd',
-  ALLE: 'alle',
-} as const
-
-export type OppgaverOgDokumenterFilterValue =
-  (typeof OppgaverOgDokumenterFilter)[keyof typeof OppgaverOgDokumenterFilter]
-
-function opprettetIntervallForFilter(filter: OppgaverOgDokumenterFilterValue): IntervalString | undefined {
-  const now = new Date()
-  switch (filter) {
-    case OppgaverOgDokumenterFilter.SISTE_2_UKER: {
-      const fra = new Date(now)
-      fra.setDate(fra.getDate() - 14)
-      return intervalString(fra.toISOString(), now.toISOString())
-    }
-    case OppgaverOgDokumenterFilter.SISTE_6_MND: {
-      const fra = new Date(now)
-      fra.setMonth(fra.getMonth() - 6)
-      return intervalString(fra.toISOString(), now.toISOString())
-    }
-    case OppgaverOgDokumenterFilter.ALLE:
-      return undefined
-  }
-}
-
-export type OppgaverOgDokumenterTab = keyof typeof OppgaverOgDokumenterTabs
-
-export interface OppgaverOgDokumenterState {
-  currentTab: OppgaverOgDokumenterTab
-  filter: (typeof OppgaverOgDokumenterFilter)[keyof typeof OppgaverOgDokumenterFilter]
-}
-
-export const initialState: OppgaverOgDokumenterState = {
-  currentTab: OppgaverOgDokumenterTabs.OPPGAVER,
-  filter: 'siste2uker',
 }

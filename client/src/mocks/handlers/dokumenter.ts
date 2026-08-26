@@ -34,8 +34,12 @@ function tilJournalføringOppgave(oppgave: Oppgave): JournalføringV2Response['o
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakStore, oppgaveStore }) => [
   http.post<never, DokumentsøkRequest, DokumentsøkResponse>(`/api/dokumenter/sok`, async ({ request }) => {
-    const { første = 100, etter = null } = await request.json()
-    const alle = await journalpostStore.søk()
+    const { første = 100, etter = null, fraDato, tilDato } = await request.json()
+    const alle = (await journalpostStore.søk()).filter((journalpost) => {
+      if (fraDato && journalpost.journalpostOpprettetTid < fraDato) return false
+      if (tilDato && journalpost.journalpostOpprettetTid > tilDato) return false
+      return true
+    })
     const start = etter ? alle.findIndex((j) => j.journalpostId === etter) + 1 : 0
     const side = alle.slice(start, start + første)
     const sideInfo = {

@@ -19,8 +19,7 @@ export function useJournalposterInngående(): UseSaksdokumenterResponse {
   }
 }
 
-export function useAlleJournalposterForSak(): UseSaksdokumenterResponse {
-  const sakId = useSakId()
+export function useAlleJournalposterForSak(sakId?: string): UseSaksdokumenterResponse {
   const { data: saksdokumenter = ingenSaksdokumenter, ...rest } = useSwr<Saksdokument[]>(
     sakId ? `/api/sak/${sakId}/dokumenter` : null
   )

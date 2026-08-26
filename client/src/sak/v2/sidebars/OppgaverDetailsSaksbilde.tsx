@@ -1,11 +1,11 @@
-import { BodyShort, VStack } from '@navikt/ds-react'
+import { BodyShort, Link, Tag, VStack } from '@navikt/ds-react'
 import { DataGridContentProps } from '../../../felleskomponenter/data/DataGrid'
 import { Oppgave } from '../../../oppgave/oppgaveTypes'
 import { useAlleJournalposterForSak } from '../../../saksbilde/useJournalposter'
+import { storForbokstavIOrd } from '../../../utils/formater'
 
 export function OppgaveDetailsSaksbilde({ row: oppgave }: DataGridContentProps<Oppgave>) {
-  const { dokumenter } = useAlleJournalposterForSak()
-  console.log('oppgaver', oppgave)
+  const { dokumenter } = useAlleJournalposterForSak(oppgave.sakId)
 
   return (
     <VStack>
@@ -14,7 +14,12 @@ export function OppgaveDetailsSaksbilde({ row: oppgave }: DataGridContentProps<O
         <ul>
           {dokumenter.map((dokument) => (
             <li key={dokument.dokumentId}>
-              {dokument.tittel} {dokument.type}
+              <Link href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`} target="_blank">
+                {dokument.tittel}
+              </Link>{' '}
+              <Tag size="small" variant="outline">
+                {storForbokstavIOrd(dokument.type)}
+              </Tag>
             </li>
           ))}
         </ul>

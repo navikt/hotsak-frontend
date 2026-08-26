@@ -54,12 +54,13 @@ export function OppgaverOgDokumenter() {
   const { fraDato, tilDato } = useMemo(() => datoIntervallForFilter(filter), [filter])
   const { journalposter, isLoading, sideInfo } = useDokumentsøk({ fnr, første: 5, etter, fraDato, tilDato })
   const opprettetIntervall = useMemo(() => opprettetIntervallForFilter(filter), [filter])
+  const [oppgaverPageNumber, setOppgaverPageNumber] = useState(1)
   const oppgaverResponse = useOpppgavesøk({
     brukerId: fnr,
     sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
     opprettetIntervall,
     sorteringsrekkefølge: 'DESC',
-    pageNumber: 1,
+    pageNumber: oppgaverPageNumber,
     pageSize: 5,
   })
 
@@ -78,6 +79,9 @@ export function OppgaverOgDokumenter() {
   const sidenummer = cursorHistory.length
   const harForrigeSide = cursorHistory.length > 1
   const harNesteSide = sideInfo?.finnesNesteSide ?? false
+
+  const harForrigeOppgaveSide = oppgaverPageNumber > 1
+  const harNesteOppgaveSide = oppgaverPageNumber < (oppgaverResponse.data?.totalPages ?? 1)
 
   if (!sak) return null
 
@@ -109,6 +113,7 @@ export function OppgaverOgDokumenter() {
               onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                 setFilter(e.target.value as OppgaverOgDokumenterFilterValue)
                 setCursorHistory([null])
+                setOppgaverPageNumber(1)
               }}
             >
               <option value={OppgaverOgDokumenterFilter.ALLE}>Vis alle</option>
@@ -134,6 +139,28 @@ export function OppgaverOgDokumenter() {
                 loading={oppgaverResponse.isLoading}
               />
             </SidebarPanel>
+            <HStack gap="space-8" align="center" justify="center" paddingBlock="space-8">
+              <Button
+                size="small"
+                variant="tertiary"
+                icon={<ChevronLeftIcon />}
+                onClick={() => setOppgaverPageNumber((prev) => prev - 1)}
+                disabled={!harForrigeOppgaveSide}
+              >
+                Forrige
+              </Button>
+              <BodyShort size="small">Side {oppgaverPageNumber}</BodyShort>
+              <Button
+                size="small"
+                variant="tertiary"
+                icon={<ChevronRightIcon />}
+                iconPosition="right"
+                onClick={() => setOppgaverPageNumber((prev) => prev + 1)}
+                disabled={!harNesteOppgaveSide}
+              >
+                Neste
+              </Button>
+            </HStack>
           </Tabs.Panel>
 
           <Tabs.Panel value={OppgaverOgDokumenterTabs.DOKUMENTER}>

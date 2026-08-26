@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
-import type { Dokument } from '../../../types/types.internal.ts'
+import { Saksdokument, SaksdokumentType } from '../../../types/types.internal.ts'
 import { JournalpostCard, skalDokumentkortVæreÅpent } from './JournalpostCard.tsx'
 
 const { setValgtDokument, setDokumentpanelSynlig } = vi.hoisted(() => ({
@@ -12,16 +12,21 @@ const { setValgtDokument, setDokumentpanelSynlig } = vi.hoisted(() => ({
   setDokumentpanelSynlig: vi.fn(),
 }))
 
-const dokument: Dokument = {
+const dokument: Saksdokument = {
+  sakId: 'sak-1',
   journalpostId: 'journalpost-1',
+  type: SaksdokumentType.INNGÅENDE,
+  opprettet: new Date().toISOString(),
+  originalTekst: undefined,
   dokumentId: 'dokument-1',
+  saksbehandler: { navn: 'Saksbehandler Navn', id: 'saksbehandler-1', epost: 'saksbehandler@nav.no' },
   tittel: 'Søknad om hjelpemidler',
   brevkode: 'NAV 10-07.03',
   logiskeVedlegg: [],
 }
 
 vi.mock('../../../saksbilde/useJournalposter', () => ({
-  useJournalposter: () => ({ dokumenter: [dokument] }),
+  useJournalposterInngående: () => ({ dokumenter: [dokument] }),
 }))
 
 vi.mock('../../../dokument/DokumentContext.tsx', () => ({

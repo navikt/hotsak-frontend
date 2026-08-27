@@ -1,10 +1,9 @@
 import { BodyShort, Button, Dialog, HStack } from '@navikt/ds-react'
 import { useNavigate } from 'react-router'
 
-import { useEffect } from 'react'
 import { useEventSource } from '../event/useEventSource.ts'
 import { Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
-import { SakEventType } from '../sak/sakTypes.ts'
+import { SakEventType, type JournalpostSakFerdigstiltData } from '../sak/sakTypes.ts'
 import { type JournalføringV2Response } from './journalføringTypes.ts'
 
 interface JournalføringFerdigModalProps {
@@ -30,11 +29,10 @@ export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: 
   const navigate = useNavigate()
 
   const sakshendelserUrl = resultat ? `/api/sak/${resultat.sakId}/hendelser` : null
-  const { data, error } = useEventSource(sakshendelserUrl, SakEventType.journalpostSakFerdigstilt)
-  useEffect(() => {
-    if (data) console.log(data)
-    if (error) console.error(error)
-  }, [data, error])
+  const { data: journalpostSakFerdigstilt } = useEventSource<JournalpostSakFerdigstiltData>(
+    sakshendelserUrl,
+    SakEventType.journalpostSakFerdigstilt
+  )
 
   function navigerOgLukkModal(sti: string) {
     onClose()
@@ -59,6 +57,21 @@ export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: 
             <Button variant="primary" size="small" onClick={() => resultat && onClose()}>
               Lukk
             </Button>
+            {sakType === 'ny' && (
+              <Button
+                variant="secondary"
+                size="small"
+                loading={!journalpostSakFerdigstilt}
+                onClick={() => {
+                  const oppgaveId = journalpostSakFerdigstilt?.oppgaveId
+                  if (oppgaveId) {
+                    navigerOgLukkModal(`/oppgave/${oppgaveId}`)
+                  }
+                }}
+              >
+                Til saken
+              </Button>
+            )}
             {sakType === 'eksisterende' && (
               <Button
                 variant="secondary"

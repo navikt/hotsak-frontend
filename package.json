@@ -35,7 +35,7 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,json,md}": [
       "prettier --write",
-      "oxlint --quiet"
+      "oxlint --quiet ."
     ]
   }
 }

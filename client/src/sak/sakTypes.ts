@@ -1,3 +1,5 @@
+import type { EventData } from '../event/eventTypes'
+
 export interface ArtikkellinjeSak {
   id: string
   hmsArtNr: string
@@ -27,3 +29,16 @@ export const EndretArtikkelBegrunnelseLabel: Record<EndretArtikkelBegrunnelse, s
   ANNET: 'Annet',
   LAGERVARE: 'Tilgjengelig på lager',
 }
+
+export interface SakEventData extends EventData {
+  sakId: string
+}
+
+export interface JournalpostSakFerdigstiltData extends SakEventData {
+  oppgaveId?: string
+}
+
+export const SakEventType = {
+  journalpostSakFerdigstilt: 'journalpostSakFerdigstilt',
+} as const
+export type SakEventType = typeof SakEventType

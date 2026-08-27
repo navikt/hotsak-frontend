@@ -1,7 +1,10 @@
 import { BodyShort, Button, Dialog, HStack } from '@navikt/ds-react'
 import { useNavigate } from 'react-router'
 
+import { useEffect } from 'react'
+import { useEventSource } from '../event/useEventSource.ts'
 import { Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { SakEventType } from '../sak/sakTypes.ts'
 import { type JournalføringV2Response } from './journalføringTypes.ts'
 
 interface JournalføringFerdigModalProps {
@@ -25,6 +28,13 @@ export function finnStiTilSak(resultat: JournalføringV2Response) {
 
 export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: JournalføringFerdigModalProps) {
   const navigate = useNavigate()
+
+  const sakshendelserUrl = resultat ? `/api/sak/${resultat.sakId}/hendelser` : null
+  const { data, error } = useEventSource(sakshendelserUrl, SakEventType.journalpostSakFerdigstilt)
+  useEffect(() => {
+    if (data) console.log(data)
+    if (error) console.error(error)
+  }, [data, error])
 
   function navigerOgLukkModal(sti: string) {
     onClose()

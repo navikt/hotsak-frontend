@@ -52,7 +52,7 @@ export function OppgaverOgDokumenter() {
   const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([null])
   const etter = cursorHistory[cursorHistory.length - 1]
   const { fraDato, tilDato } = useMemo(() => datoIntervallForFilter(filter), [filter])
-  const { journalposter, isLoading, sideInfo } = useDokumentsøk({ fnr, første: 5, etter, fraDato, tilDato })
+  const { journalposter, isValidating, sideInfo, error } = useDokumentsøk({ fnr, første: 5, etter, fraDato, tilDato })
   const opprettetIntervall = useMemo(() => opprettetIntervallForFilter(filter), [filter])
   const [oppgaverPageNumber, setOppgaverPageNumber] = useState(1)
   const oppgaverResponse = useOpppgavesøk({
@@ -123,12 +123,7 @@ export function OppgaverOgDokumenter() {
           </Box>
 
           <Tabs.Panel value={OppgaverOgDokumenterTabs.OPPGAVER}>
-            <SidebarPanel
-              tittel=""
-              error={oppgaverResponse.error && 'Feil ved henting av oppgaver.'}
-              loading={oppgaverResponse.isLoading && 'Henter oppgaver ...'}
-              spacing={false}
-            >
+            <SidebarPanel tittel="" error={oppgaverResponse.error && 'Feil ved henting av oppgaver.'} spacing={false}>
               <DataGrid
                 rows={alleOppgaver}
                 columns={oppgaveCols}
@@ -136,7 +131,7 @@ export function OppgaverOgDokumenter() {
                 keyFactory={selectOppgaveId}
                 size="small"
                 textSize="small"
-                loading={oppgaverResponse.isLoading}
+                loading={oppgaverResponse.isValidating}
               />
             </SidebarPanel>
             <HStack gap="space-8" align="center" justify="center" paddingBlock="space-8">
@@ -164,14 +159,14 @@ export function OppgaverOgDokumenter() {
           </Tabs.Panel>
 
           <Tabs.Panel value={OppgaverOgDokumenterTabs.DOKUMENTER}>
-            <SidebarPanel spacing={false} tittel="">
+            <SidebarPanel spacing={false} tittel="" error={error && 'Feil ved henting av dokumenter.'}>
               <DataGrid
                 rows={journalposter}
                 columns={dokuCols}
                 keyFactory={journalpostKey}
                 size="small"
                 textSize="small"
-                loading={isLoading}
+                loading={isValidating}
               />
               <HStack gap="space-8" align="center" justify="center" paddingBlock="space-8">
                 <Button

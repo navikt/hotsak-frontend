@@ -12,6 +12,7 @@ export function useOpppgavesøk(request?: FinnOppgaverRequest): UseOpppgavesøkR
     (request) => {
       const [url, body] = request
       return http.post<FinnOppgaverRequest, FinnOppgaverResponse>(url, body)
-    }
+    },
+    { keepPreviousData: true }
   )
 }

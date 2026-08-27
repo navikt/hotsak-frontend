@@ -45,7 +45,8 @@ export function useDokumentsøk({
   const { data, ...rest } = useSWR<DokumentsøkResponse, unknown, DokumentsøkKey>(
     fnr ? ['/api/dokumenter/sok', fnr, første, etter, fraDato, tilDato] : null,
     ([url, fnr, første, etter, fraDato, tilDato]) =>
-      http.post<DokumentsøkRequest, DokumentsøkResponse>(url, { fnr, første, etter, fraDato, tilDato })
+      http.post<DokumentsøkRequest, DokumentsøkResponse>(url, { fnr, første, etter, fraDato, tilDato }),
+    { keepPreviousData: true }
   )
   return {
     journalposter: data?.journalposter ?? [],

@@ -40,6 +40,7 @@ export interface DataGridProps<T extends object, K extends string = string> exte
   textSize?: 'medium' | 'small'
   emptyMessage?: string
   loading?: boolean
+  validating?: boolean
 
   pagination?: boolean
   pageNumber?: number
@@ -64,6 +65,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     emptyMessage = 'Ingen data funnet',
     loading,
     pagination,
+    validating,
     pageNumber = 1,
     // pageSize = 50,
     keyFactory,
@@ -124,7 +126,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
           })}
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body className={clsx({ [classes.loadingBody]: validating && rows.length > 0 })}>
         {rows.length === 0 && loading && <SkeletonRows columns={visibleColumns} expandable={expandable} />}
         {rows.length === 0 && !loading && (
           <PlaceholderRow colSpan={colSpan} textSize={textSize}>

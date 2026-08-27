@@ -6,13 +6,13 @@ import { type FinnOppgaverRequest, type FinnOppgaverResponse } from './oppgaveTy
 
 export type UseOpppgavesøkResponse = SWRResponse<FinnOppgaverResponse, HttpError>
 
-export function useOpppgavesøk(request?: FinnOppgaverRequest): UseOpppgavesøkResponse {
+export function useOpppgavesøk(request?: FinnOppgaverRequest, keepPreviousData?: boolean): UseOpppgavesøkResponse {
   return useSWR(
     () => (request ? ['/api/oppgaver/sok', request] : null),
     (request) => {
       const [url, body] = request
       return http.post<FinnOppgaverRequest, FinnOppgaverResponse>(url, body)
     },
-    { keepPreviousData: true }
+    { keepPreviousData: keepPreviousData ?? true }
   )
 }

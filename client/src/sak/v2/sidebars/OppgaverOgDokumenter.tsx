@@ -52,17 +52,27 @@ export function OppgaverOgDokumenter() {
   const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([null])
   const etter = cursorHistory[cursorHistory.length - 1]
   const { fraDato, tilDato } = useMemo(() => datoIntervallForFilter(filter), [filter])
-  const { journalposter, isValidating, sideInfo, error } = useDokumentsøk({ fnr, første: 5, etter, fraDato, tilDato })
+  const { journalposter, isValidating, isLoading, sideInfo, error } = useDokumentsøk({
+    fnr,
+    første: 5,
+    etter,
+    fraDato,
+    tilDato,
+    keepPreviousData: true,
+  })
   const opprettetIntervall = useMemo(() => opprettetIntervallForFilter(filter), [filter])
   const [oppgaverPageNumber, setOppgaverPageNumber] = useState(1)
-  const oppgaverResponse = useOpppgavesøk({
-    brukerId: fnr,
-    sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
-    opprettetIntervall,
-    sorteringsrekkefølge: 'DESC',
-    pageNumber: oppgaverPageNumber,
-    pageSize: 5,
-  })
+  const oppgaverResponse = useOpppgavesøk(
+    {
+      brukerId: fnr,
+      sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
+      opprettetIntervall,
+      sorteringsrekkefølge: 'DESC',
+      pageNumber: oppgaverPageNumber,
+      pageSize: 5,
+    },
+    true
+  )
 
   const alleOppgaver = oppgaverResponse.data?.oppgaver ?? ingenOppgaver
 
@@ -131,7 +141,8 @@ export function OppgaverOgDokumenter() {
                 keyFactory={selectOppgaveId}
                 size="small"
                 textSize="small"
-                loading={oppgaverResponse.isValidating}
+                loading={oppgaverResponse.isLoading}
+                validating={oppgaverResponse.isValidating}
               />
             </SidebarPanel>
             <HStack gap="space-8" align="center" justify="center" paddingBlock="space-8">
@@ -166,7 +177,8 @@ export function OppgaverOgDokumenter() {
                 keyFactory={journalpostKey}
                 size="small"
                 textSize="small"
-                loading={isValidating}
+                loading={isLoading}
+                validating={isValidating}
               />
               <HStack gap="space-8" align="center" justify="center" paddingBlock="space-8">
                 <Button

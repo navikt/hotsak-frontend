@@ -11,7 +11,7 @@ import {
   Select,
   VStack,
 } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { GJELDENDE_STILARK_VERSJON } from '../../../brev/breveditor/html/byggDokument.ts'
@@ -41,6 +41,8 @@ import {
 import { HenleggForm } from './HenleggForm.tsx'
 import { useBehandlingActions } from './useBehandlingActions.ts'
 import { VisBrevKnapp } from './VisBrevKnapp.tsx'
+import { useOpppgavesøk } from '../../../oppgave/useOppgavesøk.ts'
+import { OppgaverOgDokumenterFilter, opprettetIntervallForFilter } from '../sidebars/OppgaverOgDokumenterUtils.ts'
 
 export interface BehandlingRedigeringProps {
   oppgave?: Saksbehandlingsoppgave
@@ -69,6 +71,17 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const harBrevutkast = !!behandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
   const kanOppretteBrev = !harBrevutkast
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
+  const opprettetIntervallSisteToUker = useMemo(
+    () => opprettetIntervallForFilter(OppgaverOgDokumenterFilter.SISTE_2_UKER),
+    []
+  )
+  const oppgaverResponse = useOpppgavesøk({
+    brukerId: oppgave?.fnr,
+    sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
+    opprettetIntervall: opprettetIntervallSisteToUker,
+    pageSize: 1,
+  })
+  const harOppgaverSisteToUker = (oppgaverResponse.data?.totalElements ?? 0) > 0
 
   const handleSlettBrevutkast = async () => {
     if (!harBrev) return
@@ -104,6 +117,14 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
 
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8">
+      {harOppgaverSisteToUker && (
+        <Box paddingInline="space-8 space-0">
+          <InlineMessage status="info" size="small">
+            Bruker har en åpen eller nylig behandlet oppgave hos sentralen. Du kan se andre oppgaver på brukeren i
+            sidepanelet.
+          </InlineMessage>
+        </Box>
+      )}
       <VedtaksResultatVelger
         behandling={behandling}
         utfall={vedtaksresultat}

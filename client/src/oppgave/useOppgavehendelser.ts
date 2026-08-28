@@ -15,14 +15,12 @@ export function useOppgavehendelser() {
   useEffect(() => {
     if (data) {
       console.debug(data)
-      showInfoToast(`Oppgaven er endret: ${data.event}`)
+      showInfoToast(`Oppgaven er endret, versjon: ${data.versjon}`)
     }
   }, [data, showInfoToast])
 }
 
 export interface Oppgavehendelse {
-  event: 'oppgaveOpprettet' | 'oppgaveEndret' | 'oppgaveFerdigstilt' | 'oppgaveFeilregistrert'
-  id: string
   oppgaveId: string
   versjon: number
   tildeltEnhet?: string

@@ -1,7 +1,6 @@
 import { ClockDashedIcon, PersonCircleIcon, TimerPauseIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
+import { BodyShort, HStack, Link, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
-import { Link } from 'react-router'
 
 import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilter.ts'
@@ -98,7 +97,7 @@ export const oppgaveColumns = {
     },
     renderCell(row) {
       return (
-        <Link to={`/oppgave/${row.oppgaveId}`} target="_blank" rel="noreferrer">
+        <Link href={`/oppgave/${row.oppgaveId}`} target="_blank" rel="noreferrer">
           {OppgavetypeLabel[row.kategorisering.oppgavetype]}
         </Link>
       )
@@ -352,7 +351,7 @@ export const oppgaveColumns = {
     renderCell(row) {
       if (!row.ferdigstiltTidspunkt) {
         return (
-          <Tag size="small" data-color="info">
+          <Tag size="xsmall" data-color="info">
             Åpen
           </Tag>
         )

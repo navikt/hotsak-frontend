@@ -117,6 +117,20 @@ export function journalposttypeTagKort(type: Journalpost['journalposttype']) {
   )
 }
 
+export function journalposttypeTagKortere(type: Journalpost['journalposttype']) {
+  const config: Record<typeof type, { label: string; tooltip: string }> = {
+    I: { label: 'I', tooltip: 'Inngående dokument' },
+    U: { label: 'U', tooltip: 'Utgående dokument' },
+    N: { label: 'N', tooltip: 'Notat' },
+  }
+  const { label, tooltip } = config[type]
+  return (
+    <Tag size="small" variant="outline" title={tooltip}>
+      {label}
+    </Tag>
+  )
+}
+
 export function journalpoststatusTagKort(type: Journalpost['journalstatus']) {
   const config: Record<typeof type, { label: string; color: TagProps['data-color']; tooltip: string }> = {
     MOTTATT: { label: 'M', color: 'neutral', tooltip: 'Mottatt' },

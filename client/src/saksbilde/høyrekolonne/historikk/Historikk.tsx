@@ -1,4 +1,3 @@
-import { ClockDashedIcon } from '@navikt/aksel-icons'
 import { List, VStack } from '@navikt/ds-react'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
@@ -12,7 +11,6 @@ export function Historikk() {
     <SidebarPanel
       tittel="Historikk"
       error={error && 'Feil ved henting av historikk.'}
-      icon={<ClockDashedIcon title="Sakshistorikk" />}
       loading={isLoading && 'Henter historikk...'}
     >
       {hendelser.length > 0 ? (

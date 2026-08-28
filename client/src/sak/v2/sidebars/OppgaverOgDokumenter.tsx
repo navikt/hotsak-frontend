@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons'
+import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { BodyShort, Box, Button, HStack, Select, Tabs, VStack } from '@navikt/ds-react'
 import { type ChangeEvent, useMemo, useState } from 'react'
 import { useDokumentsøk } from '../../../dokument/useDokumentsøk'
@@ -98,10 +98,7 @@ export function OppgaverOgDokumenter() {
   return (
     <>
       <SidebarPanelBox paddingBlock={'space-12'}>
-        <SidebarPanelHeading
-          tittel="Oppgaver og dokumenter"
-          icon={<PersonEnvelopeIcon title="Oppgaver og dokumenter" />}
-        />
+        <SidebarPanelHeading tittel="Oppgaver og dokumenter" />
       </SidebarPanelBox>
 
       <Tabs value={currentTab} size="small" onChange={(value) => setCurrentTab(value as OppgaverOgDokumenterTab)}>

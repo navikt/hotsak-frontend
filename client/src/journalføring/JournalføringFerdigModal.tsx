@@ -29,10 +29,10 @@ export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: 
   const navigate = useNavigate()
 
   const sakshendelserUrl = resultat ? `/api/sak/${resultat.sakId}/hendelser` : null
-  const { data: journalpostSakFerdigstilt } = useEventSource<JournalpostSakFerdigstiltData>(
-    sakshendelserUrl,
-    SakEventType.journalpostSakFerdigstilt
-  )
+  const { data: journalpostSakFerdigstilt } = useEventSource<JournalpostSakFerdigstiltData>({
+    url: sakshendelserUrl,
+    event: SakEventType.journalpostSakFerdigstilt,
+  })
 
   function navigerOgLukkModal(sti: string) {
     onClose()

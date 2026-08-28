@@ -14,6 +14,7 @@ import {
 } from './oppgaveTypes.ts'
 import { useOppgave } from './useOppgave.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
+import { useOppgavehendelser } from './useOppgavehendelser.ts'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
 const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
@@ -46,6 +47,7 @@ function OppgaveContent() {
       merkSomLest.trigger()
     }
   }, [oppgave.oppgaveId])
+  useOppgavehendelser()
   return (
     <>
       <Sidetittel tittel={`Oppgave ${oppgave.oppgaveId}`} />

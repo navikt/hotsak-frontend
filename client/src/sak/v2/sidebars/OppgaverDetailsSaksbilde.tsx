@@ -27,9 +27,11 @@ export function OppgaveDetailsSaksbilde({ row: oppgave }: DataGridContentProps<O
         {dokumenter.map((dokument) => (
           <Fragment key={dokument.dokumentId}>
             <span aria-hidden>•</span>
-            <Link href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`} target="_blank">
-              {dokument.tittel}
-            </Link>
+            <BodyShort as="span" size="small">
+              <Link href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`} target="_blank">
+                {dokument.tittel}
+              </Link>
+            </BodyShort>
             <Tag size="xsmall" variant="outline">
               {storForbokstavIOrd(dokument.type)}
             </Tag>

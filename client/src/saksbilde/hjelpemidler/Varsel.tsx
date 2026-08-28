@@ -8,11 +8,16 @@ export function Varsler({ varsler }: { varsler?: Varsel[] }) {
   }
   return (
     <VStack gap="space-6" paddingBlock="space-6 space-0">
-      {varsler.map((varsel) => {
+      {varsler.map((varsel, index) => {
+        const key = index
         return varsel.type === Varseltype.WARNING ? (
-          <WarningTag langTekst={varsel.tekst.nb.length > 50 ? true : false}>{varsel.tekst.nb}</WarningTag>
+          <WarningTag key={key} langTekst={varsel.tekst.nb.length > 50 ? true : false}>
+            {varsel.tekst.nb}
+          </WarningTag>
         ) : (
-          <InfoTag langTekst={varsel.tekst.nb.length > 50 ? true : false}>{varsel.tekst.nb}</InfoTag>
+          <InfoTag key={key} langTekst={varsel.tekst.nb.length > 50 ? true : false}>
+            {varsel.tekst.nb}
+          </InfoTag>
         )
       })}
     </VStack>

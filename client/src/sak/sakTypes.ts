@@ -41,4 +41,4 @@ export interface JournalpostSakFerdigstiltData extends SakEventData {
 export const SakEventType = {
   journalpostSakFerdigstilt: 'journalpostSakFerdigstilt',
 } as const
-export type SakEventType = typeof SakEventType
+export type SakEventType = keyof typeof SakEventType

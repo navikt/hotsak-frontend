@@ -1,6 +1,6 @@
 # Vi har innvilga nokre av hjelpemidla du har søkt om
 
-Vi har behandla søknaden din om hjelpemiddel, som vi fekk \[auto_dato_soknad_teke imot\]. Søknaden er delvis innvilga. Det vil seie at du får låne nokre av hjelpemidla du har søkt om, men at du har fått avslag på delar av søknaden.
+Vi har behandla søknaden din om hjelpemiddel, som vi fekk \[auto_dato_soknad_mottatt\]. Søknaden er delvis innvilga. Det vil seie at du får låne nokre av hjelpemidla du har søkt om, men at du har fått avslag på delar av søknaden.
 
 Du får låne desse hjelpemidla:
 

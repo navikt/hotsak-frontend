@@ -1,12 +1,12 @@
 # Vi har avslått søknaden din om hjelpemiddel
 
-Vi har avslått søknaden din om hjelpemiddel, som vi fekk \[auto_dato_soknad_teke imot]. Det vil seie at du ikkje får låne hjelpemidla det vart søkt om: \[auto_hjelpemiddel_avslått]
+Vi har avslått søknaden din om hjelpemiddel, som vi fekk \[auto_dato_soknad_mottatt]. Det vil seie at du ikkje får låne hjelpemidla det vart søkt om: \[auto_hjelpemidler_avslått]
 
 ## Begrunnelse for vedtaket
 
 Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7 bokstav a jf. forskrift om stønad til hjelpemiddel m.v.
 
-Vi har avslått søknaden din om \[auto_hjelpemiddel_avslått_inline] fordi \[forklar kva opplysningar du har lagt vekt på når du har vurdert at vilkåra ikkje er oppfylt]
+Vi har avslått søknaden din om \[auto_hjelpemidler_avslått_inline] fordi \[forklar kva opplysningar du har lagt vekt på når du har vurdert at vilkåra ikkje er oppfylt]
 
 ## Du kan klage på vedtaket
 

@@ -1,6 +1,6 @@
 # Saka di om hjelpemiddel er avslutta
 
-Vi har avslutta saka di om utlån av hjelpemiddel, som vi fekk \[auto_dato_soknad_teke imot\].
+Vi har avslutta saka di om utlån av hjelpemiddel, som vi fekk \[auto_dato_soknad_mottatt\].
 
 ## Begrunnelse
 

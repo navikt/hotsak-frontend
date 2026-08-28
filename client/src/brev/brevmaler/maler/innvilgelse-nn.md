@@ -1,6 +1,6 @@
 # Vi har innvilga søknaden din om hjelpemiddel
 
-Vi har innvilga søknaden din om hjelpemiddel, som vi fekk \[auto_dato_soknad_teke imot\]. Du får låne desse hjelpemidla: \[auto_hjelpemiddel_innvilga\]
+Vi har innvilga søknaden din om hjelpemiddel, som vi fekk \[auto_dato_soknad_mottatt\]. Du får låne desse hjelpemidla: \[auto_hjelpemidler_innvilget\]
 
 ## Begrunnelse for vedtaket
 

@@ -20,3 +20,7 @@ export enum SidebarValg {
   NOTATER = 'NOTATER',
   OPPGAVER_OG_DOKUMENTER = 'OPPGAVER_OG_DOKUMENTER',
 }
+
+export const sidebarBredde: Partial<Record<SidebarValg, string>> = {
+  [SidebarValg.OPPGAVER_OG_DOKUMENTER]: '600px',
+}

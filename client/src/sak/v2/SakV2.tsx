@@ -41,6 +41,7 @@ import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import classes from './SakV2.module.css'
+import { sidebarBredde } from './SakPanelTabTypes.tsx'
 import { useSakContext } from './SakV2ContextType.ts'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
@@ -68,8 +69,14 @@ function SakV2Content({
   const { erPapirsøknad, erBestilling } = useSaksregler()
   const { erIkkeProd } = useMiljø()
 
-  const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
-    useSakContext()
+  const {
+    panelState,
+    panelDispatch,
+    totalVisibleMinWidth,
+    henleggFormRef,
+    sidebarOpenDefaultSizeRequestId,
+    aktivSidebar,
+  } = useSakContext()
   const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
@@ -113,7 +120,7 @@ function SakV2Content({
 
   const { setEksperimentSidebarPanel, handleEksperimentSidebarResize } = useEksperimentSidebar({
     sidePanelVisible: sidePanel.visible,
-    sidePanelDefaultSize: sidePanel.defaultSize,
+    sidePanelDefaultSize: sidebarBredde[aktivSidebar] ?? sidePanel.defaultSize,
     sidebarOpenDefaultSizeRequestId,
   })
 
@@ -182,7 +189,7 @@ function SakV2Content({
             panel={sidePanel}
             canShowResizeHandle={sidePanel.visible}
             panelRef={setEksperimentSidebarPanel}
-            defaultSize={sidePanel.visible ? sidePanel.defaultSize : 0}
+            defaultSize={sidePanel.visible ? (sidebarBredde[aktivSidebar] ?? sidePanel.defaultSize) : 0}
             collapsible
             collapsedSize={0}
             groupResizeBehavior="preserve-pixel-size"

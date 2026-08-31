@@ -24,12 +24,12 @@ export function SakProvider({ children, sakstype }: { children: ReactNode; sakst
   const setAktivSidebar = useCallback(
     (sidebar: SidebarValg) => {
       setAktivSidebarState(sidebar)
-      if (!panelState.panels.sidebarpanel.visible) {
+      if (!panelState.panels.sidebarpanel.visible || sidebar !== aktivSidebar) {
         setSidebarOpenDefaultSizeRequestId((current) => current + 1)
       }
       panelDispatch({ type: 'SET_PANEL_VISIBILITY', panelId: 'sidebarpanel', visible: true })
     },
-    [panelState.panels.sidebarpanel.visible]
+    [panelState.panels.sidebarpanel.visible, aktivSidebar]
   )
 
   const totalVisibleMinWidth = useMemo(() => getTotalVisibleMinWidth(panelState), [panelState])

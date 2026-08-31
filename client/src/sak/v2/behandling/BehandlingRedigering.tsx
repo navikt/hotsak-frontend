@@ -79,9 +79,10 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
     brukerId: oppgave?.fnr,
     sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
     opprettetIntervall: opprettetIntervallSisteToUker,
-    pageSize: 1,
+    pageSize: 2,
   })
-  const harOppgaverSisteToUker = (oppgaverResponse.data?.totalElements ?? 0) > 0
+  const harOppgaverSisteToUker =
+    !!oppgave && (oppgaverResponse.data?.oppgaver.some(({ oppgaveId }) => oppgaveId !== oppgave.oppgaveId) ?? false)
 
   const handleSlettBrevutkast = async () => {
     if (!harBrev) return

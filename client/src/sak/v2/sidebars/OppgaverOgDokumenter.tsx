@@ -9,7 +9,7 @@ import { oppgaveColumns } from '../../../oppgaveliste/oppgaveColumns'
 import { selectOppgaveId } from '../../../oppgaveliste/oppgaveSelectors'
 import { dokumentColumns, journalpostKey, journalposttypeTagKortere } from '../../../personoversikt/dokumentColumns'
 import { useSak } from '../../../saksbilde/useSak'
-import { Journalpost } from '../../../types/types.internal'
+import { type Journalpost } from '../../../types/types.internal'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
 import {
   datoIntervallForFilter,
@@ -106,9 +106,12 @@ export function OppgaverOgDokumenter() {
           <Tabs.List>
             <Tabs.Tab
               value={OppgaverOgDokumenterTabs.OPPGAVER}
-              label={`Oppgaver (${oppgaverResponse.data?.totalElements})`}
+              label={`Oppgaver (${oppgaverResponse.data?.totalElements ?? 0})`}
             />
-            <Tabs.Tab value={OppgaverOgDokumenterTabs.DOKUMENTER} label={`Dokumenter (${sideInfo?.totaltAntall})`} />
+            <Tabs.Tab
+              value={OppgaverOgDokumenterTabs.DOKUMENTER}
+              label={`Dokumenter (${sideInfo?.totaltAntall ?? 0})`}
+            />
           </Tabs.List>
 
           <Box width="fit-content" paddingInline="space-8">
@@ -159,7 +162,7 @@ export function OppgaverOgDokumenter() {
                 icon={<ChevronRightIcon />}
                 iconPosition="right"
                 onClick={() => setOppgaverPageNumber((prev) => prev + 1)}
-                disabled={!harNesteOppgaveSide}
+                disabled={oppgaverResponse.isValidating || !harNesteOppgaveSide}
               >
                 Neste
               </Button>
@@ -194,7 +197,7 @@ export function OppgaverOgDokumenter() {
                   icon={<ChevronRightIcon />}
                   iconPosition="right"
                   onClick={nesteSide}
-                  disabled={!harNesteSide}
+                  disabled={isValidating || !harNesteSide}
                 >
                   Neste
                 </Button>

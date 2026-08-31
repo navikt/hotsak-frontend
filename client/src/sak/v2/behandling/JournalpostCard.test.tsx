@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
-import { Saksdokument, SaksdokumentType } from '../../../types/types.internal.ts'
+import { type Saksdokument, SaksdokumentType } from '../../../types/types.internal.ts'
 import { JournalpostCard, skalDokumentkortVæreÅpent } from './JournalpostCard.tsx'
 
 const { setValgtDokument, setDokumentpanelSynlig } = vi.hoisted(() => ({

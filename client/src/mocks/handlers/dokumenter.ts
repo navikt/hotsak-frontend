@@ -37,7 +37,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
     const { første = 100, etter = null, fraDato, tilDato } = await request.json()
     const alle = (await journalpostStore.søk()).filter((journalpost) => {
       if (fraDato && journalpost.journalpostOpprettetTid < fraDato) return false
-      if (tilDato && journalpost.journalpostOpprettetTid > tilDato) return false
+      if (tilDato && journalpost.journalpostOpprettetTid.slice(0, 10) > tilDato) return false
       return true
     })
     const start = etter ? alle.findIndex((j) => j.journalpostId === etter) + 1 : 0

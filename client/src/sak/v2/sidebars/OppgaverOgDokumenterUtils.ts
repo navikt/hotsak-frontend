@@ -1,4 +1,4 @@
-import { intervalString, IntervalString, tilLocalDateString } from '../../../utils/dato'
+import { intervalString, type IntervalString, tilLocalDateString } from '../../../utils/dato'
 
 export const OppgaverOgDokumenterTabs = {
   OPPGAVER: 'OPPGAVER',
@@ -24,7 +24,10 @@ function periodeForFilter(filter: OppgaverOgDokumenterFilterValue): { fra: Date;
     }
     case OppgaverOgDokumenterFilter.SISTE_6_MND: {
       const fra = new Date(now)
+      const dag = fra.getDate()
+      fra.setDate(1)
       fra.setMonth(fra.getMonth() - 6)
+      fra.setDate(Math.min(dag, new Date(fra.getFullYear(), fra.getMonth() + 1, 0).getDate()))
       return { fra, til: now }
     }
     case OppgaverOgDokumenterFilter.ALLE:

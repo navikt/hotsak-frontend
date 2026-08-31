@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse, sse } from 'msw'
 
 import { type Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer.ts'
 import {
@@ -29,6 +29,8 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
       })
     }
   ),
+
+  sse<any, OppgaveParams>('/api/oppgaver/hendelser', async (/*{ client }*/) => {}),
 
   http.get<never, never, OppgaveMapperResponse[]>('/api/oppgaver/mapper', async () => {
     return HttpResponse.json([
@@ -156,5 +158,9 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
 
   http.get<OppgaveParams>(`/api/oppgaver/:oppgaveId/gjelder`, async () => {
     return HttpResponse.json({})
+  }),
+
+  sse<any, OppgaveParams>('/api/oppgaver/:oppgaveId/hendelser', async (/* { params, client } */) => {
+    // const oppgaveId = params.oppgaveId
   }),
 ]

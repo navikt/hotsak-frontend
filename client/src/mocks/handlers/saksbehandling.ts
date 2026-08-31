@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse, sse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import {
@@ -349,6 +349,23 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       console.log(`Angrer vedtak for behandling ${gjeldendeBehandling.behandlingId} på sak ${sakId}`)
 
       return HttpResponse.json({})
+    }),
+
+    sse<any, SakParams>('/api/sak/:sakId/hendelser', async ({ params, client }) => {
+      const sakId = params.sakId
+      const oppgaver = await oppgaveStore.finnOppgaverForSak(sakId)
+      client.send({
+        id: crypto.randomUUID(),
+        event: 'journalpostSakFerdigstilt',
+        data: {
+          oppgaveId: oppgaver[0].oppgaveId,
+        },
+      })
+      /*
+      queueMicrotask(() => {
+        client.close()
+      })
+      */
     }),
   ]
 }

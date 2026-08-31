@@ -1,8 +1,8 @@
 {
   "collection": "frontend",
-  "version": "2026.08.28-095355-026f5a3",
+  "version": "2026.08.31-111402-7cbe1b4",
   "scope": "repo",
-  "source_sha": "026f5a3",
+  "source_sha": "7cbe1b4",
   "installed_at": "2026-06-25T11:38:51Z",
   "files": [
     {
@@ -11,19 +11,19 @@
     },
     {
       "path": ".github/agents/aksel.agent.md",
-      "hash": "d190246642818387"
+      "hash": "a85a02b7740368a9"
     },
     {
       "path": ".github/agents/code-review.agent.md",
-      "hash": "ba64c6ac567371bb"
+      "hash": "035725f511ba6f5b"
     },
     {
       "path": ".github/agents/forfatter.agent.md",
-      "hash": "3dd47103e9bf04a8"
+      "hash": "2529faa6918e3520"
     },
     {
       "path": ".github/agents/nav-pilot.agent.md",
-      "hash": "6ae2b1bab2466968"
+      "hash": "f381cdcba7fcb644"
     },
     {
       "path": ".github/skills/aksel-builder/",
@@ -52,7 +52,7 @@
     },
     {
       "path": ".github/skills/nav-plan/",
-      "hash": "0a160744cf2b4e82"
+      "hash": "db7618d269cd2f07"
     },
     {
       "path": ".github/skills/nav-deep-interview/",
@@ -68,11 +68,11 @@
     },
     {
       "path": ".github/skills/security-owasp/",
-      "hash": "6b06f512092bde91"
+      "hash": "b909907ae0e18174"
     },
     {
       "path": ".github/skills/terse-mode/",
-      "hash": "133c50e8cd7769d2"
+      "hash": "d28a057d860494bb"
     },
     {
       "path": ".github/instructions/code-review.instructions.md",
@@ -80,11 +80,11 @@
     },
     {
       "path": ".github/instructions/deliberate-ai-use.instructions.md",
-      "hash": "a0999e3cc902f4f5"
+      "hash": "68b3ca596e278482"
     },
     {
       "path": ".github/instructions/norwegian-text.instructions.md",
-      "hash": "890c8475efa051a5"
+      "hash": "b392ea7a4a952a5d"
     },
     {
       "path": ".github/instructions/testing.instructions.md",

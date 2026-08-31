@@ -15,10 +15,10 @@ import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { JournalføringParter } from './JournalføringParter.tsx'
 import { JournalføringSakvalg } from './JournalføringSakvalg.tsx'
+import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { NySakSkjema } from './NySakSkjema.tsx'
 import { type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
-import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 
 interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
@@ -39,7 +39,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const fristDefault = addWeeks(mottattDatoDefault, 4)
   const opprinneligJournalføresPåFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender ?? ''
 
-  const { journalførV2 } = useJournalføringActions(oppgave, journalpost.journalpostId)
+  const { journalfør } = useJournalføringActions(oppgave)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const kanRedigere = oppgaveErUnderBehandlingAvInnloggetAnsatt
 
@@ -115,7 +115,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   // TODO Sjekk tildelt enhet vs gjeldende enhet for saksbehandler. Kan det være forskjell på dem?
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
     const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
-    const resultat = await journalførV2.trigger({
+    const resultat = await journalfør.trigger({
       tittel,
       journalføresPåFnr: fnr,
       saksgrunnlag: {
@@ -147,7 +147,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       return
     }
     const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
-    const resultat = await journalførV2.trigger({ tittel, journalføresPåFnr: fnr, sakId: valgtSakId, dokumenter })
+    const resultat = await journalfør.trigger({ tittel, journalføresPåFnr: fnr, sakId: valgtSakId, dokumenter })
     if (resultat) {
       mutateJournalpost()
       setJournalføringResultat(resultat)
@@ -249,8 +249,8 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                   type={sakType === 'eksisterende' ? 'button' : 'submit'}
                   variant="primary"
                   size="small"
-                  loading={journalførV2.isMutating}
-                  disabled={journalførV2.isMutating}
+                  loading={journalfør.isMutating}
+                  disabled={journalfør.isMutating}
                   onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
                 >
                   {sakType === 'eksisterende' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}

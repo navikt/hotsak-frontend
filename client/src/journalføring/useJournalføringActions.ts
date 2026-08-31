@@ -1,34 +1,37 @@
 import useSWRMutation from 'swr/mutation'
 
-import { type Actions, type ExecutionPromise, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { mutateOppgave } from '../oppgave/useOppgave.ts'
 import type {
-  JournalførJournalpostRequest,
-  JournalførJournalpostResponse,
   JournalføringV2Request,
   JournalføringV2Response,
+  JournalførJournalpostRequest,
 } from './journalføringTypes.ts'
 
-export interface JournalføringActions extends Actions {
-  journalfør(request: Omit<JournalførJournalpostRequest, 'oppgaveId'>): ExecutionPromise<JournalførJournalpostResponse>
-}
+type JournalføringV1Arg = Omit<JournalførJournalpostRequest, 'oppgaveId' | 'journalpostId'>
+type JournalføringV2Arg = Omit<JournalføringV2Request, 'oppgaveId' | 'journalpostId'>
 
-export function useJournalføringActions(oppgave: Oppgave, journalpostId?: string) {
+export function useJournalføringActions(oppgave: Oppgave) {
   const { oppgaveId, versjon } = oppgave
-  const { execute, state } = useActionState()
+
   if (!oppgaveId) {
     throw new Error('Mangler oppgaveId!')
   }
 
-  type JournalføringV2Arg = Omit<JournalføringV2Request, 'oppgaveId' | 'journalpostId'>
+  const journalpostId = oppgave.journalpostId
   const journalpostKey = journalpostId != null ? `/api/journalpost/${journalpostId}/journalforing` : null
-  const journalførV2 = useSWRMutation<JournalføringV2Response, HttpError, string | null, JournalføringV2Arg>(
+
+  const journalfør = useSWRMutation<
+    JournalføringV2Response,
+    HttpError,
+    string | null,
+    JournalføringV1Arg | JournalføringV2Arg
+  >(
     journalpostKey,
     (url, { arg }) =>
-      http.post<JournalføringV2Request, JournalføringV2Response>(
+      http.post<JournalførJournalpostRequest | JournalføringV2Request, JournalføringV2Response>(
         url,
         {
           ...arg,
@@ -45,18 +48,6 @@ export function useJournalføringActions(oppgave: Oppgave, journalpostId?: strin
   )
 
   return {
-    journalfør(
-      request: Omit<JournalførJournalpostRequest, 'oppgaveId'>
-    ): ExecutionPromise<JournalførJournalpostResponse> {
-      return execute(() =>
-        http.post<JournalførJournalpostRequest, JournalførJournalpostResponse>(
-          `/api/journalpost/${request.journalpostId}/journalforing`,
-          { oppgaveId, ...request },
-          { versjon }
-        )
-      )
-    },
-    journalførV2,
-    state,
+    journalfør,
   }
 }

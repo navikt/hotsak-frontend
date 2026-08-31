@@ -1,6 +1,6 @@
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, TextField, VStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
@@ -14,6 +14,7 @@ import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
 import { useJournalføringActions } from './useJournalføringActions.ts'
+import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
 
 export interface JournalpostSkjemaProps {
   oppgave: Journalføringsoppgave
@@ -24,26 +25,34 @@ export interface JournalpostSkjemaProps {
 
 export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJournalpost }: JournalpostSkjemaProps) {
   const navigate = useNavigate()
-  const journalføringActions = useJournalføringActions(oppgave)
+  const { journalfør } = useJournalføringActions(oppgave)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { saksoversikt } = useSaksoversikt(fodselsnummer, SaksstatusKategori.ÅPEN, Sakstype.BARNEBRILLER)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost.tittel || '')
 
-  const journalfør = () => {
-    journalføringActions
-      .journalfør({
-        journalpostId: journalpost.journalpostId,
+  const { journalpostSakFerdigstilt } = useJournalpostSakFerdigstiltHendelse(journalfør.data?.sakId)
+  useEffect(() => {
+    const oppgaveId = journalpostSakFerdigstilt?.oppgaveId
+    if (oppgaveId) {
+      navigate(`/oppgave/${oppgaveId}`)
+    }
+  }, [journalpostSakFerdigstilt, navigate])
+
+  const handleJournalfør: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault()
+    journalfør
+      .trigger({
         tittel: journalpostTittel,
         journalføresPåFnr: fodselsnummer,
         sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
       })
       .then((response) => {
-        if (!response) {
-          throw new Error('Klarte ikke å opprette behandle sak-oppgave og/eller sak')
+        const oppgaveId = (response as any).oppgaveId // finnes i v1-responsen
+        if (oppgaveId) {
+          navigate(`/oppgave/${oppgaveId}`)
         }
-        return navigate(`/oppgave/${response.oppgaveId}`)
       })
   }
 
@@ -120,12 +129,9 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
               type="submit"
               variant="primary"
               size="small"
-              onClick={(e) => {
-                e.preventDefault()
-                journalfør()
-              }}
-              disabled={journalføringActions.state.loading}
-              loading={journalføringActions.state.loading}
+              onClick={handleJournalfør}
+              disabled={journalfør.isMutating}
+              loading={journalfør.isMutating}
             >
               {valgtEksisterendeSakId !== '' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
             </Button>

@@ -12,3 +12,7 @@
 .placeholderCell {
   padding: var(--ax-space-10, 10px);
 }
+
+.loadingBody {
+  opacity: 0.5;
+}

@@ -764,6 +764,7 @@ export class SakStore extends Dexie {
       saksbehandler: saksbehandler,
       dokumentId: dokumentId.toString(),
       tittel: tittel,
+      logiskeVedlegg: [],
     })
   }
 

@@ -1,4 +1,3 @@
-import { WheelchairIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Detail, HStack, VStack } from '@navikt/ds-react'
 import { Skillelinje } from '../../../felleskomponenter/Strek'
 import { Mellomtittel, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
@@ -28,7 +27,7 @@ export function UtlånsoversiktV2() {
   return (
     <>
       <SidebarPanelBox paddingBlock={'space-8 space-0'}>
-        <SidebarPanelHeading tittel="Utlånsoversikt" icon={<WheelchairIcon title="Utlånsoversikt" />} />
+        <SidebarPanelHeading tittel="Utlånsoversikt" />
       </SidebarPanelBox>
       {isFromVedtak && (
         <SidebarPanelBox paddingBlock={'space-16 space-0'}>

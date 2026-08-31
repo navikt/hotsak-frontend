@@ -11,7 +11,7 @@ import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
-import { useJournalposter } from '../../saksbilde/useJournalposter.ts'
+import { useJournalposterInngående } from '../../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
@@ -26,8 +26,8 @@ import {
 } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
-import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { GodkjennBestillingModalV2 } from './bestilling/GodkjennBestillingModalV2.tsx'
+import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
@@ -41,6 +41,7 @@ import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import classes from './SakV2.module.css'
+import { sidebarBredde } from './SakPanelTabTypes.tsx'
 import { useSakContext } from './SakV2ContextType.ts'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
@@ -68,8 +69,14 @@ function SakV2Content({
   const { erPapirsøknad, erBestilling } = useSaksregler()
   const { erIkkeProd } = useMiljø()
 
-  const { panelState, panelDispatch, totalVisibleMinWidth, henleggFormRef, sidebarOpenDefaultSizeRequestId } =
-    useSakContext()
+  const {
+    panelState,
+    panelDispatch,
+    totalVisibleMinWidth,
+    henleggFormRef,
+    sidebarOpenDefaultSizeRequestId,
+    aktivSidebar,
+  } = useSakContext()
   const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
@@ -113,7 +120,7 @@ function SakV2Content({
 
   const { setEksperimentSidebarPanel, handleEksperimentSidebarResize } = useEksperimentSidebar({
     sidePanelVisible: sidePanel.visible,
-    sidePanelDefaultSize: sidePanel.defaultSize,
+    sidePanelDefaultSize: sidebarBredde[aktivSidebar] ?? sidePanel.defaultSize,
     sidebarOpenDefaultSizeRequestId,
   })
 
@@ -182,7 +189,7 @@ function SakV2Content({
             panel={sidePanel}
             canShowResizeHandle={sidePanel.visible}
             panelRef={setEksperimentSidebarPanel}
-            defaultSize={sidePanel.visible ? sidePanel.defaultSize : 0}
+            defaultSize={sidePanel.visible ? (sidebarBredde[aktivSidebar] ?? sidePanel.defaultSize) : 0}
             collapsible
             collapsedSize={0}
             groupResizeBehavior="preserve-pixel-size"
@@ -297,7 +304,7 @@ export default function SakV2({
 }
 
 function DokumentpanelInitialisering() {
-  const { dokumenter } = useJournalposter()
+  const { dokumenter } = useJournalposterInngående()
   const { setValgtDokument } = useDokumentContext()
   const { erPapirsøknad } = useSaksregler()
   const { panelDispatch } = useSakContext()

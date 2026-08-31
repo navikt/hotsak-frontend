@@ -14,6 +14,8 @@ export interface DokumentsøkRequest {
   fnr: string
   første?: number
   etter?: string | null
+  fraDato?: string
+  tilDato?: string
 }
 export interface DokumentsøkResponse {
   journalposter: Journalpost[]
@@ -25,20 +27,28 @@ export interface useDokumentsøkResponse extends Omit<SWRResponse<DokumentsøkRe
   sideInfo?: SideInfo
 }
 
-type DokumentsøkKey = [string, string, number, string | null] | null
+type DokumentsøkKey = [string, string, number, string | null, string | undefined, string | undefined] | null
 
 export function useDokumentsøk({
   fnr,
   første = 100,
   etter = null,
+  fraDato,
+  tilDato,
+  keepPreviousData = false,
 }: {
   fnr?: string
   første?: number
   etter?: string | null
+  fraDato?: string
+  tilDato?: string
+  keepPreviousData?: boolean
 }): useDokumentsøkResponse {
   const { data, ...rest } = useSWR<DokumentsøkResponse, unknown, DokumentsøkKey>(
-    fnr ? ['/api/dokumenter/sok', fnr, første, etter] : null,
-    ([url, fnr, første, etter]) => http.post<DokumentsøkRequest, DokumentsøkResponse>(url, { fnr, første, etter })
+    fnr ? ['/api/dokumenter/sok', fnr, første, etter, fraDato, tilDato] : null,
+    ([url, fnr, første, etter, fraDato, tilDato]) =>
+      http.post<DokumentsøkRequest, DokumentsøkResponse>(url, { fnr, første, etter, fraDato, tilDato }),
+    { keepPreviousData }
   )
   return {
     journalposter: data?.journalposter ?? [],

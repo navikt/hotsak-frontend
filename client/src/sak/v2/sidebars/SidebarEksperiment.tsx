@@ -1,4 +1,4 @@
-import { ChevronRightIcon, NotePencilIcon } from '@navikt/aksel-icons'
+import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { Box, Button } from '@navikt/ds-react'
 
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
@@ -10,10 +10,10 @@ import { Notater } from '../../notat/Notater'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import { SidebarValg } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakV2ContextType'
+import { OppgaverOgDokumenter } from './OppgaverOgDokumenter'
 import classes from './Sidebar.module.css'
 import { SidebarPanel } from './SidebarPanel'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import { OppgaverOgDokumenter } from './OppgaverOgDokumenter'
 
 export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave
@@ -33,7 +33,7 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
         return <UtlånsoversiktV2 />
       case SidebarValg.NOTATER:
         return (
-          <SidebarPanel tittel="Notater" icon={<NotePencilIcon title="Notater" />}>
+          <SidebarPanel tittel="Notater">
             <Notater oppgave={oppgave} />
           </SidebarPanel>
         )

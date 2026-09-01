@@ -23,9 +23,11 @@ import { useBrevActions } from '../../../brev/useBrevActions.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
+import { useOppgavesøk } from '../../../oppgave/useOppgavesøk.ts'
 import { useMiljø } from '../../../utils/useMiljø.ts'
 import { useClosePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakV2ContextType.ts'
+import { OppgaverOgDokumenterFilter, opprettetIntervallForFilter } from '../sidebars/OppgaverOgDokumenterUtils.ts'
 import classes from './BehandlingPanel.module.css'
 import {
   Gjenstående,
@@ -41,8 +43,6 @@ import {
 import { HenleggForm } from './HenleggForm.tsx'
 import { useBehandlingActions } from './useBehandlingActions.ts'
 import { VisBrevKnapp } from './VisBrevKnapp.tsx'
-import { useOpppgavesøk } from '../../../oppgave/useOppgavesøk.ts'
-import { OppgaverOgDokumenterFilter, opprettetIntervallForFilter } from '../sidebars/OppgaverOgDokumenterUtils.ts'
 
 export interface BehandlingRedigeringProps {
   oppgave?: Saksbehandlingsoppgave
@@ -75,7 +75,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
     () => opprettetIntervallForFilter(OppgaverOgDokumenterFilter.SISTE_2_UKER),
     []
   )
-  const oppgaverResponse = useOpppgavesøk({
+  const oppgaverResponse = useOppgavesøk({
     brukerId: oppgave?.fnr,
     sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
     opprettetIntervall: opprettetIntervallSisteToUker,

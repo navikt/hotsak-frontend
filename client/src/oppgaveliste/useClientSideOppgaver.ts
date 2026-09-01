@@ -5,7 +5,7 @@ import { type DataGridFilterValues } from '../felleskomponenter/data/DataGridFil
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { type FinnOppgaverRequest, type Oppgave, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
-import { useOpppgavesøk } from '../oppgave/useOppgavesøk.ts'
+import { useOppgavesøk } from '../oppgave/useOppgavesøk.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { OppgaveToolbarTab, useOppgavelisteContext } from './OppgavelisteContext.tsx'
 import {
@@ -46,7 +46,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
   const { currentTab, sort } = useOppgavelisteContext()
   const { tildelt, ...rest } = request
 
-  const response = useOpppgavesøk({
+  const response = useOppgavesøk({
     tildelt,
     sorteringsfelt: sort.orderBy === 'opprettetTidspunkt' ? 'OPPRETTET_TIDSPUNKT' : 'FRIST',
     sorteringsrekkefølge: sort.direction === 'descending' ? 'DESC' : 'ASC',

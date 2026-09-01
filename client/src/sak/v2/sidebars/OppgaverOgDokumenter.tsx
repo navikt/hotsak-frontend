@@ -1,10 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons'
-import { BodyShort, Box, Button, HStack, Select, Tabs, VStack } from '@navikt/ds-react'
+import { BodyShort, Box, Button, Detail, HStack, Select, Tabs, VStack } from '@navikt/ds-react'
 import { type ChangeEvent, useMemo, useState } from 'react'
 import { useDokumentsøk } from '../../../dokument/useDokumentsøk'
 import { DataGrid } from '../../../felleskomponenter/data/DataGrid'
 import { type Oppgave } from '../../../oppgave/oppgaveTypes'
-import { useOpppgavesøk } from '../../../oppgave/useOppgavesøk'
+import { useOppgavesøk } from '../../../oppgave/useOppgavesøk'
 import { oppgaveColumns } from '../../../oppgaveliste/oppgaveColumns'
 import { selectOppgaveId } from '../../../oppgaveliste/oppgaveSelectors'
 import { dokumentColumns, journalpostKey, journalposttypeTagKortere } from '../../../personoversikt/dokumentColumns'
@@ -62,7 +62,7 @@ export function OppgaverOgDokumenter() {
   })
   const opprettetIntervall = useMemo(() => opprettetIntervallForFilter(filter), [filter])
   const [oppgaverPageNumber, setOppgaverPageNumber] = useState(1)
-  const oppgaverResponse = useOpppgavesøk(
+  const oppgaverResponse = useOppgavesøk(
     {
       brukerId: fnr,
       sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
@@ -73,6 +73,19 @@ export function OppgaverOgDokumenter() {
     },
     true
   )
+
+  const totaleOppgaver =
+    useOppgavesøk({
+      brukerId: fnr,
+      pageNumber: 1,
+      pageSize: 1,
+    }).data?.totalElements ?? 0
+
+  const totaleDokumenter =
+    useDokumentsøk({
+      fnr,
+      første: 1,
+    }).sideInfo?.totaltAntall ?? 0
 
   const alleOppgaver = oppgaverResponse.data?.oppgaver ?? ingenOppgaver
 
@@ -104,14 +117,8 @@ export function OppgaverOgDokumenter() {
       <Tabs value={currentTab} size="small" onChange={(value) => setCurrentTab(value as OppgaverOgDokumenterTab)}>
         <VStack gap="space-12">
           <Tabs.List>
-            <Tabs.Tab
-              value={OppgaverOgDokumenterTabs.OPPGAVER}
-              label={`Oppgaver (${oppgaverResponse.data?.totalElements ?? 0})`}
-            />
-            <Tabs.Tab
-              value={OppgaverOgDokumenterTabs.DOKUMENTER}
-              label={`Dokumenter (${sideInfo?.totaltAntall ?? 0})`}
-            />
+            <Tabs.Tab value={OppgaverOgDokumenterTabs.OPPGAVER} label={`Oppgaver (${totaleOppgaver})`} />
+            <Tabs.Tab value={OppgaverOgDokumenterTabs.DOKUMENTER} label={`Dokumenter (${totaleDokumenter})`} />
           </Tabs.List>
 
           <Box width="fit-content" paddingInline="space-8">
@@ -130,6 +137,18 @@ export function OppgaverOgDokumenter() {
               <option value={OppgaverOgDokumenterFilter.SISTE_2_UKER}>Siste 2 uker</option>
               <option value={OppgaverOgDokumenterFilter.SISTE_6_MND}>Siste 6 måneder</option>
             </Select>
+            <Box paddingBlock="space-8">
+              <Detail>
+                Viser{' '}
+                {currentTab === OppgaverOgDokumenterTabs.OPPGAVER
+                  ? `${oppgaverResponse.data?.totalElements ?? 0} `
+                  : `${sideInfo?.totaltAntall ?? 0} `}
+                av{' '}
+                {currentTab === OppgaverOgDokumenterTabs.OPPGAVER
+                  ? `${totaleOppgaver} oppgaver`
+                  : `${totaleDokumenter} dokumenter`}
+              </Detail>
+            </Box>
           </Box>
 
           <Tabs.Panel value={OppgaverOgDokumenterTabs.OPPGAVER}>

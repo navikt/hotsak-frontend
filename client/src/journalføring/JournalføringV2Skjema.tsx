@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { Skillelinje } from '../felleskomponenter/Strek.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
+import { OppgaveModalType, useOppgaveÅpneModalHandler } from '../oppgave/OppgaveContext.ts'
 import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePerson } from '../personoversikt/usePerson.ts'
@@ -19,6 +20,7 @@ import { NySakSkjema } from './NySakSkjema.tsx'
 import { type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
+import { TextContainer } from '../felleskomponenter/typografi.tsx'
 
 interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
@@ -42,6 +44,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const { journalførV2 } = useJournalføringActions(oppgave, journalpost.journalpostId)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const kanRedigere = oppgaveErUnderBehandlingAvInnloggetAnsatt
+  const åpneModal = useOppgaveÅpneModalHandler()
 
   const form = useForm<JournalføringV2SkjemaVerdier>({
     mode: 'onChange',
@@ -160,7 +163,11 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         <Heading level="1" size="xsmall">
           Journalføring
         </Heading>
-        <JournalføringMenu oppgave={oppgave} onAction={mutateJournalpost} />
+        <JournalføringMenu
+          oppgave={oppgave}
+          spørreundersøkelseId="journalføringingsoppgave_overført_gosys_v1"
+          onAction={mutateJournalpost}
+        />
       </HStack>
 
       <FormProvider {...form}>
@@ -183,16 +190,18 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
               <Heading level="2" size="small">
                 Gjelder
               </Heading>
-              <SelectController
-                control={control}
-                name="tema"
-                label="Tema"
-                size="small"
-                readOnly={!kanRedigere}
-                rules={{ required: 'Du må velge tema' }}
-              >
-                <option value="HJE">Hjelpemidler</option>
-              </SelectController>
+              <TextContainer>
+                <SelectController
+                  control={control}
+                  name="tema"
+                  label="Tema"
+                  size="small"
+                  readOnly={!kanRedigere}
+                  rules={{ required: 'Du må velge tema' }}
+                >
+                  <option value="HJE">Hjelpemidler</option>
+                </SelectController>
+              </TextContainer>
               <JournalføringParter journalpost={journalpost} tildeltEnhet={tildeltEnhet} kanRedigere={kanRedigere} />
             </VStack>
 
@@ -255,7 +264,12 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                 >
                   {sakType === 'eksisterende' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
                 </Button>
-                <Button type="button" variant="secondary" size="small">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="small"
+                  onClick={() => åpneModal(OppgaveModalType.OVERFØR_TIL_GOSYS)}
+                >
                   Overfør til Gosys
                 </Button>
               </HStack>

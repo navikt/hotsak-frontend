@@ -4,13 +4,15 @@ import { ActionMenu, Button, HStack } from '@navikt/ds-react'
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { OppgaveMenuModals } from '../oppgave/OppgaveMenuModals.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
+import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser.ts'
 
 export interface JournalføringMenuProps {
   oppgave: Journalføringsoppgave
+  spørreundersøkelseId?: SpørreundersøkelseId
   onAction?(): unknown | Promise<unknown>
 }
 
-export function JournalføringMenu({ oppgave, onAction }: JournalføringMenuProps) {
+export function JournalføringMenu({ oppgave, spørreundersøkelseId, onAction }: JournalføringMenuProps) {
   return (
     <HStack justify="end">
       <ActionMenu>
@@ -24,7 +26,7 @@ export function JournalføringMenu({ oppgave, onAction }: JournalføringMenuProp
           <OppgaveMenu oppgave={oppgave} onAction={onAction} />
         </ActionMenu.Content>
       </ActionMenu>
-      <OppgaveMenuModals oppgave={oppgave} />
+      <OppgaveMenuModals oppgave={oppgave} spørreundersøkelseId={spørreundersøkelseId} />
     </HStack>
   )
 }

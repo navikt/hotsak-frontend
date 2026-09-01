@@ -8,6 +8,7 @@ import { type Journalpost, type Person } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { useFormContext } from 'react-hook-form'
 import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { TextContainer } from '../felleskomponenter/typografi.tsx'
 
 interface JournalføringParterProps {
   journalpost: Journalpost
@@ -70,76 +71,84 @@ export function JournalføringParter({ journalpost, tildeltEnhet, kanRedigere }:
   }
 
   return (
-    <VStack gap="space-8">
-      <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
-        <HStack justify="space-between" align="start">
-          <VStack gap="space-12">
-            <VStack gap="space-4">
-              <Label size="small">Bruker</Label>
-              {redigererBruker ? (
-                <VStack gap="space-4">
-                  <HStack gap="space-12" align="end">
-                    <TextField
-                      label="Fødselsnummer"
-                      size="small"
-                      value={brukerInputFnr}
-                      onChange={(e) => setBrukerInputFnr(e.target.value)}
-                      autoFocus
-                    />
-                    <HStack gap="space-4">
-                      <Button variant="primary" size="small" type="button" loading={oppslagLaster} onClick={velgBruker}>
-                        Velg
-                      </Button>
-                      <Button variant="secondary" size="small" type="button" onClick={avbrytRedigering}>
-                        Avbryt
-                      </Button>
+    <TextContainer>
+      <VStack gap="space-8">
+        <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
+          <HStack justify="space-between" align="start">
+            <VStack gap="space-12">
+              <VStack gap="space-4">
+                <Label size="small">Bruker</Label>
+                {redigererBruker ? (
+                  <VStack gap="space-4">
+                    <HStack gap="space-12" align="end">
+                      <TextField
+                        label="Fødselsnummer"
+                        size="small"
+                        value={brukerInputFnr}
+                        onChange={(e) => setBrukerInputFnr(e.target.value)}
+                        autoFocus
+                      />
+                      <HStack gap="space-4">
+                        <Button
+                          variant="primary"
+                          size="small"
+                          type="button"
+                          loading={oppslagLaster}
+                          onClick={velgBruker}
+                        >
+                          Velg
+                        </Button>
+                        <Button variant="secondary" size="small" type="button" onClick={avbrytRedigering}>
+                          Avbryt
+                        </Button>
+                      </HStack>
                     </HStack>
+                    {brukerFeil && <ErrorMessage size="small">{brukerFeil}</ErrorMessage>}
+                  </VStack>
+                ) : (
+                  <HStack gap="space-1" align="center">
+                    <BodyShort size="small">{brukerNavn} - </BodyShort>
+                    <BodyShort size="small">{brukerFnr}</BodyShort>
+                    <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
                   </HStack>
-                  {brukerFeil && <ErrorMessage size="small">{brukerFeil}</ErrorMessage>}
-                </VStack>
-              ) : (
-                <HStack gap="space-1" align="center">
-                  <BodyShort size="small">{brukerNavn} - </BodyShort>
-                  <BodyShort size="small">{brukerFnr}</BodyShort>
-                  <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
-                </HStack>
-              )}
+                )}
+              </VStack>
+              <BodyShort size="small">{tildeltEnhet}</BodyShort>
             </VStack>
-            <BodyShort size="small">{tildeltEnhet}</BodyShort>
-          </VStack>
-          {kanRedigere &&
-            (redigererBruker ? null : (
-              <Button
-                variant="tertiary"
-                size="xsmall"
-                type="button"
-                onClick={() => {
-                  setRedigererBruker(true)
-                  setBrukerFeil(null)
-                  setBrukerInputFnr(brukerFnr)
-                }}
-              >
-                Endre
-              </Button>
-            ))}
-        </HStack>
-      </Box>
+            {kanRedigere &&
+              (redigererBruker ? null : (
+                <Button
+                  variant="tertiary"
+                  size="xsmall"
+                  type="button"
+                  onClick={() => {
+                    setRedigererBruker(true)
+                    setBrukerFeil(null)
+                    setBrukerInputFnr(brukerFnr)
+                  }}
+                >
+                  Endre
+                </Button>
+              ))}
+          </HStack>
+        </Box>
 
-      <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
-        <HStack justify="space-between" align="start">
-          <VStack gap="space-4">
-            <VStack gap="space-2">
-              <Label size="small">Avsender</Label>
-              <Detail>Avsender er bruker</Detail>
+        <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
+          <HStack justify="space-between" align="start">
+            <VStack gap="space-4">
+              <VStack gap="space-2">
+                <Label size="small">Avsender</Label>
+                <Detail>Avsender er bruker</Detail>
+              </VStack>
+              <HStack gap="space-1" align="center">
+                <BodyShort size="small">{brukerNavn} - </BodyShort>
+                <BodyShort size="small">{brukerFnr}</BodyShort>
+                <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
+              </HStack>
             </VStack>
-            <HStack gap="space-1" align="center">
-              <BodyShort size="small">{brukerNavn} - </BodyShort>
-              <BodyShort size="small">{brukerFnr}</BodyShort>
-              <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
-            </HStack>
-          </VStack>
-        </HStack>
-      </Box>
-    </VStack>
+          </HStack>
+        </Box>
+      </VStack>
+    </TextContainer>
   )
 }

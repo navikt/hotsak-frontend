@@ -1,6 +1,7 @@
 import { barnebrillesak_overført_gosys_v1 } from './barnebrillesak_overført_gosys_v1'
 import { desanitizeName } from './Besvarelse'
 import { internt_notat_feilregistrert_v1 } from './internt_notat_feilregistrert_v1'
+import { journalføringingsoppgave_overført_gosys_v1 } from './journalføringingsoppgave_overført_gosys_v1'
 import { journalføringsoppgave_barnebriller_overført_gosys_v1 } from './journalføringsoppgave_barnebriller_overført_gosys_v1'
 import { journalført_notat_feilregistrert_v1 } from './journalført_notat_feilregistrert_v1'
 import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
@@ -54,6 +55,7 @@ export interface ISpørreundersøkelse extends ISpørsmålsliste {
 export const spørreundersøkelser = {
   barnebrillesak_overført_gosys_v1,
   internt_notat_feilregistrert_v1,
+  journalføringingsoppgave_overført_gosys_v1,
   journalføringsoppgave_barnebriller_overført_gosys_v1,
   journalført_notat_feilregistrert_v1,
   sak_overført_gosys_v1,

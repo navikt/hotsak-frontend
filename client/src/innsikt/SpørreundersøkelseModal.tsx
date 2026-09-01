@@ -62,6 +62,7 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
         </Dialog.Header>
         <FormProvider {...form}>
           <form
+            className={classes.form}
             onSubmit={handleSubmit(async (besvarelse) => {
               const svar = besvarelseToSvar(spørreundersøkelse, besvarelse)
               return onBesvar(

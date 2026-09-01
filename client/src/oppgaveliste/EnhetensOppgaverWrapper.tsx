@@ -1,11 +1,9 @@
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
-import { useOppgavehendelserForEnhet } from '../oppgave/useOppgavehendelser.ts'
 import { EnhetensOppgaver } from './EnhetensOppgaver.tsx'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgavelisteProvider } from './OppgavelisteProvider.tsx'
 
 export default function EnhetensOppgaverWrapper() {
-  useOppgavehendelserForEnhet()
   return (
     <>
       <Sidetittel tittel="Enhetens oppgaver" />

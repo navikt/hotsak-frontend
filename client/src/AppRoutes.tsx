@@ -4,6 +4,7 @@ import { Outlet, Route, Routes } from 'react-router'
 import classes from './AppRoutes.module.css'
 import { AsyncBoundary } from './felleskomponenter/AsyncBoundary.tsx'
 import { Feilmelding } from './felleskomponenter/feil/Feilmelding.tsx'
+import { Oppgaver } from './oppgaveliste/Oppgaver.tsx'
 import { Protected } from './tilgang/Protected.tsx'
 
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -29,7 +30,7 @@ export function AppRoutes() {
           {/* Ruter hvor det er naturlig med global, vertikal scroll */}
           <Route element={<SideLayout />}>
             <Route index element={<MineOppgaver />} />
-            <Route path="oppgaver">
+            <Route path="oppgaver" element={<Oppgaver />}>
               <Route index element={<MineOppgaver />} />
               <Route path="mine" element={<MineOppgaver />} />
               <Route path="enhetens" element={<EnhetensOppgaver />} />

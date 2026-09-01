@@ -1,11 +1,9 @@
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
-import { useOppgavehendelserForEnhet } from '../oppgave/useOppgavehendelser.ts'
 import { MedarbeidersOppgaver } from './MedarbeidersOppgaver.tsx'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgavelisteProvider } from './OppgavelisteProvider.tsx'
 
-export default function MineOppgaverWrapper() {
-  useOppgavehendelserForEnhet()
+export default function MedarbeidersOppgaverWrapper() {
   return (
     <>
       <Sidetittel tittel="Medarbeiders oppgaver" />

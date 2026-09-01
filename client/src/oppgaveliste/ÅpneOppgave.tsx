@@ -7,7 +7,6 @@ import { mutateOppgave } from '../oppgave/useOppgave.ts'
 import { preloadBehandling, preloadBehovsmelding, preloadSak } from '../sak/useSak.ts'
 import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
 import classes from './ÅpneOppgave.module.css'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface ÅpneOppgaveProps {
   oppgave: Oppgave
@@ -17,7 +16,6 @@ export function ÅpneOppgave(props: ÅpneOppgaveProps) {
   const { oppgave } = props
   // 'Å' i 'ÅpneOppgave' regnes ikke som uppercase av oxlint
   // oxlint-disable-next-line react-hooks/rules-of-hooks
-  const { erIkkeProd } = useMiljø()
 
   // 'Å' i 'ÅpneOppgave' regnes ikke som uppercase av oxlint
   // oxlint-disable-next-line react-hooks/rules-of-hooks
@@ -32,7 +30,7 @@ export function ÅpneOppgave(props: ÅpneOppgaveProps) {
     }
   }, [oppgave])
 
-  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS && erIkkeProd) {
+  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
     return (
       <Tooltip content="Overført til Gosys. Oppgaven blir borte fra listen over ferdigstilte oppgaver etter 10 dager.">
         <Tag size="xsmall" variant="neutral">

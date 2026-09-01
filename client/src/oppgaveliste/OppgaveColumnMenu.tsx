@@ -22,6 +22,7 @@ import {
   useOppgavelisteColumnToggleColumnHandler,
 } from './OppgavelisteColumnsContext.ts'
 import { useOppgavelisteContext, useOppgavelisteFilterModusToggleHandler } from './OppgavelisteContext.tsx'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export function OppgaveColumnMenu() {
   const columnsState = useOppgavelisteColumnsContext()
@@ -29,6 +30,7 @@ export function OppgaveColumnMenu() {
   const handleResetAll = useOppgavelisteColumnsResetAllHandler()
   const { filterModus } = useOppgavelisteContext()
   const toggleFilterModus = useOppgavelisteFilterModusToggleHandler()
+  const { erIkkeProd } = useMiljø()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -49,14 +51,18 @@ export function OppgaveColumnMenu() {
         </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <Tooltip content="Vis alle mulige verdier for filtre, ikke kun de som har en match i tabellen. Gjelder kolonner: 'Gjelder', 'Saksbehandler' og 'Kommune / bydel'">
-          <ActionMenu.Group label="Filterverdier">
-            <ActionMenu.CheckboxItem checked={filterModus === 'alle'} onCheckedChange={toggleFilterModus}>
-              Vis alle mulige verdier
-            </ActionMenu.CheckboxItem>
-          </ActionMenu.Group>
-        </Tooltip>
-        <ActionMenu.Divider />
+        {erIkkeProd && (
+          <>
+            <Tooltip content="Vis alle mulige verdier for filtre, ikke kun de som har en match i tabellen. Gjelder kolonner: 'Gjelder', 'Saksbehandler' og 'Kommune / bydel'">
+              <ActionMenu.Group label="Filterverdier">
+                <ActionMenu.CheckboxItem checked={filterModus === 'alle'} onCheckedChange={toggleFilterModus}>
+                  Vis alle mulige verdier
+                </ActionMenu.CheckboxItem>
+              </ActionMenu.Group>
+            </Tooltip>
+            <ActionMenu.Divider />
+          </>
+        )}
         <ActionMenu.Group label="Velg kolonner">
           <DndContext
             sensors={sensors}

@@ -8,6 +8,7 @@ import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 import { useTilbakemeldinger } from '../saksbilde/useTilbakemeldinger.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
@@ -19,8 +20,9 @@ export function OppgaveDetails({ row: oppgave }: DataGridContentProps<Oppgave>) 
   const { id: saksbehandlerId } = useInnloggetAnsatt()
   const isTildeltSaksbehandler = oppgave.tildeltSaksbehandler?.id === saksbehandlerId
   const tilbakemeldinger = useTilbakemeldinger(oppgave.sakId)
+  const { erIkkeProd } = useMiljø()
 
-  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
+  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS && erIkkeProd) {
     return (
       <VStack gap="space-12">
         <InlineMessage size="small" status="info">

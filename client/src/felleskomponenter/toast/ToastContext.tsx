@@ -1,5 +1,5 @@
 import { Stack } from '@navikt/ds-react'
-import { createContext, ReactNode, useCallback, useState } from 'react'
+import { createContext, ReactNode, useCallback, useMemo, useState } from 'react'
 import { GeneriskToast } from './Toast'
 import classes from './ToastContext.module.css'
 
@@ -19,8 +19,7 @@ interface ToastContextValue {
   showWarningToast: (message: string) => void
 }
 
-const ToastContext = createContext<ToastContextValue | undefined>(undefined)
-export { ToastContext }
+export const ToastContext = createContext<ToastContextValue | undefined>(undefined)
 
 interface ToastProviderProps {
   children: ReactNode
@@ -30,7 +29,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
   const addToast = useCallback((message: string, type: ToastType = 'success') => {
-    const id = Math.random().toString(36).substring(2, 11) // Todo bedre ID-generering?
+    const id = crypto.randomUUID()
     setToasts((prev) => [...prev, { id, message, type }])
 
     // Automatisk fjerning etter 6 sekunder
@@ -43,13 +42,24 @@ export function ToastProvider({ children }: ToastProviderProps) {
     setToasts((prev) => prev.filter((toast) => toast.id !== id))
   }, [])
 
-  const value: ToastContextValue = {
-    showToast: addToast,
-    showSuccessToast: (message: string) => addToast(message, 'success'),
-    showErrorToast: (message: string) => addToast(message, 'error'),
-    showInfoToast: (message: string) => addToast(message, 'info'),
-    showWarningToast: (message: string) => addToast(message, 'warning'),
-  }
+  const value: ToastContextValue = useMemo(
+    () => ({
+      showToast: addToast,
+      showSuccessToast(message: string) {
+        addToast(message, 'success')
+      },
+      showErrorToast(message: string) {
+        addToast(message, 'error')
+      },
+      showInfoToast(message: string) {
+        addToast(message, 'info')
+      },
+      showWarningToast(message: string) {
+        addToast(message, 'warning')
+      },
+    }),
+    [addToast]
+  )
 
   return (
     <ToastContext.Provider value={value}>

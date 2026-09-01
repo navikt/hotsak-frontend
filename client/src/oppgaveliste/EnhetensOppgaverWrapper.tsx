@@ -1,7 +1,7 @@
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { EnhetensOppgaver } from './EnhetensOppgaver.tsx'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgavelisteProvider } from './OppgavelisteProvider.tsx'
-import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 
 export default function EnhetensOppgaverWrapper() {
   return (

@@ -47,6 +47,25 @@ export const dokumentColumns = {
     width: 100,
     renderCell: ({ sakId }) => (sakId ? <Link href={`/sak/${sakId}`}>Åpne sak</Link> : null),
   },
+  tittelMedLink: {
+    field: 'tittel',
+    header: 'Tittel',
+    width: 180,
+    renderCell: (journalpost) => {
+      const førsteDokument = journalpost.dokumenter[0]
+      if (!førsteDokument) return null
+      return (
+        <Link href={`/api/journalpost/${førsteDokument.journalpostId}/${førsteDokument.dokumentId}`} target="_blank">
+          {journalpost.tittel}
+        </Link>
+      )
+    },
+  },
+  sakIdKunTekst: {
+    field: 'sakId',
+    header: 'Saks-ID',
+    width: 100,
+  },
   opprettSak: {
     field: 'opprettSak',
     header: '',
@@ -85,14 +104,28 @@ export function journalposttypeTag(type: Journalpost['journalposttype']) {
 }
 
 export function journalposttypeTagKort(type: Journalpost['journalposttype']) {
-  const config: Record<typeof type, { label: string; color: TagProps['data-color']; tooltip: string }> = {
-    I: { label: 'I', color: 'meta-purple', tooltip: 'Inngående dokument' },
-    U: { label: 'U', color: 'meta-lime', tooltip: 'Utgående dokument' },
-    N: { label: 'N', color: 'neutral', tooltip: 'Notat' },
+  const config: Record<typeof type, { label: string }> = {
+    I: { label: 'Inngående' },
+    U: { label: 'Utgående' },
+    N: { label: 'Notat' },
   }
-  const { label, color, tooltip } = config[type]
+  const { label } = config[type]
   return (
-    <Tag size="small" variant="outline" data-color={color} title={tooltip}>
+    <Tag size="small" variant="outline">
+      {label}
+    </Tag>
+  )
+}
+
+export function journalposttypeTagKortere(type: Journalpost['journalposttype']) {
+  const config: Record<typeof type, { label: string; tooltip: string }> = {
+    I: { label: 'I', tooltip: 'Inngående dokument' },
+    U: { label: 'U', tooltip: 'Utgående dokument' },
+    N: { label: 'N', tooltip: 'Notat' },
+  }
+  const { label, tooltip } = config[type]
+  return (
+    <Tag size="small" variant="outline" title={tooltip}>
       {label}
     </Tag>
   )

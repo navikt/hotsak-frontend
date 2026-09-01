@@ -10,14 +10,14 @@ import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/u
 import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
-import { useJournalposter } from '../../../useJournalposter'
+import { useJournalposterInngående } from '../../../useJournalposter'
 import { Venstremeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
 
 const RegistrerSøknadContent = memo(() => {
   const { sak, isLoading, error } = useBarnebrillesak()
-  const { dokumenter } = useJournalposter()
+  const { dokumenter } = useJournalposterInngående()
   const { setValgtDokument } = useDokumentContext()
   const { showBoundary } = useErrorBoundary()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak()

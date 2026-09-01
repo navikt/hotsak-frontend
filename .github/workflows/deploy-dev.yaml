@@ -9,8 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - brev_v1
-      - opf-sjekk-kurs
+      - feature/oppgaver-og-dokumenter
 
 jobs:
   test:

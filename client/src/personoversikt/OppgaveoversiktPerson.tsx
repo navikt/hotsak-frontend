@@ -1,5 +1,5 @@
 import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
-import { useOpppgavesøk } from '../oppgave/useOppgavesøk.ts'
+import { useOppgavesøk } from '../oppgave/useOppgavesøk.ts'
 import { oppgaveColumns } from '../oppgaveliste/oppgaveColumns.tsx'
 import { selectOppgaveId } from '../oppgaveliste/oppgaveSelectors.ts'
 
@@ -9,7 +9,7 @@ export interface OppgaveoversiktPersonProps {
 
 export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
   const { fnr } = props
-  const { data, isLoading } = useOpppgavesøk({ brukerId: fnr })
+  const { data, isLoading } = useOppgavesøk({ brukerId: fnr })
   if (!data) {
     return null
   }

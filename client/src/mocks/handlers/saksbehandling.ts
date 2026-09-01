@@ -1,5 +1,6 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse, sse } from 'msw'
 
+import { isNotatUtkast } from '../../sak/notat/notatSelectors.ts'
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import {
   Behandling,
@@ -9,7 +10,6 @@ import {
   LagreBehandlingRequest,
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
-import { isNotatUtkast } from '../../sak/notat/notatSelectors.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 import { OppgaveStatusType, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'
@@ -349,6 +349,23 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       console.log(`Angrer vedtak for behandling ${gjeldendeBehandling.behandlingId} på sak ${sakId}`)
 
       return HttpResponse.json({})
+    }),
+
+    sse<any, SakParams>('/api/sak/:sakId/hendelser', async ({ params, client }) => {
+      const sakId = params.sakId
+      const oppgaver = await oppgaveStore.finnOppgaverForSak(sakId)
+      client.send({
+        id: crypto.randomUUID(),
+        event: 'journalpostSakFerdigstilt',
+        data: {
+          oppgaveId: oppgaver[0].oppgaveId,
+        },
+      })
+      /*
+      queueMicrotask(() => {
+        client.close()
+      })
+      */
     }),
   ]
 }

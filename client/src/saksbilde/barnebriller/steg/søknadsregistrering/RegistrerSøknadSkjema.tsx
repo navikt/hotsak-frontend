@@ -18,7 +18,7 @@ import {
 } from '../../../../types/types.internal'
 import { tilDato } from '../../../../utils/dato'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
-import { useJournalposter } from '../../../useJournalposter'
+import { useJournalposterInngående } from '../../../useJournalposter'
 import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
@@ -29,7 +29,7 @@ export function RegistrerSøknadSkjema() {
   const { sak, isLoading, mutate } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
-  const { dokumenter } = useJournalposter()
+  const { dokumenter } = useJournalposterInngående()
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { målform, ...grunnlag } = { ...formData }

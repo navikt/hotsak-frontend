@@ -29,12 +29,14 @@ export function AppRoutes() {
 
           {/* Ruter hvor det er naturlig med global, vertikal scroll */}
           <Route element={<SideLayout />}>
-            <Route index element={<MineOppgaver />} />
-            <Route path="oppgaver" element={<Oppgaver />}>
+            <Route element={<Oppgaver />}>
               <Route index element={<MineOppgaver />} />
-              <Route path="mine" element={<MineOppgaver />} />
-              <Route path="enhetens" element={<EnhetensOppgaver />} />
-              <Route path="medarbeiders" element={<MedarbeidersOppgaver />} />
+              <Route path="oppgaver">
+                <Route index element={<MineOppgaver />} />
+                <Route path="mine" element={<MineOppgaver />} />
+                <Route path="enhetens" element={<EnhetensOppgaver />} />
+                <Route path="medarbeiders" element={<MedarbeidersOppgaver />} />
+              </Route>
             </Route>
             <Route path="personoversikt/*" element={<Personoversikt />} />
           </Route>

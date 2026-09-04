@@ -12,17 +12,17 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
   },
   spørsmål: [
     {
-      type: 'flervalg',
+      type: 'enkeltvalg',
       tekst: 'Hvorfor overfører du oppgaven til Gosys?',
       beskrivelse:
-        'Du kan velge flere årsaker. Vi i Digihot spør for å lære mer om hvorfor oppgaver overføres. Valgene du gjør her blir ikke synlige i Gosys.',
+        'Vi i Digihot spør for å lære mer om hvorfor oppgaver overføres. Valgene du gjør her blir ikke synlige i Gosys.',
       alternativer: [
         {
           type: 'oppfølgingsspørsmål',
           tekst: 'Behov for å sende brev',
           spørsmål: [
             {
-              type: 'flervalg',
+              type: 'enkeltvalg',
               tekst: 'Hva har du behov for å sende brev om?',
               alternativer: [
                 'Innhente signatur eller nytt fullmaktsskjema',
@@ -50,11 +50,12 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
           tekst: 'Saken skal ikke behandles i Hotsak pr. i dag',
           spørsmål: [
             {
-              type: 'flervalg',
+              type: 'enkeltvalg',
               tekst: 'Hvilket område gjelder saken?',
               alternativer: [
                 'Arbeidsliv',
                 'Utdanning',
+                'Tilskudd',
                 {
                   type: 'oppfølgingsspørsmål',
                   tekst: 'Annet',
@@ -77,23 +78,9 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
           tekst: 'Feil førsteside - ikke 10-07.03-sak',
           spørsmål: [
             {
-              type: 'flervalg',
-              tekst: 'Hva gjelder saken?',
-              alternativer: [
-                'Tilskudd',
-                {
-                  type: 'oppfølgingsspørsmål',
-                  tekst: 'Annet',
-                  spørsmål: [
-                    {
-                      type: 'fritekst',
-                      tekst: 'Oppgi hva saken gjelder.',
-                      beskrivelse: IKKE_PERSONOPPLYSNINGER,
-                      påkrevd: true,
-                    },
-                  ],
-                },
-              ],
+              type: 'fritekst',
+              tekst: 'Oppgi hva som er feil med førstesiden',
+              beskrivelse: IKKE_PERSONOPPLYSNINGER,
               påkrevd: true,
             },
           ],
@@ -103,7 +90,7 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
           tekst: 'Feil i skanning',
           spørsmål: [
             {
-              type: 'flervalg',
+              type: 'enkeltvalg',
               tekst: 'Hva er feil med skanningen?',
               alternativer: [
                 'Saken er sendt inn på feil bruker (slette)',

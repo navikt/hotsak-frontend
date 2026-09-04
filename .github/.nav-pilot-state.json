@@ -1,8 +1,8 @@
 {
   "collection": "frontend",
-  "version": "2026.08.31-111402-7cbe1b4",
+  "version": "2026.09.04-063742-24ad9ba",
   "scope": "repo",
-  "source_sha": "7cbe1b4",
+  "source_sha": "24ad9ba",
   "installed_at": "2026-06-25T11:38:51Z",
   "files": [
     {
@@ -15,7 +15,7 @@
     },
     {
       "path": ".github/agents/code-review.agent.md",
-      "hash": "035725f511ba6f5b"
+      "hash": "3406168d68a9470a"
     },
     {
       "path": ".github/agents/forfatter.agent.md",
@@ -39,7 +39,7 @@
     },
     {
       "path": ".github/skills/readme-review/",
-      "hash": "8051f0041095f50c"
+      "hash": "27b83a8872b33f4c"
     },
     {
       "path": ".github/skills/web-design-reviewer/",
@@ -84,7 +84,7 @@
     },
     {
       "path": ".github/instructions/norwegian-text.instructions.md",
-      "hash": "b392ea7a4a952a5d"
+      "hash": "8dc36629d466e9b9"
     },
     {
       "path": ".github/instructions/testing.instructions.md",

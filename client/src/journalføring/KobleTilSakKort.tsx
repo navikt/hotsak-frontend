@@ -1,12 +1,16 @@
 import { BodyShort, Box, Button, ErrorMessage, Heading, HGrid, HStack, Loader, Tag, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
 
-import { type Sakvalg, type SakvalgVisning, useKobleTilSak } from './useKobleTilSak.ts'
+import { MAKS_SAKER_SYNLIG, type Sakvalg, type SakvalgVisning } from './useKobleTilSak.ts'
+import { type HttpError } from '../io/HttpError.ts'
 import { OmrådeFilterLabel, OppgaveStatusLabel } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import classes from './KobleTilSakKort.module.css'
 
 interface KobleTilSakKortProps {
-  fnr: string
+  saker: SakvalgVisning[]
+  isLoading: boolean
+  error?: HttpError
   valgtSak: Sakvalg | null
   onChange: (sak: Sakvalg | null) => void
   feilmelding?: string
@@ -19,8 +23,10 @@ function formaterOmråde(område: string[]): string {
     .join(', ')
 }
 
-export function KobleTilSakKort({ fnr, valgtSak, onChange, feilmelding }: KobleTilSakKortProps) {
-  const { synligeSaker, alleSaker, isLoading, error, visAlle, harFlere, toggleVisAlle } = useKobleTilSak(fnr)
+export function KobleTilSakKort({ saker, isLoading, error, valgtSak, onChange, feilmelding }: KobleTilSakKortProps) {
+  const [visAlle, setVisAlle] = useState(false)
+  const synligeSaker = visAlle ? saker : saker.slice(0, MAKS_SAKER_SYNLIG)
+  const harFlere = saker.length > MAKS_SAKER_SYNLIG
 
   if (isLoading) {
     return (
@@ -35,7 +41,7 @@ export function KobleTilSakKort({ fnr, valgtSak, onChange, feilmelding }: KobleT
     return <ErrorMessage>Feil med hending av saker</ErrorMessage>
   }
 
-  if (alleSaker.length === 0) {
+  if (saker.length === 0) {
     return <BodyShort size="small">Ingen saker funnet for denne brukeren.</BodyShort>
   }
 
@@ -50,8 +56,8 @@ export function KobleTilSakKort({ fnr, valgtSak, onChange, feilmelding }: KobleT
         />
       ))}
       {harFlere && (
-        <Button variant="tertiary" size="small" type="button" onClick={toggleVisAlle}>
-          {visAlle ? 'Vis færre' : `Vis alle (${alleSaker.length})`}
+        <Button variant="tertiary" size="small" type="button" onClick={() => setVisAlle((forrige) => !forrige)}>
+          {visAlle ? 'Vis færre' : `Vis alle (${saker.length})`}
         </Button>
       )}
       <div role="alert" aria-live="polite">

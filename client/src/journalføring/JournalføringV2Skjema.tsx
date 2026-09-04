@@ -20,7 +20,7 @@ import { NySakSkjema } from './NySakSkjema.tsx'
 import { type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
-import { type Sakvalg } from './useKobleTilSak.ts'
+import { type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 
 interface JournalføringV2SkjemaProps {
@@ -98,6 +98,13 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const journalføresPåFnr = watch('journalføresPåFnr')
   const { personInfo: valgtBruker } = usePerson(journalføresPåFnr || undefined)
   const brukerFnr = valgtBruker?.fnr ?? journalføresPåFnr
+
+  const {
+    saker,
+    antallSaker,
+    isLoading: sakerIsLoading,
+    error: sakerError,
+  } = useKobleTilSak(kanRedigere ? brukerFnr : undefined)
 
   const registrertDato = formaterDato(journalpost.journalpostOpprettetTid)
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
@@ -218,6 +225,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
             <JournalføringSakvalg
               sakType={sakType}
               kanRedigere={kanRedigere}
+              antallSaker={antallSaker}
               onSakTypeChange={(type) => {
                 setSakType(type)
                 if (type === 'ny') {
@@ -232,7 +240,9 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                   Koble til eksisterende sak
                 </Heading>
                 <KobleTilSakKort
-                  fnr={brukerFnr}
+                  saker={saker}
+                  isLoading={sakerIsLoading}
+                  error={sakerError}
                   valgtSak={valgtSak}
                   onChange={(sak) => {
                     setValgtSak(sak)

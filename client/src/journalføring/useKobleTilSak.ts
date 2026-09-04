@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { type Fagsak, type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
+import { type HttpError } from '../io/HttpError.ts'
 import { Fagsaksystem, Tema, type Fagsaksystem as FagsaksystemType } from '../kodeverk/kodeverkTypes.ts'
 import {
   OppgaveStatusType,
@@ -21,7 +22,14 @@ export interface SakvalgVisning {
   område?: string[]
 }
 
-const MAKS_SAKER_SYNLIG = 10
+export interface UseKobleTilSakResponse {
+  saker: SakvalgVisning[]
+  antallSaker?: number
+  isLoading: boolean
+  error?: HttpError
+}
+
+export const MAKS_SAKER_SYNLIG = 10
 const ÅPNE_STATUSER = new Set<OppgaveStatusTypeValue>([
   OppgaveStatusType.AVVENTER_JOURNALFORING,
   OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
@@ -85,19 +93,17 @@ export function lagSakvalg(saker: SaksoversiktSak[], fagsaker: Fagsak[] = []): S
   )
 }
 
-export function useKobleTilSak(fnr: string) {
+export function useKobleTilSak(fnr?: string): UseKobleTilSakResponse {
   const { saksoversikt, isLoading, error } = useSaksoversikt(fnr)
-  const [visAlle, setVisAlle] = useState(false)
-  const alleSaker = lagSakvalg(saksoversikt?.saker ?? [], saksoversikt?.fagsaker ?? [])
-  const synligeSaker = visAlle ? alleSaker : alleSaker.slice(0, MAKS_SAKER_SYNLIG)
+  const saker = useMemo(
+    () => lagSakvalg(saksoversikt?.saker ?? [], saksoversikt?.fagsaker ?? []),
+    [saksoversikt?.saker, saksoversikt?.fagsaker]
+  )
 
   return {
+    saker,
+    antallSaker: saksoversikt ? saker.length : undefined,
     isLoading,
     error,
-    alleSaker,
-    synligeSaker,
-    harFlere: alleSaker.length > MAKS_SAKER_SYNLIG,
-    visAlle,
-    toggleVisAlle: () => setVisAlle((forrige) => !forrige),
   }
 }

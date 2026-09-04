@@ -521,6 +521,7 @@ export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.AVVIST, 'Avvist'],
   [OppgaveStatusType.HENLAGT, 'Henlagt'],
   [OppgaveStatusType.ANNULERT, 'Annulert'],
+  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
 ])
 
 export enum VedtakStatusType {

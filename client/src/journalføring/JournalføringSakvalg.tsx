@@ -3,10 +3,16 @@ import { Heading, HStack, ToggleGroup, VStack } from '@navikt/ds-react'
 interface JournalføringSakvalgProps {
   sakType: 'ny' | 'eksisterende'
   kanRedigere: boolean
+  antallSaker?: number
   onSakTypeChange(sakType: 'ny' | 'eksisterende'): void
 }
 
-export function JournalføringSakvalg({ sakType, kanRedigere, onSakTypeChange }: JournalføringSakvalgProps) {
+export function JournalføringSakvalg({
+  sakType,
+  kanRedigere,
+  antallSaker,
+  onSakTypeChange,
+}: JournalføringSakvalgProps) {
   if (!kanRedigere) return null
 
   return (
@@ -22,7 +28,9 @@ export function JournalføringSakvalg({ sakType, kanRedigere, onSakTypeChange }:
           value={sakType}
         >
           <ToggleGroup.Item value="ny">Opprett ny sak</ToggleGroup.Item>
-          <ToggleGroup.Item value="eksisterende">Koble til sak</ToggleGroup.Item>
+          <ToggleGroup.Item value="eksisterende">
+            {antallSaker === undefined ? 'Koble til sak' : `Koble til sak (${antallSaker})`}
+          </ToggleGroup.Item>
         </ToggleGroup>
       </HStack>
     </VStack>

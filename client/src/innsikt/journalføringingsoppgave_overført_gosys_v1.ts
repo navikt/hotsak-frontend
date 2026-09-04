@@ -79,7 +79,7 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
           spørsmål: [
             {
               type: 'fritekst',
-              tekst: 'Oppgi hva som er feil med førstesiden',
+              tekst: 'Oppgi hva saken egentlig gjelder.',
               beskrivelse: IKKE_PERSONOPPLYSNINGER,
               påkrevd: true,
             },

@@ -822,6 +822,44 @@ export class SakStore extends Dexie {
         behandlingsutfallTidspunkt: sak.vedtak?.vedtaksdato, // fixme -> bruk behandling
         fagsaksystem: 'HOTSAK',
       })),
+      fagsaker: [
+        {
+          fagsakId: '1234A01',
+          fagsaksystem: 'IT01',
+          tema: 'HJE',
+          sakstype: 'FAGSAK',
+          datoOpprettet: '2024-08-20T07:54:14Z',
+        },
+        {
+          fagsakId: '1234A02',
+          fagsaksystem: 'IT01',
+          tema: 'HJE',
+          sakstype: 'FAGSAK',
+          datoOpprettet: '2023-11-14T10:20:00Z',
+        },
+        {
+          fagsakId: '1234B01',
+          fagsaksystem: 'OEBS',
+          tema: 'HJE',
+          sakstype: 'FAGSAK',
+          datoOpprettet: '2022-05-03T09:15:00Z',
+        },
+        { fagsakId: 'skal-filtreres-tema', fagsaksystem: 'IT01', tema: 'AAP', datoOpprettet: '2025-01-01T00:00:00Z' },
+        {
+          fagsakId: 'skal-filtreres-system',
+          fagsaksystem: 'HJELPEMIDLER',
+          tema: 'HJE',
+          datoOpprettet: '2025-01-02T00:00:00Z',
+        },
+        {
+          fagsakId: 'skal-filtreres-barnebriller',
+          fagsaksystem: 'BARNEBRILLER',
+          tema: 'HJE',
+          datoOpprettet: '2025-01-03T00:00:00Z',
+        },
+        { fagsaksystem: 'IT01', tema: 'HJE', datoOpprettet: '2025-01-04T00:00:00Z' },
+      ],
+      fagsakerHentet: true,
       barnebrillekrav: [],
       barnebrillekravHentet: true,
     }

@@ -12,7 +12,6 @@
 
 - `cd client`
 - `pnpm run build`
--
 
 ## Kjør prosjektet i dev-modus
 

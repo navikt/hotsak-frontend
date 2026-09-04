@@ -1,46 +1,15 @@
-import { useState } from 'react'
 import { BodyShort, Box, Button, ErrorMessage, Heading, HGrid, HStack, Loader, Tag, VStack } from '@navikt/ds-react'
 
-import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
-import { type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
-import { OmrådeFilterLabel, OppgaveStatusLabel, OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
+import { type Sakvalg, type SakvalgVisning, useKobleTilSak } from './useKobleTilSak.ts'
+import { OmrådeFilterLabel, OppgaveStatusLabel } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import classes from './KobleTilSakKort.module.css'
 
-const MAKS_SAKER_SYNLIG = 10
-
 interface KobleTilSakKortProps {
   fnr: string
-  valgtSakId: string | null
-  onChange: (sakId: string | null) => void
+  valgtSak: Sakvalg | null
+  onChange: (sak: Sakvalg | null) => void
   feilmelding?: string
-}
-
-const ÅPNE_STATUSER = new Set<OppgaveStatusType>([
-  OppgaveStatusType.AVVENTER_JOURNALFORING,
-  OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-  OppgaveStatusType.TILDELT_SAKSBEHANDLER,
-  OppgaveStatusType.AVVENTER_DOKUMENTASJON,
-  OppgaveStatusType.AVVENTER_GODKJENNER,
-  OppgaveStatusType.TILDELT_GODKJENNER,
-])
-
-function statusKategoriRekkefølge(saksstatus: OppgaveStatusType): number {
-  if (ÅPNE_STATUSER.has(saksstatus)) return 0
-  return 1
-}
-
-function sorterSaker(saker: SaksoversiktSak[]): SaksoversiktSak[] {
-  return [...saker].sort((a, b) => {
-    const kategoriDiff = statusKategoriRekkefølge(a.saksstatus) - statusKategoriRekkefølge(b.saksstatus)
-    if (kategoriDiff !== 0) return kategoriDiff
-    return b.mottattTidspunkt.localeCompare(a.mottattTidspunkt)
-  })
-}
-
-function statusTagVariant(saksstatus: OppgaveStatusType): 'success' | 'warning' | 'neutral' | 'info' {
-  if (ÅPNE_STATUSER.has(saksstatus)) return 'info'
-  return 'neutral'
 }
 
 function formaterOmråde(område: string[]): string {
@@ -50,9 +19,8 @@ function formaterOmråde(område: string[]): string {
     .join(', ')
 }
 
-export function KobleTilSakKort({ fnr, valgtSakId, onChange, feilmelding }: KobleTilSakKortProps) {
-  const { saksoversikt, isLoading, error } = useSaksoversikt(fnr)
-  const [visAlle, setVisAlle] = useState(false)
+export function KobleTilSakKort({ fnr, valgtSak, onChange, feilmelding }: KobleTilSakKortProps) {
+  const { synligeSaker, alleSaker, isLoading, error, visAlle, harFlere, toggleVisAlle } = useKobleTilSak(fnr)
 
   if (isLoading) {
     return (
@@ -67,26 +35,22 @@ export function KobleTilSakKort({ fnr, valgtSakId, onChange, feilmelding }: Kobl
     return <ErrorMessage>Feil med hending av saker</ErrorMessage>
   }
 
-  const alleSaker = sorterSaker(
-    (saksoversikt?.saker ?? []).filter(
-      (sak) => sak.sakstype !== Sakstype.BARNEBRILLER && sak.sakstype !== Sakstype.BESTILLING
-    )
-  )
-
   if (alleSaker.length === 0) {
     return <BodyShort size="small">Ingen saker funnet for denne brukeren.</BodyShort>
   }
 
-  const synligeSaker = visAlle ? alleSaker : alleSaker.slice(0, MAKS_SAKER_SYNLIG)
-  const harFlere = alleSaker.length > MAKS_SAKER_SYNLIG
-
   return (
     <VStack gap="space-4" className={classes.kortListe}>
       {synligeSaker.map((sak) => (
-        <SakKort key={sak.sakId} sak={sak} valgt={sak.sakId === valgtSakId} onVelg={() => onChange(sak.sakId)} />
+        <SakKort
+          key={`${sak.valg.kilde}-${sak.sakId}`}
+          sak={sak}
+          valgt={sak.valg.kilde === valgtSak?.kilde && sak.sakId === valgtSak.sakId}
+          onVelg={() => onChange(sak.valg)}
+        />
       ))}
       {harFlere && (
-        <Button variant="tertiary" size="small" type="button" onClick={() => setVisAlle((prev) => !prev)}>
+        <Button variant="tertiary" size="small" type="button" onClick={toggleVisAlle}>
           {visAlle ? 'Vis færre' : `Vis alle (${alleSaker.length})`}
         </Button>
       )}
@@ -98,14 +62,14 @@ export function KobleTilSakKort({ fnr, valgtSakId, onChange, feilmelding }: Kobl
 }
 
 interface SakKortProps {
-  sak: SaksoversiktSak
+  sak: SakvalgVisning
   valgt: boolean
   onVelg: () => void
 }
 
 function SakKort({ sak, valgt, onVelg }: SakKortProps) {
-  const område = formaterOmråde(sak.område)
-  const statusLabel = OppgaveStatusLabel.get(sak.saksstatus) ?? sak.saksstatus
+  const område = sak.område ? formaterOmråde(sak.område) : ''
+  const statusLabel = sak.saksstatus ? (OppgaveStatusLabel.get(sak.saksstatus) ?? sak.saksstatus) : null
 
   return (
     <Box
@@ -120,7 +84,7 @@ function SakKort({ sak, valgt, onVelg }: SakKortProps) {
         <input
           type="radio"
           name="valgtSak"
-          value={sak.sakId}
+          value={`${sak.valg.kilde}-${sak.sakId}`}
           checked={valgt}
           onChange={onVelg}
           className={classes.radioInput}
@@ -132,18 +96,29 @@ function SakKort({ sak, valgt, onVelg }: SakKortProps) {
               <Heading level="3" size="xsmall">
                 {sak.gjelder}
               </Heading>
-              <BodyShort size="small">
-                <strong>Sak:</strong> {sak.sakId}
-              </BodyShort>
+              <HStack gap="space-4" align="center">
+                <BodyShort size="small">
+                  <strong>Sak:</strong>
+                </BodyShort>
+                <BodyShort>{sak.sakId}</BodyShort>
+              </HStack>
+              <HStack gap="space-4" align="center">
+                <BodyShort>
+                  <strong>Fagsystem:</strong>
+                </BodyShort>
+                <BodyShort>{sak.fagsystemLabel}</BodyShort>
+              </HStack>
             </VStack>
             <VStack gap="space-1">
               <span>
-                <Tag variant={statusTagVariant(sak.saksstatus)} size="small">
-                  {statusLabel}
-                </Tag>
+                {statusLabel && (
+                  <Tag variant="moderate" data-color="info" size="small">
+                    {statusLabel}
+                  </Tag>
+                )}
               </span>
               <BodyShort size="small">
-                <strong>Dato:</strong> {formaterDato(sak.mottattTidspunkt)}
+                <strong>Dato:</strong> {formaterDato(sak.dato)}
               </BodyShort>
             </VStack>
           </HGrid>

@@ -1,33 +1,31 @@
 import { BodyShort, Button, Dialog, HStack } from '@navikt/ds-react'
 import { useNavigate } from 'react-router'
 
-import { Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { type JournalføringV2Response } from './journalføringTypes.ts'
+import { finnModalvariant, finnStiTilSak, lagJournalføringFerdigModalmodell } from './journalføringFerdigModalUtils.ts'
 import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
 
 interface JournalføringFerdigModalProps {
   open: boolean
   resultat: JournalføringV2Response | null
   sakType: 'ny' | 'eksisterende'
+  eksternFagsak?: boolean
   onClose(): void
 }
 
-export function finnOppgaveIdForSak(resultat: JournalføringV2Response | null) {
-  return resultat?.oppgaver.find(
-    ({ oppgavetype, statuskategori }) =>
-      oppgavetype === Oppgavetype.BEHANDLE_SAK && statuskategori === Statuskategori.ÅPEN
-  )?.oppgaveId
-}
-
-export function finnStiTilSak(resultat: JournalføringV2Response) {
-  const oppgaveIdForSak = finnOppgaveIdForSak(resultat)
-  return oppgaveIdForSak ? `/oppgave/${oppgaveIdForSak}` : `/sak/${resultat.sakId}`
-}
-
-export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: JournalføringFerdigModalProps) {
+export function JournalføringFerdigModal({
+  open,
+  resultat,
+  sakType,
+  eksternFagsak = false,
+  onClose,
+}: JournalføringFerdigModalProps) {
   const navigate = useNavigate()
 
   const { journalpostSakFerdigstilt } = useJournalpostSakFerdigstiltHendelse(resultat?.sakId)
+
+  const variant = finnModalvariant(sakType, eksternFagsak)
+  const modalmodell = lagJournalføringFerdigModalmodell(variant, resultat?.sakId)
 
   function navigerOgLukkModal(sti: string) {
     onClose()
@@ -41,18 +39,14 @@ export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: 
           <Dialog.Title>Journalpost ferdig journalført</Dialog.Title>
         </Dialog.Header>
         <Dialog.Body>
-          {sakType === 'eksisterende' ? (
-            <BodyShort>Journalposten ble koblet til sak {resultat?.sakId ?? '–'}.</BodyShort>
-          ) : (
-            <BodyShort>Sak med sakId {resultat?.sakId ?? '–'} ble opprettet.</BodyShort>
-          )}
+          <BodyShort>{modalmodell.melding}</BodyShort>
         </Dialog.Body>
         <Dialog.Footer>
           <HStack gap="space-16" align="center" justify="center">
             <Button variant="primary" size="small" onClick={() => resultat && onClose()}>
               Lukk
             </Button>
-            {sakType === 'ny' && (
+            {modalmodell.visTilSaken && variant === 'ny-sak' && (
               <Button
                 variant="secondary"
                 size="small"
@@ -67,7 +61,7 @@ export function JournalføringFerdigModal({ open, resultat, sakType, onClose }: 
                 Til saken
               </Button>
             )}
-            {sakType === 'eksisterende' && (
+            {modalmodell.visTilSaken && variant === 'eksisterende-hotsak' && (
               <Button
                 variant="secondary"
                 size="small"

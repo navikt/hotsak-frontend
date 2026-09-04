@@ -20,6 +20,7 @@ import { NySakSkjema } from './NySakSkjema.tsx'
 import { type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
+import { type Sakvalg } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 
 interface JournalføringV2SkjemaProps {
@@ -30,7 +31,7 @@ interface JournalføringV2SkjemaProps {
 
 export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost }: JournalføringV2SkjemaProps) {
   const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
-  const [valgtSakId, setValgtSakId] = useState<string | null>(null)
+  const [valgtSak, setValgtSak] = useState<Sakvalg | null>(null)
   const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
@@ -145,12 +146,12 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   }
 
   const onSubmitKobleTilSak = async () => {
-    if (!valgtSakId) {
+    if (!valgtSak) {
       setValgtSakIdFeil('Du må velge en sak å koble til')
       return
     }
     const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
-    const resultat = await journalfør.trigger({ tittel, journalføresPåFnr: fnr, sakId: valgtSakId, dokumenter })
+    const resultat = await journalfør.trigger({ tittel, journalføresPåFnr: fnr, sakId: valgtSak.sakId, dokumenter })
     if (resultat) {
       mutateJournalpost()
       setJournalføringResultat(resultat)
@@ -220,7 +221,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
               onSakTypeChange={(type) => {
                 setSakType(type)
                 if (type === 'ny') {
-                  setValgtSakId(null)
+                  setValgtSak(null)
                   setValgtSakIdFeil(null)
                 }
               }}
@@ -232,10 +233,10 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                 </Heading>
                 <KobleTilSakKort
                   fnr={brukerFnr}
-                  valgtSakId={valgtSakId}
-                  onChange={(sakId) => {
-                    setValgtSakId(sakId)
-                    if (sakId) setValgtSakIdFeil(null)
+                  valgtSak={valgtSak}
+                  onChange={(sak) => {
+                    setValgtSak(sak)
+                    if (sak) setValgtSakIdFeil(null)
                   }}
                   feilmelding={valgtSakIdFeil ?? undefined}
                 />
@@ -282,6 +283,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         open={journalføringResultat != null}
         resultat={journalføringResultat}
         sakType={sakType}
+        eksternFagsak={valgtSak?.kilde === 'fagsak'}
         onClose={() => setJournalføringResultat(null)}
       />
     </VStack>

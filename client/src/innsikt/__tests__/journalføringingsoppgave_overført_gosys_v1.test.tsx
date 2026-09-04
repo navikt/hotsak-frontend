@@ -11,10 +11,6 @@ import { SpørreundersøkelseStack } from '../SpørreundersøkelseStack'
 
 const HOVEDSPØRSMÅL = 'Hvorfor overfører du oppgaven til Gosys?'
 
-/**
- * Speiler innsendingen i SpørreundersøkelseModal uten Dialog-en, slik at spørsmålshierarkiet
- * og svartransformasjonen kan testes isolert.
- */
 function Skjema({ onBesvar }: { onBesvar(svar: ISvar[]): void }) {
   const form = useForm<IBesvarelse>({ defaultValues: {} })
   return (
@@ -27,8 +23,6 @@ function Skjema({ onBesvar }: { onBesvar(svar: ISvar[]): void }) {
   )
 }
 
-type Bruker = ReturnType<typeof userEvent.setup>
-
 function renderSkjema() {
   const bruker = userEvent.setup()
   const onBesvar = vi.fn()
@@ -37,32 +31,32 @@ function renderSkjema() {
 }
 
 function hovedgruppe() {
-  return screen.getByRole('group', { name: new RegExp(HOVEDSPØRSMÅL) })
+  return screen.getByRole('radiogroup', { name: new RegExp(HOVEDSPØRSMÅL) })
 }
 
-function velgHovedårsak(bruker: Bruker, navn: string) {
-  return bruker.click(within(hovedgruppe()).getByRole('checkbox', { name: navn }))
+function velgHovedårsak(bruker: ReturnType<typeof userEvent.setup>, navn: string) {
+  return bruker.click(within(hovedgruppe()).getByRole('radio', { name: navn }))
 }
 
-function hentAlternativerFraGruppe(gruppenavn: RegExp) {
-  return within(screen.getByRole('group', { name: gruppenavn }))
-    .getAllByRole('checkbox')
-    .map((checkbox) => checkbox.getAttribute('value'))
+function hentRadioAlternativerFraGruppe(gruppenavn: RegExp) {
+  return within(screen.getByRole('radiogroup', { name: gruppenavn }))
+    .getAllByRole('radio')
+    .map((radio) => radio.getAttribute('value'))
 }
 
-function overfør(bruker: Bruker) {
+function overfør(bruker: ReturnType<typeof userEvent.setup>) {
   return bruker.click(screen.getByRole('button', { name: 'Overfør til Gosys' }))
 }
 
 describe('journalføringingsoppgave_overført_gosys_v1', () => {
-  it('bruker riktig skjema-id slik at payloaden til overføringsendepunktet er uendret', () => {
+  it('bruker riktig skjema-id', () => {
     expect(spørreundersøkelse.skjema).toBe('journalføringingsoppgave_overført_gosys_v1')
   })
 
-  it('viser alle hovedårsakene som avkryssingsbokser', () => {
+  it('viser hovedårsakene som radioknapper', () => {
     renderSkjema()
 
-    expect(hentAlternativerFraGruppe(new RegExp(HOVEDSPØRSMÅL))).toEqual([
+    expect(hentRadioAlternativerFraGruppe(new RegExp(HOVEDSPØRSMÅL))).toEqual([
       'Behov for å sende brev',
       'Saken skal ikke behandles i Hotsak pr. i dag',
       'Feil førsteside - ikke 10-07.03-sak',
@@ -71,26 +65,20 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     ])
   })
 
-  it('viser og skjuler underspørsmål når hovedårsaker hukes av og av', async () => {
+  it('tillater bare ett valgt hovedalternativ og bytter underspørsmål når valget endres', async () => {
     const { bruker } = renderSkjema()
 
     await velgHovedårsak(bruker, 'Behov for å sende brev')
-    expect(screen.getByRole('group', { name: /Hva har du behov for å sende brev om/ })).toBeInTheDocument()
-
-    await velgHovedårsak(bruker, 'Saken skal ikke behandles i Hotsak pr. i dag')
-    expect(screen.getByRole('group', { name: /Hvilket område gjelder saken/ })).toBeInTheDocument()
+    expect(screen.getByRole('radiogroup', { name: /Hva har du behov for å sende brev om/ })).toBeInTheDocument()
 
     await velgHovedårsak(bruker, 'Feil i skanning')
-    expect(screen.getByRole('group', { name: /Hva er feil med skanningen/ })).toBeInTheDocument()
-
-    expect(within(hovedgruppe()).getByRole('checkbox', { name: 'Behov for å sende brev' })).toBeChecked()
-    expect(within(hovedgruppe()).getByRole('checkbox', { name: 'Feil i skanning' })).toBeChecked()
-
-    await velgHovedårsak(bruker, 'Saken skal ikke behandles i Hotsak pr. i dag')
-    expect(screen.queryByRole('group', { name: /Hvilket område gjelder saken/ })).not.toBeInTheDocument()
+    expect(within(hovedgruppe()).getByRole('radio', { name: 'Behov for å sende brev' })).not.toBeChecked()
+    expect(within(hovedgruppe()).getByRole('radio', { name: 'Feil i skanning' })).toBeChecked()
+    expect(screen.queryByRole('radiogroup', { name: /Hva har du behov for å sende brev om/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('radiogroup', { name: /Hva er feil med skanningen/ })).toBeInTheDocument()
   })
 
-  it('krever at minst én hovedårsak er valgt', async () => {
+  it('krever at en hovedårsak er valgt', async () => {
     const { bruker, onBesvar } = renderSkjema()
 
     await overfør(bruker)
@@ -99,7 +87,7 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     expect(onBesvar).not.toHaveBeenCalled()
   })
 
-  it('krever at underspørsmålet besvares når en hovedårsak med underspørsmål er valgt', async () => {
+  it('krever at underspørsmål besvares når valgt hovedårsak har underspørsmål', async () => {
     const { bruker, onBesvar } = renderSkjema()
 
     await velgHovedårsak(bruker, 'Feil i skanning')
@@ -109,93 +97,25 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     expect(onBesvar).not.toHaveBeenCalled()
   })
 
-  it('krever begrunnelse når Annet velges på toppnivå', async () => {
-    const { bruker, onBesvar } = renderSkjema()
-
-    await velgHovedårsak(bruker, 'Annet')
-    const begrunnelse = screen.getByRole('textbox', { name: /Hva er grunnen til at du vil overføre oppgaven/ })
-    expect(begrunnelse).toBeInTheDocument()
-
-    await overfør(bruker)
-    expect(await screen.findByText('Må fylles ut')).toBeInTheDocument()
-    expect(onBesvar).not.toHaveBeenCalled()
-
-    await bruker.type(begrunnelse, 'Oppgaven hører hjemme i en annen ytelse')
-    await overfør(bruker)
-
-    expect(onBesvar).toHaveBeenCalledTimes(1)
-    expect(onBesvar.mock.calls[0][0]).toEqual([
-      { type: 'flervalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Annet' },
-      {
-        type: 'fritekst',
-        spørsmål: 'Hva er grunnen til at du vil overføre oppgaven?',
-        sti: [HOVEDSPØRSMÅL],
-        svar: 'Oppgaven hører hjemme i en annen ytelse',
-      },
-    ])
-  })
-
-  it('flater ut flere valgte grener til svar med riktig sti', async () => {
-    const { bruker, onBesvar } = renderSkjema()
-
-    await velgHovedårsak(bruker, 'Feil førsteside - ikke 10-07.03-sak')
-    await bruker.click(
-      within(screen.getByRole('group', { name: /Hva gjelder saken/ })).getByRole('checkbox', { name: 'Tilskudd' })
-    )
-    await velgHovedårsak(bruker, 'Feil i skanning')
-    await bruker.click(
-      within(screen.getByRole('group', { name: /Hva er feil med skanningen/ })).getByRole('checkbox', {
-        name: 'Bilder med for dårlig kvalitet (reskanning)',
-      })
-    )
-
-    await overfør(bruker)
-
-    expect(onBesvar).toHaveBeenCalledTimes(1)
-    expect(onBesvar.mock.calls[0][0]).toEqual([
-      { type: 'flervalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil førsteside - ikke 10-07.03-sak' },
-      { type: 'flervalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil i skanning' },
-      {
-        type: 'flervalg',
-        spørsmål: 'Hva gjelder saken?',
-        sti: [HOVEDSPØRSMÅL],
-        svar: 'Tilskudd',
-      },
-      {
-        type: 'flervalg',
-        spørsmål: 'Hva er feil med skanningen?',
-        sti: [HOVEDSPØRSMÅL],
-        svar: 'Bilder med for dårlig kvalitet (reskanning)',
-      },
-    ])
-  })
-
-  it('viser områdespørsmålet under Saken skal ikke behandles i Hotsak uten Tilskudd', async () => {
+  it('viser områdelisten under Saken skal ikke behandles i Hotsak', async () => {
     const { bruker } = renderSkjema()
 
     await velgHovedårsak(bruker, 'Saken skal ikke behandles i Hotsak pr. i dag')
 
-    expect(hentAlternativerFraGruppe(/Hvilket område gjelder saken/)).toEqual(['Arbeidsliv', 'Utdanning', 'Annet'])
+    expect(hentRadioAlternativerFraGruppe(/Hvilket område gjelder saken/)).toEqual([
+      'Arbeidsliv',
+      'Utdanning',
+      'Tilskudd',
+      'Annet',
+    ])
   })
 
-  it('viser en egen liste med Tilskudd og Annet under Feil førsteside', async () => {
-    const { bruker } = renderSkjema()
-
-    await velgHovedårsak(bruker, 'Feil førsteside - ikke 10-07.03-sak')
-
-    expect(hentAlternativerFraGruppe(/Hva gjelder saken/)).toEqual(['Tilskudd', 'Annet'])
-    expect(screen.queryByRole('group', { name: /Hvilket område gjelder saken/ })).not.toBeInTheDocument()
-  })
-
-  it('krever fritekst når Annet velges under Feil førsteside', async () => {
+  it('krever fritekst når Feil førsteside velges og sender riktig payload', async () => {
     const { bruker, onBesvar } = renderSkjema()
 
     await velgHovedårsak(bruker, 'Feil førsteside - ikke 10-07.03-sak')
-    await bruker.click(
-      within(screen.getByRole('group', { name: /Hva gjelder saken/ })).getByRole('checkbox', { name: 'Annet' })
-    )
 
-    const fritekst = screen.getByRole('textbox', { name: /Oppgi hva saken gjelder/ })
+    const fritekst = screen.getByRole('textbox', { name: /Oppgi hva saken egentlig gjelder/ })
     expect(fritekst).toBeInTheDocument()
 
     await overfør(bruker)
@@ -207,13 +127,45 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
 
     expect(onBesvar).toHaveBeenCalledTimes(1)
     expect(onBesvar.mock.calls[0][0]).toEqual([
-      { type: 'flervalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil førsteside - ikke 10-07.03-sak' },
-      { type: 'flervalg', spørsmål: 'Hva gjelder saken?', sti: [HOVEDSPØRSMÅL], svar: 'Annet' },
+      { type: 'enkeltvalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil førsteside - ikke 10-07.03-sak' },
       {
         type: 'fritekst',
-        spørsmål: 'Oppgi hva saken gjelder.',
-        sti: [HOVEDSPØRSMÅL, 'Hva gjelder saken?'],
+        spørsmål: 'Oppgi hva saken egentlig gjelder.',
+        sti: [HOVEDSPØRSMÅL],
         svar: 'Saken gjelder en annen ytelse',
+      },
+    ])
+  })
+
+  it('krever fritekst når Annet velges i underspørsmål', async () => {
+    const { bruker, onBesvar } = renderSkjema()
+
+    await velgHovedårsak(bruker, 'Feil i skanning')
+    await bruker.click(
+      within(screen.getByRole('radiogroup', { name: /Hva er feil med skanningen/ })).getByRole('radio', {
+        name: 'Annet',
+      })
+    )
+
+    await overfør(bruker)
+    expect(await screen.findByText('Må fylles ut')).toBeInTheDocument()
+    expect(onBesvar).not.toHaveBeenCalled()
+
+    await bruker.type(
+      screen.getByRole('textbox', { name: /Oppgi hva som er feil med skanningen/ }),
+      'Skanning av feil dokument'
+    )
+    await overfør(bruker)
+
+    expect(onBesvar).toHaveBeenCalledTimes(1)
+    expect(onBesvar.mock.calls[0][0]).toEqual([
+      { type: 'enkeltvalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil i skanning' },
+      { type: 'enkeltvalg', spørsmål: 'Hva er feil med skanningen?', sti: [HOVEDSPØRSMÅL], svar: 'Annet' },
+      {
+        type: 'fritekst',
+        spørsmål: 'Oppgi hva som er feil med skanningen.',
+        sti: [HOVEDSPØRSMÅL, 'Hva er feil med skanningen?'],
+        svar: 'Skanning av feil dokument',
       },
     ])
   })

@@ -2,7 +2,7 @@ import type { Tema } from '../kodeverk/kodeverkTypes.ts'
 import type { Oppgaveprioritet, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 
 export interface JournalføringV2SkjemaVerdier {
-  tema: string
+  tema: Tema
   behandlingstype: string
   behandlingstema: string
   stønadsklassifisering: string

@@ -7,7 +7,6 @@ import { NotaterIcon } from '../../notat/NotaterIcon'
 import { UtlånsoversiktIcon } from '../../notat/UtlånsoversiktIcon'
 import { SidebarValg } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakV2ContextType'
-import { useMiljø } from '../../../utils/useMiljø'
 
 export interface VertikalIkonBarProps {
   oppgave?: Saksbehandlingsoppgave
@@ -17,7 +16,6 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
   const { sak } = useSak()
   const { aktivSidebar, setAktivSidebar, panelState } = useSakContext()
   const sidePanel = panelState.panels.sidebarpanel
-  const { erIkkeProd } = useMiljø()
 
   return (
     <Box
@@ -71,22 +69,20 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
             icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
           />
         </Tooltip>
-        {erIkkeProd && (
-          <Tooltip content="Oppgaver og dokumenter på bruker" placement="left">
-            <Button
-              size="small"
-              variant="tertiary"
-              data-color="neutral"
-              style={
-                sidePanel.visible && aktivSidebar === SidebarValg.OPPGAVER_OG_DOKUMENTER
-                  ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
-                  : {}
-              }
-              onClick={() => setAktivSidebar(SidebarValg.OPPGAVER_OG_DOKUMENTER)}
-              icon={<PersonEnvelopeIcon />}
-            />
-          </Tooltip>
-        )}
+        <Tooltip content="Oppgaver og dokumenter på bruker" placement="left">
+          <Button
+            size="small"
+            variant="tertiary"
+            data-color="neutral"
+            style={
+              sidePanel.visible && aktivSidebar === SidebarValg.OPPGAVER_OG_DOKUMENTER
+                ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
+                : {}
+            }
+            onClick={() => setAktivSidebar(SidebarValg.OPPGAVER_OG_DOKUMENTER)}
+            icon={<PersonEnvelopeIcon />}
+          />
+        </Tooltip>
       </VStack>
     </Box>
   )

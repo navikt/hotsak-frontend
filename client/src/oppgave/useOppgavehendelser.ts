@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
+
 import { useEventSource } from '../event/useEventSource'
 import { useToast } from '../felleskomponenter/toast/useToast'
+import { isProd } from '../utils/useMiljø'
 import { useOppgaveId } from './useOppgave'
 
 export function useOppgavehendelser() {
   const oppgaveId = useOppgaveId()
-  const url =
-    oppgaveId && window.appSettings.NAIS_CLUSTER_NAME === 'dev-gcp' ? `/api/oppgaver/${oppgaveId}/hendelser` : null
+  const url = oppgaveId && !isProd() ? `/api/oppgaver/${oppgaveId}/hendelser` : null
   const { data } = useEventSource<Oppgavehendelse>({
     url,
     event: oppgavePredicate,
@@ -21,7 +22,7 @@ export function useOppgavehendelser() {
 }
 
 export function useOppgavehendelserForEnhet() {
-  const url = window.appSettings.NAIS_CLUSTER_NAME === 'dev-gcp' ? `/api/oppgaver/hendelser` : null
+  const url = !isProd() ? `/api/oppgaver/hendelser` : null
   const { data } = useEventSource<Oppgavehendelse>({
     url,
     event: oppgavePredicate,

@@ -1,4 +1,5 @@
-import type { OppgaveId, Oppgaveprioritet, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import type { Tema } from '../kodeverk/kodeverkTypes.ts'
+import type { Oppgaveprioritet, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 
 export interface JournalføringV2SkjemaVerdier {
   tema: string
@@ -43,24 +44,18 @@ export interface Stønadsklassifisering {
   stk3: unknown[]
 }
 
-export interface JournalførJournalpostRequest {
-  oppgaveId: OppgaveId
-  journalpostId: string
-  tittel: string
-  journalføresPåFnr: string
-  sakId?: string
-}
+export type JournalførJournalpostRequest = Omit<JournalføringV2Request, 'dokumenter' | 'saksgrunnlag'>
 
 export interface JournalførJournalpostResponse {
+  sakId: string
   /**
    * Id for behandle sak-oppgaven som følger journalføring.
    */
-  oppgaveId: OppgaveId
-  sakId: string
+  oppgaveId?: string
 }
 
 export interface JournalføringV2Saksgrunnlag {
-  tema: string
+  tema: Tema
   prioritet: Oppgaveprioritet
   oppgavetype: Oppgavetype
   behandlingstype: string
@@ -77,7 +72,7 @@ export interface JournalføringV2Saksgrunnlag {
 }
 
 export interface JournalføringV2Request {
-  oppgaveId: OppgaveId
+  oppgaveId: string
   journalpostId: string
   tittel: string
   journalføresPåFnr: string
@@ -91,7 +86,7 @@ export interface JournalføringV2Response {
   journalpostId?: string
   oppgavegrunnlagId?: string
   oppgaver: Array<{
-    oppgaveId: OppgaveId
+    oppgaveId: string
     oppgavetype: Oppgavetype
     statuskategori: Statuskategori
     isÅpen: boolean

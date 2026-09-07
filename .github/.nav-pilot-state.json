@@ -1,8 +1,8 @@
 {
   "collection": "frontend",
-  "version": "2026.09.04-063742-24ad9ba",
+  "version": "2026.09.07-074612-5c0c44d",
   "scope": "repo",
-  "source_sha": "24ad9ba",
+  "source_sha": "5c0c44d",
   "installed_at": "2026-06-25T11:38:51Z",
   "files": [
     {
@@ -23,7 +23,7 @@
     },
     {
       "path": ".github/agents/nav-pilot.agent.md",
-      "hash": "f381cdcba7fcb644"
+      "hash": "eed57b0a1dd623bf"
     },
     {
       "path": ".github/skills/aksel-builder/",

@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 import react from '@vitejs/plugin-react'
+import { resolve } from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
 
 import type { Proxy } from './proxy'
@@ -8,8 +9,16 @@ import { middlewarePlugin } from './vite-middleware-plugin.mjs'
 
 // https://vitejs.dev/config/
 export default defineConfig((env) => {
+  const useCopilotE2eEnvironment = process.env.COPILOT_E2E === 'true'
+  const envDir = useCopilotE2eEnvironment
+    ? false
+    : process.env.VITE_ENV_DIR
+      ? resolve(process.cwd(), process.env.VITE_ENV_DIR)
+      : process.cwd()
+  const miljovariabler = useCopilotE2eEnvironment ? process.env : loadEnv(env.mode, envDir)
+
   const { VITE_API_PROXY, VITE_GRUNNDATA_PROXY, VITE_ALTERNATIVPRODUKTER_PROXY, VITE_OBO_TOKEN, VITE_API_URL } =
-    loadEnv(env.mode, process.cwd())
+    miljovariabler
   const proxy: Proxy = {
     api: VITE_API_PROXY === 'true',
     grunndata: VITE_GRUNNDATA_PROXY === 'true',
@@ -17,6 +26,7 @@ export default defineConfig((env) => {
   }
   return {
     base: '/',
+    envDir,
     plugins: [
       middlewarePlugin({ development: env.mode === 'test' || env.mode === 'development', proxy }),
       htmlPlugin({ development: env.mode === 'test' || env.mode === 'development', proxy }),

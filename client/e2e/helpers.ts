@@ -21,6 +21,22 @@ export async function plukkOppgave(page: Page, oppgavetype?: 'Journalføring' | 
   }
 }
 
+export async function åpneJournalføringsoppgave(page: Page) {
+  await page.goto('/')
+  await page.getByRole('link', { name: /Enhetens oppgaver/i }).click()
+  await page.getByRole('table').waitFor({ state: 'visible' })
+
+  const journalføringsrad = page
+    .getByRole('row')
+    .filter({ hasText: 'Journalføring' })
+    .filter({ hasText: 'Hjelpemidler' })
+    .first()
+  await journalføringsrad.getByRole('button', { name: /Ta oppgaven/i }).click()
+  await journalføringsrad.getByRole('button', { name: /Åpne/i }).click()
+
+  await page.getByRole('heading', { level: 1, name: 'Journalføring' }).waitFor({ state: 'visible' })
+}
+
 /**
  * Wait for the SakV2 behandlingspanel to be visible.
  */

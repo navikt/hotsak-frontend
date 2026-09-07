@@ -47,8 +47,8 @@ import {
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { enheter } from './enheter.ts'
 import { nåIso } from './felles.ts'
-import { JournalpostStore } from './JournalpostStore.ts'
 import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
+import { JournalpostStore } from './JournalpostStore.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
@@ -496,7 +496,7 @@ export class SakStore extends Dexie {
     })
   }
 
-  async opprettJournalføringsSak(request: JournalføringV2Request): Promise<{ sakId: string; sak: Sak }> {
+  async opprettJournalføringSak(request: JournalføringV2Request): Promise<{ sakId: string; sak: Sak }> {
     const count = await this.saker.count()
     const sakId = String(count + 1)
     const nå = nåIso()
@@ -525,7 +525,7 @@ export class SakStore extends Dexie {
   }
 
   async opprettSak(journalføring: JournalførJournalpostRequest) {
-    const sak = lagBarnebrillesak('') // fixme
+    const sak = lagBarnebrillesak(journalføring.oppgaveId + journalføring.journalpostId)
     sak.bruker.fnr = journalføring.journalføresPåFnr
     sak.journalposter = [journalføring.journalpostId]
     return this.saker.add(sak)

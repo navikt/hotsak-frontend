@@ -2,9 +2,9 @@ import { http, HttpResponse } from 'msw'
 
 import type { DokumentsøkRequest, DokumentsøkResponse } from '../../dokument/useDokumentsøk.ts'
 import type {
-  JournalførJournalpostRequest,
   JournalføringV2Request,
   JournalføringV2Response,
+  JournalførJournalpostRequest,
 } from '../../journalføring/journalføringTypes.ts'
 import { type Oppgave, Oppgavetype, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import type { StoreHandlersFactory } from '../data'
@@ -87,7 +87,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
       if ('saksgrunnlag' in body) {
         const journalføringRequest = body as JournalføringV2Request
         await journalpostStore.journalførV2(journalføringRequest)
-        const { sakId, sak } = await sakStore.opprettJournalføringsSak(journalføringRequest)
+        const { sakId, sak } = await sakStore.opprettJournalføringSak(journalføringRequest)
         const { saksgrunnlag } = journalføringRequest
         if (!saksgrunnlag) {
           throw new Error('saksgrunnlag mangler i V2-journalføringsrequest med ny sak')
@@ -144,6 +144,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
       } else {
         const sakId = await sakStore.opprettSak(journalføring)
         await sakStore.tildel(sakId)
+        console.log('Opprettet ny sak med sakId:', sakId)
         return HttpResponse.json({ sakId: sakId.toString(), oppgaveId: sakId })
       }
     }

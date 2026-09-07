@@ -18,7 +18,14 @@ const columns = [
 
 export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
   const { fnr } = props
-  const { journalposter, isLoading } = useDokumentsøk({ fnr })
+  const { journalposter, isLoading, isValidating, error } = useDokumentsøk({ fnr })
+  if (error) {
+    return <div>Feil ved henting av dokumenter</div>
+  }
+  if (!journalposter || journalposter.length === 0) {
+    return <div>Fant ingen dokumenter</div>
+  }
+
   return (
     <DataGrid
       rows={journalposter}
@@ -27,6 +34,7 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
       size="small"
       textSize="small"
       loading={isLoading}
+      validating={isValidating}
     />
   )
 }

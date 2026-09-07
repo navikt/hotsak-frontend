@@ -21,7 +21,7 @@ export function useJournalføringActions(oppgave: Oppgave) {
   }
 
   const journalpostId = oppgave.journalpostId
-  const journalpostKey = journalpostId != null ? `/api/journalpost/${journalpostId}/journalforing` : null
+  const journalpostKey = journalpostId ? `/api/journalpost/${journalpostId}/journalforing` : null
 
   const journalfør = useSWRMutation<
     JournalføringV2Response,

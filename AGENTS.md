@@ -32,8 +32,8 @@
 - **Aldri kjør `git commit` eller `git push`** uten at brukeren eksplisitt ber om det.
 - Gjør ferdig alle kodeendringer, vis en oppsummering, og la brukeren selv gjennomgå og commite.
 
-- **Vitest** for unit tests (jsdom, globals enabled). Run: `pnpm run test`.
-- **Playwright** for E2E tests (Chromium, uses MSW in dev mode). Run: `pnpm run e2e`.
+- **Vitest** for unit tests (jsdom, globals enabled). Run: `pnpm run test:copilot`.
+- **Playwright** for E2E tests (Chromium, uses MSW in dev mode). Run: `pnpm run e2e:copilot`. The `:copilot` script uses inline, non-sensitive test values and does not read `.env` files.
 - E2E tests live in `client/e2e/`, unit tests next to source in `__tests__/` dirs.
 - Dev server uses MSW to intercept API requests; no real backend needed locally.
 - Use accessible roles/labels for Playwright selectors (getByRole, getByLabel) — no data-testid.

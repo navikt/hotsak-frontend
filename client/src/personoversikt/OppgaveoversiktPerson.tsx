@@ -9,9 +9,13 @@ export interface OppgaveoversiktPersonProps {
 
 export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
   const { fnr } = props
-  const { data, isLoading } = useOppgavesøk({ brukerId: fnr })
-  if (!data) {
-    return null
+  const { data, isLoading, isValidating, error } = useOppgavesøk({ brukerId: fnr })
+
+  if (error) {
+    return <div>Feil ved henting av oppgaver</div>
+  }
+  if (!data || data.oppgaver.length === 0) {
+    return <div>Fant ingen oppgaver</div>
   }
   return (
     <DataGrid
@@ -21,6 +25,7 @@ export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
       size="small"
       textSize="small"
       loading={isLoading}
+      validating={isValidating}
     />
   )
 }

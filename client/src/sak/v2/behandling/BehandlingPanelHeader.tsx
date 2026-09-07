@@ -1,16 +1,33 @@
-import { Box, HStack, Link, VStack } from '@navikt/ds-react'
+import { Box, HStack, InlineMessage, Link, VStack } from '@navikt/ds-react'
 
+import { useMemo } from 'react'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
+import { useOppgavesøk } from '../../../oppgave/useOppgavesøk.ts'
+import { useSaksregler } from '../../../saksregler/useSaksregler'
 import { type Sak } from '../../../types/types.internal'
 import { formaterDatoKort } from '../../../utils/dato'
 import { useMiljø } from '../../../utils/useMiljø.ts'
+import { OppgaverOgDokumenterFilter, opprettetIntervallForFilter } from '../sidebars/OppgaverOgDokumenterUtils.ts'
 import { JournalpostCard } from './JournalpostCard'
-import { useSaksregler } from '../../../saksregler/useSaksregler'
 
 export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: Sak }) {
   const { erBestilling } = useSaksregler()
   const { erIkkeProd } = useMiljø()
+
+  const opprettetIntervallSisteToUker = useMemo(
+    () => opprettetIntervallForFilter(OppgaverOgDokumenterFilter.SISTE_2_UKER),
+    []
+  )
+
+  const oppgaverResponse = useOppgavesøk({
+    brukerId: oppgave?.fnr,
+    sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
+    opprettetIntervall: opprettetIntervallSisteToUker,
+    pageSize: 2,
+  })
+  const harOppgaverSisteToUker =
+    !!oppgave && (oppgaverResponse.data?.oppgaver.some(({ oppgaveId }) => oppgaveId !== oppgave.oppgaveId) ?? false)
 
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8" marginBlock="space-0 space-16">
@@ -29,6 +46,13 @@ export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandli
               </Link>
             </Tekst>
           </Box>
+          {harOppgaverSisteToUker && (
+            <Box paddingInline="space-8 space-0">
+              <InlineMessage status="info" size="small">
+                Bruker har en oppgave som enten er åpen, eller behandlet de siste 2 ukene hos {sak.enhet.navn}
+              </InlineMessage>
+            </Box>
+          )}
           {erIkkeProd && <JournalpostCard />}
         </>
       )}

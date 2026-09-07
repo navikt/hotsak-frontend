@@ -10,7 +10,16 @@ import {
   type OppgaveStatusType as OppgaveStatusTypeValue,
 } from '../types/types.internal.ts'
 
-export type Sakvalg = { kilde: 'hotsak'; sakId: string } | { kilde: 'fagsak'; sakId: string }
+export const HOTSAK_SYSTEM = 'hotsak'
+
+export interface Sakvalg {
+  sakId: string
+  system: string
+}
+
+export function erFagsak(valg: Sakvalg): boolean {
+  return valg.system !== HOTSAK_SYSTEM
+}
 
 export interface SakvalgVisning {
   valg: Sakvalg
@@ -58,7 +67,7 @@ function erVisbarFagsak(fagsak: Fagsak): fagsak is Fagsak & {
 
 function tilSakvalg(sak: SaksoversiktSak): SakvalgVisning {
   return {
-    valg: { kilde: 'hotsak', sakId: sak.sakId },
+    valg: { sakId: sak.sakId, system: HOTSAK_SYSTEM },
     sakId: sak.sakId,
     gjelder: sak.gjelder,
     dato: sak.mottattTidspunkt,
@@ -72,7 +81,7 @@ function tilFagsakvalg(
   fagsak: Fagsak & { fagsakId: string; fagsaksystem: FagsaksystemType; datoOpprettet: string }
 ): SakvalgVisning {
   return {
-    valg: { kilde: 'fagsak', sakId: fagsak.fagsakId },
+    valg: { sakId: fagsak.fagsakId, system: fagsak.fagsaksystem },
     sakId: fagsak.fagsakId,
     gjelder: fagsak.tema ? Tema[fagsak.tema] : 'Hjelpemidler',
     dato: fagsak.datoOpprettet,

@@ -20,7 +20,7 @@ import { NySakSkjema } from './NySakSkjema.tsx'
 import { type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
-import { type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
+import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 
 interface JournalføringV2SkjemaProps {
@@ -158,7 +158,13 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       return
     }
     const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
-    const resultat = await journalfør.trigger({ tittel, journalføresPåFnr: fnr, sakId: valgtSak.sakId, dokumenter })
+    const resultat = await journalfør.trigger({
+      tittel,
+      journalføresPåFnr: fnr,
+      sakId: valgtSak.sakId,
+      system: valgtSak.system,
+      dokumenter,
+    })
     if (resultat) {
       mutateJournalpost()
       setJournalføringResultat(resultat)
@@ -293,7 +299,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         open={journalføringResultat != null}
         resultat={journalføringResultat}
         sakType={sakType}
-        eksternFagsak={valgtSak?.kilde === 'fagsak'}
+        eksternFagsak={valgtSak ? erFagsak(valgtSak) : false}
         onClose={() => setJournalføringResultat(null)}
       />
     </VStack>

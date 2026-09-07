@@ -78,6 +78,7 @@ export interface JournalføringV2Request {
   journalføresPåFnr: string
   saksgrunnlag?: JournalføringV2Saksgrunnlag
   sakId?: string
+  system?: string
   dokumenter: Array<{ dokumentId: string; tittel: string; annetInnhold: string[] }>
 }
 

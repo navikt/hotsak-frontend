@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { type Fagsak, type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
 import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
-import { lagSakvalg } from './useKobleTilSak.ts'
+import { erFagsak, lagSakvalg } from './useKobleTilSak.ts'
 
 const sak = (
   sakId: string,
@@ -37,7 +37,9 @@ describe('lagSakvalg', () => {
 
     expect(resultat.map(({ sakId }) => sakId)).toEqual(['1234B01', 'hotsak-1', '1234A01'])
     expect(resultat[0].fagsystemLabel).toBe('OEBS')
+    expect(resultat[0].valg).toEqual({ sakId: '1234B01', system: 'OEBS' })
     expect(resultat[1].fagsystemLabel).toBe('Hotsak')
+    expect(resultat[1].valg).toEqual({ sakId: 'hotsak-1', system: 'hotsak' })
   })
 
   it('prioriterer åpne Hotsak-saker ved lik dato', () => {
@@ -64,5 +66,26 @@ describe('lagSakvalg', () => {
     )
 
     expect(resultat).toEqual([])
+  })
+})
+
+describe('erFagsak', () => {
+  it('regner sakvalg fra Hotsak som intern sak', () => {
+    expect(erFagsak({ sakId: 'hotsak-1', system: 'hotsak' })).toBe(false)
+  })
+
+  it('regner sakvalg med fagsaksystemkode som ekstern fagsak', () => {
+    expect(erFagsak({ sakId: '1234A01', system: 'IT01' })).toBe(true)
+    expect(erFagsak({ sakId: '1234B01', system: 'OEBS' })).toBe(true)
+  })
+
+  it('utleder ekstern fagsak direkte fra sakvalgene', () => {
+    const [fagsakvalg, hotsakvalg] = lagSakvalg(
+      [sak('hotsak-1', '2024-08-21T07:54:14Z', OppgaveStatusType.AVVENTER_SAKSBEHANDLER)],
+      [{ ...fagsak('1234B01', 'OEBS'), datoOpprettet: '2024-08-22T07:54:14Z' }]
+    )
+
+    expect(erFagsak(fagsakvalg.valg)).toBe(true)
+    expect(erFagsak(hotsakvalg.valg)).toBe(false)
   })
 })

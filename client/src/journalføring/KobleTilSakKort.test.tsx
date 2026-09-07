@@ -10,7 +10,7 @@ import { MAKS_SAKER_SYNLIG, type SakvalgVisning } from './useKobleTilSak.ts'
 
 function lagSak(sakId: string): SakvalgVisning {
   return {
-    valg: { kilde: 'hotsak', sakId },
+    valg: { sakId, system: 'hotsak' },
     sakId,
     gjelder: 'Hjelpemidler',
     dato: '2024-08-21T07:54:14Z',
@@ -53,7 +53,7 @@ describe('KobleTilSakKort', () => {
 
     await userEvent.click(screen.getByRole('radio', { name: /Velg sak 9901/ }))
 
-    expect(onChange).toHaveBeenCalledWith({ kilde: 'hotsak', sakId: '9901' })
+    expect(onChange).toHaveBeenCalledWith({ sakId: '9901', system: 'hotsak' })
   })
 
   it('begrenser listen og lar brukeren vise alle saker', async () => {

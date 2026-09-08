@@ -162,7 +162,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       tittel,
       journalføresPåFnr: fnr,
       sakId: valgtSak.sakId,
-      system: valgtSak.system,
+      system: valgtSak.fagsaksystem,
       dokumenter,
     })
     if (resultat) {

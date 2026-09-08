@@ -49,9 +49,9 @@ export function KobleTilSakKort({ saker, isLoading, error, valgtSak, onChange, f
     <VStack gap="space-4" className={classes.kortListe}>
       {synligeSaker.map((sak) => (
         <SakKort
-          key={`${sak.valg.system}-${sak.sakId}`}
+          key={`${sak.valg.fagsaksystem}-${sak.sakId}`}
           sak={sak}
-          valgt={sak.valg.system === valgtSak?.system && sak.sakId === valgtSak.sakId}
+          valgt={sak.valg.fagsaksystem === valgtSak?.fagsaksystem && sak.sakId === valgtSak.sakId}
           onVelg={() => onChange(sak.valg)}
         />
       ))}
@@ -90,7 +90,7 @@ function SakKort({ sak, valgt, onVelg }: SakKortProps) {
         <input
           type="radio"
           name="valgtSak"
-          value={`${sak.valg.system}-${sak.sakId}`}
+          value={`${sak.valg.fagsaksystem}-${sak.sakId}`}
           checked={valgt}
           onChange={onVelg}
           className={classes.radioInput}

@@ -14,11 +14,11 @@ export const HOTSAK_SYSTEM = 'hotsak'
 
 export interface Sakvalg {
   sakId: string
-  system: string
+  fagsaksystem: string
 }
 
 export function erFagsak(valg: Sakvalg): boolean {
-  return valg.system !== HOTSAK_SYSTEM
+  return valg.fagsaksystem !== HOTSAK_SYSTEM
 }
 
 export interface SakvalgVisning {
@@ -67,7 +67,7 @@ function erVisbarFagsak(fagsak: Fagsak): fagsak is Fagsak & {
 
 function tilSakvalg(sak: SaksoversiktSak): SakvalgVisning {
   return {
-    valg: { sakId: sak.sakId, system: HOTSAK_SYSTEM },
+    valg: { sakId: sak.sakId, fagsaksystem: HOTSAK_SYSTEM },
     sakId: sak.sakId,
     gjelder: sak.gjelder,
     dato: sak.mottattTidspunkt,
@@ -81,7 +81,7 @@ function tilFagsakvalg(
   fagsak: Fagsak & { fagsakId: string; fagsaksystem: FagsaksystemType; datoOpprettet: string }
 ): SakvalgVisning {
   return {
-    valg: { sakId: fagsak.fagsakId, system: fagsak.fagsaksystem },
+    valg: { sakId: fagsak.fagsakId, fagsaksystem: fagsak.fagsaksystem },
     sakId: fagsak.fagsakId,
     gjelder: fagsak.tema ? Tema[fagsak.tema] : 'Hjelpemidler',
     dato: fagsak.datoOpprettet,

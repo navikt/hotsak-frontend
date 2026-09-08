@@ -25,7 +25,7 @@ test.describe('Journalføring', () => {
     const journalføring = ventPåJournalføring(page)
     await page.getByRole('button', { name: 'Journalfør og knytt til sak' }).click()
     const request = await journalføringRequest
-    expect(request.postDataJSON()).toMatchObject({ sakId: '9901', system: 'hotsak' })
+    expect(request.postDataJSON()).toMatchObject({ sakId: '9901', fagsaksystem: 'hotsak' })
     const respons = await journalføring
     const { sakId, oppgaver } = await respons.json()
     const oppgaveId = oppgaver.find((oppgave: { isÅpen: boolean }) => oppgave.isÅpen)?.oppgaveId

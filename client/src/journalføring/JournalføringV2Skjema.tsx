@@ -1,4 +1,4 @@
-import { BodyShort, Button, Heading, HStack, useDatepicker, VStack } from '@navikt/ds-react'
+import { BodyShort, Box, Button, Heading, HStack, useDatepicker, VStack } from '@navikt/ds-react'
 import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -22,6 +22,7 @@ import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
+import classes from './JournalføringV2Skjema.module.css'
 
 interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
@@ -172,8 +173,8 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   }
 
   return (
-    <VStack gap="space-16">
-      <HStack justify="space-between" align="center">
+    <VStack className={classes.rot}>
+      <HStack justify="space-between" align="center" className={classes.header}>
         <Heading level="1" size="xsmall">
           Journalføring
         </Heading>
@@ -185,8 +186,8 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       </HStack>
 
       <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <VStack gap="space-16">
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className={classes.form}>
+          <VStack gap="space-16" className={classes.innhold}>
             <div>
               <HStack gap="space-12" paddingBlock="space-0">
                 <BodyShort size="small">
@@ -268,30 +269,48 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                 fristInputProps={fristInputProps}
               />
             )}
-
-            {kanRedigere && (
-              <HStack gap="space-4" paddingBlock="space-8 space-0">
-                <Button
-                  type={sakType === 'eksisterende' ? 'button' : 'submit'}
-                  variant="primary"
-                  size="small"
-                  loading={journalfør.isMutating}
-                  disabled={journalfør.isMutating}
-                  onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
-                >
-                  {sakType === 'eksisterende' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
-                </Button>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="small"
-                  onClick={() => åpneModal(OppgaveModalType.OVERFØR_TIL_GOSYS)}
-                >
-                  Overfør til Gosys
-                </Button>
-              </HStack>
-            )}
           </VStack>
+
+          {kanRedigere && (
+            <HStack
+              asChild
+              position="sticky"
+              left="space-0"
+              bottom="space-0"
+              align="center"
+              justify="start"
+              width="100%"
+              className={classes.stickyHandlingerWrapper}
+            >
+              <Box
+                background="default"
+                borderWidth="1 0 0 0"
+                borderColor="neutral-subtle"
+                className={classes.stickyHandlinger}
+              >
+                <HStack gap="space-4" paddingInline="space-16" paddingBlock="space-8">
+                  <Button
+                    type={sakType === 'eksisterende' ? 'button' : 'submit'}
+                    variant="primary"
+                    size="small"
+                    loading={journalfør.isMutating}
+                    disabled={journalfør.isMutating}
+                    onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
+                  >
+                    {sakType === 'eksisterende' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="small"
+                    onClick={() => åpneModal(OppgaveModalType.OVERFØR_TIL_GOSYS)}
+                  >
+                    Overfør til Gosys
+                  </Button>
+                </HStack>
+              </Box>
+            </HStack>
+          )}
         </form>
       </FormProvider>
 

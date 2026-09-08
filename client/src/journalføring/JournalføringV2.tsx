@@ -42,7 +42,7 @@ export function JournalføringV2({ oppgave }: { oppgave: Journalføringsoppgave 
           <Panel defaultSize={40} minSize="350px" id="skjema">
             <div className={classes.skjemaKolonne}>
               {isLoading || !journalpost ? (
-                <HStack gap="space-4" align="center">
+                <HStack gap="space-4" align="center" className={classes.skjemaKolonneLoading}>
                   <Loader size="medium" title="Henter journalpost..." />
                   <span>Henter journalpost...</span>
                 </HStack>

@@ -1,79 +1,79 @@
 {
   "collection": "frontend",
-  "version": "2026.09.08-074731-f191217",
+  "version": "2026.09.08-175919-60c4bc6",
   "scope": "repo",
-  "source_sha": "f1a3d5102dba457be74e982c77211867ef204dcc",
+  "source_sha": "60c4bc62956118e428967f7a19935e444cbb5a5f",
   "installed_at": "2026-06-25T11:38:51Z",
   "files": [
     {
       "path": ".github/agents/accessibility.agent.md",
       "hash": "db12f2f3d0734ca4",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/agents/aksel.agent.md",
       "hash": "6b14f77aa95b4b83",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/agents/code-review.agent.md",
       "hash": "3406168d68a9470a",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/agents/forfatter.agent.md",
       "hash": "48c56daf3992a30e",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/agents/nav-pilot.agent.md",
-      "hash": "eed57b0a1dd623bf",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "hash": "f233967faa81b8da",
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/accessibility.instructions.md",
       "hash": "986ef7aa27d8a1d9",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/code-review.instructions.md",
       "hash": "76088d9c7d0e3909",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/deliberate-ai-use.instructions.md",
       "hash": "68b3ca596e278482",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/docker.instructions.md",
       "hash": "32db7a2f8aaab2ac",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/github-actions.instructions.md",
       "hash": "bbef6f3e56b8b3b3",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/norwegian-text.instructions.md",
       "hash": "8dc36629d466e9b9",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/security-owasp.instructions.md",
       "hash": "3388700634dd315d",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/testing-typescript.instructions.md",
       "hash": "6c6055340a9d075c",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/instructions/testing.instructions.md",
       "hash": "ca2a23744bef3a2c",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/prompts/aksel-component.prompt.md",
@@ -81,27 +81,28 @@
     },
     {
       "path": ".github/prompts/nais-manifest.prompt.md",
-      "hash": "8576571223ffef8a"
+      "hash": "f90a562ca7f8233c",
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/aksel-builder/",
       "hash": "3075f3a92c2eb6fc",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/conventional-commit/",
       "hash": "0c21beaedabd1e39",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/nav-architecture-review/",
       "hash": "4618dec566442509",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/nav-deep-interview/",
       "hash": "eeb3399ecd4e352c",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/nav-dekoratoren/",
@@ -111,37 +112,37 @@
     {
       "path": ".github/skills/nav-plan/",
       "hash": "db7618d269cd2f07",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/nav-troubleshoot/",
       "hash": "e9900d58d91ee0ee",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/playwright-testing/",
       "hash": "5c618cd99c79df64",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/readme-review/",
       "hash": "27b83a8872b33f4c",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/security-owasp/",
       "hash": "b909907ae0e18174",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/terse-mode/",
       "hash": "d28a057d860494bb",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     },
     {
       "path": ".github/skills/web-design-reviewer/",
       "hash": "07b2096b77bf5ae3",
-      "revision": "f1a3d5102dba457be74e982c77211867ef204dcc"
+      "revision": "60c4bc62956118e428967f7a19935e444cbb5a5f"
     }
   ]
 }

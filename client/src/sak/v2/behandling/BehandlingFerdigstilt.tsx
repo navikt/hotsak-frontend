@@ -1,5 +1,6 @@
 import { Box, Heading, InlineMessage, VStack } from '@navikt/ds-react'
 
+import { isVedtaksbrev } from '../../../brev/brevSelectors.ts'
 import { type Brev, Brevstatus } from '../../../brev/brevTyper.ts'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useUtsendingsInfo } from '../../../brev/useUtsendingsInfo.ts'
@@ -23,7 +24,8 @@ export interface BehandlingFerdigstiltProps {
 }
 
 export function BehandlingFerdigstilt({ behandling }: BehandlingFerdigstiltProps) {
-  const { brevForSak, harBrev } = useBrevForSak(behandling.sakId)
+  const { finnBrev, harVedtaksbrev } = useBrevForSak(behandling.sakId)
+  const vedtaksBrev = finnBrev(isVedtaksbrev)
   const { varsler, harVarsler } = useSøknadsVarsler()
   const { datoEkspedert } = useUtsendingsInfo()
 
@@ -41,21 +43,21 @@ export function BehandlingFerdigstilt({ behandling }: BehandlingFerdigstiltProps
             <VStack gap="space-12">
               {henleggelseUtfall && <HenleggLesevisning utfall={henleggelseUtfall} />}
 
-              {harBrev && (
+              {harVedtaksbrev && (
                 <Heading level="2" size="xsmall">
                   {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
                 </Heading>
               )}
 
-              <BrevSendtStatus brev={brevForSak?.brev[0]} datoEkspedert={datoEkspedert} erHenleggelse={erHenleggelse} />
+              <BrevSendtStatus brev={vedtaksBrev} datoEkspedert={datoEkspedert} erHenleggelse={erHenleggelse} />
 
-              {!harBrev && vedtaksresultat === VedtaksResultat.INNVILGET && (
+              {!harVedtaksbrev && vedtaksresultat === VedtaksResultat.INNVILGET && (
                 <InlineMessage status="info" size="small">
                   Saken er innvilget uten å sende brev
                 </InlineMessage>
               )}
 
-              {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
+              {harVedtaksbrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
             </VStack>
           </Box>
         </TextContainer>

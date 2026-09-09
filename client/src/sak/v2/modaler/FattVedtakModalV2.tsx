@@ -34,7 +34,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const erAvslag = vedtaksresultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
   const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
-  const { harBrev } = useBrevForSak(sak.sakId)
+  const { harVedtaksbrev } = useBrevForSak(sak.sakId)
 
   const fattVedtak = async (data: VedtakFormValues) => {
     setVedtakLoader(true)
@@ -52,7 +52,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
     }
     if (erInnvilget) {
       // lukker brevpanelet hvis det er åpent og det ikke finnes et brev og det innvilges
-      if (!harBrev) closePanel()
+      if (!harVedtaksbrev) closePanel()
     }
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
@@ -88,7 +88,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       open={open}
       width="700px"
       buttonSize="medium"
-      bekreftButtonLabel={`${vedtakTekst?.knapp}${harBrev ? ' og send brev' : ''}`}
+      bekreftButtonLabel={`${vedtakTekst?.knapp}${harVedtaksbrev ? ' og send brev' : ''}`}
       onBekreft={() => {
         if (erAvslag) {
           fattAvslagsvedtak()
@@ -113,7 +113,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
               </InfoCard.Content>
             </InfoCard>
           )}
-          {harBrev && (
+          {harVedtaksbrev && (
             <InfoCard data-color="info" size="small">
               <InfoCard.Header>
                 <InfoCard.Title>
@@ -127,7 +127,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
           )}
           <Tekst spacing>
             {`Når du går videre blir det opprettet en serviceforespørsel (SF) i OeBS.
-            ${!harBrev ? ' Innbygger får varsel om vedtaksresultatet neste virkedag.' : ''}`}
+            ${!harVedtaksbrev ? ' Innbygger får varsel om vedtaksresultatet neste virkedag.' : ''}`}
           </Tekst>
 
           {(erInnvilget || erDelvisInnvilget) && (

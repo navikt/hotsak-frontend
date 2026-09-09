@@ -6,6 +6,7 @@ import { useIsSaksbehandlerBarnebriller } from '../tilgang/useTilgang.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import {
   selectBehandlingstemaTerm,
+  selectBehandlingstypeTerm,
   selectBrukerKommuneNavn,
   selectInnsenderNavn,
   selectMappenavn,
@@ -25,6 +26,7 @@ export function useOppgaveFilterOptions(oppgaver: Oppgave[]): OppgaveFilterOptio
       saksbehandler: toSet(oppgaver, selectTildeltSaksbehandlerNavn),
       oppgavetype: isSaksbehandlerBarnebriller ? oppgavetypeOptionsBarnebriller : oppgavetypeOptions,
       behandlingstema: toSet(oppgaver, selectBehandlingstemaTerm),
+      behandlingstype: toSet(oppgaver, selectBehandlingstypeTerm),
       mappenavn: toSet(oppgaver, selectMappenavn),
       innsenderNavn: toSet(oppgaver, selectInnsenderNavn),
       kommune: toSet(oppgaver, selectBrukerKommuneNavn),

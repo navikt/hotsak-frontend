@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
-import { isBrevmal } from '../../brev/brevSelectors.ts'
-import { Brevmal } from '../../brev/brevTyper.ts'
+import { isVedtaksbrev } from '../../brev/brevSelectors.ts'
 import { useBrevForSak } from '../../brev/useBrev.ts'
 import { useDokumentContext } from '../../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
@@ -40,8 +39,8 @@ import { AvrundetPanel } from './paneler/AvrundetPanel.tsx'
 import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
-import classes from './SakV2.module.css'
 import { sidebarBredde } from './SakPanelTabTypes.tsx'
+import classes from './SakV2.module.css'
 import { useSakContext } from './SakV2ContextType.ts'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
@@ -83,7 +82,7 @@ function SakV2Content({
   const behandlingsutfall = gjeldendeBehandling?.utfall
 
   const { finnBrev } = useBrevForSak(sak.sakId)
-  const vedtaksbrev = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV))
+  const vedtaksbrev = finnBrev(isVedtaksbrev)
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []

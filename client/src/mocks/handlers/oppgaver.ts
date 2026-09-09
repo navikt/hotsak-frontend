@@ -18,17 +18,19 @@ export interface OppgaveParams {
 }
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }) => [
-  http.get<never, never, { områder: string[]; saksbehandlere: string[]; gjelderVerdier: string[] }>(
-    '/api/oppgaver/filtere',
-    async () => {
-      const { default: kommuner } = await import('../data/kommuner.json')
-      return HttpResponse.json({
-        områder: Object.values(kommuner as Record<string, string>),
-        saksbehandlere: Saksbehandlere.alle().map((saksbehandler) => saksbehandler.navn),
-        gjelderVerdier: ['Behandlingstema A', 'Behandlingstema B', 'Behandlingstema C'],
-      })
-    }
-  ),
+  http.get<
+    never,
+    never,
+    { områder: string[]; saksbehandlere: string[]; gjelderVerdier: string[]; behandlingstyper: string[] }
+  >('/api/oppgaver/filtre', async () => {
+    const { default: kommuner } = await import('../data/kommuner.json')
+    return HttpResponse.json({
+      områder: Object.values(kommuner as Record<string, string>),
+      saksbehandlere: Saksbehandlere.alle().map((saksbehandler) => saksbehandler.navn),
+      gjelderVerdier: ['Behandlingstema A', 'Behandlingstema B', 'Behandlingstema C'],
+      behandlingstyper: ['Behandlingstype A', 'Behandlingstype B', 'Behandlingstype C'],
+    })
+  }),
 
   sse<any, OppgaveParams>('/api/oppgaver/hendelser', async (/*{ client }*/) => {}),
 

@@ -1,31 +1,35 @@
 import useSWRImmutable from 'swr/immutable'
 import { http } from '../io/HttpClient'
 
-interface OppgaveFiltereResponse {
+interface OppgaveFiltreResponse {
   områder: string[]
   saksbehandlere: string[]
   gjelderVerdier: string[]
+  behandlingstyper: string[]
 }
 
-export interface OppgaveFiltere {
+export interface OppgaveFiltre {
   områder: ReadonlySet<string>
   saksbehandlere: ReadonlySet<string>
   gjelderVerdier: ReadonlySet<string>
+  behandlingstyper: ReadonlySet<string>
 }
 
-const ingenFiltere: OppgaveFiltere = {
+const ingenFiltere: OppgaveFiltre = {
   områder: new Set(),
   saksbehandlere: new Set(),
   gjelderVerdier: new Set(),
+  behandlingstyper: new Set(),
 }
 
-export function useOppgaveFiltere(): OppgaveFiltere {
-  const { data } = useSWRImmutable<OppgaveFiltere>('/api/oppgaver/filtere', async (url: string) => {
-    const result = await http.get<OppgaveFiltereResponse>(url)
+export function useOppgaveFiltre(): OppgaveFiltre {
+  const { data } = useSWRImmutable<OppgaveFiltre>('/api/oppgaver/filtre', async (url: string) => {
+    const result = await http.get<OppgaveFiltreResponse>(url)
     return {
       områder: new Set(result.områder),
       saksbehandlere: new Set(result.saksbehandlere),
       gjelderVerdier: new Set(result.gjelderVerdier),
+      behandlingstyper: new Set(result.behandlingstyper),
     }
   })
   return data ?? ingenFiltere

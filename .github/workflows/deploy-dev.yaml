@@ -159,6 +159,8 @@ jobs:
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v7
+        with:
+          fetch-tags: true
 
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2

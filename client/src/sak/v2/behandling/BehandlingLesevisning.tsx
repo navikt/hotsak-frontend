@@ -1,5 +1,6 @@
 import { Box, Heading, InlineMessage, VStack } from '@navikt/ds-react'
 
+import { isVedtaksbrev } from '../../../brev/brevSelectors.ts'
 import { Brevstatus } from '../../../brev/brevTyper.ts'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
@@ -11,8 +12,8 @@ export interface BehandlingLesevisningProps {
 }
 
 export function BehandlingLesevisning({ behandling }: BehandlingLesevisningProps) {
-  const { brevForSak, harBrev } = useBrevForSak(behandling?.sakId)
-  const brev = brevForSak?.brev[0]
+  const { finnBrev, harVedtaksbrev } = useBrevForSak(behandling?.sakId)
+  const brev = finnBrev(isVedtaksbrev)
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined
   const erHenleggelse = isBehandlingsutfallHenleggelse(behandling?.utfall)
@@ -23,7 +24,7 @@ export function BehandlingLesevisning({ behandling }: BehandlingLesevisningProps
         <TextContainer>
           <Box paddingInline="space-8 space-0">
             <VStack gap="space-12">
-              {harBrev && (
+              {harVedtaksbrev && (
                 <Heading level="2" size="xsmall">
                   {erHenleggelse ? 'Brev' : 'Vedtaksbrev'}
                 </Heading>
@@ -35,7 +36,7 @@ export function BehandlingLesevisning({ behandling }: BehandlingLesevisningProps
                 </InlineMessage>
               )}
 
-              {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
+              {harVedtaksbrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
             </VStack>
           </Box>
         </TextContainer>

@@ -5,7 +5,7 @@ import { http, type HttpAccept, type HttpAcceptKey } from '../io/HttpClient'
 import { type HttpError } from '../io/HttpError'
 import { useSakId } from '../saksbilde/useSak'
 import { and, type Predicate } from '../utils/predicate'
-import { isBrevstatusUtkast } from './brevSelectors'
+import { isBrevstatusUtkast, isVedtaksbrev } from './brevSelectors'
 import { type Brev, type Brevdata, type BrevForSak } from './brevTyper'
 
 /**
@@ -56,6 +56,16 @@ export function useBrevForSak(sakId?: string) {
     return brevForSak.brev.some(isBrevstatusUtkast)
   }, [brevForSak])
 
+  const harVedtaksbrev = useMemo(() => {
+    if (!brevForSak) return
+    return brevForSak.brev.some((brev) => isVedtaksbrev(brev))
+  }, [brevForSak])
+
+  const harVedtaksbrevUtkast = useMemo(() => {
+    if (!brevForSak) return
+    return brevForSak.brev.some((brev) => isVedtaksbrev(brev) && isBrevstatusUtkast(brev))
+  }, [brevForSak])
+
   const finnBrev = useCallback(
     <T extends Brevdata = Brevdata>(...predicates: Predicate<Brev>[]): Brev<T> | undefined => {
       if (!brevForSak) return
@@ -64,7 +74,7 @@ export function useBrevForSak(sakId?: string) {
     [brevForSak]
   )
 
-  return { brevForSak, harBrev, harBrevutkast, finnBrev, ...rest }
+  return { brevForSak, harBrev, harBrevutkast, harVedtaksbrev, harVedtaksbrevUtkast, finnBrev, ...rest }
 }
 
 export function preloadBrev<T extends Brevdata = Brevdata>(sakId: string, brevId: string) {

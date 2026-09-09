@@ -15,8 +15,8 @@ import { useState } from 'react'
 
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { GJELDENDE_STILARK_VERSJON } from '../../../brev/breveditor/html/byggDokument.ts'
-import { isBrevmal } from '../../../brev/brevSelectors.ts'
-import { Brevmal, Målform } from '../../../brev/brevTyper.ts'
+import { isVedtaksbrev } from '../../../brev/brevSelectors.ts'
+import { Målform } from '../../../brev/brevTyper.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevForSak } from '../../../brev/useBrev.ts'
 import { useBrevActions } from '../../../brev/useBrevActions.ts'
@@ -51,9 +51,9 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const { henleggFormRef } = useSakContext()
   const closePanel = useClosePanel('brevpanel')
   const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
-  const { harBrev, finnBrev } = useBrevForSak(behandling?.sakId)
+  const { harVedtaksbrev, finnBrev } = useBrevForSak(behandling?.sakId)
   const { ferdigstillBehandling, lagreBehandling } = useBehandlingActions()
-  const vedtaksbrevId = finnBrev(isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV))?.brevId
+  const vedtaksbrevId = finnBrev(isVedtaksbrev)?.brevId
   const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave, vedtaksbrevId)
   const { showSuccessToast } = useToast()
   const { erIkkeProd } = useMiljø()
@@ -71,7 +71,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   const handleSlettBrevutkast = async () => {
-    if (!harBrev) return
+    if (!harVedtaksbrev) return
     await slettBrevutkast.trigger()
     closePanel()
   }
@@ -93,7 +93,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
 
   const henlegg = async () => {
     await ferdigstillBehandling({})
-    if (!harBrev) closePanel()
+    if (!harVedtaksbrev) closePanel()
     showSuccessToast('Saken er henlagt')
   }
 
@@ -178,7 +178,7 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
                 </VStack>
               )}
 
-              {harBrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
+              {harVedtaksbrev && <VisBrevKnapp erHenleggelse={erHenleggelse} />}
 
               {brevutkastFerdigstilt && (
                 <InlineMessage status="info" size="small">

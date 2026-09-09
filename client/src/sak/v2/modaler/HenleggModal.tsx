@@ -20,7 +20,7 @@ export interface HenleggModalProps {
 export function HenleggModal({ open, onClose, sak, årsak }: HenleggModalProps) {
   const [loading, setLoading] = useState(false)
   const { henleggFormRef } = useSakContext()
-  const { harBrev } = useBrevForSak(sak.sakId)
+  const { harVedtaksbrev } = useBrevForSak(sak.sakId)
   const { personInfo } = usePerson(sak.bruker.fnr)
   const vergemål = personInfo?.vergemål || []
 
@@ -50,7 +50,7 @@ export function HenleggModal({ open, onClose, sak, årsak }: HenleggModalProps) 
       onClose={onClose}
     >
       <VStack gap="space-12">
-        {harBrev && (
+        {harVedtaksbrev && (
           <InfoCard data-color="info" size="small">
             <InfoCard.Header>
               <InfoCard.Title>

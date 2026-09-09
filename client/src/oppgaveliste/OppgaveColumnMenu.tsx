@@ -50,7 +50,7 @@ export function OppgaveColumnMenu() {
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <>
-          <Tooltip content="Vis alle mulige verdier for filtre, ikke kun de som har en match i tabellen. Gjelder kolonner: 'Gjelder', 'Saksbehandler' og 'Kommune / bydel'">
+          <Tooltip content="Vis alle mulige verdier for filtre, ikke kun de som har en match i tabellen. Gjelder kolonner: 'Gjelder', 'Behandlingstype', 'Saksbehandler' og 'Kommune / bydel'">
             <ActionMenu.Group label="Filterverdier">
               <ActionMenu.CheckboxItem checked={filterModus === 'alle'} onCheckedChange={toggleFilterModus}>
                 Vis alle mulige verdier

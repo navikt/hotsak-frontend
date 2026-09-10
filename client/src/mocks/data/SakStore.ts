@@ -752,6 +752,36 @@ export class SakStore extends Dexie {
     return this.saksdokumenter.where('sakId').equals(sakId).toArray()
   }
 
+  async leggTilInngåendeSaksdokumenter(sakId: string, journalpostId: string) {
+    const journalpost = await this.journalpostStore.hent(journalpostId)
+    if (!journalpost) {
+      return
+    }
+
+    const eksisterende = await this.hentSaksdokumenter(sakId)
+    const saksbehandler = Saksbehandlere.innlogget()
+
+    for (const dokument of journalpost.dokumenter) {
+      const finnesFraFør = eksisterende.some(
+        (d) => d.journalpostId === journalpostId && d.dokumentId === dokument.dokumentId
+      )
+      if (finnesFraFør) {
+        continue
+      }
+      await this.saksdokumenter.add({
+        sakId,
+        journalpostId,
+        type: SaksdokumentType.INNGÅENDE,
+        opprettet: nåIso(),
+        saksbehandler,
+        dokumentId: dokument.dokumentId,
+        tittel: dokument.tittel,
+        brevkode: dokument.brevkode,
+        logiskeVedlegg: dokument.logiskeVedlegg,
+      })
+    }
+  }
+
   async lagreSaksdokument(sakId: string, tittel: string) {
     const saksbehandler = Saksbehandlere.innlogget()
     const dokumentId = (await this.saksdokumenter.count()) + 1

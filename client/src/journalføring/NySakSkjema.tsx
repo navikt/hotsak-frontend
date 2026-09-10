@@ -12,6 +12,7 @@ import { OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel, Oppgaveprioritet 
 import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
 import { addWeeks, formatISO, parseISO } from 'date-fns'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
+import { PunchHjelpemidler } from './PunchHjelpemidler.tsx'
 
 function filtrertePåSøk(options: GjelderOption[], søk: string): GjelderOption[] {
   if (!søk) return options
@@ -162,6 +163,10 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, f
           ))}
         </InlineRedigerbarSelect>
       </div>
+
+      <TextContainer>
+        <PunchHjelpemidler kanRedigere={kanRedigere} />
+      </TextContainer>
 
       <TextContainer>
         <HStack gap="space-20" align="start" wrap={false}>

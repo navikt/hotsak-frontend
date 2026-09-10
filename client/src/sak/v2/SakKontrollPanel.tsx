@@ -11,6 +11,7 @@ import { useNotater } from '../notat/useNotater'
 import { GjenståendeOverfør } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
+import { usePunchedeHjelpemidler } from '../../saksbilde/hjelpemidler/usePunchedeHjelpemidler.ts'
 import classes from './SakKontrollPanel.module.css'
 
 export const SakKontrollPanel = () => {
@@ -20,16 +21,19 @@ export const SakKontrollPanel = () => {
   const søknadPanel = usePanel('behovsmeldingspanel')
   const dokumentPanel = usePanel('dokumentpanel')
   const oebsPanel = usePanel('kontaktinformasjonpanel')
+  const hjelpemidlerPanel = usePanel('hjelpemidlerpanel')
   const toggleBehandlingPanel = useTogglePanel('behandlingspanel')
   const toggleBrevKolonne = useTogglePanel('brevpanel')
   const toggleSøknadPanel = useTogglePanel('behovsmeldingspanel')
   const toggleDokumentPanel = useTogglePanel('dokumentpanel')
   const toggleOebsPanel = useTogglePanel('kontaktinformasjonpanel')
+  const toggleHjelpemidlerPanel = useTogglePanel('hjelpemidlerpanel')
   const { isOppgaveContext } = useOppgaveContext()
   const { gjeldendeBehandling } = useBehandling()
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
   const { erBestilling, erPapirsøknad } = useSaksregler()
   const { erIkkeProd } = useMiljø()
+  const { harPunchedeHjelpemidler } = usePunchedeHjelpemidler(sakId)
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
 
@@ -69,6 +73,11 @@ export const SakKontrollPanel = () => {
           {!erPapirsøknad && (
             <ToggleKnapp selected={oebsPanel.visible} onToggle={() => toggleOebsPanel()}>
               Kontaktinformasjon
+            </ToggleKnapp>
+          )}
+          {harPunchedeHjelpemidler && (
+            <ToggleKnapp selected={hjelpemidlerPanel.visible} onToggle={() => toggleHjelpemidlerPanel()}>
+              Hjelpemidler
             </ToggleKnapp>
           )}
         </Chips>

@@ -38,6 +38,7 @@ import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { AvrundetPanel } from './paneler/AvrundetPanel.tsx'
 import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
+import { PunchedeHjelpemidlerPanel } from './PunchedeHjelpemidlerPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { sidebarBredde } from './SakPanelTabTypes.tsx'
 import classes from './SakV2.module.css'
@@ -46,6 +47,7 @@ import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
+import { usePunchedeHjelpemidler } from '../../saksbilde/hjelpemidler/usePunchedeHjelpemidler.ts'
 
 function SakV2Content({
   oppgave,
@@ -67,6 +69,7 @@ function SakV2Content({
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erPapirsøknad, erBestilling } = useSaksregler()
   const { erIkkeProd } = useMiljø()
+  const { harPunchedeHjelpemidler } = usePunchedeHjelpemidler(sak.sakId)
 
   const {
     panelState,
@@ -180,6 +183,16 @@ function SakV2Content({
           >
             <AvrundetPanel>
               <KontaktinformasjonPanel sak={sak} behovsmelding={behovsmelding} />
+            </AvrundetPanel>
+          </ResizablePanel>
+
+          <ResizablePanel
+            panelId="hjelpemidlerpanel"
+            panel={panels.hjelpemidlerpanel}
+            visible={panels.hjelpemidlerpanel.visible && harPunchedeHjelpemidler}
+          >
+            <AvrundetPanel>
+              <PunchedeHjelpemidlerPanel sak={sak} />
             </AvrundetPanel>
           </ResizablePanel>
 

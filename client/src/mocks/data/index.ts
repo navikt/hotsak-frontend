@@ -8,6 +8,7 @@ import { KodeverkStore } from './KodeverkStore.ts'
 import { NotatStore } from './NotatStore'
 import { OppgaveStore } from './OppgaveStore'
 import { PersonStore } from './PersonStore'
+import { PunchedeHjelpemidlerStore } from './PunchedeHjelpemidlerStore'
 import { SakStore } from './SakStore'
 
 export async function setupStore() {
@@ -20,6 +21,7 @@ export async function setupStore() {
   const oppgaveStore = new OppgaveStore(kodeverkStore, behovsmeldingStore, journalpostStore, sakStore)
   const notatStore = new NotatStore(sakStore)
   const endreHjelpemiddelStore = new EndreHjelpemiddelStore(sakStore)
+  const punchedeHjelpemidlerStore = new PunchedeHjelpemidlerStore()
 
   return {
     behovsmeldingStore,
@@ -30,6 +32,7 @@ export async function setupStore() {
     notatStore,
     oppgaveStore,
     personStore,
+    punchedeHjelpemidlerStore,
     sakStore,
   }
 }

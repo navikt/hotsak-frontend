@@ -51,6 +51,13 @@ export const PANELS = [
     minWidthUnit: 'px',
     defaultSize: '20%',
   },
+  {
+    id: 'hjelpemidlerpanel',
+    defaultVisible: true,
+    minWidth: 300,
+    minWidthUnit: 'px',
+    defaultSize: '34%',
+  },
 ] as const satisfies PanelDefinition[]
 
 export type PanelId = (typeof PANELS)[number]['id']

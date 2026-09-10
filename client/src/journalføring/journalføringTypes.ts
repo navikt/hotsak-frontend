@@ -17,6 +17,12 @@ export interface JournalføringV2SkjemaVerdier {
   tilordnetEnhet: 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
   enhetsmappe: string
   medarbeider: string
+  punchedeHjelpemidler: PunchetHjelpemiddel[]
+}
+
+export interface PunchetHjelpemiddel {
+  hmsnummer: string
+  antall: number
 }
 
 export type SakstypeKode = 'A' | 'K' | 'KT' | 'R' | 'S' | 'T'
@@ -80,6 +86,7 @@ export interface JournalføringV2Request {
   sakId?: string
   fagsaksystem?: string
   dokumenter: Array<{ dokumentId: string; tittel: string; annetInnhold: string[] }>
+  hjelpemidler?: PunchetHjelpemiddel[]
 }
 
 export interface JournalføringV2Response {

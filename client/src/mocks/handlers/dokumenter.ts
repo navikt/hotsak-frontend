@@ -32,7 +32,12 @@ function tilJournalføringOppgave(oppgave: Oppgave): JournalføringV2Response['o
   }
 }
 
-export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakStore, oppgaveStore }) => [
+export const dokumentHandlers: StoreHandlersFactory = ({
+  journalpostStore,
+  sakStore,
+  oppgaveStore,
+  punchedeHjelpemidlerStore,
+}) => [
   http.post<never, DokumentsøkRequest, DokumentsøkResponse>(`/api/dokumenter/sok`, async ({ request }) => {
     const { første = 100, etter = null, fraDato, tilDato } = await request.json()
     const alle = (await journalpostStore.søk()).filter((journalpost) => {
@@ -88,6 +93,9 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
         const journalføringRequest = body as JournalføringV2Request
         await journalpostStore.journalførV2(journalføringRequest)
         const { sakId, sak } = await sakStore.opprettJournalføringSak(journalføringRequest)
+        if (journalføringRequest.hjelpemidler?.length) {
+          await punchedeHjelpemidlerStore.lagre(sakId, journalføringRequest.hjelpemidler)
+        }
         const { saksgrunnlag } = journalføringRequest
         if (!saksgrunnlag) {
           throw new Error('saksgrunnlag mangler i V2-journalføringsrequest med ny sak')

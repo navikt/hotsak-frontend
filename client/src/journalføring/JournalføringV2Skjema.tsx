@@ -62,6 +62,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
       aktivFra: formatISO(aktivFraDatoDefault, { representation: 'date' }),
       frist: formatISO(fristDefault, { representation: 'date' }),
+      punchedeHjelpemidler: [],
     },
   })
 
@@ -146,6 +147,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         tildeltSaksbehandler: verdier.tilordnetEnhet === 'medarbeidersOppgaveliste' ? verdier.medarbeider : undefined,
       },
       dokumenter,
+      hjelpemidler: verdier.punchedeHjelpemidler?.filter((hjelpemiddel) => hjelpemiddel.hmsnummer),
     })
     if (resultat) {
       mutateJournalpost()

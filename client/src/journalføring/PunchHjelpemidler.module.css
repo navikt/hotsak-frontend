@@ -1,0 +1,11 @@
+.hmsnummerInput {
+  flex-grow: 1;
+}
+
+.antallInput {
+  width: 6rem;
+}
+
+.produktnavn {
+  flex-grow: 1;
+}

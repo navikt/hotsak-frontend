@@ -18,6 +18,7 @@ import { notatHandlers } from './notater.ts'
 import { oppgaveHandlers } from './oppgaver.ts'
 import { personHandlers } from './person.ts'
 import { problemsammendragHandlers } from './problemsammendrag.ts'
+import { punchedeHjelpemidlerHandlers } from './punchedeHjelpemidler.ts'
 import { saksbehandlingHandlers } from './saksbehandling.ts'
 import { saksoversiktHandlers } from './saksoversikt.ts'
 import { saksvarslerHandlers } from './saksvarsler.ts'
@@ -42,6 +43,7 @@ export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...oppgaveHandlers(store),
   ...personHandlers(store),
   ...problemsammendragHandlers(store),
+  ...punchedeHjelpemidlerHandlers(store),
   ...saksbehandlingHandlers(store),
   ...saksoversiktHandlers(store),
   ...saksvarslerHandlers(store),

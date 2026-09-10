@@ -47,14 +47,26 @@ export const problemsammendragHandlers: StoreHandlersFactory = ({
 
     if (harUendretLavereRangert) {
       if (vedtak && vedtak.utfall === VedtaksResultat.DELVIS_INNVILGET) {
-        return HttpResponse.json({ problemsammendrag: `POST MRS P9 R2; DELVIS INNVILGET - SE BREV I HOTSAK; ${sakId}` })
+        return HttpResponse.json({
+          problemsammendrag: `POST MRS P9 R2; DELVIS INNVILGET - SE BREV I HOTSAK; ${sakId}`,
+          postbegrunnelser: ['POST MRS Trenger denne veldig'],
+        })
       } else {
-        return HttpResponse.json({ problemsammendrag: `POST MRS P9 R2 Manuell rullestol, Terskeleliminator; ${sakId}` })
+        return HttpResponse.json({
+          problemsammendrag: `POST MRS P9 R2 Manuell rullestol, Terskeleliminator; ${sakId}`,
+          postbegrunnelser: ['POST MRS Trenger denne veldig'],
+        })
       }
     }
     if (vedtak && vedtak.utfall === VedtaksResultat.DELVIS_INNVILGET) {
-      return HttpResponse.json({ problemsammendrag: `DELVIS INNVILGET - SE BREV I HOTSAK; ${sakId}` })
+      return HttpResponse.json({
+        problemsammendrag: `DELVIS INNVILGET - SE BREV I HOTSAK; ${sakId}`,
+        postbegrunnelser: ['POST MRS Trenger denne veldig'],
+      })
     }
-    return HttpResponse.json({ problemsammendrag: `Manuell rullestol, Terskeleliminator; ${sakId}` })
+    return HttpResponse.json({
+      problemsammendrag: `Manuell rullestol, Terskeleliminator; ${sakId}`,
+      postbegrunnelser: ['POST MRS Trenger denne veldig'],
+    })
   }),
 ]

@@ -96,6 +96,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({
         if (journalføringRequest.hjelpemidler?.length) {
           await punchedeHjelpemidlerStore.lagre(sakId, journalføringRequest.hjelpemidler)
         }
+        await sakStore.leggTilInngåendeSaksdokumenter(sakId, journalføringRequest.journalpostId)
         const { saksgrunnlag } = journalføringRequest
         if (!saksgrunnlag) {
           throw new Error('saksgrunnlag mangler i V2-journalføringsrequest med ny sak')
@@ -131,6 +132,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({
         }
         await journalpostStore.journalførV2(v2Request)
         await sakStore.knyttJournalpostTilSak(v2Request)
+        await sakStore.leggTilInngåendeSaksdokumenter(v2Request.sakId, v2Request.journalpostId)
         await oppgaveStore.ferdigstillOppgave(v2Request.oppgaveId)
         const oppgaver = await oppgaveStore.finnOppgaverForSak(v2Request.sakId)
         return HttpResponse.json<JournalføringV2Response>({

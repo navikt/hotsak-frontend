@@ -69,7 +69,7 @@ function SakV2Content({
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erPapirsøknad, erBestilling } = useSaksregler()
   const { erIkkeProd } = useMiljø()
-  const { harPunchedeHjelpemidler } = usePunchedeHjelpemidler(sak.sakId)
+  const { erPunchetPapirsøknad } = usePunchedeHjelpemidler(sak.sakId)
 
   const {
     panelState,
@@ -189,7 +189,7 @@ function SakV2Content({
           <ResizablePanel
             panelId="hjelpemidlerpanel"
             panel={panels.hjelpemidlerpanel}
-            visible={panels.hjelpemidlerpanel.visible && harPunchedeHjelpemidler}
+            visible={panels.hjelpemidlerpanel.visible && erPunchetPapirsøknad}
           >
             <AvrundetPanel>
               <PunchedeHjelpemidlerPanel sak={sak} />

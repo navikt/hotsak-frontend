@@ -7,7 +7,7 @@ export function Produktbilde({
 }: {
   src: string | undefined
   alt: string
-  size?: 'small' | 'medium'
+  size?: 'thumbnail' | 'small' | 'medium'
 }) {
   if (!src) {
     return null
@@ -15,7 +15,11 @@ export function Produktbilde({
 
   return (
     <div className={classes.border}>
-      <img alt={alt} src={src} className={size === 'small' ? classes.small : classes.medium} />
+      <img
+        alt={alt}
+        src={src}
+        className={size === 'thumbnail' ? classes.thumbnail : size === 'small' ? classes.small : classes.medium}
+      />
     </div>
   )
 }

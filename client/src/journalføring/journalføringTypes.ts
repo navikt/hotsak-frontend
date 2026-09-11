@@ -25,6 +25,15 @@ export interface PunchetHjelpemiddel {
   antall: number
 }
 
+export interface LagretPunchetHjelpemiddel extends PunchetHjelpemiddel {
+  id: string
+}
+
+export interface PunchedeHjelpemidlerResponse {
+  erPunchetPapirsøknad: boolean
+  hjelpemidler: LagretPunchetHjelpemiddel[]
+}
+
 export type SakstypeKode = 'A' | 'K' | 'KT' | 'R' | 'S' | 'T'
 
 export interface Stk3 {

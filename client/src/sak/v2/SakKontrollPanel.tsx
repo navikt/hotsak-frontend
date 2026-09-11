@@ -33,7 +33,7 @@ export const SakKontrollPanel = () => {
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
   const { erBestilling, erPapirsøknad } = useSaksregler()
   const { erIkkeProd } = useMiljø()
-  const { harPunchedeHjelpemidler } = usePunchedeHjelpemidler(sakId)
+  const { erPunchetPapirsøknad } = usePunchedeHjelpemidler(sakId)
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
 
@@ -75,7 +75,7 @@ export const SakKontrollPanel = () => {
               Kontaktinformasjon
             </ToggleKnapp>
           )}
-          {harPunchedeHjelpemidler && (
+          {erPunchetPapirsøknad && (
             <ToggleKnapp selected={hjelpemidlerPanel.visible} onToggle={() => toggleHjelpemidlerPanel()}>
               Hjelpemidler
             </ToggleKnapp>

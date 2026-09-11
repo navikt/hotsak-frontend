@@ -15,6 +15,13 @@
   height: auto;
 }
 
+.thumbnail {
+  max-width: 48px;
+  max-height: 48px;
+  width: auto;
+  height: auto;
+}
+
 .medium {
   max-width: 150px;
   max-height: 160px;

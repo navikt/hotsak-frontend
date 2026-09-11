@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form'
 
 import { useHjelpemiddelprodukter } from '../saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts'
+import { Produktbilde } from '../felleskomponenter/bilde/Produktbilde.tsx'
 import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
 import classes from './PunchHjelpemidler.module.css'
 
@@ -61,6 +62,7 @@ export function PunchHjelpemidler({ kanRedigere }: PunchHjelpemidlerProps) {
             const produkt = produkter.find((p) => p.hmsArtNr === hmsnummer)
             return (
               <HStack key={field.id} gap="space-8" align="end" wrap={false}>
+                <Produktbilde src={produkt?.produktbildeUri} alt={produkt?.artikkelnavn ?? ''} size="thumbnail" />
                 <TextField
                   label="HMS-nummer"
                   hideLabel

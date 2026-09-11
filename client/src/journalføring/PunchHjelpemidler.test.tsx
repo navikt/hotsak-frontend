@@ -64,7 +64,7 @@ describe('PunchHjelpemidler', () => {
 
   it('viser produktnavn fra bulk-oppslag mot useHjelpemiddelprodukter', async () => {
     useHjelpemiddelprodukterMock.mockReturnValue({
-      data: [{ hmsArtNr: '111111', artikkelnavn: 'Rullestol' }],
+      data: [{ hmsArtNr: '111111', artikkelnavn: 'Rullestol', produktbildeUri: '/rullestol.png' }],
       isLoading: false,
     })
     const { bruker } = renderSkjema()
@@ -72,6 +72,7 @@ describe('PunchHjelpemidler', () => {
     await slåOppHmsnumre(bruker, '111111')
 
     expect(await screen.findByText('Rullestol')).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Rullestol' })).toHaveAttribute('src', '/rullestol.png')
     expect(useHjelpemiddelprodukterMock).toHaveBeenLastCalledWith(['111111'])
   })
 

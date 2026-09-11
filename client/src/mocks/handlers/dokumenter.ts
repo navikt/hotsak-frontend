@@ -93,9 +93,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({
         const journalføringRequest = body as JournalføringV2Request
         await journalpostStore.journalførV2(journalføringRequest)
         const { sakId, sak } = await sakStore.opprettJournalføringSak(journalføringRequest)
-        if (journalføringRequest.hjelpemidler?.length) {
-          await punchedeHjelpemidlerStore.lagre(sakId, journalføringRequest.hjelpemidler)
-        }
+        await punchedeHjelpemidlerStore.lagre(sakId, journalføringRequest.hjelpemidler ?? [])
         await sakStore.leggTilInngåendeSaksdokumenter(sakId, journalføringRequest.journalpostId)
         const { saksgrunnlag } = journalføringRequest
         if (!saksgrunnlag) {

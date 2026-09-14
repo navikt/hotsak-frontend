@@ -6,7 +6,7 @@ import { type HttpError } from '../io/HttpError'
 import { useSakId } from '../saksbilde/useSak'
 import { and, type Predicate } from '../utils/predicate'
 import { isBrevstatusUtkast, isVedtaksbrev } from './brevSelectors'
-import { type Brev, type Brevdata, type BrevForSak } from './brevTyper'
+import { BrevmottakerResponse, type Brev, type Brevdata, type BrevForSak } from './brevTyper'
 
 /**
  * Tar med accept i key slik at JSON- og PDF-versjon får hver sin cache.
@@ -32,6 +32,14 @@ export function useBrevPdf(brevId?: string) {
     }
   )
   return { brev, ...rest }
+}
+
+export function useBrevmottakere(brevId?: string) {
+  const sakId = useSakId()
+  const { data, ...rest } = useSWR<BrevmottakerResponse, HttpError, HttpAcceptKey | null>(
+    sakId && brevId ? [`/api/sak/${sakId}/brev/${brevId}/mottakere`, 'application/json'] : null
+  )
+  return { data, ...rest }
 }
 
 export function useBrevForSak(sakId?: string) {

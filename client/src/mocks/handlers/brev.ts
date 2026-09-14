@@ -118,6 +118,12 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
     const buffer = await hentBrevSomPdf(brev)
     return respondPdf(buffer)
   }),
+
+  http.get<BrevParams>('/api/sak/:sakId/brev/:brevId/mottakere', async ({ params }) => {
+    const { brevId } = params
+    const mottakere = await sakStore.hentBrevmottakere(brevId)
+    return HttpResponse.json({ brevmottakere: mottakere })
+  }),
 ]
 
 async function hentBrevSomPdf(brev: Brev): Promise<ArrayBuffer> {

@@ -39,6 +39,7 @@ import {
   type Behandling,
 } from './behandlingTyper.ts'
 import { HenleggForm } from './HenleggForm.tsx'
+import { MottakereCard } from './MottakereCard.tsx'
 import { useBehandlingActions } from './useBehandlingActions.ts'
 import { VisBrevKnapp } from './VisBrevKnapp.tsx'
 
@@ -192,6 +193,8 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
                   Ferdigstill utkastet i brevpanelet. Brevet blir lagt til utsending etter at vedtaket er fattet.
                 </InlineMessage>
               )}
+
+              {erIkkeProd && <MottakereCard vedtaksbrevId={vedtaksbrevId} />}
             </VStack>
           </Box>
         </TextContainer>

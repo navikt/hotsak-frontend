@@ -4,6 +4,7 @@ import { isBrevmalBarnebrillerVedtak } from '../../brev/brevSelectors.ts'
 import {
   Brev,
   Brevmal,
+  Brevmottaker,
   Brevstatus,
   Målform,
   type OppdaterBrevutkastRequest,
@@ -97,6 +98,7 @@ export class SakStore extends Dexie {
   private readonly vilkårsgrunnlag!: Table<LagretVilkårsgrunnlag, string>
   private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, string>
   private readonly behandlinger!: Table<LagretBehandling, number, InsertBehandling>
+  private readonly brevmottakere!: Table<Brevmottaker, number, Omit<Brevmottaker, 'id'>>
 
   constructor(
     private readonly behovsmeldingStore: BehovsmeldingStore,
@@ -113,6 +115,7 @@ export class SakStore extends Dexie {
       vilkår: '++id,vilkårsvurderingId',
       vilkårsgrunnlag: 'sakId',
       vilkårsvurderinger: 'id,sakId',
+      brevmottakere: '++id,brevId',
     })
   }
 
@@ -577,6 +580,14 @@ export class SakStore extends Dexie {
       ...rest,
     })
 
+    await this.brevmottakere.add({
+      brevId: brevId.toString(),
+      fnr: '13820599335',
+      mottakertype: 'BRUKER',
+      opprettet: nåIso(),
+      opprettetAv: Saksbehandlere.innlogget().id,
+    })
+
     const brev = await this.hentBrev(brevId)
     if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
       return brev
@@ -630,6 +641,8 @@ export class SakStore extends Dexie {
     if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
       return
     }
+
+    await this.brevmottakere.delete(brevId)
 
     const behandlingId = Number(brev.behandlingId)
     if (behandlingId) {
@@ -750,6 +763,11 @@ export class SakStore extends Dexie {
 
   async hentSaksdokumenter(sakId: string) {
     return this.saksdokumenter.where('sakId').equals(sakId).toArray()
+  }
+
+  async hentBrevmottakere(brevId: ID): Promise<Brevmottaker[]> {
+    brevId = Number(brevId)
+    return this.brevmottakere.where('brevId').equals(brevId.toString()).toArray()
   }
 
   async leggTilInngåendeSaksdokumenter(sakId: string, journalpostId: string) {

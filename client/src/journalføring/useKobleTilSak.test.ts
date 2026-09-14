@@ -39,7 +39,7 @@ describe('lagSakvalg', () => {
     expect(resultat[0].fagsystemLabel).toBe('OEBS')
     expect(resultat[0].valg).toEqual({ sakId: '1234B01', fagsaksystem: 'OEBS' })
     expect(resultat[1].fagsystemLabel).toBe('Hotsak')
-    expect(resultat[1].valg).toEqual({ sakId: 'hotsak-1', fagsaksystem: 'hotsak' })
+    expect(resultat[1].valg).toEqual({ sakId: 'hotsak-1', fagsaksystem: 'HOTSAK' })
   })
 
   it('prioriterer åpne Hotsak-saker ved lik dato', () => {
@@ -71,7 +71,7 @@ describe('lagSakvalg', () => {
 
 describe('erFagsak', () => {
   it('regner sakvalg fra Hotsak som intern sak', () => {
-    expect(erFagsak({ sakId: 'hotsak-1', fagsaksystem: 'hotsak' })).toBe(false)
+    expect(erFagsak({ sakId: 'hotsak-1', fagsaksystem: 'HOTSAK' })).toBe(false)
   })
 
   it('regner sakvalg med fagsaksystemkode som ekstern fagsak', () => {

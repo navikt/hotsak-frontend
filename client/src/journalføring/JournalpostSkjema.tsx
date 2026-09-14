@@ -14,6 +14,8 @@ import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
 import { useJournalføringActions } from './useJournalføringActions.ts'
+import { Sakstype as Fagsakstype } from './journalføringTypes.ts'
+
 import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
 
 export interface JournalpostSkjemaProps {
@@ -46,7 +48,14 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
       .trigger({
         tittel: journalpostTittel,
         journalføresPåFnr: fodselsnummer,
-        sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
+        sak:
+          valgtEksisterendeSakId !== ''
+            ? {
+                fagsakId: valgtEksisterendeSakId,
+                sakstype: Fagsakstype.FAGSAK,
+                fagsaksystem: 'HOTSAK',
+              }
+            : undefined,
       })
       .then((response) => {
         const oppgaveId = (response as any).oppgaveId // finnes i v1-responsen

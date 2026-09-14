@@ -77,8 +77,6 @@ export interface JournalføringV2Request {
   tittel: string
   journalføresPåFnr: string
   saksgrunnlag?: JournalføringV2Saksgrunnlag
-  //sakId?: string
-  //fagsaksystem?: string
   sak?: {
     sakstype: Sakstype
     fagsakId?: string

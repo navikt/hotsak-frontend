@@ -77,9 +77,19 @@ export interface JournalføringV2Request {
   tittel: string
   journalføresPåFnr: string
   saksgrunnlag?: JournalføringV2Saksgrunnlag
-  sakId?: string
-  fagsaksystem?: string
+  //sakId?: string
+  //fagsaksystem?: string
+  sak?: {
+    sakstype: Sakstype
+    fagsakId?: string
+    fagsaksystem?: string
+  }
   dokumenter: Array<{ dokumentId: string; tittel: string; annetInnhold: string[] }>
+}
+
+export enum Sakstype {
+  FAGSAK = 'FAGSAK',
+  GENERELL_SAK = 'GENERELL_ SAK',
 }
 
 export interface JournalføringV2Response {

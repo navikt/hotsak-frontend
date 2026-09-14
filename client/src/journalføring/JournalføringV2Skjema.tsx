@@ -17,7 +17,7 @@ import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { JournalføringParter } from './JournalføringParter.tsx'
 import { JournalføringSakvalg } from './JournalføringSakvalg.tsx'
 import { NySakSkjema } from './NySakSkjema.tsx'
-import { type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { Sakstype, type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
@@ -162,8 +162,12 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
     const resultat = await journalfør.trigger({
       tittel,
       journalføresPåFnr: fnr,
-      sakId: valgtSak.sakId,
-      fagsaksystem: valgtSak.fagsaksystem,
+
+      sak: {
+        sakstype: Sakstype.FAGSAK,
+        fagsakId: valgtSak.sakId,
+        fagsaksystem: valgtSak.fagsaksystem,
+      },
       dokumenter,
     })
     if (resultat) {

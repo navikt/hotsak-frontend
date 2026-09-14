@@ -119,23 +119,23 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
       // V2 koble til eksisterende sak — har dokumenter-array og sakId, ingen saksgrunnlag
       if ('dokumenter' in body) {
         const v2Request = body as JournalføringV2Request
-        if (!v2Request.sakId) {
-          throw new Error('sakId mangler i V2-koble-til-sak-request')
+        if (!v2Request.sak) {
+          throw new Error('sak objekt mangler i V2-koble-til-sak-request')
         }
         await journalpostStore.journalførV2(v2Request)
         await sakStore.knyttJournalpostTilSak(v2Request)
-        await sakStore.leggTilInngåendeSaksdokumenter(v2Request.sakId, v2Request.journalpostId)
+        await sakStore.leggTilInngåendeSaksdokumenter(v2Request.sak.fagsakId ?? '', v2Request.journalpostId)
         await oppgaveStore.ferdigstillOppgave(v2Request.oppgaveId)
-        const oppgaver = await oppgaveStore.finnOppgaverForSak(v2Request.sakId)
+        const oppgaver = await oppgaveStore.finnOppgaverForSak(v2Request.sak.fagsakId ?? '')
         return HttpResponse.json<JournalføringV2Response>({
-          sakId: v2Request.sakId,
+          sakId: v2Request.sak.fagsakId ?? '',
           oppgaver: oppgaver.map(tilJournalføringOppgave),
         })
       }
 
       // V1 legacy — barnebriller og gammel journalføring
       const journalføring = body as JournalførJournalpostRequest
-      const eksisterendeSakId = journalføring.sakId
+      const eksisterendeSakId = journalføring.sak?.fagsakId
       const tittel = journalføring.tittel
       await journalpostStore.journalfør(journalføring.journalpostId, tittel)
 

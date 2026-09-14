@@ -10,7 +10,7 @@ import {
   type OppgaveStatusType as OppgaveStatusTypeValue,
 } from '../types/types.internal.ts'
 
-export const HOTSAK_SYSTEM = 'hotsak'
+export const HOTSAK_SYSTEM = 'HOTSAK'
 
 export interface Sakvalg {
   sakId: string

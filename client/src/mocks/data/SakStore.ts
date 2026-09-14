@@ -532,7 +532,7 @@ export class SakStore extends Dexie {
   }
 
   async knyttJournalpostTilSak(journalføring: JournalførJournalpostRequest) {
-    const sakId = journalføring.sakId
+    const sakId = journalføring.sak?.fagsakId
     if (!sakId) {
       return
     }

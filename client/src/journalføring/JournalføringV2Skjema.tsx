@@ -23,6 +23,7 @@ import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import classes from './JournalføringV2Skjema.module.css'
+import { byggJournalføringSak } from './journalføringValg.ts'
 
 interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
@@ -162,12 +163,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
     const resultat = await journalfør.trigger({
       tittel,
       journalføresPåFnr: fnr,
-
-      sak: {
-        sakstype: Sakstype.FAGSAK,
-        fagsakId: valgtSak.sakId,
-        fagsaksystem: valgtSak.fagsaksystem,
-      },
+      sak: byggJournalføringSak(valgtSak),
       dokumenter,
     })
     if (resultat) {
@@ -322,7 +318,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         open={journalføringResultat != null}
         resultat={journalføringResultat}
         sakType={sakType}
-        eksternFagsak={valgtSak ? erFagsak(valgtSak) : false}
+        skjulTilSaken={valgtSak?.sakstype === Sakstype.GENERELL_SAK || (valgtSak ? erFagsak(valgtSak) : false)}
         onClose={() => setJournalføringResultat(null)}
       />
     </VStack>

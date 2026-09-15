@@ -8,8 +8,8 @@ export interface JournalføringFerdigModalmodell {
   visTilSaken: boolean
 }
 
-export function finnModalvariant(sakType: 'ny' | 'eksisterende', eksternFagsak: boolean): JournalføringFerdigVariant {
-  if (eksternFagsak) return 'ekstern-fagsak'
+export function finnModalvariant(sakType: 'ny' | 'eksisterende', skjulTilSaken = false): JournalføringFerdigVariant {
+  if (skjulTilSaken) return 'ekstern-fagsak'
   return sakType === 'ny' ? 'ny-sak' : 'eksisterende-hotsak'
 }
 

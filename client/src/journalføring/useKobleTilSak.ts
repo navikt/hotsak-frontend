@@ -9,16 +9,15 @@ import {
   Sakstype,
   type OppgaveStatusType as OppgaveStatusTypeValue,
 } from '../types/types.internal.ts'
+import type { Sakvalg } from './journalføringValg.ts'
+import { Sakstype as JournalføringSakstype } from './journalføringTypes.ts'
+
+export type { Sakvalg } from './journalføringValg.ts'
 
 export const HOTSAK_SYSTEM = 'HOTSAK'
 
-export interface Sakvalg {
-  sakId: string
-  fagsaksystem: string
-}
-
 export function erFagsak(valg: Sakvalg): boolean {
-  return valg.fagsaksystem !== HOTSAK_SYSTEM
+  return valg.sakstype === JournalføringSakstype.FAGSAK && valg.fagsaksystem !== HOTSAK_SYSTEM
 }
 
 export interface SakvalgVisning {
@@ -67,7 +66,7 @@ function erVisbarFagsak(fagsak: Fagsak): fagsak is Fagsak & {
 
 function tilSakvalg(sak: SaksoversiktSak): SakvalgVisning {
   return {
-    valg: { sakId: sak.sakId, fagsaksystem: HOTSAK_SYSTEM },
+    valg: { sakstype: JournalføringSakstype.FAGSAK, sakId: sak.sakId, fagsaksystem: HOTSAK_SYSTEM },
     sakId: sak.sakId,
     gjelder: sak.gjelder,
     dato: sak.mottattTidspunkt,
@@ -81,7 +80,11 @@ function tilFagsakvalg(
   fagsak: Fagsak & { fagsakId: string; fagsaksystem: FagsaksystemType; datoOpprettet: string }
 ): SakvalgVisning {
   return {
-    valg: { sakId: fagsak.fagsakId, fagsaksystem: fagsak.fagsaksystem },
+    valg: {
+      sakstype: JournalføringSakstype.FAGSAK,
+      sakId: fagsak.fagsakId,
+      fagsaksystem: fagsak.fagsaksystem,
+    },
     sakId: fagsak.fagsakId,
     gjelder: fagsak.tema ? Tema[fagsak.tema] : 'Hjelpemidler',
     dato: fagsak.datoOpprettet,

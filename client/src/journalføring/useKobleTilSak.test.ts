@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { type Fagsak, type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
 import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
+import { Sakstype as JournalføringSakstype } from './journalføringTypes.ts'
 import { erFagsak, lagSakvalg } from './useKobleTilSak.ts'
 
 const sak = (
@@ -37,9 +38,17 @@ describe('lagSakvalg', () => {
 
     expect(resultat.map(({ sakId }) => sakId)).toEqual(['1234B01', 'hotsak-1', '1234A01'])
     expect(resultat[0].fagsystemLabel).toBe('OEBS')
-    expect(resultat[0].valg).toEqual({ sakId: '1234B01', fagsaksystem: 'OEBS' })
+    expect(resultat[0].valg).toEqual({
+      sakstype: JournalføringSakstype.FAGSAK,
+      sakId: '1234B01',
+      fagsaksystem: 'OEBS',
+    })
     expect(resultat[1].fagsystemLabel).toBe('Hotsak')
-    expect(resultat[1].valg).toEqual({ sakId: 'hotsak-1', fagsaksystem: 'HOTSAK' })
+    expect(resultat[1].valg).toEqual({
+      sakstype: JournalføringSakstype.FAGSAK,
+      sakId: 'hotsak-1',
+      fagsaksystem: 'HOTSAK',
+    })
   })
 
   it('prioriterer åpne Hotsak-saker ved lik dato', () => {
@@ -71,12 +80,12 @@ describe('lagSakvalg', () => {
 
 describe('erFagsak', () => {
   it('regner sakvalg fra Hotsak som intern sak', () => {
-    expect(erFagsak({ sakId: 'hotsak-1', fagsaksystem: 'HOTSAK' })).toBe(false)
+    expect(erFagsak({ sakstype: JournalføringSakstype.FAGSAK, sakId: 'hotsak-1', fagsaksystem: 'HOTSAK' })).toBe(false)
   })
 
   it('regner sakvalg med fagsaksystemkode som ekstern fagsak', () => {
-    expect(erFagsak({ sakId: '1234A01', fagsaksystem: 'IT01' })).toBe(true)
-    expect(erFagsak({ sakId: '1234B01', fagsaksystem: 'OEBS' })).toBe(true)
+    expect(erFagsak({ sakstype: JournalføringSakstype.FAGSAK, sakId: '1234A01', fagsaksystem: 'IT01' })).toBe(true)
+    expect(erFagsak({ sakstype: JournalføringSakstype.FAGSAK, sakId: '1234B01', fagsaksystem: 'OEBS' })).toBe(true)
   })
 
   it('utleder ekstern fagsak direkte fra sakvalgene', () => {

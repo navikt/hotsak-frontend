@@ -9,7 +9,7 @@ interface JournalføringFerdigModalProps {
   open: boolean
   resultat: JournalføringV2Response | null
   sakType: 'ny' | 'eksisterende'
-  eksternFagsak?: boolean
+  skjulTilSaken?: boolean
   onClose(): void
 }
 
@@ -17,14 +17,14 @@ export function JournalføringFerdigModal({
   open,
   resultat,
   sakType,
-  eksternFagsak = false,
+  skjulTilSaken = false,
   onClose,
 }: JournalføringFerdigModalProps) {
   const navigate = useNavigate()
 
   const { journalpostSakFerdigstilt } = useJournalpostSakFerdigstiltHendelse(resultat?.sakId)
 
-  const variant = finnModalvariant(sakType, eksternFagsak)
+  const variant = finnModalvariant(sakType, skjulTilSaken)
   const modalmodell = lagJournalføringFerdigModalmodell(variant, resultat?.sakId)
 
   function navigerOgLukkModal(sti: string) {

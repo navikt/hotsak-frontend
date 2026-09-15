@@ -53,7 +53,22 @@ describe('JournalføringFerdigModal', () => {
         open
         resultat={resultatEksisterendeSak}
         sakType="eksisterende"
-        eksternFagsak
+        skjulTilSaken
+        onClose={() => {}}
+      />
+    )
+
+    expect(screen.getByText('Journalføringen er fullført. Saken kan behandles videre i Gosys.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Til saken' })).not.toBeInTheDocument()
+  })
+
+  it('skjuler «Til saken» når journalposten kobles til Gosys generell', () => {
+    render(
+      <JournalføringFerdigModal
+        open
+        resultat={resultatEksisterendeSak}
+        sakType="eksisterende"
+        skjulTilSaken
         onClose={() => {}}
       />
     )
@@ -75,7 +90,7 @@ describe('JournalføringFerdigModal', () => {
         open
         resultat={resultatEksisterendeSak}
         sakType="eksisterende"
-        eksternFagsak
+        skjulTilSaken
         onClose={() => {}}
       />
     )

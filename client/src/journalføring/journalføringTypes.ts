@@ -87,7 +87,7 @@ export interface JournalføringV2Request {
 
 export enum Sakstype {
   FAGSAK = 'FAGSAK',
-  GENERELL_SAK = 'GENERELL_ SAK',
+  GENERELL_SAK = 'GENERELL_SAK',
 }
 
 export interface JournalføringV2Response {

@@ -30,6 +30,18 @@ export const Mottakertype = {
 } as const
 export type Mottakertype = Enum<typeof Mottakertype>
 
+export interface Brevmottaker {
+  fnr: string
+  mottakertype: Mottakertype
+  brevId: string
+  opprettet: Instant
+  opprettetAv: NavIdent
+}
+
+export interface BrevmottakerResponse {
+  brevmottakere: Brevmottaker[]
+}
+
 export const Målform = {
   BOKMÅL: 'BOKMÅL',
   NYNORSK: 'NYNORSK',

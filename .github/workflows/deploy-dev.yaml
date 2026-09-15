@@ -117,8 +117,7 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: ${{ env.VERSION_TAG }}
-          cache_from: type=gha,scope=hotsak-frontend-${{ github.ref_name }}
-          cache_to: type=gha,mode=max,scope=hotsak-frontend-${{ github.ref_name }}
+          no_cache: true
           build_secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
 
       - name: Definer release tag

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["AGENTS.md"],
+  "default_agent": "feature",
+  "subagent_depth": 1,
+  "experimental": {
+    "continue_loop_on_deny": false
+  },
+  "permission": {
+    "doom_loop": "ask"
+  }
+}

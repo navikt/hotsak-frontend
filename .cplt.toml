@@ -11,3 +11,4 @@ allow_docker = true
 [propose.allow]
 ports = [3000]
 
+# deny_clipboard =false

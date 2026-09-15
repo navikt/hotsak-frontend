@@ -4,6 +4,7 @@ import {
   type Brev,
   Brevmal,
   type FerdigstillBrevutkastRequest,
+  type LeggTilMottakerRequest,
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
 } from '../../brev/brevTyper'
@@ -15,6 +16,10 @@ import { respondConflict, respondNoContent, respondPdf } from './response'
 
 interface BrevParams extends SakParams {
   brevId: string
+}
+
+interface BrevmottakerParams extends BrevParams {
+  brevmottakerId: string
 }
 
 export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
@@ -123,6 +128,21 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
     const { brevId } = params
     const mottakere = await sakStore.hentBrevmottakere(brevId)
     return HttpResponse.json({ brevmottakere: mottakere })
+  }),
+
+  http.post<BrevParams, LeggTilMottakerRequest>(
+    '/api/sak/:sakId/brev/:brevId/mottakere',
+    async ({ params, request }) => {
+      const { sakId, brevId } = params
+      await sakStore.leggTilBrevmottaker(sakId, brevId, await request.json())
+      return respondNoContent()
+    }
+  ),
+
+  http.delete<BrevmottakerParams>('/api/sak/:sakId/brev/:brevId/mottakere/:brevmottakerId', async ({ params }) => {
+    const { sakId, brevId, brevmottakerId } = params
+    await sakStore.slettBrevmottaker(sakId, brevId, brevmottakerId)
+    return respondNoContent()
   }),
 ]
 

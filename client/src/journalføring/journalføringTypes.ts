@@ -1,6 +1,8 @@
 import type { Tema } from '../kodeverk/kodeverkTypes.ts'
 import type { Oppgaveprioritet, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 
+export type TilordnetEnhet = 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
+
 export interface JournalføringV2SkjemaVerdier {
   tema: Tema
   behandlingstype: string
@@ -14,7 +16,7 @@ export interface JournalføringV2SkjemaVerdier {
   aktivFra: string
   frist: string
   journalføresPåFnr: string
-  tilordnetEnhet: 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
+  tilordnetEnhet: TilordnetEnhet
   enhetsmappe: string
   medarbeider: string
 }

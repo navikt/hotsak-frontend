@@ -9,6 +9,7 @@ import { OppgaveModalType, useOppgaveÅpneModalHandler } from '../oppgave/Oppgav
 import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePerson } from '../personoversikt/usePerson.ts'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { JournalføringDokumenter } from './JournalføringDokumenter.tsx'
@@ -23,7 +24,7 @@ import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import classes from './JournalføringV2Skjema.module.css'
-import { byggJournalføringSak } from './journalføringValg.ts'
+import { byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
 
 interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
@@ -48,6 +49,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const kanRedigere = oppgaveErUnderBehandlingAvInnloggetAnsatt
   const åpneModal = useOppgaveÅpneModalHandler()
+  const { id: innloggetAnsattId } = useInnloggetAnsatt()
 
   const form = useForm<JournalføringV2SkjemaVerdier>({
     mode: 'onChange',
@@ -144,7 +146,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         aktivDato: verdier.aktivFra,
         fristDato: verdier.frist,
         tildeltEnhet: oppgave.tildeltEnhet.nummer,
-        tildeltSaksbehandler: verdier.tilordnetEnhet === 'medarbeidersOppgaveliste' ? verdier.medarbeider : undefined,
+        tildeltSaksbehandler: finnTildeltSaksbehandler(verdier.tilordnetEnhet, innloggetAnsattId, verdier.medarbeider),
       },
       dokumenter,
     })

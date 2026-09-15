@@ -6,6 +6,8 @@ import {
   Brevmal,
   Brevmottaker,
   Brevstatus,
+  type LeggTilMottakerRequest,
+  Mottakertype,
   Målform,
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
@@ -583,9 +585,10 @@ export class SakStore extends Dexie {
     await this.brevmottakere.add({
       brevId: brevId.toString(),
       fnr: '13820599335',
-      mottakertype: 'BRUKER',
+      mottakertype: Mottakertype.BRUKER,
       opprettet: nåIso(),
       opprettetAv: Saksbehandlere.innlogget().id,
+      kanSlettes: kanBrevmottakerSlettes(rest.brevmal, Mottakertype.BRUKER),
     })
 
     const brev = await this.hentBrev(brevId)
@@ -768,6 +771,22 @@ export class SakStore extends Dexie {
   async hentBrevmottakere(brevId: ID): Promise<Brevmottaker[]> {
     brevId = Number(brevId)
     return this.brevmottakere.where('brevId').equals(brevId.toString()).toArray()
+  }
+
+  async leggTilBrevmottaker(_sakId: string, brevId: string, request: LeggTilMottakerRequest): Promise<void> {
+    const brev = await this.hentBrev(Number(brevId))
+    await this.brevmottakere.add({
+      brevId: brevId.toString(),
+      fnr: request.fnr,
+      mottakertype: request.mottakertype,
+      opprettet: nåIso(),
+      opprettetAv: Saksbehandlere.innlogget().id,
+      kanSlettes: kanBrevmottakerSlettes(brev.brevmal, request.mottakertype),
+    })
+  }
+
+  async slettBrevmottaker(_sakId: string, _brevId: string, brevmottakerId: string): Promise<void> {
+    await this.brevmottakere.delete(Number(brevmottakerId))
   }
 
   async leggTilInngåendeSaksdokumenter(sakId: string, journalpostId: string) {
@@ -959,4 +978,12 @@ function utledVedtakStatus(vedtaksResultat?: VedtaksResultat): VedtakStatusType 
     default:
       return VedtakStatusType.INNVILGET
   }
+}
+
+const obligatoriskeMottakere: Partial<Record<Brevmal, Mottakertype[]>> = {
+  [Brevmal.BREVEDITOR_VEDTAKSBREV]: [Mottakertype.BRUKER, Mottakertype.VERGE],
+}
+
+function kanBrevmottakerSlettes(brevmal: Brevmal, mottakertype: Mottakertype): boolean {
+  return !(obligatoriskeMottakere[brevmal] ?? []).includes(mottakertype)
 }

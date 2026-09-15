@@ -1,12 +1,24 @@
 import { useCallback, useMemo } from 'react'
 import useSWR, { preload, useSWRConfig, type MutatorCallback, type MutatorOptions } from 'swr'
+import useSWRMutation from 'swr/mutation'
 
+import { useToast } from '../felleskomponenter/toast/useToast'
 import { http, type HttpAccept, type HttpAcceptKey } from '../io/HttpClient'
 import { type HttpError } from '../io/HttpError'
 import { useSakId } from '../saksbilde/useSak'
 import { and, type Predicate } from '../utils/predicate'
 import { isBrevstatusUtkast, isVedtaksbrev } from './brevSelectors'
-import { BrevmottakerResponse, type Brev, type Brevdata, type BrevForSak } from './brevTyper'
+import {
+  type Brev,
+  type Brevdata,
+  type BrevForSak,
+  type BrevmottakerResponse,
+  type LeggTilMottakerRequest,
+} from './brevTyper'
+
+function mottakereKeyOf(sakId: string, brevId: string): HttpAcceptKey {
+  return [`/api/sak/${sakId}/brev/${brevId}/mottakere`, 'application/json']
+}
 
 /**
  * Tar med accept i key slik at JSON- og PDF-versjon får hver sin cache.
@@ -37,9 +49,42 @@ export function useBrevPdf(brevId?: string) {
 export function useBrevmottakere(brevId?: string) {
   const sakId = useSakId()
   const { data, ...rest } = useSWR<BrevmottakerResponse, HttpError, HttpAcceptKey | null>(
-    sakId && brevId ? [`/api/sak/${sakId}/brev/${brevId}/mottakere`, 'application/json'] : null
+    sakId && brevId ? mottakereKeyOf(sakId, brevId) : null
   )
   return { data, ...rest }
+}
+
+export function useMutateBrevmottakere() {
+  const { mutate } = useSWRConfig()
+  return (sakId: string, brevId: string) => mutate<BrevmottakerResponse>(mottakereKeyOf(sakId, brevId))
+}
+
+export function useBrevmottakerActions(brevId?: string) {
+  const sakId = useSakId()
+  const { showSuccessToast, showInfoToast } = useToast()
+  const key = sakId && brevId ? mottakereKeyOf(sakId, brevId) : null
+
+  const leggTilBrevmottaker = useSWRMutation<void, HttpError, HttpAcceptKey | null, LeggTilMottakerRequest>(
+    key,
+    ([url], { arg: body }) => http.post<LeggTilMottakerRequest, void>(url, body),
+    {
+      onSuccess() {
+        showSuccessToast('Mottaker lagt til')
+      },
+    }
+  )
+
+  const slettBrevmottaker = useSWRMutation<void, HttpError, HttpAcceptKey | null, string>(
+    key,
+    ([url], { arg: brevmottakerId }) => http.delete(`${url}/${brevmottakerId}`),
+    {
+      onSuccess() {
+        showInfoToast('Mottaker fjernet')
+      },
+    }
+  )
+
+  return { leggTilBrevmottaker, slettBrevmottaker }
 }
 
 export function useBrevForSak(sakId?: string) {

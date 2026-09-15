@@ -1,6 +1,6 @@
-import type { StilarkVersjon } from './breveditor/html/byggDokument.ts'
 import type { OppgaveId } from '../oppgave/oppgaveTypes'
 import type { NavIdent } from '../tilgang/Ansatt'
+import type { StilarkVersjon } from './breveditor/html/byggDokument.ts'
 
 export const Brevstatus = {
   UTKAST: 'UTKAST',
@@ -31,15 +31,30 @@ export const Mottakertype = {
 export type Mottakertype = Enum<typeof Mottakertype>
 
 export interface Brevmottaker {
+  id: string
   fnr: string
   mottakertype: Mottakertype
   brevId: string
   opprettet: Instant
   opprettetAv: NavIdent
+  kanSlettes: boolean
 }
+
+export const BrevmalTekst = {
+  [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Vedtaksbrevet',
+  [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrevet',
+  [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrevet',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrevet',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrevet',
+} as const
 
 export interface BrevmottakerResponse {
   brevmottakere: Brevmottaker[]
+}
+
+export interface LeggTilMottakerRequest {
+  fnr: string
+  mottakertype: Mottakertype
 }
 
 export const Målform = {

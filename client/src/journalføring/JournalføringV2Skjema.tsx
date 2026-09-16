@@ -299,7 +299,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                     disabled={journalfør.isMutating}
                     onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
                   >
-                    {sakType === 'eksisterende' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
+                    {sakType === 'eksisterende' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
                   </Button>
                   <Button
                     type="button"

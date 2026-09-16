@@ -23,7 +23,7 @@ test.describe('Journalføring', () => {
         request.method() === 'POST' && /\/api\/journalpost\/[^/]+\/journalforing$/.test(new URL(request.url()).pathname)
     )
     const journalføring = ventPåJournalføring(page)
-    await page.getByRole('button', { name: 'Journalfør og knytt til sak' }).click()
+    await page.getByRole('button', { name: 'Journalfør og koble til sak' }).click()
     const request = await journalføringRequest
     expect(request.postDataJSON()).toMatchObject({
       sak: { sakstype: 'FAGSAK', fagsakId: '9901', fagsaksystem: 'HOTSAK' },

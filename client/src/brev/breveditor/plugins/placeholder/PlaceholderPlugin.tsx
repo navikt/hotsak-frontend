@@ -1,7 +1,7 @@
-import { createPlatePlugin } from 'platejs/react'
+import type { Path, TElement } from 'platejs'
+import { createPlatePlugin, PlateEditor } from 'platejs/react'
 import { Placeholder } from './Placeholder/Placeholder'
 import { ELEMENT_PLACEHOLDER } from './PlaceholderElement'
-import type { Editor, Path, TElement } from 'platejs'
 
 interface PlaceholderNode extends TElement {
   type: string
@@ -12,7 +12,7 @@ const EMPTY_CHAR_REGEX = new RegExp(EMPTY_CHAR, 'g')
 
 const hentSynligTekst = (text: string) => text.replace(EMPTY_CHAR_REGEX, '')
 
-const gåTilPlaceholder = (editor: Editor, node: PlaceholderNode, path: Path) => {
+const gåTilPlaceholder = (editor: PlateEditor, node: PlaceholderNode, path: Path) => {
   const textPath = [...path, 0]
   if (!editor.api.hasPath(textPath)) return
 

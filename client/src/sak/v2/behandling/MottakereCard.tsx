@@ -1,5 +1,5 @@
 import { PadlockLockedIcon, PadlockUnlockedIcon } from '@navikt/aksel-icons'
-import { Box, Button, Dialog, HStack, InlineMessage, Switch, Table, Tooltip, VStack } from '@navikt/ds-react'
+import { Box, Button, Dialog, Heading, HStack, InlineMessage, Switch, Table, Tooltip, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import {
@@ -26,6 +26,11 @@ export function MottakereCard({ vedtaksbrevId }: { vedtaksbrevId?: string }) {
 
   return (
     <Box>
+      <Box marginBlock="space-0 space-8">
+        <Heading level="2" size="xsmall">
+          Hvem mottar dette brevet?
+        </Heading>
+      </Box>
       <CompactExpandableCard variant="subtle" tittel="Mottakere">
         <Table size="small">
           <Table.Body>

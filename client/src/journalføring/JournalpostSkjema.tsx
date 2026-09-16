@@ -142,7 +142,7 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
               disabled={journalfør.isMutating}
               loading={journalfør.isMutating}
             >
-              {valgtEksisterendeSakId !== '' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
+              {valgtEksisterendeSakId !== '' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
             </Button>
           </Box>
         </VStack>

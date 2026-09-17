@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import { Journalpost } from '../../types/types.internal.ts'
+import { type Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
 import { nåIso } from './felles.ts'
 import {
   BARNEBRILLE_BREVKODE,
@@ -153,6 +153,7 @@ export class JournalpostStore extends Dexie {
 
     return this.journalposter.update(journalpostId, {
       tittel,
+      journalstatus: JournalpostStatusType.JOURNALFOERT,
     })
   }
 
@@ -180,6 +181,7 @@ export class JournalpostStore extends Dexie {
     return this.journalposter.update(journalpostId, {
       tittel,
       bruker: oppdatertBruker,
+      journalstatus: JournalpostStatusType.JOURNALFOERT,
     })
   }
 }

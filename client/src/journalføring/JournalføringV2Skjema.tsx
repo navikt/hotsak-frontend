@@ -1,9 +1,10 @@
-import { BodyShort, Box, Button, Heading, HStack, useDatepicker, VStack, Tag } from '@navikt/ds-react'
+import { BodyShort, Button, Heading, HStack, useDatepicker, VStack, Tag } from '@navikt/ds-react'
 import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Skillelinje } from '../felleskomponenter/Strek.tsx'
+import { StickyHStack } from '../felleskomponenter/StickyHStack.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from '../oppgave/OppgaveContext.ts'
 import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
@@ -150,7 +151,6 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       dokumenter,
     })
     if (resultat) {
-      //mutateJournalpost()
       setJournalføringResultat(resultat)
     }
   }
@@ -168,7 +168,6 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       dokumenter,
     })
     if (resultat) {
-      //mutateJournalpost()
       setJournalføringResultat(resultat)
     }
   }
@@ -273,68 +272,35 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
           </VStack>
 
           {kanRedigere && (
-            <HStack
-              asChild
-              position="sticky"
-              left="space-0"
-              bottom="space-0"
-              align="center"
-              justify="start"
-              width="100%"
-              className={classes.stickyHandlingerWrapper}
-            >
-              <Box
-                background="default"
-                borderWidth="1 0 0 0"
-                borderColor="neutral-subtle"
-                className={classes.stickyHandlinger}
-              >
-                <HStack gap="space-4" paddingInline="space-16" paddingBlock="space-8">
-                  <Button
-                    type={sakType === 'eksisterende' ? 'button' : 'submit'}
-                    variant="primary"
-                    size="small"
-                    loading={journalfør.isMutating}
-                    disabled={journalfør.isMutating}
-                    onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
-                  >
-                    {sakType === 'eksisterende' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="small"
-                    onClick={() => åpneModal(OppgaveModalType.OVERFØR_TIL_GOSYS)}
-                  >
-                    Overfør til Gosys
-                  </Button>
-                </HStack>
-              </Box>
-            </HStack>
+            <StickyHStack align="center" justify="start">
+              <HStack gap="space-4" paddingInline="space-16" paddingBlock="space-8">
+                <Button
+                  type={sakType === 'eksisterende' ? 'button' : 'submit'}
+                  variant="primary"
+                  size="small"
+                  loading={journalfør.isMutating}
+                  disabled={journalfør.isMutating}
+                  onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
+                >
+                  {sakType === 'eksisterende' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="small"
+                  onClick={() => åpneModal(OppgaveModalType.OVERFØR_TIL_GOSYS)}
+                >
+                  Overfør til Gosys
+                </Button>
+              </HStack>
+            </StickyHStack>
           )}
-          {/* TODO flytt noe av dette til sticky kompomnent */}
           {journalpost.journalstatus === JournalpostStatusType.JOURNALFOERT && (
-            <HStack
-              asChild
-              position="sticky"
-              left="space-0"
-              bottom="space-0"
-              align="center"
-              justify="start"
-              width="100%"
-              className={classes.stickyHandlingerWrapper}
-            >
-              <Box
-                background="default"
-                borderWidth="1 0 0 0"
-                borderColor="neutral-subtle"
-                className={classes.stickyHandlinger}
-              >
-                <Tag data-color="neutral" variant="moderate" size="small">
-                  Journalført
-                </Tag>
-              </Box>
-            </HStack>
+            <StickyHStack align="center" justify="start" paddingBlock="space-8" paddingInline="space-8">
+              <Tag data-color="info" variant="moderate" size="medium">
+                Journalført
+              </Tag>
+            </StickyHStack>
           )}
         </form>
       </FormProvider>
@@ -344,6 +310,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         resultat={journalføringResultat}
         sakType={sakType}
         skjulTilSaken={valgtSak?.sakstype === Sakstype.GENERELL_SAK || (valgtSak ? erFagsak(valgtSak) : false)}
+        onJournalpostSakFerdigstilt={mutateJournalpost}
         onClose={() => setJournalføringResultat(null)}
       />
     </VStack>

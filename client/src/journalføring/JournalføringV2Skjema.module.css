@@ -26,7 +26,7 @@
 }
 
 .rot {
-  min-height: 100%;
+  height: 100%;
 }
 
 .header {
@@ -37,19 +37,10 @@
 .form {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  flex: 1;
 }
 
 .innhold {
   padding: var(--ax-space-16);
   flex: 1;
-}
-
-.stickyHandlingerWrapper {
-  z-index: 2;
-}
-
-.stickyHandlinger {
-  width: 100%;
-  box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.15);
 }

@@ -1,4 +1,5 @@
 import { BodyShort, Button, Dialog, HStack } from '@navikt/ds-react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 import { type JournalføringV2Response } from './journalføringTypes.ts'
@@ -10,6 +11,7 @@ interface JournalføringFerdigModalProps {
   resultat: JournalføringV2Response | null
   sakType: 'ny' | 'eksisterende'
   skjulTilSaken?: boolean
+  onJournalpostSakFerdigstilt(): void
   onClose(): void
 }
 
@@ -18,11 +20,18 @@ export function JournalføringFerdigModal({
   resultat,
   sakType,
   skjulTilSaken = false,
+  onJournalpostSakFerdigstilt,
   onClose,
 }: JournalføringFerdigModalProps) {
   const navigate = useNavigate()
 
   const { journalpostSakFerdigstilt } = useJournalpostSakFerdigstiltHendelse(resultat?.sakId)
+
+  useEffect(() => {
+    if (journalpostSakFerdigstilt) {
+      onJournalpostSakFerdigstilt()
+    }
+  }, [journalpostSakFerdigstilt, onJournalpostSakFerdigstilt])
 
   const variant = finnModalvariant(sakType, skjulTilSaken)
   const modalmodell = lagJournalføringFerdigModalmodell(variant, resultat?.sakId)

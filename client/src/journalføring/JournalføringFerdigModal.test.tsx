@@ -33,18 +33,25 @@ const resultatEksisterendeSak: JournalføringV2Response = {
 
 describe('JournalføringFerdigModal', () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     useJournalpostSakFerdigstiltHendelse.mockReturnValue({
       journalpostSakFerdigstilt: { oppgaveId: 'ny-oppgave-1' },
     })
   })
 
-  it('viser «Til saken» og koblingsmelding for eksisterende Hotsak-sak', () => {
+  it('viser «Behandle saken» og koblingsmelding for eksisterende Hotsak-sak', () => {
     render(
-      <JournalføringFerdigModal open resultat={resultatEksisterendeSak} sakType="eksisterende" onClose={() => {}} />
+      <JournalføringFerdigModal
+        open
+        resultat={resultatEksisterendeSak}
+        sakType="eksisterende"
+        onJournalpostSakFerdigstilt={() => {}}
+        onClose={() => {}}
+      />
     )
 
     expect(screen.getByText('Journalposten ble koblet til sak sak-1.')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Til saken' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Behandle saken' })).toBeInTheDocument()
   })
 
   it('skjuler «Til saken» og viser Gosys-tekst for ekstern fagsak', () => {
@@ -54,6 +61,7 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="eksisterende"
         skjulTilSaken
+        onJournalpostSakFerdigstilt={() => {}}
         onClose={() => {}}
       />
     )
@@ -69,6 +77,7 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="eksisterende"
         skjulTilSaken
+        onJournalpostSakFerdigstilt={() => {}}
         onClose={() => {}}
       />
     )
@@ -77,11 +86,21 @@ describe('JournalføringFerdigModal', () => {
     expect(screen.queryByRole('button', { name: 'Til saken' })).not.toBeInTheDocument()
   })
 
-  it('viser «Til saken» og opprettelsesmelding for ny sak', () => {
-    render(<JournalføringFerdigModal open resultat={resultatEksisterendeSak} sakType="ny" onClose={() => {}} />)
+  it('viser «Behandle saken» og opprettelsesmelding for ny sak', () => {
+    render(
+      <JournalføringFerdigModal
+        open
+        resultat={resultatEksisterendeSak}
+        sakType="ny"
+        onJournalpostSakFerdigstilt={() => {}}
+        onClose={() => {}}
+      />
+    )
 
-    expect(screen.getByText('Sak med sakId sak-1 ble opprettet.')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Til saken' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Da kan nå gå til til dine oppgaver, enhetens oppgaver eller fortsette behandling av saken.')
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Behandle saken' })).toBeInTheDocument()
   })
 
   it('viser alltid oppgavelistehandlingene uavhengig av variant', () => {
@@ -91,6 +110,7 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="eksisterende"
         skjulTilSaken
+        onJournalpostSakFerdigstilt={() => {}}
         onClose={() => {}}
       />
     )
@@ -98,5 +118,52 @@ describe('JournalføringFerdigModal', () => {
     expect(screen.getAllByRole('button', { name: 'Lukk' }).length).toBeGreaterThan(0)
     expect(screen.getByRole('button', { name: 'Til mine oppgaver' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Til enhetens oppgaver' })).toBeInTheDocument()
+  })
+
+  it('varsler én gang når journalposten er ferdigstilt', () => {
+    const onJournalpostSakFerdigstilt = vi.fn()
+    const hendelse = { oppgaveId: 'ny-oppgave-1' }
+    useJournalpostSakFerdigstiltHendelse.mockReturnValue({
+      journalpostSakFerdigstilt: undefined,
+    })
+
+    const { rerender } = render(
+      <JournalføringFerdigModal
+        open
+        resultat={resultatEksisterendeSak}
+        sakType="ny"
+        onJournalpostSakFerdigstilt={onJournalpostSakFerdigstilt}
+        onClose={() => {}}
+      />
+    )
+
+    expect(onJournalpostSakFerdigstilt).not.toHaveBeenCalled()
+
+    useJournalpostSakFerdigstiltHendelse.mockReturnValue({
+      journalpostSakFerdigstilt: hendelse,
+    })
+    rerender(
+      <JournalføringFerdigModal
+        open
+        resultat={resultatEksisterendeSak}
+        sakType="ny"
+        onJournalpostSakFerdigstilt={onJournalpostSakFerdigstilt}
+        onClose={() => {}}
+      />
+    )
+
+    expect(onJournalpostSakFerdigstilt).toHaveBeenCalledTimes(1)
+
+    rerender(
+      <JournalføringFerdigModal
+        open
+        resultat={resultatEksisterendeSak}
+        sakType="ny"
+        onJournalpostSakFerdigstilt={onJournalpostSakFerdigstilt}
+        onClose={() => {}}
+      />
+    )
+
+    expect(onJournalpostSakFerdigstilt).toHaveBeenCalledTimes(1)
   })
 })

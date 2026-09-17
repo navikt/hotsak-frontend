@@ -1,6 +1,7 @@
-import { Box, Button, HStack, Tag } from '@navikt/ds-react'
+import { Button, HStack, Tag } from '@navikt/ds-react'
 
 import { useMemo } from 'react'
+import { StickyHStack } from '../../felleskomponenter/StickyHStack.tsx'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
@@ -18,7 +19,6 @@ import {
 import { useBehandling } from './behandling/useBehandling'
 import { BehandlingsutfallTag } from './BehandlingsutfallTag.tsx'
 import { BestillingKnapper } from './bestilling/BestillingKnapper'
-import classes from './StickyBunnlinje.module.css'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 
 export interface StickyBunnlinjeProps {
@@ -43,45 +43,26 @@ export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps)
   )
 
   return (
-    <HStack
-      asChild
-      position="sticky"
-      left="space-0"
-      bottom="space-0"
-      align="center"
-      justify="space-between"
-      gap="space-16"
-      paddingInline="space-16"
-      paddingBlock="space-8"
-      width="100%"
-    >
-      <Box
-        position="sticky"
-        background="default"
-        borderWidth="1 0 0 0"
-        borderColor="neutral-subtle"
-        className={classes.root}
-      >
-        <HStack align="center" justify="space-between" gap="space-16">
-          {erBestilling ? (
-            <BestillingKnapper />
-          ) : (
-            oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-              <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
-                {velgKnappetekst(gjeldendeBehandling?.utfall)}
-              </Button>
-            )
-          )}
-          {isBehandlingFerdigstilt(gjeldendeBehandling) && <Behandlingsutfall behandling={gjeldendeBehandling} />}
-          {!oppgaveErPåVent && !oppgaveErAvsluttet && (
-            <Tag data-color="neutral" variant="moderate" size="small">
-              {OppgaveStatusLabel.get(sak.saksstatus)}
-            </Tag>
-          )}
-          {oppgave && oppgaveErPåVent && <OppgavePåVentTag oppgave={oppgave} />}
-        </HStack>
-      </Box>
-    </HStack>
+    <StickyHStack align="center" justify="space-between" gap="space-16" paddingInline="space-16" paddingBlock="space-8">
+      <HStack align="center" justify="space-between" gap="space-16">
+        {erBestilling ? (
+          <BestillingKnapper />
+        ) : (
+          oppgaveErUnderBehandlingAvInnloggetAnsatt && (
+            <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
+              {velgKnappetekst(gjeldendeBehandling?.utfall)}
+            </Button>
+          )
+        )}
+        {isBehandlingFerdigstilt(gjeldendeBehandling) && <Behandlingsutfall behandling={gjeldendeBehandling} />}
+        {!oppgaveErPåVent && !oppgaveErAvsluttet && (
+          <Tag data-color="neutral" variant="moderate" size="small">
+            {OppgaveStatusLabel.get(sak.saksstatus)}
+          </Tag>
+        )}
+        {oppgave && oppgaveErPåVent && <OppgavePåVentTag oppgave={oppgave} />}
+      </HStack>
+    </StickyHStack>
   )
 }
 

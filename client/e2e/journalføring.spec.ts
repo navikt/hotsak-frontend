@@ -32,10 +32,10 @@ test.describe('Journalføring', () => {
     const { sakId, oppgaver } = await respons.json()
     const oppgaveId = oppgaver.find((oppgave: { isÅpen: boolean }) => oppgave.isÅpen)?.oppgaveId
 
-    const modal = page.getByRole('dialog', { name: 'Journalpost ferdig journalført' })
+    const modal = page.getByRole('dialog', { name: 'Journalføringen er fullført og ny sak opprettet' })
     await expect(modal).toBeVisible()
     await expect(modal).toContainText(`Journalposten ble koblet til sak ${sakId}.`)
-    await modal.getByRole('button', { name: 'Til saken' }).click()
+    await modal.getByRole('button', { name: 'Behandle saken' }).click()
 
     await expect(page).toHaveURL(`/oppgave/${oppgaveId}`)
   })
@@ -52,13 +52,12 @@ test.describe('Journalføring', () => {
     const journalføring = ventPåJournalføring(page)
     await page.getByRole('button', { name: 'Journalfør og opprett sak' }).click()
     const respons = await journalføring
-    const { sakId, oppgaver } = await respons.json()
+    const { oppgaver } = await respons.json()
     const oppgaveId = oppgaver.find((oppgave: { isÅpen: boolean }) => oppgave.isÅpen)?.oppgaveId
 
-    const modal = page.getByRole('dialog', { name: 'Journalpost ferdig journalført' })
+    const modal = page.getByRole('dialog', { name: 'Journalføringen er fullført og ny sak opprettet' })
     await expect(modal).toBeVisible()
-    await expect(modal).toContainText(`Sak med sakId ${sakId} ble opprettet.`)
-    const tilSaken = modal.getByRole('button', { name: 'Til saken' })
+    const tilSaken = modal.getByRole('button', { name: 'Behandle saken' })
     await expect(tilSaken).toBeEnabled()
     await tilSaken.click()
 

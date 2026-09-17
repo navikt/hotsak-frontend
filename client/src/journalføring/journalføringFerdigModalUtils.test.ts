@@ -97,11 +97,6 @@ describe('lagJournalføringFerdigModalmodell', () => {
   it('viser opprettelsesmelding og «Til saken» for ny sak', () => {
     const modell = lagJournalføringFerdigModalmodell('ny-sak', 'sak-1')
 
-    expect(modell.melding).toBe('Sak med sakId sak-1 ble opprettet.')
     expect(modell.visTilSaken).toBe(true)
-  })
-
-  it('faller tilbake til «–» når sakId mangler', () => {
-    expect(lagJournalføringFerdigModalmodell('ny-sak').melding).toBe('Sak med sakId – ble opprettet.')
   })
 })

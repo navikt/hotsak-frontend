@@ -30,7 +30,7 @@ export function lagJournalføringFerdigModalmodell(
       }
     case 'ny-sak':
       return {
-        melding: `Sak med sakId ${sakId ?? '–'} ble opprettet.`,
+        melding: `Da kan nå gå til til dine oppgaver, enhetens oppgaver eller fortsette behandling av saken.`,
         visTilSaken: true,
       }
   }

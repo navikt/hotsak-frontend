@@ -34,21 +34,24 @@ export function JournalføringFerdigModal({
 
   return (
     <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()} size="medium">
-      <Dialog.Popup>
+      <Dialog.Popup position="center">
         <Dialog.Header>
-          <Dialog.Title>Journalpost ferdig journalført</Dialog.Title>
+          <Dialog.Title>Journalføringen er fullført og ny sak opprettet</Dialog.Title>
         </Dialog.Header>
         <Dialog.Body>
           <BodyShort>{modalmodell.melding}</BodyShort>
         </Dialog.Body>
         <Dialog.Footer>
           <HStack gap="space-16" align="center" justify="center">
-            <Button variant="primary" size="small" onClick={() => resultat && onClose()}>
-              Lukk
+            <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/mine')}>
+              Til mine oppgaver
+            </Button>
+            <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/enhetens')}>
+              Til enhetens oppgaver
             </Button>
             {modalmodell.visTilSaken && variant === 'ny-sak' && (
               <Button
-                variant="secondary"
+                variant="primary"
                 size="small"
                 loading={!journalpostSakFerdigstilt}
                 onClick={() => {
@@ -58,24 +61,18 @@ export function JournalføringFerdigModal({
                   }
                 }}
               >
-                Til saken
+                Behandle saken
               </Button>
             )}
             {modalmodell.visTilSaken && variant === 'eksisterende-hotsak' && (
               <Button
-                variant="secondary"
+                variant="primary"
                 size="small"
                 onClick={() => resultat && navigerOgLukkModal(finnStiTilSak(resultat))}
               >
-                Til saken
+                Behandle saken
               </Button>
             )}
-            <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/mine')}>
-              Til mine oppgaver
-            </Button>
-            <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/enhetens')}>
-              Til enhetens oppgaver
-            </Button>
           </HStack>
         </Dialog.Footer>
       </Dialog.Popup>

@@ -1,4 +1,4 @@
-import useSwr, { KeyedMutator } from 'swr'
+import useSwr, { KeyedMutator, mutate } from 'swr'
 
 import type { HttpError } from '../io/HttpError.ts'
 import type { Journalpost } from '../types/types.internal'
@@ -24,4 +24,8 @@ export function useJournalpost(journalpostId?: string): JournalpostResponse {
     mutate,
     isLoading,
   }
+}
+
+export function mutateJournalpost(journalpostId: string) {
+  return mutate(`/api/journalpost/${journalpostId}`)
 }

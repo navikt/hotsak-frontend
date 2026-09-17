@@ -1,4 +1,4 @@
-import { BodyShort, Box, Button, Heading, HStack, useDatepicker, VStack } from '@navikt/ds-react'
+import { BodyShort, Box, Button, Heading, HStack, useDatepicker, VStack, Tag } from '@navikt/ds-react'
 import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -10,7 +10,7 @@ import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../o
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { type Dokument, type Journalpost } from '../types/types.internal.ts'
+import { JournalpostStatusType, type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { JournalføringDokumenter } from './JournalføringDokumenter.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
@@ -127,7 +127,6 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
     return { tittel, journalføresPåFnr: fnr, dokumenter }
   }
 
-  // TODO Sjekk tildelt enhet vs gjeldende enhet for saksbehandler. Kan det være forskjell på dem?
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
     const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
@@ -151,7 +150,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       dokumenter,
     })
     if (resultat) {
-      mutateJournalpost()
+      //mutateJournalpost()
       setJournalføringResultat(resultat)
     }
   }
@@ -169,7 +168,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       dokumenter,
     })
     if (resultat) {
-      mutateJournalpost()
+      //mutateJournalpost()
       setJournalføringResultat(resultat)
     }
   }
@@ -310,6 +309,30 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                     Overfør til Gosys
                   </Button>
                 </HStack>
+              </Box>
+            </HStack>
+          )}
+          {/* TODO flytt noe av dette til sticky kompomnent */}
+          {journalpost.journalstatus === JournalpostStatusType.JOURNALFOERT && (
+            <HStack
+              asChild
+              position="sticky"
+              left="space-0"
+              bottom="space-0"
+              align="center"
+              justify="start"
+              width="100%"
+              className={classes.stickyHandlingerWrapper}
+            >
+              <Box
+                background="default"
+                borderWidth="1 0 0 0"
+                borderColor="neutral-subtle"
+                className={classes.stickyHandlinger}
+              >
+                <Tag data-color="neutral" variant="moderate" size="small">
+                  Journalført
+                </Tag>
               </Box>
             </HStack>
           )}

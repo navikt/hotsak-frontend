@@ -1,9 +1,10 @@
-import { BodyShort, Button, Dialog, HStack } from '@navikt/ds-react'
+import { Button, Dialog, Heading, HStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
-import { type JournalføringV2Response } from './journalføringTypes.ts'
+import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { finnModalvariant, finnStiTilSak, lagJournalføringFerdigModalmodell } from './journalføringFerdigModalUtils.ts'
+import { type JournalføringV2Response } from './journalføringTypes.ts'
 import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
 
 interface JournalføringFerdigModalProps {
@@ -34,7 +35,7 @@ export function JournalføringFerdigModal({
   }, [journalpostSakFerdigstilt, onJournalpostSakFerdigstilt])
 
   const variant = finnModalvariant(sakType, skjulTilSaken)
-  const modalmodell = lagJournalføringFerdigModalmodell(variant, resultat?.sakId)
+  const modalmodell = lagJournalføringFerdigModalmodell(variant)
 
   function navigerOgLukkModal(sti: string) {
     onClose()
@@ -45,10 +46,14 @@ export function JournalføringFerdigModal({
     <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()} size="medium">
       <Dialog.Popup position="center">
         <Dialog.Header>
-          <Dialog.Title>Journalføringen er fullført og ny sak opprettet</Dialog.Title>
+          <Dialog.Title>
+            <Heading level="1" size="small">
+              {modalmodell.tittel}
+            </Heading>
+          </Dialog.Title>
         </Dialog.Header>
         <Dialog.Body>
-          <BodyShort>{modalmodell.melding}</BodyShort>
+          <Tekst>{modalmodell.melding}</Tekst>
         </Dialog.Body>
         <Dialog.Footer>
           <HStack gap="space-16" align="center" justify="center">

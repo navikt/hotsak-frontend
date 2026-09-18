@@ -74,29 +74,28 @@ describe('finnModalvariant', () => {
 
 describe('lagJournalføringFerdigModalmodell', () => {
   it('viser Gosys-melding og skjuler «Til saken» for ekstern fagsak', () => {
-    const modell = lagJournalføringFerdigModalmodell('ekstern-fagsak', 'sak-1')
+    const modell = lagJournalføringFerdigModalmodell('ekstern-fagsak')
 
     expect(modell.melding).toBe('Journalføringen er fullført. Saken kan behandles videre i Gosys.')
     expect(modell.visTilSaken).toBe(false)
   })
 
   it('viser koblingsmelding og «Til saken» for eksisterende Hotsak-sak', () => {
-    const modell = lagJournalføringFerdigModalmodell('eksisterende-hotsak', 'sak-1')
+    const modell = lagJournalføringFerdigModalmodell('eksisterende-hotsak')
 
     expect(modell.melding).toBe('Journalposten ble koblet til sak sak-1.')
     expect(modell.visTilSaken).toBe(true)
   })
 
   it('viser samme Gosys-melding og skjuler «Til saken» for saker uten lokal kobling', () => {
-    const modell = lagJournalføringFerdigModalmodell('ekstern-fagsak', 'sak-1')
+    const modell = lagJournalføringFerdigModalmodell('ekstern-fagsak')
 
     expect(modell.melding).toBe('Journalføringen er fullført. Saken kan behandles videre i Gosys.')
     expect(modell.visTilSaken).toBe(false)
   })
 
   it('viser opprettelsesmelding og «Til saken» for ny sak', () => {
-    const modell = lagJournalføringFerdigModalmodell('ny-sak', 'sak-1')
-
+    const modell = lagJournalføringFerdigModalmodell('ny-sak')
     expect(modell.visTilSaken).toBe(true)
   })
 })

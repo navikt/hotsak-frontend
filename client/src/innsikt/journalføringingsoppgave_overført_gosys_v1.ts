@@ -8,14 +8,14 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
   tittel: 'Vil du overføre oppgaven til Gosys?',
   beskrivelse: {
     header: 'Hva skjer med oppgaven hvis den overføres?',
-    body: 'Hvis du overfører oppgaven til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd.',
+    body: 'Hvis du overfører oppgaven til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. \nJournalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd. Journalføringsoppgaven blir borte fra Hotsak etter overføring.',
   },
   spørsmål: [
     {
       type: 'enkeltvalg',
       tekst: 'Hvorfor overfører du oppgaven til Gosys?',
       beskrivelse:
-        'Vi i Digihot spør for å lære mer om hvorfor oppgaver overføres. Valgene du gjør her blir ikke synlige i Gosys.',
+        'Grunnen du velger for at oppgaven skal overføres til Gosys blir synlig som en kommentar på oppgaven.',
       alternativer: [
         {
           type: 'oppfølgingsspørsmål',
@@ -55,6 +55,7 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
               alternativer: [
                 'Arbeidsliv',
                 'Utdanning',
+                'AKT26',
                 'Tilskudd',
                 {
                   type: 'oppfølgingsspørsmål',
@@ -79,7 +80,7 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
           spørsmål: [
             {
               type: 'fritekst',
-              tekst: 'Oppgi hva saken egentlig gjelder.',
+              tekst: 'Oppgi hva saken egentlig gjelder',
               beskrivelse: IKKE_PERSONOPPLYSNINGER,
               påkrevd: true,
             },

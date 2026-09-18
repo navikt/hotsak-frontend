@@ -8,7 +8,6 @@ import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
-import { useOppgavetilgang } from '../oppgave/useOppgavetilgang.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { Personlinje } from '../saksbilde/Personlinje'
@@ -16,6 +15,7 @@ import { useJournalpost } from '../saksbilde/useJournalpost'
 import classes from './Journalføring.module.css'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
+import { useJournalføringActions } from './useJournalføringActions.ts'
 
 export interface JournalføringProps {
   oppgave: Journalføringsoppgave
@@ -27,7 +27,6 @@ export function Journalføring({ oppgave }: JournalføringProps) {
   const { journalpost, error, isLoading, mutate } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
-  const { harSkrivetilgang } = useOppgavetilgang()
   const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
 
   const dokumenter = journalpost?.dokumenter
@@ -44,6 +43,8 @@ export function Journalføring({ oppgave }: JournalføringProps) {
       setValgtDokument({ journalpostId, dokumentId: førsteDokment.dokumentId })
     }
   }, [journalpostId, dokumenter, setValgtDokument])
+
+  const { journalfør } = useJournalføringActions(oppgave)
 
   if (error) {
     if (error?.status === 403) {
@@ -88,20 +89,21 @@ export function Journalføring({ oppgave }: JournalføringProps) {
       <div className={classes.container}>
         <div className={classes.toKolonner}>
           <div className={classes.skjemaOgVisning}>
-            {oppgaveErUnderBehandlingAvInnloggetAnsatt && harSkrivetilgang ? (
+            {oppgaveErUnderBehandlingAvInnloggetAnsatt ? (
               <JournalpostSkjema
                 oppgave={oppgave}
                 journalpost={journalpost}
                 personInfo={personInfo}
+                journalfør={journalfør}
                 mutateJournalpost={mutate}
               />
             ) : (
               <JournalpostVisning
+                sakId={journalfør.data?.sakId}
                 oppgave={oppgave}
                 journalpost={journalpost}
                 personInfo={personInfo}
                 mutateJournalpost={mutate}
-                lesevisning={!harSkrivetilgang}
               />
             )}
           </div>

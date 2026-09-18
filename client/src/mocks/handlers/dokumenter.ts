@@ -147,7 +147,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakSt
         const sakId = await sakStore.opprettSak(journalføring)
         await sakStore.tildel(sakId)
         console.log('Opprettet ny sak med sakId:', sakId)
-        return HttpResponse.json({ sakId: sakId.toString(), oppgaveId: sakId })
+        return HttpResponse.json({ sakId: sakId.toString() })
       }
     }
   ),

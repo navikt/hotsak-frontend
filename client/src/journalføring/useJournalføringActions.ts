@@ -51,3 +51,5 @@ export function useJournalføringActions(oppgave: Oppgave) {
     journalfør,
   }
 }
+
+export type UseJournalføringActionsResponse = ReturnType<typeof useJournalføringActions>

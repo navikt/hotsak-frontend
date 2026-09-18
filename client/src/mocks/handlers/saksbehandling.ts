@@ -358,7 +358,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         id: crypto.randomUUID(),
         event: 'journalpostSakFerdigstilt',
         data: {
-          oppgaveId: oppgaver[0].oppgaveId,
+          oppgaveId: oppgaver[0]?.oppgaveId,
         },
       })
       /*

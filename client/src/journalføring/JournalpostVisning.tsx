@@ -1,5 +1,6 @@
-import { Box, Heading, InlineMessage, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, InlineMessage, VStack } from '@navikt/ds-react'
 
+import { useNavigate } from 'react-router'
 import { Dokumenter } from '../dokument/Dokumenter'
 import { Tekst } from '../felleskomponenter/typografi'
 import { type Journalføringsoppgave, Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
@@ -7,25 +8,24 @@ import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { type Journalpost, type Person } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
+import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
 
 export interface JournalpostVisningProps {
+  sakId?: string
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
   personInfo: Person
   mutateJournalpost(): void
-  lesevisning: boolean
 }
 
-export function JournalpostVisning({
-  oppgave,
-  journalpost,
-  personInfo,
-  mutateJournalpost,
-  lesevisning,
-}: JournalpostVisningProps) {
+export function JournalpostVisning(props: JournalpostVisningProps) {
+  const { sakId, oppgave, journalpost, personInfo, mutateJournalpost } = props
+  const navigate = useNavigate()
+  const { journalpostSakFerdigstilt, isActive } = useJournalpostSakFerdigstiltHendelse(sakId)
+  const isLoading = !journalpostSakFerdigstilt?.oppgaveId
   return (
     <>
-      {!lesevisning && <JournalføringMenu oppgave={oppgave} onAction={mutateJournalpost} />}
+      <JournalføringMenu oppgave={oppgave} onAction={mutateJournalpost} />
       <VStack gap="space-12">
         <Heading level="1" size="xsmall" spacing>
           Journalføring
@@ -45,6 +45,20 @@ export function JournalpostVisning({
         <Box paddingBlock="space-24 space-0" paddingInline="space-0 space-24">
           <JournalpostStatus oppgave={oppgave} />
         </Box>
+        {oppgave.oppgavestatus === Oppgavestatus.FERDIGSTILT && isActive && (
+          <div>
+            <Button
+              type="button"
+              disabled={isLoading}
+              loading={isLoading}
+              variant="primary"
+              size="small"
+              onClick={() => navigate(`/oppgave/${journalpostSakFerdigstilt?.oppgaveId}`)}
+            >
+              Åpne saken
+            </Button>
+          </div>
+        )}
       </VStack>
     </>
   )

@@ -1,7 +1,5 @@
 import { lazy, memo } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
-import { OverførtGosysVisning } from './OverførtGosysVisning'
-import { Personlinje } from './Personlinje'
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
@@ -14,7 +12,8 @@ import { SakbrukerinnstillingerProvider } from '../sak/v2/Sakbrukerinnstillinger
 import { SakProvider } from '../sak/v2/SakProvider'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { OppgaveStatusType, type SakBase } from '../types/types.internal'
-import { useMiljø } from '../utils/useMiljø.ts'
+import { OverførtGosysVisning } from './OverførtGosysVisning'
+import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
@@ -29,7 +28,6 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
-  const { erProd } = useMiljø()
   const { gjeldendeBehandling } = useBehandling()
 
   if (isSakLoading || isPersonLoading || isBehovsmeldingLoading) return <SakLoader />
@@ -50,7 +48,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
 
   const sakData = sak.data
 
-  if (erFerdigstiltOppgaveOgOverførtTilGosys(oppgave, sakData, erProd, gjeldendeBehandling?.utfall)) {
+  if (erFerdigstiltOppgaveOgOverførtTilGosys(oppgave, sakData, gjeldendeBehandling?.utfall)) {
     return <OverførtGosysVisning />
   }
 
@@ -91,10 +89,9 @@ export default function Saksbilde({ oppgave }: { oppgave?: Saksbehandlingsoppgav
 function erFerdigstiltOppgaveOgOverførtTilGosys(
   oppgave?: Saksbehandlingsoppgave,
   sak?: SakBase,
-  erProd?: boolean,
   utfall?: Behandlingsutfall
 ) {
-  if (!sak || erProd) return false
+  if (!sak) return false
 
   if (!oppgave && sak.saksstatus == OppgaveStatusType.SENDT_GOSYS) return true
 

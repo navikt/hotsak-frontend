@@ -148,6 +148,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         fristDato: verdier.frist,
         tildeltEnhet: oppgave.tildeltEnhet.nummer,
         tildeltSaksbehandler: finnTildeltSaksbehandler(verdier.tilordnetEnhet, innloggetAnsattId, verdier.medarbeider),
+        mappeId: verdier.mappeId,
       },
       dokumenter,
     })

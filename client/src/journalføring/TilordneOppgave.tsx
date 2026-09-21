@@ -11,7 +11,7 @@ interface TilordneOppgaveProps {
 }
 
 export function TilordneOppgave({ tildeltEnhet }: TilordneOppgaveProps) {
-  const { register, control } = useFormContext<JournalføringV2SkjemaVerdier>()
+  const { register, control, setValue } = useFormContext<JournalføringV2SkjemaVerdier>()
   const { behandlere } = useOppgavebehandlere()
   const mapper = useOppgaveMapper()
   const { gjeldendeEnhet, navn } = useInnloggetAnsatt()
@@ -23,7 +23,18 @@ export function TilordneOppgave({ tildeltEnhet }: TilordneOppgaveProps) {
         name="tilordnetEnhet"
         control={control}
         render={({ field }) => (
-          <RadioGroup legend="Tilordne oppgave" hideLegend size="small" value={field.value} onChange={field.onChange}>
+          <RadioGroup
+            legend="Tilordne oppgave"
+            hideLegend
+            size="small"
+            value={field.value}
+            onChange={(value) => {
+              field.onChange(value)
+              if (value !== 'enhetensOppgaveliste') {
+                setValue('mappeId', undefined)
+              }
+            }}
+          >
             <Radio value="minOppgaveliste">
               Min oppgaveliste: {gjeldendeEnhet.nummer} | {navn}
             </Radio>
@@ -43,7 +54,11 @@ export function TilordneOppgave({ tildeltEnhet }: TilordneOppgaveProps) {
             <Radio value="enhetensOppgaveliste">Min enhet: {tildeltEnhet}</Radio>
             {field.value === 'enhetensOppgaveliste' && (
               <Box paddingInline="space-32 space-0">
-                <Select label="Enhetsmappe" size="small" {...register('enhetsmappe')}>
+                <Select
+                  label="Enhetsmappe"
+                  size="small"
+                  {...register('mappeId', { setValueAs: (value) => value || undefined })}
+                >
                   <option value="">Enhetens liste</option>
                   {mapper.map((mappe) => (
                     <option key={mappe.id} value={mappe.id.toString()}>

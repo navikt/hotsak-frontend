@@ -34,47 +34,45 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
 
   sse<any, OppgaveParams>('/api/oppgaver/hendelser', async (/*{ client }*/) => {}),
 
-  http.get<never, never, OppgaveMapperResponse[]>('/api/oppgaver/mapper', async () => {
-    return HttpResponse.json([
-      {
-        totalElements: 3,
-        mapper: [
-          {
-            id: 663,
-            enhet: '2970',
-            navn: 'Enhetsmappe A',
-            tema: 'HJE',
-            versjon: 1,
-            opprettetAv: 'Z991054',
-            opprettetTidspunkt: '2025-11-06T09:03:33.395Z',
-            endretAv: null,
-            endretTidspunkt: null,
-          },
-          {
-            id: 664,
-            enhet: '2970',
-            navn: 'Enhetsmappe B',
-            tema: 'HJE',
-            versjon: 1,
-            opprettetAv: 'Z991054',
-            opprettetTidspunkt: '2025-11-06T09:04:23.446Z',
-            endretAv: null,
-            endretTidspunkt: null,
-          },
-          {
-            id: 682,
-            enhet: '2970',
-            navn: 'Enhetsmappe C',
-            tema: 'HJE',
-            versjon: 1,
-            opprettetAv: 'Z991054',
-            opprettetTidspunkt: '2025-11-06T09:04:35.723Z',
-            endretAv: null,
-            endretTidspunkt: null,
-          },
-        ],
-      },
-    ])
+  http.get<never, never, OppgaveMapperResponse>('/api/oppgaver/mapper', async () => {
+    return HttpResponse.json({
+      totalElements: 3,
+      mapper: [
+        {
+          id: 663,
+          enhet: '2970',
+          navn: 'Enhetsmappe A',
+          tema: 'HJE',
+          versjon: 1,
+          opprettetAv: 'Z991054',
+          opprettetTidspunkt: '2025-11-06T09:03:33.395Z',
+          endretAv: null,
+          endretTidspunkt: null,
+        },
+        {
+          id: 664,
+          enhet: '2970',
+          navn: 'Enhetsmappe B',
+          tema: 'HJE',
+          versjon: 1,
+          opprettetAv: 'Z991054',
+          opprettetTidspunkt: '2025-11-06T09:04:23.446Z',
+          endretAv: null,
+          endretTidspunkt: null,
+        },
+        {
+          id: 682,
+          enhet: '2970',
+          navn: 'Enhetsmappe C',
+          tema: 'HJE',
+          versjon: 1,
+          opprettetAv: 'Z991054',
+          opprettetTidspunkt: '2025-11-06T09:04:35.723Z',
+          endretAv: null,
+          endretTidspunkt: null,
+        },
+      ],
+    })
   }),
 
   http.post<never, FinnOppgaverRequest, FinnOppgaverResponse>(`/api/oppgaver/sok`, async ({ request }) => {

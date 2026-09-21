@@ -37,7 +37,6 @@ function TestSkjema({ onSubmit }: { onSubmit(): void }) {
       frist: '2026-10-16',
       journalføresPåFnr: '',
       tilordnetEnhet: 'enhetensOppgaveliste',
-      enhetsmappe: '',
       medarbeider: '',
     },
   })

@@ -1,5 +1,5 @@
-import { OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
-import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
+import { type OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
+import { type Dokument, type Hendelse, type Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
 import { lagTilfeldigInteger, nåIso } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { HJELPEMIDDEL_JOURNALPOST_IDS as HJELPEMIDDEL_IDS } from './journalpostKonstanter.ts'
@@ -24,11 +24,15 @@ export interface LagretHendelse extends Hendelse {
 }
 export type InsertHendelse = Omit<LagretHendelse, 'id'>
 
+interface LagJournalpostOptions {
+  behandlingstema?: OppgaveKodeverk
+  brukerFnr?: string
+}
+
 export function lagJournalpost(
   journalpostId: string,
-  tittel: string = 'Tilskudd ved kjøp av briller til barn',
-  behandlingstema: OppgaveKodeverk = { kode: 'ab0420', term: 'Briller til barn' },
-  options?: { brukerFnr?: string }
+  tittel: string,
+  { behandlingstema, brukerFnr }: LagJournalpostOptions = {}
 ): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const journalpostOpprettetTid = nåIso()
@@ -36,7 +40,7 @@ export function lagJournalpost(
   return {
     journalpostId,
     tema: { kode: 'HJE', term: 'Hjelpemidler' },
-    behandlingstema: behandlingstema,
+    ...(behandlingstema ? { behandlingstema } : {}),
     kanal: { kode: 'SKAN_IM', term: 'Skanning Iron Mountain' },
     journalposttype: journalposttyper[lagTilfeldigInteger(0, 2)],
     journalstatus: JournalpostStatusType.MOTTATT,
@@ -44,7 +48,7 @@ export function lagJournalpost(
     fnrInnsender,
     tittel: tittel,
     bruker: {
-      fnr: options?.brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
+      fnr: brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
       navn: lagTilfeldigNavn(),
     },
     innsender: {

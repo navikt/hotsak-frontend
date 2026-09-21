@@ -166,29 +166,42 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, f
       <TextContainer>
         <HStack gap="space-20" align="start" wrap={false}>
           <VStack gap="space-12" align="start">
-            <UNSAFE_Combobox
-              label="Gjelder"
-              size="small"
-              shouldAutocomplete
-              allowNewValues={false}
-              readOnly={!kanRedigere}
-              className={classes.kodeverkSelect}
-              options={gjelderComboboxOptions}
-              filteredOptions={filtrerteGjelderComboboxOptions}
-              selectedOptions={valgtGjelderComboboxOptions}
-              value={gjelderSøk}
-              onChange={(value) => setGjelderSøk(value)}
-              onToggleSelected={(value, isSelected) => {
-                if (isSelected) {
-                  const [tmKode, btKode] = value.split('|')
-                  setValue('behandlingstema', tmKode ?? '')
-                  setValue('behandlingstype', btKode ?? '')
-                } else {
-                  setValue('behandlingstema', '')
-                  setValue('behandlingstype', '')
-                }
-                setGjelderSøk('')
+            <Controller
+              name="behandlingstema"
+              rules={{
+                validate: (_, verdier) =>
+                  Boolean(verdier.behandlingstema || verdier.behandlingstype) || 'Du må velge hva saken gjelder',
               }}
+              render={({ field, fieldState }) => (
+                <UNSAFE_Combobox
+                  ref={field.ref}
+                  name={field.name}
+                  label="Gjelder"
+                  size="small"
+                  shouldAutocomplete
+                  allowNewValues={false}
+                  readOnly={!kanRedigere}
+                  className={classes.kodeverkSelect}
+                  options={gjelderComboboxOptions}
+                  filteredOptions={filtrerteGjelderComboboxOptions}
+                  selectedOptions={valgtGjelderComboboxOptions}
+                  value={gjelderSøk}
+                  error={fieldState.error?.message}
+                  onBlur={field.onBlur}
+                  onChange={(value) => setGjelderSøk(value)}
+                  onToggleSelected={(value, isSelected) => {
+                    if (isSelected) {
+                      const [tmKode, btKode] = value.split('|')
+                      setValue('behandlingstype', btKode ?? '')
+                      field.onChange(tmKode ?? '')
+                    } else {
+                      setValue('behandlingstype', '')
+                      field.onChange('')
+                    }
+                    setGjelderSøk('')
+                  }}
+                />
+              )}
             />
           </VStack>
           <DatePicker {...(fristProps as Parameters<typeof DatePicker>[0])}>

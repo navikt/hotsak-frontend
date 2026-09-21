@@ -50,7 +50,6 @@ describe('JournalføringFerdigModal', () => {
       />
     )
 
-    expect(screen.getByText('Journalposten ble koblet til sak sak-1.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Behandle saken' })).toBeInTheDocument()
   })
 
@@ -66,7 +65,11 @@ describe('JournalføringFerdigModal', () => {
       />
     )
 
-    expect(screen.getByText('Journalføringen er fullført. Saken kan behandles videre i Gosys.')).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Dokumentene ble journalført og knyttet til en eksisterende fagsak. Saken kan behandles videre i Gosys.'
+      )
+    ).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Til saken' })).not.toBeInTheDocument()
   })
 
@@ -82,7 +85,11 @@ describe('JournalføringFerdigModal', () => {
       />
     )
 
-    expect(screen.getByText('Journalføringen er fullført. Saken kan behandles videre i Gosys.')).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Dokumentene ble journalført og knyttet til en eksisterende fagsak. Saken kan behandles videre i Gosys.'
+      )
+    ).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Til saken' })).not.toBeInTheDocument()
   })
 
@@ -98,7 +105,7 @@ describe('JournalføringFerdigModal', () => {
     )
 
     expect(
-      screen.getByText('Da kan nå gå til til dine oppgaver, enhetens oppgaver eller fortsette behandling av saken.')
+      screen.getByText('Du kan nå gå til til dine oppgaver, enhetens oppgaver eller fortsette behandling av saken.')
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Behandle saken' })).toBeInTheDocument()
   })

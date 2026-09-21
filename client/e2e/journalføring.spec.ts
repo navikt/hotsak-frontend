@@ -9,9 +9,18 @@ function ventPåJournalføring(page: import('@playwright/test').Page) {
   })
 }
 
+async function velgGjelder(page: import('@playwright/test').Page) {
+  await page.getByRole('combobox', { name: 'Gjelder' }).fill('ganghjelpemiddel')
+  await page
+    .getByRole('option', { name: /Ganghjelpemiddel/i })
+    .first()
+    .click()
+}
+
 test.describe('Journalføring', () => {
   test('kan koble en journalpost til en eksisterende Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)
+    await velgGjelder(page)
 
     const kobleTilSak = page.getByRole('radio', { name: /^Koble til sak \(\d+\)$/ })
     await expect(kobleTilSak).toBeVisible()
@@ -29,12 +38,12 @@ test.describe('Journalføring', () => {
       sak: { sakstype: 'FAGSAK', fagsakId: '9901', fagsaksystem: 'HOTSAK' },
     })
     const respons = await journalføring
-    const { sakId, oppgaver } = await respons.json()
+    const { oppgaver } = await respons.json()
     const oppgaveId = oppgaver.find((oppgave: { isÅpen: boolean }) => oppgave.isÅpen)?.oppgaveId
 
-    const modal = page.getByRole('dialog', { name: 'Journalføringen er fullført og ny sak opprettet' })
+    const modal = page.getByRole('dialog', { name: 'Dokumentene ble knyttet til eksisterende sak' })
     await expect(modal).toBeVisible()
-    await expect(modal).toContainText(`Journalposten ble koblet til sak ${sakId}.`)
+    await expect(modal).toContainText('Dokumentene ble journalført og knyttet til en eksisterende sak i Hotsak.')
     await modal.getByRole('button', { name: 'Behandle saken' }).click()
 
     await expect(page).toHaveURL(`/oppgave/${oppgaveId}`)
@@ -42,12 +51,7 @@ test.describe('Journalføring', () => {
 
   test('kan journalføre og opprette en ny Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)
-
-    await page.getByRole('combobox', { name: 'Gjelder' }).fill('ganghjelpemiddel')
-    await page
-      .getByRole('option', { name: /Ganghjelpemiddel/i })
-      .first()
-      .click()
+    await velgGjelder(page)
 
     const journalføring = ventPåJournalføring(page)
     await page.getByRole('button', { name: 'Journalfør og opprett sak' }).click()
@@ -55,7 +59,7 @@ test.describe('Journalføring', () => {
     const { oppgaver } = await respons.json()
     const oppgaveId = oppgaver.find((oppgave: { isÅpen: boolean }) => oppgave.isÅpen)?.oppgaveId
 
-    const modal = page.getByRole('dialog', { name: 'Journalføringen er fullført og ny sak opprettet' })
+    const modal = page.getByRole('dialog', { name: 'Journalføringen er fullført og ny sak er opprettet' })
     await expect(modal).toBeVisible()
     const tilSaken = modal.getByRole('button', { name: 'Behandle saken' })
     await expect(tilSaken).toBeEnabled()

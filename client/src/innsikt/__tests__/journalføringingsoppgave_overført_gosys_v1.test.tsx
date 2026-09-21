@@ -105,6 +105,7 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     expect(hentRadioAlternativerFraGruppe(/Hvilket område gjelder saken/)).toEqual([
       'Arbeidsliv',
       'Utdanning',
+      'AKT26',
       'Tilskudd',
       'Annet',
     ])
@@ -130,7 +131,7 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
       { type: 'enkeltvalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil førsteside - ikke 10-07.03-sak' },
       {
         type: 'fritekst',
-        spørsmål: 'Oppgi hva saken egentlig gjelder.',
+        spørsmål: 'Oppgi hva saken egentlig gjelder',
         sti: [HOVEDSPØRSMÅL],
         svar: 'Saken gjelder en annen ytelse',
       },

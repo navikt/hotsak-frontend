@@ -41,32 +41,27 @@ export class JournalpostStore extends Dexie {
     }
 
     await this.lagreAlle([
-      lagJournalpost('9001'),
-      lagJournalpost('9002'),
-      lagJournalpost('9003'),
-      lagJournalpost('9004'),
-      lagJournalpost('9005'),
+      lagJournalpost('9001', 'Tilskudd ved kjøp av briller til barn', {
+        behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+      }),
+      lagJournalpost('9002', 'Tilskudd ved kjøp av briller til barn', {
+        behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+      }),
+      lagJournalpost('9003', 'Tilskudd ved kjøp av briller til barn', {
+        behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+      }),
+      lagJournalpost('9004', 'Tilskudd ved kjøp av briller til barn', {
+        behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+      }),
+      lagJournalpost('9005', 'Tilskudd ved kjøp av briller til barn', {
+        behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+      }),
     ])
 
     const v2Poster = [
-      lagJournalpost(
-        '9006',
-        'Søknad om hjelpemidler',
-        { kode: 'ae0034', term: 'Søknad' },
-        { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
-      ),
-      lagJournalpost(
-        '9007',
-        'Søknad om hjelpemidler',
-        { kode: 'ae0034', term: 'Søknad' },
-        { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
-      ),
-      lagJournalpost(
-        '9008',
-        'Søknad om hjelpemidler',
-        { kode: 'ae0034', term: 'Søknad' },
-        { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }
-      ),
+      lagJournalpost('9006', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
+      lagJournalpost('9007', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
+      lagJournalpost('9008', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
     ]
 
     v2Poster.forEach(async (v2Post) => {

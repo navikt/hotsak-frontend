@@ -67,6 +67,7 @@ export function OppgaverOgDokumenter() {
       brukerId: fnr,
       sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
       opprettetIntervall,
+      alleFagsystemer: true,
       sorteringsrekkefølge: 'DESC',
       pageNumber: oppgaverPageNumber,
       pageSize: 5,

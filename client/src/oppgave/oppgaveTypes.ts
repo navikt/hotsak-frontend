@@ -216,6 +216,8 @@ export interface FinnOppgaverRequest {
 
   tildelt?: OppgaveTildelt
 
+  alleFagsystemer?: boolean
+
   // tidspunkter
   opprettetIntervall?: IntervalString
   aktivIntervall?: IntervalString

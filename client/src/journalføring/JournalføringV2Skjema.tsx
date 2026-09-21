@@ -313,7 +313,6 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         sakType={sakType}
         skjulTilSaken={valgtSak?.sakstype === Sakstype.GENERELL_SAK || (valgtSak ? erFagsak(valgtSak) : false)}
         onJournalpostSakFerdigstilt={mutateJournalpost}
-        onClose={() => setJournalføringResultat(null)}
       />
     </VStack>
   )

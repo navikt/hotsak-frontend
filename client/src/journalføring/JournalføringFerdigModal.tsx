@@ -13,7 +13,6 @@ interface JournalføringFerdigModalProps {
   sakType: 'ny' | 'eksisterende'
   skjulTilSaken?: boolean
   onJournalpostSakFerdigstilt(): void
-  onClose(): void
 }
 
 export function JournalføringFerdigModal({
@@ -22,7 +21,6 @@ export function JournalføringFerdigModal({
   sakType,
   skjulTilSaken = false,
   onJournalpostSakFerdigstilt,
-  onClose,
 }: JournalføringFerdigModalProps) {
   const navigate = useNavigate()
 
@@ -38,14 +36,13 @@ export function JournalføringFerdigModal({
   const modalmodell = lagJournalføringFerdigModalmodell(variant)
 
   function navigerOgLukkModal(sti: string) {
-    onClose()
     navigate(sti)
   }
 
   return (
-    <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()} size="medium">
-      <Dialog.Popup position="center">
-        <Dialog.Header>
+    <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen} size="medium">
+      <Dialog.Popup position="center" closeOnOutsideClick={false}>
+        <Dialog.Header withClosebutton={false}>
           <Dialog.Title>
             <Heading level="1" size="small">
               {modalmodell.tittel}

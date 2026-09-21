@@ -14,7 +14,6 @@ import { useJournalposterInngående } from '../../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
-import { useMiljø } from '../../utils/useMiljø.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
@@ -46,6 +45,7 @@ import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
+import { useErPilot } from '../../tilgang/useTilgang.ts'
 
 function SakV2Content({
   oppgave,
@@ -66,7 +66,7 @@ function SakV2Content({
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erPapirsøknad, erBestilling } = useSaksregler()
-  const { erIkkeProd } = useMiljø()
+  const erJournalføringPilot = useErPilot('journalføringPilot')
 
   const {
     panelState,
@@ -129,7 +129,7 @@ function SakV2Content({
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
-      {erIkkeProd && <DokumentpanelInitialisering />}
+      {erJournalføringPilot && <DokumentpanelInitialisering />}
       <Box
         marginBlock="space-8 space-0"
         marginInline="space-8"
@@ -156,7 +156,7 @@ function SakV2Content({
           <ResizablePanel
             panelId="dokumentpanel"
             panel={dokumentPanel}
-            visible={erIkkeProd && dokumentPanel.visible && !erBestilling}
+            visible={erJournalføringPilot && dokumentPanel.visible && !erBestilling}
           >
             <AvrundetPanel>
               <PapirsøknadPanel />
@@ -302,6 +302,7 @@ export default function SakV2({
   )
 }
 
+//TODO: Ikke en komponent, bør skrives om
 function DokumentpanelInitialisering() {
   const { dokumenter } = useJournalposterInngående()
   const { setValgtDokument } = useDokumentContext()

@@ -4,7 +4,6 @@ import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { useJournalpost } from '../saksbilde/useJournalpost.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
 import {
   isJournalføringsoppgave,
@@ -20,19 +19,17 @@ const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx')
 const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
 const Saksbilde = lazy(() => import('../saksbilde/Saksbilde.tsx'))
 
-//const BREVKODE_JOURNALFØRING_V2 = 'NAV 10-07.03'
 const BREVKODE_BRILLER_TIL_BARN = ['NAV 10-07.34', 'NAVe 10-07.34']
 
 function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) {
   const { journalpost, isLoading } = useJournalpost(oppgave.journalpostId)
-  const { erIkkeProd } = useMiljø()
   if (isLoading) {
     return null
   }
 
   const brevkode = journalpost?.dokumenter[0]?.brevkode
 
-  if (erIkkeProd && brevkode && !BREVKODE_BRILLER_TIL_BARN.includes(brevkode)) {
+  if (brevkode && !BREVKODE_BRILLER_TIL_BARN.includes(brevkode)) {
     return <JournalføringV2 oppgave={oppgave} />
   }
 
@@ -42,11 +39,13 @@ function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) 
 function OppgaveContent() {
   const { oppgave } = useOppgave()
   const { merkSomLest } = useOppgaveActions(oppgave)
+
   useEffect(() => {
     if (oppgave) {
       merkSomLest.trigger()
     }
   }, [oppgave.oppgaveId])
+
   useOppgavehendelser()
   return (
     <>

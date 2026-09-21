@@ -5,15 +5,15 @@ import { Tekst } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { useOppgavesøk } from '../../../oppgave/useOppgavesøk.ts'
 import { useSaksregler } from '../../../saksregler/useSaksregler'
+import { useErPilot } from '../../../tilgang/useTilgang.ts'
 import { type Sak } from '../../../types/types.internal'
 import { formaterDatoKort } from '../../../utils/dato'
-import { useMiljø } from '../../../utils/useMiljø.ts'
 import { OppgaverOgDokumenterFilter, opprettetIntervallForFilter } from '../sidebars/OppgaverOgDokumenterUtils.ts'
 import { JournalpostCard } from './JournalpostCard'
 
 export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: Sak }) {
   const { erBestilling } = useSaksregler()
-  const { erIkkeProd } = useMiljø()
+  const erJournalføringPilot = useErPilot('journalføringPilot')
 
   const opprettetIntervallSisteToUker = useMemo(
     () => opprettetIntervallForFilter(OppgaverOgDokumenterFilter.SISTE_2_UKER),
@@ -53,7 +53,7 @@ export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandli
               </InlineMessage>
             </Box>
           )}
-          {erIkkeProd && <JournalpostCard />}
+          {erJournalføringPilot && <JournalpostCard />}
         </>
       )}
     </VStack>

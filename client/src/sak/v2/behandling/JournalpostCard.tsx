@@ -29,6 +29,12 @@ export function JournalpostCard() {
     return null
   }
 
+  // Tidlig return for å ikke vise dokumentkortet hvis det kun er PDF for digital søknad som ligger der
+  //Kun relevant frem til vi lanserer journalføringspiloten
+  if (!erPapirsøknad && dokumenter.length === 1) {
+    return null
+  }
+
   return (
     <Box>
       <CompactExpandableCard

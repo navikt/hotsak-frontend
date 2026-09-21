@@ -4,8 +4,8 @@ import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
-import type { JournalføringV2Response } from './journalføringTypes.ts'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
+import type { JournalføringV2Response } from './journalføringTypes.ts'
 
 const navigate = vi.fn()
 const useJournalpostSakFerdigstiltHendelse = vi.fn()
@@ -46,7 +46,6 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="eksisterende"
         onJournalpostSakFerdigstilt={() => {}}
-        onClose={() => {}}
       />
     )
 
@@ -61,7 +60,6 @@ describe('JournalføringFerdigModal', () => {
         sakType="eksisterende"
         skjulTilSaken
         onJournalpostSakFerdigstilt={() => {}}
-        onClose={() => {}}
       />
     )
 
@@ -81,7 +79,6 @@ describe('JournalføringFerdigModal', () => {
         sakType="eksisterende"
         skjulTilSaken
         onJournalpostSakFerdigstilt={() => {}}
-        onClose={() => {}}
       />
     )
 
@@ -100,7 +97,6 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="ny"
         onJournalpostSakFerdigstilt={() => {}}
-        onClose={() => {}}
       />
     )
 
@@ -118,11 +114,9 @@ describe('JournalføringFerdigModal', () => {
         sakType="eksisterende"
         skjulTilSaken
         onJournalpostSakFerdigstilt={() => {}}
-        onClose={() => {}}
       />
     )
 
-    expect(screen.getAllByRole('button', { name: 'Lukk' }).length).toBeGreaterThan(0)
     expect(screen.getByRole('button', { name: 'Til mine oppgaver' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Til enhetens oppgaver' })).toBeInTheDocument()
   })
@@ -140,7 +134,6 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="ny"
         onJournalpostSakFerdigstilt={onJournalpostSakFerdigstilt}
-        onClose={() => {}}
       />
     )
 
@@ -155,7 +148,6 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="ny"
         onJournalpostSakFerdigstilt={onJournalpostSakFerdigstilt}
-        onClose={() => {}}
       />
     )
 
@@ -167,7 +159,6 @@ describe('JournalføringFerdigModal', () => {
         resultat={resultatEksisterendeSak}
         sakType="ny"
         onJournalpostSakFerdigstilt={onJournalpostSakFerdigstilt}
-        onClose={() => {}}
       />
     )
 

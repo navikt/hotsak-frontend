@@ -79,6 +79,7 @@ export function OppgaverOgDokumenter() {
     useOppgavesøk({
       brukerId: fnr,
       pageNumber: 1,
+      alleFagsystemer: true,
       pageSize: 1,
     }).data?.totalElements ?? 0
 

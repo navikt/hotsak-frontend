@@ -120,6 +120,7 @@ function EndreMottakereDialog({
               <Switch
                 checked={!!formidler}
                 disabled={isMutating || (!formidler && !formidlerFnr)}
+                loading={isMutating}
                 onChange={async () => {
                   if (formidler) {
                     await slettBrevmottaker.trigger(formidler.id)

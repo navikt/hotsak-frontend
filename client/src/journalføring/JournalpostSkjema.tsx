@@ -1,6 +1,6 @@
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, TextField, VStack } from '@navikt/ds-react'
-import { MouseEventHandler, useEffect, useState } from 'react'
+import { MouseEventHandler, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
@@ -12,35 +12,31 @@ import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { type Journalpost, type Person, SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
-import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
-import { useJournalføringActions } from './useJournalføringActions.ts'
 import { Sakstype as Fagsakstype } from './journalføringTypes.ts'
-
-import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
+import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
+import type { UseJournalføringActionsResponse } from './useJournalføringActions.ts'
 
 export interface JournalpostSkjemaProps {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
   personInfo: Person
+  journalfør: UseJournalføringActionsResponse['journalfør']
   mutateJournalpost(): void
 }
 
-export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJournalpost }: JournalpostSkjemaProps) {
+export function JournalpostSkjema({
+  oppgave,
+  journalpost,
+  personInfo,
+  journalfør,
+  mutateJournalpost,
+}: JournalpostSkjemaProps) {
   const navigate = useNavigate()
-  const { journalfør } = useJournalføringActions(oppgave)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { saksoversikt } = useSaksoversikt(fodselsnummer, SaksstatusKategori.ÅPEN, Sakstype.BARNEBRILLER)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost.tittel || '')
-
-  const { journalpostSakFerdigstilt } = useJournalpostSakFerdigstiltHendelse(journalfør.data?.sakId)
-  useEffect(() => {
-    const oppgaveId = journalpostSakFerdigstilt?.oppgaveId
-    if (oppgaveId) {
-      navigate(`/oppgave/${oppgaveId}`)
-    }
-  }, [journalpostSakFerdigstilt, navigate])
 
   const handleJournalfør: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault()
@@ -58,9 +54,14 @@ export function JournalpostSkjema({ oppgave, journalpost, personInfo, mutateJour
             : undefined,
       })
       .then((response) => {
-        const oppgaveId = (response as any).oppgaveId // finnes i v1-responsen
+        let oppgaveId = (response as any).oppgaveId // finnes i v1-responsen
         if (oppgaveId) {
           navigate(`/oppgave/${oppgaveId}`)
+          return
+        }
+        const oppgaver = response.oppgaver?.filter((oppgave) => oppgave.isÅpen)
+        if (oppgaver[0]) {
+          navigate(`/oppgave/${oppgaver[0].oppgaveId}`)
         }
       })
   }

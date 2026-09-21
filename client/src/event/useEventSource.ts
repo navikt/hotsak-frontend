@@ -13,6 +13,7 @@ export function useEventSource<T = unknown>(props: EventSourceProps) {
 
   const [data, setData] = useState<T>()
   const [error, setError] = useState<Error>()
+  const [isActive, setIsActive] = useState(false)
 
   useEffect(() => {
     if (!url) return
@@ -30,14 +31,21 @@ export function useEventSource<T = unknown>(props: EventSourceProps) {
           setError(new Error('Failed to parse event source message', { cause }))
         }
       },
+      onConnect() {
+        setIsActive(true)
+      },
+      onDisconnect() {},
       onComment(comment) {
         console.debug('Event source comment:', comment)
       },
       fetch: window.fetch,
     })
 
-    return () => source.close()
+    return () => {
+      setIsActive(false)
+      source.close()
+    }
   }, [url, event])
 
-  return { data, error }
+  return { data, error, isActive }
 }

@@ -8,5 +8,5 @@ export function useJournalpostSakFerdigstiltHendelse(sakId?: string) {
     url: sakshendelserUrl,
     event: SakEventType.journalpostSakFerdigstilt,
   })
-  return { journalpostSakFerdigstilt, rest }
+  return { journalpostSakFerdigstilt, ...rest }
 }

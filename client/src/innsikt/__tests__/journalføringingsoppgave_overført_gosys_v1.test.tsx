@@ -128,7 +128,7 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
 
     expect(onBesvar).toHaveBeenCalledTimes(1)
     expect(onBesvar.mock.calls[0][0]).toEqual([
-      { type: 'enkeltvalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil førsteside - ikke 10-07.03-sak' },
+      { type: 'enkeltvalg', spørsmål: HOVEDSPØRSMÅL, sti: [], svar: 'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral' },
       {
         type: 'fritekst',
         spørsmål: 'Oppgi hva saken egentlig gjelder',

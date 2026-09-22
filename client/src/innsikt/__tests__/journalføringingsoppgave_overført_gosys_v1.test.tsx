@@ -59,7 +59,7 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     expect(hentRadioAlternativerFraGruppe(new RegExp(HOVEDSPØRSMÅL))).toEqual([
       'Behov for å sende brev',
       'Saken skal ikke behandles i Hotsak pr. i dag',
-      'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral”',
+      'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral',
       'Feil i skanning',
       'Annet',
     ])
@@ -114,7 +114,7 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
   it('krever fritekst når Feil førsteside velges og sender riktig payload', async () => {
     const { bruker, onBesvar } = renderSkjema()
 
-    await velgHovedårsak(bruker, 'Feil førsteside - ikke 10-07.03-sak')
+    await velgHovedårsak(bruker, 'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral')
 
     const fritekst = screen.getByRole('textbox', { name: /Oppgi hva saken egentlig gjelder/ })
     expect(fritekst).toBeInTheDocument()

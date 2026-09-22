@@ -76,7 +76,7 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
         },
         {
           type: 'oppfølgingsspørsmål',
-          tekst: 'Feil førsteside - ikke 10-07.03-sak',
+          tekst: 'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral',
           spørsmål: [
             {
               type: 'fritekst',

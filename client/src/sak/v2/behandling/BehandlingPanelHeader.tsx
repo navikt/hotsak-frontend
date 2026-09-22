@@ -20,12 +20,16 @@ export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandli
     []
   )
 
-  const oppgaverResponse = useOppgavesøk({
-    brukerId: oppgave?.fnr,
-    sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
-    opprettetIntervall: opprettetIntervallSisteToUker,
-    pageSize: 2,
-  })
+  const oppgaverResponse = useOppgavesøk(
+    oppgave?.fnr
+      ? {
+          brukerId: oppgave?.fnr,
+          sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
+          opprettetIntervall: opprettetIntervallSisteToUker,
+          pageSize: 2,
+        }
+      : undefined
+  )
   const harOppgaverSisteToUker =
     !!oppgave && (oppgaverResponse.data?.oppgaver.some(({ oppgaveId }) => oppgaveId !== oppgave.oppgaveId) ?? false)
 

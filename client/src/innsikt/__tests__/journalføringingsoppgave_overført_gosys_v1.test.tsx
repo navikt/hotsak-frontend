@@ -59,7 +59,7 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     expect(hentRadioAlternativerFraGruppe(new RegExp(HOVEDSPØRSMÅL))).toEqual([
       'Behov for å sende brev',
       'Saken skal ikke behandles i Hotsak pr. i dag',
-      'Feil førsteside - ikke 10-07.03-sak',
+      'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral”',
       'Feil i skanning',
       'Annet',
     ])

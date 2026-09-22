@@ -26,6 +26,7 @@ export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandli
           brukerId: oppgave?.fnr,
           sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
           opprettetIntervall: opprettetIntervallSisteToUker,
+          alleFagsystemer: true,
           pageSize: 2,
         }
       : undefined

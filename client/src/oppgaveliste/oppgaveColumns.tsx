@@ -1,5 +1,5 @@
 import { ClockDashedIcon, PersonCircleIcon, TimerPauseIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, Link, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
+import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
 import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
@@ -18,6 +18,7 @@ import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
 import classes from './oppgaveColumns.module.css'
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
+import { OppgavetypeÅpneOppgaveCell } from './OppgavetypeÅpneOppgaveCell.tsx'
 
 type OppgaveColumns = {
   [K in string]: DataGridColumn<Oppgave> & { field: K }
@@ -96,11 +97,7 @@ export const oppgaveColumns = {
       sortOptions: true,
     },
     renderCell(row) {
-      return (
-        <Link href={`/oppgave/${row.oppgaveId}`} target="_blank" rel="noreferrer">
-          {OppgavetypeLabel[row.kategorisering.oppgavetype]}
-        </Link>
-      )
+      return <OppgavetypeÅpneOppgaveCell row={row} />
     },
   },
   behandlingstema: {

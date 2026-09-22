@@ -13,6 +13,7 @@ export enum Oppgavetype {
   BEHANDLE_SAK = 'BEHANDLE_SAK',
   GODKJENNE_VEDTAK = 'GODKJENNE_VEDTAK',
   BEHANDLE_UNDERKJENT_VEDTAK = 'BEHANDLE_UNDERKJENT_VEDTAK',
+  VURDER_KONSEKVENS_YTELSE = 'VURDER_KONSEKVENS_YTELSE',
 }
 
 export const OppgavetypeLabel: Record<Oppgavetype, string> = {
@@ -20,6 +21,7 @@ export const OppgavetypeLabel: Record<Oppgavetype, string> = {
   BEHANDLE_SAK: 'Behandle sak',
   GODKJENNE_VEDTAK: 'Godkjenne vedtak',
   BEHANDLE_UNDERKJENT_VEDTAK: 'Behandle underkjent vedtak',
+  VURDER_KONSEKVENS_YTELSE: 'Vurder konsekvens for ytelse',
 }
 
 export enum Oppgavestatus {

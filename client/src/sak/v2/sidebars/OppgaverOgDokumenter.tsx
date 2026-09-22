@@ -25,7 +25,7 @@ const ingenOppgaver: Oppgave[] = []
 
 const oppgaveCols = [
   { ...oppgaveColumns.behandlingstema, filter: undefined },
-  { ...oppgaveColumns.sakId, sortKey: undefined },
+  { ...oppgaveColumns.sakIdMedEksternFallback, sortKey: undefined },
   { ...oppgaveColumns.oppgavetypeÅpneOppgave, filter: undefined },
   { ...oppgaveColumns.behandlingstype, filter: undefined },
   { ...oppgaveColumns.ferdigstilt, sortKey: undefined },

@@ -10,7 +10,7 @@ export function OppgavetypeÅpneOppgaveCell({ row }: { row: Oppgave }) {
   if (!row.isBehandlesAvApplikasjonHotsak) {
     return (
       <Link href={gosysLink} target="_blank" rel="noreferrer">
-        {row.kategorisering.oppgavetype}
+        {oppgavetype}
       </Link>
     )
   }

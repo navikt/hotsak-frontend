@@ -101,6 +101,7 @@ export interface Oppgave extends OppgaveBase {
   journalpostId?: string
   sak?: OppgaveSak
   behandlesAvApplikasjon?: string
+  eksternSakId?: string
 
   // totrinnskontroll
   totrinnskontroll?: OppgaveTotrinnskontroll

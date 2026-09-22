@@ -60,6 +60,15 @@ export const oppgaveColumns = {
     width: 125,
     experiment: true,
   },
+  sakIdMedEksternFallback: {
+    field: 'sakId',
+    header: 'Saksnr.',
+    sortKey: 'sakId',
+    width: 125,
+    renderCell(row) {
+      return row.sakId ? row.sakId : (row.eksternSakId ?? 'Ukjent')
+    },
+  },
   saksbehandler: {
     field: 'saksbehandler',
     header: 'Saksbehandler',

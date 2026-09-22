@@ -63,25 +63,31 @@ export function OppgaverOgDokumenter() {
   const opprettetIntervall = useMemo(() => opprettetIntervallForFilter(filter), [filter])
   const [oppgaverPageNumber, setOppgaverPageNumber] = useState(1)
   const oppgaverResponse = useOppgavesøk(
-    {
-      brukerId: fnr,
-      sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
-      opprettetIntervall,
-      alleFagsystemer: true,
-      sorteringsrekkefølge: 'DESC',
-      pageNumber: oppgaverPageNumber,
-      pageSize: 5,
-    },
+    fnr
+      ? {
+          brukerId: fnr,
+          sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
+          opprettetIntervall,
+          alleFagsystemer: true,
+          sorteringsrekkefølge: 'DESC',
+          pageNumber: oppgaverPageNumber,
+          pageSize: 5,
+        }
+      : undefined,
     true
   )
 
   const totaleOppgaver =
-    useOppgavesøk({
-      brukerId: fnr,
-      pageNumber: 1,
-      alleFagsystemer: true,
-      pageSize: 1,
-    }).data?.totalElements ?? 0
+    useOppgavesøk(
+      fnr
+        ? {
+            brukerId: fnr,
+            pageNumber: 1,
+            alleFagsystemer: true,
+            pageSize: 1,
+          }
+        : undefined
+    ).data?.totalElements ?? 0
 
   const totaleDokumenter =
     useDokumentsøk({

@@ -17,6 +17,7 @@ import { usePerson } from '../../personoversikt/usePerson.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
 import { type Brevdata, type Målform } from '../brevTyper.ts'
+import { useBrevmottakere } from '../useBrev.ts'
 import { useSerienummer } from '../useSerienummer.ts'
 import './Breveditor.less'
 import { BreveditorContext } from './BreveditorContext.ts'
@@ -170,6 +171,11 @@ export function Breveditor(props: BreveditorProps) {
     .join(', ')
   const målformTekster = hentMålformTekster(målform)
 
+  // Kopi til formidler
+  const { data } = useBrevmottakere(brevId)
+  const formidlerMedKopi = data?.brevmottakere.find((mottaker) => mottaker.mottakertype === 'FORMIDLER')
+  const { personInfo: formidler } = usePerson(formidlerMedKopi?.fnr)
+
   // Stopp refresh/lukking av nettsiden hvis man har ulagrede endringer
   useBeforeUnload(
     onLagreBrev ? endringsstatus.erEndret : false,
@@ -299,6 +305,13 @@ export function Breveditor(props: BreveditorProps) {
                         />
                       </PlateContainer>
                       <p>
+                        {formidlerMedKopi && (
+                          <>
+                            {`Kopi til hjelpemiddelformidler: ${formaterNavn(formidler?.navn)}`}
+                            <br />
+                            <br />
+                          </>
+                        )}
                         {målformTekster.medVennligHilsen} <br />
                         {metadata.saksbehandlerNavn}
                         {metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />

@@ -14,7 +14,7 @@ export function MottakereCard({ vedtaksbrevId }: { vedtaksbrevId?: string }) {
   const { brev } = useBrev(vedtaksbrevId)
   const { sak } = useSak()
 
-  const { personInfo } = usePerson(sak?.data.innsender.fnr)
+  const { personInfo } = usePerson(sak?.data.bruker.fnr)
   const vergemål = personInfo?.vergemål || []
   const harVerge = vergemål.length > 0
 

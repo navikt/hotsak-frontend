@@ -47,14 +47,14 @@ jobs:
         id: nais-login
         with:
           team: teamdigihot
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER}}
+          project_id: ${{vars.NAIS_MANAGEMENT_PROJECT_ID}}
 
       - name: Definer release tag
         env:
-          VERSION_TAG: ${{ github.event.release.tag_name }}
-          REGISTRY: ${{ steps.nais-login.outputs.registry }}
-          APP: ${{ github.event.repository.name }}
+          VERSION_TAG: ${{ github.event.release.tag_name}}
+          REGISTRY: ${{steps.nais-login.outputs.registry}}
+          APP: ${{github.event.repository.name}}
         run: |
           IMAGE=$REGISTRY/$APP:$VERSION_TAG
           echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
@@ -65,9 +65,25 @@ jobs:
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/prod.yaml
-          VAR: commit=${{ github.sha }}
+          VAR: commit=${{github.sha}}
 
       - name: Etter deploy
         uses: navikt/digihot-deploy/actions/post-production@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+     
+  unleash:
+    name: Deploy Unleash secrets
+    permissions:
+      contents: read
+      id-token: write
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        name: Sjekk ut koden
+      - uses: nais/deploy/actions/deploy@v2
+        name: Deploy Unleash API token
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/unleash-api-token-prod.yaml

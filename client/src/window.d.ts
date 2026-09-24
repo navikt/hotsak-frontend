@@ -16,6 +16,8 @@ declare global {
       USE_MSW_GRUNNDATA?: boolean
       USE_MSW_ALTERNATIVPRODUKTER?: boolean
 
+      UNLEASH_ENABLED?: boolean
+
       GIT_COMMIT?: string
 
       GOSYS_OPPGAVEBEHANDLING_URL?: string

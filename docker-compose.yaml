@@ -27,6 +27,9 @@ services:
       UMAMI_ENABLED: 'false'
       UMAMI_WEBSITE_ID:
 
+      # Ingen Unleash-tilkobling lokalt. Klienten bruker bare bootstrap-verdier.
+      UNLEASH_ENABLED: 'false'
+
       USE_MSW: 'false'
       USE_MSW_GRUNNDATA: 'false'
       USE_MSW_ALTERNATIVPRODUKTER: 'true'

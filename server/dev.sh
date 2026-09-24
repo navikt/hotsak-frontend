@@ -24,6 +24,8 @@ export IMAGE_PROXY_URL=
 export UMAMI_ENABLED=false
 export UMAMI_WEBSITE_ID=
 
+export UNLEASH_ENABLED=false
+
 export USE_MSW=true
 export USE_MSW_GRUNNDATA=true
 export USE_MSW_ALTERNATIVPRODUKTER=true

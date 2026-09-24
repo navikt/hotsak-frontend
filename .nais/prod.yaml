@@ -31,6 +31,8 @@ spec:
         - application: modiacontextholder
           namespace: personoversikt
           cluster: prod-gcp
+      external:
+        - host: teamdigihot-unleash-api.nav.cloud.nais.io
   azure:
     application:
       enabled: true
@@ -53,6 +55,7 @@ spec:
       memory: 512Mi
   envFrom:
     - secret: hm-saksbehandling
+    - secret: hotsak-frontend-unleash-api-token
   env:
     - name: PORT
       value: '3000'
@@ -81,6 +84,8 @@ spec:
     - name: UMAMI_WEBSITE_ID
       value: 97bc2b63-e714-42e8-b364-39d59e022039
     - name: UMAMI_ENABLED
+      value: 'true'
+    - name: UNLEASH_ENABLED
       value: 'true'
     - name: GOSYS_OPPGAVEBEHANDLING_URL
       value: https://gosys.intern.nav.no/gosys/oppgavebehandling

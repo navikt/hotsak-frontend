@@ -11,6 +11,7 @@ import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { useLogBruker } from './sporing/useLogBruker.ts'
 import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
+import { UnleashEnhetContext } from './unleash/UnleashEnhetContext.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
 export function App() {
@@ -24,6 +25,7 @@ export function App() {
       <div className={classes.root}>
         <AsyncBoundary errorComponent={GlobalFeilside} suspenseFallback={null}>
           <TilgangProvider>
+            <UnleashEnhetContext />
             <PersonProvider>
               <ToastProvider>
                 <a href="#hovedinnhold" className="sr-only focusable">

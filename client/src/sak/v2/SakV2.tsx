@@ -1,4 +1,5 @@
 import { Box, HStack } from '@navikt/ds-react'
+import { useFlag } from '@unleash/proxy-client-react'
 import { useEffect, useRef, useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
@@ -14,6 +15,7 @@ import { useJournalposterInngående } from '../../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
+import { FeatureToggle } from '../../unleash/FeatureToggle.ts'
 import { useSakHotkeys } from '../hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
@@ -45,7 +47,6 @@ import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
-import { useErPilot } from '../../tilgang/useTilgang.ts'
 
 function SakV2Content({
   oppgave,
@@ -66,7 +67,7 @@ function SakV2Content({
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
   const { erPapirsøknad, erBestilling } = useSaksregler()
-  const erJournalføringPilot = useErPilot('journalføringPilot')
+  const erJournalføringPilot = useFlag(FeatureToggle.journalforing)
 
   const {
     panelState,

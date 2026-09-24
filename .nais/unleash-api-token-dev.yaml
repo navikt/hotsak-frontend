@@ -1,0 +1,14 @@
+apiVersion: unleash.nais.io/v1
+kind: ApiToken
+metadata:
+  name: hotsak-frontend
+  namespace: teamdigihot
+  labels:
+    team: teamdigihot
+spec:
+  unleashInstance:
+    apiVersion: unleash.nais.io/v1
+    kind: RemoteUnleash
+    name: teamdigihot
+  secretName: hotsak-frontend-unleash-api-token
+  environment: development

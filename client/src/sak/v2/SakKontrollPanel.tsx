@@ -1,4 +1,5 @@
 import { Chips, HStack } from '@navikt/ds-react'
+import { useFlag } from '@unleash/proxy-client-react'
 import clsx from 'clsx'
 
 import { useOppgaveContext } from '../../oppgave/OppgaveContext'
@@ -6,12 +7,12 @@ import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import { useSakId } from '../../saksbilde/useSak'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import globalStyles from '../../styles/shared.module.css'
+import { FeatureToggle } from '../../unleash/FeatureToggle.ts'
 import { useNotater } from '../notat/useNotater'
 import { GjenståendeOverfør } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
 import classes from './SakKontrollPanel.module.css'
-import { useErPilot } from '../../tilgang/useTilgang.ts'
 
 export const SakKontrollPanel = () => {
   const sakId = useSakId()
@@ -29,7 +30,7 @@ export const SakKontrollPanel = () => {
   const { gjeldendeBehandling } = useBehandling()
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
   const { erBestilling, erPapirsøknad } = useSaksregler()
-  const erJournalføringPilot = useErPilot('journalføringPilot')
+  const erJournalføringPilot = useFlag(FeatureToggle.journalforing)
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
 

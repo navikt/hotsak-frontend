@@ -187,3 +187,19 @@ jobs:
           body: ${{ env.CHANGE_LOG }}
           draft: true
           prerelease: false
+
+  unleash:
+    name: Deploy Unleash secrets
+    permissions:
+      contents: read
+      id-token: write
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        name: Sjekk ut koden
+      - uses: nais/deploy/actions/deploy@v2
+        name: Deploy Unleash API token
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/unleash-api-token-dev.yaml

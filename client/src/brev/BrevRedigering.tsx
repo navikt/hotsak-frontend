@@ -16,7 +16,8 @@ import { useSak } from '../saksbilde/useSak.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less' // todo -> hvorfor less?
 import { BrevContext } from './BrevContext.ts'
-import { Breveditor, type BreveditorState } from './breveditor/Breveditor.tsx'
+import { Breveditor } from './breveditor/Breveditor.tsx'
+import { type BreveditorBrevdata, type BreveditorState, isBreveditorState } from './breveditor/breveditorTyper.ts'
 import { type PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { useBrevmal } from './brevmaler/useBrevmal.ts'
@@ -40,11 +41,7 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
   const closePanel = useClosePanel('brevpanel')
   const [visSlettBrevModal, setVisSlettBrevModal] = useState(false)
 
-  const {
-    brev,
-    isLoading: brevIsLoading,
-    error: brevError,
-  } = useBrev<BreveditorState & { antallUkerSvartid?: number }>(brevId)
+  const { brev, isLoading: brevIsLoading, error: brevError } = useBrev<BreveditorBrevdata>(brevId)
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
@@ -114,7 +111,7 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
         brevmal: brev.brevmal,
         brevmalVersjon: brev.brevmalVersjon,
         målform: brev.målform,
-        data: { ...brev.data, ...state },
+        data: state,
       },
       serienummer,
     })
@@ -129,7 +126,7 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
 
   const markerKlart = async (klart: boolean) => {
     setSynligKryssKnapp(true)
-    const currentBrev = brev?.data?.value
+    const currentBrev = brev && isBreveditorState(brev.data) ? brev.data.value : undefined
     if (!currentBrev) return
 
     const feil = validerPlaceholders(currentBrev)
@@ -212,13 +209,11 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
               }}
               brevId={brev.brevId}
               templateMarkdown={templateMarkdown}
-              initialState={brev.data}
+              initialState={isBreveditorState(brev.data) ? brev.data : undefined}
               initialSerienummer={brev.serienummer}
               stilarkVersjon={brev.brevmalVersjon}
               målform={brev.målform}
-              spesiellePlaceholderVerdier={{
-                auto_antall_uker_svartid: `${brev.data.antallUkerSvartid ?? 4} uker`,
-              }}
+              spesiellePlaceholderVerdier={isBreveditorState(brev.data) ? undefined : brev.data.templateValues}
               onLagreBrev={handleLagreBrev}
             />
           </>

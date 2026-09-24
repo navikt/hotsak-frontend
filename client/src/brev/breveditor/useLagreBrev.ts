@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { BreveditorState } from './Breveditor.tsx'
+import type { BreveditorState } from './breveditorTyper.ts'
 
 // Interface for å tracke endringsstatus (er alle endringer lagret)
 export interface Endringsstatus {

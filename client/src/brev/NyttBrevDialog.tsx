@@ -2,6 +2,7 @@ import { Button, Dialog, Select, VStack } from '@navikt/ds-react'
 import { type FormEvent, useState } from 'react'
 
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
+import { type BrevmalInitialisering } from './breveditor/breveditorTyper.ts'
 import { GJELDENDE_STILARK_VERSJON } from './breveditor/html/byggDokument.ts'
 import { type Brev, Brevmal, Målform } from './brevTyper.ts'
 import { useBrevActions } from './useBrevActions.ts'
@@ -15,7 +16,7 @@ interface NyttBrevDialogProps {
 
 export function NyttBrevDialog({ open, oppgave, onClose, onOpprettet }: NyttBrevDialogProps) {
   const [antallUker, setAntallUker] = useState(4)
-  const { opprettBrevutkast } = useBrevActions(oppgave)
+  const { opprettBrevutkast } = useBrevActions<BrevmalInitialisering>(oppgave)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -24,7 +25,11 @@ export function NyttBrevDialog({ open, oppgave, onClose, onOpprettet }: NyttBrev
         brevmal: Brevmal.BREVEDITOR_SVARTIDSBREV,
         brevmalVersjon: GJELDENDE_STILARK_VERSJON,
         målform: Målform.BOKMÅL,
-        data: { antallUkerSvartid: antallUker },
+        data: {
+          templateValues: {
+            auto_antall_uker_svartid: `${antallUker} uker`,
+          },
+        },
       },
     })
     onOpprettet(brev)

@@ -9,14 +9,13 @@ import {
 } from '@platejs/basic-nodes/react'
 import { ListPlugin } from '@platejs/list-classic/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
-import type { History } from '@platejs/slate'
-import { KEYS, type Value } from 'platejs'
+import { KEYS } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
-import { type Brevdata, type Målform } from '../brevTyper.ts'
+import { type Målform } from '../brevTyper.ts'
 import { useBrevmottakere } from '../useBrev.ts'
 import { useSerienummer } from '../useSerienummer.ts'
 import './Breveditor.less'
@@ -32,12 +31,7 @@ import { transformerPlaceholders } from './transformerPlaceholders.ts'
 import { useEditorScale } from './useEditorScale.ts'
 import { useLagreBrev } from './useLagreBrev.ts'
 import { Verktøylinje } from './verktøylinje/Verktøylinje.tsx'
-
-export interface BreveditorState extends Brevdata {
-  value: Value
-  valueAsHtml: string
-  history: History
-}
+import { type BreveditorState } from './breveditorTyper.ts'
 
 export interface Metadata {
   brukersNavn: string

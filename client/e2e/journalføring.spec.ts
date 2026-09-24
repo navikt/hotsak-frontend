@@ -44,7 +44,7 @@ test.describe('Journalføring', () => {
     const modal = page.getByRole('dialog', { name: 'Dokumentene ble knyttet til eksisterende sak' })
     await expect(modal).toBeVisible()
     await expect(modal).toContainText('Dokumentene ble journalført og knyttet til en eksisterende sak i Hotsak.')
-    await modal.getByRole('button', { name: 'Behandle saken' }).click()
+    await modal.getByRole('button', { name: 'Gå til saken' }).click()
 
     await expect(page).toHaveURL(`/oppgave/${oppgaveId}`)
   })
@@ -70,7 +70,7 @@ test.describe('Journalføring', () => {
 
     const modal = page.getByRole('dialog', { name: 'Journalføringen er fullført og ny sak er opprettet' })
     await expect(modal).toBeVisible()
-    const tilSaken = modal.getByRole('button', { name: 'Behandle saken' })
+    const tilSaken = modal.getByRole('button', { name: 'Gå til saken' })
     await expect(tilSaken).toBeEnabled()
     await tilSaken.click()
 

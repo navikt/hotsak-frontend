@@ -1,10 +1,12 @@
 import { ClockDashedIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Box, Button, Tooltip, VStack } from '@navikt/ds-react'
+import { useEffect, useRef } from 'react'
 
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { useSak } from '../../../saksbilde/useSak'
 import { NotaterIcon } from '../../notat/NotaterIcon'
 import { UtlånsoversiktIcon } from '../../notat/UtlånsoversiktIcon'
+import { useNotater } from '../../notat/useNotater'
 import { SidebarValg } from '../SakPanelTabTypes'
 import { useSakContext } from '../SakV2ContextType'
 
@@ -16,6 +18,22 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
   const { sak } = useSak()
   const { aktivSidebar, setAktivSidebar, panelState } = useSakContext()
   const sidePanel = panelState.panels.sidebarpanel
+  const { antallNotater, isLoading: notaterIsLoading } = useNotater(sak?.data.sakId)
+  const sidebarErInitialisert = useRef(false)
+
+  useEffect(() => {
+    if (notaterIsLoading || sidebarErInitialisert.current) return
+
+    sidebarErInitialisert.current = true
+    if (antallNotater > 0) {
+      setAktivSidebar(SidebarValg.NOTATER)
+    }
+  }, [antallNotater, notaterIsLoading, setAktivSidebar])
+
+  function velgSidebar(sidebar: SidebarValg) {
+    sidebarErInitialisert.current = true
+    setAktivSidebar(sidebar)
+  }
 
   return (
     <Box
@@ -29,7 +47,7 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
       <VStack align="center" gap="space-12" paddingInline="space-4">
         <Tooltip content="Sakshistorikk" placement="left">
           <Button
-            onClick={() => setAktivSidebar(SidebarValg.SAKSHISTORIKK)}
+            onClick={() => velgSidebar(SidebarValg.SAKSHISTORIKK)}
             size="small"
             style={
               sidePanel.visible && aktivSidebar === SidebarValg.SAKSHISTORIKK
@@ -51,7 +69,7 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
                 ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
                 : {}
             }
-            onClick={() => setAktivSidebar(SidebarValg.HJELPEMIDDELOVERSIKT)}
+            onClick={() => velgSidebar(SidebarValg.HJELPEMIDDELOVERSIKT)}
             icon={<UtlånsoversiktIcon />}
           />
         </Tooltip>
@@ -65,7 +83,7 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
                 ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
                 : {}
             }
-            onClick={() => setAktivSidebar(SidebarValg.NOTATER)}
+            onClick={() => velgSidebar(SidebarValg.NOTATER)}
             icon={<NotaterIcon oppgaveId={oppgave?.oppgaveId} sakId={sak?.data.sakId} />}
           />
         </Tooltip>
@@ -79,7 +97,7 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
                 ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
                 : {}
             }
-            onClick={() => setAktivSidebar(SidebarValg.OPPGAVER_OG_DOKUMENTER)}
+            onClick={() => velgSidebar(SidebarValg.OPPGAVER_OG_DOKUMENTER)}
             icon={<PersonEnvelopeIcon />}
           />
         </Tooltip>

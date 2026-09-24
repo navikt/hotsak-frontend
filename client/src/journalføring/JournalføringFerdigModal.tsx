@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router'
 
 import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { finnModalvariant, finnStiTilSak, lagJournalføringFerdigModalmodell } from './journalføringFerdigModalUtils.ts'
-import { type JournalføringV2Response } from './journalføringTypes.ts'
+import { type JournalføringV2Response, type TilordnetEnhet } from './journalføringTypes.ts'
 import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
 
 interface JournalføringFerdigModalProps {
   open: boolean
   resultat: JournalføringV2Response | null
   sakType: 'ny' | 'eksisterende'
+  tilordnetEnhet?: TilordnetEnhet
   skjulTilSaken?: boolean
   onJournalpostSakFerdigstilt(): void
 }
@@ -19,6 +20,7 @@ export function JournalføringFerdigModal({
   open,
   resultat,
   sakType,
+  tilordnetEnhet,
   skjulTilSaken = false,
   onJournalpostSakFerdigstilt,
 }: JournalføringFerdigModalProps) {
@@ -33,7 +35,7 @@ export function JournalføringFerdigModal({
   }, [journalpostSakFerdigstilt, onJournalpostSakFerdigstilt])
 
   const variant = finnModalvariant(sakType, skjulTilSaken)
-  const modalmodell = lagJournalføringFerdigModalmodell(variant)
+  const modalmodell = lagJournalføringFerdigModalmodell(variant, tilordnetEnhet)
 
   function navigerOgLukkModal(sti: string) {
     navigate(sti)
@@ -54,13 +56,13 @@ export function JournalføringFerdigModal({
         </Dialog.Body>
         <Dialog.Footer>
           <HStack gap="space-16" align="center" justify="center">
-            <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/mine')}>
+            <Button variant="tertiary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/mine')}>
               Til mine oppgaver
             </Button>
             <Button variant="secondary" size="small" onClick={() => navigerOgLukkModal('/oppgaver/enhetens')}>
               Til enhetens oppgaver
             </Button>
-            {modalmodell.visTilSaken && variant === 'ny-sak' && (
+            {modalmodell.tilSakenKnappetekst && variant === 'ny-sak' && (
               <Button
                 variant="primary"
                 size="small"
@@ -72,16 +74,16 @@ export function JournalføringFerdigModal({
                   }
                 }}
               >
-                Behandle saken
+                {modalmodell.tilSakenKnappetekst}
               </Button>
             )}
-            {modalmodell.visTilSaken && variant === 'eksisterende-hotsak' && (
+            {modalmodell.tilSakenKnappetekst && variant === 'eksisterende-hotsak' && (
               <Button
                 variant="primary"
                 size="small"
                 onClick={() => resultat && navigerOgLukkModal(finnStiTilSak(resultat))}
               >
-                Behandle saken
+                {modalmodell.tilSakenKnappetekst}
               </Button>
             )}
           </HStack>

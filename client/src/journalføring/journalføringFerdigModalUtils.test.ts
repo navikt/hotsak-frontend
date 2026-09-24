@@ -79,20 +79,36 @@ describe('lagJournalføringFerdigModalmodell', () => {
     expect(modell.melding).toBe(
       'Dokumentene ble journalført og knyttet til en eksisterende fagsak. Saken kan behandles videre i Gosys.'
     )
-    expect(modell.visTilSaken).toBe(false)
+    expect(modell.tilSakenKnappetekst).toBeUndefined()
   })
 
-  it('viser koblingsmelding og «Til saken» for eksisterende Hotsak-sak', () => {
+  it('viser koblingsmelding og «Gå til saken» for eksisterende Hotsak-sak', () => {
     const modell = lagJournalføringFerdigModalmodell('eksisterende-hotsak')
 
     expect(modell.melding).toBe(
       'Dokumentene ble journalført og knyttet til en eksisterende sak i Hotsak. Du kan nå gå til dine oppgaver, enhetens oppgaver eller fortsette behandlingen av saken.'
     )
-    expect(modell.visTilSaken).toBe(true)
+    expect(modell.tilSakenKnappetekst).toBe('Gå til saken')
   })
 
-  it('viser opprettelsesmelding og «Til saken» for ny sak', () => {
+  it('viser «Behandle saken» for ny sak på min oppgaveliste', () => {
+    const modell = lagJournalføringFerdigModalmodell('ny-sak', 'minOppgaveliste')
+
+    expect(modell.tilSakenKnappetekst).toBe('Behandle saken')
+  })
+
+  it.each(['enhetensOppgaveliste', 'medarbeidersOppgaveliste'] as const)(
+    'viser «Gå til saken» for ny sak på %s',
+    (tilordnetEnhet) => {
+      const modell = lagJournalføringFerdigModalmodell('ny-sak', tilordnetEnhet)
+
+      expect(modell.tilSakenKnappetekst).toBe('Gå til saken')
+    }
+  )
+
+  it('viser «Gå til saken» for ny sak uten tilordningsvalg', () => {
     const modell = lagJournalføringFerdigModalmodell('ny-sak')
-    expect(modell.visTilSaken).toBe(true)
+
+    expect(modell.tilSakenKnappetekst).toBe('Gå til saken')
   })
 })

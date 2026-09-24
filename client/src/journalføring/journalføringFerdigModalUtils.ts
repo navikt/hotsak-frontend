@@ -1,12 +1,12 @@
 import { type OppgaveId, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
-import { type JournalføringV2Response } from './journalføringTypes.ts'
+import { type JournalføringV2Response, type TilordnetEnhet } from './journalføringTypes.ts'
 
 export type JournalføringFerdigVariant = 'ny-sak' | 'eksisterende-hotsak' | 'ekstern-fagsak'
 
 export interface JournalføringFerdigModalmodell {
   tittel: string
   melding: string
-  visTilSaken: boolean
+  tilSakenKnappetekst?: 'Behandle saken' | 'Gå til saken'
 }
 
 export function finnModalvariant(sakType: 'ny' | 'eksisterende', skjulTilSaken = false): JournalføringFerdigVariant {
@@ -14,26 +14,28 @@ export function finnModalvariant(sakType: 'ny' | 'eksisterende', skjulTilSaken =
   return sakType === 'ny' ? 'ny-sak' : 'eksisterende-hotsak'
 }
 
-export function lagJournalføringFerdigModalmodell(variant: JournalføringFerdigVariant): JournalføringFerdigModalmodell {
+export function lagJournalføringFerdigModalmodell(
+  variant: JournalføringFerdigVariant,
+  tilordnetEnhet?: TilordnetEnhet
+): JournalføringFerdigModalmodell {
   switch (variant) {
     case 'ekstern-fagsak':
       return {
         tittel: 'Dokumentene ble knyttet til eksisterende sak',
         melding:
           'Dokumentene ble journalført og knyttet til en eksisterende fagsak. Saken kan behandles videre i Gosys.',
-        visTilSaken: false,
       }
     case 'eksisterende-hotsak':
       return {
         tittel: 'Dokumentene ble knyttet til eksisterende sak',
         melding: `Dokumentene ble journalført og knyttet til en eksisterende sak i Hotsak. Du kan nå gå til dine oppgaver, enhetens oppgaver eller fortsette behandlingen av saken.`,
-        visTilSaken: true,
+        tilSakenKnappetekst: 'Gå til saken',
       }
     case 'ny-sak':
       return {
         tittel: 'Journalføringen er fullført og ny sak er opprettet',
         melding: `Du kan nå gå til til dine oppgaver, enhetens oppgaver eller fortsette behandling av saken.`,
-        visTilSaken: true,
+        tilSakenKnappetekst: tilordnetEnhet === 'minOppgaveliste' ? 'Behandle saken' : 'Gå til saken',
       }
   }
 }

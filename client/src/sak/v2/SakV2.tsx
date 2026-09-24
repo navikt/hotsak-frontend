@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
-import { isVedtaksbrev } from '../../brev/brevSelectors.ts'
+import { isBreveditorbrev, isVedtaksbrev } from '../../brev/brevSelectors.ts'
 import { useBrevForSak } from '../../brev/useBrev.ts'
 import { useDokumentContext } from '../../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../../felleskomponenter/AsyncBoundary.tsx'
@@ -81,8 +81,9 @@ function SakV2Content({
   const { gjeldendeBehandling } = useBehandling()
   const behandlingsutfall = gjeldendeBehandling?.utfall
 
-  const { finnBrev } = useBrevForSak(sak.sakId)
+  const { brevForSak, finnBrev } = useBrevForSak(sak.sakId)
   const vedtaksbrev = finnBrev(isVedtaksbrev)
+  const breveditorbrev = brevForSak?.brev.filter(isBreveditorbrev) ?? []
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
@@ -150,7 +151,7 @@ function SakV2Content({
           )}
           <ResizablePanel panelId="brevpanel" panel={brevPanel} visible={brevPanel.visible}>
             <AvrundetPanel>
-              <BrevPanel oppgave={oppgave} brev={vedtaksbrev} />
+              <BrevPanel oppgave={oppgave} brev={breveditorbrev} initialBrevId={vedtaksbrev?.brevId} />
             </AvrundetPanel>
           </ResizablePanel>
           <ResizablePanel

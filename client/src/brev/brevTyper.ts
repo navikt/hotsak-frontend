@@ -14,6 +14,7 @@ export type Brevstatus = Enum<typeof Brevstatus>
 export const Brevmal = {
   // Breveditor
   BREVEDITOR_VEDTAKSBREV: 'BREVEDITOR_VEDTAKSBREV',
+  BREVEDITOR_SVARTIDSBREV: 'BREVEDITOR_SVARTIDSBREV',
 
   // Barnebriller
   BARNEBRILLER_INNHENTE_OPPLYSNINGER: 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
@@ -41,12 +42,28 @@ export interface Brevmottaker {
 }
 
 export const BrevmalTekst = {
-  [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Vedtaksbrevet',
-  [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrevet',
-  [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrevet',
-  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrevet',
-  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrevet',
+  [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Vedtaksbrev',
+  [Brevmal.BREVEDITOR_SVARTIDSBREV]: 'Svartidsbrev',
+  [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrev',
 } as const
+
+export function brevstatusTekst(status: Brevstatus): string {
+  switch (status) {
+    case Brevstatus.UTKAST:
+      return 'Utkast'
+    case Brevstatus.FERDIGSTILT:
+      return 'Ferdigstilt'
+    case Brevstatus.JOURNALFØRT:
+      return 'Journalført'
+    case Brevstatus.TIL_DISTRIBUSJON:
+      return 'Til distribusjon'
+    case Brevstatus.DISTRIBUERT:
+      return 'Sendt'
+  }
+}
 
 export interface BrevmottakerResponse {
   brevmottakere: Brevmottaker[]

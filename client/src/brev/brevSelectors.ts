@@ -18,6 +18,10 @@ export const isBrevstatusFerdigstilt: Predicate<Brev> = isBrevstatus(Brevstatus.
 export const isBrevstatusDistribuert: Predicate<Brev> = isBrevstatus(Brevstatus.DISTRIBUERT)
 
 export const isVedtaksbrev: Predicate<Brev> = isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV)
+export const isBreveditorbrev: Predicate<Brev> = isBrevmalOneOf(
+  Brevmal.BREVEDITOR_VEDTAKSBREV,
+  Brevmal.BREVEDITOR_SVARTIDSBREV
+)
 
 export const isBrevmalBarnebrillerVedtak: Predicate<Brev> = isBrevmalOneOf(
   Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE,

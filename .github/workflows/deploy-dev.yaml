@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - feature/oppgaver-og-dokumenter
+      - feature/flere-brev
 
 jobs:
   test:

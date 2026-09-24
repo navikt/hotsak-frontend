@@ -60,6 +60,7 @@ export interface BreveditorProps {
   onStateChange?(newState: BreveditorState): void
   onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string
+  spesiellePlaceholderVerdier?: PlaceholderSpesielleVerdier
 }
 
 export function Breveditor(props: BreveditorProps) {
@@ -74,6 +75,7 @@ export function Breveditor(props: BreveditorProps) {
     onStateChange,
     onLagreBrev,
     placeholder,
+    spesiellePlaceholderVerdier,
   } = props
   const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
 
@@ -85,6 +87,7 @@ export function Breveditor(props: BreveditorProps) {
     auto_hjelpemidler_avslått: hjelpemidlerSøktOm,
     auto_hjelpemidler_avslått_inline: hjelpemidlerSøktOm,
     auto_leveringstid: 'fem uker',
+    ...spesiellePlaceholderVerdier,
   }
 
   const editor = usePlateEditor(

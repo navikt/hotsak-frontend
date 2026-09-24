@@ -27,6 +27,8 @@ function loadTemplate(key: string): Promise<{ default: string }> {
       return import('./maler/henleggelse.md?raw')
     case 'henleggelse-nn':
       return import('./maler/henleggelse-nn.md?raw')
+    case 'svartidsbrev':
+      return import('./maler/svartidsbrev.md?raw')
     default:
       return Promise.resolve({ default: '' })
   }

@@ -21,23 +21,30 @@ import { type PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { useBrevmal } from './brevmaler/useBrevmal.ts'
 import classes from './BrevRedigering.module.css'
+import { Brevmal } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
 
 export interface BrevRedigeringProps {
   oppgave: Saksbehandlingsoppgave
-  behandling: Behandling
+  behandling?: Behandling
   brevId: string
+  onSlettBrev?: () => void
+  onTilbake?: () => void
 }
 
-export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringProps) {
+export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTilbake }: BrevRedigeringProps) {
   const { sak } = useSak()
 
   const closePanel = useClosePanel('brevpanel')
   const [visSlettBrevModal, setVisSlettBrevModal] = useState(false)
 
-  const { brev, isLoading: brevIsLoading, error: brevError } = useBrev<BreveditorState>(brevId)
+  const {
+    brev,
+    isLoading: brevIsLoading,
+    error: brevError,
+  } = useBrev<BreveditorState & { antallUkerSvartid?: number }>(brevId)
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
@@ -57,11 +64,16 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
 
   const { showInfoToast } = useToast()
 
-  const templateMarkdown = useBrevmal(utledBrevmal(behandling), brev?.målform)
+  const templateMarkdown = useBrevmal(utledBrevmal(behandling, brev?.brevmal), brev?.målform)
 
   // sett brev tilbake til utkast hvis dato det ble ferdigstilt er før i dag, slik at det får dagens dato
   useEffect(() => {
-    if (brev?.ferdigstilt && !isToday(brev.ferdigstilt) && !isBehandlingFerdigstilt(behandling)) {
+    if (
+      brev?.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV &&
+      brev.ferdigstilt &&
+      !isToday(brev.ferdigstilt) &&
+      !isBehandlingFerdigstilt(behandling)
+    ) {
       redigerBrevutkast.trigger().then(() => {
         showInfoToast(
           'Brevet knyttet til denne behandlingen ble ferdigstilt før dagens dato og er nå satt tilbake til utkast. Ferdigstill brevet på nytt hvis du skal ferdigstille behandlingen.'
@@ -102,7 +114,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
         brevmal: brev.brevmal,
         brevmalVersjon: brev.brevmalVersjon,
         målform: brev.målform,
-        data: state,
+        data: { ...brev.data, ...state },
       },
       serienummer,
     })
@@ -111,7 +123,8 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
   const handleSlettBrevutkast = async () => {
     if (!brev) return
     await slettBrevutkast.trigger()
-    closePanel()
+    if (onSlettBrev) onSlettBrev()
+    else closePanel()
   }
 
   const markerKlart = async (klart: boolean) => {
@@ -147,7 +160,13 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
         {brev.ferdigstilt ? (
           <>
             <div className="brevtoolbar">
-              <div className="left" />
+              <div className="left">
+                {onTilbake && (
+                  <Button variant="tertiary" size="small" onClick={onTilbake}>
+                    Alle brev
+                  </Button>
+                )}
+              </div>
               <div className="right">
                 <Button variant="tertiary" size="small" onClick={() => markerKlart(false)}>
                   Rediger
@@ -160,6 +179,11 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
           <>
             <div className="brevtoolbar">
               <div className="left">
+                {onTilbake && (
+                  <Button variant="tertiary" size="small" onClick={onTilbake}>
+                    Alle brev
+                  </Button>
+                )}
                 <Button variant="tertiary" size="small" onClick={() => setVisSlettBrevModal(true)}>
                   Slett utkast
                 </Button>
@@ -192,6 +216,9 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
               initialSerienummer={brev.serienummer}
               stilarkVersjon={brev.brevmalVersjon}
               målform={brev.målform}
+              spesiellePlaceholderVerdier={{
+                auto_antall_uker_svartid: `${brev.data.antallUkerSvartid ?? 4} uker`,
+              }}
               onLagreBrev={handleLagreBrev}
             />
           </>
@@ -210,7 +237,11 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
   )
 }
 
-function utledBrevmal(behandling?: Behandling): string | undefined {
+function utledBrevmal(behandling?: Behandling, brevmal?: Brevmal): string | undefined {
+  if (brevmal === Brevmal.BREVEDITOR_SVARTIDSBREV) {
+    return 'svartidsbrev'
+  }
+
   const utfall = behandling?.utfall
 
   if (isBehandlingsutfallVedtak(utfall)) {

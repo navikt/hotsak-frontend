@@ -2,7 +2,7 @@
 
 Hei,
 
-Din sak er under behandling men vil ta tid. Du må belage deg på {{ANTALL_UKER_SVARTID}} behandlingstid.
+Din sak er under behandling men vil ta tid. Du må belage deg på \[auto_antall_uker_svartid\] behandlingstid.
 
 ## Du har rett til innsyn i saken din
 

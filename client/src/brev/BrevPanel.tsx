@@ -1,5 +1,5 @@
-import { Box, InfoCard, VStack } from '@navikt/ds-react'
-import { Suspense, type ReactNode } from 'react'
+import { Box, Button, InfoCard, VStack } from '@navikt/ds-react'
+import { type ReactNode, Suspense, useState } from 'react'
 
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
@@ -7,76 +7,122 @@ import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
+import { formaterDato } from '../utils/dato.ts'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import { type Brev } from './brevTyper.ts'
+import { type Brev, BrevmalTekst, brevstatusTekst } from './brevTyper.ts'
+import { NyttBrevDialog } from './NyttBrevDialog.tsx'
 
 export interface BrevPanelProps {
   oppgave?: Saksbehandlingsoppgave
-  brev?: Brev
+  brev: Brev[]
+  initialBrevId?: string
 }
 
-export function BrevPanel({ oppgave, brev }: BrevPanelProps) {
+export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const { gjeldendeBehandling } = useBehandling()
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  const [valgtBrevId, setValgtBrevId] = useState<string | null | undefined>(initialBrevId)
+  const [nyttBrevDialogOpen, setNyttBrevDialogOpen] = useState(false)
+  const aktivtBrevId = valgtBrevId === undefined ? initialBrevId : valgtBrevId
+  const valgtBrev = brev.find((brev) => brev.brevId === aktivtBrevId)
+  const kanOppretteBrev = !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt
 
-  if (oppgaveErAvsluttet || brev?.distribusjon.length) {
+  if (valgtBrev) {
+    const tilbakeTilOversikt = () => setValgtBrevId(null)
+    const kanRedigere =
+      !oppgaveErAvsluttet && valgtBrev.distribusjon.length === 0 && oppgaveErUnderBehandlingAvInnloggetAnsatt
+
+    if (kanRedigere && oppgave) {
+      return (
+        <Box className={classes.container} background="default">
+          <Suspense>
+            <BrevRedigering
+              oppgave={oppgave}
+              behandling={gjeldendeBehandling}
+              brevId={valgtBrev.brevId}
+              onSlettBrev={tilbakeTilOversikt}
+              onTilbake={tilbakeTilOversikt}
+            />
+          </Suspense>
+        </Box>
+      )
+    }
+
     return (
-      <BrevPanelLayout tittel="Vedtaksbrev">
-        <BrevInfoCard title="Oppgaven er ferdigstilt">
-          Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet. Dersom du har angret på vedtaket finnes det
-          en ny oppgave i din liste hvor du kan redigere brevet som tidligere var tilknyttet denne oppgaven.
-        </BrevInfoCard>
-        <BrevForhåndsvisning brevId={brev?.brevId} avsluttet={oppgaveErAvsluttet} />
+      <BrevPanelLayout tittel={BrevmalTekst[valgtBrev.brevmal]} onTilbake={tilbakeTilOversikt}>
+        {oppgaveErAvsluttet && (
+          <BrevInfoCard title="Oppgaven er ferdigstilt">
+            Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
+          </BrevInfoCard>
+        )}
+        <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
       </BrevPanelLayout>
     )
   }
-
-  if (!gjeldendeBehandling?.utfall) {
-    return (
-      <BrevPanelLayout>
-        <BrevInfoCard title="Ingen mal valgt for brevutkast">
-          I fremtiden vil man kunne opprette brev underveis i saken her. Foreløpig må du sette et vedtaksresultat i
-          behandlingspanelet og velge om du vil opprette vedtaksbrev der.
-        </BrevInfoCard>
-      </BrevPanelLayout>
-    )
-  }
-
-  if (!oppgaveErUnderBehandlingAvInnloggetAnsatt) {
-    return (
-      <BrevPanelLayout>
-        <BrevForhåndsvisning brevId={brev?.brevId} avsluttet={oppgaveErAvsluttet} />
-      </BrevPanelLayout>
-    )
-  }
-
-  if (!brev) {
-    return (
-      <BrevPanelLayout>
-        <BrevInfoCard title="Brevutkast ikke opprettet">Det er ikke opprettet noe vedtaksbrev i saken.</BrevInfoCard>
-      </BrevPanelLayout>
-    )
-  }
-
-  if (!oppgave) return null
 
   return (
-    <Box className={classes.container} background="default">
-      <Suspense>
-        <BrevRedigering oppgave={oppgave} behandling={gjeldendeBehandling} brevId={brev.brevId} />
-      </Suspense>
-    </Box>
+    <>
+      <BrevPanelLayout onNyttBrev={kanOppretteBrev ? () => setNyttBrevDialogOpen(true) : undefined}>
+        {brev.length === 0 ? (
+          <BrevInfoCard title="Ingen brev">Det er ikke opprettet noen brev i saken.</BrevInfoCard>
+        ) : (
+          <VStack gap="space-8">
+            {brev.map((brev) => (
+              <Button key={brev.brevId} variant="tertiary" onClick={() => setValgtBrevId(brev.brevId)}>
+                {BrevmalTekst[brev.brevmal]} - {brevstatusTekst(brev.brevstatus)} ({formaterDato(brev.opprettet)})
+              </Button>
+            ))}
+          </VStack>
+        )}
+      </BrevPanelLayout>
+      {oppgave && (
+        <NyttBrevDialog
+          open={nyttBrevDialogOpen}
+          oppgave={oppgave}
+          onClose={() => setNyttBrevDialogOpen(false)}
+          onOpprettet={(opprettetBrev) => {
+            setNyttBrevDialogOpen(false)
+            setValgtBrevId(opprettetBrev.brevId)
+          }}
+        />
+      )}
+    </>
   )
 }
 
-function BrevPanelLayout({ tittel = 'Brev', children }: { tittel?: string; children: ReactNode }) {
+function BrevPanelLayout({
+  tittel = 'Brev',
+  onNyttBrev,
+  onTilbake,
+  children,
+}: {
+  tittel?: string
+  onNyttBrev?: () => void
+  onTilbake?: () => void
+  children: ReactNode
+}) {
   const closePanel = useClosePanel('brevpanel')
   return (
     <Box className={classes.container} background="default">
       <VStack paddingInline="space-20" gap="space-16" height="100%">
-        <PanelTittel paddingInline="space-8 space-0" tittel={tittel} lukkPanel={closePanel} />
+        <PanelTittel
+          paddingInline="space-8 space-0"
+          tittel={tittel}
+          handlinger={
+            onNyttBrev ? (
+              <Button size="small" onClick={onNyttBrev}>
+                Nytt brev
+              </Button>
+            ) : onTilbake ? (
+              <Button size="small" variant="tertiary" onClick={onTilbake}>
+                Alle brev
+              </Button>
+            ) : undefined
+          }
+          lukkPanel={closePanel}
+        />
         {children}
       </VStack>
     </Box>

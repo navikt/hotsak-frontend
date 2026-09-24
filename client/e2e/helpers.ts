@@ -105,7 +105,7 @@ export async function fyllPlaceholder(page: Page, placeholderNavn: RegExp, tekst
   await page.getByRole('link', { name: placeholderNavn }).first().click()
   await page.waitForTimeout(150)
   await page.keyboard.type(tekst)
-  await page.getByText('Lagret').waitFor({ state: 'visible' })
+  await page.getByTestId('brevpanel').getByText('Lagret').waitFor({ state: 'visible' })
   await page.getByRole('button', { name: /Ferdigstill utkast/i }).click()
 }
 

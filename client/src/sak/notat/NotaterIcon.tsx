@@ -48,7 +48,8 @@ export function NotaterIcon({ sakId }: { oppgaveId?: OppgaveId; sakId?: string }
       {!isLoading && (
         <Tag
           size="xsmall"
-          variant={`${antall > 0 ? 'info-moderate' : 'neutral-moderate'}`}
+          data-color={antall > 0 ? 'warning' : 'neutral'}
+          variant={`${antall > 0 ? 'strong' : 'moderate'}`}
           className={classes.tag}
           data-testid="notatteller"
           aria-hidden="true"

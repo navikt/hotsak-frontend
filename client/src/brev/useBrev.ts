@@ -2,7 +2,6 @@ import { useCallback, useMemo } from 'react'
 import useSWR, { preload, useSWRConfig, type MutatorCallback, type MutatorOptions } from 'swr'
 import useSWRMutation from 'swr/mutation'
 
-import { useToast } from '../felleskomponenter/toast/useToast'
 import { http, type HttpAccept, type HttpAcceptKey } from '../io/HttpClient'
 import { type HttpError } from '../io/HttpError'
 import { useSakId } from '../saksbilde/useSak'
@@ -61,27 +60,16 @@ export function useMutateBrevmottakere() {
 
 export function useBrevmottakerActions(brevId?: string) {
   const sakId = useSakId()
-  const { showSuccessToast, showInfoToast } = useToast()
   const key = sakId && brevId ? mottakereKeyOf(sakId, brevId) : null
 
   const leggTilBrevmottaker = useSWRMutation<void, HttpError, HttpAcceptKey | null, LeggTilMottakerRequest>(
     key,
-    ([url], { arg: body }) => http.post<LeggTilMottakerRequest, void>(url, body),
-    {
-      onSuccess() {
-        showSuccessToast('Mottaker lagt til')
-      },
-    }
+    ([url], { arg: body }) => http.post<LeggTilMottakerRequest, void>(url, body)
   )
 
   const slettBrevmottaker = useSWRMutation<void, HttpError, HttpAcceptKey | null, string>(
     key,
-    ([url], { arg: brevmottakerId }) => http.delete(`${url}/${brevmottakerId}`),
-    {
-      onSuccess() {
-        showInfoToast('Mottaker fjernet')
-      },
-    }
+    ([url], { arg: brevmottakerId }) => http.delete(`${url}/${brevmottakerId}`)
   )
 
   return { leggTilBrevmottaker, slettBrevmottaker }

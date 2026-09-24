@@ -9,7 +9,7 @@ export interface OppgaveoversiktPersonProps {
 
 export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
   const { fnr } = props
-  const { data, isLoading, isValidating, error } = useOppgavesøk({ brukerId: fnr })
+  const { data, isLoading, isValidating, error } = useOppgavesøk(fnr ? { brukerId: fnr } : undefined)
 
   if (error) {
     return <div>Feil ved henting av oppgaver</div>

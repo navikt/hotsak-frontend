@@ -1,4 +1,5 @@
 import { intervalString, type IntervalString, tilLocalDateString } from '../../../utils/dato'
+import { subYears } from 'date-fns'
 
 export const OppgaverOgDokumenterTabs = {
   OPPGAVER: 'OPPGAVER',
@@ -31,7 +32,7 @@ function periodeForFilter(filter: OppgaverOgDokumenterFilterValue): { fra: Date;
       return { fra, til: now }
     }
     case OppgaverOgDokumenterFilter.ALLE:
-      return undefined
+      return { fra: subYears(now, 10), til: now }
   }
 }
 

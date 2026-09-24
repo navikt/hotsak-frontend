@@ -6,6 +6,7 @@ import { afterAll, afterEach, beforeAll } from 'vitest'
 ;(globalThis as Record<string, unknown>).appSettings ??= {
   NAIS_CLUSTER_NAME: 'test',
   USE_MSW: 'false',
+  UNLEASH_ENABLED: false,
   MILJO: 'test',
 }
 

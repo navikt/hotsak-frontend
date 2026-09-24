@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log/slog"
 	"net/http"
 	"os"
 
@@ -73,6 +74,8 @@ func main() {
 			"USE_MSW_GRUNNDATA",
 			"USE_MSW_ALTERNATIVPRODUKTER",
 
+			"UNLEASH_ENABLED",
+
 			"GIT_COMMIT",
 
 			"GOSYS_OPPGAVEBEHANDLING_URL",
@@ -82,6 +85,17 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
+
+	// Unleash Frontend API-proxy: krever innlogget bruker (samme idp som resten av
+	// BFF-en), men bruker et statisk server-token i stedet for OBO-veksling siden
+	// Unleash-tokenet er team-scoped og ikke bundet til den innloggede brukeren.
+	unleashProxy, err := newUnleashFrontendProxy(idp, os.Getenv("UNLEASH_SERVER_API_URL"), os.Getenv("UNLEASH_SERVER_API_TOKEN"))
+	if err != nil {
+		slog.Error("unleash proxy configuration failed", "error", err)
+		os.Exit(1)
+	}
+	mux.Handle("/api/unleash/", http.StripPrefix("/api/unleash", unleashProxy))
+
 	if useMSW {
 		gjeldendeEnhet := &enhet{
 			Nummer: "2970",

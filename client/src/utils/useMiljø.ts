@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-const mswAktivert = window.appSettings.USE_MSW || false
+export const mswAktivert = window.appSettings.USE_MSW || false
 
 export function useMiljø() {
   return useMemo(() => {

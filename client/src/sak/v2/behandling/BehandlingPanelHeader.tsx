@@ -1,11 +1,12 @@
 import { Box, HStack, InlineMessage, Link, VStack } from '@navikt/ds-react'
+import { useFlag } from '@unleash/proxy-client-react'
 
 import { useMemo } from 'react'
 import { Tekst } from '../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { useOppgavesøk } from '../../../oppgave/useOppgavesøk.ts'
 import { useSaksregler } from '../../../saksregler/useSaksregler'
-import { useErPilot } from '../../../tilgang/useTilgang.ts'
+import { FeatureToggle } from '../../../unleash/FeatureToggle.ts'
 import { type Sak } from '../../../types/types.internal'
 import { formaterDatoKort } from '../../../utils/dato'
 import { OppgaverOgDokumenterFilter, opprettetIntervallForFilter } from '../sidebars/OppgaverOgDokumenterUtils.ts'
@@ -13,7 +14,7 @@ import { JournalpostCard } from './JournalpostCard'
 
 export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: Sak }) {
   const { erBestilling } = useSaksregler()
-  const erJournalføringPilot = useErPilot('journalføringPilot')
+  const erJournalføringPilot = useFlag(FeatureToggle.journalforing)
 
   const opprettetIntervallSisteToUker = useMemo(
     () => opprettetIntervallForFilter(OppgaverOgDokumenterFilter.SISTE_2_UKER),

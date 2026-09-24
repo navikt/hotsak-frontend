@@ -19,7 +19,12 @@ import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { JournalføringParter } from './JournalføringParter.tsx'
 import { JournalføringSakvalg } from './JournalføringSakvalg.tsx'
 import { NySakSkjema } from './NySakSkjema.tsx'
-import { Sakstype, type JournalføringV2Response, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import {
+  Sakstype,
+  type JournalføringV2Response,
+  type JournalføringV2SkjemaVerdier,
+  type TilordnetEnhet,
+} from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
@@ -40,6 +45,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
+  const [tilordnetEnhet, setTilordnetEnhet] = useState<TilordnetEnhet>()
 
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
   const aktivFraDatoDefault = new Date()
@@ -153,6 +159,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       dokumenter,
     })
     if (resultat) {
+      setTilordnetEnhet(verdier.tilordnetEnhet)
       setJournalføringResultat(resultat)
     }
   }
@@ -170,6 +177,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       dokumenter,
     })
     if (resultat) {
+      setTilordnetEnhet(undefined)
       setJournalføringResultat(resultat)
     }
   }
@@ -311,6 +319,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
         open={journalføringResultat != null}
         resultat={journalføringResultat}
         sakType={sakType}
+        tilordnetEnhet={tilordnetEnhet}
         skjulTilSaken={valgtSak?.sakstype === Sakstype.GENERELL_SAK || (valgtSak ? erFagsak(valgtSak) : false)}
         onJournalpostSakFerdigstilt={mutateJournalpost}
       />

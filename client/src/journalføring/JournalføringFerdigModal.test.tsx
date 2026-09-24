@@ -39,7 +39,7 @@ describe('JournalføringFerdigModal', () => {
     })
   })
 
-  it('viser «Behandle saken» og koblingsmelding for eksisterende Hotsak-sak', () => {
+  it('viser «Gå til saken» og koblingsmelding for eksisterende Hotsak-sak', () => {
     render(
       <JournalføringFerdigModal
         open
@@ -49,7 +49,7 @@ describe('JournalføringFerdigModal', () => {
       />
     )
 
-    expect(screen.getByRole('button', { name: 'Behandle saken' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Gå til saken' })).toBeInTheDocument()
   })
 
   it('skjuler «Til saken» og viser Gosys-tekst for ekstern fagsak', () => {
@@ -68,7 +68,8 @@ describe('JournalføringFerdigModal', () => {
         'Dokumentene ble journalført og knyttet til en eksisterende fagsak. Saken kan behandles videre i Gosys.'
       )
     ).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Til saken' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Gå til saken' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Behandle saken' })).not.toBeInTheDocument()
   })
 
   it('skjuler «Til saken» når journalposten kobles til Gosys generell', () => {
@@ -87,7 +88,8 @@ describe('JournalføringFerdigModal', () => {
         'Dokumentene ble journalført og knyttet til en eksisterende fagsak. Saken kan behandles videre i Gosys.'
       )
     ).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Til saken' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Gå til saken' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Behandle saken' })).not.toBeInTheDocument()
   })
 
   it('viser «Behandle saken» og opprettelsesmelding for ny sak', () => {
@@ -96,6 +98,7 @@ describe('JournalføringFerdigModal', () => {
         open
         resultat={resultatEksisterendeSak}
         sakType="ny"
+        tilordnetEnhet="minOppgaveliste"
         onJournalpostSakFerdigstilt={() => {}}
       />
     )
@@ -105,6 +108,24 @@ describe('JournalføringFerdigModal', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Behandle saken' })).toBeInTheDocument()
   })
+
+  it.each(['enhetensOppgaveliste', 'medarbeidersOppgaveliste'] as const)(
+    'viser «Gå til saken» når en ny sak tilordnes %s',
+    (tilordnetEnhet) => {
+      render(
+        <JournalføringFerdigModal
+          open
+          resultat={resultatEksisterendeSak}
+          sakType="ny"
+          tilordnetEnhet={tilordnetEnhet}
+          onJournalpostSakFerdigstilt={() => {}}
+        />
+      )
+
+      expect(screen.getByRole('button', { name: 'Gå til saken' })).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Behandle saken' })).not.toBeInTheDocument()
+    }
+  )
 
   it('viser alltid oppgavelistehandlingene uavhengig av variant', () => {
     render(

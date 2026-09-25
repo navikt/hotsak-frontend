@@ -43,24 +43,36 @@ describe('TilordneOppgave', () => {
   it('lagrer OppgaveMappe.id direkte som mappeId', async () => {
     render(<TestSkjema />)
 
-    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Enhetsmappe' }), '663')
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Legg i mappe (frivillig)' }), '663')
 
     expect(screen.getByLabelText('Valgt mappe-ID')).toHaveTextContent('663')
   })
 
-  it('tømmer mappeId når oppgaven flyttes bort fra enhetens oppgaveliste', async () => {
+  it.each([
+    ['Min oppgaveliste', /Min oppgaveliste/],
+    ['medarbeiders oppgaveliste', /Medarbeider sin oppgaveliste/],
+    ['Min enhet', /Min enhet/],
+  ])('viser mappevalg ved valg av %s', async (_label, radioName) => {
     render(<TestSkjema />)
 
-    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Enhetsmappe' }), '663')
+    await userEvent.click(screen.getByRole('radio', { name: radioName }))
+
+    expect(screen.getByRole('combobox', { name: 'Legg i mappe (frivillig)' })).toBeVisible()
+  })
+
+  it('beholder mappeId når oppgaven flyttes bort fra enhetens oppgaveliste', async () => {
+    render(<TestSkjema />)
+
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Legg i mappe (frivillig)' }), '663')
     await userEvent.click(screen.getByRole('radio', { name: /Min oppgaveliste/ }))
 
-    expect(screen.getByLabelText('Valgt mappe-ID')).toBeEmptyDOMElement()
+    expect(screen.getByLabelText('Valgt mappe-ID')).toHaveTextContent('663')
   })
 
   it('tømmer mappeId når Enhetens liste velges', async () => {
     render(<TestSkjema />)
 
-    const enhetsmappe = screen.getByRole('combobox', { name: 'Enhetsmappe' })
+    const enhetsmappe = screen.getByRole('combobox', { name: 'Legg i mappe (frivillig)' })
     await userEvent.selectOptions(enhetsmappe, '663')
     await userEvent.selectOptions(enhetsmappe, '')
 

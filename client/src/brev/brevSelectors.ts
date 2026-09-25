@@ -1,5 +1,5 @@
 import { type Predicate } from '../utils/predicate'
-import { type Brev, Brevmal, Brevstatus } from './brevTyper'
+import { type Brev, BreveditorbrevUtenVedtak, Brevmal, Brevstatus } from './brevTyper'
 
 export function isBrevmal(brevmal: Brevmal): Predicate<Brev> {
   return (brev) => brev.brevmal === brevmal
@@ -20,7 +20,7 @@ export const isBrevstatusDistribuert: Predicate<Brev> = isBrevstatus(Brevstatus.
 export const isVedtaksbrev: Predicate<Brev> = isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV)
 export const isBreveditorbrev: Predicate<Brev> = isBrevmalOneOf(
   Brevmal.BREVEDITOR_VEDTAKSBREV,
-  Brevmal.BREVEDITOR_SVARTIDSBREV
+  ...BreveditorbrevUtenVedtak
 )
 
 export const isBrevmalBarnebrillerVedtak: Predicate<Brev> = isBrevmalOneOf(

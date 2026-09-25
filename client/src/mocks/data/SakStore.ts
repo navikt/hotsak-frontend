@@ -567,8 +567,12 @@ export class SakStore extends Dexie {
     }
   }
 
-  async opprettBrevutkast(sakId: string, request: OpprettBrevutkastRequest): Promise<Brev> {
+  async opprettBrevutkast(sakId: string, request: OpprettBrevutkastRequest): Promise<Brev | null> {
     const { data = {}, ...rest } = request.brevutkast
+    const brevForSak = await this.hentBrevForSak(sakId)
+    if (brevForSak.some((brev) => brev.brevmal === rest.brevmal)) {
+      return null
+    }
 
     const brevId = await this.brev.add({
       sakId,

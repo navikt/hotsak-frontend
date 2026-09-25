@@ -11,7 +11,7 @@ import { formaterDato } from '../utils/dato.ts'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import { type Brev, BrevmalTekst, brevstatusTekst } from './brevTyper.ts'
+import { type Brev, BreveditorbrevUtenVedtak, BrevmalTekst, brevstatusTekst } from './brevTyper.ts'
 import { NyttBrevDialog } from './NyttBrevDialog.tsx'
 
 export interface BrevPanelProps {
@@ -27,7 +27,10 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const [nyttBrevDialogOpen, setNyttBrevDialogOpen] = useState(false)
   const aktivtBrevId = valgtBrevId === undefined ? initialBrevId : valgtBrevId
   const valgtBrev = brev.find((brev) => brev.brevId === aktivtBrevId)
-  const kanOppretteBrev = !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt
+  const eksisterendeBrevmaler = new Set(brev.map((brev) => brev.brevmal))
+  const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter((brevmal) => !eksisterendeBrevmaler.has(brevmal))
+  const kanOppretteBrev =
+    !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt && tilgjengeligeBrevmaler.length > 0
 
   if (valgtBrev) {
     const tilbakeTilOversikt = () => setValgtBrevId(null)
@@ -81,6 +84,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         <NyttBrevDialog
           open={nyttBrevDialogOpen}
           oppgave={oppgave}
+          tilgjengeligeBrevmaler={tilgjengeligeBrevmaler}
           onClose={() => setNyttBrevDialogOpen(false)}
           onOpprettet={(opprettetBrev) => {
             setNyttBrevDialogOpen(false)

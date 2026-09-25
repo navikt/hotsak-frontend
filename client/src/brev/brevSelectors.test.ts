@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
 import { isBreveditorbrev } from './brevSelectors.ts'
-import { type Brev, Brevmal } from './brevTyper.ts'
+import { type Brev, BreveditorbrevUtenVedtak, Brevmal } from './brevTyper.ts'
 
 describe('isBreveditorbrev', () => {
-  it.each([Brevmal.BREVEDITOR_VEDTAKSBREV, Brevmal.BREVEDITOR_SVARTIDSBREV])('inkluderer %s', (brevmal) => {
+  it.each([Brevmal.BREVEDITOR_VEDTAKSBREV, ...BreveditorbrevUtenVedtak])('inkluderer %s', (brevmal) => {
     expect(isBreveditorbrev({ brevmal } as Brev)).toBe(true)
   })
 

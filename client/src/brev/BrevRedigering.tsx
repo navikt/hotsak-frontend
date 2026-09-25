@@ -22,7 +22,7 @@ import { type PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { useBrevmal } from './brevmaler/useBrevmal.ts'
 import classes from './BrevRedigering.module.css'
-import { Brevmal } from './brevTyper.ts'
+import { Brevmal, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
@@ -45,6 +45,9 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
+
+  const sendesMedBehandling = brev?.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV
+  const brevUtenVedtak = brev?.brevmal !== undefined && isBreveditorbrevUtenVedtak(brev.brevmal)
 
   const datoSoknadMottatt = sak?.data.opprettet
   const hjelpemidlerSøktOm = sak?.data.søknadGjelder
@@ -168,6 +171,11 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
                 <Button variant="tertiary" size="small" onClick={() => markerKlart(false)}>
                   Rediger
                 </Button>
+                {brevUtenVedtak && (
+                  <Button variant="tertiary" size="small" onClick={() => markerKlart(false)}>
+                    Send brev
+                  </Button>
+                )}
               </div>
             </div>
             <BrevForhåndsvisning brevId={brevId} />
@@ -192,7 +200,7 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
                   size="small"
                   onClick={() => markerKlart(true)}
                 >
-                  Ferdigstill utkast
+                  {sendesMedBehandling ? 'Ferdigstill utkast' : 'Ferdigstill og forhåndsvis'}
                 </Button>
               </div>
             </div>
@@ -235,6 +243,9 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
 function utledBrevmal(behandling?: Behandling, brevmal?: Brevmal): string | undefined {
   if (brevmal === Brevmal.BREVEDITOR_SVARTIDSBREV) {
     return 'svartidsbrev'
+  }
+  if (brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER) {
+    return 'innhente-opplysninger'
   }
 
   const utfall = behandling?.utfall

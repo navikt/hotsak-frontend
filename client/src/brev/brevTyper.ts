@@ -15,6 +15,7 @@ export const Brevmal = {
   // Breveditor
   BREVEDITOR_VEDTAKSBREV: 'BREVEDITOR_VEDTAKSBREV',
   BREVEDITOR_SVARTIDSBREV: 'BREVEDITOR_SVARTIDSBREV',
+  BREVEDITOR_INNHENTE_OPPLYSNINGER: 'BREVEDITOR_INNHENTE_OPPLYSNINGER',
 
   // Barnebriller
   BARNEBRILLER_INNHENTE_OPPLYSNINGER: 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
@@ -23,6 +24,16 @@ export const Brevmal = {
   BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER: 'BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER',
 } as const
 export type Brevmal = Enum<typeof Brevmal>
+
+export const BreveditorbrevUtenVedtak = [
+  Brevmal.BREVEDITOR_SVARTIDSBREV,
+  Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER,
+] as const satisfies readonly Brevmal[]
+export type BreveditorbrevUtenVedtak = (typeof BreveditorbrevUtenVedtak)[number]
+
+export function isBreveditorbrevUtenVedtak(brevmal: string): brevmal is BreveditorbrevUtenVedtak {
+  return BreveditorbrevUtenVedtak.some((brevmalUtenVedtak) => brevmalUtenVedtak === brevmal)
+}
 
 export const Mottakertype = {
   BRUKER: 'BRUKER',
@@ -44,6 +55,7 @@ export interface Brevmottaker {
 export const BrevmalTekst = {
   [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Vedtaksbrev',
   [Brevmal.BREVEDITOR_SVARTIDSBREV]: 'Svartidsbrev',
+  [Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER]: 'Innhente opplysninger',
   [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrev',
   [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrev',
   [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrev',

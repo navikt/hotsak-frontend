@@ -29,6 +29,9 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.post<SakParams, OpprettBrevutkastRequest>('/api/sak/:sakId/brev', async ({ params, request }) => {
     const { sakId } = params
     const brev = await sakStore.opprettBrevutkast(sakId, await request.json())
+    if (!brev) {
+      return respondConflict()
+    }
     return HttpResponse.json(brev)
   }),
 

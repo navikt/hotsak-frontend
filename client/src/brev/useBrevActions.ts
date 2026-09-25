@@ -96,6 +96,18 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     }
   )
 
+  const sendUnderveisBrev = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
+    brevKey,
+    async ([url]) => {
+      await http.post(`${url}/utsending`, { oppgaveId }, { versjon })
+    },
+    {
+      async onSuccess() {
+        await mutateBehandlingOgBrevForSak(sakId!)
+      },
+    }
+  )
+
   return {
     opprettBrevutkast,
     oppdaterBrevutkast,
@@ -103,6 +115,7 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     forhåndsvisBrev,
     ferdigstillBrevutkast,
     redigerBrevutkast,
+    sendUnderveisBrev,
   }
 }
 

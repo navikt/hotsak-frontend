@@ -52,7 +52,10 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
    */
   http.delete<BrevParams>('/api/sak/:sakId/brev/:brevId', async ({ params }) => {
     const { brevId } = params
-    await sakStore.slettBrevutkast(brevId)
+    const slettet = await sakStore.slettBrevutkast(brevId)
+    if (!slettet) {
+      return respondConflict()
+    }
     return respondNoContent()
   }),
 
@@ -63,7 +66,10 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
     '/api/sak/:sakId/brev/:brevId/ferdigstilling',
     async ({ params }) => {
       const { brevId } = params
-      await sakStore.ferdigstillBrevutkast(brevId)
+      const brev = await sakStore.ferdigstillBrevutkast(brevId)
+      if (!brev) {
+        return respondConflict()
+      }
       return respondNoContent()
     }
   ),
@@ -73,7 +79,22 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
    */
   http.delete<BrevParams>('/api/sak/:sakId/brev/:brevId/ferdigstilling', async ({ params }) => {
     const { brevId } = params
-    await sakStore.redigerBrevutkast(brevId)
+    const brev = await sakStore.redigerBrevutkast(brevId)
+    if (!brev) {
+      return respondConflict()
+    }
+    return respondNoContent()
+  }),
+
+  /**
+   * Send underveis brev.
+   */
+  http.post<BrevParams>('/api/sak/:sakId/brev/:brevId/utsending', async ({ params }) => {
+    const { brevId } = params
+    const brev = await sakStore.sendUnderveisBrev(brevId)
+    if (!brev) {
+      return respondConflict()
+    }
     return respondNoContent()
   }),
 

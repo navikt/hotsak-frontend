@@ -57,10 +57,8 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
         .map((h) => h.trim())
     : undefined
 
-  const { oppdaterBrevutkast, slettBrevutkast, ferdigstillBrevutkast, redigerBrevutkast } = useBrevActions(
-    oppgave,
-    brev?.brevId
-  )
+  const { oppdaterBrevutkast, slettBrevutkast, ferdigstillBrevutkast, redigerBrevutkast, sendUnderveisBrev } =
+    useBrevActions(oppgave, brev?.brevId)
 
   const { showInfoToast } = useToast()
 
@@ -172,7 +170,12 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
                   Rediger
                 </Button>
                 {brevUtenVedtak && (
-                  <Button variant="tertiary" size="small" onClick={() => markerKlart(false)}>
+                  <Button
+                    variant="primary"
+                    size="small"
+                    loading={sendUnderveisBrev.isMutating}
+                    onClick={() => sendUnderveisBrev.trigger()}
+                  >
                     Send brev
                   </Button>
                 )}

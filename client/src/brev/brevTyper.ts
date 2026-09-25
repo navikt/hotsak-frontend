@@ -123,6 +123,10 @@ export interface Brev<T extends Brevdata = Brevdata> extends Brevutkast<T> {
   ferdigstilt?: Instant
   ferdigstiltAv?: NavIdent
   brevstatus: Brevstatus
+  isUtkast: boolean
+  isFerdigstilt: boolean
+  isJournalført: boolean
+  isDistribuert: boolean
   distribusjon: Brevdistribusjon[]
   serienummer: number
 }

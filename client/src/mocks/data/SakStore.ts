@@ -6,6 +6,7 @@ import {
   Brevmal,
   Brevmottaker,
   Brevstatus,
+  isBreveditorbrevUtenVedtak,
   type LeggTilMottakerRequest,
   Mottakertype,
   Målform,
@@ -580,6 +581,10 @@ export class SakStore extends Dexie {
       opprettet: nåIso(),
       opprettetAv: Saksbehandlere.innlogget().id,
       brevstatus: Brevstatus.UTKAST,
+      isUtkast: true,
+      isFerdigstilt: false,
+      isJournalført: false,
+      isDistribuert: false,
       distribusjon: [],
       serienummer: 0,
       data,
@@ -626,7 +631,7 @@ export class SakStore extends Dexie {
     const { data = {}, ...rest } = request.brevutkast
 
     const eksisterendeBrev = await this.hentBrev(brevId)
-    if (request.serienummer <= eksisterendeBrev.serienummer) {
+    if (eksisterendeBrev.brevstatus !== Brevstatus.UTKAST || request.serienummer <= eksisterendeBrev.serienummer) {
       return null
     }
 
@@ -641,12 +646,15 @@ export class SakStore extends Dexie {
     return this.hentBrev(brevId)
   }
 
-  async slettBrevutkast(brevId: ID): Promise<void> {
+  async slettBrevutkast(brevId: ID): Promise<boolean> {
     brevId = Number(brevId)
     const brev = await this.hentBrev(brevId)
+    if (brev.brevstatus !== Brevstatus.UTKAST) {
+      return false
+    }
     this.brev.delete(brevId)
     if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
-      return
+      return true
     }
 
     await this.brevmottakere.delete(brevId)
@@ -680,10 +688,15 @@ export class SakStore extends Dexie {
         }
       }
     }
+    return true
   }
 
-  async ferdigstillBrevutkast(brevId: ID): Promise<Brev> {
+  async ferdigstillBrevutkast(brevId: ID): Promise<Brev | null> {
     brevId = Number(brevId)
+    const eksisterendeBrev = await this.hentBrev(brevId)
+    if (eksisterendeBrev.brevstatus !== Brevstatus.UTKAST) {
+      return null
+    }
 
     await this.brev.update(brevId, {
       ferdigstilt: nåIso(),
@@ -729,8 +742,12 @@ export class SakStore extends Dexie {
     return brev
   }
 
-  async redigerBrevutkast(brevId: ID): Promise<Brev> {
+  async redigerBrevutkast(brevId: ID): Promise<Brev | null> {
     brevId = Number(brevId)
+    const eksisterendeBrev = await this.hentBrev(brevId)
+    if (eksisterendeBrev.brevstatus !== Brevstatus.FERDIGSTILT) {
+      return null
+    }
 
     await this.brev.update(brevId, {
       endret: nåIso(),
@@ -753,6 +770,29 @@ export class SakStore extends Dexie {
     }
 
     return brev
+  }
+
+  async sendUnderveisBrev(brevId: ID): Promise<Brev | null> {
+    brevId = Number(brevId)
+    const brev = await this.hentBrev(brevId)
+    if (
+      brev.brevstatus === Brevstatus.TIL_DISTRIBUSJON ||
+      brev.brevstatus === Brevstatus.JOURNALFØRT ||
+      brev.brevstatus === Brevstatus.DISTRIBUERT
+    ) {
+      return brev
+    }
+    if (!isBreveditorbrevUtenVedtak(brev.brevmal) || brev.brevstatus !== Brevstatus.FERDIGSTILT) {
+      return null
+    }
+
+    await this.brev.update(brevId, {
+      endret: nåIso(),
+      endretAv: Saksbehandlere.innlogget().id,
+      brevstatus: Brevstatus.TIL_DISTRIBUSJON,
+    })
+
+    return this.hentBrev(brevId)
   }
 
   async hentBrev(brevId: ID): Promise<Brev> {

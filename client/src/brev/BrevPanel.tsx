@@ -1,4 +1,4 @@
-import { Box, Button, InfoCard, VStack } from '@navikt/ds-react'
+import { Box, Button, HStack, InfoCard, Tooltip, VStack } from '@navikt/ds-react'
 import { type ReactNode, Suspense, useState } from 'react'
 
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
@@ -11,8 +11,9 @@ import { formaterDato } from '../utils/dato.ts'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import { type Brev, BreveditorbrevUtenVedtak, BrevmalTekst, brevstatusTekst } from './brevTyper.ts'
+import { type Brev, BreveditorbrevUtenVedtak, Brevmal, BrevmalTekst, Brevstatus, brevstatusTekst } from './brevTyper.ts'
 import { NyttBrevDialog } from './NyttBrevDialog.tsx'
+import { EnvelopeClosedIcon } from '@navikt/aksel-icons'
 
 export interface BrevPanelProps {
   oppgave?: Saksbehandlingsoppgave
@@ -35,7 +36,9 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   if (valgtBrev) {
     const tilbakeTilOversikt = () => setValgtBrevId(null)
     const kanRedigere =
-      !oppgaveErAvsluttet && valgtBrev.distribusjon.length === 0 && oppgaveErUnderBehandlingAvInnloggetAnsatt
+      !oppgaveErAvsluttet &&
+      [Brevstatus.UTKAST, Brevstatus.FERDIGSTILT].some((status) => status === valgtBrev.brevstatus) &&
+      oppgaveErUnderBehandlingAvInnloggetAnsatt
 
     if (kanRedigere && oppgave) {
       return (
@@ -74,7 +77,18 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
           <VStack gap="space-8">
             {brev.map((brev) => (
               <Button key={brev.brevId} variant="tertiary" onClick={() => setValgtBrevId(brev.brevId)}>
-                {BrevmalTekst[brev.brevmal]} - {brevstatusTekst(brev.brevstatus)} ({formaterDato(brev.opprettet)})
+                <HStack gap="space-2" paddingInline="space-8" align="center">
+                  {BrevmalTekst[brev.brevmal]} - {brevstatusTekst(brev.brevstatus)} ({formaterDato(brev.opprettet)})
+                  <Tooltip
+                    content={
+                      brev.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV
+                        ? 'Vedtaksbrevet sendes ut automatisk etter du har fatted et vedtak'
+                        : 'Brevet sendes ut manuelt ved at du trykker på "Send brev" når du står inne på det ferdigstilte brevet'
+                    }
+                  >
+                    <EnvelopeClosedIcon title="a11y-title" fontSize="1.5rem" />
+                  </Tooltip>
+                </HStack>
               </Button>
             ))}
           </VStack>

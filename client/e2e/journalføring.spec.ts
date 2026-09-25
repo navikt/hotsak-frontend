@@ -52,7 +52,7 @@ test.describe('Journalføring', () => {
   test('kan journalføre og opprette en ny Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)
     await velgGjelder(page)
-    await page.getByRole('combobox', { name: 'Enhetsmappe' }).selectOption('663')
+    await page.getByRole('combobox', { name: 'Legg i mappe (frivillig)' }).selectOption('663')
 
     const journalføringRequest = page.waitForRequest(
       (request) =>

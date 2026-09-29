@@ -14,6 +14,7 @@ import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import classes from './FattVedtakModalV2.module.css'
+import { useSaksregler } from '../../../saksregler/useSaksregler'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -27,6 +28,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
   const vedtakFormRef = useRef<VedtakFormHandle>(null)
+  const problemsammendragRef = useRef<HTMLInputElement>(null)
   const closePanel = useClosePanel('brevpanel')
   const { personInfo } = usePerson(sak.bruker.fnr)
   const vergemål = personInfo?.vergemål || []
@@ -35,6 +37,8 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
   const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
   const { harVedtaksbrev } = useBrevForSak(sak.sakId)
+
+  const { erPapirsøknad } = useSaksregler()
 
   const fattVedtak = async (data: VedtakFormValues) => {
     setVedtakLoader(true)
@@ -89,6 +93,10 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
       width="700px"
       buttonSize="medium"
       bekreftButtonLabel={`${vedtakTekst?.knapp}${harVedtaksbrev ? ' og send brev' : ''}`}
+      initialFocusTo={erPapirsøknad && !erAvslag ? problemsammendragRef : undefined}
+      onInitialFocus={() => {
+        if (erPapirsøknad && !erAvslag) problemsammendragRef.current?.setSelectionRange(0, 0)
+      }}
       onBekreft={() => {
         if (erAvslag) {
           fattAvslagsvedtak()
@@ -134,6 +142,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
             <VedtakForm
               sak={sak}
               ref={vedtakFormRef}
+              problemsammendragRef={problemsammendragRef}
               onVedtak={fattVedtak}
               postbegrunnelsePåkrevd={erInnvilget}
               vedtaksresultat={vedtaksresultat}

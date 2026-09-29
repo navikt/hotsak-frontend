@@ -1,5 +1,5 @@
-import { Button, ButtonProps, Dialog } from '@navikt/ds-react'
-import { type ReactNode, useRef } from 'react'
+import { Button, type ButtonProps, Dialog } from '@navikt/ds-react'
+import { type ReactNode, type RefObject, useRef } from 'react'
 
 export interface BekreftelsesDialogProps {
   heading: string
@@ -13,6 +13,8 @@ export interface BekreftelsesDialogProps {
   avbrytButtonVariant?: ButtonProps['variant']
   width?: string
   children?: ReactNode
+  initialFocusTo?: RefObject<HTMLElement | null>
+  onInitialFocus?: () => void
   onBekreft(): void | Promise<void>
   onClose(nextOpen: false): void | Promise<void>
 }
@@ -30,6 +32,8 @@ export function BekreftelsesDialog(props: BekreftelsesDialogProps) {
     avbrytButtonVariant = 'secondary',
     width = '500px',
     children,
+    initialFocusTo,
+    onInitialFocus,
     onBekreft,
     onClose,
   } = props
@@ -61,11 +65,15 @@ export function BekreftelsesDialog(props: BekreftelsesDialogProps) {
       onOpenChange={(nextOpen) => !nextOpen && onClose(nextOpen)}
       onOpenChangeComplete={(isOpen) => {
         if (isOpen) {
-          bekreftKnappRef.current?.focus({ focusVisible: true } as FocusOptions & { focusVisible?: boolean })
+          const focusTarget = initialFocusTo?.current ?? bekreftKnappRef.current
+          focusTarget?.focus({
+            focusVisible: true,
+          } as FocusOptions & { focusVisible?: boolean })
+          if (focusTarget) onInitialFocus?.()
         }
       }}
     >
-      <Dialog.Popup initialFocusTo={bekreftKnappRef} closeOnOutsideClick={false} width={width}>
+      <Dialog.Popup initialFocusTo={initialFocusTo ?? bekreftKnappRef} closeOnOutsideClick={false} width={width}>
         <Dialog.Header>
           <Dialog.Title>{heading}</Dialog.Title>
         </Dialog.Header>

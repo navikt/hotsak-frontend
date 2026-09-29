@@ -60,6 +60,12 @@ jobs:
           echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
           echo $IMAGE
 
+      - name: Deploy Unleash API token
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/unleash-api-token-prod.yaml
+
       - name: Deploy til prod-gcp
         uses: nais/deploy/actions/deploy@v2
         env:

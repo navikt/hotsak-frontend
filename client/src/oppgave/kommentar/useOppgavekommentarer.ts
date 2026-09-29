@@ -28,10 +28,9 @@ export function mutateOppgavekommentarer(oppgaveId: OppgaveId, kommentarer?: Opp
 }
 
 export function useOppgavekommentarerForSak(sakId?: ID) {
-  const { data: kommentarer = ingenKommentarer, ...rest } = useSWR<Oppgavekommentar[], HttpError>(
-    sakId ? `/api/sak/${sakId}/kommentarer` : null
-  )
-  return { kommentarer, antallKommentarer: kommentarer.length, ...rest }
+  const { data, ...rest } = useSWR<Oppgavekommentar[], HttpError>(sakId ? `/api/sak/${sakId}/kommentarer` : null)
+  const kommentarer = data ?? ingenKommentarer
+  return { kommentarer, antallKommentarer: kommentarer.length, harHentetKommentarer: data !== undefined, ...rest }
 }
 
 export function mutateOppgavekommentarerForSak(sakId: ID, kommentarer?: Oppgavekommentar[]) {

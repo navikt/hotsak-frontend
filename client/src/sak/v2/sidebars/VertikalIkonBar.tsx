@@ -2,6 +2,7 @@ import { ClockDashedIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Box, Button, Tooltip, VStack } from '@navikt/ds-react'
 import { useEffect, useRef } from 'react'
 
+import { useOppgavekommentarerForSak } from '../../../oppgave/kommentar/useOppgavekommentarer'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes'
 import { useSak } from '../../../saksbilde/useSak'
 import { NotaterIcon } from '../../notat/NotaterIcon'
@@ -17,18 +18,21 @@ export interface VertikalIkonBarProps {
 export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
   const { sak } = useSak()
   const { aktivSidebar, setAktivSidebar, panelState } = useSakContext()
+  const { antallKommentarer, harHentetKommentarer } = useOppgavekommentarerForSak(sak?.data.sakId)
   const sidePanel = panelState.panels.sidebarpanel
   const { antallNotater, harHentetNotater } = useNotater(sak?.data.sakId)
   const sidebarErInitialisert = useRef(false)
 
+  const totaltAntall = antallNotater + antallKommentarer
+
   useEffect(() => {
-    if (!harHentetNotater || sidebarErInitialisert.current) return
+    if (!harHentetNotater || !harHentetKommentarer || sidebarErInitialisert.current) return
 
     sidebarErInitialisert.current = true
-    if (antallNotater > 0) {
+    if (totaltAntall > 0) {
       setAktivSidebar(SidebarValg.NOTATER)
     }
-  }, [antallNotater, harHentetNotater, setAktivSidebar])
+  }, [totaltAntall, harHentetNotater, harHentetKommentarer, setAktivSidebar])
 
   function velgSidebar(sidebar: SidebarValg) {
     sidebarErInitialisert.current = true

@@ -1,18 +1,16 @@
 import '@testing-library/jest-dom/vitest'
 
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { createRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { type Sak, OppgaveStatusType, SaksstatusKategori, Sakstype } from '../../types/types.internal.ts'
-import { VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
-import { FattVedtakModalV2 } from '../v2/modaler/FattVedtakModalV2.tsx'
 import { type VedtakFormHandle, VedtakForm } from './VedtakForm.tsx'
 
-const { papirsøknad, laster, svar } = vi.hoisted(() => ({
+const { papirsøknad, laster, dialogFokusFerdig } = vi.hoisted(() => ({
   papirsøknad: { current: false },
   laster: { current: false },
-  svar: { current: 'Problemsammendrag' as string | undefined },
+  dialogFokusFerdig: vi.fn(),
 }))
 
 vi.mock('../../saksregler/useSaksregler.ts', () => ({
@@ -21,34 +19,12 @@ vi.mock('../../saksregler/useSaksregler.ts', () => ({
 
 vi.mock('./useVedtak.ts', () => ({
   useVedtak: () => ({
-    form: useForm({ values: { problemsammendrag: svar.current ?? '' } }),
+    form: useForm({ defaultValues: { problemsammendrag: 'Problemsammendrag' } }),
     sammendragMedLavere: false,
     utleveringsmerknad: '',
     logTilUmami: vi.fn(),
     isLoading: laster.current,
-    harServiceforespørselSvar: svar.current !== undefined,
-    originaltProblemsammendrag: svar.current ?? '',
   }),
-}))
-
-vi.mock('../../brev/useBrev.ts', () => ({
-  useBrevForSak: () => ({ harVedtaksbrev: false }),
-}))
-
-vi.mock('../../personoversikt/usePerson.ts', () => ({
-  usePerson: () => ({ personInfo: { vergemål: [] } }),
-}))
-
-vi.mock('../../felleskomponenter/toast/useToast.ts', () => ({
-  useToast: () => ({ showSuccessToast: vi.fn() }),
-}))
-
-vi.mock('../v2/behandling/useBehandlingActions.ts', () => ({
-  useBehandlingActions: () => ({ ferdigstillBehandling: vi.fn() }),
-}))
-
-vi.mock('../v2/paneler/usePanelHooks.ts', () => ({
-  useClosePanel: () => vi.fn(),
 }))
 
 const sak: Sak = {
@@ -72,16 +48,16 @@ describe('VedtakForm', () => {
   beforeEach(() => {
     papirsøknad.current = false
     laster.current = false
-    svar.current = 'Problemsammendrag'
+    dialogFokusFerdig.mockClear()
   })
 
-  it('gir problemsammendraget fokus med markøren først for papirsøknader', async () => {
+  it('gir problemsammendraget fokus med markøren først for papirsøknader', () => {
     papirsøknad.current = true
 
     render(<VedtakForm sak={sak} onVedtak={vi.fn()} />)
 
     const felt = screen.getByRole<HTMLInputElement>('textbox', { name: /Problemsammendrag til OeBS/i })
-    await waitFor(() => expect(felt).toHaveFocus())
+    expect(felt).toHaveFocus()
     expect(felt.selectionStart).toBe(0)
     expect(felt.selectionEnd).toBe(0)
   })
@@ -98,77 +74,6 @@ describe('VedtakForm', () => {
 
     expect(felt.selectionStart).toBe(5)
     expect(felt.selectionEnd).toBe(5)
-  })
-
-  it('venter på svar og skjemaverdi før fokus og markør settes i vedtaksdialogen', async () => {
-    papirsøknad.current = true
-    laster.current = true
-    svar.current = undefined
-    const { rerender } = render(
-      <FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />
-    )
-
-    expect(screen.queryByRole('textbox', { name: /Problemsammendrag til OeBS/i })).not.toBeInTheDocument()
-
-    svar.current = 'Tekst fra serviceforespørsel'
-    laster.current = false
-    rerender(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
-
-    const felt = await screen.findByRole<HTMLInputElement>('textbox', { name: /Problemsammendrag til OeBS/i })
-    await waitFor(() => {
-      expect(felt).toHaveValue('Tekst fra serviceforespørsel')
-      expect(felt).toHaveFocus()
-      expect(felt.selectionStart).toBe(0)
-      expect(felt.selectionEnd).toBe(0)
-    })
-  })
-
-  it('fokuserer problemsammendraget i vedtaksdialogen når svaret allerede er lastet', async () => {
-    papirsøknad.current = true
-    const originalFocus = HTMLInputElement.prototype.focus
-    const focus = vi.spyOn(HTMLInputElement.prototype, 'focus').mockImplementation(function (
-      this: HTMLInputElement,
-      options
-    ) {
-      originalFocus.call(this, options)
-      if (options && 'focusVisible' in options && options.focusVisible) {
-        this.setSelectionRange(this.value.length, this.value.length)
-      }
-    })
-
-    try {
-      render(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
-
-      const felt = await screen.findByRole<HTMLInputElement>('textbox', { name: /Problemsammendrag til OeBS/i })
-      await waitFor(() => expect(focus).toHaveBeenCalledWith(expect.objectContaining({ focusVisible: true })))
-      expect(felt).toHaveFocus()
-      expect(felt.selectionStart).toBe(0)
-      expect(felt.selectionEnd).toBe(0)
-    } finally {
-      focus.mockRestore()
-    }
-  })
-
-  it('beholder fokus på Innvilg-knappen i vedtaksdialogen for digitale søknader', async () => {
-    render(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
-
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Innvilg' })).toHaveFocus())
-  })
-
-  it('beholder fokus på Avslå-knappen når en papirsøknad avslås', async () => {
-    papirsøknad.current = true
-    render(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.AVSLÅTT} onClose={vi.fn()} />)
-
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Avslå' })).toHaveFocus())
-  })
-
-  it('fokuserer ikke feltet uten svar fra serviceforespørsel', () => {
-    papirsøknad.current = true
-    svar.current = undefined
-
-    render(<VedtakForm sak={sak} onVedtak={vi.fn()} />)
-
-    expect(screen.getByRole('textbox', { name: /Problemsammendrag til OeBS/i })).not.toHaveFocus()
   })
 
   it('gir ikke problemsammendraget automatisk fokus for digitale søknader', () => {

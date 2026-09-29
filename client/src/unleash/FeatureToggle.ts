@@ -11,9 +11,8 @@ export enum FeatureToggle {
 
 /**
  * Bootstrap-verdi brukt før Unleash-klienten har hentet ekte verdier fra
- * proxyen, og som fallback i miljø uten Unleash-tilkobling (lokal utvikling).
- * Skal ikke vise nye funksjoner i produksjon ved oppstartsfeil, så flagget
- * starter av inntil Unleash har evaluert konteksten.
+ * proxyen. Flagget starter av i miljøer med ekte brukere, også hvis Unleash
+ * ikke svarer. I lokal utvikling og labs setter unleashConfig.ts flagget på.
  */
 export const FEATURE_TOGGLE_BOOTSTRAP: Record<FeatureToggle, boolean> = {
   [FeatureToggle.journalforing]: false,

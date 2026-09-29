@@ -6,7 +6,7 @@ import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpeteks
 import { SakstypeEtikett } from '../felleskomponenter/SakstypeEtikett.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
 import { type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
-import { OppgaveStatusLabel } from '../types/types.internal'
+import { SaksstatusLabel } from '../types/types.internal'
 import { formaterDato } from '../utils/dato'
 
 export interface KnyttTilEksisterendeSakProps {
@@ -57,9 +57,7 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
                     <Table.DataCell className={classes.tableCell}>
                       {sak.sakstype && <SakstypeEtikett sakstype={sak.sakstype} />}
                     </Table.DataCell>
-                    <Table.DataCell className={classes.tableCell}>
-                      {OppgaveStatusLabel.get(sak.saksstatus)}
-                    </Table.DataCell>
+                    <Table.DataCell className={classes.tableCell}>{SaksstatusLabel.get(sak.saksstatus)}</Table.DataCell>
                     <Table.DataCell className={classes.tableCell}>
                       {formaterDato(sak.saksstatusGyldigFra)}
                     </Table.DataCell>

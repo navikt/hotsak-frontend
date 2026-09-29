@@ -1,16 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
 import { type Fagsak, type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
-import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
+import { Saksstatus, Sakstype } from '../types/types.internal.ts'
 import { Sakstype as JournalføringSakstype } from './journalføringTypes.ts'
 import { erFagsak, lagSakvalg } from './useKobleTilSak.ts'
 
-const sak = (
-  sakId: string,
-  dato: string,
-  saksstatus: OppgaveStatusType,
-  sakstype = Sakstype.SØKNAD
-): SaksoversiktSak => ({
+const sak = (sakId: string, dato: string, saksstatus: Saksstatus, sakstype = Sakstype.SØKNAD): SaksoversiktSak => ({
   sakId,
   sakstype,
   saksstatus,
@@ -32,7 +27,7 @@ const fagsak = (fagsakId: string, fagsaksystem: Fagsak['fagsaksystem'] = 'IT01')
 describe('lagSakvalg', () => {
   it('kombinerer saker og HJE-fagsaker i datorekkefølge', () => {
     const resultat = lagSakvalg(
-      [sak('hotsak-1', '2024-08-21T07:54:14Z', OppgaveStatusType.AVVENTER_SAKSBEHANDLER)],
+      [sak('hotsak-1', '2024-08-21T07:54:14Z', Saksstatus.AVVENTER_SAKSBEHANDLER)],
       [fagsak('1234A01'), { ...fagsak('1234B01', 'OEBS'), datoOpprettet: '2024-08-22T07:54:14Z' }]
     )
 
@@ -54,8 +49,8 @@ describe('lagSakvalg', () => {
   it('prioriterer åpne Hotsak-saker ved lik dato', () => {
     const resultat = lagSakvalg(
       [
-        sak('lukket', '2024-08-20T07:54:14Z', OppgaveStatusType.HENLAGT),
-        sak('åpen', '2024-08-20T07:54:14Z', OppgaveStatusType.AVVENTER_SAKSBEHANDLER),
+        sak('lukket', '2024-08-20T07:54:14Z', Saksstatus.FERDIGBEHANDLET),
+        sak('åpen', '2024-08-20T07:54:14Z', Saksstatus.AVVENTER_SAKSBEHANDLER),
       ],
       []
     )
@@ -65,7 +60,7 @@ describe('lagSakvalg', () => {
 
   it('filtrerer bort irrelevante eller ufullstendige saker', () => {
     const resultat = lagSakvalg(
-      [sak('bestilling', '2025-01-01T00:00:00Z', OppgaveStatusType.FERDIGSTILT, Sakstype.BESTILLING)],
+      [sak('bestilling', '2025-01-01T00:00:00Z', Saksstatus.FERDIGBEHANDLET, Sakstype.BESTILLING)],
       [
         { ...fagsak('feil-tema'), tema: 'AAP' },
         { ...fagsak('hjelpemidler', 'HJELPEMIDLER'), tema: 'HJE' },
@@ -90,7 +85,7 @@ describe('erFagsak', () => {
 
   it('utleder ekstern fagsak direkte fra sakvalgene', () => {
     const [fagsakvalg, hotsakvalg] = lagSakvalg(
-      [sak('hotsak-1', '2024-08-21T07:54:14Z', OppgaveStatusType.AVVENTER_SAKSBEHANDLER)],
+      [sak('hotsak-1', '2024-08-21T07:54:14Z', Saksstatus.AVVENTER_SAKSBEHANDLER)],
       [{ ...fagsak('1234B01', 'OEBS'), datoOpprettet: '2024-08-22T07:54:14Z' }]
     )
 

@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - feature/oppgaver-og-dokumenter
+      - saksstatus
 
 jobs:
   test:

@@ -7,7 +7,7 @@ import { useBrevForSak } from '../../../../brev/useBrev.ts'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../../../oppgave/useOppgaveregler.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
+import { Saksstatus, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useSakId } from '../../../useSak.ts'
@@ -43,10 +43,10 @@ export function Vedtak(props: VedtakProps) {
 
   const status = sak.data.vilkårsvurdering!.resultat
   const alertType = alertVariant(status)
-  const vedtakFattet = sak.data.saksstatus === OppgaveStatusType.VEDTAK_FATTET
+  const vedtakFattet = sak.data.saksstatus === Saksstatus.FERDIGBEHANDLET
 
   const visAlertGodkjenning =
-    sak.data.saksstatus === OppgaveStatusType.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
+    sak.data.saksstatus === Saksstatus.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
 
   const visSkeleton =
     oppgaveErUnderBehandling && samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && henterSaksdokumenter

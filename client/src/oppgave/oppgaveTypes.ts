@@ -1,6 +1,6 @@
 import type { PageResponse } from '../felleskomponenter/Page.ts'
 import type { Bydel, Enhet, Kommune, Personnavn } from '../types/hotlibs.ts'
-import type { OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
+import type { Saksstatus, Saksbehandler, Sakstype } from '../types/types.internal'
 import type { IntervalString } from '../utils/dato.ts'
 
 /**
@@ -198,7 +198,7 @@ export interface OppgaveInnsender {
 export interface OppgaveSak {
   sakId: string
   sakstype: Sakstype
-  saksstatus: OppgaveStatusType
+  saksstatus: Saksstatus
   søknadId: string
   søknadGjelder: string
 }

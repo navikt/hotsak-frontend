@@ -11,7 +11,7 @@ import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
 import { SakProvider } from '../sak/v2/SakProvider'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
-import { OppgaveStatusType, type SakBase } from '../types/types.internal'
+import { Saksstatus, type SakBase } from '../types/types.internal'
 import { OverførtGosysVisning } from './OverførtGosysVisning'
 import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
@@ -93,7 +93,7 @@ function erFerdigstiltOppgaveOgOverførtTilGosys(
 ) {
   if (!sak) return false
 
-  if (!oppgave && sak.saksstatus == OppgaveStatusType.SENDT_GOSYS) return true
+  if (!oppgave && sak.saksstatus == Saksstatus.OVERFØRT_GOSYS) return true
 
   if (!oppgave) return false
 

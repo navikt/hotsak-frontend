@@ -1,6 +1,6 @@
 import { Button, HelpText, HStack, InlineMessage, Loader, Textarea, TextField, VStack } from '@navikt/ds-react'
-import { forwardRef, type RefObject, useImperativeHandle, useRef, useState } from 'react'
-import { Controller, FormProvider } from 'react-hook-form'
+import { forwardRef, type RefObject, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { Controller, FormProvider, useWatch } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Sak } from '../../types/types.internal'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
@@ -24,9 +24,36 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
   ({ onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat, problemsammendragRef }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
     const harPlassertMarkør = useRef(false)
+    const feltRef = useRef<HTMLInputElement>(null)
 
-    const { form, sammendragMedLavere, utleveringsmerknad, logTilUmami, isLoading } = useVedtak()
+    const {
+      form,
+      sammendragMedLavere,
+      utleveringsmerknad,
+      logTilUmami,
+      isLoading,
+      harServiceforespørselSvar,
+      originaltProblemsammendrag,
+    } = useVedtak()
     const { erPapirsøknad } = useSaksregler()
+    const innhold = useWatch({ control: form.control, name: 'problemsammendrag' })
+
+    useEffect(() => {
+      if (
+        !erPapirsøknad ||
+        isLoading ||
+        !harServiceforespørselSvar ||
+        innhold !== originaltProblemsammendrag ||
+        harPlassertMarkør.current ||
+        !feltRef.current
+      ) {
+        return
+      }
+
+      feltRef.current.focus()
+      feltRef.current.setSelectionRange(0, 0)
+      harPlassertMarkør.current = true
+    }, [erPapirsøknad, isLoading, harServiceforespørselSvar, innhold, originaltProblemsammendrag])
 
     const validerProblemsammendrag = (value: string | undefined) => {
       if (!value || value.trim() === '') {
@@ -89,13 +116,6 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 }}
                 render={({ field, fieldState }) => (
                   <TextField
-                    autoFocus={erPapirsøknad}
-                    onFocus={(event) => {
-                      if (erPapirsøknad && !harPlassertMarkør.current) {
-                        event.currentTarget.setSelectionRange(0, 0)
-                        harPlassertMarkør.current = true
-                      }
-                    }}
                     label={
                       <HStack wrap={false} gap="space-8" align="center">
                         <Etikett>Problemsammendrag til OeBS </Etikett>
@@ -112,6 +132,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                     {...field}
                     ref={(element) => {
                       field.ref(element)
+                      feltRef.current = element
                       if (problemsammendragRef) problemsammendragRef.current = element
                     }}
                     value={field.value ?? ''}

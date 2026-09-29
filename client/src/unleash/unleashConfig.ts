@@ -1,7 +1,7 @@
 import { type IConfig } from '@unleash/proxy-client-react'
 
 import { mswAktivert } from '../utils/useMiljø.ts'
-import { FEATURE_TOGGLE_BOOTSTRAP } from './FeatureToggle.ts'
+import { FEATURE_TOGGLE_BOOTSTRAP, FeatureToggle } from './FeatureToggle.ts'
 
 /**
  * Konfigurasjon for Unleash-klienten (`@unleash/proxy-client-react`).
@@ -36,7 +36,7 @@ export const unleashConfig: IConfig = {
   disableMetrics: !unleashEnabled,
   bootstrap: Object.entries(FEATURE_TOGGLE_BOOTSTRAP).map(([name, enabled]) => ({
     name,
-    enabled,
+    enabled: mswAktivert && name === FeatureToggle.journalforing ? true : enabled,
     variant: { name: 'disabled', enabled: false },
     impressionData: false,
   })),

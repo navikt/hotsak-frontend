@@ -8,6 +8,7 @@ interface UseServiceforespørselResponse {
   problemsammendrag: string
   postbegrunnelser: string[]
   isLoading: boolean
+  harSvar: boolean
 }
 
 interface ServiceforespørselResponse {
@@ -26,5 +27,6 @@ export function useServiceforespørsel(): UseServiceforespørselResponse {
     postbegrunnelser: data?.postbegrunnelser ?? [],
     isLoading,
     ...rest,
+    harSvar: data !== undefined,
   }
 }

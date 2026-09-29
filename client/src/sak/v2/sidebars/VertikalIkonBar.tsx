@@ -18,17 +18,17 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
   const { sak } = useSak()
   const { aktivSidebar, setAktivSidebar, panelState } = useSakContext()
   const sidePanel = panelState.panels.sidebarpanel
-  const { antallNotater, isLoading: notaterIsLoading } = useNotater(sak?.data.sakId)
+  const { antallNotater, harHentetNotater } = useNotater(sak?.data.sakId)
   const sidebarErInitialisert = useRef(false)
 
   useEffect(() => {
-    if (notaterIsLoading || sidebarErInitialisert.current) return
+    if (!harHentetNotater || sidebarErInitialisert.current) return
 
     sidebarErInitialisert.current = true
     if (antallNotater > 0) {
       setAktivSidebar(SidebarValg.NOTATER)
     }
-  }, [antallNotater, notaterIsLoading, setAktivSidebar])
+  }, [antallNotater, harHentetNotater, setAktivSidebar])
 
   function velgSidebar(sidebar: SidebarValg) {
     sidebarErInitialisert.current = true

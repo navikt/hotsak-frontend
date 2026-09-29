@@ -49,6 +49,7 @@ export function useNotater(sakId?: string) {
   return {
     notater,
     antallNotater,
+    harHentetNotater: data !== undefined,
     harUtkast: notater.utkast.length > 0,
     gjeldendeUtkast: notater.utkast[0], // antar at vi ikke har flere utkast pt.
     opprettNotat,

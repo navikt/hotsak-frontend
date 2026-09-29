@@ -13,7 +13,12 @@ vi.mock('../oppgave/useOppgave.ts', () => ({
 }))
 
 vi.mock('../oppgave/useOppgavebehandlere.ts', () => ({
-  useOppgavebehandlere: () => ({ behandlere: [] }),
+  useOppgavebehandlere: () => ({
+    behandlere: [
+      { id: 'ansatt-1', navn: 'Kari Nordmann' },
+      { id: 'ansatt-2', navn: 'Ola Hansen' },
+    ],
+  }),
 }))
 
 vi.mock('../tilgang/useTilgang.ts', () => ({
@@ -30,11 +35,13 @@ function TestSkjema() {
     },
   })
   const mappeId = form.watch('mappeId')
+  const medarbeider = form.watch('medarbeider')
 
   return (
     <FormProvider {...form}>
       <TilordneOppgave tildeltEnhet="Testenhet - 2970" />
       <output aria-label="Valgt mappe-ID">{mappeId ?? ''}</output>
+      <output aria-label="Valgt medarbeider-ID">{medarbeider ?? ''}</output>
     </FormProvider>
   )
 }
@@ -77,5 +84,41 @@ describe('TilordneOppgave', () => {
     await userEvent.selectOptions(enhetsmappe, '')
 
     expect(screen.getByLabelText('Valgt mappe-ID')).toBeEmptyDOMElement()
+  })
+
+  it('lagrer valgt medarbeiders ID i skjemaet', async () => {
+    const user = userEvent.setup()
+    render(<TestSkjema />)
+
+    await user.click(screen.getByRole('radio', { name: /Medarbeider sin oppgaveliste/ }))
+    await user.type(screen.getByRole('combobox', { name: 'Medarbeider' }), 'Kari')
+    await user.click(screen.getByRole('option', { name: 'Kari Nordmann' }))
+
+    expect(screen.getByLabelText('Valgt medarbeider-ID')).toHaveTextContent('ansatt-1')
+    expect(screen.getByRole('option', { name: 'Kari Nordmann' })).toHaveAttribute('aria-selected', 'true')
+  })
+
+  it('tømmer medarbeider når valget fjernes', async () => {
+    const user = userEvent.setup()
+    render(<TestSkjema />)
+
+    await user.click(screen.getByRole('radio', { name: /Medarbeider sin oppgaveliste/ }))
+    await user.click(screen.getByRole('combobox', { name: 'Medarbeider' }))
+    await user.click(screen.getByRole('option', { name: 'Kari Nordmann' }))
+    await user.click(screen.getByRole('combobox', { name: 'Medarbeider' }))
+    await user.click(screen.getByRole('option', { name: 'Kari Nordmann' }))
+
+    expect(screen.getByLabelText('Valgt medarbeider-ID')).toBeEmptyDOMElement()
+  })
+
+  it('lar ikke fritekst bli til en medarbeider-ID', async () => {
+    const user = userEvent.setup()
+    render(<TestSkjema />)
+
+    await user.click(screen.getByRole('radio', { name: /Medarbeider sin oppgaveliste/ }))
+    await user.type(screen.getByRole('combobox', { name: 'Medarbeider' }), 'Ukjent medarbeider')
+
+    expect(screen.queryByRole('option', { name: 'Ukjent medarbeider' })).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Valgt medarbeider-ID')).toBeEmptyDOMElement()
   })
 })

@@ -1,6 +1,7 @@
 import { Box, Label, Radio, RadioGroup, Select, VStack } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
+import { ComboboxController } from '../felleskomponenter/skjema/ComboboxController.tsx'
 import { useOppgaveMapper } from '../oppgave/useOppgave.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
@@ -40,14 +41,13 @@ export function TilordneOppgave({ tildeltEnhet }: TilordneOppgaveProps) {
                 <Radio value="medarbeidersOppgaveliste">Medarbeider sin oppgaveliste</Radio>
                 {field.value === 'medarbeidersOppgaveliste' && (
                   <Box paddingInline="space-32 space-0">
-                    <Select label="Medarbeider" size="small" {...register('medarbeider')}>
-                      <option value="">Velg medarbeider</option>
-                      {behandlere.map((behandler) => (
-                        <option key={behandler.id} value={behandler.id}>
-                          {behandler.navn}
-                        </option>
-                      ))}
-                    </Select>
+                    <ComboboxController
+                      name="medarbeider"
+                      control={control}
+                      label="Medarbeider"
+                      size="small"
+                      options={behandlere.map((behandler) => ({ label: behandler.navn, value: behandler.id }))}
+                    />
                   </Box>
                 )}
                 <Radio value="enhetensOppgaveliste">Min enhet: {tildeltEnhet}</Radio>

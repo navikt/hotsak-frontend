@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 
-import { render, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { SidebarValg } from '../SakPanelTabTypes'
@@ -8,9 +8,10 @@ import { VertikalIkonBar } from './VertikalIkonBar'
 
 const setAktivSidebar = vi.fn()
 const useNotater = vi.fn()
+let sakId: string | undefined = 'sak-1'
 
 vi.mock('../../../saksbilde/useSak', () => ({
-  useSak: () => ({ sak: { data: { sakId: 'sak-1' } } }),
+  useSak: () => ({ sak: sakId ? { data: { sakId } } : undefined }),
 }))
 
 vi.mock('../../notat/useNotater', () => ({
@@ -40,21 +41,38 @@ vi.mock('../SakV2ContextType', () => ({
 describe('VertikalIkonBar', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    sakId = 'sak-1'
   })
 
-  it('åpner notatpanelet som standard når saken har notater', async () => {
-    useNotater.mockReturnValue({ antallNotater: 1, isLoading: false })
+  it('åpner notatpanelet som standard når saken har notater', () => {
+    useNotater.mockReturnValue({ antallNotater: 1, harHentetNotater: true, isLoading: false })
 
     render(<VertikalIkonBar />)
 
-    await waitFor(() => expect(setAktivSidebar).toHaveBeenCalledWith(SidebarValg.NOTATER))
+    expect(setAktivSidebar).toHaveBeenCalledWith(SidebarValg.NOTATER)
   })
 
-  it('beholder utlånsoversikten som standard når saken ikke har notater', async () => {
-    useNotater.mockReturnValue({ antallNotater: 0, isLoading: false })
+  it('beholder utlånsoversikten som standard når saken ikke har notater', () => {
+    useNotater.mockReturnValue({ antallNotater: 0, harHentetNotater: true, isLoading: false })
 
     render(<VertikalIkonBar />)
 
-    await waitFor(() => expect(setAktivSidebar).not.toHaveBeenCalled())
+    expect(setAktivSidebar).not.toHaveBeenCalled()
+  })
+
+  it('venter på notatdata selv om isLoading er false før saken er hentet', () => {
+    sakId = undefined
+    useNotater.mockReturnValue({ antallNotater: 0, harHentetNotater: false, isLoading: false })
+
+    const { rerender } = render(<VertikalIkonBar />)
+    expect(setAktivSidebar).not.toHaveBeenCalled()
+
+    sakId = 'sak-1'
+    rerender(<VertikalIkonBar />)
+    expect(setAktivSidebar).not.toHaveBeenCalled()
+
+    useNotater.mockReturnValue({ antallNotater: 2, harHentetNotater: true, isLoading: false })
+    rerender(<VertikalIkonBar />)
+    expect(setAktivSidebar).toHaveBeenCalledExactlyOnceWith(SidebarValg.NOTATER)
   })
 })

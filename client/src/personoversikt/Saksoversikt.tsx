@@ -5,7 +5,7 @@ import { DataGrid, type DataGridColumn } from '../felleskomponenter/data/DataGri
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OmrådeFilterLabel, OppgaveStatusLabel, Sakstype } from '../types/types.internal'
+import { OmrådeFilterLabel, SaksstatusLabel, Sakstype } from '../types/types.internal'
 import { storForbokstavIOrd } from '../utils/formater.ts'
 import {
   erSaksoversiktBarnebrillekrav,
@@ -137,7 +137,7 @@ const columns: ReadonlyArray<DataGridColumn<SaksoversiktSak | SaksoversiktBarneb
       if (row.behandlingsutfall) {
         return storForbokstavIOrd(row.behandlingsutfall)
       }
-      return OppgaveStatusLabel.get(row.saksstatus) || 'Ikke vurdert'
+      return SaksstatusLabel.get(row.saksstatus) || 'Ikke vurdert'
     },
   },
   {

@@ -1,11 +1,6 @@
 import { http } from 'msw'
 
-import {
-  type OppdaterVilkårRequest,
-  OppgaveStatusType,
-  StegType,
-  type VurderVilkårRequest,
-} from '../../types/types.internal'
+import { type OppdaterVilkårRequest, Saksstatus, StegType, type VurderVilkårRequest } from '../../types/types.internal'
 import { type StoreHandlersFactory } from '../data'
 import { type SakParams } from './params'
 import { respondCreated, respondNoContent } from './response'
@@ -19,7 +14,7 @@ export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ sakStore }) =>
     const sakId = params.sakId
     const payload = await request.json()
     await sakStore.vurderVilkår(sakId, payload)
-    await sakStore.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
+    await sakStore.oppdaterStatus(sakId, Saksstatus.TILDELT_SAKSBEHANDLER)
     return respondCreated()
   }),
 

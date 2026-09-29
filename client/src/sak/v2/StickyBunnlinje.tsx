@@ -7,7 +7,7 @@ import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
 import { useUtførtAv, utførtAvNavn } from '../../tilgang/UtførtAv.ts'
-import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
+import { SaksstatusLabel, Sak } from '../../types/types.internal'
 import { formaterDato } from '../../utils/dato'
 import {
   type Behandlingsutfall,
@@ -57,7 +57,7 @@ export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps)
         {isBehandlingFerdigstilt(gjeldendeBehandling) && <Behandlingsutfall behandling={gjeldendeBehandling} />}
         {!oppgaveErPåVent && !oppgaveErAvsluttet && (
           <Tag data-color="neutral" variant="moderate" size="small">
-            {OppgaveStatusLabel.get(sak.saksstatus)}
+            {SaksstatusLabel.get(sak.saksstatus)}
           </Tag>
         )}
         {oppgave && oppgaveErPåVent && <OppgavePåVentTag oppgave={oppgave} />}

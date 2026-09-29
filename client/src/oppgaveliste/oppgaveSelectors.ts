@@ -1,7 +1,7 @@
 import { parseISO } from 'date-fns'
 
 import { type Oppgave, type OppgaveId, Oppgaveprioritet, type Oppgavetype } from '../oppgave/oppgaveTypes.ts'
-import { type OppgaveStatusType } from '../types/types.internal.ts'
+import { type Saksstatus } from '../types/types.internal.ts'
 import { OPPGAVE_FILTER_OPTION_TOMME } from './useOppgaveFilterOptions.ts'
 
 export function selectOppgaveId(it: Oppgave): OppgaveId {
@@ -58,7 +58,7 @@ export function selectBrukerKommuneNavn(it: Oppgave): string {
   return it.bruker?.kommune?.navn || OPPGAVE_FILTER_OPTION_TOMME
 }
 
-export function selectSaksstatus(it: Oppgave): OppgaveStatusType | string {
+export function selectSaksstatus(it: Oppgave): Saksstatus | string {
   return it.sak?.saksstatus || OPPGAVE_FILTER_OPTION_TOMME
 }
 

@@ -25,7 +25,7 @@ export enum TilgangResultat {
 export interface SakBase {
   sakId: string
   sakstype: Sakstype
-  saksstatus: OppgaveStatusType
+  saksstatus: Saksstatus
   saksstatusGyldigFra: string
   statuskategori: SaksstatusKategori
   opprettet: string
@@ -469,32 +469,20 @@ export enum JournalpostStatusType {
   UKJENT = 'UKJENT',
 }
 
-/**
- * Kombinert saks- og oppgavetype.
- *
- * todo -> rename til `Saksstatus`
- */
-export enum OppgaveStatusType {
-  AVVENTER_JOURNALFORING = 'AVVENTER_JOURNALFORING',
+export enum Saksstatus {
+  MOTTATT = 'MOTTATT',
 
   AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
 
-  AVVENTER_DOKUMENTASJON = 'AVVENTER_DOKUMENTASJON',
-
-  // Totrinnskontroll
   AVVENTER_GODKJENNER = 'AVVENTER_GODKJENNER',
   TILDELT_GODKJENNER = 'TILDELT_GODKJENNER',
 
-  // Kun for søknad
-  SENDT_GOSYS = 'SENDT_GOSYS', // OVERFØRT_GOSYS
-  VEDTAK_FATTET = 'VEDTAK_FATTET',
-  // Kun for bestilling
-  FERDIGSTILT = 'FERDIGSTILT', // BESTILLING_GODKJENT
-  AVVIST = 'AVVIST', // BESTILLING_AVVIST
+  AVVENTER_DOKUMENTASJON = 'AVVENTER_DOKUMENTASJON',
 
-  HENLAGT = 'HENLAGT',
-  ANNULERT = 'ANNULERT',
+  FERDIGBEHANDLET = 'FERDIGBEHANDLET',
+  OVERFØRT_GOSYS = 'OVERFØRT_GOSYS',
+  ANNULLERT = 'ANNULLERT',
 }
 
 /**
@@ -506,22 +494,16 @@ export enum SaksstatusKategori {
   LUKKET = 'LUKKET',
 }
 
-/**
- * todo -> rename til `SaksstatusLabel`
- */
-export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
-  [OppgaveStatusType.AVVENTER_JOURNALFORING, 'Ikke journalført'],
-  [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
-  [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-  [OppgaveStatusType.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
-  [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
-  [OppgaveStatusType.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
-  [OppgaveStatusType.SENDT_GOSYS, 'Overført til Gosys'],
-  [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
-  [OppgaveStatusType.AVVIST, 'Avvist'],
-  [OppgaveStatusType.HENLAGT, 'Henlagt'],
-  [OppgaveStatusType.ANNULERT, 'Annulert'],
-  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
+export const SaksstatusLabel = new Map<Saksstatus, string>([
+  [Saksstatus.MOTTATT, 'Mottatt'],
+  [Saksstatus.AVVENTER_SAKSBEHANDLER, 'Til behandling'],
+  [Saksstatus.TILDELT_SAKSBEHANDLER, 'Under behandling'],
+  [Saksstatus.AVVENTER_GODKJENNER, 'Til godkjenning'],
+  [Saksstatus.TILDELT_GODKJENNER, 'Under godkjenning'],
+  [Saksstatus.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
+  [Saksstatus.FERDIGBEHANDLET, 'Ferdigbehandlet'],
+  [Saksstatus.OVERFØRT_GOSYS, 'Overført til Gosys'],
+  [Saksstatus.ANNULLERT, 'Annullert'],
 ])
 
 export enum VedtakStatusType {

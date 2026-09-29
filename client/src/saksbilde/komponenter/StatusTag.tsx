@@ -1,15 +1,9 @@
 import { Tag, type TagProps } from '@navikt/ds-react'
 
-import { OppgaveStatusLabel, OppgaveStatusType, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
+import { SaksstatusLabel, Saksstatus, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
 import classes from './StatusTag.module.css'
 
-export function StatusTag({
-  saksstatus,
-  vedtaksstatus,
-}: {
-  saksstatus: OppgaveStatusType
-  vedtaksstatus?: VedtakStatusType
-}) {
+export function StatusTag({ saksstatus, vedtaksstatus }: { saksstatus: Saksstatus; vedtaksstatus?: VedtakStatusType }) {
   return (
     <Tag
       className={classes.root}
@@ -17,23 +11,21 @@ export function StatusTag({
       size="small"
       variant={tagVariant(saksstatus, vedtaksstatus)}
     >
-      {saksstatus === OppgaveStatusType.VEDTAK_FATTET && vedtaksstatus
+      {saksstatus === Saksstatus.FERDIGBEHANDLET && vedtaksstatus
         ? VedtakStatusLabel.get(vedtaksstatus)
-        : OppgaveStatusLabel.get(saksstatus)}
+        : SaksstatusLabel.get(saksstatus)}
     </Tag>
   )
 }
 
-function tagVariant(saksstatus: OppgaveStatusType, vedtaksstatus?: VedtakStatusType): TagProps['variant'] {
+function tagVariant(saksstatus: Saksstatus, vedtaksstatus?: VedtakStatusType): TagProps['variant'] {
   switch (saksstatus) {
-    case OppgaveStatusType.AVVENTER_DOKUMENTASJON:
+    case Saksstatus.AVVENTER_DOKUMENTASJON:
       return 'warning'
-    case OppgaveStatusType.VEDTAK_FATTET:
+    case Saksstatus.FERDIGBEHANDLET:
       if (vedtaksstatus === VedtakStatusType.INNVILGET) return 'success'
       if (vedtaksstatus === VedtakStatusType.AVSLÅTT) return 'error'
       else return 'info'
-    case OppgaveStatusType.AVVIST:
-      return 'error'
     default:
       return 'info'
   }

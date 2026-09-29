@@ -32,7 +32,7 @@ import {
   Brevkode,
   Kjønn,
   type OppdaterVilkårRequest,
-  OppgaveStatusType,
+  Saksstatus,
   type Sak,
   type Saksdokument,
   SaksdokumentType,
@@ -315,7 +315,7 @@ export class SakStore extends Dexie {
 
     this.transaction('rw', this.saker, this.hendelser, () => {
       this.oppdaterSak(sak.sakId, {
-        saksstatus: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
+        saksstatus: Saksstatus.TILDELT_SAKSBEHANDLER,
       })
       this.lagreHendelse(sak.sakId, 'Saksbehandler har tatt saken', undefined)
     })
@@ -331,7 +331,7 @@ export class SakStore extends Dexie {
 
     this.transaction('rw', this.saker, this.hendelser, () => {
       this.oppdaterSak(sak.sakId, {
-        saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+        saksstatus: Saksstatus.AVVENTER_SAKSBEHANDLER,
       })
       this.lagreHendelse(sak.sakId, 'Saksbehandler er meldt av saken')
     })
@@ -363,7 +363,7 @@ export class SakStore extends Dexie {
     })
   }
 
-  async oppdaterStatus(sakId: string, status: OppgaveStatusType) {
+  async oppdaterStatus(sakId: string, status: Saksstatus) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
@@ -411,7 +411,7 @@ export class SakStore extends Dexie {
 
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår, { allKeys: true })
-      await this.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
+      await this.oppdaterStatus(sakId, Saksstatus.TILDELT_SAKSBEHANDLER)
       return this.oppdaterSteg(sakId, StegType.VURDERE_VILKÅR)
     })
   }
@@ -437,7 +437,7 @@ export class SakStore extends Dexie {
     return this.transaction('rw', this.saker, this.hendelser, () => {
       this.oppdaterSak<LagretBarnebrillesak>(sakId, {
         steg: StegType.GODKJENNE,
-        saksstatus: OppgaveStatusType.AVVENTER_GODKJENNER,
+        saksstatus: Saksstatus.AVVENTER_GODKJENNER,
         totrinnskontroll,
       })
       this.lagreHendelse(sakId, 'Sak sendt til godkjenning')
@@ -468,7 +468,7 @@ export class SakStore extends Dexie {
         }
         this.oppdaterSak<LagretBarnebrillesak>(sak.sakId, {
           steg: StegType.FERDIG_BEHANDLET,
-          saksstatus: OppgaveStatusType.VEDTAK_FATTET,
+          saksstatus: Saksstatus.FERDIGBEHANDLET,
           vedtak: {
             vedtaksdato: nå,
             vedtaksstatus:
@@ -493,7 +493,7 @@ export class SakStore extends Dexie {
         }
         this.oppdaterSak<LagretBarnebrillesak>(sak.sakId, {
           steg: StegType.REVURDERE,
-          saksstatus: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
+          saksstatus: Saksstatus.TILDELT_SAKSBEHANDLER,
           totrinnskontroll,
         })
         this.lagreHendelse(sak.sakId, 'Sak returnert til saksbehandler')
@@ -508,7 +508,7 @@ export class SakStore extends Dexie {
     const sak: LagretHjelpemiddelsak = {
       sakId,
       sakstype: Sakstype.SØKNAD,
-      saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+      saksstatus: Saksstatus.AVVENTER_SAKSBEHANDLER,
       saksstatusGyldigFra: nå,
       statuskategori: SaksstatusKategori.ÅPEN,
       opprettet: nå,
@@ -835,11 +835,7 @@ export class SakStore extends Dexie {
     })
   }
 
-  async fattVedtak(
-    sakId: string,
-    status: OppgaveStatusType = OppgaveStatusType.VEDTAK_FATTET,
-    vedtaksResultat?: VedtaksResultat
-  ) {
+  async fattVedtak(sakId: string, status: Saksstatus = Saksstatus.FERDIGBEHANDLET, vedtaksResultat?: VedtaksResultat) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false

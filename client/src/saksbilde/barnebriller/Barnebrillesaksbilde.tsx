@@ -9,7 +9,7 @@ import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes.ts'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
+import { Saksstatus, Sakstype, StepType } from '../../types/types.internal'
 import { StatusTag } from '../komponenter/StatusTag'
 import { LasterPersonlinje } from '../Personlinje'
 import { SaksbildeMenu } from '../SaksbildeMenu.tsx'
@@ -42,7 +42,7 @@ const BarnebrillesakContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppg
   if (!sak) return null
 
   const { saksstatus, vedtak } = sak.data
-  const visStatusTag = !oppgave?.isPåVent || saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON
+  const visStatusTag = !oppgave?.isPåVent || saksstatus === Saksstatus.AVVENTER_DOKUMENTASJON
   return (
     <div className={classes.content}>
       <HStack className={classes.header} wrap={false} align="baseline">
@@ -54,7 +54,7 @@ const BarnebrillesakContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppg
           {harSkrivetilgang && <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />}
         </HStack>
       </HStack>
-      {saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
+      {saksstatus === Saksstatus.AVVENTER_DOKUMENTASJON && (
         <AlertContainerMedium>
           <InfoCard size="small">
             <InfoCard.Content>

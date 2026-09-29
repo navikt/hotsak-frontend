@@ -4,7 +4,7 @@ import { Tekst } from '../../../../felleskomponenter/typografi'
 import { type Saksbehandlingsoppgave } from '../../../../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../../../../oppgave/useOppgaveregler.ts'
 import { SidebarPanel } from '../../../../sak/v2/sidebars/SidebarPanel.tsx'
-import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
+import { Saksstatus, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
@@ -42,11 +42,7 @@ export function TotrinnskontrollPanel({ oppgave }: TotrinnskontrollPanelProps) {
     totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
     totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
 
-  if (
-    !totrinnskontrollFullført &&
-    saksstatus !== OppgaveStatusType.VEDTAK_FATTET &&
-    oppgaveErUnderBehandlingAvAnnenAnsatt
-  ) {
+  if (!totrinnskontrollFullført && saksstatus !== Saksstatus.FERDIGBEHANDLET && oppgaveErUnderBehandlingAvAnnenAnsatt) {
     return (
       <SidebarPanel tittel="Totrinnskontroll">
         <Tekst>En annen saksbehandler har allerede tatt denne saken.</Tekst>

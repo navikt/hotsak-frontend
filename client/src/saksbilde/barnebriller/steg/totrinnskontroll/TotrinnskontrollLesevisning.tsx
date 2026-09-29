@@ -1,7 +1,7 @@
 import { InlineMessage, VStack } from '@navikt/ds-react'
 
 import { Etikett, Tekst } from '../../../../felleskomponenter/typografi'
-import { OppgaveStatusType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
+import { Saksstatus, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
 import { storForbokstavIAlleOrd } from '../../../../utils/formater'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
@@ -27,7 +27,7 @@ export function TotrinnskontrollLesevisning() {
         </InlineMessage>
       )}
       {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT &&
-        sak.data.saksstatus === OppgaveStatusType.VEDTAK_FATTET && (
+        sak.data.saksstatus === Saksstatus.FERDIGBEHANDLET && (
           <InlineMessage role="status" size="small" status="success">
             Vedtaket er fattet {formaterDato(sak?.data.vedtak?.vedtaksdato)}
           </InlineMessage>

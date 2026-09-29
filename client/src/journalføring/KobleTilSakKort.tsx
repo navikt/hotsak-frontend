@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { GOSYS_GENERELL_SAK, type Sakvalg } from './journalføringValg.ts'
 import { MAKS_SAKER_SYNLIG, type SakvalgVisning } from './useKobleTilSak.ts'
 import { type HttpError } from '../io/HttpError.ts'
-import { OmrådeFilterLabel, OppgaveStatusLabel } from '../types/types.internal.ts'
+import { OmrådeFilterLabel, SaksstatusLabel } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import classes from './KobleTilSakKort.module.css'
 import { Sakstype } from './journalføringTypes.ts'
@@ -91,7 +91,7 @@ interface SakKortProps {
 function SakKort({ sak, valgt, onVelg }: SakKortProps) {
   const erGenerellSak = sak.valg.sakstype === Sakstype.GENERELL_SAK
   const område = sak.område ? formaterOmråde(sak.område) : ''
-  const statusLabel = sak.saksstatus ? (OppgaveStatusLabel.get(sak.saksstatus) ?? sak.saksstatus) : null
+  const statusLabel = sak.saksstatus ? (SaksstatusLabel.get(sak.saksstatus) ?? sak.saksstatus) : null
 
   return (
     <Box

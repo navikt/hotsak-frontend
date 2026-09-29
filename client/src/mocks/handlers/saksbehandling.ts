@@ -11,7 +11,7 @@ import {
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
-import { OppgaveStatusType, TilgangResultat, TilgangType } from '../../types/types.internal'
+import { Saksstatus, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'
 import { type StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
@@ -72,7 +72,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
       if (erLagretHjelpemiddelsak(sak)) {
         return HttpResponse.json({
-          kanTildeles: sak.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+          kanTildeles: sak.saksstatus === Saksstatus.AVVENTER_SAKSBEHANDLER,
           data: sak,
           tilganger,
         })
@@ -82,8 +82,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         return HttpResponse.json({
           tilganger,
           kanTildeles:
-            sak.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
-            sak.saksstatus === OppgaveStatusType.AVVENTER_GODKJENNER,
+            sak.saksstatus === Saksstatus.AVVENTER_SAKSBEHANDLER || sak.saksstatus === Saksstatus.AVVENTER_GODKJENNER,
           data: sak,
         })
       }
@@ -145,14 +144,14 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
     http.put<SakParams>('/api/sak/:sakId/tilbakeforing', async ({ params }) => {
       const sakId = params.sakId
-      await sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
+      await sakStore.oppdaterStatus(sakId, Saksstatus.OVERFØRT_GOSYS)
 
       const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
       const gjeldendeBehandling = behandlingerForSak[0]!
 
       const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
       await oppgaveStore.ferdigstillOppgave(gjeldendeBehandling!.oppgaveId)
-      await sakStore.fattVedtak(sakId, OppgaveStatusType.SENDT_GOSYS, vedtaksResultat)
+      await sakStore.fattVedtak(sakId, Saksstatus.OVERFØRT_GOSYS, vedtaksResultat)
       await sakStore.ferdigstillBehandlingForSak(sakId)
       return respondNoContent()
     }),
@@ -209,7 +208,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return HttpResponse.json(tilbakemeldinger)
     }),
 
-    http.put<SakParams, { status: OppgaveStatusType }>('/api/sak/:sakId/status', async ({ request, params }) => {
+    http.put<SakParams, { status: Saksstatus }>('/api/sak/:sakId/status', async ({ request, params }) => {
       const sakId = params.sakId
       const { status } = await request.json()
       await sakStore.oppdaterStatus(sakId, status)
@@ -218,7 +217,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     }),
 
     http.post<SakParams>('/api/sak/:sakId/henleggelse', async ({ params }) => {
-      await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.HENLAGT)
+      await sakStore.oppdaterStatus(params.sakId, Saksstatus.FERDIGBEHANDLET)
       return respondNoContent()
     }),
 
@@ -307,7 +306,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         if (isBehandlingsutfallBestilling(body.utfall)) {
           await sakStore.ferdigstillBehandlingForSak(params.sakId)
           await oppgaveStore.ferdigstillOppgave(body.oppgaveId)
-          await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.FERDIGSTILT)
+          await sakStore.oppdaterStatus(params.sakId, Saksstatus.FERDIGBEHANDLET)
         }
 
         const behandling = await sakStore.hentBehandling(Number(behandlingId))
@@ -330,7 +329,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
       const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
       await oppgaveStore.ferdigstillOppgave(gjeldendeBehandling!.oppgaveId)
-      await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, vedtaksResultat)
+      await sakStore.fattVedtak(sakId, Saksstatus.FERDIGBEHANDLET, vedtaksResultat)
       await sakStore.ferdigstillBehandlingForSak(sakId)
       return respondNoContent()
     }),

@@ -1,6 +1,6 @@
 import { type Fagsaksystem, type Tema } from '../kodeverk/kodeverkTypes.ts'
 import { type OppgaveId } from '../oppgave/oppgaveTypes.ts'
-import { type OppgaveStatusType, type Sakstype } from '../types/types.internal.ts'
+import { type Saksstatus, type Sakstype } from '../types/types.internal.ts'
 
 export interface Saksoversikt {
   saker: SaksoversiktSak[]
@@ -22,7 +22,7 @@ export interface SaksoversiktBase {
 export interface SaksoversiktSak extends SaksoversiktBase {
   sakId: string
   sakstype: Sakstype
-  saksstatus: OppgaveStatusType
+  saksstatus: Saksstatus
   saksstatusGyldigFra: string
   område: string[]
   oppgaveId?: OppgaveId

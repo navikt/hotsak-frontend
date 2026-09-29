@@ -4,11 +4,7 @@ import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { type Fagsak, type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { Fagsaksystem, Tema, type Fagsaksystem as FagsaksystemType } from '../kodeverk/kodeverkTypes.ts'
-import {
-  OppgaveStatusType,
-  Sakstype,
-  type OppgaveStatusType as OppgaveStatusTypeValue,
-} from '../types/types.internal.ts'
+import { Saksstatus, Sakstype, type Saksstatus as OppgaveStatusTypeValue } from '../types/types.internal.ts'
 import type { Sakvalg } from './journalføringValg.ts'
 import { Sakstype as JournalføringSakstype } from './journalføringTypes.ts'
 
@@ -39,12 +35,12 @@ export interface UseKobleTilSakResponse {
 
 export const MAKS_SAKER_SYNLIG = 10
 const ÅPNE_STATUSER = new Set<OppgaveStatusTypeValue>([
-  OppgaveStatusType.AVVENTER_JOURNALFORING,
-  OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-  OppgaveStatusType.TILDELT_SAKSBEHANDLER,
-  OppgaveStatusType.AVVENTER_DOKUMENTASJON,
-  OppgaveStatusType.AVVENTER_GODKJENNER,
-  OppgaveStatusType.TILDELT_GODKJENNER,
+  Saksstatus.MOTTATT,
+  Saksstatus.AVVENTER_SAKSBEHANDLER,
+  Saksstatus.TILDELT_SAKSBEHANDLER,
+  Saksstatus.AVVENTER_DOKUMENTASJON,
+  Saksstatus.AVVENTER_GODKJENNER,
+  Saksstatus.TILDELT_GODKJENNER,
 ])
 
 function erVisbarSak(sak: SaksoversiktSak): boolean {

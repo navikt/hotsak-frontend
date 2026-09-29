@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { type Sak, OppgaveStatusType, SaksstatusKategori, Sakstype } from '../../types/types.internal.ts'
+import { type Sak, Saksstatus, SaksstatusKategori, Sakstype } from '../../types/types.internal.ts'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
 import { FattVedtakModalV2 } from '../v2/modaler/FattVedtakModalV2.tsx'
 import { type VedtakFormHandle, VedtakForm } from './VedtakForm.tsx'
@@ -54,7 +54,7 @@ vi.mock('../v2/paneler/usePanelHooks.ts', () => ({
 const sak: Sak = {
   sakId: 'sak-1',
   sakstype: Sakstype.SØKNAD,
-  saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+  saksstatus: Saksstatus.AVVENTER_SAKSBEHANDLER,
   saksstatusGyldigFra: '2026-01-01',
   statuskategori: SaksstatusKategori.ÅPEN,
   opprettet: '2026-01-01',

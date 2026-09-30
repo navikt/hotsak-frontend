@@ -76,7 +76,7 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
         },
         {
           type: 'oppfølgingsspørsmål',
-          tekst: 'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral',
+          tekst: 'Saken skal ikke behandles av Nav hjelpemiddelsentral',
           spørsmål: [
             {
               type: 'fritekst',
@@ -86,34 +86,7 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
             },
           ],
         },
-        {
-          type: 'oppfølgingsspørsmål',
-          tekst: 'Feil i skanning',
-          spørsmål: [
-            {
-              type: 'enkeltvalg',
-              tekst: 'Hva er feil med skanningen?',
-              alternativer: [
-                'Saken er sendt inn på feil bruker (slette)',
-                'Saken inneholder dokumenter tilhørende flere brukere (splitte)',
-                'Bilder med for dårlig kvalitet (reskanning)',
-                {
-                  type: 'oppfølgingsspørsmål',
-                  tekst: 'Annet',
-                  spørsmål: [
-                    {
-                      type: 'fritekst',
-                      tekst: 'Oppgi hva som er feil med skanningen.',
-                      beskrivelse: IKKE_PERSONOPPLYSNINGER,
-                      påkrevd: true,
-                    },
-                  ],
-                },
-              ],
-              påkrevd: true,
-            },
-          ],
-        },
+        'Saken er sendt inn på feil bruker eller inneholder dokumentasjon om flere brukere',
         {
           type: 'oppfølgingsspørsmål',
           tekst: 'Annet',

@@ -12,7 +12,7 @@ import {
   Oppgavetype,
   OppgavetypeLabel,
 } from '../oppgave/oppgaveTypes.ts'
-import { OppgaveStatusLabel, OppgaveStatusType } from '../types/types.internal.ts'
+import { SaksstatusLabel, Saksstatus } from '../types/types.internal.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
 import classes from './oppgaveColumns.module.css'
@@ -286,11 +286,11 @@ export const oppgaveColumns = {
     filter: {
       options: new Map([
         ['(Tomme)', '(Tomme)'],
-        [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
-        [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-        [OppgaveStatusType.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
-        [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
-        [OppgaveStatusType.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
+        [Saksstatus.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
+        [Saksstatus.TILDELT_SAKSBEHANDLER, 'Under behandling'],
+        [Saksstatus.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
+        [Saksstatus.AVVENTER_GODKJENNER, 'Til godkjenning'],
+        [Saksstatus.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
         /*
         [OppgaveStatusType.SENDT_GOSYS, 'Overført til Gosys'],
         [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
@@ -307,7 +307,7 @@ export const oppgaveColumns = {
       if (!sak) {
         return null
       }
-      return OppgaveStatusLabel.get(sak.saksstatus)
+      return SaksstatusLabel.get(sak.saksstatus)
     },
   },
   opprettetTidspunkt: {

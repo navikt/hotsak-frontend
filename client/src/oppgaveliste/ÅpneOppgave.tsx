@@ -5,7 +5,7 @@ import { LinkButton } from '../felleskomponenter/button/LinkButton.tsx'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { mutateOppgave } from '../oppgave/useOppgave.ts'
 import { preloadBehandling, preloadBehovsmelding, preloadSak } from '../sak/useSak.ts'
-import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
+import { Saksstatus, Sakstype } from '../types/types.internal.ts'
 import classes from './ÅpneOppgave.module.css'
 
 export interface ÅpneOppgaveProps {
@@ -30,7 +30,7 @@ export function ÅpneOppgave(props: ÅpneOppgaveProps) {
     }
   }, [oppgave])
 
-  if (oppgave.sak?.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
+  if (oppgave.sak?.saksstatus === Saksstatus.OVERFØRT_GOSYS) {
     return (
       <Tooltip content="Overført til Gosys. Oppgaven blir borte fra listen over ferdigstilte oppgaver etter 10 dager.">
         <Tag size="xsmall" variant="neutral">

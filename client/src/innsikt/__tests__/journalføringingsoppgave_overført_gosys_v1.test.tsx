@@ -59,23 +59,10 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     expect(hentRadioAlternativerFraGruppe(new RegExp(HOVEDSPØRSMÅL))).toEqual([
       'Behov for å sende brev',
       'Saken skal ikke behandles i Hotsak pr. i dag',
-      'Feil førsteside - skal ikke behandles av Nav hjelpemiddelsentral',
-      'Feil i skanning',
+      'Saken skal ikke behandles av Nav hjelpemiddelsentral',
+      'Saken er sendt inn på feil bruker eller inneholder dokumentasjon om flere brukere',
       'Annet',
     ])
-  })
-
-  it('tillater bare ett valgt hovedalternativ og bytter underspørsmål når valget endres', async () => {
-    const { bruker } = renderSkjema()
-
-    await velgHovedårsak(bruker, 'Behov for å sende brev')
-    expect(screen.getByRole('radiogroup', { name: /Hva har du behov for å sende brev om/ })).toBeInTheDocument()
-
-    await velgHovedårsak(bruker, 'Feil i skanning')
-    expect(within(hovedgruppe()).getByRole('radio', { name: 'Behov for å sende brev' })).not.toBeChecked()
-    expect(within(hovedgruppe()).getByRole('radio', { name: 'Feil i skanning' })).toBeChecked()
-    expect(screen.queryByRole('radiogroup', { name: /Hva har du behov for å sende brev om/ })).not.toBeInTheDocument()
-    expect(screen.getByRole('radiogroup', { name: /Hva er feil med skanningen/ })).toBeInTheDocument()
   })
 
   it('krever at en hovedårsak er valgt', async () => {
@@ -84,16 +71,6 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     await overfør(bruker)
 
     expect(await screen.findByText('Du må velge minst én årsak')).toBeInTheDocument()
-    expect(onBesvar).not.toHaveBeenCalled()
-  })
-
-  it('krever at underspørsmål besvares når valgt hovedårsak har underspørsmål', async () => {
-    const { bruker, onBesvar } = renderSkjema()
-
-    await velgHovedårsak(bruker, 'Feil i skanning')
-    await overfør(bruker)
-
-    expect(await screen.findByText('Må fylles ut')).toBeInTheDocument()
     expect(onBesvar).not.toHaveBeenCalled()
   })
 

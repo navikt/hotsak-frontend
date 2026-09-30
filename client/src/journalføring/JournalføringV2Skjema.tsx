@@ -31,6 +31,7 @@ import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import classes from './JournalføringV2Skjema.module.css'
 import { byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
+import { harUgyldigeDokumenttitler } from './dokumenttittelValidering.ts'
 
 interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
@@ -43,6 +44,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const [valgtSak, setValgtSak] = useState<Sakvalg | null>(null)
   const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
+  const [visDokumenttittelFeil, setVisDokumenttittelFeil] = useState(false)
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
   const [tilordnetEnhet, setTilordnetEnhet] = useState<TilordnetEnhet>()
@@ -135,7 +137,15 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
     return { tittel, journalføresPåFnr: fnr, dokumenter }
   }
 
+  function erDokumenttitlerGyldige() {
+    const gyldige = !harUgyldigeDokumenttitler(journalpost.dokumenter, dokumentTitler)
+    setVisDokumenttittelFeil(!gyldige)
+    return gyldige
+  }
+
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
+    if (!erDokumenttitlerGyldige()) return
+
     const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
@@ -169,6 +179,8 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       setValgtSakIdFeil('Du må velge en sak å koble til')
       return
     }
+    if (!erDokumenttitlerGyldige()) return
+
     const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
@@ -237,6 +249,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
               onTittelChange={(id, tittel) => setDokumentTitler((prev) => ({ ...prev, [id]: tittel }))}
               onChipsChange={(id, chips) => setAnnetInnhold((prev) => ({ ...prev, [id]: chips }))}
               readOnly={!kanRedigere}
+              visTittelFeil={visDokumenttittelFeil}
             />
 
             <JournalføringSakvalg
@@ -290,7 +303,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                   size="small"
                   loading={journalfør.isMutating}
                   disabled={journalfør.isMutating}
-                  onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : undefined}
+                  onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : () => setVisDokumenttittelFeil(true)}
                 >
                   {sakType === 'eksisterende' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
                 </Button>

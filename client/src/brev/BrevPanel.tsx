@@ -1,19 +1,28 @@
 import { Box, Button, HStack, InfoCard, Tooltip, VStack } from '@navikt/ds-react'
-import { type ReactNode, Suspense, useState } from 'react'
+import { type ReactNode, Suspense, useEffect, useState } from 'react'
 
+import { EnvelopeClosedIcon } from '@navikt/aksel-icons'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
-import { formaterDato } from '../utils/dato.ts'
+import { formaterDato, formaterTidsstempel } from '../utils/dato.ts'
+import { AngreSendingAvBrevDialog } from './AngreSendingAvBrevDialog.tsx'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import { type Brev, BreveditorbrevUtenVedtak, Brevmal, BrevmalTekst, Brevstatus, brevstatusTekst } from './brevTyper.ts'
+import {
+  type Brev,
+  BreveditorbrevUtenVedtak,
+  Brevmal,
+  BrevmalTekst,
+  Brevstatus,
+  brevstatusTekst,
+  isBreveditorbrevUtenVedtak,
+} from './brevTyper.ts'
 import { NyttBrevDialog } from './NyttBrevDialog.tsx'
-import { EnvelopeClosedIcon } from '@navikt/aksel-icons'
 
 export interface BrevPanelProps {
   oppgave?: Saksbehandlingsoppgave
@@ -32,9 +41,29 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter((brevmal) => !eksisterendeBrevmaler.has(brevmal))
   const kanOppretteBrev =
     !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt && tilgjengeligeBrevmaler.length > 0
+  const underveisbrevTilDistribusjon = valgtBrev
+    ? isBreveditorbrevUtenVedtak(valgtBrev.brevmal) && valgtBrev.brevstatus == Brevstatus.TIL_DISTRIBUSJON
+    : false
+  const distribueresEtter = underveisbrevTilDistribusjon ? valgtBrev?.distribusjon[0]?.distribueresEtter : undefined
+  const [angreSendingAvBrevDialogOpen, setAngreSendingAvBrevDialogOpen] = useState(false)
+  const [nå, setNå] = useState(Date.now)
+  const kanAngreBrev =
+    underveisbrevTilDistribusjon && distribueresEtter !== undefined && Date.parse(distribueresEtter) > nå
+
+  useEffect(() => {
+    if (!distribueresEtter) return
+
+    const frist = Date.parse(distribueresEtter)
+    if (!Number.isFinite(frist)) return
+
+    const timeoutId = window.setTimeout(() => setNå(Date.now()), Math.max(0, frist - Date.now()))
+
+    return () => window.clearTimeout(timeoutId)
+  }, [distribueresEtter])
 
   if (valgtBrev) {
     const tilbakeTilOversikt = () => setValgtBrevId(null)
+    const angreBrevDistribusjon = () => setAngreSendingAvBrevDialogOpen(true)
     const kanRedigere =
       !oppgaveErAvsluttet &&
       [Brevstatus.UTKAST, Brevstatus.FERDIGSTILT].some((status) => status === valgtBrev.brevstatus) &&
@@ -57,13 +86,30 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
     }
 
     return (
-      <BrevPanelLayout tittel={BrevmalTekst[valgtBrev.brevmal]} onTilbake={tilbakeTilOversikt}>
+      <BrevPanelLayout
+        tittel={BrevmalTekst[valgtBrev.brevmal]}
+        onTilbake={tilbakeTilOversikt}
+        onAngre={kanAngreBrev ? angreBrevDistribusjon : undefined}
+      >
         {oppgaveErAvsluttet && (
           <BrevInfoCard title="Oppgaven er ferdigstilt">
             Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
           </BrevInfoCard>
         )}
+        {underveisbrevTilDistribusjon && (
+          <BrevInfoCard title="Brev til distribusjon">
+            Brevet ligger til distribusjon, og vil sendes automatisk{' '}
+            {distribueresEtter ? `den ${formaterTidsstempel(distribueresEtter)}` : 'neste virkedag kl 08:00'}.
+          </BrevInfoCard>
+        )}
         <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
+        <AngreSendingAvBrevDialog
+          oppgave={oppgave}
+          brevId={valgtBrev.brevId}
+          open={angreSendingAvBrevDialogOpen}
+          onClose={() => setAngreSendingAvBrevDialogOpen(false)}
+          distribueresEtter={distribueresEtter}
+        />
       </BrevPanelLayout>
     )
   }
@@ -114,11 +160,13 @@ function BrevPanelLayout({
   tittel = 'Brev',
   onNyttBrev,
   onTilbake,
+  onAngre,
   children,
 }: {
   tittel?: string
   onNyttBrev?: () => void
   onTilbake?: () => void
+  onAngre?: () => void
   children: ReactNode
 }) {
   const closePanel = useClosePanel('brevpanel')
@@ -129,14 +177,24 @@ function BrevPanelLayout({
           paddingInline="space-8 space-0"
           tittel={tittel}
           handlinger={
-            onNyttBrev ? (
-              <Button size="small" onClick={onNyttBrev}>
-                Nytt brev
-              </Button>
-            ) : onTilbake ? (
-              <Button size="small" variant="tertiary" onClick={onTilbake}>
-                Alle brev
-              </Button>
+            onNyttBrev || onTilbake || onAngre ? (
+              <HStack gap="space-8">
+                {onNyttBrev && (
+                  <Button size="small" onClick={onNyttBrev}>
+                    Nytt brev
+                  </Button>
+                )}
+                {onTilbake && (
+                  <Button size="small" variant="tertiary" onClick={onTilbake}>
+                    Alle brev
+                  </Button>
+                )}
+                {onAngre && (
+                  <Button size="small" variant="tertiary" onClick={onAngre}>
+                    Angre
+                  </Button>
+                )}
+              </HStack>
             ) : undefined
           }
           lukkPanel={closePanel}

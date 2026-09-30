@@ -50,7 +50,7 @@ import {
 } from '../../types/types.internal'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { enheter } from './enheter.ts'
-import { nåIso } from './felles.ts'
+import { nesteArbeidsdagKlokkenÅtte, nåIso } from './felles.ts'
 import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import {
@@ -790,6 +790,31 @@ export class SakStore extends Dexie {
       endret: nåIso(),
       endretAv: Saksbehandlere.innlogget().id,
       brevstatus: Brevstatus.TIL_DISTRIBUSJON,
+      distribusjon: [
+        {
+          brevId: brevId.toString(),
+          mottakertype: Mottakertype.BRUKER,
+          fnr: '13820599335',
+          distribueresEtter: nesteArbeidsdagKlokkenÅtte(),
+        },
+      ],
+    })
+
+    return this.hentBrev(brevId)
+  }
+
+  async angreUnderveisBrev(brevId: ID): Promise<Brev | null> {
+    brevId = Number(brevId)
+    const brev = await this.hentBrev(brevId)
+    if (brev.brevstatus !== Brevstatus.TIL_DISTRIBUSJON) {
+      return null
+    }
+
+    await this.brev.update(brevId, {
+      endret: nåIso(),
+      endretAv: Saksbehandlere.innlogget().id,
+      brevstatus: Brevstatus.FERDIGSTILT,
+      distribusjon: [],
     })
 
     return this.hentBrev(brevId)

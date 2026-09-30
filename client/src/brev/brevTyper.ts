@@ -140,6 +140,7 @@ export interface Brevdistribusjon {
   skalDistribueres?: boolean
   distribusjonId?: string
   distribuert?: Instant
+  distribueresEtter?: Instant
 }
 
 export interface OpprettBrevutkastRequest<T extends Brevdata = Brevdata> {

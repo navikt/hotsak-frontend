@@ -54,6 +54,12 @@ export function nåIso(): string {
   return new Date().toISOString()
 }
 
+export function nesteArbeidsdagKlokkenÅtte(): Instant {
+  const tomorrow = addDays(new Date(), 1)
+  tomorrow.setHours(8, 0, 0, 0)
+  return tomorrow.toISOString()
+}
+
 export function lagTilfeldigHmsArtNr(): string {
   return lagTilfeldigInteger(1, 999999).toString().padStart(6, '0')
 }

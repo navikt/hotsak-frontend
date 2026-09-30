@@ -99,7 +99,19 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
   const sendUnderveisBrev = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
     brevKey,
     async ([url]) => {
-      await http.post(`${url}/utsending`, { oppgaveId }, { versjon })
+      await http.post(`${url}/distribusjon`, { oppgaveId }, { versjon })
+    },
+    {
+      async onSuccess() {
+        await mutateBehandlingOgBrevForSak(sakId!)
+      },
+    }
+  )
+
+  const angreUnderveisBrev = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
+    brevKey,
+    async ([url]) => {
+      await http.delete(`${url}/distribusjon`, { versjon })
     },
     {
       async onSuccess() {
@@ -116,6 +128,7 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     ferdigstillBrevutkast,
     redigerBrevutkast,
     sendUnderveisBrev,
+    angreUnderveisBrev,
   }
 }
 

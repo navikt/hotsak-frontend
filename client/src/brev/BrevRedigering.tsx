@@ -23,6 +23,7 @@ import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { useBrevmal } from './brevmaler/useBrevmal.ts'
 import classes from './BrevRedigering.module.css'
 import { Brevmal, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
+import { SendBrevDialog } from './SendBrevDialog.tsx'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
@@ -40,6 +41,7 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
 
   const closePanel = useClosePanel('brevpanel')
   const [visSlettBrevModal, setVisSlettBrevModal] = useState(false)
+  const [openSendBrevDialog, setOpenSendBrevDialog] = useState(false)
 
   const { brev, isLoading: brevIsLoading, error: brevError } = useBrev<BreveditorBrevdata>(brevId)
 
@@ -57,8 +59,10 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
         .map((h) => h.trim())
     : undefined
 
-  const { oppdaterBrevutkast, slettBrevutkast, ferdigstillBrevutkast, redigerBrevutkast, sendUnderveisBrev } =
-    useBrevActions(oppgave, brev?.brevId)
+  const { oppdaterBrevutkast, slettBrevutkast, ferdigstillBrevutkast, redigerBrevutkast } = useBrevActions(
+    oppgave,
+    brev?.brevId
+  )
 
   const { showInfoToast } = useToast()
 
@@ -170,12 +174,7 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
                   Rediger
                 </Button>
                 {brevUtenVedtak && (
-                  <Button
-                    variant="primary"
-                    size="small"
-                    loading={sendUnderveisBrev.isMutating}
-                    onClick={() => sendUnderveisBrev.trigger()}
-                  >
+                  <Button variant="primary" size="small" onClick={() => setOpenSendBrevDialog(true)}>
                     Send brev
                   </Button>
                 )}
@@ -238,6 +237,12 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
         open={visSlettBrevModal}
         onClose={() => setVisSlettBrevModal(false)}
         onBekreft={handleSlettBrevutkast}
+      />
+      <SendBrevDialog
+        oppgave={oppgave}
+        brevId={brev?.brevId}
+        open={openSendBrevDialog}
+        onClose={() => setOpenSendBrevDialog(false)}
       />
     </BrevContext>
   )

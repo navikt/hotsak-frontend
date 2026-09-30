@@ -89,9 +89,21 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
   /**
    * Send underveis brev.
    */
-  http.post<BrevParams>('/api/sak/:sakId/brev/:brevId/utsending', async ({ params }) => {
+  http.post<BrevParams>('/api/sak/:sakId/brev/:brevId/distribusjon', async ({ params }) => {
     const { brevId } = params
     const brev = await sakStore.sendUnderveisBrev(brevId)
+    if (!brev) {
+      return respondConflict()
+    }
+    return respondNoContent()
+  }),
+
+  /**
+   * Angre underveis brev.
+   */
+  http.delete<BrevParams>('/api/sak/:sakId/brev/:brevId/distribusjon', async ({ params }) => {
+    const { brevId } = params
+    const brev = await sakStore.angreUnderveisBrev(brevId)
     if (!brev) {
       return respondConflict()
     }

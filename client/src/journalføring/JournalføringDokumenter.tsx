@@ -10,6 +10,7 @@ interface JournalføringDokumenterProps {
   onTittelChange(dokumentId: string, tittel: string): void
   onChipsChange(dokumentId: string, chips: string[]): void
   readOnly: boolean
+  visTittelFeil: boolean
 }
 
 export function JournalføringDokumenter({
@@ -19,6 +20,7 @@ export function JournalføringDokumenter({
   onTittelChange,
   onChipsChange,
   readOnly,
+  visTittelFeil,
 }: JournalføringDokumenterProps) {
   return (
     <VStack gap="space-8">
@@ -36,6 +38,7 @@ export function JournalføringDokumenter({
           valgteChips={annetInnhold[dok.dokumentId] ?? []}
           onChipsChange={(chips) => onChipsChange(dok.dokumentId, chips)}
           readOnly={readOnly}
+          visTittelFeil={visTittelFeil}
         />
       ))}
     </VStack>

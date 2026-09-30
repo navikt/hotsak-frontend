@@ -3,6 +3,8 @@ import { Box, Button, HStack, UNSAFE_Combobox, VStack } from '@navikt/ds-react'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { useKodeverkDokumenttitler } from '../oppgave/useKodeverkOppgave.ts'
 import { type Dokument } from '../types/types.internal.ts'
+import classes from './DokumentRad.module.css'
+import { validerDokumenttittel } from './dokumenttittelValidering.ts'
 
 interface DokumentRadProps {
   dokument: Dokument
@@ -13,6 +15,7 @@ interface DokumentRadProps {
   valgteChips: string[]
   onChipsChange(chips: string[]): void
   readOnly?: boolean
+  visTittelFeil: boolean
 }
 
 export function DokumentRad({
@@ -24,6 +27,7 @@ export function DokumentRad({
   valgteChips,
   onChipsChange,
   readOnly = false,
+  visTittelFeil,
 }: DokumentRadProps) {
   const dokumentTittelOptions = useKodeverkDokumenttitler()
 
@@ -31,19 +35,21 @@ export function DokumentRad({
     <TextContainer>
       <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12" background="accent-soft">
         <VStack gap="space-6">
-          <HStack align="end" gap="space-4">
+          <HStack align="end" gap="space-4" width="100%" wrap={false}>
             <UNSAFE_Combobox
+              className={classes.dokumenttittel}
               label={`Dokumenttittel (${index + 1} av ${total})`}
+              error={visTittelFeil ? validerDokumenttittel(valgtTittel) : undefined}
               size="small"
               options={dokumentTittelOptions}
               selectedOptions={valgtTittel ? [valgtTittel] : []}
               onToggleSelected={(opt, isSelected) => onTittelChange(isSelected ? opt : '')}
               shouldAutocomplete
-              allowNewValues={false}
+              allowNewValues={true}
               readOnly={readOnly}
-              style={{ flex: 1 }}
             />
             <Button
+              className={classes.apneLenke}
               as="a"
               href={`/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`}
               target="_blank"

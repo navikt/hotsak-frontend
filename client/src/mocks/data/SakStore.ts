@@ -789,7 +789,7 @@ export class SakStore extends Dexie {
     await this.brev.update(brevId, {
       endret: nåIso(),
       endretAv: Saksbehandlere.innlogget().id,
-      brevstatus: Brevstatus.TIL_DISTRIBUSJON,
+      brevstatus: Brevstatus.FERDIGSTILT,
       distribusjon: [
         {
           brevId: brevId.toString(),
@@ -806,7 +806,7 @@ export class SakStore extends Dexie {
   async angreUnderveisBrev(brevId: ID): Promise<Brev | null> {
     brevId = Number(brevId)
     const brev = await this.hentBrev(brevId)
-    if (brev.brevstatus !== Brevstatus.TIL_DISTRIBUSJON) {
+    if (brev.brevstatus !== Brevstatus.FERDIGSTILT) {
       return null
     }
 

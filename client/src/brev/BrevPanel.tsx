@@ -41,25 +41,24 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter((brevmal) => !eksisterendeBrevmaler.has(brevmal))
   const kanOppretteBrev =
     !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt && tilgjengeligeBrevmaler.length > 0
-  const underveisbrevTilDistribusjon = valgtBrev
-    ? isBreveditorbrevUtenVedtak(valgtBrev.brevmal) && valgtBrev.brevstatus == Brevstatus.TIL_DISTRIBUSJON
-    : false
-  const distribueresEtter = underveisbrevTilDistribusjon ? valgtBrev?.distribusjon[0]?.distribueresEtter : undefined
+  const underveisbrevDistribueresEtter =
+    valgtBrev && isBreveditorbrevUtenVedtak(valgtBrev.brevmal)
+      ? valgtBrev.distribusjon[0]?.distribueresEtter
+      : undefined
   const [angreSendingAvBrevDialogOpen, setAngreSendingAvBrevDialogOpen] = useState(false)
   const [nå, setNå] = useState(Date.now)
-  const kanAngreBrev =
-    underveisbrevTilDistribusjon && distribueresEtter !== undefined && Date.parse(distribueresEtter) > nå
+  const kanAngreBrev = underveisbrevDistribueresEtter !== undefined && Date.parse(underveisbrevDistribueresEtter) > nå
 
   useEffect(() => {
-    if (!distribueresEtter) return
+    if (!underveisbrevDistribueresEtter) return
 
-    const frist = Date.parse(distribueresEtter)
+    const frist = Date.parse(underveisbrevDistribueresEtter)
     if (!Number.isFinite(frist)) return
 
     const timeoutId = window.setTimeout(() => setNå(Date.now()), Math.max(0, frist - Date.now()))
 
     return () => window.clearTimeout(timeoutId)
-  }, [distribueresEtter])
+  }, [underveisbrevDistribueresEtter])
 
   if (valgtBrev) {
     const tilbakeTilOversikt = () => setValgtBrevId(null)
@@ -96,10 +95,10 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
             Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
           </BrevInfoCard>
         )}
-        {underveisbrevTilDistribusjon && (
+        {underveisbrevDistribueresEtter && (
           <BrevInfoCard title="Brev til distribusjon">
-            Brevet ligger til distribusjon, og vil sendes automatisk{' '}
-            {distribueresEtter ? `den ${formaterTidsstempel(distribueresEtter)}` : 'neste virkedag kl 08:00'}.
+            Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
+            {formaterTidsstempel(underveisbrevDistribueresEtter)}.
           </BrevInfoCard>
         )}
         <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
@@ -108,7 +107,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
           brevId={valgtBrev.brevId}
           open={angreSendingAvBrevDialogOpen}
           onClose={() => setAngreSendingAvBrevDialogOpen(false)}
-          distribueresEtter={distribueresEtter}
+          distribueresEtter={underveisbrevDistribueresEtter}
         />
       </BrevPanelLayout>
     )

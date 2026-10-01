@@ -111,7 +111,7 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
   const angreUnderveisBrev = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
     brevKey,
     async ([url]) => {
-      await http.delete(`${url}/distribusjon`, { versjon })
+      await http.post(`${url}/angring`, { oppgaveId }, { versjon })
     },
     {
       async onSuccess() {

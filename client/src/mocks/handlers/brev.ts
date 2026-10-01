@@ -101,7 +101,7 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
   /**
    * Angre underveis brev.
    */
-  http.delete<BrevParams>('/api/sak/:sakId/brev/:brevId/distribusjon', async ({ params }) => {
+  http.post<BrevParams>('/api/sak/:sakId/brev/:brevId/angring', async ({ params }) => {
     const { brevId } = params
     const brev = await sakStore.angreUnderveisBrev(brevId)
     if (!brev) {

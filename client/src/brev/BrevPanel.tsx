@@ -13,15 +13,7 @@ import { AngreSendingAvBrevDialog } from './AngreSendingAvBrevDialog.tsx'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import {
-  type Brev,
-  BreveditorbrevUtenVedtak,
-  Brevmal,
-  BrevmalTekst,
-  Brevstatus,
-  brevstatusTekst,
-  isBreveditorbrevUtenVedtak,
-} from './brevTyper.ts'
+import { type Brev, BreveditorbrevUtenVedtak, Brevmal, BrevmalTekst, Brevstatus, brevstatusTekst } from './brevTyper.ts'
 import { NyttBrevDialog } from './NyttBrevDialog.tsx'
 
 export interface BrevPanelProps {
@@ -41,13 +33,26 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter((brevmal) => !eksisterendeBrevmaler.has(brevmal))
   const kanOppretteBrev =
     !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt && tilgjengeligeBrevmaler.length > 0
-  const underveisbrevDistribueresEtter =
-    valgtBrev && isBreveditorbrevUtenVedtak(valgtBrev.brevmal)
-      ? valgtBrev.distribusjon[0]?.distribueresEtter
-      : undefined
+  const aktivDistribusjon = valgtBrev?.distribusjon.find(
+    (distribusjon) => distribusjon.skalDistribueres && !distribusjon.distribuert
+  )
+  const underveisbrevDistribueresEtter = aktivDistribusjon?.distribueresEtter
+  const harAktivDistribusjon = aktivDistribusjon !== undefined
   const [angreSendingAvBrevDialogOpen, setAngreSendingAvBrevDialogOpen] = useState(false)
   const [nå, setNå] = useState(Date.now)
-  const kanAngreBrev = underveisbrevDistribueresEtter !== undefined && Date.parse(underveisbrevDistribueresEtter) > nå
+  const distribusjonstidspunkt = underveisbrevDistribueresEtter
+    ? Date.parse(underveisbrevDistribueresEtter)
+    : Number.NaN
+
+  const harGyldigDistribusjonstidspunkt = Number.isFinite(distribusjonstidspunkt)
+  const gyldigDistribueresEtter = harGyldigDistribusjonstidspunkt ? underveisbrevDistribueresEtter : undefined
+
+  const kanAngreBrev =
+    harAktivDistribusjon &&
+    harGyldigDistribusjonstidspunkt &&
+    distribusjonstidspunkt > nå &&
+    !oppgaveErAvsluttet &&
+    oppgaveErUnderBehandlingAvInnloggetAnsatt
 
   useEffect(() => {
     if (!underveisbrevDistribueresEtter) return
@@ -64,6 +69,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
     const tilbakeTilOversikt = () => setValgtBrevId(null)
     const angreBrevDistribusjon = () => setAngreSendingAvBrevDialogOpen(true)
     const kanRedigere =
+      !harAktivDistribusjon &&
       !oppgaveErAvsluttet &&
       [Brevstatus.UTKAST, Brevstatus.FERDIGSTILT].some((status) => status === valgtBrev.brevstatus) &&
       oppgaveErUnderBehandlingAvInnloggetAnsatt
@@ -95,10 +101,9 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
             Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
           </BrevInfoCard>
         )}
-        {underveisbrevDistribueresEtter && (
+        {gyldigDistribueresEtter && (
           <BrevInfoCard title="Brev til distribusjon">
-            Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
-            {formaterTidsstempel(underveisbrevDistribueresEtter)}.
+            Brevet ligger til distribusjon, og vil sendes automatisk den {formaterTidsstempel(gyldigDistribueresEtter)}.
           </BrevInfoCard>
         )}
         <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
@@ -107,7 +112,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
           brevId={valgtBrev.brevId}
           open={angreSendingAvBrevDialogOpen}
           onClose={() => setAngreSendingAvBrevDialogOpen(false)}
-          distribueresEtter={underveisbrevDistribueresEtter}
+          distribueresEtter={gyldigDistribueresEtter}
         />
       </BrevPanelLayout>
     )

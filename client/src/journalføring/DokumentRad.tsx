@@ -43,14 +43,14 @@ export function DokumentRad({
                   {`Dokumenttittel (${index + 1} av ${total})`}{' '}
                   <HelpText title="right" placement="right">
                     <Tekst>
-                      Gode titler som beskriver innholdet i dokumentet og riktig registrering av avsender og mottaker
-                      hjelper oss å finne de riktige dokumentene raskt. Det er viktig at tittelen på dokumentet er
-                      korrekt og forståelig. <br />
+                      Gi dokumentet en korrekt og forståelig tittel. Da kan andre raskt finne riktig dokument og forstå
+                      hva dokumentet handler om, både i og utenfor Nav. Dokumentbeskrivelsene blir synlig for innbygger.
+                      <br />
                       <Link
                         href="https://navno.sharepoint.com/sites/intranett-arkiv-og-dokumenthandtering/SitePages/Hvordan%20gi%20dokumentet%20du%20journalf%C3%B8rer%20et%20godt%20navn%20og%20en%20god%20beskrivelse.aspx"
                         target="_blank"
                       >
-                        Veiledning på navet
+                        Slik gir du dokumentene en god beskrivelse
                       </Link>
                     </Tekst>
                   </HelpText>

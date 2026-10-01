@@ -1,6 +1,6 @@
-import { Box, Button, HStack, UNSAFE_Combobox, VStack } from '@navikt/ds-react'
+import { Box, Button, HStack, UNSAFE_Combobox, VStack, HelpText, Link } from '@navikt/ds-react'
 
-import { TextContainer } from '../felleskomponenter/typografi.tsx'
+import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { useKodeverkDokumenttitler } from '../oppgave/useKodeverkOppgave.ts'
 import { type Dokument } from '../types/types.internal.ts'
 import classes from './DokumentRad.module.css'
@@ -38,7 +38,24 @@ export function DokumentRad({
           <HStack align="end" gap="space-4" width="100%" wrap={false}>
             <UNSAFE_Combobox
               className={classes.dokumenttittel}
-              label={`Dokumenttittel (${index + 1} av ${total})`}
+              label={
+                <HStack gap="space-6" align="center">
+                  {`Dokumenttittel (${index + 1} av ${total})`}{' '}
+                  <HelpText title="right" placement="right">
+                    <Tekst>
+                      Gi dokumentet en korrekt og forståelig tittel. Da kan andre raskt finne riktig dokument og forstå
+                      hva dokumentet handler om, både i og utenfor Nav. Dokumentbeskrivelsene blir synlig for innbygger.
+                      <br />
+                      <Link
+                        href="https://navno.sharepoint.com/sites/intranett-arkiv-og-dokumenthandtering/SitePages/Hvordan%20gi%20dokumentet%20du%20journalf%C3%B8rer%20et%20godt%20navn%20og%20en%20god%20beskrivelse.aspx"
+                        target="_blank"
+                      >
+                        Slik gir du dokumentene en god beskrivelse
+                      </Link>
+                    </Tekst>
+                  </HelpText>
+                </HStack>
+              }
               error={visTittelFeil ? validerDokumenttittel(valgtTittel) : undefined}
               size="small"
               options={dokumentTittelOptions}

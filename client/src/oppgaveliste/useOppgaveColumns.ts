@@ -34,6 +34,8 @@ function finnAlleVerdier(id: string, filtere: ReturnType<typeof useOppgaveFiltre
       return filtere.gjelderVerdier.size > 0 ? filtere.gjelderVerdier : undefined
     case 'behandlingstype':
       return filtere.behandlingstyper.size > 0 ? filtere.behandlingstyper : undefined
+    case 'mappenavn':
+      return filtere.mapper.size > 0 ? filtere.mapper : undefined
     default:
       return undefined
   }

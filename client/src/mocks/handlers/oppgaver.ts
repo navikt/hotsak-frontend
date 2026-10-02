@@ -21,7 +21,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
   http.get<
     never,
     never,
-    { områder: string[]; saksbehandlere: string[]; gjelderVerdier: string[]; behandlingstyper: string[] }
+    {
+      områder: string[]
+      saksbehandlere: string[]
+      gjelderVerdier: string[]
+      behandlingstyper: string[]
+      mapper: string[]
+    }
   >('/api/oppgaver/filtre', async () => {
     const { default: kommuner } = await import('../data/kommuner.json')
     return HttpResponse.json({
@@ -29,6 +35,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
       saksbehandlere: Saksbehandlere.alle().map((saksbehandler) => saksbehandler.navn),
       gjelderVerdier: ['Behandlingstema A', 'Behandlingstema B', 'Behandlingstema C'],
       behandlingstyper: ['Behandlingstype A', 'Behandlingstype B', 'Behandlingstype C'],
+      mapper: ['Mappe A', 'Mappe B', 'Mappe C'],
     })
   }),
 

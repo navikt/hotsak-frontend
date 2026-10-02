@@ -96,16 +96,19 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         onTilbake={tilbakeTilOversikt}
         onAngre={kanAngreBrev ? angreBrevDistribusjon : undefined}
       >
-        {oppgaveErAvsluttet && (
-          <BrevInfoCard title="Oppgaven er ferdigstilt">
-            Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
-          </BrevInfoCard>
-        )}
-        {gyldigDistribueresEtter && (
-          <BrevInfoCard title="Brev til distribusjon">
-            Brevet ligger til distribusjon, og vil sendes automatisk den {formaterTidsstempel(gyldigDistribueresEtter)}.
-          </BrevInfoCard>
-        )}
+        <Box paddingInline="space-20">
+          {oppgaveErAvsluttet && (
+            <BrevInfoCard title="Oppgaven er ferdigstilt">
+              Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
+            </BrevInfoCard>
+          )}
+          {gyldigDistribueresEtter && (
+            <BrevInfoCard title="Brev til distribusjon">
+              Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
+              {formaterTidsstempel(gyldigDistribueresEtter)}.
+            </BrevInfoCard>
+          )}
+        </Box>
         <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
         <AngreSendingAvBrevDialog
           oppgave={oppgave}
@@ -121,28 +124,30 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   return (
     <>
       <BrevPanelLayout onNyttBrev={kanOppretteBrev ? () => setNyttBrevDialogOpen(true) : undefined}>
-        {brev.length === 0 ? (
-          <BrevInfoCard title="Ingen brev">Det er ikke opprettet noen brev i saken.</BrevInfoCard>
-        ) : (
-          <VStack gap="space-8">
-            {brev.map((brev) => (
-              <Button key={brev.brevId} variant="tertiary" onClick={() => setValgtBrevId(brev.brevId)}>
-                <HStack gap="space-2" paddingInline="space-8" align="center">
-                  {BrevmalTekst[brev.brevmal]} - {brevstatusTekst(brev.brevstatus)} ({formaterDato(brev.opprettet)})
-                  <Tooltip
-                    content={
-                      brev.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV
-                        ? 'Vedtaksbrevet sendes ut automatisk etter du har fatted et vedtak'
-                        : 'Brevet sendes ut manuelt ved at du trykker på "Send brev" når du står inne på det ferdigstilte brevet'
-                    }
-                  >
-                    <EnvelopeClosedIcon title="a11y-title" fontSize="1.5rem" />
-                  </Tooltip>
-                </HStack>
-              </Button>
-            ))}
-          </VStack>
-        )}
+        <Box paddingInline="space-20">
+          {brev.length === 0 ? (
+            <BrevInfoCard title="Ingen brev">Det er ikke opprettet noen brev i saken.</BrevInfoCard>
+          ) : (
+            <VStack gap="space-8">
+              {brev.map((brev) => (
+                <Button key={brev.brevId} variant="tertiary" onClick={() => setValgtBrevId(brev.brevId)}>
+                  <HStack gap="space-2" paddingInline="space-8" align="center">
+                    {BrevmalTekst[brev.brevmal]} - {brevstatusTekst(brev.brevstatus)} ({formaterDato(brev.opprettet)})
+                    <Tooltip
+                      content={
+                        brev.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV
+                          ? 'Vedtaksbrevet sendes ut automatisk etter du har fatted et vedtak'
+                          : 'Brevet sendes ut manuelt ved at du trykker på "Send brev" når du står inne på det ferdigstilte brevet'
+                      }
+                    >
+                      <EnvelopeClosedIcon title="a11y-title" fontSize="1.5rem" />
+                    </Tooltip>
+                  </HStack>
+                </Button>
+              ))}
+            </VStack>
+          )}
+        </Box>
       </BrevPanelLayout>
       {oppgave && (
         <NyttBrevDialog
@@ -176,33 +181,35 @@ function BrevPanelLayout({
   const closePanel = useClosePanel('brevpanel')
   return (
     <Box className={classes.container} background="default">
-      <VStack paddingInline="space-20" gap="space-16" height="100%">
-        <PanelTittel
-          paddingInline="space-8 space-0"
-          tittel={tittel}
-          handlinger={
-            onNyttBrev || onTilbake || onAngre ? (
-              <HStack gap="space-8">
-                {onNyttBrev && (
-                  <Button size="small" onClick={onNyttBrev}>
-                    Nytt brev
-                  </Button>
-                )}
-                {onTilbake && (
-                  <Button size="small" variant="tertiary" onClick={onTilbake}>
-                    Alle brev
-                  </Button>
-                )}
-                {onAngre && (
-                  <Button size="small" variant="tertiary" onClick={onAngre}>
-                    Angre
-                  </Button>
-                )}
-              </HStack>
-            ) : undefined
-          }
-          lukkPanel={closePanel}
-        />
+      <VStack gap="space-16" height="100%">
+        <Box paddingInline="space-12">
+          <PanelTittel
+            paddingInline="space-8 space-0"
+            tittel={tittel}
+            handlinger={
+              onNyttBrev || onTilbake || onAngre ? (
+                <HStack gap="space-8">
+                  {onNyttBrev && (
+                    <Button size="small" onClick={onNyttBrev}>
+                      Nytt brev
+                    </Button>
+                  )}
+                  {onTilbake && (
+                    <Button size="small" variant="tertiary" onClick={onTilbake}>
+                      Alle brev
+                    </Button>
+                  )}
+                  {onAngre && (
+                    <Button size="small" variant="tertiary" onClick={onAngre}>
+                      Angre
+                    </Button>
+                  )}
+                </HStack>
+              ) : undefined
+            }
+            lukkPanel={closePanel}
+          />
+        </Box>
         {children}
       </VStack>
     </Box>

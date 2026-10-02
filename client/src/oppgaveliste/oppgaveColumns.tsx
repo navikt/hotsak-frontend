@@ -146,7 +146,10 @@ export const oppgaveColumns = {
     header: 'Beskrivelse',
     renderCell(row) {
       if (row.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING) {
-        return row.beskrivelse
+        // Håndterer at beskrivelse kan inneholde flere kommentarer på oppgaven adskilt med linjeskift. Beskrivelse skal kun være første element i listen
+        return row.beskrivelse?.split('\n').findLast((line) => {
+          line.trim()
+        })
       }
       const søknadGjelder = row.sak?.søknadGjelder
       if (!søknadGjelder) {

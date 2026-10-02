@@ -81,7 +81,7 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
     beskrivelse:
       journalføring.tittel === 'Søknad om hjelpemidler'
         ? journalføring.tittel
-        : '"--- 21.09.2026 14:28 (hm-saksbehandling) ---\nZ994377: Ingen kommentar\n\nDokumentasjon av arbeid eller utdanning"',
+        : '--- 21.09.2026 14:28 (hm-saksbehandling) ---\nZ994377: Ingen kommentar\n\nDokumentasjon av arbeid eller utdanning',
     tildeltEnhet: enheter.agder,
     tildeltSaksbehandler: undefined,
     aktivDato: journalføring.journalpostOpprettetTid,

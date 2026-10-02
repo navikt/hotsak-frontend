@@ -6,6 +6,7 @@ interface OppgaveFiltreResponse {
   saksbehandlere: string[]
   gjelderVerdier: string[]
   behandlingstyper: string[]
+  mapper: string[]
 }
 
 export interface OppgaveFiltre {
@@ -13,6 +14,7 @@ export interface OppgaveFiltre {
   saksbehandlere: ReadonlySet<string>
   gjelderVerdier: ReadonlySet<string>
   behandlingstyper: ReadonlySet<string>
+  mapper: ReadonlySet<string>
 }
 
 const ingenFiltere: OppgaveFiltre = {
@@ -20,6 +22,7 @@ const ingenFiltere: OppgaveFiltre = {
   saksbehandlere: new Set(),
   gjelderVerdier: new Set(),
   behandlingstyper: new Set(),
+  mapper: new Set(),
 }
 
 export function useOppgaveFiltre(): OppgaveFiltre {
@@ -30,6 +33,7 @@ export function useOppgaveFiltre(): OppgaveFiltre {
       saksbehandlere: new Set(result.saksbehandlere),
       gjelderVerdier: new Set(result.gjelderVerdier),
       behandlingstyper: new Set(result.behandlingstyper),
+      mapper: new Set(result.mapper),
     }
   })
   return data ?? ingenFiltere

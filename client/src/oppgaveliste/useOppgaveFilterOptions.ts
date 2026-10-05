@@ -25,7 +25,9 @@ export function useOppgaveFilterOptions(oppgaver: Oppgave[]): OppgaveFilterOptio
   return useMemo(() => {
     return {
       saksbehandler: toSet(oppgaver, selectTildeltSaksbehandlerNavn),
-      oppgavetype: isSaksbehandlerBarnebriller ? oppgavetypeOptionsBarnebriller : toSet(oppgaver, selectOppgavetype),
+      oppgavetype: isSaksbehandlerBarnebriller
+        ? oppgavetypeOptionsBarnebriller
+        : toDataGridFilterOptions(OppgavetypeLabel, ...toSet(oppgaver, selectOppgavetype)),
       behandlingstema: toSet(oppgaver, selectBehandlingstemaTerm),
       behandlingstype: toSet(oppgaver, selectBehandlingstypeTerm),
       mappenavn: toSet(oppgaver, selectMappenavn),

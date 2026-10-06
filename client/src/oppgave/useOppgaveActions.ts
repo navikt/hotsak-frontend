@@ -23,6 +23,7 @@ export interface EndreOppgaveRequest {
   aktivDato?: string
   fristFerdigstillelse?: string
   kommentar?: string
+  mappeId?: string | null
 }
 
 /**

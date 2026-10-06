@@ -1,4 +1,7 @@
+import { useState } from 'react'
+
 import { ActionMenu } from '@navikt/ds-react'
+import { EndreMappeDialog } from '../felleskomponenter/EndreMappe'
 
 import { type Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveActions } from '../oppgave/useOppgaveActions.ts'
@@ -13,17 +16,30 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
   const { oppgave } = props
   const { fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const mutateOppgaver = useMutateOppgaver()
+  const [endreMappeOpen, setEndreMappeOpen] = useState(false)
+
   return (
-    <OppgaveMenu>
-      <ActionMenu.Item
-        disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
-        onSelect={async () => {
-          await fjernOppgavetildeling.trigger()
-          await mutateOppgaver()
-        }}
-      >
-        Fjern tildeling
-      </ActionMenu.Item>
-    </OppgaveMenu>
+    <>
+      <OppgaveMenu>
+        <ActionMenu.Item
+          disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
+          onSelect={async () => {
+            await fjernOppgavetildeling.trigger()
+            await mutateOppgaver()
+          }}
+        >
+          Fjern tildeling
+        </ActionMenu.Item>
+        <ActionMenu.Item
+          disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
+          onSelect={() => {
+            setEndreMappeOpen(true)
+          }}
+        >
+          Endre mappe
+        </ActionMenu.Item>
+      </OppgaveMenu>
+      {endreMappeOpen && <EndreMappeDialog oppgave={oppgave} onClose={() => setEndreMappeOpen(false)} />}
+    </>
   )
 }

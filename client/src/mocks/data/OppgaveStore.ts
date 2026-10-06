@@ -159,6 +159,9 @@ export class OppgaveStore extends Dexie {
     if (request.fristFerdigstillelse) {
       changes.fristFerdigstillelse = request.fristFerdigstillelse
     }
+    if (request.mappeId !== undefined) {
+      changes.mappeId = request.mappeId ?? undefined
+    }
     return this.oppgaver.update(oppgaveId, changes)
   }
 

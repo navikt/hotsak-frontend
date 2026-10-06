@@ -1,0 +1,52 @@
+.root {
+  position: relative;
+  min-width: 0;
+}
+
+.textField {
+  width: 100%;
+}
+
+.suggestionsWrapper {
+  border: 1px solid var(--ax-border-neutral-subtleA);
+  border-radius: var(--ax-radius-8);
+  background-color: var(--ax-bg-raised);
+  color: var(--ax-text-neutral);
+  box-shadow: var(--ax-shadow-dialog);
+  flex-direction: column;
+  display: flex;
+  overflow-y: auto;
+  max-height: 16rem;
+  padding-block: var(--ax-space-6);
+  padding-left: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 1000;
+}
+
+.suggestionsWrapper[hidden] {
+  display: none;
+}
+
+.suggestionElement {
+  border-radius: var(--ax-radius-8);
+  margin-inline: var(--ax-space-8);
+  margin-block: var(--ax-space-2);
+  padding-block: var(--ax-space-6);
+  padding-inline: var(--ax-space-8);
+  cursor: pointer;
+}
+
+.suggestionElement:hover,
+.active {
+  outline: 2px solid var(--ax-border-focus);
+}
+
+.invisible {
+  position: absolute;
+  left: -9999px;
+  overflow: hidden;
+  height: 1px;
+  width: 1px;
+}

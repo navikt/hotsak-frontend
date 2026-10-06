@@ -11,7 +11,7 @@ import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../o
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { JournalpostStatusType, type Dokument, type Journalpost } from '../types/types.internal.ts'
+import { JournalpostStatusType, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { JournalføringDokumenter } from './JournalføringDokumenter.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
@@ -30,7 +30,7 @@ import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import classes from './JournalføringV2Skjema.module.css'
-import { byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
+import { byggDokumentPayload, byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
 import { harUgyldigeDokumenttitler } from './dokumenttittelValidering.ts'
 
 interface JournalføringV2SkjemaProps {
@@ -124,16 +124,8 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
 
   function byggJournalføringPayload() {
-    const tittel =
-      dokumentTitler[journalpost.dokumenter[0]?.dokumentId ?? ''] ??
-      journalpost.dokumenter[0]?.tittel ??
-      journalpost.tittel
     const fnr = getValues('journalføresPåFnr')
-    const dokumenter = journalpost.dokumenter.map((dok: Dokument) => ({
-      dokumentId: dok.dokumentId,
-      tittel: dokumentTitler[dok.dokumentId] ?? dok.tittel,
-      annetInnhold: annetInnhold[dok.dokumentId] ?? [],
-    }))
+    const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, annetInnhold)
     return { tittel, journalføresPåFnr: fnr, dokumenter }
   }
 

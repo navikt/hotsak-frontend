@@ -10,6 +10,7 @@ import {
   selectBrukerKommuneNavn,
   selectInnsenderNavn,
   selectMappenavn,
+  selectOppgavetype,
   selectTildeltSaksbehandlerNavn,
 } from './oppgaveSelectors.ts'
 
@@ -24,7 +25,9 @@ export function useOppgaveFilterOptions(oppgaver: Oppgave[]): OppgaveFilterOptio
   return useMemo(() => {
     return {
       saksbehandler: toSet(oppgaver, selectTildeltSaksbehandlerNavn),
-      oppgavetype: isSaksbehandlerBarnebriller ? oppgavetypeOptionsBarnebriller : oppgavetypeOptions,
+      oppgavetype: isSaksbehandlerBarnebriller
+        ? oppgavetypeOptionsBarnebriller
+        : toDataGridFilterOptions(OppgavetypeLabel, ...toSet(oppgaver, selectOppgavetype)),
       behandlingstema: toSet(oppgaver, selectBehandlingstemaTerm),
       behandlingstype: toSet(oppgaver, selectBehandlingstypeTerm),
       mappenavn: toSet(oppgaver, selectMappenavn),
@@ -41,8 +44,6 @@ const oppgavetypeOptionsBarnebriller = toDataGridFilterOptions(
   Oppgavetype.GODKJENNE_VEDTAK,
   Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
 )
-
-const oppgavetypeOptions = toDataGridFilterOptions(OppgavetypeLabel, Oppgavetype.BEHANDLE_SAK)
 
 function toSet<T, R>(items: T[], selector: (item: T) => R): Set<R> {
   const destination = new Set<R>()

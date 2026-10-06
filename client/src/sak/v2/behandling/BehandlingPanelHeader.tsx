@@ -11,6 +11,7 @@ import { type Sak } from '../../../types/types.internal'
 import { formaterDatoKort } from '../../../utils/dato'
 import { OppgaverOgDokumenterFilter, opprettetIntervallForFilter } from '../sidebars/OppgaverOgDokumenterUtils.ts'
 import { JournalpostCard } from './JournalpostCard'
+import { InlineKopiknapp } from '../../../felleskomponenter/Kopiknapp.tsx'
 
 export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandlingsoppgave; sak: Sak }) {
   const { erBestilling } = useSaksregler()
@@ -38,7 +39,10 @@ export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandli
   return (
     <VStack gap="space-16" paddingInline="space-0 space-8" marginBlock="space-0 space-16">
       <HStack gap="space-20" paddingInline="space-8 space-0">
-        <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
+        <HStack gap="space-4">
+          <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
+          <InlineKopiknapp copyText={sak.sakId} tooltip="Kopier saksnummer" />
+        </HStack>
         {oppgave?.fristFerdigstillelse && (
           <Tekst textColor="subtle">Frist: {formaterDatoKort(oppgave.fristFerdigstillelse)}</Tekst>
         )}

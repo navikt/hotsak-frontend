@@ -4,14 +4,19 @@ import { EndreMappeDialog } from '../felleskomponenter/EndreMappe.tsx'
 
 import { type Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { OppgaveMenu } from './OppgaveMenu.tsx'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface MedarbeidersOppgaverMenuProps {
   oppgave: Oppgave
 }
 
 export function MedarbeidersOppgaverMenu(props: MedarbeidersOppgaverMenuProps) {
+  const { erProd } = useMiljø()
   const { oppgave } = props
   const [endreMappeOpen, setEndreMappeOpen] = useState(false)
+  if (erProd) {
+    return null
+  }
 
   return (
     <>

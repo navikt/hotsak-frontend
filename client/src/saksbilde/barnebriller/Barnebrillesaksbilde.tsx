@@ -11,7 +11,7 @@ import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandler
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Saksstatus, Sakstype, StepType } from '../../types/types.internal'
 import { StatusTag } from '../komponenter/StatusTag'
-import { LasterPersonlinje } from '../Personlinje'
+import { LasterPersonlinje } from '../../felleskomponenter/personlinje/Personlinje.tsx'
 import { SaksbildeMenu } from '../SaksbildeMenu.tsx'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import classes from './Barnebrillesaksbilde.module.css'

@@ -1,13 +1,13 @@
 import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
-import { Children, ReactNode, useEffect } from 'react'
+import { Children, ReactNode, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 
-import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
-import { Tekst } from '../felleskomponenter/typografi'
-import { usePersonContext } from '../personoversikt/PersonContext'
-import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../types/types.internal'
-import { beregnAlder, formaterDato } from '../utils/dato'
-import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
+import { Kopiknapp } from '../Kopiknapp.tsx'
+import { Tekst } from '../typografi.tsx'
+import { usePersonContext } from '../../personoversikt/PersonContext.tsx'
+import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../../types/types.internal.ts'
+import { beregnAlder, formaterDato } from '../../utils/dato.ts'
+import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../../utils/formater.ts'
 import classes from './personlinje.module.css'
 
 export interface PersonlinjeProps {
@@ -19,13 +19,22 @@ export interface PersonlinjeProps {
 export function Personlinje({ person, loading, skjulTelefonnummer = false }: PersonlinjeProps) {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
+  const harSattFodselsnummer = useRef(false)
 
   useEffect(() => {
     if (person?.fnr) {
       setFodselsnummer(person?.fnr)
+      harSattFodselsnummer.current = true
     }
-    return () => setFodselsnummer('')
-  }, [person?.fnr])
+  }, [person?.fnr, setFodselsnummer])
+
+  useEffect(() => {
+    return () => {
+      if (harSattFodselsnummer.current) {
+        setFodselsnummer('')
+      }
+    }
+  }, [setFodselsnummer])
 
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />

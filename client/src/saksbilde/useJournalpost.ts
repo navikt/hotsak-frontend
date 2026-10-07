@@ -29,3 +29,10 @@ export function useJournalpost(journalpostId?: string): JournalpostResponse {
 export function mutateJournalpost(journalpostId: string) {
   return mutate(`/api/journalpost/${journalpostId}`)
 }
+
+export function useJournalpostSuspense(journalpostId: string) {
+  const { data: journalpost, mutate } = useSwr<Journalpost, HttpError>(`/api/journalpost/${journalpostId}`, {
+    suspense: true,
+  })
+  return { journalpost: journalpost as Journalpost, mutate }
+}

@@ -9,7 +9,7 @@ import { SelectController } from '../felleskomponenter/skjema/SelectController.t
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from '../oppgave/OppgaveContext.ts'
 import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
-import { usePerson } from '../personoversikt/usePerson.ts'
+import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { JournalpostStatusType, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
@@ -52,7 +52,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
   const aktivFraDatoDefault = new Date()
   const fristDefault = addWeeks(mottattDatoDefault, 4)
-  const opprinneligJournalføresPåFnr = journalpost.bruker?.fnr ?? journalpost.fnrInnsender ?? ''
+  const { fodselsnummer } = usePersonContext()
 
   const { journalfør } = useJournalføringActions(oppgave)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
@@ -71,17 +71,15 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
       behandlingstema: '',
       stønadsklassifisering: 'DA',
       stønadType: 'S',
-      journalføresPåFnr: opprinneligJournalføresPåFnr,
       mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
       aktivFra: formatISO(aktivFraDatoDefault, { representation: 'date' }),
       frist: formatISO(fristDefault, { representation: 'date' }),
     },
   })
 
-  const { handleSubmit, control, setValue, getValues, watch, trigger, register } = form
+  const { handleSubmit, control, setValue, getValues, trigger, register } = form
 
   useEffect(() => {
-    register('journalføresPåFnr')
     register('mottattDato')
     register('frist')
     register('aktivFra', {
@@ -109,24 +107,24 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
     },
   })
 
-  const journalføresPåFnr = watch('journalføresPåFnr')
-  const { personInfo: valgtBruker } = usePerson(journalføresPåFnr || undefined)
-  const brukerFnr = valgtBruker?.fnr ?? journalføresPåFnr
+  useEffect(() => {
+    setValgtSak(null)
+    setValgtSakIdFeil(null)
+  }, [fodselsnummer])
 
   const {
     saker,
     antallSaker,
     isLoading: sakerIsLoading,
     error: sakerError,
-  } = useKobleTilSak(kanRedigere ? brukerFnr : undefined)
+  } = useKobleTilSak(kanRedigere ? fodselsnummer : undefined)
 
   const registrertDato = formaterDato(journalpost.journalpostOpprettetTid)
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
 
   function byggJournalføringPayload() {
-    const fnr = getValues('journalføresPåFnr')
     const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, annetInnhold)
-    return { tittel, journalføresPåFnr: fnr, dokumenter }
+    return { tittel, journalføresPåFnr: fodselsnummer, dokumenter }
   }
 
   function erDokumenttitlerGyldige() {
@@ -138,10 +136,10 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
-      journalføresPåFnr: fnr,
+      journalføresPåFnr,
       saksgrunnlag: {
         tema: verdier.tema,
         prioritet: verdier.prioritet,
@@ -173,10 +171,10 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
     }
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, journalføresPåFnr: fnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
-      journalføresPåFnr: fnr,
+      journalføresPåFnr,
       sak: byggJournalføringSak(valgtSak),
       dokumenter,
     })
@@ -256,7 +254,7 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
                 }
               }}
             />
-            {sakType === 'eksisterende' && brukerFnr && (
+            {sakType === 'eksisterende' && fodselsnummer && (
               <VStack gap="space-8" paddingBlock="space-20 space-0">
                 <Heading level="2" size="small">
                   Koble til eksisterende sak

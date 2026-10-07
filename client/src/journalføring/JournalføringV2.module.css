@@ -20,10 +20,6 @@
   border-right: 1px solid var(--ax-border-neutral-subtle);
 }
 
-.skjemaKolonneLoading {
-  padding: var(--ax-space-16);
-}
-
 .dokumentKolonne {
   height: 100%;
   overflow: hidden;

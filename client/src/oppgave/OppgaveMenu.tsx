@@ -4,7 +4,7 @@ import { type ReactNode } from 'react'
 
 import { useUmami } from '../sporing/useUmami.ts'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
-import { type Oppgave, type OppgaveId, Oppgavetype } from './oppgaveTypes.ts'
+import { type Oppgave, type OppgaveId, Oppgavetype, Statuskategori } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
 import { useOppgaveUrl } from './useOppgaveUrl.ts'
@@ -96,6 +96,13 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       >
         {`Legg tilbake til ${gjeldendeEnhet?.navn}`}
       </ActionMenu.Item>
+      <OppgaveModalActionMenuItem
+        modal={OppgaveModalType.ENDRE_MAPPE}
+        underBehandlingAvInnloggetAnsatt={true}
+        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
+      >
+        Endre mappe
+      </OppgaveModalActionMenuItem>
       <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
     </ActionMenu.Group>
   )
@@ -108,16 +115,18 @@ function OppgaveMenuGroup({ children }: { children: ReactNode }) {
 function OppgaveModalActionMenuItem({
   modal,
   underBehandlingAvInnloggetAnsatt,
+  disabled,
   children,
 }: {
   modal: OppgaveModalType
   underBehandlingAvInnloggetAnsatt: boolean
+  disabled?: boolean
   children: ReactNode
 }) {
   const åpneModal = useOppgaveÅpneModalHandler()
   const handleSelect = () => åpneModal(modal)
   return (
-    <ActionMenu.Item disabled={!underBehandlingAvInnloggetAnsatt} onSelect={handleSelect}>
+    <ActionMenu.Item disabled={!underBehandlingAvInnloggetAnsatt || disabled} onSelect={handleSelect}>
       {children}
     </ActionMenu.Item>
   )

@@ -8,6 +8,7 @@ import { type Oppgave, type OppgaveId, Oppgavetype, Statuskategori } from './opp
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
 import { useOppgaveUrl } from './useOppgaveUrl.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface OppgaveMenuProps {
   oppgave: Oppgave
@@ -25,6 +26,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   } = useOppgaveregler(oppgave)
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { logOppgaveLagtTilbake } = useUmami()
+  const { erIkkeProd } = useMiljø()
 
   if (!oppgave) {
     return null
@@ -96,13 +98,15 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       >
         {`Legg tilbake til ${gjeldendeEnhet?.navn}`}
       </ActionMenu.Item>
-      <OppgaveModalActionMenuItem
-        modal={OppgaveModalType.ENDRE_MAPPE}
-        underBehandlingAvInnloggetAnsatt={true}
-        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
-      >
-        Endre mappe
-      </OppgaveModalActionMenuItem>
+      {erIkkeProd && (
+        <OppgaveModalActionMenuItem
+          modal={OppgaveModalType.ENDRE_MAPPE}
+          underBehandlingAvInnloggetAnsatt={true}
+          disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
+        >
+          Endre mappe
+        </OppgaveModalActionMenuItem>
+      )}
       <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
     </ActionMenu.Group>
   )

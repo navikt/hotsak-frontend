@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { EndreMappeDialog } from '../felleskomponenter/EndreMappe.tsx'
 import { type Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveActions } from '../oppgave/useOppgaveActions.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { OppgaveMenu } from './OppgaveMenu.tsx'
 import { useMutateOppgaver } from './useMutateOppgaver.ts'
 
@@ -17,6 +18,8 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
   const mutateOppgaver = useMutateOppgaver()
   const [endreMappeOpen, setEndreMappeOpen] = useState(false)
 
+  const { erIkkeProd } = useMiljø()
+
   return (
     <>
       <OppgaveMenu>
@@ -29,12 +32,14 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
         >
           Fjern tildeling
         </ActionMenu.Item>
-        <ActionMenu.Item
-          disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
-          onSelect={() => setEndreMappeOpen(true)}
-        >
-          Endre mappe
-        </ActionMenu.Item>
+        {erIkkeProd && (
+          <ActionMenu.Item
+            disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
+            onSelect={() => setEndreMappeOpen(true)}
+          >
+            Endre mappe
+          </ActionMenu.Item>
+        )}
       </OppgaveMenu>
       {endreMappeOpen && <EndreMappeDialog oppgave={oppgave} onClose={() => setEndreMappeOpen(false)} />}
     </>

@@ -15,6 +15,7 @@ const nyttFnr = '02020299999'
 
 function TestPersonlinje({ lasterNyPerson = false, vis = true }: { lasterNyPerson?: boolean; vis?: boolean }) {
   const [fodselsnummer, setFodselsnummer] = useState(opprinneligPerson.fnr)
+  const [navigert, setNavigert] = useState(false)
 
   return (
     <MemoryRouter>
@@ -23,7 +24,18 @@ function TestPersonlinje({ lasterNyPerson = false, vis = true }: { lasterNyPerso
         <button type="button" onClick={() => setFodselsnummer(nyttFnr)}>
           Velg ny bruker
         </button>
-        {vis && <Personlinje person={lasterNyPerson ? undefined : opprinneligPerson} loading={lasterNyPerson} />}
+        <button
+          type="button"
+          onClick={() => {
+            setFodselsnummer(nyttFnr)
+            setNavigert(true)
+          }}
+        >
+          Søk og naviger
+        </button>
+        {vis && !navigert && (
+          <Personlinje person={lasterNyPerson ? undefined : opprinneligPerson} loading={lasterNyPerson} />
+        )}
       </PersonContext>
     </MemoryRouter>
   )
@@ -45,5 +57,13 @@ describe('Personlinje', () => {
     rerender(<TestPersonlinje vis={false} />)
 
     expect(screen.getByRole('status', { name: 'Aktivt fødselsnummer' })).toBeEmptyDOMElement()
+  })
+
+  it('beholder fødselsnummer som settes i samme oppdatering som personlinjen fjernes', async () => {
+    render(<TestPersonlinje />)
+
+    await userEvent.click(screen.getByRole('button', { name: 'Søk og naviger' }))
+
+    expect(screen.getByRole('status', { name: 'Aktivt fødselsnummer' })).toHaveTextContent(nyttFnr)
   })
 })

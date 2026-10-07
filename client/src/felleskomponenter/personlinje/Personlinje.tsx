@@ -19,19 +19,21 @@ export interface PersonlinjeProps {
 export function Personlinje({ person, loading, skjulTelefonnummer = false }: PersonlinjeProps) {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
-  const harSattFodselsnummer = useRef(false)
+  const sattFodselsnummer = useRef<string>(undefined)
 
   useEffect(() => {
     if (person?.fnr) {
-      setFodselsnummer(person?.fnr)
-      harSattFodselsnummer.current = true
+      setFodselsnummer(person.fnr)
+      sattFodselsnummer.current = person.fnr
     }
   }, [person?.fnr, setFodselsnummer])
 
   useEffect(() => {
     return () => {
-      if (harSattFodselsnummer.current) {
-        setFodselsnummer('')
+      // Tøm bare hvis ingen andre har byttet fødselsnummer siden, f.eks. et søk som navigerer bort herfra.
+      const satt = sattFodselsnummer.current
+      if (satt) {
+        setFodselsnummer((gjeldende) => (gjeldende === satt ? '' : gjeldende))
       }
     }
   }, [setFodselsnummer])

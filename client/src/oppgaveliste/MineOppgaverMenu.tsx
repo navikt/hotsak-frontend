@@ -1,8 +1,7 @@
+import { ActionMenu } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { ActionMenu } from '@navikt/ds-react'
-import { EndreMappeDialog } from '../felleskomponenter/EndreMappe'
-
+import { EndreMappeDialog } from '../felleskomponenter/EndreMappe.tsx'
 import { type Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveActions } from '../oppgave/useOppgaveActions.ts'
 import { OppgaveMenu } from './OppgaveMenu.tsx'
@@ -32,9 +31,7 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
         </ActionMenu.Item>
         <ActionMenu.Item
           disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
-          onSelect={() => {
-            setEndreMappeOpen(true)
-          }}
+          onSelect={() => setEndreMappeOpen(true)}
         >
           Endre mappe
         </ActionMenu.Item>

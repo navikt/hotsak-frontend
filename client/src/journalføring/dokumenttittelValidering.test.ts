@@ -1,12 +1,22 @@
 import { describe, expect, it } from 'vitest'
 
 import { type Dokument } from '../types/types.internal.ts'
-import { harUgyldigeDokumenttitler, validerDokumenttittel } from './dokumenttittelValidering.ts'
+import {
+  harUgyldigeDokumenttitler,
+  normaliserDokumenttittel,
+  validerDokumenttittel,
+} from './dokumenttittelValidering.ts'
 
 const dokumenter: Dokument[] = [
   { journalpostId: 'journalpost-1', dokumentId: 'dokument-1', tittel: 'Opprinnelig tittel', logiskeVedlegg: [] },
   { journalpostId: 'journalpost-1', dokumentId: 'dokument-2', tittel: 'Annet dokument', logiskeVedlegg: [] },
 ]
+
+describe('normaliserDokumenttittel', () => {
+  it('fjerner whitespace i starten og slutten uten å endre mellomrom inne i tittelen', () => {
+    expect(normaliserDokumenttittel(' \tNy  tittel \n')).toBe('Ny  tittel')
+  })
+})
 
 describe('validerDokumenttittel', () => {
   it.each(['', '   ', '\n\t'])('avviser tom eller blank dokumenttittel (%j)', (tittel) => {

@@ -1,6 +1,7 @@
 import { Box, Button, HStack, UNSAFE_Combobox, VStack, HelpText, Link } from '@navikt/ds-react'
 
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
+import { SearchableSelect } from '../felleskomponenter/searchableSelect/SearchableSelect.tsx'
 import { useKodeverkDokumenttitler } from '../oppgave/useKodeverkOppgave.ts'
 import { type Dokument } from '../types/types.internal.ts'
 import classes from './DokumentRad.module.css'
@@ -36,7 +37,7 @@ export function DokumentRad({
       <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12" background="accent-soft">
         <VStack gap="space-6">
           <HStack align="end" gap="space-4" width="100%" wrap={false}>
-            <UNSAFE_Combobox
+            <SearchableSelect
               className={classes.dokumenttittel}
               label={
                 <HStack gap="space-6" align="center">
@@ -57,12 +58,9 @@ export function DokumentRad({
                 </HStack>
               }
               error={visTittelFeil ? validerDokumenttittel(valgtTittel) : undefined}
-              size="small"
-              options={dokumentTittelOptions}
-              selectedOptions={valgtTittel ? [valgtTittel] : []}
-              onToggleSelected={(opt, isSelected) => onTittelChange(isSelected ? opt : '')}
-              shouldAutocomplete
-              allowNewValues={true}
+              suggestions={dokumentTittelOptions}
+              value={valgtTittel}
+              onChange={onTittelChange}
               readOnly={readOnly}
             />
             <Button

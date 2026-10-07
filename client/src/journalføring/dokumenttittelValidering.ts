@@ -1,7 +1,11 @@
 import { type Dokument } from '../types/types.internal.ts'
 
+export function normaliserDokumenttittel(tittel: string): string {
+  return tittel.trim()
+}
+
 export function validerDokumenttittel(tittel: string): string | undefined {
-  const trimmetTittel = tittel.trim()
+  const trimmetTittel = normaliserDokumenttittel(tittel)
 
   if (!trimmetTittel) {
     return 'Du må skrive en dokumenttittel'

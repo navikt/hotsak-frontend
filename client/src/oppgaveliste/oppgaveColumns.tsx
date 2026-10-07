@@ -19,6 +19,8 @@ import classes from './oppgaveColumns.module.css'
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 import { OppgavetypeÅpneOppgaveCell } from './OppgavetypeÅpneOppgaveCell.tsx'
+import { EnhetensOppgaverMenu } from './EnhetensOppgaverMenu.tsx'
+import { MedarbeidersOppgaverMenu } from './MedarbeidersOppgaverMenu.tsx'
 
 type OppgaveColumns = {
   [K in string]: DataGridColumn<Oppgave> & { field: K }
@@ -376,6 +378,20 @@ export const oppgaveColumns = {
     width: 50,
     renderCell(row) {
       return <MineOppgaverMenu oppgave={row} />
+    },
+  },
+  enhetensOppgaverMenu: {
+    field: 'enhetensOppgaverMenu',
+    width: 50,
+    renderCell(row) {
+      return <EnhetensOppgaverMenu oppgave={row} />
+    },
+  },
+  medarbeidersOppgaverMenu: {
+    field: 'medarbeidersOppgaverMenu',
+    width: 50,
+    renderCell(row) {
+      return <MedarbeidersOppgaverMenu oppgave={row} />
     },
   },
   saksbehandlerKort: {

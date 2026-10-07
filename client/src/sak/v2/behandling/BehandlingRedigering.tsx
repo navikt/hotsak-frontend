@@ -149,17 +149,15 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
 
               {kanOppretteBrev && !isBehandlingsutfallOverføring(behandling?.utfall) && (
                 <VStack gap="space-8">
-                  {erIkkeProd && (
-                    <RadioGroup
-                      legend="Målform"
-                      size="small"
-                      value={målform}
-                      onChange={(value: Målform) => setMålform(value)}
-                    >
-                      <Radio value={Målform.BOKMÅL}>Bokmål</Radio>
-                      <Radio value={Målform.NYNORSK}>Nynorsk</Radio>
-                    </RadioGroup>
-                  )}
+                  <RadioGroup
+                    legend="Målform"
+                    size="small"
+                    value={målform}
+                    onChange={(value: Målform) => setMålform(value)}
+                  >
+                    <Radio value={Målform.BOKMÅL}>Bokmål</Radio>
+                    <Radio value={Målform.NYNORSK}>Nynorsk</Radio>
+                  </RadioGroup>
                   <div>
                     <Button
                       variant={

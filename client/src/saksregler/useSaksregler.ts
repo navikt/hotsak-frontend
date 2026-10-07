@@ -1,7 +1,7 @@
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useBehovsmelding } from '../saksbilde/useBehovsmelding.ts'
-import { Kanal, Sakstype } from '../types/types.internal.ts'
+import { Sakstype } from '../types/types.internal.ts'
 
 export function useSaksregler() {
   const { oppgave } = useOppgave()
@@ -15,6 +15,6 @@ export function useSaksregler() {
     erBestilling: oppgave?.sak?.sakstype === Sakstype.BESTILLING,
     erSøknad: oppgave?.sak?.sakstype === Sakstype.SØKNAD,
     erBarnebrillesak: oppgave?.sak?.sakstype === Sakstype.BARNEBRILLER,
-    erPapirsøknad: behovsmelding?.kanal === Kanal.SKAN_IM,
+    erPapirsøknad: behovsmelding?.skjemaversjon === -1,
   }
 }

@@ -31,4 +31,5 @@ const defaultColumns: DefaultOppgaveColumns = [
   ['saksstatus', false],
   'opprettetTidspunkt',
   'fristFerdigstillelse',
+  'enhetensOppgaverMenu',
 ]

@@ -14,6 +14,7 @@ export interface Innsenderbehovsmelding {
   levering?: Levering
   saksbehandlingvarsel: Varsel[]
   kanal: Kanal
+  skjemaversjon: number
 }
 
 export enum BehovsmeldingType {

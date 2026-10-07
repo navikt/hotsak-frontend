@@ -36,6 +36,7 @@ export const behovsmeldingHandlers: StoreHandlersFactory = ({ sakStore, behovsme
         id: lagUUID(),
         type: BehovsmeldingType.SØKNAD,
         innsendingsdato: new Date().toISOString(),
+        skjemaversjon: -1,
       })
       //return respondNotFound()
     }

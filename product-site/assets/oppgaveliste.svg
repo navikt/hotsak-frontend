@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560">
+  <rect width="960" height="560" rx="8" fill="#f1f5f9"/>
+  <rect width="960" height="54" fill="#fff"/><rect x="24" y="16" width="22" height="22" rx="5" fill="#c30000"/><text x="56" y="34" font-family="Arial" font-size="18" font-weight="700" fill="#1e2b3c">Hotsak</text>
+  <rect x="32" y="86" width="896" height="74" rx="6" fill="#fff"/><text x="56" y="120" font-family="Arial" font-size="24" font-weight="700" fill="#1e2b3c">Mine oppgaver</text><text x="56" y="143" font-family="Arial" font-size="13" fill="#4f5f73">12 åpne oppgaver · 2 haster</text>
+  <rect x="32" y="184" width="896" height="52" rx="6" fill="#fff"/><text x="56" y="216" font-family="Arial" font-size="14" fill="#4f5f73">Søk i oppgaver</text><rect x="690" y="198" width="100" height="24" rx="12" fill="#e8f3ff"/><text x="710" y="215" font-family="Arial" font-size="12" fill="#0062ba">Åpne</text><rect x="804" y="198" width="100" height="24" rx="12" fill="#fce8e8"/><text x="820" y="215" font-family="Arial" font-size="12" fill="#a00000">Haster</text>
+  <rect x="32" y="260" width="896" height="260" rx="6" fill="#fff"/>
+  <g font-family="Arial" font-size="13" fill="#1e2b3c"><text x="56" y="292" font-weight="700">Oppgave</text><text x="400" y="292" font-weight="700">Type</text><text x="610" y="292" font-weight="700">Frist</text><text x="780" y="292" font-weight="700">Status</text>
+  <text x="56" y="338">Søknad om hjelpemiddel</text><text x="400" y="338" fill="#4f5f73">Saksbehandling</text><text x="610" y="338">I dag</text><text x="780" y="338" fill="#a00000">Haster</text>
+  <text x="56" y="390">Dokumentasjon til sak</text><text x="400" y="390" fill="#4f5f73">Journalføring</text><text x="610" y="390">I morgen</text><text x="780" y="390" fill="#0062ba">Åpen</text>
+  <text x="56" y="442">Krav om støtte til briller</text><text x="400" y="442" fill="#4f5f73">Briller til barn</text><text x="610" y="442">25.09.2026</text><text x="780" y="442" fill="#006c6b">Ny</text></g>
+  <path d="M32 310h896M32 362h896M32 414h896M32 466h896" stroke="#d9e2ec"/>
+</svg>

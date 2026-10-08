@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Svar på vanlige spørsmål om journalføring, oppgaver og Gosys i Hotsak.">
+    <title>Spørsmål og svar | Hotsak</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#hovedinnhold">Hopp til hovedinnhold</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./" aria-label="Hotsak, til forsiden">
+          <span class="brand-mark" aria-hidden="true">H</span>
+          <span>
+            <strong>Hotsak</strong>
+            <small>Saksbehandling på hjelpemiddelområdet</small>
+          </span>
+        </a>
+        <a class="header-link" href="https://github.com/navikt/hotsak-frontend" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </header>
+
+    <div class="site-layout">
+      <aside class="sidebar">
+        <nav aria-label="Sider om Hotsak">
+          <p class="sidebar-title">Utforsk Hotsak</p>
+          <ul>
+            <li><a href="./">Om Hotsak</a></li>
+            <li><a href="journalforing.html">Journalføring</a></li>
+            <li><a href="faq.html" aria-current="page">Spørsmål og svar</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="hovedinnhold">
+        <article class="content-page">
+          <div class="container content-wrapper">
+            <p class="eyebrow">Hjelp til saksbehandlere</p>
+            <h1>Spørsmål og svar</h1>
+            <p class="page-intro">Her finner du svar på vanlige spørsmål om journalføring i Hotsak. Vi legger til flere spørsmål etter hvert.</p>
+
+            <!-- Legg til nye spørsmål som en details-blokk i denne seksjonen. -->
+            <section class="faq-list" aria-labelledby="vanlige-sporsmal">
+              <h2 id="vanlige-sporsmal">Vanlige spørsmål</h2>
+              <details>
+                <summary>Hvor finner jeg journalføringsoppgaven?</summary>
+                <div class="faq-answer">
+                  <p>Du kan finne oppgaven i oppgavelista i Hotsak og i Gosys. I Gosys står det at oppgaven skal behandles i et annet system. <a href="journalforing.html#oppgaver">Se hvordan oppgavene vises i Gosys og Hotsak</a>.</p>
+                </div>
+              </details>
+              <details>
+                <summary>Hvorfor vises oppgaven i både Gosys og Hotsak?</summary>
+                <div class="faq-answer">
+                  <p>Alle oppgaver lagres i Gosys. Oppgaver som skal behandles i Hotsak, vises i begge systemer. <a href="journalforing.html#oppgaver">Les om oppgavene i Gosys og Hotsak</a>.</p>
+                </div>
+              </details>
+              <details>
+                <summary>Hvordan skjuler jeg Hotsak-oppgaver i Gosys?</summary>
+                <div class="faq-answer">
+                  <p>Åpne filteret <strong>System</strong> i oppgavelista i Gosys. La <strong>Gosys</strong> være valgt, og fjern avhukingen for <strong>Annet system</strong>. Da ser du bare oppgaver som skal behandles i Gosys.</p>
+                </div>
+              </details>
+              <details>
+                <summary>Hvilke skjemaer kan behandles i Hotsak?</summary>
+                <div class="faq-answer">
+                  <p>Hotsak tar nå imot NAV 10-07.03, NAV 10-07.04 og NAV 10-07.86, samt ettersendelser til disse skjemaene. <a href="journalforing.html#dokumenter">Se navnene på skjemaene</a>.</p>
+                </div>
+              </details>
+              <details>
+                <summary>Hva gjør jeg hvis saken ikke kan behandles i Hotsak?</summary>
+                <div class="faq-answer">
+                  <p>Velg <strong>Overfør til Gosys</strong> og oppgi årsaken. Journalføringen og den videre behandlingen må da gjøres i Gosys og Infotrygd. <a href="journalforing.html#overforing">Se årsakene til overføring</a>.</p>
+                </div>
+              </details>
+              <details>
+                <summary>Hva er forskjellen på en Hotsak-sak og en fagsak?</summary>
+                <div class="faq-answer">
+                  <p>En Hotsak-sak behandles videre i Hotsak. En fagsak i et annet system, som Infotrygd, behandles videre i Gosys og det aktuelle fagsystemet. Du kan <a href="journalforing.html#flyter">journalføre dokumenter på begge typer saker</a>.</p>
+                </div>
+              </details>
+              <details>
+                <summary>Hva gjør jeg hvis dokumentene kommer før det finnes en sak?</summary>
+                <div class="faq-answer">
+                  <p>Velg <strong>Koble til sak</strong> og deretter <strong>Gosys generell</strong>. Det kan være aktuelt når en ettersendelse kommer før søknaden. <a href="journalforing.html#gosys-generell">Les om journalføring uten en opprettet sak</a>.</p>
+                </div>
+              </details>
+            </section>
+          </div>
+        </article>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span><strong>Hotsak</strong> · Nav</span>
+        <span>Produktside for ansatte, produktledere og samarbeidspartnere</span>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#e8f3ff"/>
+  <circle cx="1020" cy="80" r="280" fill="#d4e9fb"/>
+  <rect x="92" y="126" width="72" height="72" rx="14" fill="#c30000"/>
+  <path d="M110 142h15v22h18v-22h15v40h-15v-12h-18v12h-15z" fill="#fff"/>
+  <text x="92" y="292" fill="#1e2b3c" font-family="Arial, sans-serif" font-size="72" font-weight="700">Hotsak</text>
+  <text x="92" y="360" fill="#4f5f73" font-family="Arial, sans-serif" font-size="34">Saksbehandling på hjelpemiddelområdet</text>
+  <rect x="92" y="430" width="360" height="12" rx="6" fill="#0062ba"/>
+</svg>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hotsak samler oppgaver og saksbehandling på hjelpemiddelområdet.">
+    <meta property="og:title" content="Hotsak">
+    <meta property="og:description" content="En samlet arbeidsflate for saksbehandling på hjelpemiddelområdet.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://navikt.github.io/hotsak-frontend/">
+    <meta property="og:image" content="https://navikt.github.io/hotsak-frontend/assets/og-image.svg">
+    <title>Hotsak | Saksbehandling på hjelpemiddelområdet</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#hovedinnhold">Hopp til hovedinnhold</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./" aria-label="Hotsak, til toppen">
+          <span class="brand-mark" aria-hidden="true">H</span>
+          <span>
+            <strong>Hotsak</strong>
+            <small>Saksbehandling på hjelpemiddelområdet</small>
+          </span>
+        </a>
+        <a class="header-link" href="https://github.com/navikt/hotsak-frontend" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </header>
+
+    <div class="site-layout">
+      <aside class="sidebar">
+        <nav aria-label="Sider om Hotsak">
+          <p class="sidebar-title">Utforsk Hotsak</p>
+          <ul>
+            <li><a href="./" aria-current="page">Om Hotsak</a></li>
+            <li><a href="journalforing.html">Journalføring</a></li>
+            <li><a href="faq.html">Spørsmål og svar</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <main id="hovedinnhold">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Hotsak</p>
+            <h1>Én arbeidsflate for saksbehandling på hjelpemiddelområdet</h1>
+            <p class="lead">Hotsak hjelper ansatte på hjelpemiddelsentralene med å holde oversikt, behandle saker og følge opp personer fra oppgaven kommer inn til saken er ferdig.</p>
+            <div class="actions">
+              <a class="button button-primary" href="#funksjoner">Se hva Hotsak kan gjøre</a>
+              <a class="button button-secondary" href="https://github.com/navikt/hotsak-frontend" target="_blank" rel="noreferrer">Se kildekoden ↗</a>
+            </div>
+            <p class="note">Siden beskriver funksjonene i Hotsak. Selve applikasjonen krever intern tilgang i Nav.</p>
+          </div>
+          <figure class="browser-frame hero-screen">
+            <img src="assets/oppgaveliste.svg" width="960" height="560" alt="Illustrasjon av Hotsak med oppgaver fordelt i en oversikt">
+            <figcaption>Oppgaver samlet i én oversikt</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="funksjoner">
+        <div class="container">
+          <p class="eyebrow">Kjernefunksjonalitet</p>
+          <h2>Hotsak samler arbeidsoppgavene på ett sted</h2>
+          <p class="section-intro">Du kan gå fra oppgave til ferdig behandling uten å bytte mellom flere arbeidsflater for å finne informasjonen du trenger.</p>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <span class="icon icon-blue" aria-hidden="true">01</span>
+              <h3>Finn og fordel oppgaver</h3>
+              <p>Se dine egne oppgaver, enhetens oppgaver eller oppgaver som er tildelt medarbeidere. Filtrer på status, hastegrad og andre relevante opplysninger.</p>
+            </article>
+            <article class="feature-card">
+              <span class="icon icon-purple" aria-hidden="true">02</span>
+              <h3>Journalfør og finn riktig sak</h3>
+              <p>Registrer dokumenter, koble dem til en eksisterende sak eller opprett en ny sak. Dokumentet og opplysningene følger saken videre.</p>
+            </article>
+            <article class="feature-card">
+              <span class="icon icon-green" aria-hidden="true">03</span>
+              <h3>Behandle saken samlet</h3>
+              <p>Se behovsmelding, kontaktinformasjon, dokumenter og tidligere aktivitet i samme saksbilde. Du kan også skrive notater og følge historikken.</p>
+            </article>
+            <article class="feature-card">
+              <span class="icon icon-orange" aria-hidden="true">04</span>
+              <h3>Vurder og fatt vedtak</h3>
+              <p>Vurder vilkår, velg resultat, skriv brev og ferdigstill behandlingen. Hotsak viser hva som mangler før saken kan avsluttes.</p>
+            </article>
+            <article class="feature-card">
+              <span class="icon icon-red" aria-hidden="true">05</span>
+              <h3>Følg opp hjelpemidler</h3>
+              <p>Se oversikt over hjelpemidler personen har fått, og bruk informasjonen når du behandler nye behov eller følger opp en sak.</p>
+            </article>
+            <article class="feature-card">
+              <span class="icon icon-teal" aria-hidden="true">06</span>
+              <h3>Håndter briller til barn</h3>
+              <p>Behandle krav om støtte til briller for barn gjennom egne steg for registrering, vilkårsvurdering og vedtak.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="saksflyten">
+        <div class="container">
+          <div class="split-heading">
+            <div>
+              <p class="eyebrow">Fra oppgave til resultat</p>
+              <h2>En tydelig saksflyt</h2>
+            </div>
+            <p class="section-intro">Hotsak støtter de viktigste stegene i saksbehandlingen og gjør det synlig hva som er gjort, og hva som gjenstår.</p>
+          </div>
+          <ol class="steps">
+            <li><span>1</span><div><h3>Oppgaven kommer inn</h3><p>Du finner oppgaven i oppgavelista og ser hva den gjelder.</p></div></li>
+            <li><span>2</span><div><h3>Dokumenter og opplysninger samles</h3><p>Journalfør dokumenter og koble dem til riktig person og sak.</p></div></li>
+            <li><span>3</span><div><h3>Saken vurderes</h3><p>Se behov, vilkår, hjelpemidler og tidligere aktivitet mens du behandler saken.</p></div></li>
+            <li><span>4</span><div><h3>Vedtak og brev ferdigstilles</h3><p>Velg resultat, skriv brev og få oversikt over det som mangler før ferdigstilling.</p></div></li>
+            <li><span>5</span><div><h3>Resultatet kan følges opp</h3><p>Notater, dokumenter, historikk og hjelpemiddeloversikt er tilgjengelig videre.</p></div></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container showcase-grid">
+          <div>
+            <p class="eyebrow">Saksbildet</p>
+            <h2>Det viktigste er samlet rundt saken</h2>
+            <p class="section-intro">Saksbildet gir plass til både behandlingen og informasjonen du trenger for å ta en beslutning. Panelene kan åpnes og tilpasses arbeidsmåten din.</p>
+            <ul class="check-list">
+              <li>Behovsmelding og funksjonsbeskrivelse</li>
+              <li>Kontaktinformasjon og dokumenter</li>
+              <li>Vilkårsvurdering og vedtak</li>
+              <li>Brev, notater og historikk</li>
+            </ul>
+          </div>
+          <figure class="browser-frame">
+            <img src="assets/saksbilde.svg" width="960" height="560" loading="lazy" alt="Illustrasjon av et saksbilde med behandling, behovsmelding og dokumenter">
+            <figcaption>Saksbildet viser behandlingen og relevant informasjon samlet.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section-muted">
+        <div class="container showcase-grid reverse">
+          <div>
+            <p class="eyebrow">Personoversikt</p>
+            <h2>Se saken i sammenheng med personen</h2>
+            <p class="section-intro">Personoversikten gir en samlet visning av saker, oppgaver, dokumenter og utlånte hjelpemidler. Det gjør det enklere å finne riktig bakgrunn når du behandler en ny henvendelse.</p>
+            <a class="text-link" href="#kontakt">Snakk med teamet om Hotsak →</a>
+          </div>
+          <figure class="browser-frame">
+            <img src="assets/personoversikt.svg" width="960" height="560" loading="lazy" alt="Illustrasjon av personoversikt med saker og utlånte hjelpemidler">
+            <figcaption>Personoversikten samler saken og hjelpemidlene i samme visning.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="briller">
+        <div class="container showcase-grid">
+          <div>
+            <p class="eyebrow">Briller til barn</p>
+            <h2>En egen flyt for krav om støtte til briller</h2>
+            <p class="section-intro">Hotsak støtter saksbehandling av brillesaker for barn med tydelige steg for registrering, vurdering og vedtak. Statusen viser hvor saken er og hva som skjer videre.</p>
+            <ul class="check-list">
+              <li>Registrer søknadsopplysninger</li>
+              <li>Vurder vilkår og dokumentasjon</li>
+              <li>Fatt vedtak og send brev</li>
+              <li>Sett saken på vent når opplysninger mangler</li>
+            </ul>
+          </div>
+          <figure class="browser-frame">
+            <img src="assets/barnebriller.svg" width="960" height="560" loading="lazy" alt="Illustrasjon av stegvis saksbehandling for briller til barn">
+            <figcaption>Stegvis behandling gjør statusen i brillesaken tydelig.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="teknologi">
+        <div class="container tech-section">
+          <p class="eyebrow">For deg som vil vite mer</p>
+          <h2>Teknologistacken bak Hotsak</h2>
+          <p class="section-intro">Hotsak er bygget med teknologi som passer Navs plattform og gjør det mulig å utvikle, teste og drifte løsningen over tid.</p>
+          <div class="tech-list">
+            <span>React</span><span>TypeScript</span><span>Vite</span><span>Aksel</span><span>Go</span><span>Nais</span><span>GraphQL</span><span>Vitest</span><span>Playwright</span><span>MSW</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-band" id="kontakt">
+        <div class="container cta-inner">
+          <div>
+            <p class="eyebrow">Vil du vite mer?</p>
+            <h2>Ta kontakt med teamet eller se kildekoden</h2>
+          </div>
+          <div class="actions">
+            <a class="button button-light" href="https://github.com/navikt/hotsak-frontend" target="_blank" rel="noreferrer">Se Hotsak på GitHub ↗</a>
+            <span class="slack-contact">Kontakt teamet i <strong>#digihot</strong> på Slack</span>
+          </div>
+        </div>
+      </section>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span><strong>Hotsak</strong> · Nav</span>
+        <span>Produktside for ansatte, produktledere og samarbeidspartnere</span>
+      </div>
+    </footer>
+  </body>
+</html>

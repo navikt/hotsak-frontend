@@ -1,5 +1,20 @@
 # Frontend for saksbehandling på Hjelpemiddelområdet
 
+## Produktside
+
+Den offentlige produktsiden beskriver Hotsak for ansatte, produktledere, designere og ledere:
+[navikt.github.io/hotsak-frontend](https://navikt.github.io/hotsak-frontend/).
+
+Kilden ligger i `product-site/` og består av statisk HTML, CSS og SVG-illustrasjoner. Venstremenyen leder til en samlet side om journalføring og en side med spørsmål og svar. Nye spørsmål kan legges til som `<details>`-blokker i `product-site/faq.html`.
+
+Du kan forhåndsvise siden lokalt fra repo-roten med:
+
+```bash
+python3 -m http.server 8000 --directory product-site
+```
+
+Åpne deretter [http://localhost:8000](http://localhost:8000). Alle illustrasjoner skal bruke syntetiske data og må kontrolleres før nye bilder publiseres.
+
 Koden er delt i to separate moduler:
 
 - `server` – Go-backend

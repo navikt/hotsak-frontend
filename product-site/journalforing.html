@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Slik journalfører du dokumenter i Hotsak, finner riktig sak og ser når oppgaven må behandles i Gosys.">
+    <title>Journalføring i Hotsak | Hotsak</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#hovedinnhold">Hopp til hovedinnhold</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./" aria-label="Hotsak, til forsiden">
+          <span class="brand-mark" aria-hidden="true">H</span>
+          <span>
+            <strong>Hotsak</strong>
+            <small>Saksbehandling på hjelpemiddelområdet</small>
+          </span>
+        </a>
+        <a class="header-link" href="https://github.com/navikt/hotsak-frontend" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </header>
+
+    <div class="site-layout">
+      <aside class="sidebar">
+        <nav aria-label="Sider om Hotsak">
+          <p class="sidebar-title">Utforsk Hotsak</p>
+          <ul>
+            <li><a href="./">Om Hotsak</a></li>
+            <li><a href="journalforing.html" aria-current="page">Journalføring</a></li>
+            <li><a href="faq.html">Spørsmål og svar</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main id="hovedinnhold">
+        <article class="content-page">
+          <div class="container content-wrapper">
+            <p class="eyebrow">For saksbehandlere</p>
+            <h1>Journalføring i Hotsak</h1>
+            <p class="page-intro">Når du journalfører, registrerer du dokumentene på riktig person og sak. Kontroller opplysningene og dokumenttitlene før du fullfører.</p>
+
+            <section aria-labelledby="oppgaver">
+              <h2 id="oppgaver">Oppgavene finnes også i Gosys</h2>
+              <p>Alle oppgaver lagres i Gosys. Oppgaver som skal behandles i Hotsak, er synlige i både Gosys og Hotsak. I Gosys får du beskjed om at disse oppgavene skal behandles i et annet system.</p>
+              <p>Vil du bare se oppgaver som skal behandles i Gosys? Åpne filteret <strong>System</strong> i oppgavelista. La <strong>Gosys</strong> være valgt, og fjern avhukingen for <strong>Annet system</strong>. Da skjules Hotsak-oppgavene fra oppgavelista i Gosys.</p>
+            </section>
+
+            <section aria-labelledby="dokumenter">
+              <h2 id="dokumenter">Disse dokumentene kommer til Hotsak nå</h2>
+              <p>Foreløpig tar Hotsak imot et begrenset utvalg skjemaer:</p>
+              <ul>
+                <li><strong>NAV 10-07.03:</strong> Søknad om hjelpemidler</li>
+                <li><strong>NAV 10-07.04:</strong> Fullmakt i forbindelse med søknad om tekniske hjelpemidler</li>
+                <li><strong>NAV 10-07.86:</strong> Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker</li>
+              </ul>
+              <p>Ettersendelser til disse skjemaene kommer også til Hotsak.</p>
+            </section>
+
+            <section aria-labelledby="flyter">
+              <h2 id="flyter">Slik kan du journalføre</h2>
+              <p>Velg hvor dokumentene hører hjemme. I Hotsak kan du se dokumentene ved siden av opplysningene du skal kontrollere.</p>
+              <div class="flow-list">
+                <section class="flow-card" aria-labelledby="ny-sak">
+                  <h3 id="ny-sak">Journalfør og opprett sak</h3>
+                  <p>Velg <strong>Opprett ny sak</strong> når dokumentene skal starte en ny Hotsak-sak. Kontroller hva saken gjelder, datoer og prioritet. Velg hvem oppgaven skal til, og trykk <strong>Journalfør og opprett sak</strong>. Hotsak oppretter en sak og en oppgave for videre behandling.</p>
+                </section>
+                <section class="flow-card" aria-labelledby="hotsak-sak">
+                  <h3 id="hotsak-sak">Journalfør og koble til eksisterende Hotsak-sak</h3>
+                  <p>Velg <strong>Koble til sak</strong> når det allerede finnes en Hotsak-sak. Finn riktig sak i lista, og se etter <strong>Hotsak</strong> under «Fagsystem». Trykk <strong>Journalfør og koble til sak</strong>. Dokumentene knyttes til saken, slik at du kan fortsette behandlingen i Hotsak.</p>
+                </section>
+                <section class="flow-card" aria-labelledby="fagsak">
+                  <h3 id="fagsak">Journalfør og koble til eksisterende fagsak</h3>
+                  <p>Velg <strong>Koble til sak</strong> hvis dokumentene hører til en sak i et annet fagsystem, vanligvis Infotrygd. Finn riktig fagsak i lista, og trykk <strong>Journalfør og koble til sak</strong>. Dokumentene knyttes til fagsaken. Videre behandling skjer i Gosys og det aktuelle fagsystemet, ikke i Hotsak.</p>
+                </section>
+                <section class="flow-card" aria-labelledby="gosys-generell">
+                  <h3 id="gosys-generell">Når det ikke finnes en sak ennå</h3>
+                  <p>Kommer dokumentene før saken er opprettet, kan du velge <strong>Koble til sak</strong> og deretter <strong>Gosys generell</strong>. Det kan for eksempel være en ettersendelse som kommer før selve søknaden. Dokumentene journalføres uten å knyttes til en bestemt sak. Trykk <strong>Journalfør og koble til sak</strong> for å fullføre.</p>
+                </section>
+              </div>
+            </section>
+
+            <section aria-labelledby="overforing">
+              <h2 id="overforing">Når oppgaven må overføres til Gosys</h2>
+              <p>Velg <strong>Overfør til Gosys</strong> hvis du ikke kan behandle oppgaven i Hotsak. Du blir bedt om å velge årsak. Årsaken blir synlig som en kommentar på oppgaven i Gosys. Etter overføringen forsvinner journalføringsoppgaven fra Hotsak, og journalføring og videre behandling må gjøres i Gosys og Infotrygd.</p>
+              <dl class="reason-list">
+                <dt>Behov for å sende brev</dt>
+                <dd>Velg dette når du må innhente signatur eller nytt fullmaktsskjema, be om dokumentasjon, sende varsel om svartid eller sende et annet brev som ikke kan håndteres i Hotsak ennå.</dd>
+                <dt>Saken skal ikke behandles i Hotsak i dag</dt>
+                <dd>Hotsak støtter ikke alle områder ennå. Velg området saken gjelder: Arbeidsliv, Utdanning, AKT26, Tilskudd eller Annet. Saken må behandles utenfor Hotsak.</dd>
+                <dt>Saken skal ikke behandles av Nav hjelpemiddelsentral</dt>
+                <dd>Velg dette når oppgaven hører hjemme hos en annen del av Nav. Oppgi hva saken gjelder, slik at den kan følges opp riktig.</dd>
+                <dt>Saken er sendt inn på feil bruker eller inneholder dokumentasjon om flere brukere</dt>
+                <dd>Da kan du ikke journalføre dokumentene på én Hotsak-sak uten å avklare hvem de gjelder. Overfør oppgaven for videre håndtering.</dd>
+                <dt>Annet</dt>
+                <dd>Velg dette hvis ingen av årsakene passer. Beskriv kort hvorfor oppgaven ikke kan behandles i Hotsak.</dd>
+              </dl>
+            </section>
+            <p class="related-link">Har du flere spørsmål? <a href="faq.html">Se spørsmål og svar om journalføring</a>.</p>
+          </div>
+        </article>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span><strong>Hotsak</strong> · Nav</span>
+        <span>Produktside for ansatte, produktledere og samarbeidspartnere</span>
+      </div>
+    </footer>
+  </body>
+</html>

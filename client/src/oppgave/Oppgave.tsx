@@ -3,38 +3,14 @@ import { lazy, useEffect } from 'react'
 import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
-import { useJournalpost } from '../saksbilde/useJournalpost.ts'
+import { JournalføringRouter } from './JournalføringRouter.tsx'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
-import {
-  isJournalføringsoppgave,
-  isSaksbehandlingsoppgave,
-  type Journalføringsoppgave,
-  type Oppgave,
-} from './oppgaveTypes.ts'
+import { isJournalføringsoppgave, isSaksbehandlingsoppgave, type Oppgave } from './oppgaveTypes.ts'
 import { useOppgave } from './useOppgave.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavehendelser } from './useOppgavehendelser.ts'
 
-const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
-const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
 const Saksbilde = lazy(() => import('../saksbilde/Saksbilde.tsx'))
-
-const BREVKODE_BRILLER_TIL_BARN = ['NAV 10-07.34', 'NAVe 10-07.34']
-
-function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) {
-  const { journalpost, isLoading } = useJournalpost(oppgave.journalpostId)
-  if (isLoading) {
-    return null
-  }
-
-  const brevkode = journalpost?.dokumenter[0]?.brevkode
-
-  if (brevkode && !BREVKODE_BRILLER_TIL_BARN.includes(brevkode)) {
-    return <JournalføringV2 oppgave={oppgave} />
-  }
-
-  return <Journalføring oppgave={oppgave} />
-}
 
 function OppgaveContent() {
   const { oppgave } = useOppgave()

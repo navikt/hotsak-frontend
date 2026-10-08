@@ -15,7 +15,6 @@ export interface JournalføringV2SkjemaVerdier {
   mottattDato: string
   aktivFra: string
   frist: string
-  journalføresPåFnr: string
   tilordnetEnhet: TilordnetEnhet
   mappeId?: string
   medarbeider: string

@@ -35,6 +35,7 @@ test.describe('Journalføring', () => {
     await page.getByRole('button', { name: 'Journalfør og koble til sak' }).click()
     const request = await journalføringRequest
     expect(request.postDataJSON()).toMatchObject({
+      journalføresPåFnr: '01010199999',
       sak: { sakstype: 'FAGSAK', fagsakId: '9901', fagsaksystem: 'HOTSAK' },
     })
     const respons = await journalføring
@@ -51,6 +52,17 @@ test.describe('Journalføring', () => {
 
   test('kan journalføre og opprette en ny Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)
+    const annetFnr = await page.evaluate(async () => {
+      const response = await fetch('/api/journalpost/9006')
+      if (!response.ok) throw new Error('Kunne ikke hente testjournalpost')
+      const journalpost: { innsender: { fnr: string } } = await response.json()
+      return journalpost.innsender.fnr
+    })
+    await page.getByRole('button', { name: 'Endre bruker' }).click()
+    await page.getByRole('textbox', { name: 'Fødselsnummer' }).fill(annetFnr)
+    await page.getByRole('button', { name: 'Velg', exact: true }).click()
+    await expect(page.getByRole('textbox', { name: 'Fødselsnummer' })).toBeHidden()
+    await expect(page.getByText(`Fnr: ${annetFnr.slice(0, 6)} ${annetFnr.slice(6)}`)).toBeVisible()
     await velgGjelder(page)
     await page.getByRole('combobox', { name: 'Legg i mappe (frivillig)' }).selectOption('663')
 
@@ -62,6 +74,7 @@ test.describe('Journalføring', () => {
     await page.getByRole('button', { name: 'Journalfør og opprett sak' }).click()
     const request = await journalføringRequest
     expect(request.postDataJSON()).toMatchObject({
+      journalføresPåFnr: annetFnr,
       saksgrunnlag: { mappeId: '663' },
     })
     const respons = await journalføring

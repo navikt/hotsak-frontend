@@ -15,10 +15,8 @@ export function usePerson(fnr?: string): UsePersonResponse {
     data: personInfo,
     error,
     isLoading,
-  } = useSwr<Person, HttpError, [string, string] | null>(
-    fnr ? ['/api/person', fnr] : null,
-    ([url, fnr]) => http.post<{ fnr: string }, Person>(url, { fnr }),
-    { keepPreviousData: true }
+  } = useSwr<Person, HttpError, [string, string] | null>(fnr ? ['/api/person', fnr] : null, ([url, fnr]) =>
+    http.post<{ fnr: string }, Person>(url, { fnr })
   )
 
   return {

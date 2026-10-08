@@ -1,7 +1,7 @@
 import { Box, HGrid, Skeleton } from '@navikt/ds-react'
 
 import { hotsakHistorikkMinWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
-import { LasterPersonlinje } from './Personlinje'
+import { LasterPersonlinje } from '../felleskomponenter/personlinje/Personlinje'
 import classes from './SakLoader.module.css'
 
 export function SakLoader() {

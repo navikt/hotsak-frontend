@@ -1,14 +1,13 @@
-import { BodyShort, Box, Button, ErrorMessage, HStack, Label, TextField, VStack, Detail } from '@navikt/ds-react'
+import { BodyShort, Box, Button, Detail, ErrorMessage, HStack, Label, TextField, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { InlineKopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
+import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { http } from '../io/HttpClient.ts'
+import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { type Journalpost, type Person } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
-import { useFormContext } from 'react-hook-form'
-import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
-import { TextContainer } from '../felleskomponenter/typografi.tsx'
 
 interface JournalføringParterProps {
   journalpost: Journalpost
@@ -17,22 +16,20 @@ interface JournalføringParterProps {
 }
 
 export function JournalføringParter({ journalpost, tildeltEnhet, kanRedigere }: JournalføringParterProps) {
-  const { watch, setValue } = useFormContext<JournalføringV2SkjemaVerdier>()
-  const journalføresPåFnr = watch('journalføresPåFnr')
+  const { fodselsnummer, setFodselsnummer } = usePersonContext()
 
   const [redigererBruker, setRedigererBruker] = useState(false)
   const [brukerInputFnr, setBrukerInputFnr] = useState('')
   const [brukerFeil, setBrukerFeil] = useState<string | null>(null)
   const [oppslagLaster, setOppslagLaster] = useState(false)
 
-  const { personInfo: valgtBruker } = usePerson(journalføresPåFnr || undefined)
+  const { personInfo } = usePerson(fodselsnummer)
 
-  const brukerNavn = valgtBruker
-    ? formaterNavn(valgtBruker.navn)
-    : journalpost.bruker
+  const brukerNavn = personInfo
+    ? formaterNavn(personInfo.navn)
+    : journalpost.bruker?.fnr === fodselsnummer
       ? formaterNavn(journalpost.bruker.navn)
       : ''
-  const brukerFnr = valgtBruker?.fnr ?? journalføresPåFnr
 
   function visBrukerIkkeFunnet() {
     setBrukerFeil('Bruker ikke funnet i PDL')
@@ -48,13 +45,12 @@ export function JournalføringParter({ journalpost, tildeltEnhet, kanRedigere }:
     }
     setOppslagLaster(true)
     try {
-      //TODO gjør dette fra en hook
       const person = await http.post<{ fnr: string }, Person>('/api/person', { fnr })
-      if (!person) {
+      if (!person?.fnr) {
         visBrukerIkkeFunnet()
         return
       }
-      setValue('journalføresPåFnr', person.fnr, { shouldDirty: true })
+      setFodselsnummer(person.fnr)
       setBrukerInputFnr('')
       setRedigererBruker(false)
     } catch {
@@ -108,8 +104,8 @@ export function JournalføringParter({ journalpost, tildeltEnhet, kanRedigere }:
                 ) : (
                   <HStack gap="space-1" align="center">
                     <BodyShort size="small">{brukerNavn} - </BodyShort>
-                    <BodyShort size="small">{brukerFnr}</BodyShort>
-                    <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
+                    <BodyShort size="small">{fodselsnummer}</BodyShort>
+                    <InlineKopiknapp copyText={fodselsnummer} tooltip="Kopier fødselsnummer" />
                   </HStack>
                 )}
               </VStack>
@@ -124,10 +120,10 @@ export function JournalføringParter({ journalpost, tildeltEnhet, kanRedigere }:
                   onClick={() => {
                     setRedigererBruker(true)
                     setBrukerFeil(null)
-                    setBrukerInputFnr(brukerFnr)
+                    setBrukerInputFnr(fodselsnummer)
                   }}
                 >
-                  Endre
+                  Endre <span className="sr-only">bruker</span>
                 </Button>
               ))}
           </HStack>
@@ -142,8 +138,8 @@ export function JournalføringParter({ journalpost, tildeltEnhet, kanRedigere }:
               </VStack>
               <HStack gap="space-1" align="center">
                 <BodyShort size="small">{brukerNavn} - </BodyShort>
-                <BodyShort size="small">{brukerFnr}</BodyShort>
-                <InlineKopiknapp copyText={brukerFnr} tooltip="Kopier fødselsnummer" />
+                <BodyShort size="small">{fodselsnummer}</BodyShort>
+                <InlineKopiknapp copyText={fodselsnummer} tooltip="Kopier fødselsnummer" />
               </HStack>
             </VStack>
           </HStack>

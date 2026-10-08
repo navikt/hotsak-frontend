@@ -1,11 +1,11 @@
-import { createContext, type ReactNode, useContext, useState } from 'react'
+import { createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useState } from 'react'
 
 interface PersonContextType {
   fodselsnummer: string
-  setFodselsnummer(fødselsnummer: string): void
+  setFodselsnummer: Dispatch<SetStateAction<string>>
 }
 
-const initialState = {
+const initialState: PersonContextType = {
   fodselsnummer: '',
   setFodselsnummer() {},
 }

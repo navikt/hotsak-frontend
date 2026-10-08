@@ -30,7 +30,7 @@ export class HttpError extends Error {
 
   static BAD_REQUEST = new HttpError('Bad Request', 400)
   static UNAUTHORIZED = new HttpError('Unauthorized', 401)
-  static FORBIDDEN = new HttpError('Forbidden', 401)
+  static FORBIDDEN = new HttpError('Forbidden', 403)
   static NOT_FOUND = new HttpError('Not Found', 404)
   static CONFLICT = new HttpError('Conflict', 409)
   static INTERNAL_SERVER_ERROR = new HttpError('Internal Server Error', 401)

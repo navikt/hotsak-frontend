@@ -30,6 +30,7 @@ export function mutateJournalpost(journalpostId: string) {
   return mutate(`/api/journalpost/${journalpostId}`)
 }
 
+// # TODO: Bruk denne overalt og fas ut useJournalpost når V1 journalføring er borte
 export function useJournalpostSuspense(journalpostId: string) {
   const { data: journalpost, mutate } = useSwr<Journalpost, HttpError>(`/api/journalpost/${journalpostId}`, {
     suspense: true,

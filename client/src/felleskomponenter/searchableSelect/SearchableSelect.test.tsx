@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useState } from 'react'
+import { StrictMode, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -25,6 +25,65 @@ function TestForm({ onSubmit = vi.fn() }: { onSubmit?: () => void }) {
 }
 
 describe('SearchableSelect', () => {
+  it('markerer hele tittelen ved fokus slik at skriving erstatter den', async () => {
+    const user = userEvent.setup()
+    render(
+      <StrictMode>
+        <TestForm />
+      </StrictMode>
+    )
+    const input = screen.getByRole<HTMLInputElement>('combobox', { name: 'Dokumenttittel' })
+
+    await user.click(input)
+    expect(input.selectionStart).toBe(0)
+    expect(input.selectionEnd).toBe('Opprinnelig tittel'.length)
+
+    await user.keyboard('Ny tittel')
+    expect(input).toHaveValue('Ny tittel')
+
+    await user.click(screen.getByRole('button', { name: 'Send inn' }))
+    await user.click(input)
+    expect(input.selectionStart).toBe(0)
+    expect(input.selectionEnd).toBe('Ny tittel'.length)
+  })
+
+  it('markerer ikke verdien i et skrivebeskyttet felt', async () => {
+    const user = userEvent.setup()
+    render(
+      <SearchableSelect
+        label="Dokumenttittel"
+        suggestions={suggestions}
+        value="Låst tittel"
+        onChange={vi.fn()}
+        readOnly
+      />
+    )
+    const input = screen.getByRole<HTMLInputElement>('combobox', { name: 'Dokumenttittel' })
+
+    await user.click(input)
+    expect(input.selectionStart).toBe(input.selectionEnd)
+    expect(input).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('markerer tittelen ved tastaturfokus uten å endre markeringen ved senere rendringer', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<TestForm />)
+    const input = screen.getByRole<HTMLInputElement>('combobox', { name: 'Dokumenttittel' })
+
+    await user.tab()
+    expect(input).toHaveFocus()
+    expect(input.selectionStart).toBe(0)
+    expect(input.selectionEnd).toBe('Opprinnelig tittel'.length)
+
+    input.setSelectionRange(4, 4)
+    rerender(<TestForm />)
+    expect(input.selectionStart).toBe(4)
+    expect(input.selectionEnd).toBe(4)
+
+    await user.click(input)
+    expect(input.selectionStart).toBe(input.selectionEnd)
+  })
+
   it('viser kontrollert verdi, filtrerer forslag og velger med tastaturet', async () => {
     const user = userEvent.setup()
     render(<TestForm />)

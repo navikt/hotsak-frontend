@@ -69,8 +69,8 @@ function JournalføringV2Innhold({ oppgave, journalpost, mutateJournalpost }: Jo
 
   return (
     <div className={classes.wrapper}>
+      <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
       <div className={classes.container}>
-        <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <Group orientation="horizontal" className={classes.panelGroup}>
           <Panel defaultSize={40} minSize="350px" id="skjema">
             <div className={classes.skjemaKolonne}>

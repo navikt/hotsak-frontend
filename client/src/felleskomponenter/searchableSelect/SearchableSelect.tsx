@@ -24,6 +24,7 @@ export function SearchableSelect({
 }: SearchableSelectProps) {
   const id = useId()
   const inputRef = useRef<HTMLInputElement>(null)
+  const selectOnClick = useRef(false)
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -85,9 +86,21 @@ export function SearchableSelect({
             setQuery('')
             setActiveIndex(-1)
             setOpen(true)
+            inputRef.current?.select()
+          }
+        }}
+        onMouseDown={(event) => {
+          selectOnClick.current = !readOnly && document.activeElement !== event.currentTarget
+        }}
+        onClick={(event) => {
+          if (selectOnClick.current) {
+            // The click can move the caret after focus has selected the text.
+            event.currentTarget.select()
+            selectOnClick.current = false
           }
         }}
         onBlur={() => {
+          selectOnClick.current = false
           setOpen(false)
           setActiveIndex(-1)
         }}

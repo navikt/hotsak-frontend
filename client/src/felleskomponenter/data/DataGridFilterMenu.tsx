@@ -47,6 +47,7 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
       return [...result.entries()]
     }
   }, [filter.options, filter.allOptions, filter.sortOptions, current.values, useAllOptions])
+  const counts = filter.counts
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
   const handleFilterReset = useDataGridFilterResetHandler(field, scope)
@@ -80,7 +81,7 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
                 }
               }}
             >
-              {label}
+              {counts ? `${label} (${counts.get(value as V) ?? 0})` : label}
             </ActionMenu.CheckboxItem>
           ))}
           {enabled && (

@@ -23,9 +23,12 @@ export function MineOppgaver() {
     tildelt: OppgaveTildelt.MEG,
     ferdigstiltIntervall: intervalString({ days: ANTALL_DAGER_FERDIGSTILTE }, iDag),
   })
-  const { oppgaver, filterOptions, isLoading } = ferdigstilte ? ferdigstilteOppgaver : åpneOppgaver
+  const { oppgaver, filterOptions, filterCounts, isLoading, antallViste } = ferdigstilte
+    ? ferdigstilteOppgaver
+    : åpneOppgaver
   const toolbarProps: OppgaveToolbarProps = {
     antallOppgaver: åpneOppgaver.antallOppgaver,
+    antallViste,
     antallHastesaker: åpneOppgaver.antallHastesaker,
     antallAktive: åpneOppgaver.antallAktive,
     antallPåVent: åpneOppgaver.antallPåVent,
@@ -36,7 +39,12 @@ export function MineOppgaver() {
   return (
     <Box marginInline="space-20">
       <OppgaveToolbar {...toolbarProps} />
-      <MineOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
+      <MineOppgaverTable
+        oppgaver={oppgaver}
+        filterOptions={filterOptions}
+        filterCounts={filterCounts}
+        loading={isLoading}
+      />
     </Box>
   )
 }

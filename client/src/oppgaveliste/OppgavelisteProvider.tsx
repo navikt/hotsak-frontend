@@ -20,7 +20,7 @@ export interface OppgavelisteProviderProps {
 
 export function OppgavelisteProvider(props: OppgavelisteProviderProps) {
   const { suffix, defaultColumns, children } = props
-  const [state, dispatch] = useLocalReducer('oppgaveliste' + suffix, reducer, initialState)
+  const [state, dispatch] = useLocalReducer('oppgaveliste' + suffix, reducer, withInitialState)
   return (
     <OppgavelisteContext value={state}>
       <OppgavelisteDispatch value={dispatch}>
@@ -30,6 +30,11 @@ export function OppgavelisteProvider(props: OppgavelisteProviderProps) {
       </OppgavelisteDispatch>
     </OppgavelisteContext>
   )
+}
+
+// Lagret state fra før nye felt ble lagt til får standardverdier, for å kunne sette nye til true
+function withInitialState(storedState?: OppgavelisteState): OppgavelisteState {
+  return { ...initialState, ...storedState }
 }
 
 function reducer(state: OppgavelisteState, action: OppgavePaginationAction): OppgavelisteState {
@@ -48,6 +53,8 @@ function reducer(state: OppgavelisteState, action: OppgavePaginationAction): Opp
       }
     case 'toggleFilterModus':
       return { ...state, filterModus: state.filterModus === 'matchet' ? 'alle' : 'matchet' }
+    case 'toggleVisAntallIFiltre':
+      return { ...state, visAntallIFiltre: !state.visAntallIFiltre }
     default:
       return state
   }

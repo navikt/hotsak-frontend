@@ -514,6 +514,7 @@ export class SakStore extends Dexie {
       statuskategori: SaksstatusKategori.ÅPEN,
       opprettet: nå,
       søknadGjelder: request.tittel,
+      søknadMottatt: nå,
       bruker: {
         fnr: request.journalføresPåFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },

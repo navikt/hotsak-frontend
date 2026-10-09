@@ -6,14 +6,19 @@ import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 
 export function EnhetensOppgaver() {
-  const { oppgaver, filterOptions, isLoading, ...rest } = useClientSideOppgaver({
+  const { oppgaver, filterOptions, filterCounts, isLoading, ...rest } = useClientSideOppgaver({
     statuskategori: Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.INGEN,
   })
   return (
     <Box marginInline="space-20">
       <OppgaveToolbar loading={isLoading} {...rest} />
-      <EnhetensOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
+      <EnhetensOppgaverTable
+        oppgaver={oppgaver}
+        filterOptions={filterOptions}
+        filterCounts={filterCounts}
+        loading={isLoading}
+      />
     </Box>
   )
 }

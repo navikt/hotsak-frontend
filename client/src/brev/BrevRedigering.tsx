@@ -51,7 +51,7 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
   const sendesMedBehandling = brev?.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV
   const brevUtenVedtak = brev?.brevmal !== undefined && isBreveditorbrevUtenVedtak(brev.brevmal)
 
-  const datoSoknadMottatt = sak?.data.opprettet
+  const datoSoknadMottatt = sak?.data.søknadMottatt
   const hjelpemidlerSøktOm = sak?.data.søknadGjelder
     ? sak.data.søknadGjelder
         .replace(/^Søknad om:\s*/i, '')

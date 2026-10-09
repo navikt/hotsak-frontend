@@ -30,6 +30,7 @@ export interface SakBase {
   statuskategori: SaksstatusKategori
   opprettet: string
   søknadGjelder: string
+  søknadMottatt: string
   bruker: Bruker
   innsender: Innsender
   enhet: Enhet

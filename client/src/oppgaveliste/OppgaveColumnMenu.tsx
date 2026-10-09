@@ -21,14 +21,19 @@ import {
   useOppgavelisteColumnsResetAllHandler,
   useOppgavelisteColumnToggleColumnHandler,
 } from './OppgavelisteColumnsContext.ts'
-import { useOppgavelisteContext, useOppgavelisteFilterModusToggleHandler } from './OppgavelisteContext.tsx'
+import {
+  useOppgavelisteContext,
+  useOppgavelisteFilterModusToggleHandler,
+  useOppgavelisteVisAntallIFiltreToggleHandler,
+} from './OppgavelisteContext.tsx'
 
 export function OppgaveColumnMenu() {
   const columnsState = useOppgavelisteColumnsContext()
   const isOppgavelisteCustomized = useIsOppgavelisteCustomized()
   const handleResetAll = useOppgavelisteColumnsResetAllHandler()
-  const { filterModus } = useOppgavelisteContext()
+  const { filterModus, visAntallIFiltre } = useOppgavelisteContext()
   const toggleFilterModus = useOppgavelisteFilterModusToggleHandler()
+  const toggleVisAntallIFiltre = useOppgavelisteVisAntallIFiltreToggleHandler()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -54,6 +59,13 @@ export function OppgaveColumnMenu() {
             <ActionMenu.Group label="Filterverdier">
               <ActionMenu.CheckboxItem checked={filterModus === 'alle'} onCheckedChange={toggleFilterModus}>
                 Vis alle mulige verdier
+              </ActionMenu.CheckboxItem>
+            </ActionMenu.Group>
+          </Tooltip>
+          <Tooltip content="Vis antall oppgaver som matcher hver verdi i filtrene, gitt de andre aktive filtrene">
+            <ActionMenu.Group label="Antall i filtre">
+              <ActionMenu.CheckboxItem checked={visAntallIFiltre} onCheckedChange={toggleVisAntallIFiltre}>
+                Vis antall per verdi
               </ActionMenu.CheckboxItem>
             </ActionMenu.Group>
           </Tooltip>

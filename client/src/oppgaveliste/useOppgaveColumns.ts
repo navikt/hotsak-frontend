@@ -4,24 +4,30 @@ import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { getOppgaveColumn } from './oppgaveColumns.tsx'
 import { useOppgavelisteColumnsContext } from './OppgavelisteColumnsContext.ts'
+import { useOppgavelisteContext } from './OppgavelisteContext.tsx'
 import { useOppgaveFiltre } from './useOppgaveFiltre.ts'
-import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
+import { type OppgaveFilterCounts, type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 
-export function useOppgaveColumns(filterOptions: OppgaveFilterOptions): DataGridColumn<Oppgave>[] {
+export function useOppgaveColumns(
+  filterOptions: OppgaveFilterOptions,
+  filterCounts?: OppgaveFilterCounts
+): DataGridColumn<Oppgave>[] {
   const columnsState = useOppgavelisteColumnsContext()
   const filtre = useOppgaveFiltre()
+  const { visAntallIFiltre } = useOppgavelisteContext()
   return useMemo(() => {
     return columnsState.map(({ id, checked }): DataGridColumn<Oppgave> => {
       const options = filterOptions[id]
       const column = getOppgaveColumn(id)
       const allOptions = finnAlleVerdier(id, filtre)
+      const counts = visAntallIFiltre ? filterCounts?.[id] : undefined
       return {
         ...column,
-        ...(column.filter && options ? { filter: { ...column.filter, options, allOptions } } : {}),
+        ...(column.filter ? { filter: { ...column.filter, ...(options ? { options, allOptions } : {}), counts } } : {}),
         hidden: !checked,
       }
     })
-  }, [columnsState, filterOptions, filtre])
+  }, [columnsState, filterOptions, filterCounts, visAntallIFiltre, filtre])
 }
 
 function finnAlleVerdier(id: string, filtere: ReturnType<typeof useOppgaveFiltre>): ReadonlySet<string> | undefined {

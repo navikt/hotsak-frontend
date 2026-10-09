@@ -1,5 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons'
-import { Box, Button, HGrid, HStack, Tabs } from '@navikt/ds-react'
+import { Box, Button, Detail, HGrid, HStack, Tabs } from '@navikt/ds-react'
 
 import {
   useDataGridFilterResetAllHandler,
@@ -16,13 +16,20 @@ export interface OppgaveToolbarProps {
   antallAktive: number
   antallPåVent: number
   antallFerdigstilte?: number
+  antallViste?: number
   ferdigstilte?: boolean
   loading?: boolean
 }
 
 export function OppgaveToolbar(props: OppgaveToolbarProps) {
-  const { antallHastesaker, antallAktive, antallPåVent, antallFerdigstilte, ferdigstilte, loading } = props
+  const { antallHastesaker, antallAktive, antallPåVent, antallFerdigstilte, antallViste, ferdigstilte, loading } = props
   const { currentTab } = useOppgavelisteContext()
+  const antallIFanen = {
+    [OppgaveToolbarTab.AKTIVE]: antallAktive,
+    [OppgaveToolbarTab.HASTESAKER]: antallHastesaker,
+    [OppgaveToolbarTab.PÅ_VENT]: antallPåVent,
+    [OppgaveToolbarTab.FERDIGSTILTE]: antallFerdigstilte,
+  }[currentTab]
   const handleTabChanged = useOppgavelisteTabChangeHandler()
   const isDataGridFiltered = useIsDataGridFiltered(currentTab)
   const handleFilterResetAll = useDataGridFilterResetAllHandler(currentTab)
@@ -30,7 +37,13 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
   return (
     <Box borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="space-8">
       <HGrid columns="1fr 1fr" align="center" className={classes.grid}>
-        <div />
+        <Box>
+          {!loading && antallViste != null && antallIFanen != null && (
+            <Detail>
+              Viser {antallViste} av {antallIFanen} oppgaver
+            </Detail>
+          )}
+        </Box>
         <HStack gap="space-32" align="center" justify="end" wrap={false}>
           {!loading && (
             <Tabs value={currentTab} size="small" onChange={handleTabChanged}>

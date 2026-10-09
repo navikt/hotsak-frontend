@@ -1,7 +1,6 @@
-import { Box, Button, HStack, InfoCard, Tooltip, VStack } from '@navikt/ds-react'
+import { Box, Button, HStack, InfoCard, Table, VStack } from '@navikt/ds-react'
 import { type ReactNode, Suspense, useEffect, useState } from 'react'
 
-import { EnvelopeClosedIcon } from '@navikt/aksel-icons'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
@@ -13,7 +12,15 @@ import { AngreSendingAvBrevDialog } from './AngreSendingAvBrevDialog.tsx'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import { type Brev, BreveditorbrevUtenVedtak, Brevmal, BrevmalTekst, Brevstatus, brevstatusTekst } from './brevTyper.ts'
+import {
+  type Brev,
+  Brevdistribusjon,
+  BreveditorbrevUtenVedtak,
+  Brevmal,
+  BrevmalTekst,
+  Brevstatus,
+  brevstatusTekst,
+} from './brevTyper.ts'
 import { NyttBrevDialog } from './NyttBrevDialog.tsx'
 
 export interface BrevPanelProps {
@@ -128,24 +135,51 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
           {brev.length === 0 ? (
             <BrevInfoCard title="Ingen brev">Det er ikke opprettet noen brev i saken.</BrevInfoCard>
           ) : (
-            <VStack gap="space-8">
-              {brev.map((brev) => (
-                <Button key={brev.brevId} variant="tertiary" onClick={() => setValgtBrevId(brev.brevId)}>
-                  <HStack gap="space-2" paddingInline="space-8" align="center">
-                    {BrevmalTekst[brev.brevmal]} - {brevstatusTekst(brev.brevstatus)} ({formaterDato(brev.opprettet)})
-                    <Tooltip
+            <Table>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell scope="col"></Table.HeaderCell>
+                  <Table.HeaderCell scope="col"></Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Brevtype</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Brevstatus</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Opprettet</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Ferdigstilt</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Distribusjonsstatus</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {brev.map((brev) => {
+                  return (
+                    <Table.ExpandableRow
+                      key={brev.brevId}
                       content={
                         brev.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV
-                          ? 'Vedtaksbrevet sendes ut automatisk etter du har fatted et vedtak'
+                          ? 'Vedtaksbrevet sendes ut automatisk etter du har fattet et vedtak'
                           : 'Brevet sendes ut manuelt ved at du trykker på "Send brev" når du står inne på det ferdigstilte brevet'
                       }
                     >
-                      <EnvelopeClosedIcon title="a11y-title" fontSize="1.5rem" />
-                    </Tooltip>
-                  </HStack>
-                </Button>
-              ))}
-            </VStack>
+                      <Table.DataCell>
+                        <Button
+                          size="xsmall"
+                          type="button"
+                          variant="secondary"
+                          onClick={() => setValgtBrevId(brev.brevId)}
+                        >
+                          Åpne
+                        </Button>
+                      </Table.DataCell>
+                      <Table.DataCell>{BrevmalTekst[brev.brevmal]}</Table.DataCell>
+                      <Table.DataCell>{brevstatusTekst(brev.brevstatus)}</Table.DataCell>
+                      <Table.DataCell>{formaterDato(new Date(brev.opprettet))}</Table.DataCell>
+                      <Table.DataCell>
+                        {brev.ferdigstilt ? formaterDato(new Date(brev.ferdigstilt)) : 'Aktivt'}
+                      </Table.DataCell>
+                      <Table.DataCell>{distribusjonsStatus(brev.distribusjon[0])}</Table.DataCell>
+                    </Table.ExpandableRow>
+                  )
+                })}
+              </Table.Body>
+            </Table>
           )}
         </Box>
       </BrevPanelLayout>
@@ -229,4 +263,18 @@ function BrevInfoCard({ title, children }: { title: string; children: ReactNode 
       </InfoCard>
     </TextContainer>
   )
+}
+
+function distribusjonsStatus(brevdistribusjon: Brevdistribusjon): string {
+  if (!brevdistribusjon) {
+    return '-'
+  }
+  if (brevdistribusjon.distribuert) {
+    return 'Distribuert'
+  } else if (brevdistribusjon.journalført) {
+    return 'Journalført'
+  } else if (brevdistribusjon.skalDistribueres) {
+    return 'Skal distribueres'
+  }
+  return 'Ikke distribuert'
 }

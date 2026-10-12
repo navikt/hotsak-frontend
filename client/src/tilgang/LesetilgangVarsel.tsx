@@ -1,14 +1,14 @@
 import { Alert } from '@navikt/ds-react'
 
+import { useMiljø } from '../utils/useMiljø.ts'
 import { AnsattGruppe } from './Ansatt.ts'
 import { useInnloggetAnsatt } from './useTilgang.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 export function LesetilgangVarsel() {
   const { erInnlogget, grupper } = useInnloggetAnsatt()
-  const { erIkkeProd } = useMiljø()
+  const { erProd } = useMiljø()
 
-  if (erIkkeProd) {
+  if (erProd) {
     return null
   }
 

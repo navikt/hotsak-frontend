@@ -7,6 +7,7 @@ import { lagTilfeldigNavn } from './navn.ts'
 
 export const BARNEBRILLE_BREVKODE = 'NAV 10-07.34'
 export const HJELPEMIDDEL_BREVKODE = 'NAV 10-07.03'
+export const FUNKSJONSEVNE_BREVKODE = 'NAV 10-07.86'
 
 /** Journalpost-IDer som tilhører hjelpemiddelsaker (ikke barnebriller). */
 export const HJELPEMIDDEL_JOURNALPOST_IDS = HJELPEMIDDEL_IDS
@@ -88,6 +89,20 @@ export function lagHjelpemiddelDokumenter(journalpostId: string): InsertDokument
       tittel: 'NAV 10-07.03: Søknad om hjelpemidler',
       brevkode: HJELPEMIDDEL_BREVKODE,
       logiskeVedlegg: [],
+    },
+  ]
+}
+
+export function lagFunksjonsevneDokumenter(journalpostId: string): InsertDokument[] {
+  return [
+    {
+      journalpostId,
+      tittel: 'NAV 10-07.86: Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker',
+      brevkode: FUNKSJONSEVNE_BREVKODE,
+      logiskeVedlegg: [
+        { vedleggId: `${journalpostId}-1`, tittel: 'Annen dokumentasjon' },
+        { vedleggId: `${journalpostId}-2`, tittel: 'Uttalelse fra fagperson om diagnose og funksjonsevne' },
+      ],
     },
   ]
 }

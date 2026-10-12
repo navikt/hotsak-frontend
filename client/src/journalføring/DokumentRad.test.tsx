@@ -20,6 +20,25 @@ const dokument: Dokument = {
 }
 
 describe('DokumentRad', () => {
+  it('viser forhåndsvalgt annet innhold uten å vise annen dokumentasjon', () => {
+    render(
+      <DokumentRad
+        dokument={dokument}
+        index={0}
+        total={1}
+        valgtTittel="Opprinnelig tittel"
+        onTittelChange={vi.fn()}
+        valgteChips={['Uttalelse fra fagperson om diagnose og funksjonsevne']}
+        onChipsChange={vi.fn()}
+        readOnly
+        visTittelFeil={false}
+      />
+    )
+
+    expect(screen.getByText('Uttalelse fra fagperson om diagnose og funksjonsevne')).toBeVisible()
+    expect(screen.queryByText('Annen dokumentasjon')).not.toBeInTheDocument()
+  })
+
   it('viser valgt tittel og sender fritekst og valgte forslag til forelderen', async () => {
     const user = userEvent.setup()
     const onTittelChange = vi.fn()

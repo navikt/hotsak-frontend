@@ -20,6 +20,8 @@ export type OppgaveFilterOptions = Partial<
   Record<OppgaveColumnField, ReadonlySet<string> | ReadonlyMap<string, string>>
 >
 
+export type OppgaveFilterCounts = Partial<Record<OppgaveColumnField, ReadonlyMap<string, number>>>
+
 export function useOppgaveFilterOptions(oppgaver: Oppgave[]): OppgaveFilterOptions {
   const isSaksbehandlerBarnebriller = useIsSaksbehandlerBarnebriller()
   return useMemo(() => {

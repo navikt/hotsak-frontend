@@ -21,6 +21,7 @@ export interface OppgavelisteState {
   currentPage: number
   sort: OppgavelisteSortState
   filterModus: 'matchet' | 'alle'
+  visAntallIFiltre: boolean
 }
 
 export const initialState: OppgavelisteState = {
@@ -31,6 +32,7 @@ export const initialState: OppgavelisteState = {
     direction: 'ascending',
   },
   filterModus: 'matchet',
+  visAntallIFiltre: true,
 }
 
 export const OppgavelisteContext = createContext<OppgavelisteState>(initialState)
@@ -86,8 +88,15 @@ export function useOppgavelisteFilterModusToggleHandler(): () => void {
   }, [dispatch])
 }
 
+export function useOppgavelisteVisAntallIFiltreToggleHandler(): () => void {
+  const dispatch = useOppgavelisteDispatch()
+  return useCallback(() => {
+    dispatch({ type: 'toggleVisAntallIFiltre' })
+  }, [dispatch])
+}
+
 interface OppgavelisteBaseAction {
-  type: 'changeTab' | 'changePage' | 'sort' | 'toggleFilterModus'
+  type: 'changeTab' | 'changePage' | 'sort' | 'toggleFilterModus' | 'toggleVisAntallIFiltre'
 }
 
 export interface OppgavelisteChangeTabAction extends OppgavelisteBaseAction {
@@ -108,8 +117,13 @@ export interface OppgavelisteToggleFilterModusAction extends OppgavelisteBaseAct
   type: 'toggleFilterModus'
 }
 
+export interface OppgavelisteToggleVisAntallIFiltreAction extends OppgavelisteBaseAction {
+  type: 'toggleVisAntallIFiltre'
+}
+
 export type OppgavePaginationAction =
   | OppgavelisteChangeTabAction
   | OppgavelisteChangePageAction
   | OppgavelisteSortAction
   | OppgavelisteToggleFilterModusAction
+  | OppgavelisteToggleVisAntallIFiltreAction

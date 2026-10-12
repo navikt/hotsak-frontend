@@ -42,7 +42,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
 
-  const datoSoknadMottatt = sak?.data.opprettet
+  const datoSoknadMottatt = sak?.data.søknadMottatt
   const hjelpemidlerSøktOm = sak?.data.søknadGjelder
     ? sak.data.søknadGjelder
         .replace(/^Søknad om:\s*/i, '')

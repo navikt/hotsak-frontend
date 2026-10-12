@@ -59,6 +59,7 @@ const sak: Sak = {
   statuskategori: SaksstatusKategori.ÅPEN,
   opprettet: '2026-01-01',
   søknadGjelder: 'Hjelpemidler',
+  søknadMottatt: '2026-01-01',
   bruker: {
     fnr: '00000000000',
     navn: { fornavn: 'Test', etternavn: 'Bruker' },

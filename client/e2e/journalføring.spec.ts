@@ -18,6 +18,16 @@ async function velgGjelder(page: import('@playwright/test').Page) {
 }
 
 test.describe('Journalføring', () => {
+  test('viser annet innhold fra logiske vedlegg på 10-07.86-oppgaven', async ({ page }) => {
+    await page.goto('/oppgave/109009')
+    await expect(page.getByRole('heading', { level: 1, name: 'Journalføring' })).toBeVisible()
+    await expect(page.getByRole('combobox', { name: 'Dokumenttittel (1 av 1)' })).toHaveValue(
+      'NAV 10-07.86: Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker'
+    )
+    await expect(page.getByText('Uttalelse fra fagperson om diagnose og funksjonsevne', { exact: true })).toBeVisible()
+    await expect(page.getByText('Annen dokumentasjon', { exact: true })).toHaveCount(0)
+  })
+
   test('kan koble en journalpost til en eksisterende Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)
     await velgGjelder(page)

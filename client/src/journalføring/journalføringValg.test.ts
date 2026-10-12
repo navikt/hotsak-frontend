@@ -2,7 +2,12 @@ import { describe, expect, it } from 'vitest'
 
 import { type Journalpost, JournalpostStatusType } from '../types/types.internal.ts'
 import { Sakstype } from './journalføringTypes.ts'
-import { byggDokumentPayload, byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
+import {
+  byggDokumentPayload,
+  byggJournalføringSak,
+  finnTildeltSaksbehandler,
+  hentAnnetInnhold,
+} from './journalføringValg.ts'
 
 const journalpost: Journalpost = {
   journalpostId: 'journalpost-1',
@@ -38,6 +43,59 @@ describe('byggDokumentPayload', () => {
       tittel: 'Overordnet tittel',
       dokumenter: [],
     })
+  })
+
+  it('bruker filtrerte logiske vedlegg for uendrede dokumenter, men beholder eksplisitt tomt innhold', () => {
+    const medVedlegg = {
+      ...journalpost,
+      dokumenter: [
+        {
+          ...journalpost.dokumenter[0],
+          logiskeVedlegg: [
+            { vedleggId: '1', tittel: 'Annen dokumentasjon' },
+            { vedleggId: '2', tittel: 'Uttalelse fra fagperson om diagnose og funksjonsevne' },
+          ],
+        },
+        {
+          ...journalpost.dokumenter[1],
+          logiskeVedlegg: [{ vedleggId: '3', tittel: 'Faglig vurdering' }],
+        },
+      ],
+    }
+
+    expect(byggDokumentPayload(medVedlegg, {}, {})).toMatchObject({
+      dokumenter: [
+        { dokumentId: 'dokument-1', annetInnhold: ['Uttalelse fra fagperson om diagnose og funksjonsevne'] },
+        { dokumentId: 'dokument-2', annetInnhold: ['Faglig vurdering'] },
+      ],
+    })
+    expect(byggDokumentPayload(medVedlegg, {}, { 'dokument-1': [] })).toMatchObject({
+      dokumenter: [
+        { dokumentId: 'dokument-1', annetInnhold: [] },
+        { dokumentId: 'dokument-2', annetInnhold: ['Faglig vurdering'] },
+      ],
+    })
+  })
+})
+
+describe('hentAnnetInnhold', () => {
+  it.each([
+    [['Annen dokumentasjon'], []],
+    [
+      ['Annen dokumentasjon', 'Uttalelse fra fagperson om diagnose og funksjonsevne'],
+      ['Uttalelse fra fagperson om diagnose og funksjonsevne'],
+    ],
+    [
+      ['ANNEN DOKUMENTASJON', 'Annen dokumentasjon vedlagt', 'Faglig vurdering'],
+      ['Annen dokumentasjon vedlagt', 'Faglig vurdering'],
+    ],
+  ])('filtrerer annen dokumentasjon fra %j til %j', (titler, forventet) => {
+    expect(
+      hentAnnetInnhold({
+        ...journalpost.dokumenter[0],
+        logiskeVedlegg: titler.map((tittel, index) => ({ vedleggId: String(index), tittel })),
+      })
+    ).toEqual(forventet)
   })
 })
 

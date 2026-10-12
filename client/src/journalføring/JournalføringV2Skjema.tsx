@@ -1,6 +1,6 @@
 import { BodyShort, Button, Heading, HStack, useDatepicker, VStack, Tag } from '@navikt/ds-react'
 import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Skillelinje } from '../felleskomponenter/Strek.tsx'
@@ -45,7 +45,10 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
   const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
   const [visDokumenttittelFeil, setVisDokumenttittelFeil] = useState(false)
-  const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
+  const annetInnhold = useRef<{ journalpostId: string; endringer: Record<string, string[]> }>({
+    journalpostId: journalpost.journalpostId,
+    endringer: {},
+  })
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
   const [tilordnetEnhet, setTilordnetEnhet] = useState<TilordnetEnhet>()
 
@@ -123,7 +126,9 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
 
   function byggJournalføringPayload() {
-    const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, annetInnhold)
+    const endringer =
+      annetInnhold.current.journalpostId === journalpost.journalpostId ? annetInnhold.current.endringer : {}
+    const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, endringer)
     return { tittel, journalføresPåFnr: fodselsnummer, dokumenter }
   }
 
@@ -233,11 +238,18 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
             </VStack>
 
             <JournalføringDokumenter
+              key={journalpost.journalpostId}
               journalpost={journalpost}
               dokumentTitler={dokumentTitler}
-              annetInnhold={annetInnhold}
               onTittelChange={(id, tittel) => setDokumentTitler((prev) => ({ ...prev, [id]: tittel }))}
-              onChipsChange={(id, chips) => setAnnetInnhold((prev) => ({ ...prev, [id]: chips }))}
+              onChipsChange={(id, chips) => {
+                const endringer =
+                  annetInnhold.current.journalpostId === journalpost.journalpostId ? annetInnhold.current.endringer : {}
+                annetInnhold.current = {
+                  journalpostId: journalpost.journalpostId,
+                  endringer: { ...endringer, [id]: chips },
+                }
+              }}
               readOnly={!kanRedigere}
               visTittelFeil={visDokumenttittelFeil}
             />

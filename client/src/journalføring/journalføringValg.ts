@@ -16,6 +16,12 @@ export const GOSYS_GENERELL_SAK: Sakvalg = {
   sakstype: Sakstype.GENERELL_SAK,
 }
 
+export function hentAnnetInnhold(dokument: Dokument): string[] {
+  return dokument.logiskeVedlegg
+    .map(({ tittel }) => tittel)
+    .filter((tittel) => tittel.toLocaleLowerCase('nb') !== 'annen dokumentasjon')
+}
+
 export function byggDokumentPayload(
   journalpost: Journalpost,
   dokumentTitler: Record<string, string>,
@@ -29,7 +35,7 @@ export function byggDokumentPayload(
   const dokumenter = journalpost.dokumenter.map((dok: Dokument) => ({
     dokumentId: dok.dokumentId,
     tittel: normaliserDokumenttittel(dokumentTitler[dok.dokumentId] ?? dok.tittel),
-    annetInnhold: annetInnhold[dok.dokumentId] ?? [],
+    annetInnhold: annetInnhold[dok.dokumentId] ?? hentAnnetInnhold(dok),
   }))
   return { tittel, dokumenter }
 }

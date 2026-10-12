@@ -8,6 +8,7 @@ import {
   InsertHendelse,
   InsertJournalpost,
   lagDokumenter,
+  lagFunksjonsevneDokumenter,
   lagHjelpemiddelDokumenter,
   lagJournalpost,
   LagretDokument,
@@ -62,16 +63,25 @@ export class JournalpostStore extends Dexie {
       lagJournalpost('9006', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
       lagJournalpost('9007', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
       lagJournalpost('9008', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
+      lagJournalpost('9009', 'Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker', {
+        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+      }),
     ]
 
-    v2Poster.forEach(async (v2Post) => {
-      await this.journalposter.add(v2Post)
-      await this.dokumenter.bulkAdd(lagHjelpemiddelDokumenter(v2Post.journalpostId) as LagretDokument[])
-      await this.personStore.lagreAlle([
-        { ...lagPerson(), fnr: v2Post.fnrInnsender },
-        { ...lagPerson(), fnr: v2Post.bruker?.fnr!! },
-      ])
-    })
+    await Promise.all(
+      v2Poster.map(async (v2Post) => {
+        await this.journalposter.add(v2Post)
+        const dokumenter =
+          v2Post.journalpostId === '9009'
+            ? lagFunksjonsevneDokumenter(v2Post.journalpostId)
+            : lagHjelpemiddelDokumenter(v2Post.journalpostId)
+        await this.dokumenter.bulkAdd(dokumenter as LagretDokument[])
+        await this.personStore.lagreAlle([
+          { ...lagPerson(), fnr: v2Post.fnrInnsender },
+          { ...lagPerson(), fnr: v2Post.bruker?.fnr!! },
+        ])
+      })
+    )
 
     return ['9006']
   }

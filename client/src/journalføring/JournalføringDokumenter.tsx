@@ -1,12 +1,13 @@
 import { Heading, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
 
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { DokumentRad } from './DokumentRad.tsx'
+import { hentAnnetInnhold } from './journalføringValg.ts'
 
 interface JournalføringDokumenterProps {
   journalpost: Journalpost
   dokumentTitler: Record<string, string>
-  annetInnhold: Record<string, string[]>
   onTittelChange(dokumentId: string, tittel: string): void
   onChipsChange(dokumentId: string, chips: string[]): void
   readOnly: boolean
@@ -16,12 +17,13 @@ interface JournalføringDokumenterProps {
 export function JournalføringDokumenter({
   journalpost,
   dokumentTitler,
-  annetInnhold,
   onTittelChange,
   onChipsChange,
   readOnly,
   visTittelFeil,
 }: JournalføringDokumenterProps) {
+  const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
+
   return (
     <VStack gap="space-8">
       <Heading level="2" size="small">
@@ -35,8 +37,11 @@ export function JournalføringDokumenter({
           total={journalpost.dokumenter.length}
           valgtTittel={dokumentTitler[dok.dokumentId] ?? dok.tittel}
           onTittelChange={(tittel) => onTittelChange(dok.dokumentId, tittel)}
-          valgteChips={annetInnhold[dok.dokumentId] ?? []}
-          onChipsChange={(chips) => onChipsChange(dok.dokumentId, chips)}
+          valgteChips={annetInnhold[dok.dokumentId] ?? hentAnnetInnhold(dok)}
+          onChipsChange={(chips) => {
+            setAnnetInnhold((prev) => ({ ...prev, [dok.dokumentId]: chips }))
+            onChipsChange(dok.dokumentId, chips)
+          }}
           readOnly={readOnly}
           visTittelFeil={visTittelFeil}
         />

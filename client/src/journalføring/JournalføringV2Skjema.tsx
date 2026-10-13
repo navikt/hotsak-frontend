@@ -32,14 +32,21 @@ import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import classes from './JournalføringV2Skjema.module.css'
 import { byggDokumentPayload, byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
 import { harUgyldigeDokumenttitler } from './dokumenttittelValidering.ts'
+import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
 interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
   mutateJournalpost(): void
+  standardverdier: JournalføringStandardverdier
 }
 
-export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost }: JournalføringV2SkjemaProps) {
+export function JournalføringV2Skjema({
+  oppgave,
+  journalpost,
+  mutateJournalpost,
+  standardverdier,
+}: JournalføringV2SkjemaProps) {
   const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
   const [valgtSak, setValgtSak] = useState<Sakvalg | null>(null)
   const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
@@ -68,10 +75,8 @@ export function JournalføringV2Skjema({ oppgave, journalpost, mutateJournalpost
     defaultValues: {
       tema: 'HJE',
       prioritet: Oppgaveprioritet.NORMAL,
-      tilordnetEnhet: 'enhetensOppgaveliste',
+      ...standardverdier,
       kommentar: '',
-      behandlingstype: '',
-      behandlingstema: '',
       stønadsklassifisering: 'DA',
       stønadType: 'S',
       mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),

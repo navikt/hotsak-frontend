@@ -7,11 +7,11 @@ import { HttpError } from '../io/HttpError.ts'
 import { JournalføringLoader } from '../journalføring/JournalføringLoader.tsx'
 import { useJournalpostSuspense } from '../saksbilde/useJournalpost.ts'
 import { type Journalføringsoppgave } from './oppgaveTypes.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
+import { BREVKODE_BRILLER_TIL_BARN } from '../journalføring/journalføringStandardverdier.ts'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
 const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
-
-const BREVKODE_BRILLER_TIL_BARN = ['NAV 10-07.34', 'NAVe 10-07.34']
 
 export function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) {
   return (
@@ -28,12 +28,17 @@ export function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppg
 
 function VelgJournalføring({ oppgave }: { oppgave: Journalføringsoppgave }) {
   const { journalpost, mutate } = useJournalpostSuspense(oppgave.journalpostId)
-  const brevkode = journalpost.dokumenter[0]?.brevkode
+  const { erProd } = useMiljø()
 
-  if (brevkode && !BREVKODE_BRILLER_TIL_BARN.includes(brevkode)) {
-    return <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={mutate} />
+  const brevkode = journalpost.dokumenter[0]?.brevkode
+  const erBarnebrilleSøknad =
+    brevkode && BREVKODE_BRILLER_TIL_BARN.includes(brevkode) ? journalpost.innsender.fnr : journalpost.bruker?.fnr
+
+  if (erProd && erBarnebrilleSøknad) {
+    return <Journalføring oppgave={oppgave} />
   }
-  return <Journalføring oppgave={oppgave} />
+
+  return <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={mutate} />
 }
 
 function JournalpostFeilmelding({ error }: FallbackProps) {

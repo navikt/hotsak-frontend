@@ -10,6 +10,7 @@ import { useDarkMode } from './header/useDarkMode.ts'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { useLogBruker } from './sporing/useLogBruker.ts'
 import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
+import { LesetilgangVarsel } from './tilgang/LesetilgangVarsel.tsx'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { UnleashEnhetContext } from './unleash/UnleashEnhetContext.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
@@ -32,6 +33,7 @@ export function App() {
                   Hopp til hovedinnhold
                 </a>
                 <Toppmeny />
+                <LesetilgangVarsel />
                 <Utviklingsverktøy />
                 <AppRoutes />
               </ToastProvider>

@@ -21,8 +21,8 @@ export function LesetilgangVarsel() {
 
   return (
     <Alert variant="info" size="small" fullWidth contentMaxWidth={false} role="status">
-      Du har kun lesetilgang i Hotsak. Du kan ikke behandle saker. Hvis du trenger full tilgang, kontakt
-      rolleadministratoren for enheten.
+      Du har kun lesetilgang i Hotsak. Du kan ikke behandle saker. Hvis du trenger full tilgang, kontakt din nærmeste
+      leder.
     </Alert>
   )
 }

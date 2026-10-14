@@ -12,12 +12,16 @@ import { lagJournalføringsoppgave } from '../mocks/data/lagOppgave.ts'
 import { type Journalføringsoppgave, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { PersonContext, usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
+import { type Journalpost } from '../types/types.internal.ts'
 import { JournalføringV2 } from './JournalføringV2.tsx'
 
 const fnrFraForrigeOppgave = '02020299999'
 const journalpostensFnr = '01010199999'
 
-const { skjemaFnr } = vi.hoisted(() => ({ skjemaFnr: [] as string[] }))
+const { skjemaFnr, skjemaStandardverdier } = vi.hoisted(() => ({
+  skjemaFnr: [] as string[],
+  skjemaStandardverdier: [] as unknown[],
+}))
 
 // Simulerer SWR: personen er ikke tilgjengelig ved første render, men lastes asynkront.
 vi.mock('../personoversikt/usePerson.ts', async () => {
@@ -34,9 +38,10 @@ vi.mock('../personoversikt/usePerson.ts', async () => {
   }
 })
 vi.mock('./JournalføringV2Skjema.tsx', () => ({
-  JournalføringV2Skjema: () => {
+  JournalføringV2Skjema: ({ standardverdier }: { standardverdier: unknown }) => {
     const { fodselsnummer } = usePersonContext()
     skjemaFnr.push(fodselsnummer)
+    skjemaStandardverdier.push(standardverdier)
     return <div>Skjema for {fodselsnummer}</div>
   },
 }))
@@ -48,11 +53,11 @@ vi.mock('react-resizable-panels', () => ({
   Panel: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }))
 
-const journalpost = {
+const journalpost: Journalpost = {
   ...lagJournalpost('9006', 'Søknad om hjelpemidler', { brukerFnr: journalpostensFnr }),
   dokumenter: [],
 }
-function lagOppgave(jp: typeof journalpost): Journalføringsoppgave {
+function lagOppgave(jp: Journalpost): Journalføringsoppgave {
   const testOppgave = lagJournalføringsoppgave(jp)
   return {
     ...testOppgave,
@@ -127,6 +132,87 @@ describe('JournalføringV2', () => {
     expect(usePerson).not.toHaveBeenCalledWith('')
     expect(skjemaFnr).not.toContain('')
     expect(skjemaFnr).not.toContain(journalpostensFnr)
+  })
+
+  it('bruker brevkoden fra første dokument til å sende standardverdier til skjemaet', async () => {
+    skjemaFnr.length = 0
+    skjemaStandardverdier.length = 0
+    const journalpostMedFlereDokumenter = {
+      ...journalpost,
+      dokumenter: [
+        {
+          journalpostId: journalpost.journalpostId,
+          dokumentId: 'dokument-1',
+          tittel: 'Søknad om briller til barn',
+          brevkode: 'NAV 10-07.34',
+          logiskeVedlegg: [],
+        },
+        {
+          journalpostId: journalpost.journalpostId,
+          dokumentId: 'dokument-2',
+          tittel: 'Vedlegg',
+          brevkode: 'ukjent brevkode',
+          logiskeVedlegg: [],
+        },
+      ],
+    }
+
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2
+          oppgave={lagOppgave(journalpostMedFlereDokumenter)}
+          journalpost={journalpostMedFlereDokumenter}
+          mutateJournalpost={vi.fn()}
+        />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(await screen.findByText(`Skjema for ${journalpost.innsender.fnr}`)).toBeInTheDocument()
+    expect(skjemaStandardverdier.at(-1)).toEqual({
+      behandlingstema: 'ab0420',
+      behandlingstype: 'ae0034',
+      tilordnetEnhet: 'minOppgaveliste',
+    })
+  })
+
+  it('bruker fallback når bare et senere dokument har barnebrillebrevkode', async () => {
+    skjemaStandardverdier.length = 0
+    const journalpostMedFlereDokumenter = {
+      ...journalpost,
+      dokumenter: [
+        {
+          journalpostId: journalpost.journalpostId,
+          dokumentId: 'dokument-1',
+          tittel: 'Annen søknad',
+          brevkode: 'annen brevkode',
+          logiskeVedlegg: [],
+        },
+        {
+          journalpostId: journalpost.journalpostId,
+          dokumentId: 'dokument-2',
+          tittel: 'Vedlegg',
+          brevkode: 'NAVe 10-07.34',
+          logiskeVedlegg: [],
+        },
+      ],
+    }
+
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2
+          oppgave={lagOppgave(journalpostMedFlereDokumenter)}
+          journalpost={journalpostMedFlereDokumenter}
+          mutateJournalpost={vi.fn()}
+        />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(await screen.findByText(`Skjema for ${journalpostensFnr}`)).toBeInTheDocument()
+    expect(skjemaStandardverdier.at(-1)).toEqual({
+      behandlingstema: '',
+      behandlingstype: '',
+      tilordnetEnhet: 'enhetensOppgaveliste',
+    })
   })
 
   it.each([

@@ -31,8 +31,7 @@ function VelgJournalføring({ oppgave }: { oppgave: Journalføringsoppgave }) {
   const { erProd } = useMiljø()
 
   const brevkode = journalpost.dokumenter[0]?.brevkode
-  const erBarnebrilleSøknad =
-    brevkode && BREVKODE_BRILLER_TIL_BARN.includes(brevkode) ? journalpost.innsender.fnr : journalpost.bruker?.fnr
+  const erBarnebrilleSøknad = brevkode && BREVKODE_BRILLER_TIL_BARN.includes(brevkode)
 
   if (erProd && erBarnebrilleSøknad) {
     return <Journalføring oppgave={oppgave} />

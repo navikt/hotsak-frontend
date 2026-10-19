@@ -45,7 +45,7 @@ test.describe('Journalføring', () => {
     await page.getByRole('button', { name: 'Journalfør og koble til sak' }).click()
     const request = await journalføringRequest
     expect(request.postDataJSON()).toMatchObject({
-      journalføresPåFnr: '01010199999',
+      brukerFnr: '01010199999',
       sak: { sakstype: 'FAGSAK', fagsakId: '9901', fagsaksystem: 'HOTSAK' },
     })
     const respons = await journalføring
@@ -84,7 +84,7 @@ test.describe('Journalføring', () => {
     await page.getByRole('button', { name: 'Journalfør og opprett sak' }).click()
     const request = await journalføringRequest
     expect(request.postDataJSON()).toMatchObject({
-      journalføresPåFnr: annetFnr,
+      brukerFnr: annetFnr,
       saksgrunnlag: { mappeId: '663' },
     })
     const respons = await journalføring

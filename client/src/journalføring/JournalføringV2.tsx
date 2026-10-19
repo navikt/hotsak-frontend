@@ -34,15 +34,15 @@ export function JournalføringV2({ oppgave, journalpost, mutateJournalpost }: Jo
 
   const brevkode = journalpost.dokumenter[0]?.brevkode
 
-  const journalføresPåFnr =
+  const brukerFnr =
     brevkode && BREVKODE_BRILLER_TIL_BARN.includes(brevkode) ? journalpost.innsender.fnr : journalpost.bruker?.fnr
 
-  if (!journalføresPåFnr) {
+  if (!brukerFnr) {
     return <FeilmeldingAlert>Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.</FeilmeldingAlert>
   }
 
   return (
-    <AktivPersonBoundary key={journalpostId} fnr={journalføresPåFnr}>
+    <AktivPersonBoundary key={journalpostId} fnr={brukerFnr}>
       <JournalføringV2Innhold oppgave={oppgave} journalpost={journalpost} mutateJournalpost={mutateJournalpost} />
     </AktivPersonBoundary>
   )

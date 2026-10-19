@@ -76,7 +76,8 @@ export interface JournalføringV2Request {
   oppgaveId: string
   journalpostId: string
   tittel: string
-  journalføresPåFnr: string
+  brukerFnr: string
+  avsenderFnr?: string
   saksgrunnlag?: JournalføringV2Saksgrunnlag
   sak?: {
     sakstype: Sakstype

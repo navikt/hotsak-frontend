@@ -515,12 +515,12 @@ export class SakStore extends Dexie {
       søknadGjelder: request.tittel,
       søknadMottatt: nå,
       bruker: {
-        fnr: request.journalføresPåFnr,
+        fnr: request.brukerFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },
         fødselsdato: '',
       },
       innsender: {
-        fnr: request.journalføresPåFnr,
+        fnr: request.brukerFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },
       },
       enhet: enheter.agder,
@@ -532,7 +532,7 @@ export class SakStore extends Dexie {
 
   async opprettSak(journalføring: JournalførJournalpostRequest) {
     const sak = lagBarnebrillesak(journalføring.oppgaveId + journalføring.journalpostId)
-    sak.bruker.fnr = journalføring.journalføresPåFnr
+    sak.bruker.fnr = journalføring.brukerFnr
     sak.journalposter = [journalføring.journalpostId]
     return this.saker.add(sak)
   }

@@ -65,6 +65,8 @@ export class JournalpostStore extends Dexie {
       lagJournalpost('9008', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
       lagJournalpost('9009', 'Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker', {
         brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        avsenderFnr: '02020299999',
+        kanal: { kode: 'NAV_NO', term: 'Nav.no' },
       }),
     ]
 
@@ -170,9 +172,9 @@ export class JournalpostStore extends Dexie {
 
     const annetInnhold =
       dokumenter.find((d) => String(d.dokumentId) === String(dokument?.dokumentId))?.annetInnhold || []
-    const person = await this.personStore.hent(journalføringRequest.journalføresPåFnr)
+    const person = await this.personStore.hent(journalføringRequest.brukerFnr)
     const oppdatertBruker = {
-      fnr: person?.fnr ?? journalføringRequest.journalføresPåFnr,
+      fnr: person?.fnr ?? journalføringRequest.brukerFnr,
       navn: person?.navn ?? journalpost?.bruker?.navn ?? { fornavn: 'Ukjent', etternavn: '' },
       fulltNavn: person ? formaterNavn(person.navn) : journalpost?.bruker?.fulltNavn,
     }

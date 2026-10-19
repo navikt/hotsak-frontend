@@ -34,7 +34,7 @@ export function JournalpostSkjema({
   const navigate = useNavigate()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
-  const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
+  const [brukerFnr, setBrukerFnr] = useState('')
   const { saksoversikt } = useSaksoversikt(fodselsnummer, SaksstatusKategori.ÅPEN, Sakstype.BARNEBRILLER)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost.tittel || '')
 
@@ -43,7 +43,7 @@ export function JournalpostSkjema({
     journalfør
       .trigger({
         tittel: journalpostTittel,
-        journalføresPåFnr: fodselsnummer,
+        brukerFnr: fodselsnummer,
         sak:
           valgtEksisterendeSakId !== ''
             ? {
@@ -96,14 +96,14 @@ export function JournalpostSkjema({
                       label="Endre bruker"
                       description="Skriv inn fødselsnummer eller D-nummer"
                       size="small"
-                      value={journalføresPåFnr}
-                      onChange={(e) => setJournalføresPåFnr(e.target.value)}
+                      value={brukerFnr}
+                      onChange={(e) => setBrukerFnr(e.target.value)}
                     />
                     <Button
                       variant="secondary"
                       size="small"
                       onClick={() => {
-                        setFodselsnummer(journalføresPåFnr)
+                        setFodselsnummer(brukerFnr)
                       }}
                     >
                       Endre bruker

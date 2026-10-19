@@ -134,7 +134,7 @@ export function JournalføringV2Skjema({
     const endringer =
       annetInnhold.current.journalpostId === journalpost.journalpostId ? annetInnhold.current.endringer : {}
     const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, endringer)
-    return { tittel, journalføresPåFnr: fodselsnummer, dokumenter }
+    return { tittel, brukerFnr: fodselsnummer, dokumenter }
   }
 
   function erDokumenttitlerGyldige() {
@@ -146,10 +146,10 @@ export function JournalføringV2Skjema({
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, brukerFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
-      journalføresPåFnr,
+      brukerFnr,
       saksgrunnlag: {
         tema: verdier.tema,
         prioritet: verdier.prioritet,
@@ -181,10 +181,10 @@ export function JournalføringV2Skjema({
     }
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, brukerFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
-      journalføresPåFnr,
+      brukerFnr,
       sak: byggJournalføringSak(valgtSak),
       dokumenter,
     })

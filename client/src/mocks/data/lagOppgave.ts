@@ -60,6 +60,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
 
 export function lagJournalføringsoppgave(journalføring: LagretJournalpost): InsertOppgave {
   const journalpostId = journalføring.journalpostId
+  const erHjelpemiddelsøknad = journalføring.tittel === 'Søknad om hjelpemidler' || journalpostId === '9009'
 
   // TODO: Litt hacky utledning av gjelder verdi på behandlingsteama. Når vi vet mer om hvordan vi vil gjøre det, bør logikken her også oppdateres. Sjekke på brevkode for eksempel
 
@@ -73,15 +74,14 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
       oppgavetype: Oppgavetype.JOURNALFØRING,
       behandlingstema: {
         kode: '',
-        term: journalføring.tittel === 'Søknad om hjelpemidler' ? 'Hjelpemidler' : 'Briller til barn',
+        term: erHjelpemiddelsøknad ? 'Hjelpemidler' : 'Briller til barn',
       },
       behandlingstype: { kode: '', term: 'Søknad' },
       tema: 'HJE',
     },
-    beskrivelse:
-      journalføring.tittel === 'Søknad om hjelpemidler'
-        ? journalføring.tittel
-        : '--- 21.09.2026 14:28 (hm-saksbehandling) ---\nZ994377: Ingen kommentar\n\nDokumentasjon av arbeid eller utdanning',
+    beskrivelse: erHjelpemiddelsøknad
+      ? journalføring.tittel
+      : '--- 21.09.2026 14:28 (hm-saksbehandling) ---\nZ994377: Ingen kommentar\n\nDokumentasjon av arbeid eller utdanning',
     tildeltEnhet: enheter.agder,
     tildeltSaksbehandler: undefined,
     aktivDato: journalføring.journalpostOpprettetTid,

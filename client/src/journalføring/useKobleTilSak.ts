@@ -27,7 +27,7 @@ export interface SakvalgVisning {
   sakId: string
   gjelder: string
   dato: string
-  fagsystemLabel: string
+  fagsystemLabel?: string
   saksstatus?: OppgaveStatusTypeValue
   område?: string[]
 }

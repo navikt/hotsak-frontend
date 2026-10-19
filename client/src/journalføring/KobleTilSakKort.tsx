@@ -28,9 +28,8 @@ function formaterOmråde(område: string[]): string {
 const GOSYS_GENERELL_SAK_VISNING: SakvalgVisning = {
   valg: GOSYS_GENERELL_SAK,
   sakId: '',
-  gjelder: 'Gosys generell',
+  gjelder: 'Generell sak',
   dato: '',
-  fagsystemLabel: 'Fagsak system',
 }
 
 export function KobleTilSakKort({ saker, isLoading, error, valgtSak, onChange, feilmelding }: KobleTilSakKortProps) {
@@ -118,7 +117,7 @@ function SakKort({ sak, valgt, onVelg }: SakKortProps) {
           {erGenerellSak ? (
             <VStack gap="space-1">
               <BodyShort>{sak.gjelder}</BodyShort>
-              <BodyShort>{sak.fagsystemLabel}</BodyShort>
+              {sak.fagsystemLabel && <BodyShort>{sak.fagsystemLabel}</BodyShort>}
             </VStack>
           ) : (
             <>

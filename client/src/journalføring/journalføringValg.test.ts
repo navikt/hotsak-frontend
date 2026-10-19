@@ -114,7 +114,7 @@ describe('finnTildeltSaksbehandler', () => {
 })
 
 describe('byggJournalføringSak', () => {
-  it('bygger sak for Gosys generell uten fagsakfelter', () => {
+  it('bygger sak for Generell sak uten fagsakfelter', () => {
     expect(byggJournalføringSak({ sakstype: Sakstype.GENERELL_SAK })).toEqual({
       sakstype: Sakstype.GENERELL_SAK,
     })

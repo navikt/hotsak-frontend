@@ -19,10 +19,16 @@ import { hentJournalføringStandardverdier } from './journalføringStandardverdi
 interface JournalføringV2Props {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
+  erBarnebrilleSøknad: boolean
   mutateJournalpost(): void
 }
 
-export function JournalføringV2({ oppgave, journalpost, mutateJournalpost }: JournalføringV2Props) {
+export function JournalføringV2({
+  oppgave,
+  journalpost,
+  mutateJournalpost,
+  erBarnebrilleSøknad,
+}: JournalføringV2Props) {
   const { journalpostId, dokumenter } = journalpost
   const { setValgtDokument } = useDokumentContext()
 
@@ -42,7 +48,12 @@ export function JournalføringV2({ oppgave, journalpost, mutateJournalpost }: Jo
 
   return (
     <AktivPersonBoundary key={journalpostId} fnr={journalpost.fnrBruker}>
-      <JournalføringV2Innhold oppgave={oppgave} journalpost={journalpost} mutateJournalpost={mutateJournalpost} />
+      <JournalføringV2Innhold
+        oppgave={oppgave}
+        journalpost={journalpost}
+        mutateJournalpost={mutateJournalpost}
+        erBarnebrilleSøknad={erBarnebrilleSøknad}
+      />
     </AktivPersonBoundary>
   )
 }
@@ -63,7 +74,12 @@ function AktivPersonBoundary({ fnr, children }: { fnr: string; children: ReactNo
   return children
 }
 
-function JournalføringV2Innhold({ oppgave, journalpost, mutateJournalpost }: JournalføringV2Props) {
+function JournalføringV2Innhold({
+  oppgave,
+  journalpost,
+  mutateJournalpost,
+  erBarnebrilleSøknad,
+}: JournalføringV2Props) {
   const { fodselsnummer } = usePersonContext()
   const { personInfo, error: personError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
 
@@ -82,6 +98,7 @@ function JournalføringV2Innhold({ oppgave, journalpost, mutateJournalpost }: Jo
                 oppgave={oppgave}
                 journalpost={journalpost}
                 mutateJournalpost={mutateJournalpost}
+                erBarnebrilleSøknad={erBarnebrilleSøknad}
                 standardverdier={hentJournalføringStandardverdier(journalpost.dokumenter[0]?.brevkode)}
               />
             </div>

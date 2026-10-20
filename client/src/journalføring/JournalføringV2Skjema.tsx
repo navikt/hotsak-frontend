@@ -38,6 +38,7 @@ interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
   mutateJournalpost(): void
+  erBarnebrilleSøknad: boolean
   standardverdier: JournalføringStandardverdier
 }
 
@@ -45,6 +46,7 @@ export function JournalføringV2Skjema({
   oppgave,
   journalpost,
   mutateJournalpost,
+  erBarnebrilleSøknad,
   standardverdier,
 }: JournalføringV2SkjemaProps) {
   const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
@@ -205,7 +207,9 @@ export function JournalføringV2Skjema({
         </Heading>
         <JournalføringMenu
           oppgave={oppgave}
-          spørreundersøkelseId="journalføringingsoppgave_overført_gosys_v1"
+          spørreundersøkelseId={
+            erBarnebrilleSøknad ? 'barnebrillesak_overført_gosys_v1' : 'journalføringingsoppgave_overført_gosys_v1'
+          }
           onAction={mutateJournalpost}
         />
       </HStack>

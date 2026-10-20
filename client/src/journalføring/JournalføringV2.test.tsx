@@ -92,7 +92,12 @@ describe('JournalføringV2', () => {
   it('viser journalpostens bruker og bruker aldri fødselsnummeret fra forrige oppgave', async () => {
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={oppgave}
+          journalpost={journalpost}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 
@@ -114,7 +119,12 @@ describe('JournalføringV2', () => {
     }
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2 oppgave={lagOppgave(jp)} journalpost={jp} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={lagOppgave(jp)}
+          journalpost={jp}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 
@@ -131,7 +141,12 @@ describe('JournalføringV2', () => {
     }
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2 oppgave={lagOppgave(jp)} journalpost={jp} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={lagOppgave(jp)}
+          journalpost={jp}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 
@@ -143,7 +158,12 @@ describe('JournalføringV2', () => {
     const jp = { ...journalpost, fnrBruker: '' }
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2 oppgave={lagOppgave(jp)} journalpost={jp} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={lagOppgave(jp)}
+          journalpost={jp}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 
@@ -160,7 +180,12 @@ describe('JournalføringV2', () => {
     }
     const { container, rerender } = render(
       <MedGammeltFødselsnummerIContext strict={false}>
-        <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={oppgave}
+          journalpost={journalpost}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
     expect(await screen.findByText('Fnr: 010101 99999')).toBeInTheDocument()
@@ -169,7 +194,12 @@ describe('JournalføringV2', () => {
     vi.mocked(usePerson).mockClear()
     rerender(
       <MedGammeltFødselsnummerIContext strict={false}>
-        <JournalføringV2 oppgave={lagOppgave(journalpostB)} journalpost={journalpostB} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={lagOppgave(journalpostB)}
+          journalpost={journalpostB}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 
@@ -211,6 +241,7 @@ describe('JournalføringV2', () => {
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
         />
       </MedGammeltFødselsnummerIContext>
     )
@@ -251,6 +282,7 @@ describe('JournalføringV2', () => {
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
         />
       </MedGammeltFødselsnummerIContext>
     )
@@ -273,7 +305,12 @@ describe('JournalføringV2', () => {
 
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={oppgave}
+          journalpost={journalpost}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 

@@ -1,9 +1,10 @@
-import { Box, Button, HStack, UNSAFE_Combobox, VStack, HelpText, Link } from '@navikt/ds-react'
+import { Box, Button, HStack, VStack, HelpText, Link } from '@navikt/ds-react'
 
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { SearchableSelect } from '../felleskomponenter/searchableSelect/SearchableSelect.tsx'
 import { useKodeverkDokumenttitler } from '../oppgave/useKodeverkOppgave.ts'
 import { type Dokument } from '../types/types.internal.ts'
+import { AnnetInnhold } from './AnnetInnhold.tsx'
 import classes from './DokumentRad.module.css'
 import { validerDokumenttittel } from './dokumenttittelValidering.ts'
 
@@ -76,16 +77,10 @@ export function DokumentRad({
               Åpne
             </Button>
           </HStack>
-          <UNSAFE_Combobox
-            allowNewValues
-            label="Annet innhold"
-            size="small"
-            options={dokumentTittelOptions}
-            selectedOptions={valgteChips}
-            onToggleSelected={(option, isSelected) => {
-              onChipsChange(isSelected ? [...valgteChips, option] : valgteChips.filter((c) => c !== option))
-            }}
-            isMultiSelect
+          <AnnetInnhold
+            alternativer={dokumentTittelOptions}
+            valgteChips={valgteChips}
+            onChipsChange={onChipsChange}
             readOnly={readOnly}
           />
         </VStack>

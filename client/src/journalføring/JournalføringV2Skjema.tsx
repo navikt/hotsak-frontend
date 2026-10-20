@@ -125,7 +125,7 @@ export function JournalføringV2Skjema({
     antallSaker,
     isLoading: sakerIsLoading,
     error: sakerError,
-  } = useKobleTilSak(kanRedigere ? fodselsnummer : undefined)
+  } = useKobleTilSak(kanRedigere ? fodselsnummer : undefined, journalpost.dokumenter[0]?.brevkode)
 
   const registrertDato = formaterDato(journalpost.journalpostOpprettetTid)
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`

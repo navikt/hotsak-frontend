@@ -45,7 +45,7 @@ export interface Stønadsklassifisering {
   stk3: unknown[]
 }
 
-export type JournalførJournalpostRequest = Omit<JournalføringV2Request, 'dokumenter' | 'saksgrunnlag'>
+export type JournalførJournalpostRequest = Omit<JournalføringV2Request, 'dokumenter' | 'saksgrunnlag' | 'avsenderFnr'>
 
 export interface JournalførJournalpostResponse {
   sakId: string
@@ -77,7 +77,7 @@ export interface JournalføringV2Request {
   journalpostId: string
   tittel: string
   brukerFnr: string
-  avsenderFnr?: string
+  avsenderFnr: string
   saksgrunnlag?: JournalføringV2Saksgrunnlag
   sak?: {
     sakstype: Sakstype

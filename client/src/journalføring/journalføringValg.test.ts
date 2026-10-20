@@ -15,14 +15,15 @@ const journalpost: Journalpost = {
   tittel: ' Overordnet tittel ',
   tema: { kode: 'HJE', term: 'Hjelpemidler' },
   kanal: { kode: 'SKAN_IM', term: 'Skanning' },
-  fnrInnsender: '',
+  fnrInnsender: '01010199999',
+  fnrBruker: '01010199999',
   journalstatus: JournalpostStatusType.MOTTATT,
   journalposttype: 'I',
   dokumenter: [
     { journalpostId: 'journalpost-1', dokumentId: 'dokument-1', tittel: ' Første tittel ', logiskeVedlegg: [] },
     { journalpostId: 'journalpost-1', dokumentId: 'dokument-2', tittel: ' Andre tittel ', logiskeVedlegg: [] },
   ],
-  innsender: { fnr: '', navn: { fornavn: 'Test', etternavn: 'Test' } },
+  innsender: { fnr: '01010199999', navn: { fornavn: 'Test', etternavn: 'Test' } },
 }
 
 describe('byggDokumentPayload', () => {

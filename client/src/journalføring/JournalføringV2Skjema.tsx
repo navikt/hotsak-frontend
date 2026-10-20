@@ -62,7 +62,8 @@ export function JournalføringV2Skjema({
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
   const aktivFraDatoDefault = new Date()
   const fristDefault = addWeeks(mottattDatoDefault, 4)
-  const { fodselsnummer } = usePersonContext()
+  const { fodselsnummer, setFodselsnummer } = usePersonContext()
+  const [avsenderFnr, setAvsenderFnr] = useState(journalpost.fnrInnsender)
 
   const { journalfør } = useJournalføringActions(oppgave)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
@@ -134,7 +135,7 @@ export function JournalføringV2Skjema({
     const endringer =
       annetInnhold.current.journalpostId === journalpost.journalpostId ? annetInnhold.current.endringer : {}
     const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, endringer)
-    return { tittel, brukerFnr: fodselsnummer, dokumenter }
+    return { tittel, brukerFnr: fodselsnummer, avsenderFnr, dokumenter }
   }
 
   function erDokumenttitlerGyldige() {
@@ -146,10 +147,11 @@ export function JournalføringV2Skjema({
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, brukerFnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
       brukerFnr,
+      avsenderFnr,
       saksgrunnlag: {
         tema: verdier.tema,
         prioritet: verdier.prioritet,
@@ -181,10 +183,11 @@ export function JournalføringV2Skjema({
     }
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, brukerFnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
       brukerFnr,
+      avsenderFnr,
       sak: byggJournalføringSak(valgtSak),
       dokumenter,
     })
@@ -239,7 +242,14 @@ export function JournalføringV2Skjema({
                   <option value="HJE">Hjelpemidler</option>
                 </SelectController>
               </TextContainer>
-              <JournalføringParter journalpost={journalpost} tildeltEnhet={tildeltEnhet} kanRedigere={kanRedigere} />
+              <JournalføringParter
+                journalpost={journalpost}
+                tildeltEnhet={tildeltEnhet}
+                kanRedigere={kanRedigere}
+                avsenderFnr={avsenderFnr}
+                onAvsenderChange={setAvsenderFnr}
+                onBrukerChange={setFodselsnummer}
+              />
             </VStack>
 
             <JournalføringDokumenter

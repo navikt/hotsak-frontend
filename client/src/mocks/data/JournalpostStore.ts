@@ -33,6 +33,18 @@ export class JournalpostStore extends Dexie {
       dokumenter: '++dokumentId,journalpostId',
       hendelser: '++id,journalpostId',
     })
+    this.version(2).upgrade(async (tx) => {
+      await tx
+        .table<LagretJournalpost>('journalposter')
+        .toCollection()
+        .modify((journalpost) => {
+          if (journalpost.fnrBruker) return
+          if (!journalpost.bruker?.fnr) {
+            throw new Error(`Journalpost ${journalpost.journalpostId} mangler bruker`)
+          }
+          journalpost.fnrBruker = journalpost.bruker.fnr
+        })
+    })
   }
 
   async populer() {
@@ -173,10 +185,32 @@ export class JournalpostStore extends Dexie {
     const annetInnhold =
       dokumenter.find((d) => String(d.dokumentId) === String(dokument?.dokumentId))?.annetInnhold || []
     const person = await this.personStore.hent(journalføringRequest.brukerFnr)
+    const avsender = await this.personStore.hent(journalføringRequest.avsenderFnr)
     const oppdatertBruker = {
-      fnr: person?.fnr ?? journalføringRequest.brukerFnr,
-      navn: person?.navn ?? journalpost?.bruker?.navn ?? { fornavn: 'Ukjent', etternavn: '' },
-      fulltNavn: person ? formaterNavn(person.navn) : journalpost?.bruker?.fulltNavn,
+      fnr: journalføringRequest.brukerFnr,
+      navn: person?.navn ??
+        (journalpost?.fnrBruker === journalføringRequest.brukerFnr ? journalpost.bruker?.navn : undefined) ?? {
+          fornavn: 'Ukjent',
+          etternavn: '',
+        },
+      fulltNavn: person
+        ? formaterNavn(person.navn)
+        : journalpost?.fnrBruker === journalføringRequest.brukerFnr
+          ? journalpost.bruker?.fulltNavn
+          : undefined,
+    }
+    const oppdatertInnsender = {
+      fnr: journalføringRequest.avsenderFnr,
+      navn:
+        avsender?.navn ??
+        (journalpost?.fnrInnsender === journalføringRequest.avsenderFnr
+          ? journalpost.innsender.navn
+          : { fornavn: 'Ukjent', etternavn: '' }),
+      fulltNavn: avsender
+        ? formaterNavn(avsender.navn)
+        : journalpost?.fnrInnsender === journalføringRequest.avsenderFnr
+          ? journalpost.innsender.fulltNavn
+          : undefined,
     }
 
     await this.dokumenter.update(dokumentId, {
@@ -188,6 +222,9 @@ export class JournalpostStore extends Dexie {
     return this.journalposter.update(journalpostId, {
       tittel,
       bruker: oppdatertBruker,
+      fnrBruker: oppdatertBruker.fnr,
+      innsender: oppdatertInnsender,
+      fnrInnsender: oppdatertInnsender.fnr,
       journalstatus: JournalpostStatusType.JOURNALFOERT,
     })
   }

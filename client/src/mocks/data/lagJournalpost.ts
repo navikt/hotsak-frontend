@@ -37,7 +37,9 @@ export function lagJournalpost(
   tittel: string,
   { behandlingstema, brukerFnr, avsenderFnr, kanal }: LagJournalpostOptions = {}
 ): InsertJournalpost {
-  const fnrInnsender = avsenderFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
+  const fnrBruker = brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
+  const fnrInnsender = avsenderFnr ?? fnrBruker
+  const brukerNavn = lagTilfeldigNavn()
   const journalpostOpprettetTid = nåIso()
   const journalposttyper = ['I', 'U', 'N'] as const
   return {
@@ -49,14 +51,15 @@ export function lagJournalpost(
     journalstatus: JournalpostStatusType.MOTTATT,
     journalpostOpprettetTid,
     fnrInnsender,
+    fnrBruker,
     tittel: tittel,
     bruker: {
-      fnr: brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
-      navn: lagTilfeldigNavn(),
+      fnr: fnrBruker,
+      navn: brukerNavn,
     },
     innsender: {
       fnr: fnrInnsender,
-      navn: lagTilfeldigNavn(),
+      navn: fnrInnsender === fnrBruker ? brukerNavn : lagTilfeldigNavn(),
     },
   }
 }

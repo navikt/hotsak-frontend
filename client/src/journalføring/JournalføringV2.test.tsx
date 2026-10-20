@@ -103,6 +103,54 @@ describe('JournalføringV2', () => {
     expect(skjemaFnr).not.toContain(fnrFraForrigeOppgave)
   })
 
+  it('bruker journalpostens bruker i personlinja når avsenderen har et annet fødselsnummer', async () => {
+    const jp = {
+      ...lagJournalpost('9009', 'Søknad om hjelpemiddel', {
+        brukerFnr: journalpostensFnr,
+        avsenderFnr: fnrFraForrigeOppgave,
+      }),
+      bruker: { ...journalpost.bruker!, fnr: '03030399999' },
+      dokumenter: [],
+    }
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2 oppgave={lagOppgave(jp)} journalpost={jp} mutateJournalpost={vi.fn()} />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(await screen.findByText('Fnr: 010101 99999')).toBeInTheDocument()
+    expect(screen.getByText(`Skjema for ${journalpostensFnr}`)).toBeInTheDocument()
+    expect(usePerson).not.toHaveBeenCalledWith(fnrFraForrigeOppgave)
+    expect(usePerson).not.toHaveBeenCalledWith('03030399999')
+  })
+
+  it('stopper journalføring når avsender mangler', () => {
+    const jp = {
+      ...journalpost,
+      fnrInnsender: '',
+    }
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2 oppgave={lagOppgave(jp)} journalpost={jp} mutateJournalpost={vi.fn()} />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(screen.getByText('Journalposten mangler avsender. Kan ikke journalføre uten fødselsnummer.')).toBeVisible()
+    expect(screen.queryByText(`Skjema for ${journalpostensFnr}`)).not.toBeInTheDocument()
+  })
+
+  it('stopper journalføring når fnrBruker mangler selv om nøstet bruker har fødselsnummer', () => {
+    const jp = { ...journalpost, fnrBruker: '' }
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2 oppgave={lagOppgave(jp)} journalpost={jp} mutateJournalpost={vi.fn()} />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(screen.getByText('Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.')).toBeVisible()
+    expect(screen.queryByText(`Skjema for ${journalpostensFnr}`)).not.toBeInTheDocument()
+  })
+
   it('bytter til bruker B når journalposten byttes fra A til B', async () => {
     // Uten StrictMode: StrictMode kjører gatens effect på nytt etter cleanup og skjuler rekkefølgefeil.
     const fnrB = '03030399999'
@@ -167,7 +215,7 @@ describe('JournalføringV2', () => {
       </MedGammeltFødselsnummerIContext>
     )
 
-    expect(await screen.findByText(`Skjema for ${journalpost.innsender.fnr}`)).toBeInTheDocument()
+    expect(await screen.findByText(`Skjema for ${journalpost.fnrBruker}`)).toBeInTheDocument()
     expect(skjemaStandardverdier.at(-1)).toEqual({
       behandlingstema: 'ab0420',
       behandlingstype: 'ae0034',
@@ -175,7 +223,7 @@ describe('JournalføringV2', () => {
     })
   })
 
-  it('bruker fallback når bare et senere dokument har barnebrillebrevkode', async () => {
+  it('bruker standardverdier fra første dokument når et senere dokument har barnebrillebrevkode', async () => {
     skjemaStandardverdier.length = 0
     const journalpostMedFlereDokumenter = {
       ...journalpost,

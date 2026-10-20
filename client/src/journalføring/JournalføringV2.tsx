@@ -14,7 +14,7 @@ import { type Journalpost } from '../types/types.internal.ts'
 import { JournalføringLoader } from './JournalføringLoader.tsx'
 import classes from './JournalføringV2.module.css'
 import { JournalføringV2Skjema } from './JournalføringV2Skjema.tsx'
-import { BREVKODE_BRILLER_TIL_BARN, hentJournalføringStandardverdier } from './journalføringStandardverdier.ts'
+import { hentJournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
 interface JournalføringV2Props {
   oppgave: Journalføringsoppgave
@@ -32,17 +32,16 @@ export function JournalføringV2({ oppgave, journalpost, mutateJournalpost }: Jo
     }
   }, [journalpostId, dokumenter, setValgtDokument])
 
-  const brevkode = journalpost.dokumenter[0]?.brevkode
-
-  const brukerFnr =
-    brevkode && BREVKODE_BRILLER_TIL_BARN.includes(brevkode) ? journalpost.innsender.fnr : journalpost.bruker?.fnr
-
-  if (!brukerFnr) {
+  if (!journalpost.fnrBruker) {
     return <FeilmeldingAlert>Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.</FeilmeldingAlert>
   }
 
+  if (!journalpost.fnrInnsender) {
+    return <FeilmeldingAlert>Journalposten mangler avsender. Kan ikke journalføre uten fødselsnummer.</FeilmeldingAlert>
+  }
+
   return (
-    <AktivPersonBoundary key={journalpostId} fnr={brukerFnr}>
+    <AktivPersonBoundary key={journalpostId} fnr={journalpost.fnrBruker}>
       <JournalføringV2Innhold oppgave={oppgave} journalpost={journalpost} mutateJournalpost={mutateJournalpost} />
     </AktivPersonBoundary>
   )

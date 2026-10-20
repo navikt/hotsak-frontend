@@ -520,7 +520,7 @@ export class SakStore extends Dexie {
         fødselsdato: '',
       },
       innsender: {
-        fnr: request.brukerFnr,
+        fnr: request.avsenderFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },
       },
       enhet: enheter.agder,

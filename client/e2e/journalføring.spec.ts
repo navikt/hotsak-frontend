@@ -17,10 +17,23 @@ async function velgGjelder(page: import('@playwright/test').Page) {
     .click()
 }
 
+async function hentParter(page: import('@playwright/test').Page) {
+  return page.evaluate(async () => {
+    const response = await fetch('/api/journalpost/9006')
+    if (!response.ok) throw new Error('Kunne ikke hente testjournalpost')
+    const journalpost: { fnrBruker: string; fnrInnsender: string } = await response.json()
+    if (!journalpost.fnrBruker || !journalpost.fnrInnsender) throw new Error('Testjournalposten mangler part')
+    return { brukerFnr: journalpost.fnrBruker, avsenderFnr: journalpost.fnrInnsender }
+  })
+}
+
 test.describe('Journalføring', () => {
   test('viser annet innhold fra logiske vedlegg på 10-07.86-oppgaven', async ({ page }) => {
     await page.goto('/oppgave/109009')
     await expect(page.getByRole('heading', { level: 1, name: 'Journalføring' })).toBeVisible()
+    await expect(page.getByText('Fnr: 010101 99999')).toBeVisible()
+    await expect(page.getByText(/ - 01010199999$/)).toBeVisible()
+    await expect(page.getByText(/ - 02020299999$/)).toBeVisible()
     await expect(page.getByRole('combobox', { name: 'Dokumenttittel (1 av 1)' })).toHaveValue(
       'NAV 10-07.86: Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker'
     )
@@ -30,6 +43,13 @@ test.describe('Journalføring', () => {
 
   test('kan koble en journalpost til en eksisterende Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)
+    const { brukerFnr } = await hentParter(page)
+    const nyAvsenderFnr = '02020299999'
+    await page.getByRole('button', { name: 'Endre avsender' }).click()
+    await page.getByRole('textbox', { name: 'Avsenders fødselsnummer' }).fill(nyAvsenderFnr)
+    await page.getByRole('button', { name: 'Velg avsender' }).click()
+    await expect(page.getByRole('textbox', { name: 'Avsenders fødselsnummer' })).toBeHidden()
+    await expect(page.getByText(`Fnr: ${brukerFnr.slice(0, 6)} ${brukerFnr.slice(6)}`)).toBeVisible()
     await velgGjelder(page)
 
     const kobleTilSak = page.getByRole('radio', { name: /^Koble til sak \(\d+\)$/ })
@@ -45,7 +65,8 @@ test.describe('Journalføring', () => {
     await page.getByRole('button', { name: 'Journalfør og koble til sak' }).click()
     const request = await journalføringRequest
     expect(request.postDataJSON()).toMatchObject({
-      brukerFnr: '01010199999',
+      brukerFnr,
+      avsenderFnr: nyAvsenderFnr,
       sak: { sakstype: 'FAGSAK', fagsakId: '9901', fagsaksystem: 'HOTSAK' },
     })
     const respons = await journalføring
@@ -62,12 +83,8 @@ test.describe('Journalføring', () => {
 
   test('kan journalføre og opprette en ny Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)
-    const annetFnr = await page.evaluate(async () => {
-      const response = await fetch('/api/journalpost/9006')
-      if (!response.ok) throw new Error('Kunne ikke hente testjournalpost')
-      const journalpost: { innsender: { fnr: string } } = await response.json()
-      return journalpost.innsender.fnr
-    })
+    const { avsenderFnr } = await hentParter(page)
+    const annetFnr = avsenderFnr
     await page.getByRole('button', { name: 'Endre bruker' }).click()
     await page.getByRole('textbox', { name: 'Fødselsnummer' }).fill(annetFnr)
     await page.getByRole('button', { name: 'Velg', exact: true }).click()
@@ -85,6 +102,7 @@ test.describe('Journalføring', () => {
     const request = await journalføringRequest
     expect(request.postDataJSON()).toMatchObject({
       brukerFnr: annetFnr,
+      avsenderFnr,
       saksgrunnlag: { mappeId: '663' },
     })
     const respons = await journalføring

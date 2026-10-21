@@ -10,7 +10,7 @@ export const journalføringsoppgave_barnebriller_overført_gosys_v1: ISpørreund
   spørsmål: [
     {
       type: 'enkeltvalg',
-      tekst: 'Hvorfor overfører du oppgaven til Gosys?',
+      tekst: 'Hvorfor overfører du journalføringsoppgaven til Gosys?',
       beskrivelse: 'Årsaken du velger vil vises i Gosys. Eventuell fritekst vises ikke i Gosys, og brukes kun internt.',
       alternativer: [
         'Behandlingsbriller/linser ordinære vilkår',

@@ -9,7 +9,7 @@ import { besvarelseToSvar, type IBesvarelse, type ISvar } from '../Besvarelse'
 import { journalføringingsoppgave_overført_gosys_v1 as spørreundersøkelse } from '../journalføringingsoppgave_overført_gosys_v1'
 import { SpørreundersøkelseStack } from '../SpørreundersøkelseStack'
 
-const HOVEDSPØRSMÅL = 'Hvorfor overfører du oppgaven til Gosys?'
+const HOVEDSPØRSMÅL = 'Hvorfor overfører du journalføringsoppgaven til Gosys?'
 
 function Skjema({ onBesvar }: { onBesvar(svar: ISvar[]): void }) {
   const form = useForm<IBesvarelse>({ defaultValues: {} })

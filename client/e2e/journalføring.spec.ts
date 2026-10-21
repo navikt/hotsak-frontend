@@ -76,10 +76,38 @@ test.describe('Journalføring', () => {
     const modal = page.getByRole('dialog', { name: 'Dokumentene ble knyttet til eksisterende sak' })
     await expect(modal).toBeVisible()
     await expect(modal).toContainText('Dokumentene ble journalført og knyttet til en eksisterende sak i Hotsak.')
+    await expect(modal.getByRole('button', { name: 'Gå til saken' })).toBeVisible()
     await modal.getByRole('button', { name: 'Gå til saken' }).click()
 
     await expect(page).toHaveURL(`/oppgave/${oppgaveId}`)
   })
+
+  for (const { navn, radio, sak } of [
+    { navn: 'Generell sak', radio: 'Velg Generell sak', sak: { sakstype: 'GENERELL_SAK' } },
+    {
+      navn: 'ekstern fagsak',
+      radio: /Velg sak 1234A01:/,
+      sak: { sakstype: 'FAGSAK', fagsakId: '1234A01', fagsaksystem: 'IT01' },
+    },
+  ]) {
+    test(`viser ikke «Gå til saken» etter journalføring og kobling til ${navn}`, async ({ page }) => {
+      await åpneJournalføringsoppgave(page)
+      await page.getByRole('radio', { name: /^Koble til sak \(\d+\)$/ }).click()
+      await page.getByRole('radio', { name: radio }).check()
+
+      const journalføring = ventPåJournalføring(page)
+      await page.getByRole('button', { name: 'Journalfør og koble til sak' }).click()
+      const respons = await journalføring
+      expect(respons.ok()).toBe(true)
+      expect(respons.request().postDataJSON()).toMatchObject({ sak })
+
+      const modal = page.getByRole('dialog', { name: 'Dokumentene ble knyttet til eksisterende sak' })
+      await expect(modal).toBeVisible()
+      await expect(modal).toContainText('Saken kan behandles videre i Gosys.')
+      await expect(modal.getByRole('button', { name: 'Gå til saken' })).toHaveCount(0)
+      await expect(modal.getByRole('button', { name: 'Behandle saken' })).toHaveCount(0)
+    })
+  }
 
   test('kan journalføre og opprette en ny Hotsak-sak og navigere til saken', async ({ page }) => {
     await åpneJournalføringsoppgave(page)

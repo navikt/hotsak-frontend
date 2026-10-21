@@ -1,4 +1,5 @@
-import { delay, graphql, HttpResponse } from 'msw'
+import { delay, HttpResponse } from 'msw'
+import { graphql } from 'msw/graphql'
 
 import type {
   FinnAlternativeProdukterSideQuery,
@@ -12,8 +13,10 @@ import alternativeProdukter from '../data/alternativeProductsPage_2.json'
 import { lagUUID } from '../data/felles.ts'
 import produktInfo from '../data/fetchAlternativeProducts.json'
 
+const alternativprodukterGraphql = graphql.link('/alternativprodukter-api/graphql')
+
 export const alternativprodukterHandlers: StoreHandlersFactory = () => [
-  graphql.query<FinnAlternativeProdukterSideQuery, FinnAlternativeProdukterSideQueryVariables>(
+  alternativprodukterGraphql.query<FinnAlternativeProdukterSideQuery, FinnAlternativeProdukterSideQueryVariables>(
     'FinnAlternativeProdukterSide',
     async ({ variables }) => {
       const { hmsnrs } = variables
@@ -38,25 +41,28 @@ export const alternativprodukterHandlers: StoreHandlersFactory = () => [
     }
   ),
 
-  graphql.query<HentProduktInfoQuery, HentProduktInfoQueryVariables>('HentProduktInfo', async ({ variables }) => {
-    const { hmsnrs } = variables
+  alternativprodukterGraphql.query<HentProduktInfoQuery, HentProduktInfoQueryVariables>(
+    'HentProduktInfo',
+    async ({ variables }) => {
+      const { hmsnrs } = variables
 
-    const hmsnrsArray = Array.isArray(hmsnrs) ? hmsnrs : [hmsnrs]
+      const hmsnrsArray = Array.isArray(hmsnrs) ? hmsnrs : [hmsnrs]
 
-    const produkt = produktInfo.data.fetchAlternativeProducts.at(0)
+      const produkt = produktInfo.data.fetchAlternativeProducts.at(0)
 
-    const content: Produktinfo[] = hmsnrsArray.map((hmsnr) => {
-      return {
-        ...produkt,
-        id: produkt!.id ?? lagUUID(),
-        hmsArtNr: hmsnr,
-      }
-    })
+      const content: Produktinfo[] = hmsnrsArray.map((hmsnr) => {
+        return {
+          ...produkt,
+          id: produkt!.id ?? lagUUID(),
+          hmsArtNr: hmsnr,
+        }
+      })
 
-    return HttpResponse.json({
-      data: {
-        fetchAlternativeProducts: content,
-      },
-    })
-  }),
+      return HttpResponse.json({
+        data: {
+          fetchAlternativeProducts: content,
+        },
+      })
+    }
+  ),
 ]

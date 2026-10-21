@@ -1,20 +1,30 @@
-import { graphql, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw'
+import { graphql } from 'msw/graphql'
 
+import type {
+  HMDBFinnHjelpemiddelprodukterQuery,
+  HMDBFinnHjelpemiddelprodukterQueryVariables,
+} from '../../generated/grunndata.ts'
 import type { StoreHandlersFactory } from '../data'
 import { respondNotFound } from './response'
 
+const grunndataGraphql = graphql.link('/grunndata-api/graphql')
+
 export const grunndataHandlers: StoreHandlersFactory = ({ hjelpemiddelStore }) => [
-  graphql.query('FinnHjelpemiddelprodukter', async ({ variables }) => {
-    const { hmsnrs } = variables
-    const ikkeFunnetHmsNr = ['404404', '404000']
-    if (hmsnrs.some((hmsnr: string) => ikkeFunnetHmsNr.includes(hmsnr))) {
-      return respondNotFound()
+  grunndataGraphql.query<HMDBFinnHjelpemiddelprodukterQuery, HMDBFinnHjelpemiddelprodukterQueryVariables>(
+    'FinnHjelpemiddelprodukter',
+    async ({ variables }) => {
+      const hmsnrs = Array.isArray(variables.hmsnrs) ? variables.hmsnrs : [variables.hmsnrs]
+      const ikkeFunnetHmsNr = ['404404', '404000']
+      if (hmsnrs.some((hmsnr) => ikkeFunnetHmsNr.includes(hmsnr))) {
+        return respondNotFound()
+      }
+
+      const hjelpemidler = (await hjelpemiddelStore.finn(hmsnrs)) || []
+
+      return HttpResponse.json({
+        data: { products: hjelpemidler },
+      })
     }
-
-    const hjelpemidler = (await hjelpemiddelStore.finn(hmsnrs)) || []
-
-    return HttpResponse.json({
-      data: { products: hjelpemidler },
-    })
-  }),
+  ),
 ]

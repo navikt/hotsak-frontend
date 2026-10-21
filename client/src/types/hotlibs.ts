@@ -32,3 +32,9 @@ export interface Veiadresse {
   postnummer: string
   poststed: string
 }
+
+export const Kilde = {
+  DIGITAL_BEHOVSMELDING: 'DIGITAL_BEHOVSMELDING',
+  JOURNALPOST: 'JOURNALPOST',
+} as const
+export type Kilde = Enum<typeof Kilde>

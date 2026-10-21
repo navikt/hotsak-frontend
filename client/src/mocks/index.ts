@@ -70,6 +70,6 @@ export async function initMsw(): Promise<unknown> {
     }
   })
   return worker.start({
-    onUnhandledRequest: 'bypass',
+    onUnhandledFrame: 'bypass',
   })
 }

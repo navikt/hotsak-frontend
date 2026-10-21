@@ -1,21 +1,43 @@
-import type { Bydel, Kommune, Personnavn, Veiadresse } from './hotlibs.ts'
+import type { Bydel, Kilde, Kommune, Personnavn, Veiadresse } from './hotlibs.ts'
 import type { Kanal } from './types.internal.ts'
 
-// TODO Lage en type for tynn behovsmelding?
-export interface Innsenderbehovsmelding {
+export interface BehovsmeldingBase {
   id: string
   type: BehovsmeldingType
+  innsendingsdato: LocalDate
+  innsendingstidspunkt?: Instant
   prioritet: Prioritet
   hjmBrukersFnr: string
-  innsendingsdato: string
+  skjemaversjon: number
+  kilde: Kilde
+  isDigitalBehovsmelding: boolean
+}
+
+/**
+ * Også kjent som "Digital behovsmelding".
+ */
+export interface Innsenderbehovsmelding extends BehovsmeldingBase {
   bruker: Bruker
   brukersituasjon: Brukersituasjon
   hjelpemidler?: Hjelpemidler
   levering?: Levering
   saksbehandlingvarsel: Varsel[]
-  kanal: Kanal
-  skjemaversjon: number
+  kilde: 'DIGITAL_BEHOVSMELDING'
+  isDigitalBehovsmelding: true
 }
+
+/**
+ * "Behovsmelding" basert på journalpost, f.eks. papirsøknad eller FyllUt-SendInn-søknad.
+ *
+ * NB! Denne modellen brukes også for barnebriller.
+ */
+export interface IkkeBehovsmelding extends BehovsmeldingBase {
+  kanal?: Kanal
+  kilde: 'JOURNALPOST'
+  isDigitalBehovsmelding: false
+}
+
+export type Behovsmelding = Innsenderbehovsmelding | IkkeBehovsmelding
 
 export enum BehovsmeldingType {
   SØKNAD = 'SØKNAD',

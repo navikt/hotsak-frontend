@@ -38,6 +38,7 @@ interface JournalføringV2SkjemaProps {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
   mutateJournalpost(): void
+  erBarnebrilleSøknad: boolean
   standardverdier: JournalføringStandardverdier
 }
 
@@ -45,6 +46,7 @@ export function JournalføringV2Skjema({
   oppgave,
   journalpost,
   mutateJournalpost,
+  erBarnebrilleSøknad,
   standardverdier,
 }: JournalføringV2SkjemaProps) {
   const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
@@ -62,7 +64,8 @@ export function JournalføringV2Skjema({
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
   const aktivFraDatoDefault = new Date()
   const fristDefault = addWeeks(mottattDatoDefault, 4)
-  const { fodselsnummer } = usePersonContext()
+  const { fodselsnummer, setFodselsnummer } = usePersonContext()
+  const [avsenderFnr, setAvsenderFnr] = useState(journalpost.fnrInnsender)
 
   const { journalfør } = useJournalføringActions(oppgave)
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
@@ -134,7 +137,7 @@ export function JournalføringV2Skjema({
     const endringer =
       annetInnhold.current.journalpostId === journalpost.journalpostId ? annetInnhold.current.endringer : {}
     const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, endringer)
-    return { tittel, journalføresPåFnr: fodselsnummer, dokumenter }
+    return { tittel, brukerFnr: fodselsnummer, avsenderFnr, dokumenter }
   }
 
   function erDokumenttitlerGyldige() {
@@ -146,10 +149,11 @@ export function JournalføringV2Skjema({
   const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
-      journalføresPåFnr,
+      brukerFnr,
+      avsenderFnr,
       saksgrunnlag: {
         tema: verdier.tema,
         prioritet: verdier.prioritet,
@@ -181,10 +185,11 @@ export function JournalføringV2Skjema({
     }
     if (!erDokumenttitlerGyldige()) return
 
-    const { tittel, journalføresPåFnr, dokumenter } = byggJournalføringPayload()
+    const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
-      journalføresPåFnr,
+      brukerFnr,
+      avsenderFnr,
       sak: byggJournalføringSak(valgtSak),
       dokumenter,
     })
@@ -202,7 +207,9 @@ export function JournalføringV2Skjema({
         </Heading>
         <JournalføringMenu
           oppgave={oppgave}
-          spørreundersøkelseId="journalføringingsoppgave_overført_gosys_v1"
+          spørreundersøkelseId={
+            erBarnebrilleSøknad ? 'barnebrillesak_overført_gosys_v1' : 'journalføringingsoppgave_overført_gosys_v1'
+          }
           onAction={mutateJournalpost}
         />
       </HStack>
@@ -239,7 +246,14 @@ export function JournalføringV2Skjema({
                   <option value="HJE">Hjelpemidler</option>
                 </SelectController>
               </TextContainer>
-              <JournalføringParter journalpost={journalpost} tildeltEnhet={tildeltEnhet} kanRedigere={kanRedigere} />
+              <JournalføringParter
+                journalpost={journalpost}
+                tildeltEnhet={tildeltEnhet}
+                kanRedigere={kanRedigere}
+                avsenderFnr={avsenderFnr}
+                onAvsenderChange={setAvsenderFnr}
+                onBrukerChange={setFodselsnummer}
+              />
             </VStack>
 
             <JournalføringDokumenter

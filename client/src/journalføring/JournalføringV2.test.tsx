@@ -92,7 +92,12 @@ describe('JournalføringV2', () => {
   it('viser journalpostens bruker og bruker aldri fødselsnummeret fra forrige oppgave', async () => {
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={oppgave}
+          journalpost={journalpost}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 
@@ -101,6 +106,69 @@ describe('JournalføringV2', () => {
     expect(usePerson).toHaveBeenCalledWith(journalpostensFnr)
     expect(usePerson).not.toHaveBeenCalledWith(fnrFraForrigeOppgave)
     expect(skjemaFnr).not.toContain(fnrFraForrigeOppgave)
+  })
+
+  it('bruker journalpostens bruker i personlinja når avsenderen har et annet fødselsnummer', async () => {
+    const jp = {
+      ...lagJournalpost('9009', 'Søknad om hjelpemiddel', {
+        brukerFnr: journalpostensFnr,
+        avsenderFnr: fnrFraForrigeOppgave,
+      }),
+      bruker: { ...journalpost.bruker!, fnr: '03030399999' },
+      dokumenter: [],
+    }
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2
+          oppgave={lagOppgave(jp)}
+          journalpost={jp}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(await screen.findByText('Fnr: 010101 99999')).toBeInTheDocument()
+    expect(screen.getByText(`Skjema for ${journalpostensFnr}`)).toBeInTheDocument()
+    expect(usePerson).not.toHaveBeenCalledWith(fnrFraForrigeOppgave)
+    expect(usePerson).not.toHaveBeenCalledWith('03030399999')
+  })
+
+  it('stopper journalføring når avsender mangler', () => {
+    const jp = {
+      ...journalpost,
+      fnrInnsender: '',
+    }
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2
+          oppgave={lagOppgave(jp)}
+          journalpost={jp}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(screen.getByText('Journalposten mangler avsender. Kan ikke journalføre uten fødselsnummer.')).toBeVisible()
+    expect(screen.queryByText(`Skjema for ${journalpostensFnr}`)).not.toBeInTheDocument()
+  })
+
+  it('stopper journalføring når fnrBruker mangler selv om nøstet bruker har fødselsnummer', () => {
+    const jp = { ...journalpost, fnrBruker: '' }
+    render(
+      <MedGammeltFødselsnummerIContext>
+        <JournalføringV2
+          oppgave={lagOppgave(jp)}
+          journalpost={jp}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
+      </MedGammeltFødselsnummerIContext>
+    )
+
+    expect(screen.getByText('Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.')).toBeVisible()
+    expect(screen.queryByText(`Skjema for ${journalpostensFnr}`)).not.toBeInTheDocument()
   })
 
   it('bytter til bruker B når journalposten byttes fra A til B', async () => {
@@ -112,7 +180,12 @@ describe('JournalføringV2', () => {
     }
     const { container, rerender } = render(
       <MedGammeltFødselsnummerIContext strict={false}>
-        <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={oppgave}
+          journalpost={journalpost}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
     expect(await screen.findByText('Fnr: 010101 99999')).toBeInTheDocument()
@@ -121,7 +194,12 @@ describe('JournalføringV2', () => {
     vi.mocked(usePerson).mockClear()
     rerender(
       <MedGammeltFødselsnummerIContext strict={false}>
-        <JournalføringV2 oppgave={lagOppgave(journalpostB)} journalpost={journalpostB} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={lagOppgave(journalpostB)}
+          journalpost={journalpostB}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 
@@ -163,11 +241,12 @@ describe('JournalføringV2', () => {
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
         />
       </MedGammeltFødselsnummerIContext>
     )
 
-    expect(await screen.findByText(`Skjema for ${journalpost.innsender.fnr}`)).toBeInTheDocument()
+    expect(await screen.findByText(`Skjema for ${journalpost.fnrBruker}`)).toBeInTheDocument()
     expect(skjemaStandardverdier.at(-1)).toEqual({
       behandlingstema: 'ab0420',
       behandlingstype: 'ae0034',
@@ -175,7 +254,7 @@ describe('JournalføringV2', () => {
     })
   })
 
-  it('bruker fallback når bare et senere dokument har barnebrillebrevkode', async () => {
+  it('bruker standardverdier fra første dokument når et senere dokument har barnebrillebrevkode', async () => {
     skjemaStandardverdier.length = 0
     const journalpostMedFlereDokumenter = {
       ...journalpost,
@@ -203,6 +282,7 @@ describe('JournalføringV2', () => {
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
         />
       </MedGammeltFødselsnummerIContext>
     )
@@ -225,7 +305,12 @@ describe('JournalføringV2', () => {
 
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={vi.fn()} />
+        <JournalføringV2
+          oppgave={oppgave}
+          journalpost={journalpost}
+          mutateJournalpost={vi.fn()}
+          erBarnebrilleSøknad={false}
+        />
       </MedGammeltFødselsnummerIContext>
     )
 

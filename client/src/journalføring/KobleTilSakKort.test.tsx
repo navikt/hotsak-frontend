@@ -57,11 +57,11 @@ describe('KobleTilSakKort', () => {
     expect(onChange).toHaveBeenCalledWith({ sakstype: Sakstype.FAGSAK, sakId: '9901', fagsaksystem: 'hotsak' })
   })
 
-  it('melder fra om Gosys generell som valgt sak', async () => {
+  it('melder fra om Generell sak som valgt sak', async () => {
     const onChange = vi.fn()
     render(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={onChange} />)
 
-    await userEvent.click(screen.getByRole('radio', { name: 'Velg Gosys generell' }))
+    await userEvent.click(screen.getByRole('radio', { name: 'Velg Generell sak' }))
 
     expect(onChange).toHaveBeenCalledWith({ sakstype: Sakstype.GENERELL_SAK })
   })
@@ -78,13 +78,11 @@ describe('KobleTilSakKort', () => {
     expect(screen.getByRole('button', { name: 'Vis færre' })).toBeInTheDocument()
   })
 
-  it('viser Gosys generell øverst uten metadata', () => {
+  it('viser Generell sak øverst uten metadata', () => {
     render(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
 
     const radioer = screen.getAllByRole('radio')
-    expect(radioer[0]).toHaveAccessibleName('Velg Gosys generell')
-    expect(screen.getByText('Fagsak system')).toBeInTheDocument()
-    expect(radioer[0].closest('label')).toHaveTextContent('Gosys generellFagsak system')
+    expect(radioer[0]).toHaveAccessibleName('Velg Generell sak')
     expect(radioer[0].closest('label')).not.toHaveTextContent('Sak:')
     expect(radioer[0].closest('label')).not.toHaveTextContent('Dato:')
   })

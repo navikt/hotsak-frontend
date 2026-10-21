@@ -381,6 +381,7 @@ export interface Journalpost {
   behandlingstema?: OppgaveKodeverk
   kanal: OppgaveKodeverk
   fnrInnsender: string
+  fnrBruker: string
   journalstatus: JournalpostStatusType
   journalposttype: 'I' | 'U' | 'N'
   dokumenter: Dokument[]

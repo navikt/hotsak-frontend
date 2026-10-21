@@ -7,10 +7,8 @@ import { HttpError } from '../io/HttpError.ts'
 import { JournalføringLoader } from '../journalføring/JournalføringLoader.tsx'
 import { useJournalpostSuspense } from '../saksbilde/useJournalpost.ts'
 import { type Journalføringsoppgave } from './oppgaveTypes.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
-import { BREVKODE_BRILLER_TIL_BARN } from '../journalføring/journalføringStandardverdier.ts'
 
-const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
+//const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
 const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
 
 export function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) {
@@ -27,17 +25,22 @@ export function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppg
 }
 
 function VelgJournalføring({ oppgave }: { oppgave: Journalføringsoppgave }) {
-  const { journalpost, mutate } = useJournalpostSuspense(oppgave.journalpostId)
-  const { erProd } = useMiljø()
+  // TODO Kall hooken lenger ned og ikke prop drill. Er barnebrillesøknad kan også brukes fleres steder. Logikken er litt duplisert foreløpig
+  const { journalpost, mutate, erBarnebrilleSøknad } = useJournalpostSuspense(oppgave.journalpostId)
+  //const { erProd } = useMiljø()
 
-  const brevkode = journalpost.dokumenter[0]?.brevkode
-  const erBarnebrilleSøknad = brevkode && BREVKODE_BRILLER_TIL_BARN.includes(brevkode)
+  //if (erProd && erBarnebrilleSøknad) {
+  // return <Journalføring oppgave={oppgave} />
+  //}
 
-  if (erProd && erBarnebrilleSøknad) {
-    return <Journalføring oppgave={oppgave} />
-  }
-
-  return <JournalføringV2 oppgave={oppgave} journalpost={journalpost} mutateJournalpost={mutate} />
+  return (
+    <JournalføringV2
+      oppgave={oppgave}
+      journalpost={journalpost}
+      mutateJournalpost={mutate}
+      erBarnebrilleSøknad={erBarnebrilleSøknad}
+    />
+  )
 }
 
 function JournalpostFeilmelding({ error }: FallbackProps) {

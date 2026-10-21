@@ -27,15 +27,16 @@ import {
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
+import { Kilde } from '../../types/hotlibs.ts'
 import {
   type Barnebrillesak,
   Brevkode,
   Kjønn,
   type OppdaterVilkårRequest,
-  Saksstatus,
   type Sak,
   type Saksdokument,
   SaksdokumentType,
+  Saksstatus,
   SaksstatusKategori,
   Sakstype,
   StegType,
@@ -524,6 +525,7 @@ export class SakStore extends Dexie {
         navn: { fornavn: 'Ukjent', etternavn: '' },
       },
       enhet: enheter.agder,
+      kilde: Kilde.JOURNALPOST,
       journalposter: [request.journalpostId],
     }
     await this.saker.add(sak as unknown as InsertSak)

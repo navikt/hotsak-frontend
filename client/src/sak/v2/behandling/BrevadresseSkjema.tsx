@@ -24,7 +24,7 @@ export function BrevadresseSkjema({
 }: BrevadresseSkjemaProps) {
   const [adresselinje1, setAdresselinje1] = useState(initiellAdresse?.adresselinje1 ?? '')
   const [adresselinje2, setAdresselinje2] = useState(
-    initiellAdresse ? (initiellAdresse.adresselinje2 ?? '') : formidlerNavn ? `v/ ${formidlerNavn}` : ''
+    initiellAdresse?.adresselinje2 ? (initiellAdresse.adresselinje2 ?? '') : formidlerNavn ? `v/ ${formidlerNavn}` : ''
   )
   const [adresselinje3, setAdresselinje3] = useState(initiellAdresse?.adresselinje3 ?? '')
   const [postnummer, setPostnummer] = useState(initiellAdresse?.postnummer ?? '')

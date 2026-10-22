@@ -848,9 +848,22 @@ export class SakStore extends Dexie {
 
   async leggTilBrevmottaker(_sakId: string, brevId: string, request: LeggTilMottakerRequest): Promise<void> {
     const brev = await this.hentBrev(Number(brevId))
+    const eksisterende = (await this.hentBrevmottakere(brevId)).find(
+      (mottaker) =>
+        mottaker.mottakertype === request.mottakertype &&
+        mottaker.fnr === request.fnr &&
+        mottaker.orgnr === request.orgnr
+    )
+    if (eksisterende) {
+      await this.brevmottakere.update(Number(eksisterende.id), { adresse: request.adresse ?? eksisterende.adresse })
+      return
+    }
     await this.brevmottakere.add({
       brevId: brevId.toString(),
       fnr: request.fnr,
+      orgnr: request.orgnr,
+      navn: request.navn,
+      adresse: request.adresse,
       mottakertype: request.mottakertype,
       opprettet: nåIso(),
       opprettetAv: Saksbehandlere.innlogget().id,

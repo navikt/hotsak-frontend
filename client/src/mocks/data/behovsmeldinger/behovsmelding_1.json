@@ -21,7 +21,7 @@
       "signaturtype": "FULLMAKT",
       "telefon": "13820599",
       "veiadresse": {
-        "adresse": "Fjellvegen 69",
+        "adresselinje1": "Fjellvegen 69",
         "postnummer": "6770",
         "poststed": "Nordfjordeid"
       },
@@ -138,7 +138,7 @@
         "stilling": "Fysioterapetut",
         "telefon": "24252525",
         "adresse": {
-          "adresse": "Veste Østby 27",
+          "adresselinje1": "Veste Østby 27",
           "postnummer": "2424",
           "poststed": "ØSTBY"
         },
@@ -157,7 +157,7 @@
         "stilling": "Fysioterapetut",
         "telefon": "24252525",
         "adresse": {
-          "adresse": "Veste Østby 27",
+          "adresselinje1": "Veste Østby 27",
           "postnummer": "2424",
           "poststed": "ØSTBY"
         },

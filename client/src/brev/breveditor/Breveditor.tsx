@@ -304,7 +304,7 @@ export function Breveditor(props: BreveditorProps) {
                       <p>
                         {formidlerMedKopi && (
                           <>
-                            {`Kopi til hjelpemiddelformidler: ${formaterNavn(formidler?.navn)}`}
+                            {`Kopi til hjelpemiddelformidler: ${formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi.navn ?? '')}`}
                             <br />
                             <br />
                           </>

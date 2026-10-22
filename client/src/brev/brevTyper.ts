@@ -1,3 +1,4 @@
+import type { Veiadresse } from '../types/hotlibs.ts'
 import type { OppgaveId } from '../oppgave/oppgaveTypes'
 import type { NavIdent } from '../tilgang/Ansatt'
 import type { StilarkVersjon } from './breveditor/html/byggDokument.ts'
@@ -44,7 +45,10 @@ export type Mottakertype = Enum<typeof Mottakertype>
 
 export interface Brevmottaker {
   id: string
-  fnr: string
+  fnr?: string
+  orgnr?: string
+  navn?: string
+  adresse?: Veiadresse
   mottakertype: Mottakertype
   brevId: string
   opprettet: Instant
@@ -82,8 +86,11 @@ export interface BrevmottakerResponse {
 }
 
 export interface LeggTilMottakerRequest {
-  fnr: string
   mottakertype: Mottakertype
+  fnr?: string
+  orgnr?: string
+  navn?: string
+  adresse?: Veiadresse
 }
 
 export const Målform = {
@@ -134,7 +141,10 @@ export interface Brev<T extends Brevdata = Brevdata> extends Brevutkast<T> {
 export interface Brevdistribusjon {
   brevId: string
   mottakertype: Mottakertype
-  fnr: string
+  fnr?: string
+  orgnr?: string
+  navn?: string
+  adresse?: Veiadresse
   journalført?: Instant
   journalpostId?: string
   skalDistribueres?: boolean

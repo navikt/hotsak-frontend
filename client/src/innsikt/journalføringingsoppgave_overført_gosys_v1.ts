@@ -5,15 +5,15 @@ const IKKE_PERSONOPPLYSNINGER =
 
 export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse = {
   skjema: 'journalføringingsoppgave_overført_gosys_v1',
-  tittel: 'Vil du overføre oppgaven til Gosys?',
+  tittel: 'Vil du overføre journalføringsoppgaven til Gosys?',
   beskrivelse: {
-    header: 'Hva skjer med oppgaven hvis den overføres?',
+    header: 'Hva skjer med journalføringsoppgaven hvis den overføres?',
     body: 'Hvis du overfører oppgaven til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. \nJournalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd. Journalføringsoppgaven blir borte fra Hotsak etter overføring.',
   },
   spørsmål: [
     {
       type: 'enkeltvalg',
-      tekst: 'Hvorfor overfører du oppgaven til Gosys?',
+      tekst: 'Hvorfor overfører du journalføringsoppgaven til Gosys?',
       beskrivelse:
         'Grunnen du velger for at oppgaven skal overføres til Gosys blir synlig som en kommentar på oppgaven.',
       alternativer: [

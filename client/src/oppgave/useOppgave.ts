@@ -38,5 +38,9 @@ export function preloadOppgave(oppgaveId: OppgaveId) {
 }
 
 export function mutateOppgave(oppgaveId: OppgaveId, oppgave?: Oppgave) {
-  return mutate(`/api/oppgaver/${oppgaveId}`, oppgave)
+  if (oppgave === undefined) {
+    return mutate(`/api/oppgaver/${oppgaveId}`)
+  } else {
+    return mutate(`/api/oppgaver/${oppgaveId}`, oppgave)
+  }
 }

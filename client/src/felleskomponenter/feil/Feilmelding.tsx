@@ -1,5 +1,6 @@
-import { Accordion, BodyShort, Box, CopyButton, Heading, Link } from '@navikt/ds-react'
+import { Accordion, BodyShort, Box, CopyButton, Heading, Link, VStack } from '@navikt/ds-react'
 import { type FallbackProps } from 'react-error-boundary'
+import { useMemo } from 'react'
 
 import { HttpError } from '../../io/HttpError.ts'
 import { toError } from '../../utils/error.ts'
@@ -14,6 +15,7 @@ export function Feilmelding(props: FeilmeldingProps) {
   const error = toError(props.error)
   const statusCode = HttpError.isHttpError(error) ? error.status : (props.status ?? 500)
   const stackTrace = useStackTrace(error)
+  const tidspunkt = useMemo(() => new Date().toLocaleString(), [])
   return (
     <Box
       className={classes.root}
@@ -37,8 +39,18 @@ export function Feilmelding(props: FeilmeldingProps) {
           <Accordion.Item>
             <Accordion.Header>Informasjon til utviklere</Accordion.Header>
             <Accordion.Content>
-              <CopyButton copyText={stackTrace} text="Kopier feilmelding" activeText="Kopiert" />
-              <pre className={classes.stackTrace}>{stackTrace}</pre>
+              <VStack gap="space-12">
+                <BodyShort as="pre" size="small">
+                  Tidspunkt: {tidspunkt}
+                </BodyShort>
+                <BodyShort as="pre" size="small">
+                  Adresse: {window.location.href}
+                </BodyShort>
+                <div>
+                  <CopyButton copyText={stackTrace} text="Kopier feilmelding" activeText="Kopiert" />
+                  <pre className={classes.stackTrace}>{stackTrace}</pre>
+                </div>
+              </VStack>
             </Accordion.Content>
           </Accordion.Item>
         </Accordion>

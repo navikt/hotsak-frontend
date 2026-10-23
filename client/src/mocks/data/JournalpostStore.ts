@@ -56,29 +56,52 @@ export class JournalpostStore extends Dexie {
     await this.lagreAlle([
       lagJournalpost('9001', 'Tilskudd ved kjøp av briller til barn', {
         behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+        sak: { datoOpprettet: '2026-01-12T09:00:00.000Z', fagsakId: '4401', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9002', 'Tilskudd ved kjøp av briller til barn', {
         behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+        sak: { datoOpprettet: '2026-02-03T10:15:00.000Z', fagsakId: '4402', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9003', 'Tilskudd ved kjøp av briller til barn', {
         behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+        sak: { datoOpprettet: '2026-03-18T12:30:00.000Z', fagsakId: '4403', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9004', 'Tilskudd ved kjøp av briller til barn', {
         behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+        sak: { datoOpprettet: '2026-04-09T08:45:00.000Z', fagsakId: '4404', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9005', 'Tilskudd ved kjøp av briller til barn', {
         behandlingstema: { kode: 'ab0420', term: 'Briller til barn' },
+        sak: { datoOpprettet: '2026-05-21T14:00:00.000Z', fagsakId: '4405', fagsaksystem: 'HJELPEMIDLER' },
       }),
     ])
 
     const v2Poster = [
-      lagJournalpost('9006', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
-      lagJournalpost('9007', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
-      lagJournalpost('9008', 'Søknad om hjelpemidler', { brukerFnr: JOURNALFOERING_V2_BRUKER_FNR }),
+      lagJournalpost('9006', 'Søknad om hjelpemidler', {
+        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        sak: { datoOpprettet: '2026-06-02T09:20:00.000Z', fagsakId: '9901', fagsaksystem: 'HJELPEMIDLER' },
+      }),
+      lagJournalpost('9007', 'Søknad om hjelpemidler', {
+        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        sak: { datoOpprettet: '2026-07-14T11:10:00.000Z', fagsakId: '9902', fagsaksystem: 'HJELPEMIDLER' },
+      }),
+      lagJournalpost('9008', 'Søknad om hjelpemidler', {
+        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        sak: { datoOpprettet: '2026-06-02T09:20:00.000Z', fagsakId: '9901', fagsaksystem: 'HJELPEMIDLER' },
+      }),
       lagJournalpost('9009', 'Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker', {
         brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
         avsenderFnr: '02020299999',
         kanal: { kode: 'NAV_NO', term: 'Nav.no' },
+        sak: { datoOpprettet: '2026-07-14T11:10:00.000Z', fagsakId: '9902', fagsaksystem: 'HJELPEMIDLER' },
+      }),
+      lagJournalpost('9010', 'Søknad om hjelpemidler', {
+        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        sak: { datoOpprettet: '2026-10-02T09:05:00.000Z', fagsakId: '1234A01', fagsaksystem: 'IT01' },
+      }),
+      lagJournalpost('9011', 'Søknad om hjelpemidler', {
+        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        sak: { datoOpprettet: '2026-10-16T10:35:00.000Z', fagsakId: '1234A02', fagsaksystem: 'IT01' },
       }),
     ]
 

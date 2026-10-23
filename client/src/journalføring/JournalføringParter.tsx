@@ -3,7 +3,7 @@ import { BodyShort, Box, Button, ErrorMessage, HStack, Label, TextField, VStack 
 import { InlineKopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
-import { type Journalpost } from '../types/types.internal.ts'
+import { Kanal, type Journalpost } from '../types/types.internal.ts'
 import { useJournalføringPart } from './useJournalføringPart.ts'
 
 interface JournalføringParterProps {
@@ -66,7 +66,7 @@ export function JournalføringParter({
           inputLabel="Avsenders fødselsnummer"
           velgLabel="Velg avsender"
           fnr={avsenderFnr}
-          kanRedigere={kanRedigere}
+          kanRedigere={kanRedigere && journalpost.kanal.kode !== Kanal.NAV_NO}
           part={avsender}
         />
       </VStack>

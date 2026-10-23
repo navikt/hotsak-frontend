@@ -37,6 +37,7 @@ export function BrevHeader({
   const [innstillingerÅpen, setInnstillingerÅpen] = useState(false)
   const { data } = useBrevmottakere(valgtBrevId)
   const erVedtaksbrevValgt = brev.some((b) => b.brevId === valgtBrevId && isVedtaksbrev(b))
+  const flereMottakere = (data?.brevmottakere?.length ?? 0) > 1
 
   return (
     <Box borderRadius="12" marginBlock="space-0 space-4">
@@ -75,9 +76,11 @@ export function BrevHeader({
                   >
                     Innstillinger
                   </Button>
-                  <Tag variant="warning" size="small">
-                    Flere mottakere
-                  </Tag>
+                  {flereMottakere && (
+                    <Tag variant="warning" size="small">
+                      Flere mottakere
+                    </Tag>
+                  )}
                 </>
               )}
             </HStack>

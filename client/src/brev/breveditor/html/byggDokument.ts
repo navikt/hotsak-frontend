@@ -1,8 +1,9 @@
 import { Value } from 'platejs'
-import { Målform } from '../../brevTyper.ts'
+import { Brevmottaker, Målform } from '../../brevTyper.ts'
 import { Metadata } from '../Breveditor'
 import versjonertStilarkV1 from '../versjonerte-brev-stilark/v1.less?raw'
 import { serialiserTilHtml } from './serialiserTilHtml'
+import { formaterNavn } from '../../../utils/formater.ts'
 
 export const GJELDENDE_STILARK_VERSJON = 'v1' as const
 
@@ -73,9 +74,10 @@ export function byggHeaderHtml(metadata: Metadata, vergeNavn?: string, målform?
   )
 }
 
-export function byggFooterHtml(metadata: Metadata, målform?: Målform): string {
+export function byggFooterHtml(metadata: Metadata, målform?: Målform, formidlerMedKopi?: Brevmottaker): string {
   const målformTekster = hentMålformTekster(målform)
   return `<footer>
+        ${`Kopi til hjelpemiddelformidler: ${formidlerMedKopi ? formaterNavn(formidlerMedKopi.navn) : ''}`} <br /><br />
         ${målformTekster.medVennligHilsen} <br />
         ${metadata.saksbehandlerNavn}
         ${metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />
@@ -88,7 +90,8 @@ export function byggFullHtml(
   nyVerdi: Value,
   stilarkVersjon: StilarkVersjon,
   vergeNavn?: string,
-  målform?: Målform
+  målform?: Målform,
+  formidlerMedKopi?: Brevmottaker
 ): string {
   const stilark = hentStilark(stilarkVersjon)
   const målformTekster = hentMålformTekster(målform)
@@ -123,7 +126,7 @@ export function byggFullHtml(
     `<main>` +
     (serialiserTilHtml(nyVerdi) || '') +
     `</main>` +
-    byggFooterHtml(metadata, målform) +
+    byggFooterHtml(metadata, målform, formidlerMedKopi) +
     `</body>
     </html>`
   )

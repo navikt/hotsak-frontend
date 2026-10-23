@@ -209,7 +209,7 @@ export function Breveditor(props: BreveditorProps) {
   // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
   useEffect(() => {
     if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn, målform)
+      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn, målform, formidlerMedKopi)
       if (initialState.valueAsHtml !== ferskHtml) {
         const oppdatertState: BreveditorState = {
           value: initialState.value,

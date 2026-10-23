@@ -82,6 +82,14 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const brevUtenVedtak = valgtBrev?.brevmal !== undefined && isBreveditorbrevUtenVedtak(valgtBrev.brevmal)
 
   useEffect(() => {
+    if (initialBrevId) {
+      setPlaceholderFeil([])
+      setSynligKryssKnapp(false)
+      setValgtBrevId(initialBrevId)
+    }
+  }, [initialBrevId])
+
+  useEffect(() => {
     if (!underveisbrevDistribueresEtter) return
 
     const frist = Date.parse(underveisbrevDistribueresEtter)

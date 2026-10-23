@@ -1,7 +1,7 @@
 import { Button, ErrorMessage, HStack, TextField, VStack } from '@navikt/ds-react'
 import { type FormEvent, useState } from 'react'
 
-import { type Veiadresse } from '../../../types/hotlibs.ts'
+import { type Veiadresse } from '../types/hotlibs.ts'
 
 interface BrevadresseSkjemaProps {
   initiellAdresse?: Veiadresse

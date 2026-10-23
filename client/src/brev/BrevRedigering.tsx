@@ -1,6 +1,6 @@
-import { Button, Loader, LocalAlert } from '@navikt/ds-react'
+import { Loader, LocalAlert } from '@navikt/ds-react'
 import { isToday } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
@@ -11,20 +11,15 @@ import {
   isBehandlingsutfallVedtak,
   VedtaksResultat,
 } from '../sak/v2/behandling/behandlingTyper.ts'
-import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less' // todo -> hvorfor less?
-import { BrevContext } from './BrevContext.ts'
 import { Breveditor } from './breveditor/Breveditor.tsx'
 import { type BreveditorBrevdata, type BreveditorState, isBreveditorState } from './breveditor/breveditorTyper.ts'
-import { type PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { useBrevmal } from './brevmaler/useBrevmal.ts'
 import classes from './BrevRedigering.module.css'
-import { Brevmal, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
-import { SendBrevDialog } from './SendBrevDialog.tsx'
-import { SlettBrevModal } from './SlettBrevModal.tsx'
+import { Brevmal } from './brevTyper.ts'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
 
@@ -32,38 +27,12 @@ export interface BrevRedigeringProps {
   oppgave: Saksbehandlingsoppgave
   behandling?: Behandling
   brevId: string
-  onSlettBrev?: () => void
-  onTilbake?: () => void
 }
 
-export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTilbake }: BrevRedigeringProps) {
+export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringProps) {
   const { sak } = useSak()
-
-  const closePanel = useClosePanel('brevpanel')
-  const [visSlettBrevModal, setVisSlettBrevModal] = useState(false)
-  const [openSendBrevDialog, setOpenSendBrevDialog] = useState(false)
-
   const { brev, isLoading: brevIsLoading, error: brevError } = useBrev<BreveditorBrevdata>(brevId)
-
-  const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
-  const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
-
-  const sendesMedBehandling = brev?.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV
-  const brevUtenVedtak = brev?.brevmal !== undefined && isBreveditorbrevUtenVedtak(brev.brevmal)
-
-  const datoSoknadMottatt = sak?.data.søknadMottatt
-  const hjelpemidlerSøktOm = sak?.data.søknadGjelder
-    ? sak.data.søknadGjelder
-        .replace(/^Søknad om:\s*/i, '')
-        .split(',')
-        .map((h) => h.trim())
-    : undefined
-
-  const { oppdaterBrevutkast, slettBrevutkast, ferdigstillBrevutkast, redigerBrevutkast } = useBrevActions(
-    oppgave,
-    brev?.brevId
-  )
-
+  const { oppdaterBrevutkast, redigerBrevutkast } = useBrevActions(oppgave, brev?.brevId)
   const { showInfoToast } = useToast()
 
   const templateMarkdown = useBrevmal(utledBrevmal(behandling, brev?.brevmal), brev?.målform)
@@ -109,8 +78,15 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
 
   if (!brev || !templateMarkdown) return null
 
+  if (brev.ferdigstilt) {
+    return (
+      <div className="brev">
+        <BrevForhåndsvisning brevId={brevId} />
+      </div>
+    )
+  }
+
   const handleLagreBrev = async (state: BreveditorState, serienummer: number) => {
-    if (!brev) return // Utkast må være opprettet først
     await oppdaterBrevutkast.trigger({
       brevutkast: {
         brevmal: brev.brevmal,
@@ -122,129 +98,29 @@ export function BrevRedigering({ oppgave, behandling, brevId, onSlettBrev, onTil
     })
   }
 
-  const handleSlettBrevutkast = async () => {
-    if (!brev) return
-    await slettBrevutkast.trigger()
-    if (onSlettBrev) onSlettBrev()
-    else closePanel()
-  }
-
-  const markerKlart = async (klart: boolean) => {
-    setSynligKryssKnapp(true)
-    const currentBrev = brev && isBreveditorState(brev.data) ? brev.data.value : undefined
-    if (!currentBrev) return
-
-    const feil = validerPlaceholders(currentBrev)
-    if (feil.length > 0) {
-      setPlaceholderFeil(feil)
-      return
-    }
-    setPlaceholderFeil([])
-    if (klart) {
-      await ferdigstillBrevutkast.trigger()
-    } else {
-      await redigerBrevutkast.trigger()
-    }
-  }
-
   return (
-    <BrevContext
-      value={{
-        placeholderFeil,
-        setPlaceholderFeil,
-        synligKryssKnapp,
-        setSynligKryssKnapp,
-        datoSoknadMottatt,
-        hjelpemidlerSøktOm,
-      }}
-    >
-      <div className="brev">
-        {brev.ferdigstilt ? (
-          <>
-            <div className="brevtoolbar">
-              <div className="left">
-                {onTilbake && (
-                  <Button variant="tertiary" size="small" onClick={onTilbake}>
-                    Alle brev
-                  </Button>
-                )}
-              </div>
-              <div className="right">
-                <Button variant="tertiary" size="small" onClick={() => markerKlart(false)}>
-                  Rediger
-                </Button>
-                {brevUtenVedtak && (
-                  <Button variant="primary" size="small" onClick={() => setOpenSendBrevDialog(true)}>
-                    Send brev
-                  </Button>
-                )}
-              </div>
-            </div>
-            <BrevForhåndsvisning brevId={brevId} />
-          </>
-        ) : (
-          <>
-            <div className="brevtoolbar">
-              <div className="left">
-                {onTilbake && (
-                  <Button variant="tertiary" size="small" onClick={onTilbake}>
-                    Alle brev
-                  </Button>
-                )}
-                <Button variant="tertiary" size="small" onClick={() => setVisSlettBrevModal(true)}>
-                  Slett utkast
-                </Button>
-              </div>
-              <div className="right">
-                <Button
-                  loading={ferdigstillBrevutkast.isMutating}
-                  variant="primary"
-                  size="small"
-                  onClick={() => markerKlart(true)}
-                >
-                  {sendesMedBehandling ? 'Ferdigstill utkast' : 'Ferdigstill og forhåndsvis'}
-                </Button>
-              </div>
-            </div>
-            <Breveditor
-              placeholder="Skriv et fantastisk brev her..."
-              metadata={{
-                brukersNavn: sak?.data.bruker.fulltNavn || '',
-                brukersFødselsnummer: sak?.data.bruker.fnr || '',
-                saksnummer: Number(sak!.data.sakId),
-                brevOpprettet: formaterDatoLang(new Date().toISOString()),
-                saksbehandlerNavn: oppgave?.tildeltSaksbehandler?.navn || '',
-                attestantsNavn: undefined,
-                hjelpemiddelsentral: sak?.data.enhet.navn || 'Nav hjelpemiddelsentral',
-              }}
-              brevId={brev.brevId}
-              templateMarkdown={templateMarkdown}
-              initialState={isBreveditorState(brev.data) ? brev.data : undefined}
-              initialSerienummer={brev.serienummer}
-              stilarkVersjon={brev.brevmalVersjon}
-              målform={brev.målform}
-              spesiellePlaceholderVerdier={isBreveditorState(brev.data) ? undefined : brev.data.templateValues}
-              onLagreBrev={handleLagreBrev}
-            />
-          </>
-        )}
-      </div>
-      <SlettBrevModal
-        heading="Vil du slette brevutkastet?"
-        tekst="Du er i ferd med å slette brevutkastet. Dette kan ikke angres."
-        width="700px"
-        loading={slettBrevutkast.isMutating}
-        open={visSlettBrevModal}
-        onClose={() => setVisSlettBrevModal(false)}
-        onBekreft={handleSlettBrevutkast}
+    <div className="brev">
+      <Breveditor
+        placeholder="Skriv et fantastisk brev her..."
+        metadata={{
+          brukersNavn: sak?.data.bruker.fulltNavn || '',
+          brukersFødselsnummer: sak?.data.bruker.fnr || '',
+          saksnummer: Number(sak!.data.sakId),
+          brevOpprettet: formaterDatoLang(new Date().toISOString()),
+          saksbehandlerNavn: oppgave?.tildeltSaksbehandler?.navn || '',
+          attestantsNavn: undefined,
+          hjelpemiddelsentral: sak?.data.enhet.navn || 'Nav hjelpemiddelsentral',
+        }}
+        brevId={brev.brevId}
+        templateMarkdown={templateMarkdown}
+        initialState={isBreveditorState(brev.data) ? brev.data : undefined}
+        initialSerienummer={brev.serienummer}
+        stilarkVersjon={brev.brevmalVersjon}
+        målform={brev.målform}
+        spesiellePlaceholderVerdier={isBreveditorState(brev.data) ? undefined : brev.data.templateValues}
+        onLagreBrev={handleLagreBrev}
       />
-      <SendBrevDialog
-        oppgave={oppgave}
-        brevId={brev?.brevId}
-        open={openSendBrevDialog}
-        onClose={() => setOpenSendBrevDialog(false)}
-      />
-    </BrevContext>
+    </div>
   )
 }
 

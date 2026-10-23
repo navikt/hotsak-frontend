@@ -23,7 +23,6 @@ import { useBrevActions } from '../../../brev/useBrevActions.ts'
 import { useToast } from '../../../felleskomponenter/toast/useToast'
 import { TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { type Saksbehandlingsoppgave } from '../../../oppgave/oppgaveTypes.ts'
-import { useMiljø } from '../../../utils/useMiljø.ts'
 import { useClosePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakV2ContextType.ts'
 import classes from './BehandlingPanel.module.css'
@@ -39,7 +38,6 @@ import {
   type Behandling,
 } from './behandlingTyper.ts'
 import { HenleggForm } from './HenleggForm.tsx'
-import { MottakereCard } from './MottakereCard.tsx'
 import { useBehandlingActions } from './useBehandlingActions.ts'
 import { VisBrevKnapp } from './VisBrevKnapp.tsx'
 
@@ -57,7 +55,6 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
   const vedtaksbrevId = finnBrev(isVedtaksbrev)?.brevId
   const { opprettBrevutkast, slettBrevutkast } = useBrevActions(oppgave, vedtaksbrevId)
   const { showSuccessToast } = useToast()
-  const { erIkkeProd } = useMiljø()
   const [målform, setMålform] = useState<Målform>(Målform.BOKMÅL)
 
   const vedtaksresultat = isBehandlingsutfallVedtak(behandling?.utfall) ? behandling.utfall.utfall : undefined
@@ -191,8 +188,6 @@ export function BehandlingRedigering({ oppgave, behandling }: BehandlingRedigeri
                   Ferdigstill utkastet i brevpanelet. Brevet blir lagt til utsending etter at vedtaket er fattet.
                 </InlineMessage>
               )}
-
-              {erIkkeProd && <MottakereCard vedtaksbrevId={vedtaksbrevId} />}
             </VStack>
           </Box>
         </TextContainer>

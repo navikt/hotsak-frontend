@@ -151,7 +151,7 @@ function SakV2Content({
             </Panel>
           )}
           <ResizablePanel panelId="brevpanel" panel={brevPanel} visible={brevPanel.visible}>
-            <AvrundetPanel>
+            <AvrundetPanel paddingBlock="space-4">
               <BrevPanel oppgave={oppgave} brev={breveditorbrev} initialBrevId={vedtaksbrev?.brevId} />
             </AvrundetPanel>
           </ResizablePanel>

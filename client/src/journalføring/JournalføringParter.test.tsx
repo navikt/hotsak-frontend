@@ -10,6 +10,7 @@ import { lagPerson } from '../mocks/data/PersonStore.ts'
 import { lagJournalpost } from '../mocks/data/lagJournalpost.ts'
 import { PersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
+import { Kanal, type Journalpost } from '../types/types.internal.ts'
 import { JournalføringParter } from './JournalføringParter.tsx'
 
 vi.mock('../io/HttpClient.ts', () => ({ http: { post: vi.fn() } }))
@@ -35,9 +36,11 @@ const journalpost = {
 function TestParter({
   initialAvsenderFnr = avsenderFnr,
   kanRedigere = true,
+  kanal = journalpost.kanal,
 }: {
   initialAvsenderFnr?: string
   kanRedigere?: boolean
+  kanal?: Journalpost['kanal']
 }) {
   const [fodselsnummer, setFodselsnummer] = useState(opprinneligFnr)
   const [gjeldendeAvsenderFnr, setGjeldendeAvsenderFnr] = useState(initialAvsenderFnr)
@@ -47,7 +50,7 @@ function TestParter({
       <output aria-label="Aktivt fødselsnummer">{fodselsnummer}</output>
       <output aria-label="Avsenders fødselsnummer">{gjeldendeAvsenderFnr}</output>
       <JournalføringParter
-        journalpost={journalpost}
+        journalpost={{ ...journalpost, kanal }}
         tildeltEnhet="Testenhet"
         kanRedigere={kanRedigere}
         avsenderFnr={gjeldendeAvsenderFnr}
@@ -90,6 +93,14 @@ describe('JournalføringParter', () => {
 
     expect(screen.getByRole('button', { name: 'Endre bruker' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Endre avsender' })).toBeInTheDocument()
+  })
+
+  it('viser bare endreknappen for bruker når journalposten er sendt via nav.no', () => {
+    render(<TestParter kanal={{ kode: Kanal.NAV_NO, term: 'nav.no' }} />)
+
+    expect(screen.getByRole('button', { name: 'Endre bruker' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Endre avsender' })).not.toBeInTheDocument()
+    expect(screen.getByRole('status', { name: 'Avsenders fødselsnummer' })).toHaveTextContent(avsenderFnr)
   })
 
   it('skjuler redigeringsknappene når oppgaven er skrivebeskyttet', () => {

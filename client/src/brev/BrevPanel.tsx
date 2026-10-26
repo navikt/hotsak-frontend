@@ -168,84 +168,88 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         hjelpemidlerSøktOm: hjelpemidlerSøktOm(sak?.data.søknadGjelder),
       }}
     >
-      <BrevHeader
-        brev={brev}
-        valgtBrevId={aktivtBrevId}
-        onVelgBrev={handleVelgBrev}
-        kanRedigere={kanRedigere}
-        handlinger={handlinger}
-      />
-      {!valgtBrev && valgtBrevId != 'nytt-utkast' && (
-        <Box paddingInline="space-20">
-          <BrevInfoCard title="Ingen brev valgt">
-            {brev.length === 0 ? 'Det er ikke opprettet noen brev i saken.' : 'Velg et brev i fanene over.'}
-          </BrevInfoCard>
-        </Box>
-      )}
-      {!valgtBrev && valgtBrevId == 'nytt-utkast' && (
-        <>
-          {oppgave && (
-            <NyttBrev
-              oppgave={oppgave}
-              tilgjengeligeBrevmaler={tilgjengeligeBrevmaler}
-              onOpprettet={(opprettetBrev) => {
-                handleVelgBrev(opprettetBrev.brevId)
-              }}
-            />
-          )}
-        </>
-      )}
-      {valgtBrev && kanRedigere && oppgave && (
-        <Box className={classes.container} background="default">
-          <Suspense>
-            <BrevRedigering oppgave={oppgave} behandling={gjeldendeBehandling} brevId={valgtBrev.brevId} />
-          </Suspense>
-        </Box>
-      )}
-      {valgtBrev && !(kanRedigere && oppgave) && (
-        <>
-          <Box paddingInline="space-20" paddingBlock="space-0 space-20">
-            {oppgaveErAvsluttet && (
-              <BrevInfoCard title="Oppgaven er ferdigstilt">
-                Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
-              </BrevInfoCard>
-            )}
-            {gyldigDistribueresEtter && (
-              <BrevInfoCard title="Brev til distribusjon">
-                Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
-                {formaterTidsstempel(gyldigDistribueresEtter)}.
-              </BrevInfoCard>
-            )}
+      <div className={classes.panel}>
+        <div className={classes.header}>
+          <BrevHeader
+            brev={brev}
+            valgtBrevId={aktivtBrevId}
+            onVelgBrev={handleVelgBrev}
+            kanRedigere={kanRedigere}
+            handlinger={handlinger}
+          />
+        </div>
+        {!valgtBrev && valgtBrevId != 'nytt-utkast' && (
+          <Box paddingInline="space-20">
+            <BrevInfoCard title="Ingen brev valgt">
+              {brev.length === 0 ? 'Det er ikke opprettet noen brev i saken.' : 'Velg et brev i fanene over.'}
+            </BrevInfoCard>
           </Box>
-          <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
-        </>
-      )}
-      {valgtBrev && oppgave && (
-        <SendBrevDialog
-          oppgave={oppgave}
-          brevId={valgtBrev.brevId}
-          open={sendBrevDialogOpen}
-          onClose={() => setSendBrevDialogOpen(false)}
+        )}
+        {!valgtBrev && valgtBrevId == 'nytt-utkast' && (
+          <>
+            {oppgave && (
+              <NyttBrev
+                oppgave={oppgave}
+                tilgjengeligeBrevmaler={tilgjengeligeBrevmaler}
+                onOpprettet={(opprettetBrev) => {
+                  handleVelgBrev(opprettetBrev.brevId)
+                }}
+              />
+            )}
+          </>
+        )}
+        {valgtBrev && kanRedigere && oppgave && (
+          <Box className={classes.container} background="default">
+            <Suspense>
+              <BrevRedigering oppgave={oppgave} behandling={gjeldendeBehandling} brevId={valgtBrev.brevId} />
+            </Suspense>
+          </Box>
+        )}
+        {valgtBrev && !(kanRedigere && oppgave) && (
+          <div className={classes.innhold}>
+            <Box paddingInline="space-20" paddingBlock="space-0 space-20">
+              {oppgaveErAvsluttet && (
+                <BrevInfoCard title="Oppgaven er ferdigstilt">
+                  Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
+                </BrevInfoCard>
+              )}
+              {gyldigDistribueresEtter && (
+                <BrevInfoCard title="Brev til distribusjon">
+                  Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
+                  {formaterTidsstempel(gyldigDistribueresEtter)}.
+                </BrevInfoCard>
+              )}
+            </Box>
+            <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
+          </div>
+        )}
+        {valgtBrev && oppgave && (
+          <SendBrevDialog
+            oppgave={oppgave}
+            brevId={valgtBrev.brevId}
+            open={sendBrevDialogOpen}
+            onClose={() => setSendBrevDialogOpen(false)}
+          />
+        )}
+        {valgtBrev && (
+          <AngreSendingAvBrevDialog
+            oppgave={oppgave}
+            brevId={valgtBrev.brevId}
+            open={angreSendingAvBrevDialogOpen}
+            onClose={() => setAngreSendingAvBrevDialogOpen(false)}
+            distribueresEtter={gyldigDistribueresEtter}
+          />
+        )}
+        <SlettBrevModal
+          heading="Vil du slette brevutkastet?"
+          tekst="Du er i ferd med å slette brevutkastet. Dette kan ikke angres."
+          width="700px"
+          loading={slettBrevutkast.isMutating}
+          open={slettBrevModalOpen}
+          onClose={() => setSlettBrevModalOpen(false)}
+          onBekreft={handleSlettBrev}
         />
-      )}
-      {valgtBrev && (
-        <AngreSendingAvBrevDialog
-          oppgave={oppgave}
-          brevId={valgtBrev.brevId}
-          open={angreSendingAvBrevDialogOpen}
-          onClose={() => setAngreSendingAvBrevDialogOpen(false)}
-          distribueresEtter={gyldigDistribueresEtter}
-        />
-      )}
-      <SlettBrevModal
-        heading="Vil du slette brevutkastet?"
-        tekst="Du er i ferd med å slette brevutkastet. Dette kan ikke angres."
-        width="700px"
-        loading={slettBrevutkast.isMutating}
-        open={slettBrevModalOpen}
-        onClose={() => setSlettBrevModalOpen(false)}
-        onBekreft={handleSlettBrev}
-      />
+      </div>
     </BrevContext>
   )
 }

@@ -123,7 +123,7 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
             ) : (
               <BrevadresseSkjema
                 initiellAdresse={formidlerSomMottaker?.adresse ?? initiellAdresse}
-                formidlerNavn={formidlerNavn}
+                formidlerNavn={formidlerSomMottaker?.navn ?? formidlerNavn}
                 isLoading={leggTilBrevmottaker.isMutating || endreBrevmottaker.isMutating}
                 feilmelding={feilmelding}
                 onLagre={handleLagre}

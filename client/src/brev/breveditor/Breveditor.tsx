@@ -243,7 +243,7 @@ export function Breveditor(props: BreveditorProps) {
           if ((onStateChange != null || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: BreveditorState = {
               value: nyVerdi,
-              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn, målform),
+              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn, målform, formidlerMedKopi),
               history: changedEditor.history,
             }
             if (!state.current || state.current.value !== nyVerdi) {

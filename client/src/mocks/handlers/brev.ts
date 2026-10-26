@@ -4,6 +4,7 @@ import {
   type Brev,
   Brevmal,
   type FerdigstillBrevutkastRequest,
+  type EndreMottakerRequest,
   type LeggTilMottakerRequest,
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
@@ -171,6 +172,15 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
     async ({ params, request }) => {
       const { sakId, brevId } = params
       await sakStore.leggTilBrevmottaker(sakId, brevId, await request.json())
+      return respondNoContent()
+    }
+  ),
+
+  http.put<BrevmottakerParams, EndreMottakerRequest>(
+    '/api/sak/:sakId/brev/:brevId/mottakere/:brevmottakerId',
+    async ({ params, request }) => {
+      const { sakId, brevId, brevmottakerId } = params
+      await sakStore.endreBrevmottaker(sakId, brevId, brevmottakerId, await request.json())
       return respondNoContent()
     }
   ),

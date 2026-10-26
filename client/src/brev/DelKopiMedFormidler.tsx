@@ -20,8 +20,8 @@ interface DelKopiMedFormidlerProps {
 export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiMedFormidlerProps) {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
-  const { leggTilBrevmottaker, slettBrevmottaker } = useBrevmottakerActions(brevId)
-  const isMutating = leggTilBrevmottaker.isMutating || slettBrevmottaker.isMutating
+  const { leggTilBrevmottaker, endreBrevmottaker, slettBrevmottaker } = useBrevmottakerActions(brevId)
+  const isMutating = leggTilBrevmottaker.isMutating || endreBrevmottaker.isMutating || slettBrevmottaker.isMutating
   const [visSkjema, setVisSkjema] = useState(false)
 
   const formidlerSomMottaker = mottakere.brevmottakere.find(
@@ -36,6 +36,7 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
   const handleFormidlerKopi = async (skalMottaKopi: boolean) => {
     if (skalMottaKopi && !formidlerSomMottaker) {
       leggTilBrevmottaker.reset()
+      endreBrevmottaker.reset()
       setVisSkjema(true)
     } else if (!skalMottaKopi) {
       setVisSkjema(false)
@@ -44,17 +45,21 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
   }
 
   const handleLagre = async (adresse: Veiadresse, formidlerNavn: string) => {
-    // POST med samme mottakertype oppdaterer adressen. Bytt til PUT etter hvert
-    // Orgnr mangler i behovsmelding foreløpig. Inntil det finnes går kopien som sentral utskrift til adressen.
-    await leggTilBrevmottaker.trigger({
-      mottakertype: Mottakertype.FORMIDLER,
-      navn: formidlerNavn,
-      adresse,
-    })
+    if (formidlerSomMottaker) {
+      await endreBrevmottaker.trigger({ brevmottakerId: formidlerSomMottaker.id, navn: formidlerNavn, adresse })
+    } else {
+      // Orgnr mangler i behovsmelding foreløpig. Inntil det finnes går kopien som sentral utskrift til adressen.
+      await leggTilBrevmottaker.trigger({
+        mottakertype: Mottakertype.FORMIDLER,
+        navn: formidlerNavn,
+        adresse,
+      })
+    }
     setVisSkjema(false)
   }
 
-  const feilmelding = leggTilBrevmottaker.error ? feilmeldingFra(leggTilBrevmottaker.error) : undefined
+  const lagreFeil = leggTilBrevmottaker.error ?? endreBrevmottaker.error
+  const feilmelding = lagreFeil ? feilmeldingFra(lagreFeil) : undefined
 
   return (
     <Box marginBlock="space-12 space-8">
@@ -119,7 +124,7 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
               <BrevadresseSkjema
                 initiellAdresse={formidlerSomMottaker?.adresse ?? initiellAdresse}
                 formidlerNavn={formidlerNavn}
-                isLoading={leggTilBrevmottaker.isMutating}
+                isLoading={leggTilBrevmottaker.isMutating || endreBrevmottaker.isMutating}
                 feilmelding={feilmelding}
                 onLagre={handleLagre}
                 onAvbryt={() => setVisSkjema(false)}

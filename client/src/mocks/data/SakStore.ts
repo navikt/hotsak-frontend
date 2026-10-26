@@ -7,6 +7,7 @@ import {
   Brevmottaker,
   Brevstatus,
   isBreveditorbrevUtenVedtak,
+  type EndreMottakerRequest,
   type LeggTilMottakerRequest,
   Mottakertype,
   Målform,
@@ -848,16 +849,6 @@ export class SakStore extends Dexie {
 
   async leggTilBrevmottaker(_sakId: string, brevId: string, request: LeggTilMottakerRequest): Promise<void> {
     const brev = await this.hentBrev(Number(brevId))
-    const eksisterende = (await this.hentBrevmottakere(brevId)).find(
-      (mottaker) =>
-        mottaker.mottakertype === request.mottakertype &&
-        mottaker.fnr === request.fnr &&
-        mottaker.orgnr === request.orgnr
-    )
-    if (eksisterende) {
-      await this.brevmottakere.update(Number(eksisterende.id), { adresse: request.adresse ?? eksisterende.adresse })
-      return
-    }
     await this.brevmottakere.add({
       brevId: brevId.toString(),
       fnr: request.fnr,
@@ -868,6 +859,18 @@ export class SakStore extends Dexie {
       opprettet: nåIso(),
       opprettetAv: Saksbehandlere.innlogget().id,
       kanSlettes: kanBrevmottakerSlettes(brev.brevmal, request.mottakertype),
+    })
+  }
+
+  async endreBrevmottaker(
+    _sakId: string,
+    _brevId: string,
+    brevmottakerId: string,
+    request: EndreMottakerRequest
+  ): Promise<void> {
+    await this.brevmottakere.update(Number(brevmottakerId), {
+      ...(request.navn !== undefined && { navn: request.navn }),
+      ...(request.adresse !== undefined && { adresse: request.adresse }),
     })
   }
 

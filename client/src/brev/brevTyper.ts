@@ -103,6 +103,11 @@ export interface LeggTilMottakerRequest {
   adresse?: Veiadresse
 }
 
+export interface EndreMottakerRequest {
+  navn?: string
+  adresse?: Veiadresse
+}
+
 export const Målform = {
   BOKMÅL: 'BOKMÅL',
   NYNORSK: 'NYNORSK',

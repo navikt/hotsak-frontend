@@ -22,6 +22,7 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
   const { data } = useBrevmottakere(valgtBrevId)
   const erVedtaksbrevValgt = brev.some((b) => b.brevId === valgtBrevId && isVedtaksbrev(b))
   const flereMottakere = (data?.brevmottakere?.length ?? 0) > 1
+  const erUtkastValgt = brev.some((b) => b.brevId === valgtBrevId && b.brevstatus === 'UTKAST')
 
   return (
     <Box borderRadius="12" marginBlock="space-0 space-4">
@@ -48,15 +49,17 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
             <HStack gap="space-4">
               {erIkkeProd && (
                 <>
-                  <Button
-                    variant="tertiary"
-                    size="small"
-                    aria-expanded={innstillingerÅpen}
-                    onClick={() => setInnstillingerÅpen(!innstillingerÅpen)}
-                    icon={<ChevronDownIcon fontSize="1.3rem" />}
-                  >
-                    Innstillinger
-                  </Button>
+                  {erUtkastValgt && (
+                    <Button
+                      variant="tertiary"
+                      size="small"
+                      aria-expanded={innstillingerÅpen}
+                      onClick={() => setInnstillingerÅpen(!innstillingerÅpen)}
+                      icon={<ChevronDownIcon fontSize="1.3rem" />}
+                    >
+                      Innstillinger
+                    </Button>
+                  )}
                   {flereMottakere && (
                     <Tag variant="warning" size="small">
                       Flere mottakere
@@ -69,7 +72,7 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
           </HStack>
         </Box>
       )}
-      {innstillingerÅpen && (
+      {innstillingerÅpen && erUtkastValgt && (
         <BrevHeaderInnstillinger
           key={valgtBrevId}
           valgtBrevId={valgtBrevId}

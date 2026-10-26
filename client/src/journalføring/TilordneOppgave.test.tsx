@@ -17,6 +17,10 @@ vi.mock('../oppgave/useOppgavebehandlere.ts', () => ({
     behandlere: [
       { id: 'ansatt-1', navn: 'Kari Nordmann' },
       { id: 'ansatt-2', navn: 'Ola Hansen' },
+      { id: 'ansatt-3', navn: 'Silje Saksbehandler' },
+      { id: 'ansatt-4', navn: 'Vurder Vilkårsen' },
+      { id: 'ansatt-5', navn: 'Lese Visingsrud' },
+      { id: 'ansatt-6', navn: 'Per Ove Olsen' },
     ],
   }),
 }))
@@ -96,6 +100,52 @@ describe('TilordneOppgave', () => {
 
     expect(screen.getByLabelText('Valgt medarbeider-ID')).toHaveTextContent('ansatt-1')
     expect(screen.getByRole('option', { name: 'Kari Nordmann' })).toHaveAttribute('aria-selected', 'true')
+  })
+
+  it('finner medarbeider med deler av fornavn og etternavn', async () => {
+    const user = userEvent.setup()
+    render(<TestSkjema />)
+
+    await user.click(screen.getByRole('radio', { name: /Medarbeider sin oppgaveliste/ }))
+    await user.type(screen.getByRole('combobox', { name: 'Medarbeider' }), 'si sa')
+
+    expect(screen.getByRole('option', { name: 'Silje Saksbehandler' })).toBeVisible()
+    expect(screen.queryByRole('option', { name: 'Kari Nordmann' })).not.toBeInTheDocument()
+    await user.click(screen.getByRole('option', { name: 'Silje Saksbehandler' }))
+
+    expect(screen.getByLabelText('Valgt medarbeider-ID')).toHaveTextContent('ansatt-3')
+  })
+
+  it('krever at søkeordene treffer hver sin navnedel', async () => {
+    const user = userEvent.setup()
+    render(<TestSkjema />)
+
+    await user.click(screen.getByRole('radio', { name: /Medarbeider sin oppgaveliste/ }))
+    await user.type(screen.getByRole('combobox', { name: 'Medarbeider' }), 'v vi')
+
+    expect(screen.getByRole('option', { name: 'Vurder Vilkårsen' })).toBeVisible()
+    expect(screen.queryByRole('option', { name: 'Lese Visingsrud' })).not.toBeInTheDocument()
+  })
+
+  it('finner medarbeider når søkeordene er inne i navnedelene', async () => {
+    const user = userEvent.setup()
+    render(<TestSkjema />)
+
+    await user.click(screen.getByRole('radio', { name: /Medarbeider sin oppgaveliste/ }))
+    await user.type(screen.getByRole('combobox', { name: 'Medarbeider' }), 'urd års')
+
+    expect(screen.getByRole('option', { name: 'Vurder Vilkårsen' })).toBeVisible()
+    expect(screen.queryByRole('option', { name: 'Lese Visingsrud' })).not.toBeInTheDocument()
+  })
+
+  it('finner etternavnet selv om medarbeideren har mellomnavn', async () => {
+    const user = userEvent.setup()
+    render(<TestSkjema />)
+
+    await user.click(screen.getByRole('radio', { name: /Medarbeider sin oppgaveliste/ }))
+    await user.type(screen.getByRole('combobox', { name: 'Medarbeider' }), 'er ol')
+
+    expect(screen.getByRole('option', { name: 'Per Ove Olsen' })).toBeVisible()
   })
 
   it('tømmer medarbeider når valget fjernes', async () => {

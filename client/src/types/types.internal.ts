@@ -376,6 +376,12 @@ export enum FritakFraBegrunnelseÅrsak {
   ER_SELVFORKLARENDE_TILBEHØR = 'ER_SELVFORKLARENDE_TILBEHØR',
 }
 
+export interface JournalpostSak {
+  datoOpprettet: string | null
+  fagsakId: string | null
+  fagsaksystem: string | null
+}
+
 export interface Journalpost {
   journalpostId: string
   journalpostOpprettetTid: string
@@ -390,6 +396,7 @@ export interface Journalpost {
   dokumenter: Dokument[]
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
+  sak?: JournalpostSak | null
   sakId?: string
 }
 

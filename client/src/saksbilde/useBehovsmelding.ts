@@ -10,8 +10,11 @@ interface UseBehovsmeldingResponse<T extends Behovsmelding> extends Omit<SWRResp
   harKunTilbehør: boolean
 }
 
-export function useBehovsmelding<T extends Behovsmelding = Innsenderbehovsmelding>(): UseBehovsmeldingResponse<T> {
-  const sakId = useSakId()
+export function useBehovsmelding<T extends Behovsmelding = Innsenderbehovsmelding>(
+  sakIdForSøk?: string
+): UseBehovsmeldingResponse<T> {
+  const kontekstSakId = useSakId()
+  const sakId = sakIdForSøk ?? kontekstSakId
   const { data: behovsmelding, ...rest } = useSWRImmutable<T, HttpError>(
     sakId ? `/api/sak/${sakId}/behovsmelding` : null
   )

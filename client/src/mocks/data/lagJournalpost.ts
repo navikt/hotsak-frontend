@@ -1,5 +1,11 @@
 import { type OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
-import { type Dokument, type Hendelse, type Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
+import {
+  type Dokument,
+  type Hendelse,
+  type Journalpost,
+  type JournalpostSak,
+  JournalpostStatusType,
+} from '../../types/types.internal.ts'
 import { lagTilfeldigInteger, nåIso } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { HJELPEMIDDEL_JOURNALPOST_IDS as HJELPEMIDDEL_IDS } from './journalpostKonstanter.ts'
@@ -30,12 +36,13 @@ interface LagJournalpostOptions {
   brukerFnr?: string
   avsenderFnr?: string
   kanal?: OppgaveKodeverk
+  sak?: JournalpostSak | null
 }
 
 export function lagJournalpost(
   journalpostId: string,
   tittel: string,
-  { behandlingstema, brukerFnr, avsenderFnr, kanal }: LagJournalpostOptions = {}
+  { behandlingstema, brukerFnr, avsenderFnr, kanal, sak }: LagJournalpostOptions = {}
 ): InsertJournalpost {
   const fnrBruker = brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const fnrInnsender = avsenderFnr ?? fnrBruker
@@ -52,6 +59,7 @@ export function lagJournalpost(
     journalpostOpprettetTid,
     fnrInnsender,
     fnrBruker,
+    ...(sak !== undefined ? { sak: sak === null ? null : { ...sak } } : {}),
     tittel: tittel,
     bruker: {
       fnr: fnrBruker,

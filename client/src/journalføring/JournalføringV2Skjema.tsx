@@ -117,7 +117,6 @@ export function JournalføringV2Skjema({
       }
     },
   })
-  // test
   useEffect(() => {
     setValgtSak(null)
     setValgtSakIdFeil(null)

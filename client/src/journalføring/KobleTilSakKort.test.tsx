@@ -200,13 +200,13 @@ describe('KobleTilSakKort', () => {
       expect(screen.getByText('Andre dokument')).toBeInTheDocument()
       expect(screen.getByText('En svært lang dokumenttittel uten mellomrom som skal forbli intakt')).toBeInTheDocument()
       expect(screen.getAllByText('03.02.2025')).toHaveLength(3)
-      expect(screen.getByText('Utgående dokument')).toHaveAttribute('data-color', 'meta-lime')
-      expect(screen.getByText('Inngående dokument')).toHaveAttribute('data-color', 'meta-purple')
+      expect(screen.getByText('Utgående')).toHaveAttribute('data-color', 'meta-lime')
+      expect(screen.getByText('Inngående')).toHaveAttribute('data-color', 'meta-purple')
       expect(screen.getByText('Notat')).toHaveAttribute('data-color', 'neutral')
 
       const journalpost = screen.getByText('Første dokument').closest('ul')?.parentElement
       expect(journalpost?.children[1]).toHaveClass(classes.dokumentListe)
-      const type = within(journalpost as HTMLElement).getByText('Utgående dokument')
+      const type = within(journalpost as HTMLElement).getByText('Utgående')
       const dokumenter = within(journalpost as HTMLElement).getByRole('link', { name: 'Andre dokument' })
       const dato = within(journalpost as HTMLElement).getByText('03.02.2025')
       expect(type.compareDocumentPosition(dokumenter) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()

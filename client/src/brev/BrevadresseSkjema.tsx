@@ -8,20 +8,23 @@ interface BrevadresseSkjemaProps {
   formidlerNavn?: string
   isLoading: boolean
   feilmelding?: string
-  onLagre(adresse: Veiadresse): void
+  onLagre(adresse: Veiadresse, formidlerNavn: string): void
   onAvbryt(): void
+  digitalBehovsmelding: boolean
 }
 
-type Feil = Partial<Record<'adresselinje1' | 'postnummer' | 'poststed', string>>
+type Feil = Partial<Record<'formidlerNavn' | 'adresselinje1' | 'postnummer' | 'poststed', string>>
 
 export function BrevadresseSkjema({
   initiellAdresse,
-  formidlerNavn,
+  formidlerNavn: initialFormidlerNavn,
   isLoading,
   feilmelding,
   onLagre,
   onAvbryt,
+  digitalBehovsmelding,
 }: BrevadresseSkjemaProps) {
+  const [formidlerNavn, setFormidlerNavn] = useState(initialFormidlerNavn ?? '')
   const [adresselinje1, setAdresselinje1] = useState(initiellAdresse?.adresselinje1 ?? '')
   const [adresselinje2, setAdresselinje2] = useState(
     initiellAdresse?.adresselinje2 ? (initiellAdresse.adresselinje2 ?? '') : formidlerNavn ? `v/ ${formidlerNavn}` : ''
@@ -34,6 +37,7 @@ export function BrevadresseSkjema({
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     const nyeFeil: Feil = {}
+    if (!formidlerNavn.trim()) nyeFeil.formidlerNavn = 'Du må fylle ut formidlers navn'
     if (!adresselinje1.trim()) nyeFeil.adresselinje1 = 'Du må fylle ut adresselinje 1'
     if (!postnummer.trim()) nyeFeil.postnummer = 'Du må fylle ut postnummer'
     else if (!/^\d{4}$/.test(postnummer.trim())) nyeFeil.postnummer = 'Postnummer må være fire siffer'
@@ -41,18 +45,30 @@ export function BrevadresseSkjema({
     setFeil(nyeFeil)
     if (Object.keys(nyeFeil).length > 0) return
 
-    onLagre({
-      adresselinje1: adresselinje1.trim(),
-      adresselinje2: adresselinje2.trim() || undefined,
-      adresselinje3: adresselinje3.trim() || undefined,
-      postnummer: postnummer.trim(),
-      poststed: poststed.trim(),
-    })
+    onLagre(
+      {
+        adresselinje1: adresselinje1.trim(),
+        adresselinje2: adresselinje2.trim() || undefined,
+        adresselinje3: adresselinje3.trim() || undefined,
+        postnummer: postnummer.trim(),
+        poststed: poststed.trim(),
+      },
+      formidlerNavn.trim()
+    )
   }
 
   return (
     <form onSubmit={handleSubmit} noValidate>
       <VStack gap="space-6">
+        {!digitalBehovsmelding && (
+          <TextField
+            size="small"
+            label="Formidlers navn"
+            value={formidlerNavn}
+            onChange={(e) => setFormidlerNavn(e.target.value)}
+            error={feil.formidlerNavn}
+          />
+        )}
         <TextField
           size="small"
           label="Adresselinje 1"

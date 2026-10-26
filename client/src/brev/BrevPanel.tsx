@@ -7,21 +7,21 @@ import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { formaterTidsstempel } from '../utils/dato.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { AngreSendingAvBrevDialog } from './AngreSendingAvBrevDialog.tsx'
 import { BrevContext } from './BrevContext.ts'
+import { type BreveditorBrevdata, isBreveditorState } from './breveditor/breveditorTyper.ts'
+import { type PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { BrevHeader } from './BrevHeader.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import { type BreveditorBrevdata, isBreveditorState } from './breveditor/breveditorTyper.ts'
-import { type PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { type Brev, BreveditorbrevUtenVedtak, Brevmal, Brevstatus, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
-import { NyttBrevDialog } from './NyttBrevDialog.tsx'
+import { NyttBrev } from './NyttBrev.tsx'
 import { SendBrevDialog } from './SendBrevDialog.tsx'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface BrevPanelProps {
   oppgave?: Saksbehandlingsoppgave
@@ -35,7 +35,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const { gjeldendeBehandling } = useBehandling()
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const [valgtBrevId, setValgtBrevId] = useState<string | null | undefined>(initialBrevId)
-  const [nyttBrevDialogOpen, setNyttBrevDialogOpen] = useState(false)
   const [sendBrevDialogOpen, setSendBrevDialogOpen] = useState(false)
   const [slettBrevModalOpen, setSlettBrevModalOpen] = useState(false)
   const [angreSendingAvBrevDialogOpen, setAngreSendingAvBrevDialogOpen] = useState(false)
@@ -50,8 +49,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
 
   const eksisterendeBrevmaler = new Set(brev.map((brev) => brev.brevmal))
   const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter((brevmal) => !eksisterendeBrevmaler.has(brevmal))
-  const kanOppretteBrev =
-    !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt && tilgjengeligeBrevmaler.length > 0
 
   const aktivDistribusjon = valgtBrev?.distribusjon.find(
     (distribusjon) => distribusjon.skalDistribueres && !distribusjon.distribuert
@@ -173,19 +170,30 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
     >
       <BrevHeader
         brev={brev}
-        valgtBrevId={valgtBrev?.brevId}
-        kanOppretteBrev={kanOppretteBrev}
+        valgtBrevId={aktivtBrevId}
         onVelgBrev={handleVelgBrev}
-        onNyttBrev={() => setNyttBrevDialogOpen(true)}
         kanRedigere={kanRedigere}
         handlinger={handlinger}
       />
-      {!valgtBrev && (
+      {!valgtBrev && valgtBrevId != 'nytt-utkast' && (
         <Box paddingInline="space-20">
           <BrevInfoCard title="Ingen brev valgt">
             {brev.length === 0 ? 'Det er ikke opprettet noen brev i saken.' : 'Velg et brev i fanene over.'}
           </BrevInfoCard>
         </Box>
+      )}
+      {!valgtBrev && valgtBrevId == 'nytt-utkast' && (
+        <>
+          {oppgave && (
+            <NyttBrev
+              oppgave={oppgave}
+              tilgjengeligeBrevmaler={tilgjengeligeBrevmaler}
+              onOpprettet={(opprettetBrev) => {
+                handleVelgBrev(opprettetBrev.brevId)
+              }}
+            />
+          )}
+        </>
       )}
       {valgtBrev && kanRedigere && oppgave && (
         <Box className={classes.container} background="default">
@@ -211,18 +219,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
           </Box>
           <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
         </>
-      )}
-      {oppgave && (
-        <NyttBrevDialog
-          open={nyttBrevDialogOpen}
-          oppgave={oppgave}
-          tilgjengeligeBrevmaler={tilgjengeligeBrevmaler}
-          onClose={() => setNyttBrevDialogOpen(false)}
-          onOpprettet={(opprettetBrev) => {
-            setNyttBrevDialogOpen(false)
-            handleVelgBrev(opprettetBrev.brevId)
-          }}
-        />
       )}
       {valgtBrev && oppgave && (
         <SendBrevDialog

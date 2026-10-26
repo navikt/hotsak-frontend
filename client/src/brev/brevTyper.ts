@@ -66,6 +66,16 @@ export const BrevmalTekst = {
   [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrev',
 } as const
 
+export const BrevmalTekstBeskrivelse = {
+  [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Informerer om utfallet av saken i et vedtaksbrev.',
+  [Brevmal.BREVEDITOR_SVARTIDSBREV]: 'Informerer om forventet behandlingstid.',
+  [Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER]: 'Be om dokumentasjon som mangler.',
+  [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrev',
+} as const
+
 export function brevstatusTekst(status: Brevstatus): string {
   switch (status) {
     case Brevstatus.UTKAST:

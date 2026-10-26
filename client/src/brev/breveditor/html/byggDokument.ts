@@ -77,7 +77,7 @@ export function byggHeaderHtml(metadata: Metadata, vergeNavn?: string, målform?
 export function byggFooterHtml(metadata: Metadata, målform?: Målform, formidlerMedKopi?: Brevmottaker): string {
   const målformTekster = hentMålformTekster(målform)
   return `<footer>
-        ${`Kopi til hjelpemiddelformidler: ${formidlerMedKopi ? formaterNavn(formidlerMedKopi.navn) : ''}`} <br /><br />
+        ${formidlerMedKopi ? `Kopi til hjelpemiddelformidler: ${formaterNavn(formidlerMedKopi.navn)}<br /><br />` : ''} 
         ${målformTekster.medVennligHilsen} <br />
         ${metadata.saksbehandlerNavn}
         ${metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />

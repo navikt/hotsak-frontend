@@ -28,10 +28,10 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
     (mottaker) => mottaker.mottakertype === Mottakertype.FORMIDLER
   )
   const innsender = sak?.data.innsender
-  const formidlerNavn = innsender ? formaterNavn(innsender.navn) : undefined
+  const digitalBehovsmelding = behovsmelding?.isDigitalBehovsmelding ?? false
+  const formidlerNavn = digitalBehovsmelding && innsender ? formaterNavn(innsender.navn) : undefined
   const initiellAdresse = behovsmelding?.levering?.hjelpemiddelformidler?.adresse
   const arbeidssted = behovsmelding?.levering?.hjelpemiddelformidler?.arbeidssted
-  const digitalBehovsmelding = behovsmelding?.isDigitalBehovsmelding ?? false
 
   const handleFormidlerKopi = async (skalMottaKopi: boolean) => {
     if (skalMottaKopi && !formidlerSomMottaker) {

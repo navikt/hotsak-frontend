@@ -1,4 +1,5 @@
-import { BodyShort, Detail, Heading, HStack } from '@navikt/ds-react'
+import { BodyShort, Box, Detail, HStack } from '@navikt/ds-react'
+import { Etikett } from '../felleskomponenter/typografi'
 import { useMemo } from 'react'
 
 import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
@@ -35,27 +36,27 @@ function Oppgavekommentarer({ oppgaveId }: { oppgaveId: OppgaveId }) {
 
   return (
     <div className={classes.kommentarSeksjon}>
-      <Heading level="3" size="xsmall" spacing>
-        Kommentarer
-      </Heading>
+      <Etikett>Kommentarer</Etikett>
       {isLoading ? (
         <BodyShort size="small">Henter kommentarer...</BodyShort>
       ) : (
         <ul className={classes.kommentarListe} role="list">
           {sorterteKommentarer.map((kommentar, index) => (
-            <li
-              key={`${kommentar.oppgaveId}-${kommentar.registrertTidspunkt}-${kommentar.tekst}-${index}`}
-              className={classes.kommentar}
-            >
-              <HStack gap="space-4" wrap>
-                {kommentar.registrertAv && <Detail>{utførtAvNavn(kommentar.registrertAv)}</Detail>}
-                {kommentar.registrertAvEnhet && <Detail>{kommentar.registrertAvEnhet.navn}</Detail>}
-                <Detail>
-                  <FormatDateTime dateTime={kommentar.registrertTidspunkt} />
-                </Detail>
-              </HStack>
-              <BodyShort size="small">{kommentar.tekst}</BodyShort>
-            </li>
+            <Box background="neutral-soft" padding="space-12" borderRadius="12">
+              <li
+                key={`${kommentar.oppgaveId}-${kommentar.registrertTidspunkt}-${kommentar.tekst}-${index}`}
+                className={classes.kommentar}
+              >
+                <HStack gap="space-4" wrap>
+                  {kommentar.registrertAv && <Detail>{utførtAvNavn(kommentar.registrertAv)}</Detail>}
+                  <Detail>
+                    <FormatDateTime dateTime={kommentar.registrertTidspunkt} />
+                  </Detail>
+                </HStack>
+
+                <BodyShort size="small">{kommentar.tekst}</BodyShort>
+              </li>
+            </Box>
           ))}
         </ul>
       )}

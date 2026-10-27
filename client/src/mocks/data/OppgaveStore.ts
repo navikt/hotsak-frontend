@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import { isFuture } from 'date-fns'
+import { isFuture, subHours } from 'date-fns'
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
 import type { Oppgavekommentar } from '../../oppgave/kommentar/useOppgavekommentarer.ts'
 import {
@@ -93,6 +93,35 @@ export class OppgaveStore extends Dexie {
     const oppgaverForJournalposter: InsertOppgave[] = journalposter.map(lagJournalføringsoppgave)
 
     return this.lagreAlle([...oppgaverForSaker, ...oppgaverForJournalposter])
+  }
+
+  async populerKommentarer() {
+    const kommentarerPerOppgave: Record<OppgaveId, string[]> = {
+      '9901': [
+        'Venter på utfyllende dokumentasjon fra formidler.',
+        'Dokumentasjonen er mottatt. Saken er klar for videre behandling.',
+      ],
+      '9902': ['Søknaden gjelder samme hjelpemiddel som i denne saken.'],
+    }
+
+    await this.transaction('rw', this.oppgaver, this.kommentarer, async () => {
+      for (const [oppgaveId, tekster] of Object.entries(kommentarerPerOppgave)) {
+        const oppgave = await this.hent(oppgaveId)
+        if (!oppgave || (await this.kommentarer.where({ oppgaveId }).count()) > 0) continue
+
+        for (const [indeks, tekst] of tekster.entries()) {
+          const saksbehandler = Saksbehandlere.hent(indeks === 0 ? 'S112233' : 'V998877')
+          await this.lagreKommentar(oppgaveId, {
+            oppgaveId,
+            tekst,
+            registrertAv: saksbehandler,
+            registrertAvEnhet: saksbehandler.gjeldendeEnhet,
+            registrertAvSystem: 'HOTSAK',
+            registrertTidspunkt: subHours(new Date(), tekster.length - indeks).toISOString(),
+          })
+        }
+      }
+    })
   }
 
   async lagreAlle(oppgaver: InsertOppgave[]) {

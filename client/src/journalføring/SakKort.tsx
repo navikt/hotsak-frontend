@@ -145,7 +145,7 @@ export function SakKort({
                   </BodyShort>
                   <ul className={classes.dokumentListe} role="list">
                     {journalpost.dokumenter.map((dokument) => (
-                      <li key={dokument.dokumentId} className={classes.dokument}>
+                      <BodyShort as="li" size="small" key={dokument.dokumentId} className={classes.dokument}>
                         <Link
                           inlineText
                           href={`/api/journalpost/${journalpost.journalpostId}/${dokument.dokumentId}`}
@@ -154,7 +154,7 @@ export function SakKort({
                         >
                           {dokument.tittel}
                         </Link>
-                      </li>
+                      </BodyShort>
                     ))}
                   </ul>
                   {journalposttypeTag(journalpost.journalposttype)}

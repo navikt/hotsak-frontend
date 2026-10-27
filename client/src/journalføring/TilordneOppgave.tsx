@@ -1,4 +1,5 @@
 import { Box, Label, Radio, RadioGroup, Select, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { ComboboxController } from '../felleskomponenter/skjema/ComboboxController.tsx'
@@ -13,10 +14,25 @@ interface TilordneOppgaveProps {
 }
 
 export function TilordneOppgave({ tildeltEnhet }: TilordneOppgaveProps) {
+  const [medarbeiderSøk, setMedarbeiderSøk] = useState('')
   const { register, control } = useFormContext<JournalføringV2SkjemaVerdier>()
   const { behandlere } = useOppgavebehandlere()
   const mapper = useOppgaveMapper()
   const { gjeldendeEnhet, navn } = useInnloggetAnsatt()
+  const medarbeiderOptions = behandlere.map((behandler) => ({ label: behandler.navn, value: behandler.id }))
+  const søkeord = medarbeiderSøk.trim().toLocaleLowerCase('nb-NO').split(/\s+/)
+  const filtrerteMedarbeidere =
+    søkeord.length > 1
+      ? medarbeiderOptions.filter((option) => {
+          const navnedeler = option.label.toLocaleLowerCase('nb-NO').split(/\s+/)
+          let nesteNavnedel = 0
+          return søkeord.every((ord) => {
+            const indeks = navnedeler.findIndex((navnedel, i) => i >= nesteNavnedel && navnedel.includes(ord))
+            nesteNavnedel = indeks + 1
+            return indeks !== -1
+          })
+        })
+      : undefined
 
   return (
     <TextContainer>
@@ -46,7 +62,9 @@ export function TilordneOppgave({ tildeltEnhet }: TilordneOppgaveProps) {
                       control={control}
                       label="Medarbeider"
                       size="small"
-                      options={behandlere.map((behandler) => ({ label: behandler.navn, value: behandler.id }))}
+                      options={medarbeiderOptions}
+                      filteredOptions={filtrerteMedarbeidere}
+                      onChange={setMedarbeiderSøk}
                     />
                   </Box>
                 )}

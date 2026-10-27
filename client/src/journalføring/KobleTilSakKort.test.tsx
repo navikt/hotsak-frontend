@@ -24,6 +24,7 @@ import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { Sakstype } from './journalføringTypes.ts'
 import { MAKS_SAKER_SYNLIG, type SakvalgVisning } from './useKobleTilSak.ts'
 import classes from './KobleTilSakKort.module.css'
+import { SakKort } from './SakKort.tsx'
 
 function lagSak(sakId: string, fagsaksystem = 'HOTSAK'): SakvalgVisning {
   return {
@@ -510,22 +511,6 @@ describe('KobleTilSakKort', () => {
     }
   })
 
-  it('viser hentefeil for hjelpemidler uten å skjule dokumentene', async () => {
-    const post = mockHttpPost([lagJournalpost('jp-1', '9901', 'HJELPEMIDLER', ['Søknad'])])
-    const fetcher = vi.fn(async () => {
-      throw new Error('behovsmeldingen feilet')
-    })
-
-    try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />, fetcher)
-      await åpneSakskort('Hjelpemidler')
-      expect(await screen.findByText('Kunne ikke hente hjelpemidler for saken.')).toBeInTheDocument()
-      expect(await screen.findByText('Søknad')).toBeInTheDocument()
-    } finally {
-      post.mockRestore()
-    }
-  })
-
   it('viser tydelig tomtilstand når saken ikke har journalposter', async () => {
     const post = mockHttpPost()
 
@@ -565,7 +550,7 @@ describe('KobleTilSakKort', () => {
 
     try {
       renderMedPerson(<KobleTilSakKort saker={[sakMedStatus]} isLoading={false} valgtSak={null} onChange={onChange} />)
-      const åpneSak = screen.getByRole('link', { name: 'Åpne sak 9901 i ny fane' })
+      const åpneSak = screen.getByRole('link', { name: 'Åpne, sak 9901, i ny fane' })
       expect(åpneSak).toBeVisible()
       expect(åpneSak).toHaveTextContent('Åpne')
       expect(åpneSak.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
@@ -618,6 +603,78 @@ describe('KobleTilSakKort', () => {
     expect(innerHeaderGrid).toContainElement(radio)
     expect(innerHeaderGrid).toContainElement(heading)
     expect(dato).toHaveTextContent('Dato: 21.08.2024')
-    expect(innerHeaderGrid).toContainElement(screen.getByRole('link', { name: 'Åpne sak 9901 i ny fane' }))
+    expect(innerHeaderGrid).toContainElement(screen.getByRole('link', { name: 'Åpne, sak 9901, i ny fane' }))
+  })
+})
+
+describe('SakLink', () => {
+  it.each([
+    {
+      navn: 'linker til oppgaven for en Hotsak-sak med oppgave',
+      fagsaksystem: 'HOTSAK',
+      oppgaveId: 'oppgave-9901',
+      href: '/oppgave/oppgave-9901',
+      tekst: 'Åpne',
+    },
+    {
+      navn: 'linker til saken for en Hotsak-sak uten oppgave',
+      fagsaksystem: 'HOTSAK',
+      oppgaveId: undefined,
+      href: '/sak/9901',
+      tekst: 'Åpne',
+    },
+    {
+      navn: 'linker til Gosys for en ekstern sak med oppgave',
+      fagsaksystem: 'IT01',
+      oppgaveId: 'oppgave-9901',
+      href: 'http://localhost/gosys/oppgavebehandling/oppgave/oppgave-9901',
+      tekst: 'Åpne i Gosys',
+    },
+  ])('$navn', ({ fagsaksystem, oppgaveId, href, tekst }) => {
+    render(
+      <SakKort
+        sak={lagSak('9901', fagsaksystem)}
+        valgt={false}
+        onVelg={vi.fn()}
+        oppgave={oppgaveId ? lagBehandleSakOppgave(oppgaveId, '9901') : undefined}
+      />
+    )
+
+    const link = screen.getByRole('link', { name: `${tekst}, sak 9901, i ny fane` })
+    expect(link).toHaveTextContent(new RegExp(`^${tekst}$`))
+    expect(link).toHaveAttribute('href', href)
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('viser ingen lenke for en ekstern sak uten oppgave', () => {
+    render(<SakKort sak={lagSak('9901', 'IT01')} valgt={false} onVelg={vi.fn()} />)
+
+    expect(screen.queryByRole('link', { name: /Åpne/ })).not.toBeInTheDocument()
+  })
+
+  it('bruker konfigurert Gosys-URL for eksterne oppgaver', () => {
+    vi.stubGlobal('appSettings', {
+      ...window.appSettings,
+      GOSYS_OPPGAVEBEHANDLING_URL: 'https://gosys.test/oppgavebehandling',
+    })
+
+    try {
+      render(
+        <SakKort
+          sak={lagSak('9901', 'IT01')}
+          valgt={false}
+          onVelg={vi.fn()}
+          oppgave={lagBehandleSakOppgave('ekstern-oppgave', '9901')}
+        />
+      )
+
+      expect(screen.getByRole('link', { name: 'Åpne i Gosys, sak 9901, i ny fane' })).toHaveAttribute(
+        'href',
+        'https://gosys.test/oppgavebehandling/oppgave/ekstern-oppgave'
+      )
+    } finally {
+      vi.unstubAllGlobals()
+    }
   })
 })

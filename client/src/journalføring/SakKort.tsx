@@ -9,7 +9,7 @@ import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { journalposttypeTag } from '../personoversikt/dokumentColumns.tsx'
 import { useBehovsmelding } from '../saksbilde/useBehovsmelding.ts'
 import { type Behovsmelding } from '../types/BehovsmeldingTypes.ts'
-import { OmrådeFilterLabel, SaksstatusLabel, type Journalpost, type Sak } from '../types/types.internal.ts'
+import { OmrådeFilterLabel, SaksstatusLabel, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
 import { Sakstype } from './journalføringTypes.ts'
 import classes from './KobleTilSakKort.module.css'
@@ -52,15 +52,13 @@ export function SakKort({
   const journalpostSystem = erHotsak ? 'HJELPEMIDLER' : fagsaksystem
   const sakensJournalposter = journalposter.filter((journalpost) => journalpost.sak?.fagsaksystem === journalpostSystem)
 
-  const sakLink = oppgave && erHotsak ? `/oppgave/${oppgave.oppgaveId}` : erHotsak ? `/sak/${sak.sakId}` : undefined
-
   const headerDetails = (
     <div className={classes.headerDetaljer}>
       <div className={classes.hovedDetaljer}>
         <HStack gap="space-6" align="center">
           <Etikett>Sak: </Etikett>
           <BodyShort size="small">{sak.sakId}</BodyShort>
-          {sakLink && <SakLink oppgave={oppgave} erHotsak={erHotsak} sak={sak} />}
+          <SakLink oppgave={oppgave} erHotsak={erHotsak} sak={sak} />
         </HStack>
         <HStack gap="space-4" align="center">
           <BodyShort size="small">

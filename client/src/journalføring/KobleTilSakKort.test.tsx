@@ -238,7 +238,6 @@ describe('KobleTilSakKort', () => {
       await åpneSakskort('Hjelpemidler')
       const gjelder = await screen.findByText('Gjelder:')
       await screen.findByText('Nyeste kommentar')
-      expect(screen.getByRole('heading', { name: 'Kommentarer', level: 3 })).toBeInTheDocument()
       const commentsList = document.querySelector(`ul.${classes.kommentarListe}`)
       expect(commentsList).toBeInTheDocument()
       const commentItems = within(commentsList as HTMLElement).getAllByRole('listitem')

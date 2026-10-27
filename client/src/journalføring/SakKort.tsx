@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { BodyShort, ErrorMessage, HGrid, HStack, Link, Loader, Tag } from '@navikt/ds-react'
+import { BodyShort, Box, ErrorMessage, HGrid, HStack, Link, Loader, Tag } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { FinnHjelpemiddelLink } from '../felleskomponenter/FinnHjelpemiddelLink.tsx'
@@ -54,22 +54,22 @@ export function SakKort({
   const headerDetails = (
     <div className={classes.headerDetaljer}>
       <div className={classes.hovedDetaljer}>
-        <HStack gap="space-4" align="center">
-          <BodyShort size="small">
-            <strong>Sak:</strong>
-          </BodyShort>
+        <HStack gap="space-6" align="center">
+          <Etikett>Sak: </Etikett>
           <BodyShort size="small">{sak.sakId}</BodyShort>
           {erHotsak && (
-            <Link
-              href={`/sak/${sak.sakId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Åpne sak ${sak.sakId} i ny fane`}
-              className={classes.sakLenke}
-              onClick={(event) => event.stopPropagation()}
-            >
-              Åpne <ExternalLinkIcon aria-hidden />
-            </Link>
+            <BodyShort size="small">
+              <Link
+                href={oppgave ? `/oppgave/${oppgave.oppgaveId}` : `/sak/${sak.sakId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Åpne sak ${sak.sakId} i ny fane`}
+                className={classes.sakLenke}
+                onClick={(event) => event.stopPropagation()}
+              >
+                Åpne <ExternalLinkIcon aria-hidden />
+              </Link>
+            </BodyShort>
           )}
         </HStack>
         <HStack gap="space-4" align="center">
@@ -116,9 +116,11 @@ export function SakKort({
               {statusLabel}
             </Tag>
           )}
-          <BodyShort size="small">
-            <strong>Dato:</strong> {formaterDato(sak.dato)}
-          </BodyShort>
+          <Box marginBlock="space-8 space-0">
+            <BodyShort size="small">
+              <strong>Dato:</strong> {formaterDato(sak.dato)}
+            </BodyShort>
+          </Box>
         </div>
       }
     >

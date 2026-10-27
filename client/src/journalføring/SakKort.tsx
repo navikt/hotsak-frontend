@@ -9,12 +9,13 @@ import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { journalposttypeTag } from '../personoversikt/dokumentColumns.tsx'
 import { useBehovsmelding } from '../saksbilde/useBehovsmelding.ts'
 import { type Behovsmelding } from '../types/BehovsmeldingTypes.ts'
-import { OmrådeFilterLabel, SaksstatusLabel, type Journalpost } from '../types/types.internal.ts'
+import { OmrådeFilterLabel, SaksstatusLabel, type Journalpost, type Sak } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
-import classes from './KobleTilSakKort.module.css'
-import { type SakvalgVisning, HOTSAK_SYSTEM } from './useKobleTilSak.ts'
 import { Sakstype } from './journalføringTypes.ts'
+import classes from './KobleTilSakKort.module.css'
 import { OppgaveDetaljer } from './OppgaveDetaljer.tsx'
+import { HOTSAK_SYSTEM, type SakvalgVisning } from './useKobleTilSak.ts'
+import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 
 interface SakKortProps {
   sak: SakvalgVisning
@@ -51,26 +52,15 @@ export function SakKort({
   const journalpostSystem = erHotsak ? 'HJELPEMIDLER' : fagsaksystem
   const sakensJournalposter = journalposter.filter((journalpost) => journalpost.sak?.fagsaksystem === journalpostSystem)
 
+  const sakLink = oppgave && erHotsak ? `/oppgave/${oppgave.oppgaveId}` : erHotsak ? `/sak/${sak.sakId}` : undefined
+
   const headerDetails = (
     <div className={classes.headerDetaljer}>
       <div className={classes.hovedDetaljer}>
         <HStack gap="space-6" align="center">
           <Etikett>Sak: </Etikett>
           <BodyShort size="small">{sak.sakId}</BodyShort>
-          {erHotsak && (
-            <BodyShort size="small">
-              <Link
-                href={oppgave ? `/oppgave/${oppgave.oppgaveId}` : `/sak/${sak.sakId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Åpne sak ${sak.sakId} i ny fane`}
-                className={classes.sakLenke}
-                onClick={(event) => event.stopPropagation()}
-              >
-                Åpne <ExternalLinkIcon aria-hidden />
-              </Link>
-            </BodyShort>
-          )}
+          {sakLink && <SakLink oppgave={oppgave} erHotsak={erHotsak} sak={sak} />}
         </HStack>
         <HStack gap="space-4" align="center">
           <BodyShort size="small">
@@ -171,37 +161,62 @@ export function SakKort({
 }
 
 function SakensHjelpemidler({ sakId }: { sakId: string }) {
-  const { behovsmelding, isLoading, error } = useBehovsmelding<Behovsmelding>(sakId)
+  const { behovsmelding } = useBehovsmelding<Behovsmelding>(sakId)
   const hjelpemidler = behovsmelding?.isDigitalBehovsmelding ? behovsmelding.hjelpemidler?.hjelpemidler : undefined
 
   return (
     <section className={classes.hjelpemiddelSeksjon} aria-label="Hjelpemidler i saken">
-      <Etikett>Hjelpemidler</Etikett>
-      {error && <ErrorMessage>Kunne ikke hente hjelpemidler for saken.</ErrorMessage>}
-      {isLoading && <BodyShort size="small">Henter hjelpemidler...</BodyShort>}
-
       {hjelpemidler && hjelpemidler?.length > 0 && (
-        <ul className={classes.hjelpemiddelListe}>
-          {hjelpemidler.map((hjelpemiddel) => (
-            <HGrid
-              as="li"
-              key={hjelpemiddel.hjelpemiddelId}
-              columns="minmax(0, 7rem) minmax(0, 1fr) auto"
-              gap="space-8"
-              align="start"
-              className={classes.hjelpemiddel}
-            >
-              <FinnHjelpemiddelLink hmsnr={hjelpemiddel.produkt.hmsArtNr}>
-                {hjelpemiddel.produkt.hmsArtNr}
-              </FinnHjelpemiddelLink>
-              <BodyShort size="small" className={classes.artikkelnavn}>
-                {hjelpemiddel.produkt.artikkelnavn}
-              </BodyShort>
-              <BodyShort size="small">Antall: {hjelpemiddel.antall}</BodyShort>
-            </HGrid>
-          ))}
-        </ul>
+        <>
+          <Etikett>Hjelpemidler</Etikett>
+
+          <ul className={classes.hjelpemiddelListe}>
+            {hjelpemidler.map((hjelpemiddel) => (
+              <HGrid
+                as="li"
+                key={hjelpemiddel.hjelpemiddelId}
+                columns="minmax(0, 7rem) minmax(0, 1fr) auto"
+                gap="space-8"
+                align="start"
+                className={classes.hjelpemiddel}
+              >
+                <FinnHjelpemiddelLink hmsnr={hjelpemiddel.produkt.hmsArtNr}>
+                  {hjelpemiddel.produkt.hmsArtNr}
+                </FinnHjelpemiddelLink>
+                <BodyShort size="small" className={classes.artikkelnavn}>
+                  {hjelpemiddel.produkt.artikkelnavn}
+                </BodyShort>
+                <BodyShort size="small">Antall: {hjelpemiddel.antall}</BodyShort>
+              </HGrid>
+            ))}
+          </ul>
+        </>
       )}
     </section>
+  )
+}
+
+function SakLink({ oppgave, erHotsak, sak }: { oppgave?: Oppgave; erHotsak: boolean; sak: SakvalgVisning }) {
+  const eksternOppgaveUrl = useOppgaveUrl(oppgave?.oppgaveId)
+  const href = erHotsak ? (oppgave ? `/oppgave/${oppgave.oppgaveId}` : `/sak/${sak.sakId}`) : eksternOppgaveUrl
+  const tekst = erHotsak ? 'Åpne' : 'Åpne i Gosys'
+
+  if (!href) return null
+
+  return (
+    <BodyShort size="small">
+      <Link
+        href={href}
+        target="_blank"
+        inlineText
+        data-color="accent"
+        rel="noopener noreferrer"
+        aria-label={`${tekst}, sak ${sak.sakId}, i ny fane`}
+        className={classes.sakLenke}
+        onClick={(event) => event.stopPropagation()}
+      >
+        {tekst} <ExternalLinkIcon aria-hidden />
+      </Link>
+    </BodyShort>
   )
 }

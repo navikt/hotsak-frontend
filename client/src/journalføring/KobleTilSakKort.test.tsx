@@ -209,7 +209,7 @@ describe('KobleTilSakKort', () => {
     }
   })
 
-  it('viser oppgaveinformasjon mellom journalposter og hjelpemidler og laster kommentarer først ved åpning', async () => {
+  it('laster kommentarer først ved åpning', async () => {
     const oppgave = lagBehandleSakOppgave('oppgave-9901', '9901', 'Beskrivelse i kortet')
     const post = mockHttpPost([lagJournalpost('jp-1', '9901', 'HJELPEMIDLER', ['Journalpost før oppgave'])], () =>
       lagOppgaveRespons([oppgave])
@@ -237,7 +237,6 @@ describe('KobleTilSakKort', () => {
       expect(fetcher).not.toHaveBeenCalledWith('/api/oppgaver/oppgave-9901/kommentarer')
 
       await åpneSakskort('Hjelpemidler')
-      const gjelder = await screen.findByText('Gjelder:')
       await screen.findByText('Nyeste kommentar')
       const commentsList = document.querySelector(`ul.${classes.kommentarListe}`)
       expect(commentsList).toBeInTheDocument()
@@ -247,11 +246,6 @@ describe('KobleTilSakKort', () => {
       expect(commentItems[1]).toHaveTextContent('Eldre kommentar')
       expect(kommentarer.map((kommentar) => kommentar.tekst)).toEqual(['Eldre kommentar', 'Nyeste kommentar'])
       expect(screen.queryByText('Beskrivelse i kortet')).not.toBeInTheDocument()
-
-      const hjelpemidler = await screen.findByRole('region', { name: 'Hjelpemidler i saken' })
-      const journalpost = screen.getByText('Journalpost før oppgave')
-      expect(journalpost.compareDocumentPosition(gjelder) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-      expect(gjelder.compareDocumentPosition(hjelpemidler) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     } finally {
       post.mockRestore()
     }

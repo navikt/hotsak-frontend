@@ -1,4 +1,4 @@
-import { ExpansionCard, Label } from '@navikt/ds-react'
+import { ExpansionCard, HGrid, Label, VStack } from '@navikt/ds-react'
 import classes from './CompactExpadableCard.module.css'
 import clsx from 'clsx'
 import { useId } from 'react'
@@ -11,10 +11,8 @@ interface CompactExpandableCardProps {
   children: React.ReactNode
   startContent?: React.ReactNode
   headerDetails?: React.ReactNode
-  endContent?: React.ReactNode
   className?: string
   headerClassName?: string
-  titleClassName?: string
 }
 
 export function CompactExpandableCard({
@@ -25,18 +23,12 @@ export function CompactExpandableCard({
   onToggle,
   startContent,
   headerDetails,
-  endContent,
   className,
   headerClassName,
-  titleClassName,
 }: CompactExpandableCardProps) {
   const headingId = useId()
   const title = (
-    <ExpansionCard.Title
-      id={headingId}
-      className={clsx(classes.heading, !headerDetails && titleClassName)}
-      size="small"
-    >
+    <ExpansionCard.Title id={headingId} className={classes.heading} size="small">
       <Label size="small">{tittel}</Label>
     </ExpansionCard.Title>
   )
@@ -52,16 +44,19 @@ export function CompactExpandableCard({
       <ExpansionCard.Header
         className={clsx(variant !== 'default' ? classes.root : classes.rootDefault, headerClassName)}
       >
-        {startContent}
-        {headerDetails ? (
-          <div className={titleClassName}>
+        {startContent || headerDetails ? (
+          <HGrid columns={startContent ? 'auto minmax(0, 1fr)' : 'minmax(0, 1fr)'} gap="space-8" align="center">
+            {startContent}
             {title}
-            {headerDetails}
-          </div>
+            {headerDetails && (
+              <VStack minWidth="0" gridColumn={startContent ? '2' : undefined}>
+                {headerDetails}
+              </VStack>
+            )}
+          </HGrid>
         ) : (
           title
         )}
-        {endContent}
       </ExpansionCard.Header>
       <ExpansionCard.Content className={clsx(variant !== 'default' && classes.content)}>
         {children}

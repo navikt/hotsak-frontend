@@ -10,16 +10,8 @@ import { sorterKronologiskSynkende } from '../utils/dato.ts'
 import classes from './KobleTilSakKort.module.css'
 
 export function OppgaveDetaljer({ oppgave }: { oppgave: Oppgave }) {
-  const { behandlingstema, behandlingstype } = oppgave.kategorisering
-  const gjelder = [behandlingstema?.term, behandlingstype?.term].filter(Boolean).join(' | ')
-
   return (
     <div className={classes.oppgaveSeksjon}>
-      {gjelder && (
-        <BodyShort size="small">
-          <strong>Gjelder:</strong> {gjelder}
-        </BodyShort>
-      )}
       <Oppgavekommentarer oppgaveId={oppgave.oppgaveId} />
     </div>
   )

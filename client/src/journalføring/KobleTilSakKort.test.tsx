@@ -543,7 +543,7 @@ describe('KobleTilSakKort', () => {
     }
   })
 
-  it('viser status ved tittelen og Åpne ved sak-ID uten å utvide kortet', async () => {
+  it('viser status og Åpne i headeren uten å utvide kortet ved valg eller lenkeklikk', async () => {
     const post = mockHttpPost()
     const onChange = vi.fn()
     const sakMedStatus = { ...énSak[0], saksstatus: Saksstatus.MOTTATT }
@@ -558,14 +558,9 @@ describe('KobleTilSakKort', () => {
       expect(åpneSak).toHaveAttribute('target', '_blank')
       expect(åpneSak).toHaveAttribute('rel', 'noopener noreferrer')
       const kortHeader = screen.getByText('Hjelpemidler', { exact: true }).closest('.aksel-expansioncard__header')
-      expect(kortHeader?.firstElementChild?.firstElementChild).toBe(
-        screen.getByRole('radio', { name: /Velg sak 9901/ })
-      )
-      expect(kortHeader?.firstElementChild?.children[1]).toHaveClass(classes.sakTittel)
-      expect(kortHeader?.firstElementChild?.children[2]).toHaveClass(classes.sideDetaljer)
-      expect(kortHeader?.firstElementChild?.children[2]).toHaveTextContent('Mottatt')
-      expect(kortHeader?.querySelector(`.${classes.sideDetaljer}`)).toHaveTextContent('Dato:')
-      expect(kortHeader?.querySelector(`.${classes.hovedDetaljer}`)).toContainElement(åpneSak)
+      expect(kortHeader).toHaveTextContent('Mottatt')
+      expect(kortHeader).toHaveTextContent('Dato:')
+      expect(kortHeader).toContainElement(åpneSak)
       const utvidKnapp = kortHeader?.querySelector('[aria-expanded]')
       expect(utvidKnapp).toHaveAttribute('aria-expanded', 'false')
 
@@ -592,18 +587,22 @@ describe('KobleTilSakKort', () => {
     expect(generellSakKort).not.toHaveTextContent('Dato:')
   })
 
-  it('plasserer tittel, radio og høyre metadata i samme indre fagsak-header', () => {
-    render(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+  it('viser radio og tittel i egen rad over sakdetaljer og status/dato', () => {
+    const sakMedStatus = { ...énSak[0], saksstatus: Saksstatus.MOTTATT }
+    render(<KobleTilSakKort saker={[sakMedStatus]} isLoading={false} valgtSak={null} onChange={() => {}} />)
 
     const radio = screen.getByRole('radio', { name: /Velg sak 9901/ })
-    const heading = screen.getByText('Hjelpemidler', { exact: true })
-    const innerHeaderGrid = radio.closest(`.${classes.sakHeader}`)?.querySelector(':scope > div:first-child')
-    const dato = innerHeaderGrid?.querySelector(`.${classes.sideDetaljer}`)
+    const heading = screen.getByRole('heading', { name: 'Hjelpemidler' })
+    const detaljer = heading.nextElementSibling?.firstElementChild
+    const sakdetaljer = detaljer?.children[0]
+    const statusOgDato = detaljer?.children[1]
 
-    expect(innerHeaderGrid).toContainElement(radio)
-    expect(innerHeaderGrid).toContainElement(heading)
-    expect(dato).toHaveTextContent('Dato: 21.08.2024')
-    expect(innerHeaderGrid).toContainElement(screen.getByRole('link', { name: 'Åpne, sak 9901, i ny fane' }))
+    expect(heading.previousElementSibling).toBe(radio)
+    expect(sakdetaljer).toHaveTextContent('Sak: 9901')
+    expect(sakdetaljer).toHaveTextContent('Fagsystem:')
+    expect(sakdetaljer).toContainElement(screen.getByRole('link', { name: 'Åpne, sak 9901, i ny fane' }))
+    expect(statusOgDato).toHaveTextContent('Mottatt')
+    expect(statusOgDato).toHaveTextContent('Dato: 21.08.2024')
   })
 })
 

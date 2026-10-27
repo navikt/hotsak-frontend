@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { BodyShort, Box, ErrorMessage, HGrid, HStack, Link, Loader, Tag } from '@navikt/ds-react'
+import { BodyShort, ErrorMessage, HGrid, HStack, Link, Loader, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { FinnHjelpemiddelLink } from '../felleskomponenter/FinnHjelpemiddelLink.tsx'
@@ -52,27 +52,48 @@ export function SakKort({
   const journalpostSystem = erHotsak ? 'HJELPEMIDLER' : fagsaksystem
   const sakensJournalposter = journalposter.filter((journalpost) => journalpost.sak?.fagsaksystem === journalpostSystem)
 
+  const gjelder = [oppgave?.kategorisering.behandlingstema?.term, oppgave?.kategorisering.behandlingstype?.term]
+    .filter(Boolean)
+    .join(' | ')
+
   const headerDetails = (
-    <div className={classes.headerDetaljer}>
-      <div className={classes.hovedDetaljer}>
+    <HGrid columns={{ xs: 'minmax(0, 1fr)', sm: 'minmax(0, 1fr) max-content' }} gap="space-8" align="start">
+      <VStack gap="space-4" minWidth="0">
         <HStack gap="space-6" align="center">
           <Etikett>Sak: </Etikett>
           <BodyShort size="small">{sak.sakId}</BodyShort>
           <SakLink oppgave={oppgave} erHotsak={erHotsak} sak={sak} />
         </HStack>
+
+        {gjelder && (
+          <BodyShort size="small">
+            <strong>Gjelder:</strong> {gjelder}
+          </BodyShort>
+        )}
+
         <HStack gap="space-4" align="center">
           <BodyShort size="small">
             <strong>Fagsystem:</strong>
           </BodyShort>
           <BodyShort size="small">{sak.fagsystemLabel}</BodyShort>
         </HStack>
-      </div>
-      {område && (
-        <BodyShort size="small" className={classes.område}>
-          <strong>Område:</strong> {område}
+        {område && (
+          <BodyShort size="small">
+            <strong>Område:</strong> {område}
+          </BodyShort>
+        )}
+      </VStack>
+      <VStack gap="space-4" align={{ xs: 'start', sm: 'end' }}>
+        {statusLabel && (
+          <Tag variant="moderate" data-color="info" size="small">
+            {statusLabel}
+          </Tag>
+        )}
+        <BodyShort size="small">
+          <strong>Dato:</strong> {formaterDato(sak.dato)}
         </BodyShort>
-      )}
-    </div>
+      </VStack>
+    </HGrid>
   )
 
   return (
@@ -83,7 +104,6 @@ export function SakKort({
       onToggle={setÅpnet}
       className={`${classes.sakKort} ${valgt ? classes.valgtSak : ''}`}
       headerClassName={classes.sakHeader}
-      titleClassName={classes.sakTittel}
       startContent={
         <input
           type="radio"
@@ -97,20 +117,6 @@ export function SakKort({
         />
       }
       headerDetails={headerDetails}
-      endContent={
-        <div className={classes.sideDetaljer}>
-          {statusLabel && (
-            <Tag variant="moderate" data-color="info" size="small">
-              {statusLabel}
-            </Tag>
-          )}
-          <Box marginBlock="space-8 space-0">
-            <BodyShort size="small">
-              <strong>Dato:</strong> {formaterDato(sak.dato)}
-            </BodyShort>
-          </Box>
-        </div>
-      }
     >
       <div className={classes.utvidetInnhold}>
         {journalposterFeil ? (

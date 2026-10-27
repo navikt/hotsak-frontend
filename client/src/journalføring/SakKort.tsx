@@ -175,15 +175,10 @@ function SakensHjelpemidler({ sakId }: { sakId: string }) {
   return (
     <section className={classes.hjelpemiddelSeksjon} aria-label="Hjelpemidler i saken">
       <Etikett>Hjelpemidler</Etikett>
-      {error ? (
-        <ErrorMessage>Kunne ikke hente hjelpemidler for saken.</ErrorMessage>
-      ) : isLoading ? (
-        <BodyShort size="small">Henter hjelpemidler...</BodyShort>
-      ) : !behovsmelding ? (
-        <ErrorMessage>Fant ikke behovsmelding for saken.</ErrorMessage>
-      ) : !hjelpemidler?.length ? (
-        <BodyShort size="small">Ingen hjelpemidler registrert for saken.</BodyShort>
-      ) : (
+      {error && <ErrorMessage>Kunne ikke hente hjelpemidler for saken.</ErrorMessage>}
+      {isLoading && <BodyShort size="small">Henter hjelpemidler...</BodyShort>}
+
+      {hjelpemidler && hjelpemidler?.length > 0 && (
         <ul className={classes.hjelpemiddelListe}>
           {hjelpemidler.map((hjelpemiddel) => (
             <HGrid

@@ -103,7 +103,7 @@
 .journalpost {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr) max-content;
-  align-items: start;
+  align-items: center;
   gap: var(--ax-space-4) var(--ax-space-8);
   padding-block: var(--ax-space-4);
 }

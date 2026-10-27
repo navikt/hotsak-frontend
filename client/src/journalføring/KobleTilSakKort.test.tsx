@@ -488,7 +488,6 @@ describe('KobleTilSakKort', () => {
 
       await åpneSakskort('Hjelpemidler')
       await waitFor(() => expect(fetcher).toHaveBeenCalledExactlyOnceWith('/api/sak/9901/behovsmelding'))
-      expect(await screen.findByText('Ingen hjelpemidler registrert for saken.')).toBeInTheDocument()
     } finally {
       post.mockRestore()
     }

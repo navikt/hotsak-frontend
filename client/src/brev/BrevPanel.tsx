@@ -213,10 +213,15 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
                   Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
                 </BrevInfoCard>
               )}
-              {gyldigDistribueresEtter && (
+              {gyldigDistribueresEtter && !valgtBrev.isDistribuert && (
                 <BrevInfoCard title="Brev til distribusjon">
                   Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
                   {formaterTidsstempel(gyldigDistribueresEtter)}.
+                </BrevInfoCard>
+              )}
+              {gyldigDistribueresEtter && valgtBrev.isDistribuert && (
+                <BrevInfoCard title="Brev til distribusjon">
+                  Brevet er distribuert og ble sendt den {formaterTidsstempel(gyldigDistribueresEtter)}.
                 </BrevInfoCard>
               )}
             </Box>

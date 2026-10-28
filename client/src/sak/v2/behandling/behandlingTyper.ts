@@ -62,10 +62,7 @@ export interface BehandlingsutfallHenleggelse extends Utfall<Henleggelsesårsak 
 export type BehandlingsutfallOverføring = Utfall<OverførtTil>
 
 export type Behandlingsutfall =
-  | BehandlingsutfallVedtak
-  | BehandlingsutfallBestilling
-  | BehandlingsutfallHenleggelse
-  | BehandlingsutfallOverføring
+  BehandlingsutfallVedtak | BehandlingsutfallBestilling | BehandlingsutfallHenleggelse | BehandlingsutfallOverføring
 
 export function isBehandlingsutfallVedtak(utfall?: Behandlingsutfall): utfall is BehandlingsutfallVedtak {
   return utfall != null && utfall.type === 'VEDTAK'
@@ -94,6 +91,7 @@ export enum GjenståendeOverfør {
   BREV_MÅ_SLETTES = 'BREV_MÅ_SLETTES',
   BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES = 'BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES',
   NOTATUTKAST_MÅ_SLETTES = 'NOTATUTKAST_MÅ_SLETTES',
+  UNDERVEISBREV_MÅ_SENDES_ELLER_SLETTES = 'UNDERVEISBREV_MÅ_SENDES_ELLER_SLETTES',
 }
 
 export interface BehandlingerForSak {
@@ -131,6 +129,7 @@ export enum Gjenstående {
   BREV_IKKE_FERDIGSTILT = 'BREV_IKKE_FERDIGSTILT',
   UTFALL_MANGLER = 'UTFALL_MANGLER',
   NOTAT_IKKE_FERDIGSTILT = 'NOTAT_IKKE_FERDIGSTILT',
+  UNDERVEISBREV_IKKE_SENDT = 'UNDERVEISBREV_IKKE_SENDT',
 }
 
 export enum UtfallLåst {

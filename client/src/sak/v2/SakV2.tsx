@@ -100,7 +100,9 @@ function SakV2Content({
 
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
   const brevutkastIkkeFerdigstilt =
-    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
+    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) ||
+    gjenstående.includes(Gjenstående.BREV_MANGLER) ||
+    gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT)
 
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({ groupId: 'sakv2', storage: localStorage })
 

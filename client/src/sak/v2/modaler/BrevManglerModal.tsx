@@ -50,6 +50,9 @@ export function BrevManglerModal({
           påstartet.
         </Tekst>
       )}
+      {gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT) && (
+        <Tekst spacing>For å kunne fatte vedtaket må du sende eller slette påbegynte underveisbrev.</Tekst>
+      )}
     </InfoModal>
   )
 }

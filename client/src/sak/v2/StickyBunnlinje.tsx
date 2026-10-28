@@ -34,9 +34,12 @@ export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps)
 
   const knappevariant = useMemo(
     () =>
-      [Gjenstående.BREV_IKKE_FERDIGSTILT, Gjenstående.BREV_MANGLER, Gjenstående.UTFALL_MANGLER].some((gjenstående) =>
-        gjeldendeBehandling?.gjenstående.includes(gjenstående)
-      )
+      [
+        Gjenstående.BREV_IKKE_FERDIGSTILT,
+        Gjenstående.BREV_MANGLER,
+        Gjenstående.UTFALL_MANGLER,
+        Gjenstående.UNDERVEISBREV_IKKE_SENDT,
+      ].some((gjenstående) => gjeldendeBehandling?.gjenstående.includes(gjenstående))
         ? 'secondary'
         : 'primary',
     [gjeldendeBehandling]

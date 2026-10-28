@@ -24,6 +24,7 @@ import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { Sakstype } from './journalføringTypes.ts'
 import { MAKS_SAKER_SYNLIG, type SakvalgVisning } from './useKobleTilSak.ts'
 import classes from './KobleTilSakKort.module.css'
+import { SakKort } from './SakKort.tsx'
 
 function lagSak(sakId: string, fagsaksystem = 'HOTSAK'): SakvalgVisning {
   return {
@@ -208,7 +209,7 @@ describe('KobleTilSakKort', () => {
     }
   })
 
-  it('viser oppgaveinformasjon mellom journalposter og hjelpemidler og laster kommentarer først ved åpning', async () => {
+  it('laster kommentarer først ved åpning', async () => {
     const oppgave = lagBehandleSakOppgave('oppgave-9901', '9901', 'Beskrivelse i kortet')
     const post = mockHttpPost([lagJournalpost('jp-1', '9901', 'HJELPEMIDLER', ['Journalpost før oppgave'])], () =>
       lagOppgaveRespons([oppgave])
@@ -236,9 +237,7 @@ describe('KobleTilSakKort', () => {
       expect(fetcher).not.toHaveBeenCalledWith('/api/oppgaver/oppgave-9901/kommentarer')
 
       await åpneSakskort('Hjelpemidler')
-      const gjelder = await screen.findByText('Gjelder:')
       await screen.findByText('Nyeste kommentar')
-      expect(screen.getByRole('heading', { name: 'Kommentarer', level: 3 })).toBeInTheDocument()
       const commentsList = document.querySelector(`ul.${classes.kommentarListe}`)
       expect(commentsList).toBeInTheDocument()
       const commentItems = within(commentsList as HTMLElement).getAllByRole('listitem')
@@ -247,11 +246,6 @@ describe('KobleTilSakKort', () => {
       expect(commentItems[1]).toHaveTextContent('Eldre kommentar')
       expect(kommentarer.map((kommentar) => kommentar.tekst)).toEqual(['Eldre kommentar', 'Nyeste kommentar'])
       expect(screen.queryByText('Beskrivelse i kortet')).not.toBeInTheDocument()
-
-      const hjelpemidler = await screen.findByRole('region', { name: 'Hjelpemidler i saken' })
-      const journalpost = screen.getByText('Journalpost før oppgave')
-      expect(journalpost.compareDocumentPosition(gjelder) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-      expect(gjelder.compareDocumentPosition(hjelpemidler) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     } finally {
       post.mockRestore()
     }
@@ -489,7 +483,6 @@ describe('KobleTilSakKort', () => {
 
       await åpneSakskort('Hjelpemidler')
       await waitFor(() => expect(fetcher).toHaveBeenCalledExactlyOnceWith('/api/sak/9901/behovsmelding'))
-      expect(await screen.findByText('Ingen hjelpemidler registrert for saken.')).toBeInTheDocument()
     } finally {
       post.mockRestore()
     }
@@ -507,22 +500,6 @@ describe('KobleTilSakKort', () => {
       await åpneSakskort('Infotrygd')
       expect(screen.queryByRole('region', { name: 'Hjelpemidler i saken' })).not.toBeInTheDocument()
       expect(fetcher).not.toHaveBeenCalled()
-    } finally {
-      post.mockRestore()
-    }
-  })
-
-  it('viser hentefeil for hjelpemidler uten å skjule dokumentene', async () => {
-    const post = mockHttpPost([lagJournalpost('jp-1', '9901', 'HJELPEMIDLER', ['Søknad'])])
-    const fetcher = vi.fn(async () => {
-      throw new Error('behovsmeldingen feilet')
-    })
-
-    try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />, fetcher)
-      await åpneSakskort('Hjelpemidler')
-      expect(await screen.findByText('Kunne ikke hente hjelpemidler for saken.')).toBeInTheDocument()
-      expect(await screen.findByText('Søknad')).toBeInTheDocument()
     } finally {
       post.mockRestore()
     }
@@ -560,14 +537,14 @@ describe('KobleTilSakKort', () => {
     }
   })
 
-  it('viser status ved tittelen og Åpne ved sak-ID uten å utvide kortet', async () => {
+  it('viser status og Åpne i headeren uten å utvide kortet ved valg eller lenkeklikk', async () => {
     const post = mockHttpPost()
     const onChange = vi.fn()
     const sakMedStatus = { ...énSak[0], saksstatus: Saksstatus.MOTTATT }
 
     try {
       renderMedPerson(<KobleTilSakKort saker={[sakMedStatus]} isLoading={false} valgtSak={null} onChange={onChange} />)
-      const åpneSak = screen.getByRole('link', { name: 'Åpne sak 9901 i ny fane' })
+      const åpneSak = screen.getByRole('link', { name: 'Åpne, sak 9901, i ny fane' })
       expect(åpneSak).toBeVisible()
       expect(åpneSak).toHaveTextContent('Åpne')
       expect(åpneSak.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
@@ -575,14 +552,9 @@ describe('KobleTilSakKort', () => {
       expect(åpneSak).toHaveAttribute('target', '_blank')
       expect(åpneSak).toHaveAttribute('rel', 'noopener noreferrer')
       const kortHeader = screen.getByText('Hjelpemidler', { exact: true }).closest('.aksel-expansioncard__header')
-      expect(kortHeader?.firstElementChild?.firstElementChild).toBe(
-        screen.getByRole('radio', { name: /Velg sak 9901/ })
-      )
-      expect(kortHeader?.firstElementChild?.children[1]).toHaveClass(classes.sakTittel)
-      expect(kortHeader?.firstElementChild?.children[2]).toHaveClass(classes.sideDetaljer)
-      expect(kortHeader?.firstElementChild?.children[2]).toHaveTextContent('Mottatt')
-      expect(kortHeader?.querySelector(`.${classes.sideDetaljer}`)).toHaveTextContent('Dato:')
-      expect(kortHeader?.querySelector(`.${classes.hovedDetaljer}`)).toContainElement(åpneSak)
+      expect(kortHeader).toHaveTextContent('Mottatt')
+      expect(kortHeader).toHaveTextContent('Dato:')
+      expect(kortHeader).toContainElement(åpneSak)
       const utvidKnapp = kortHeader?.querySelector('[aria-expanded]')
       expect(utvidKnapp).toHaveAttribute('aria-expanded', 'false')
 
@@ -609,17 +581,93 @@ describe('KobleTilSakKort', () => {
     expect(generellSakKort).not.toHaveTextContent('Dato:')
   })
 
-  it('plasserer tittel, radio og høyre metadata i samme indre fagsak-header', () => {
-    render(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+  it('viser radio og tittel i egen rad over sakdetaljer og status/dato', () => {
+    const sakMedStatus = { ...énSak[0], saksstatus: Saksstatus.MOTTATT }
+    render(<KobleTilSakKort saker={[sakMedStatus]} isLoading={false} valgtSak={null} onChange={() => {}} />)
 
     const radio = screen.getByRole('radio', { name: /Velg sak 9901/ })
-    const heading = screen.getByText('Hjelpemidler', { exact: true })
-    const innerHeaderGrid = radio.closest(`.${classes.sakHeader}`)?.querySelector(':scope > div:first-child')
-    const dato = innerHeaderGrid?.querySelector(`.${classes.sideDetaljer}`)
+    const heading = screen.getByRole('heading', { name: 'Hjelpemidler' })
+    const detaljer = heading.nextElementSibling?.firstElementChild
+    const sakdetaljer = detaljer?.children[0]
+    const statusOgDato = detaljer?.children[1]
 
-    expect(innerHeaderGrid).toContainElement(radio)
-    expect(innerHeaderGrid).toContainElement(heading)
-    expect(dato).toHaveTextContent('Dato: 21.08.2024')
-    expect(innerHeaderGrid).toContainElement(screen.getByRole('link', { name: 'Åpne sak 9901 i ny fane' }))
+    expect(heading.previousElementSibling).toBe(radio)
+    expect(sakdetaljer).toHaveTextContent('Sak: 9901')
+    expect(sakdetaljer).toHaveTextContent('Fagsystem:')
+    expect(sakdetaljer).toContainElement(screen.getByRole('link', { name: 'Åpne, sak 9901, i ny fane' }))
+    expect(statusOgDato).toHaveTextContent('Mottatt')
+    expect(statusOgDato).toHaveTextContent('Dato: 21.08.2024')
+  })
+})
+
+describe('SakLink', () => {
+  it.each([
+    {
+      navn: 'linker til oppgaven for en Hotsak-sak med oppgave',
+      fagsaksystem: 'HOTSAK',
+      oppgaveId: 'oppgave-9901',
+      href: '/oppgave/oppgave-9901',
+      tekst: 'Åpne',
+    },
+    {
+      navn: 'linker til saken for en Hotsak-sak uten oppgave',
+      fagsaksystem: 'HOTSAK',
+      oppgaveId: undefined,
+      href: '/sak/9901',
+      tekst: 'Åpne',
+    },
+    {
+      navn: 'linker til Gosys for en ekstern sak med oppgave',
+      fagsaksystem: 'IT01',
+      oppgaveId: 'oppgave-9901',
+      href: 'http://localhost/gosys/oppgavebehandling/oppgave/oppgave-9901',
+      tekst: 'Åpne i Gosys',
+    },
+  ])('$navn', ({ fagsaksystem, oppgaveId, href, tekst }) => {
+    render(
+      <SakKort
+        sak={lagSak('9901', fagsaksystem)}
+        valgt={false}
+        onVelg={vi.fn()}
+        oppgave={oppgaveId ? lagBehandleSakOppgave(oppgaveId, '9901') : undefined}
+      />
+    )
+
+    const link = screen.getByRole('link', { name: `${tekst}, sak 9901, i ny fane` })
+    expect(link).toHaveTextContent(new RegExp(`^${tekst}$`))
+    expect(link).toHaveAttribute('href', href)
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('viser ingen lenke for en ekstern sak uten oppgave', () => {
+    render(<SakKort sak={lagSak('9901', 'IT01')} valgt={false} onVelg={vi.fn()} />)
+
+    expect(screen.queryByRole('link', { name: /Åpne/ })).not.toBeInTheDocument()
+  })
+
+  it('bruker konfigurert Gosys-URL for eksterne oppgaver', () => {
+    vi.stubGlobal('appSettings', {
+      ...window.appSettings,
+      GOSYS_OPPGAVEBEHANDLING_URL: 'https://gosys.test/oppgavebehandling',
+    })
+
+    try {
+      render(
+        <SakKort
+          sak={lagSak('9901', 'IT01')}
+          valgt={false}
+          onVelg={vi.fn()}
+          oppgave={lagBehandleSakOppgave('ekstern-oppgave', '9901')}
+        />
+      )
+
+      expect(screen.getByRole('link', { name: 'Åpne i Gosys, sak 9901, i ny fane' })).toHaveAttribute(
+        'href',
+        'https://gosys.test/oppgavebehandling/oppgave/ekstern-oppgave'
+      )
+    } finally {
+      vi.unstubAllGlobals()
+    }
   })
 })

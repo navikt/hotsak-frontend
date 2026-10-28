@@ -27,21 +27,8 @@
 }
 
 .sakHeader > div:first-child {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) max-content;
-  gap: var(--ax-space-8);
-  align-items: start;
   flex: 1;
   min-width: 0;
-}
-
-.sakTittel {
-  grid-column: 2;
-  min-width: 0;
-}
-
-.sakTittel > :first-child {
-  margin-top: 0;
 }
 
 .sakLenke {
@@ -54,33 +41,11 @@
   position: relative;
   z-index: 2;
   flex-shrink: 0;
-  margin-top: var(--ax-space-2);
+  margin-block: 0;
   width: 1.125rem;
   height: 1.125rem;
   accent-color: var(--ax-color-action-primary);
   cursor: pointer;
-}
-
-.headerDetaljer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ax-space-4);
-  margin-top: var(--ax-space-4);
-  min-width: 0;
-}
-
-.hovedDetaljer,
-.sideDetaljer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--ax-space-4);
-}
-
-.sideDetaljer {
-  grid-column: 3;
-  align-items: flex-end;
-  text-align: right;
 }
 
 .utvidetInnhold {
@@ -97,13 +62,13 @@
 .journalpostListe {
   display: flex;
   flex-direction: column;
-  gap: var(--ax-space-8);
+  gap: var(--ax-space-4);
 }
 
 .journalpost {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr) max-content;
-  align-items: start;
+  align-items: first baseline;
   gap: var(--ax-space-4) var(--ax-space-8);
   padding-block: var(--ax-space-4);
 }
@@ -145,6 +110,7 @@
 .dokument {
   min-width: 0;
   overflow-wrap: anywhere;
+  align-items: center;
 }
 
 .hjelpemiddelSeksjon {
@@ -166,16 +132,6 @@
 }
 
 @media (max-width: 479px) {
-  .sakHeader > div:first-child {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  .sideDetaljer {
-    grid-column: 2;
-    align-items: flex-start;
-    text-align: left;
-  }
-
   .journalpost {
     grid-template-columns: minmax(0, 1fr) max-content;
   }

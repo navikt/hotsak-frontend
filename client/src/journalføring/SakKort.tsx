@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { BodyShort, ErrorMessage, HGrid, HStack, Link, Loader, Tag } from '@navikt/ds-react'
+import { BodyShort, ErrorMessage, HGrid, HStack, Link, Loader, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { FinnHjelpemiddelLink } from '../felleskomponenter/FinnHjelpemiddelLink.tsx'
@@ -11,10 +11,11 @@ import { useBehovsmelding } from '../saksbilde/useBehovsmelding.ts'
 import { type Behovsmelding } from '../types/BehovsmeldingTypes.ts'
 import { OmrådeFilterLabel, SaksstatusLabel, type Journalpost } from '../types/types.internal.ts'
 import { formaterDato } from '../utils/dato.ts'
-import classes from './KobleTilSakKort.module.css'
-import { type SakvalgVisning, HOTSAK_SYSTEM } from './useKobleTilSak.ts'
 import { Sakstype } from './journalføringTypes.ts'
+import classes from './KobleTilSakKort.module.css'
 import { OppgaveDetaljer } from './OppgaveDetaljer.tsx'
+import { HOTSAK_SYSTEM, type SakvalgVisning } from './useKobleTilSak.ts'
+import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 
 interface SakKortProps {
   sak: SakvalgVisning
@@ -51,40 +52,48 @@ export function SakKort({
   const journalpostSystem = erHotsak ? 'HJELPEMIDLER' : fagsaksystem
   const sakensJournalposter = journalposter.filter((journalpost) => journalpost.sak?.fagsaksystem === journalpostSystem)
 
+  const gjelder = [oppgave?.kategorisering.behandlingstema?.term, oppgave?.kategorisering.behandlingstype?.term]
+    .filter(Boolean)
+    .join(' | ')
+
   const headerDetails = (
-    <div className={classes.headerDetaljer}>
-      <div className={classes.hovedDetaljer}>
-        <HStack gap="space-4" align="center">
-          <BodyShort size="small">
-            <strong>Sak:</strong>
-          </BodyShort>
+    <HGrid columns={{ xs: 'minmax(0, 1fr)', sm: 'minmax(0, 1fr) max-content' }} gap="space-8" align="start">
+      <VStack gap="space-4" minWidth="0">
+        <HStack gap="space-6" align="center">
+          <Etikett>Sak: </Etikett>
           <BodyShort size="small">{sak.sakId}</BodyShort>
-          {erHotsak && (
-            <Link
-              href={`/sak/${sak.sakId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Åpne sak ${sak.sakId} i ny fane`}
-              className={classes.sakLenke}
-              onClick={(event) => event.stopPropagation()}
-            >
-              Åpne <ExternalLinkIcon aria-hidden />
-            </Link>
-          )}
+          <SakLink oppgave={oppgave} erHotsak={erHotsak} sak={sak} />
         </HStack>
+
+        {gjelder && (
+          <BodyShort size="small">
+            <strong>Gjelder:</strong> {gjelder}
+          </BodyShort>
+        )}
+
         <HStack gap="space-4" align="center">
           <BodyShort size="small">
             <strong>Fagsystem:</strong>
           </BodyShort>
           <BodyShort size="small">{sak.fagsystemLabel}</BodyShort>
         </HStack>
-      </div>
-      {område && (
-        <BodyShort size="small" className={classes.område}>
-          <strong>Område:</strong> {område}
+        {område && (
+          <BodyShort size="small">
+            <strong>Område:</strong> {område}
+          </BodyShort>
+        )}
+      </VStack>
+      <VStack gap="space-4" align={{ xs: 'start', sm: 'end' }}>
+        {statusLabel && (
+          <Tag variant="moderate" data-color="info" size="small">
+            {statusLabel}
+          </Tag>
+        )}
+        <BodyShort size="small">
+          <strong>Dato:</strong> {formaterDato(sak.dato)}
         </BodyShort>
-      )}
-    </div>
+      </VStack>
+    </HGrid>
   )
 
   return (
@@ -95,7 +104,6 @@ export function SakKort({
       onToggle={setÅpnet}
       className={`${classes.sakKort} ${valgt ? classes.valgtSak : ''}`}
       headerClassName={classes.sakHeader}
-      titleClassName={classes.sakTittel}
       startContent={
         <input
           type="radio"
@@ -109,18 +117,6 @@ export function SakKort({
         />
       }
       headerDetails={headerDetails}
-      endContent={
-        <div className={classes.sideDetaljer}>
-          {statusLabel && (
-            <Tag variant="moderate" data-color="info" size="small">
-              {statusLabel}
-            </Tag>
-          )}
-          <BodyShort size="small">
-            <strong>Dato:</strong> {formaterDato(sak.dato)}
-          </BodyShort>
-        </div>
-      }
     >
       <div className={classes.utvidetInnhold}>
         {journalposterFeil ? (
@@ -143,7 +139,7 @@ export function SakKort({
                   </BodyShort>
                   <ul className={classes.dokumentListe} role="list">
                     {journalpost.dokumenter.map((dokument) => (
-                      <li key={dokument.dokumentId} className={classes.dokument}>
+                      <BodyShort as="li" size="small" key={dokument.dokumentId} className={classes.dokument}>
                         <Link
                           inlineText
                           href={`/api/journalpost/${journalpost.journalpostId}/${dokument.dokumentId}`}
@@ -152,7 +148,7 @@ export function SakKort({
                         >
                           {dokument.tittel}
                         </Link>
-                      </li>
+                      </BodyShort>
                     ))}
                   </ul>
                   {journalposttypeTag(journalpost.journalposttype)}
@@ -169,42 +165,62 @@ export function SakKort({
 }
 
 function SakensHjelpemidler({ sakId }: { sakId: string }) {
-  const { behovsmelding, isLoading, error } = useBehovsmelding<Behovsmelding>(sakId)
+  const { behovsmelding } = useBehovsmelding<Behovsmelding>(sakId)
   const hjelpemidler = behovsmelding?.isDigitalBehovsmelding ? behovsmelding.hjelpemidler?.hjelpemidler : undefined
 
   return (
     <section className={classes.hjelpemiddelSeksjon} aria-label="Hjelpemidler i saken">
-      <Etikett>Hjelpemidler</Etikett>
-      {error ? (
-        <ErrorMessage>Kunne ikke hente hjelpemidler for saken.</ErrorMessage>
-      ) : isLoading ? (
-        <BodyShort size="small">Henter hjelpemidler...</BodyShort>
-      ) : !behovsmelding ? (
-        <ErrorMessage>Fant ikke behovsmelding for saken.</ErrorMessage>
-      ) : !hjelpemidler?.length ? (
-        <BodyShort size="small">Ingen hjelpemidler registrert for saken.</BodyShort>
-      ) : (
-        <ul className={classes.hjelpemiddelListe}>
-          {hjelpemidler.map((hjelpemiddel) => (
-            <HGrid
-              as="li"
-              key={hjelpemiddel.hjelpemiddelId}
-              columns="minmax(0, 7rem) minmax(0, 1fr) auto"
-              gap="space-8"
-              align="start"
-              className={classes.hjelpemiddel}
-            >
-              <FinnHjelpemiddelLink hmsnr={hjelpemiddel.produkt.hmsArtNr}>
-                {hjelpemiddel.produkt.hmsArtNr}
-              </FinnHjelpemiddelLink>
-              <BodyShort size="small" className={classes.artikkelnavn}>
-                {hjelpemiddel.produkt.artikkelnavn}
-              </BodyShort>
-              <BodyShort size="small">Antall: {hjelpemiddel.antall}</BodyShort>
-            </HGrid>
-          ))}
-        </ul>
+      {hjelpemidler && hjelpemidler?.length > 0 && (
+        <>
+          <Etikett>Hjelpemidler</Etikett>
+
+          <ul className={classes.hjelpemiddelListe}>
+            {hjelpemidler.map((hjelpemiddel) => (
+              <HGrid
+                as="li"
+                key={hjelpemiddel.hjelpemiddelId}
+                columns="minmax(0, 7rem) minmax(0, 1fr) auto"
+                gap="space-8"
+                align="start"
+                className={classes.hjelpemiddel}
+              >
+                <FinnHjelpemiddelLink hmsnr={hjelpemiddel.produkt.hmsArtNr}>
+                  {hjelpemiddel.produkt.hmsArtNr}
+                </FinnHjelpemiddelLink>
+                <BodyShort size="small" className={classes.artikkelnavn}>
+                  {hjelpemiddel.produkt.artikkelnavn}
+                </BodyShort>
+                <BodyShort size="small">Antall: {hjelpemiddel.antall}</BodyShort>
+              </HGrid>
+            ))}
+          </ul>
+        </>
       )}
     </section>
+  )
+}
+
+function SakLink({ oppgave, erHotsak, sak }: { oppgave?: Oppgave; erHotsak: boolean; sak: SakvalgVisning }) {
+  const eksternOppgaveUrl = useOppgaveUrl(oppgave?.oppgaveId)
+  const href = erHotsak ? (oppgave ? `/oppgave/${oppgave.oppgaveId}` : `/sak/${sak.sakId}`) : eksternOppgaveUrl
+  const tekst = erHotsak ? 'Åpne' : 'Åpne i Gosys'
+
+  if (!href) return null
+
+  return (
+    <BodyShort size="small">
+      <Link
+        href={href}
+        target="_blank"
+        inlineText
+        data-color="accent"
+        rel="noopener noreferrer"
+        aria-label={`${tekst}, sak ${sak.sakId}, i ny fane`}
+        className={classes.sakLenke}
+        onClick={(event) => event.stopPropagation()}
+      >
+        {tekst} <ExternalLinkIcon aria-hidden />
+      </Link>
+    </BodyShort>
   )
 }

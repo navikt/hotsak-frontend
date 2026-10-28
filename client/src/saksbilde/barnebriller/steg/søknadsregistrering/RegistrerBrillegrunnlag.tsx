@@ -14,7 +14,7 @@ export function RegistrerBrillegrunnlag() {
 
   return (
     <VStack gap="space-40" paddingBlock="space-40 space-0" marginInline="space-0 space-4">
-      <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
+      <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr || sak?.data.innsender?.fnr} />
       <BrillestyrkeForm />
       <Bestillingsdato />
       <KjøptBrille />

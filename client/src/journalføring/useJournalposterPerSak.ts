@@ -1,5 +1,5 @@
 import { subYears, format } from 'date-fns'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
 import type { Journalpost } from '../types/types.internal.ts'
@@ -11,7 +11,7 @@ export interface UseJournalposterPerSakResponse {
 }
 
 export function useJournalposterPerSak(fnr?: string): UseJournalposterPerSakResponse {
-  const fraDato = format(subYears(new Date(), 1), 'yyyy-MM-dd')
+  const [fraDato] = useState(() => format(subYears(new Date(), 1), 'yyyy-MM-dd'))
   const { journalposter, isLoading, error } = useDokumentsøk({ fnr, fraDato })
 
   const journalposterPerSak = useMemo(() => {

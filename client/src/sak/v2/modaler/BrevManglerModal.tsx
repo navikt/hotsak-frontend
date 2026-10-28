@@ -19,7 +19,12 @@ export function BrevManglerModal({
   henleggelsesutfall,
 }: BrevManglerModalProps) {
   return (
-    <InfoModal heading="Mangler brev" open={open} width="500px" onClose={onClose}>
+    <InfoModal
+      heading={`${gjenstående.includes(Gjenstående.BREV_MANGLER) ? 'Mangler brev' : 'Underveisbrev må sendes eller slettes'}`}
+      open={open}
+      width="500px"
+      onClose={onClose}
+    >
       {gjenstående.includes(Gjenstående.BREV_MANGLER) && vedtaksresultat && (
         <>
           <Tekst spacing>

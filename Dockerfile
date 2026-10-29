@@ -10,7 +10,7 @@ FROM node:lts-alpine AS client-builder
 ENV HUSKY=0
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-COPY --from=ghcr.io/pnpm/pnpm:12.14.0-alpine /opt/pnpm /opt/pnpm
+COPY --from=ghcr.io/pnpm/pnpm:12-alpine /opt/pnpm /opt/pnpm
 RUN ln -s /opt/pnpm/pnpm /usr/local/bin/pnpm
 WORKDIR /app
 COPY .npmrc client/package.json client/pnpm-lock.yaml client/pnpm-workspace.yaml ./

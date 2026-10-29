@@ -18,10 +18,6 @@ export interface NotatCardProps {
 }
 
 export function NotatCard({ notat }: NotatCardProps) {
-  const [visFulltNotat, setVisFulltNotat] = useState(false)
-  const textRef = useRef<HTMLDivElement>(null)
-  const isClamped = useIsClamped(notat.tekst, textRef)
-
   return (
     <Box background="neutral-soft" padding="space-12" borderRadius="12" data-testid="notat-card">
       <VStack gap="space-12">
@@ -47,36 +43,57 @@ export function NotatCard({ notat }: NotatCardProps) {
           <Undertittel>{notat.saksbehandler.navn}</Undertittel>
         </VStack>
       </VStack>
-      {notat.tekst && (
-        <VStack gap="space-12">
-          <MardownEditorPreviewStyling ref={textRef} truncate={!visFulltNotat}>
-            <MDXEditor
-              markdown={notat.tekst}
-              readOnly={true}
-              contentEditableClassName="mdxEditorRemoveMargin"
-              plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
-            />
-          </MardownEditorPreviewStyling>
-          {isClamped && (
-            <div>
-              <Button
-                variant="tertiary"
-                size="small"
-                icon={visFulltNotat ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                iconPosition="right"
-                onClick={() => setVisFulltNotat((state) => !state)}
-              >
-                {visFulltNotat ? 'Vis mindre' : 'Vis mer'}
-              </Button>
-            </div>
-          )}
-        </VStack>
-      )}
-      {!notat.tekst && (
-        <Box paddingBlock="space-12 space-0">
-          <Tekst>Dette notatet ble opprettet i Gosys, les PDF-filen for å se innholdet.</Tekst>
-        </Box>
-      )}
+      <NotatTekst notat={notat} />
     </Box>
+  )
+}
+
+function NotatTekst(props: { notat: Notat }) {
+  const { notat } = props
+
+  const [visFulltNotat, setVisFulltNotat] = useState(false)
+  const textRef = useRef<HTMLDivElement>(null)
+  const isClamped = useIsClamped(notat.tekst, textRef)
+
+  if (!notat.tekst) {
+    return (
+      <Box paddingBlock="space-12 space-0">
+        <Tekst>Dette notatet ble opprettet i Gosys, les PDF-filen for å se innholdet.</Tekst>
+      </Box>
+    )
+  }
+
+  if (notat.type === NotatType.KOMMENTAR) {
+    return (
+      <Box paddingBlock="space-12 space-0">
+        <Tekst>{notat.tekst}</Tekst>
+      </Box>
+    )
+  }
+
+  return (
+    <VStack gap="space-12">
+      <MardownEditorPreviewStyling ref={textRef} truncate={!visFulltNotat}>
+        <MDXEditor
+          markdown={notat.tekst}
+          readOnly={true}
+          contentEditableClassName="mdxEditorRemoveMargin"
+          plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
+        />
+      </MardownEditorPreviewStyling>
+      {isClamped && (
+        <div>
+          <Button
+            variant="tertiary"
+            size="small"
+            icon={visFulltNotat ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            iconPosition="right"
+            onClick={() => setVisFulltNotat((state) => !state)}
+          >
+            {visFulltNotat ? 'Vis mindre' : 'Vis mer'}
+          </Button>
+        </div>
+      )}
+    </VStack>
   )
 }

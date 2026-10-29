@@ -65,25 +65,13 @@ describe('JournalføringRouter', () => {
   })
 
   it('velger V2 for vanlige søknader', async () => {
-    vi.mocked(useJournalpostSuspense).mockReturnValue({ journalpost: medBrevkode('NAV 10-07.03'), mutate: vi.fn() })
+    vi.mocked(useJournalpostSuspense).mockReturnValue({
+      journalpost: medBrevkode('NAV 10-07.03'),
+      mutate: vi.fn(),
+      erBarnebrilleSøknad: false,
+    })
     render(<JournalføringRouter oppgave={oppgave} />)
 
     expect(await screen.findByText('Journalføring V2')).toBeInTheDocument()
-  })
-
-  it('velger V2 for briller til barn i dev', async () => {
-    window.appSettings.NAIS_CLUSTER_NAME = 'dev-gcp'
-    vi.mocked(useJournalpostSuspense).mockReturnValue({ journalpost: medBrevkode('NAV 10-07.34'), mutate: vi.fn() })
-    render(<JournalføringRouter oppgave={oppgave} />)
-
-    expect(await screen.findByText('Journalføring V2')).toBeInTheDocument()
-  })
-
-  it('velger V1 for briller til barn i prod', async () => {
-    window.appSettings.NAIS_CLUSTER_NAME = 'prod-gcp'
-    vi.mocked(useJournalpostSuspense).mockReturnValue({ journalpost: medBrevkode('NAV 10-07.34'), mutate: vi.fn() })
-    render(<JournalføringRouter oppgave={oppgave} />)
-
-    expect(await screen.findByText('Journalføring V1')).toBeInTheDocument()
   })
 })

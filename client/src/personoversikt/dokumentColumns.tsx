@@ -91,8 +91,8 @@ export function journalpostKey(journalpost: Journalpost): string {
 
 export function journalposttypeTag(type: Journalpost['journalposttype']) {
   const config: Record<typeof type, { label: string; color: TagProps['data-color'] }> = {
-    I: { label: 'Inngående dokument', color: 'meta-purple' },
-    U: { label: 'Utgående dokument', color: 'meta-lime' },
+    I: { label: 'Inngående', color: 'meta-purple' },
+    U: { label: 'Utgående', color: 'meta-lime' },
     N: { label: 'Notat', color: 'neutral' },
   }
   const { label, color } = config[type]

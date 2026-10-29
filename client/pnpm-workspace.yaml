@@ -16,9 +16,3 @@ allowBuilds:
   esbuild: true
   msw: true
   protobufjs: false
-
-overrides:
-  js-yaml@>=4.0.0 <4.3.2: ^4.3.2
-
-minimumReleaseAgeExclude:
-  - js-yaml@4.3.2

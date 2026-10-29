@@ -31,6 +31,7 @@ export async function initMsw(): Promise<unknown> {
     await journalpostStore.populer()
     await sakStore.populer()
     await oppgaveStore.populer()
+    await oppgaveStore.populerKommentarer()
     await notatStore.populer()
     await endreHjelpemiddelStore.populer()
   } catch (err: unknown) {
@@ -70,6 +71,6 @@ export async function initMsw(): Promise<unknown> {
     }
   })
   return worker.start({
-    onUnhandledRequest: 'bypass',
+    onUnhandledFrame: 'bypass',
   })
 }

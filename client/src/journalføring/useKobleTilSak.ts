@@ -4,9 +4,15 @@ import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { type Fagsak, type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { Fagsaksystem, Tema, type Fagsaksystem as FagsaksystemType } from '../kodeverk/kodeverkTypes.ts'
-import { Saksstatus, Sakstype, type Saksstatus as OppgaveStatusTypeValue } from '../types/types.internal.ts'
+import {
+  Saksstatus,
+  SaksstatusKategori,
+  Sakstype,
+  type Saksstatus as OppgaveStatusTypeValue,
+} from '../types/types.internal.ts'
 import type { Sakvalg } from './journalføringValg.ts'
 import { Sakstype as JournalføringSakstype } from './journalføringTypes.ts'
+import { BREVKODE_BRILLER_TIL_BARN } from './journalføringStandardverdier.ts'
 
 export type { Sakvalg } from './journalføringValg.ts'
 
@@ -21,7 +27,7 @@ export interface SakvalgVisning {
   sakId: string
   gjelder: string
   dato: string
-  fagsystemLabel: string
+  fagsystemLabel?: string
   saksstatus?: OppgaveStatusTypeValue
   område?: string[]
 }
@@ -88,24 +94,33 @@ function tilFagsakvalg(
   }
 }
 
-export function lagSakvalg(saker: SaksoversiktSak[], fagsaker: Fagsak[] = []): SakvalgVisning[] {
-  return [...saker.filter(erVisbarSak).map(tilSakvalg), ...fagsaker.filter(erVisbarFagsak).map(tilFagsakvalg)].sort(
-    (a, b) => {
-      const datoDiff = b.dato.localeCompare(a.dato)
-      if (datoDiff !== 0) return datoDiff
-      if (a.saksstatus && b.saksstatus) {
-        return Number(ÅPNE_STATUSER.has(b.saksstatus)) - Number(ÅPNE_STATUSER.has(a.saksstatus))
-      }
-      return 0
+export function lagSakvalg(
+  saker: SaksoversiktSak[],
+  fagsaker: Fagsak[] = [],
+  erBarnebrillesøknad = false
+): SakvalgVisning[] {
+  const visbareSaker = erBarnebrillesøknad ? saker : saker.filter(erVisbarSak)
+  const visbareFagsaker = erBarnebrillesøknad ? [] : fagsaker.filter(erVisbarFagsak)
+  return [...visbareSaker.map(tilSakvalg), ...visbareFagsaker.map(tilFagsakvalg)].sort((a, b) => {
+    const datoDiff = b.dato.localeCompare(a.dato)
+    if (datoDiff !== 0) return datoDiff
+    if (a.saksstatus && b.saksstatus) {
+      return Number(ÅPNE_STATUSER.has(b.saksstatus)) - Number(ÅPNE_STATUSER.has(a.saksstatus))
     }
-  )
+    return 0
+  })
 }
 
-export function useKobleTilSak(fnr?: string): UseKobleTilSakResponse {
-  const { saksoversikt, isLoading, error } = useSaksoversikt(fnr)
+export function useKobleTilSak(fnr?: string, brevkode?: string): UseKobleTilSakResponse {
+  const erBarnebrillesøknad = brevkode !== undefined && BREVKODE_BRILLER_TIL_BARN.includes(brevkode)
+  const { saksoversikt, isLoading, error } = useSaksoversikt(
+    fnr,
+    erBarnebrillesøknad ? SaksstatusKategori.ÅPEN : undefined,
+    erBarnebrillesøknad ? Sakstype.BARNEBRILLER : undefined
+  )
   const saker = useMemo(
-    () => lagSakvalg(saksoversikt?.saker ?? [], saksoversikt?.fagsaker ?? []),
-    [saksoversikt?.saker, saksoversikt?.fagsaker]
+    () => lagSakvalg(saksoversikt?.saker ?? [], saksoversikt?.fagsaker ?? [], erBarnebrillesøknad),
+    [saksoversikt?.saker, saksoversikt?.fagsaker, erBarnebrillesøknad]
   )
 
   return {

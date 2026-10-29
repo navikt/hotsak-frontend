@@ -1,150 +1,119 @@
-import { BodyShort, Box, Button, Detail, ErrorMessage, HStack, Label, TextField, VStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { BodyShort, Box, Button, ErrorMessage, HStack, Label, TextField, VStack } from '@navikt/ds-react'
 
 import { InlineKopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { http } from '../io/HttpClient.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
-import { usePerson } from '../personoversikt/usePerson.ts'
-import { type Journalpost, type Person } from '../types/types.internal.ts'
-import { formaterNavn } from '../utils/formater.ts'
+import { Kanal, type Journalpost } from '../types/types.internal.ts'
+import { useJournalføringPart } from './useJournalføringPart.ts'
 
 interface JournalføringParterProps {
   journalpost: Journalpost
   tildeltEnhet: string
   kanRedigere: boolean
+  avsenderFnr: string
+  onAvsenderChange(fnr: string): void
+  onBrukerChange(fnr: string): void
 }
 
-export function JournalføringParter({ journalpost, tildeltEnhet, kanRedigere }: JournalføringParterProps) {
-  const { fodselsnummer, setFodselsnummer } = usePersonContext()
+interface PartFeltProps {
+  label: string
+  srLabel: string
+  inputLabel: string
+  velgLabel: string
+  fnr: string
+  kanRedigere: boolean
+  part: ReturnType<typeof useJournalføringPart>
+}
 
-  const [redigererBruker, setRedigererBruker] = useState(false)
-  const [brukerInputFnr, setBrukerInputFnr] = useState('')
-  const [brukerFeil, setBrukerFeil] = useState<string | null>(null)
-  const [oppslagLaster, setOppslagLaster] = useState(false)
-
-  const { personInfo } = usePerson(fodselsnummer)
-
-  const brukerNavn = personInfo
-    ? formaterNavn(personInfo.navn)
-    : journalpost.bruker?.fnr === fodselsnummer
-      ? formaterNavn(journalpost.bruker.navn)
-      : ''
-
-  function visBrukerIkkeFunnet() {
-    setBrukerFeil('Bruker ikke funnet i PDL')
-    setBrukerInputFnr('')
-  }
-
-  async function velgBruker() {
-    const fnr = brukerInputFnr.trim()
-    setBrukerFeil(null)
-    if (!fnr) {
-      visBrukerIkkeFunnet()
-      return
-    }
-    setOppslagLaster(true)
-    try {
-      const person = await http.post<{ fnr: string }, Person>('/api/person', { fnr })
-      if (!person?.fnr) {
-        visBrukerIkkeFunnet()
-        return
-      }
-      setFodselsnummer(person.fnr)
-      setBrukerInputFnr('')
-      setRedigererBruker(false)
-    } catch {
-      visBrukerIkkeFunnet()
-    } finally {
-      setOppslagLaster(false)
-    }
-  }
-
-  function avbrytRedigering() {
-    setRedigererBruker(false)
-    setBrukerFeil(null)
-    setBrukerInputFnr('')
-  }
+export function JournalføringParter({
+  journalpost,
+  kanRedigere,
+  avsenderFnr,
+  onAvsenderChange,
+  onBrukerChange,
+}: JournalføringParterProps) {
+  const { fodselsnummer } = usePersonContext()
+  const bruker = useJournalføringPart({
+    part: 'Bruker',
+    fnr: fodselsnummer,
+    onChange: onBrukerChange,
+    opprinneligFnr: journalpost.fnrBruker,
+    opprinneligNavn: journalpost.bruker?.navn,
+  })
+  const avsender = useJournalføringPart({
+    part: 'Avsender',
+    fnr: avsenderFnr,
+    onChange: onAvsenderChange,
+    opprinneligFnr: journalpost.fnrInnsender,
+    opprinneligNavn: journalpost.innsender.navn,
+  })
 
   return (
     <TextContainer>
       <VStack gap="space-8">
-        <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
-          <HStack justify="space-between" align="start">
-            <VStack gap="space-12">
-              <VStack gap="space-4">
-                <Label size="small">Bruker</Label>
-                {redigererBruker ? (
-                  <VStack gap="space-4">
-                    <HStack gap="space-12" align="end">
-                      <TextField
-                        label="Fødselsnummer"
-                        size="small"
-                        value={brukerInputFnr}
-                        onChange={(e) => setBrukerInputFnr(e.target.value)}
-                        autoFocus
-                      />
-                      <HStack gap="space-4">
-                        <Button
-                          variant="primary"
-                          size="small"
-                          type="button"
-                          loading={oppslagLaster}
-                          onClick={velgBruker}
-                        >
-                          Velg
-                        </Button>
-                        <Button variant="secondary" size="small" type="button" onClick={avbrytRedigering}>
-                          Avbryt
-                        </Button>
-                      </HStack>
-                    </HStack>
-                    {brukerFeil && <ErrorMessage size="small">{brukerFeil}</ErrorMessage>}
-                  </VStack>
-                ) : (
-                  <HStack gap="space-1" align="center">
-                    <BodyShort size="small">{brukerNavn} - </BodyShort>
-                    <BodyShort size="small">{fodselsnummer}</BodyShort>
-                    <InlineKopiknapp copyText={fodselsnummer} tooltip="Kopier fødselsnummer" />
-                  </HStack>
-                )}
-              </VStack>
-              <BodyShort size="small">{tildeltEnhet}</BodyShort>
-            </VStack>
-            {kanRedigere &&
-              (redigererBruker ? null : (
-                <Button
-                  variant="tertiary"
-                  size="xsmall"
-                  type="button"
-                  onClick={() => {
-                    setRedigererBruker(true)
-                    setBrukerFeil(null)
-                    setBrukerInputFnr(fodselsnummer)
-                  }}
-                >
-                  Endre <span className="sr-only">bruker</span>
-                </Button>
-              ))}
-          </HStack>
-        </Box>
-
-        <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
-          <HStack justify="space-between" align="start">
-            <VStack gap="space-4">
-              <VStack gap="space-2">
-                <Label size="small">Avsender</Label>
-                <Detail>Avsender er bruker</Detail>
-              </VStack>
-              <HStack gap="space-1" align="center">
-                <BodyShort size="small">{brukerNavn} - </BodyShort>
-                <BodyShort size="small">{fodselsnummer}</BodyShort>
-                <InlineKopiknapp copyText={fodselsnummer} tooltip="Kopier fødselsnummer" />
-              </HStack>
-            </VStack>
-          </HStack>
-        </Box>
+        <PartFelt
+          label="Bruker"
+          srLabel="bruker"
+          inputLabel="Fødselsnummer"
+          velgLabel="Velg"
+          fnr={fodselsnummer}
+          kanRedigere={kanRedigere}
+          part={bruker}
+        />
+        <PartFelt
+          label="Avsender"
+          srLabel="avsender"
+          inputLabel="Avsenders fødselsnummer"
+          velgLabel="Velg avsender"
+          fnr={avsenderFnr}
+          kanRedigere={kanRedigere && journalpost.kanal.kode !== Kanal.NAV_NO}
+          part={avsender}
+        />
       </VStack>
     </TextContainer>
+  )
+}
+
+function PartFelt({ label, srLabel, inputLabel, velgLabel, fnr, kanRedigere, part }: PartFeltProps) {
+  return (
+    <Box borderRadius="12" borderWidth="1" borderColor="neutral-subtle" padding="space-12">
+      <HStack justify="space-between" align="start">
+        <VStack gap="space-4">
+          <Label size="small">{label}</Label>
+          {part.redigerer ? (
+            <VStack gap="space-4">
+              <HStack gap="space-12" align="end">
+                <TextField
+                  label={inputLabel}
+                  size="small"
+                  value={part.inputFnr}
+                  onChange={(e) => part.setInputFnr(e.target.value)}
+                  autoFocus
+                />
+                <HStack gap="space-4">
+                  <Button variant="primary" size="small" type="button" loading={part.laster} onClick={part.velg}>
+                    {velgLabel}
+                  </Button>
+                  <Button variant="secondary" size="small" type="button" onClick={part.avbrytRedigering}>
+                    Avbryt
+                  </Button>
+                </HStack>
+              </HStack>
+              {part.feil && <ErrorMessage size="small">{part.feil}</ErrorMessage>}
+            </VStack>
+          ) : (
+            <HStack gap="space-1" align="center">
+              <BodyShort size="small">{`${part.navn} - ${fnr}`}</BodyShort>
+              <InlineKopiknapp copyText={fnr} tooltip="Kopier fødselsnummer" />
+            </HStack>
+          )}
+        </VStack>
+        {kanRedigere && !part.redigerer && (
+          <Button variant="tertiary" size="xsmall" type="button" onClick={part.startRedigering}>
+            Endre <span className="sr-only">{srLabel}</span>
+          </Button>
+        )}
+      </HStack>
+    </Box>
   )
 }

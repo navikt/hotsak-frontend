@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom/vitest'
-
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { Kilde } from '../../types/hotlibs.ts'
 import { type Sak, Saksstatus, SaksstatusKategori, Sakstype } from '../../types/types.internal.ts'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
 import { FattVedtakModalV2 } from '../v2/modaler/FattVedtakModalV2.tsx'
@@ -67,6 +68,7 @@ const sak: Sak = {
   },
   innsender: { fnr: '00000000000', navn: { fornavn: 'Test', etternavn: 'Innsender' } },
   enhet: { nummer: '0000', navn: 'Testenhet' },
+  kilde: Kilde.DIGITAL_BEHOVSMELDING,
 }
 
 describe('VedtakForm', () => {

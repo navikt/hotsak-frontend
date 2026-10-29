@@ -2,26 +2,148 @@
   max-width: var(--textcontainer-bredde);
 }
 
-.kortLabel {
-  cursor: pointer;
-  display: block;
+.sakKort {
+  border-radius: var(--ax-radius-12);
 }
 
-.kortLabel:hover {
+.generellSak {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-8);
+  cursor: pointer;
+}
+
+.sakKort:hover {
   border-color: var(--ax-border-action);
   background-color: var(--ax-bg-subtle);
 }
 
-.radioInput {
+.sakKort.valgtSak {
+  border-color: var(--ax-border-info);
+}
+
+.sakHeader {
+  padding: var(--ax-space-12);
+}
+
+.sakHeader > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.sakLenke {
+  position: relative;
+  z-index: 2;
   flex-shrink: 0;
-  margin-top: var(--ax-space-4);
+}
+
+.radioInput {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  margin-block: 0;
   width: 1.125rem;
   height: 1.125rem;
   accent-color: var(--ax-color-action-primary);
   cursor: pointer;
 }
 
-.kortInnhold {
-  flex: 1;
+.utvidetInnhold {
+  padding: var(--ax-space-8) var(--ax-space-12);
+}
+
+.journalpostListe,
+.dokumentListe {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.journalpostListe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-4);
+}
+
+.journalpost {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  align-items: first baseline;
+  gap: var(--ax-space-4) var(--ax-space-8);
+  padding-block: var(--ax-space-4);
+}
+
+.journalpostDato {
+  white-space: nowrap;
+}
+
+.oppgaveSeksjon {
+  margin-top: var(--ax-space-12);
+}
+
+.kommentarSeksjon {
+  margin-top: var(--ax-space-8);
+}
+
+.kommentarListe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-8);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kommentar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-2);
+}
+
+.dokumentListe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-2);
   min-width: 0;
+}
+
+.dokument {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  align-items: center;
+}
+
+.hjelpemiddelSeksjon {
+  margin-top: var(--ax-space-12);
+}
+
+.hjelpemiddelListe {
+  list-style: none;
+  margin: var(--ax-space-4) 0 0;
+  padding: 0;
+}
+
+.hjelpemiddel {
+  padding-block: var(--ax-space-4);
+}
+
+.artikkelnavn {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 479px) {
+  .journalpost {
+    grid-template-columns: minmax(0, 1fr) max-content;
+  }
+
+  .dokumentListe {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .journalpostDato {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-self: end;
+  }
 }

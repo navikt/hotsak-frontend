@@ -14,15 +14,21 @@ import { type Journalpost } from '../types/types.internal.ts'
 import { JournalføringLoader } from './JournalføringLoader.tsx'
 import classes from './JournalføringV2.module.css'
 import { JournalføringV2Skjema } from './JournalføringV2Skjema.tsx'
-import { BREVKODE_BRILLER_TIL_BARN, hentJournalføringStandardverdier } from './journalføringStandardverdier.ts'
+import { hentJournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
 interface JournalføringV2Props {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
+  erBarnebrilleSøknad: boolean
   mutateJournalpost(): void
 }
 
-export function JournalføringV2({ oppgave, journalpost, mutateJournalpost }: JournalføringV2Props) {
+export function JournalføringV2({
+  oppgave,
+  journalpost,
+  mutateJournalpost,
+  erBarnebrilleSøknad,
+}: JournalføringV2Props) {
   const { journalpostId, dokumenter } = journalpost
   const { setValgtDokument } = useDokumentContext()
 
@@ -32,18 +38,22 @@ export function JournalføringV2({ oppgave, journalpost, mutateJournalpost }: Jo
     }
   }, [journalpostId, dokumenter, setValgtDokument])
 
-  const brevkode = journalpost.dokumenter[0]?.brevkode
-
-  const journalføresPåFnr =
-    brevkode && BREVKODE_BRILLER_TIL_BARN.includes(brevkode) ? journalpost.innsender.fnr : journalpost.bruker?.fnr
-
-  if (!journalføresPåFnr) {
+  if (!journalpost.fnrBruker) {
     return <FeilmeldingAlert>Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.</FeilmeldingAlert>
   }
 
+  if (!journalpost.fnrInnsender) {
+    return <FeilmeldingAlert>Journalposten mangler avsender. Kan ikke journalføre uten fødselsnummer.</FeilmeldingAlert>
+  }
+
   return (
-    <AktivPersonBoundary key={journalpostId} fnr={journalføresPåFnr}>
-      <JournalføringV2Innhold oppgave={oppgave} journalpost={journalpost} mutateJournalpost={mutateJournalpost} />
+    <AktivPersonBoundary key={journalpostId} fnr={journalpost.fnrBruker}>
+      <JournalføringV2Innhold
+        oppgave={oppgave}
+        journalpost={journalpost}
+        mutateJournalpost={mutateJournalpost}
+        erBarnebrilleSøknad={erBarnebrilleSøknad}
+      />
     </AktivPersonBoundary>
   )
 }
@@ -64,7 +74,12 @@ function AktivPersonBoundary({ fnr, children }: { fnr: string; children: ReactNo
   return children
 }
 
-function JournalføringV2Innhold({ oppgave, journalpost, mutateJournalpost }: JournalføringV2Props) {
+function JournalføringV2Innhold({
+  oppgave,
+  journalpost,
+  mutateJournalpost,
+  erBarnebrilleSøknad,
+}: JournalføringV2Props) {
   const { fodselsnummer } = usePersonContext()
   const { personInfo, error: personError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
 
@@ -83,6 +98,7 @@ function JournalføringV2Innhold({ oppgave, journalpost, mutateJournalpost }: Jo
                 oppgave={oppgave}
                 journalpost={journalpost}
                 mutateJournalpost={mutateJournalpost}
+                erBarnebrilleSøknad={erBarnebrilleSøknad}
                 standardverdier={hentJournalføringStandardverdier(journalpost.dokumenter[0]?.brevkode)}
               />
             </div>

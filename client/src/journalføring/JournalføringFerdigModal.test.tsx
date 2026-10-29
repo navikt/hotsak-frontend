@@ -72,7 +72,7 @@ describe('JournalføringFerdigModal', () => {
     expect(screen.queryByRole('button', { name: 'Behandle saken' })).not.toBeInTheDocument()
   })
 
-  it('skjuler «Til saken» når journalposten kobles til Gosys generell', () => {
+  it('skjuler «Til saken» når journalposten kobles til Generell sak', () => {
     render(
       <JournalføringFerdigModal
         open

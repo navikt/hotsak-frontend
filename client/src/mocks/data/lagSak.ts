@@ -1,12 +1,13 @@
 import { formatISO, subMonths } from 'date-fns'
 
 import { BehovsmeldingType } from '../../types/BehovsmeldingTypes.ts'
+import { Kilde } from '../../types/hotlibs.ts'
 import {
   type Barnebrillesak,
   type Hendelse,
   Kjønn,
-  Saksstatus,
   type Sak,
+  Saksstatus,
   SaksstatusKategori,
   Sakstype,
   StegType,
@@ -88,6 +89,7 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
       fulltNavn: 'Frank Formidler',
     },
     enhet: enheter.itAvdelingen,
+    kilde: Kilde.DIGITAL_BEHOVSMELDING,
     hast: levering?.hast
       ? {
           årsaker: levering.hast.hasteårsaker,
@@ -130,6 +132,7 @@ export function lagBarnebrillesak(sakId: string): InsertBarnebrillesak {
       navn: lagTilfeldigNavn(),
     },
     enhet: enheter.oslo,
+    kilde: Kilde.JOURNALPOST,
     steg: StegType.INNHENTE_FAKTA,
     journalposter: [],
   }
@@ -170,6 +173,7 @@ export function lagJournalføringssaker(brukerFnr: string): InsertHjelpemiddelsa
       bruker,
       innsender,
       enhet: enheter.agder,
+      kilde: Kilde.DIGITAL_BEHOVSMELDING,
     },
     {
       behovsmeldingCasePath: '',
@@ -184,6 +188,7 @@ export function lagJournalføringssaker(brukerFnr: string): InsertHjelpemiddelsa
       bruker,
       innsender,
       enhet: enheter.agder,
+      kilde: Kilde.DIGITAL_BEHOVSMELDING,
     },
     {
       behovsmeldingCasePath: '',
@@ -198,6 +203,7 @@ export function lagJournalføringssaker(brukerFnr: string): InsertHjelpemiddelsa
       bruker,
       innsender,
       enhet: enheter.agder,
+      kilde: Kilde.DIGITAL_BEHOVSMELDING,
     },
   ]
 }

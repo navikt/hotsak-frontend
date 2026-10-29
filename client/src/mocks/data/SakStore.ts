@@ -27,15 +27,16 @@ import {
   VedtaksResultat,
 } from '../../sak/v2/behandling/behandlingTyper.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
+import { Kilde } from '../../types/hotlibs.ts'
 import {
   type Barnebrillesak,
   Brevkode,
   Kjønn,
   type OppdaterVilkårRequest,
-  Saksstatus,
   type Sak,
   type Saksdokument,
   SaksdokumentType,
+  Saksstatus,
   SaksstatusKategori,
   Sakstype,
   StegType,
@@ -515,15 +516,16 @@ export class SakStore extends Dexie {
       søknadGjelder: request.tittel,
       søknadMottatt: nå,
       bruker: {
-        fnr: request.journalføresPåFnr,
+        fnr: request.brukerFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },
         fødselsdato: '',
       },
       innsender: {
-        fnr: request.journalføresPåFnr,
+        fnr: request.avsenderFnr,
         navn: { fornavn: 'Ukjent', etternavn: '' },
       },
       enhet: enheter.agder,
+      kilde: Kilde.JOURNALPOST,
       journalposter: [request.journalpostId],
     }
     await this.saker.add(sak as unknown as InsertSak)
@@ -532,7 +534,7 @@ export class SakStore extends Dexie {
 
   async opprettSak(journalføring: JournalførJournalpostRequest) {
     const sak = lagBarnebrillesak(journalføring.oppgaveId + journalføring.journalpostId)
-    sak.bruker.fnr = journalføring.journalføresPåFnr
+    sak.bruker.fnr = journalføring.brukerFnr
     sak.journalposter = [journalføring.journalpostId]
     return this.saker.add(sak)
   }

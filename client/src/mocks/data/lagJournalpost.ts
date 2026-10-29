@@ -1,5 +1,11 @@
 import { type OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
-import { type Dokument, type Hendelse, type Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
+import {
+  type Dokument,
+  type Hendelse,
+  type Journalpost,
+  type JournalpostSak,
+  JournalpostStatusType,
+} from '../../types/types.internal.ts'
 import { lagTilfeldigInteger, nåIso } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { HJELPEMIDDEL_JOURNALPOST_IDS as HJELPEMIDDEL_IDS } from './journalpostKonstanter.ts'
@@ -28,33 +34,40 @@ export type InsertHendelse = Omit<LagretHendelse, 'id'>
 interface LagJournalpostOptions {
   behandlingstema?: OppgaveKodeverk
   brukerFnr?: string
+  avsenderFnr?: string
+  kanal?: OppgaveKodeverk
+  sak?: JournalpostSak | null
 }
 
 export function lagJournalpost(
   journalpostId: string,
   tittel: string,
-  { behandlingstema, brukerFnr }: LagJournalpostOptions = {}
+  { behandlingstema, brukerFnr, avsenderFnr, kanal, sak }: LagJournalpostOptions = {}
 ): InsertJournalpost {
-  const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
+  const fnrBruker = brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
+  const fnrInnsender = avsenderFnr ?? fnrBruker
+  const brukerNavn = lagTilfeldigNavn()
   const journalpostOpprettetTid = nåIso()
   const journalposttyper = ['I', 'U', 'N'] as const
   return {
     journalpostId,
     tema: { kode: 'HJE', term: 'Hjelpemidler' },
     ...(behandlingstema ? { behandlingstema } : {}),
-    kanal: { kode: 'SKAN_IM', term: 'Skanning Iron Mountain' },
+    kanal: kanal ?? { kode: 'SKAN_IM', term: 'Skanning Iron Mountain' },
     journalposttype: journalposttyper[lagTilfeldigInteger(0, 2)],
     journalstatus: JournalpostStatusType.MOTTATT,
     journalpostOpprettetTid,
     fnrInnsender,
+    fnrBruker,
+    ...(sak !== undefined ? { sak: sak === null ? null : { ...sak } } : {}),
     tittel: tittel,
     bruker: {
-      fnr: brukerFnr ?? lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
-      navn: lagTilfeldigNavn(),
+      fnr: fnrBruker,
+      navn: brukerNavn,
     },
     innsender: {
       fnr: fnrInnsender,
-      navn: lagTilfeldigNavn(),
+      navn: fnrInnsender === fnrBruker ? brukerNavn : lagTilfeldigNavn(),
     },
   }
 }

@@ -1,6 +1,6 @@
 import { OppgaveKodeverk } from '../oppgave/oppgaveTypes.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
-import type { Bydel, Enhet, HarPersonnavn, Kommune, Personnavn } from './hotlibs.ts'
+import type { Bydel, Enhet, HarPersonnavn, Kilde, Kommune, Personnavn } from './hotlibs.ts'
 
 export interface SakResponse<T extends SakBase> {
   data: T
@@ -35,6 +35,8 @@ export interface SakBase {
   innsender: Innsender
   enhet: Enhet
   vedtak?: VedtakType
+  kilde: Kilde
+  kanal?: Kanal
 }
 
 /**
@@ -53,6 +55,7 @@ export interface Barnebrillesak extends SakBase {
   journalposter: string[]
   utbetalingsmottaker?: Utbetalingsmottaker
   totrinnskontroll?: Totrinnskontroll
+  kilde: 'JOURNALPOST'
 }
 
 export interface Hast {
@@ -373,6 +376,12 @@ export enum FritakFraBegrunnelseÅrsak {
   ER_SELVFORKLARENDE_TILBEHØR = 'ER_SELVFORKLARENDE_TILBEHØR',
 }
 
+export interface JournalpostSak {
+  datoOpprettet: string | null
+  fagsakId: string | null
+  fagsaksystem: string | null
+}
+
 export interface Journalpost {
   journalpostId: string
   journalpostOpprettetTid: string
@@ -381,11 +390,13 @@ export interface Journalpost {
   behandlingstema?: OppgaveKodeverk
   kanal: OppgaveKodeverk
   fnrInnsender: string
+  fnrBruker: string
   journalstatus: JournalpostStatusType
   journalposttype: 'I' | 'U' | 'N'
   dokumenter: Dokument[]
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
+  sak?: JournalpostSak | null
   sakId?: string
 }
 

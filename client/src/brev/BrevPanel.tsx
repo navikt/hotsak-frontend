@@ -53,6 +53,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const aktivDistribusjon = valgtBrev?.distribusjon.find(
     (distribusjon) => distribusjon.skalDistribueres && !distribusjon.distribuert
   )
+  const erDistribuert = valgtBrev?.distribusjon.some((distribusjon) => distribusjon.distribuert) ?? false
   const underveisbrevDistribueresEtter = aktivDistribusjon?.distribueresEtter
   const harAktivDistribusjon = aktivDistribusjon !== undefined
   const distribusjonstidspunkt = underveisbrevDistribueresEtter
@@ -213,15 +214,16 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
                   Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
                 </BrevInfoCard>
               )}
-              {gyldigDistribueresEtter && !valgtBrev.isDistribuert && (
+              {gyldigDistribueresEtter && !erDistribuert && (
                 <BrevInfoCard title="Brev til distribusjon">
                   Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
                   {formaterTidsstempel(gyldigDistribueresEtter)}.
                 </BrevInfoCard>
               )}
-              {gyldigDistribueresEtter && valgtBrev.isDistribuert && (
+              {erDistribuert && valgtBrev.distribusjon[0].distribueresEtter && (
                 <BrevInfoCard title="Brev til distribusjon">
-                  Brevet er distribuert og ble sendt den {formaterTidsstempel(gyldigDistribueresEtter)}.
+                  Brevet er distribuert og ble sendt den{' '}
+                  {formaterTidsstempel(valgtBrev.distribusjon[0].distribueresEtter)}.
                 </BrevInfoCard>
               )}
             </Box>

@@ -28,7 +28,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
   const vedtakFormRef = useRef<VedtakFormHandle>(null)
-  const problemsammendragRef = useRef<HTMLInputElement>(null)
+  const problemsammendragRef = useRef<HTMLTextAreaElement>(null)
   const closePanel = useClosePanel('brevpanel')
   const { personInfo } = usePerson(sak.bruker.fnr)
   const vergemål = personInfo?.vergemål || []

@@ -83,7 +83,7 @@ describe('VedtakForm', () => {
 
     render(<VedtakForm sak={sak} onVedtak={vi.fn()} />)
 
-    const felt = screen.getByRole<HTMLInputElement>('textbox', { name: /Problemsammendrag til OeBS/i })
+    const felt = screen.getByRole<HTMLTextAreaElement>('textbox', { name: /Problemsammendrag til OeBS/i })
     await waitFor(() => expect(felt).toHaveFocus())
     expect(felt.selectionStart).toBe(0)
     expect(felt.selectionEnd).toBe(0)
@@ -94,7 +94,7 @@ describe('VedtakForm', () => {
 
     render(<VedtakForm sak={sak} onVedtak={vi.fn()} />)
 
-    const felt = screen.getByRole<HTMLInputElement>('textbox', { name: /Problemsammendrag til OeBS/i })
+    const felt = screen.getByRole<HTMLTextAreaElement>('textbox', { name: /Problemsammendrag til OeBS/i })
     felt.blur()
     felt.setSelectionRange(5, 5)
     felt.focus()
@@ -117,7 +117,7 @@ describe('VedtakForm', () => {
     laster.current = false
     rerender(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
 
-    const felt = await screen.findByRole<HTMLInputElement>('textbox', { name: /Problemsammendrag til OeBS/i })
+    const felt = await screen.findByRole<HTMLTextAreaElement>('textbox', { name: /Problemsammendrag til OeBS/i })
     await waitFor(() => {
       expect(felt).toHaveValue('Tekst fra serviceforespørsel')
       expect(felt).toHaveFocus()
@@ -128,9 +128,9 @@ describe('VedtakForm', () => {
 
   it('fokuserer problemsammendraget i vedtaksdialogen når svaret allerede er lastet', async () => {
     papirsøknad.current = true
-    const originalFocus = HTMLInputElement.prototype.focus
-    const focus = vi.spyOn(HTMLInputElement.prototype, 'focus').mockImplementation(function (
-      this: HTMLInputElement,
+    const originalFocus = HTMLTextAreaElement.prototype.focus
+    const focus = vi.spyOn(HTMLTextAreaElement.prototype, 'focus').mockImplementation(function (
+      this: HTMLTextAreaElement,
       options
     ) {
       originalFocus.call(this, options)
@@ -142,7 +142,7 @@ describe('VedtakForm', () => {
     try {
       render(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
 
-      const felt = await screen.findByRole<HTMLInputElement>('textbox', { name: /Problemsammendrag til OeBS/i })
+      const felt = await screen.findByRole<HTMLTextAreaElement>('textbox', { name: /Problemsammendrag til OeBS/i })
       await waitFor(() => expect(focus).toHaveBeenCalledWith(expect.objectContaining({ focusVisible: true })))
       expect(felt).toHaveFocus()
       expect(felt.selectionStart).toBe(0)
@@ -207,6 +207,33 @@ describe('VedtakForm', () => {
 
     expect(await screen.findByText('Problemsammendrag må fylles ut')).toBeInTheDocument()
     expect(onVedtak).not.toHaveBeenCalled()
+  })
+
+  it('viser tegn for mye og valideringsfeil uten å kutte teksten når problemsammendraget er for langt', async () => {
+    const onVedtak = vi.fn()
+    const ref = createRef<VedtakFormHandle>()
+    const tekst = 'a'.repeat(225)
+    svar.current = tekst
+    render(<VedtakForm sak={sak} onVedtak={onVedtak} ref={ref} />)
+
+    expect(screen.getAllByText('5 tegn for mye').length).toBeGreaterThan(0)
+    expect(screen.getByRole('textbox', { name: /Problemsammendrag til OeBS/i })).toHaveValue(tekst)
+
+    await act(async () => {
+      await ref.current?.submit()
+    })
+
+    expect(await screen.findByText(/maks 220 tegn/)).toBeInTheDocument()
+    expect(onVedtak).not.toHaveBeenCalled()
+  })
+
+  it('erstatter linjeskift i problemsammendraget med mellomrom', () => {
+    render(<VedtakForm sak={sak} onVedtak={vi.fn()} />)
+
+    const felt = screen.getByRole('textbox', { name: /Problemsammendrag til OeBS/i })
+    fireEvent.change(felt, { target: { value: 'første\nandre' } })
+
+    expect(felt).toHaveValue('første andre')
   })
 
   it('godtar problemsammendrag med innhold ved innsending', async () => {

@@ -15,6 +15,7 @@ import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { useClosePanel } from '../paneler/usePanelHooks'
 import classes from './FattVedtakModalV2.module.css'
 import { useSaksregler } from '../../../saksregler/useSaksregler'
+import { useMiljø } from '../../../utils/useMiljø.ts'
 
 export interface FattVedtakModalV2Props {
   open: boolean
@@ -39,6 +40,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
   const { harVedtaksbrev } = useBrevForSak(sak.sakId)
 
   const { erPapirsøknad } = useSaksregler()
+  const { erProd } = useMiljø()
 
   const fattVedtak = async (data: VedtakFormValues) => {
     setVedtakLoader(true)
@@ -48,6 +50,7 @@ export function FattVedtakModalV2({ open, onClose, sak, vedtaksresultat }: FattV
         problemsammendrag: data.problemsammendrag,
         postbegrunnelse: data.postbegrunnelse,
         utleveringMerknad: data.utleveringMerknad,
+        kontaktopplysninger: erPapirsøknad || erProd ? undefined : data.kontaktopplysninger,
       })
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({

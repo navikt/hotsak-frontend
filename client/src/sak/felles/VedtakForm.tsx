@@ -2,6 +2,8 @@ import { Button, HelpText, HStack, InlineMessage, Loader, Textarea, VStack } fro
 import { forwardRef, type RefObject, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Controller, FormProvider, useWatch } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
+import { MAKS_LENGDE_KONTAKTOPPLYSNINGER } from './kontaktopplysninger.ts'
 import { Sak } from '../../types/types.internal'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
 import { FritekstPanel } from './FritekstPanel'
@@ -222,6 +224,30 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 </VStack>
               )}
               {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
+              {!erPapirsøknad && (
+                <Eksperiment>
+                  <Controller
+                    name="kontaktopplysninger"
+                    control={form.control}
+                    rules={{
+                      validate: (value) =>
+                        (value ?? '').length <= MAKS_LENGDE_KONTAKTOPPLYSNINGER ||
+                        `Kontaktopplysninger kan ikke være lengre enn ${MAKS_LENGDE_KONTAKTOPPLYSNINGER} tegn`,
+                    }}
+                    render={({ field, fieldState }) => (
+                      <Textarea
+                        label="Kontaktopplysninger"
+                        size="small"
+                        minRows={2}
+                        maxLength={MAKS_LENGDE_KONTAKTOPPLYSNINGER}
+                        {...field}
+                        value={field.value ?? ''}
+                        error={fieldState.error?.message}
+                      />
+                    )}
+                  />
+                </Eksperiment>
+              )}
             </VStack>
           )}
           <button type="submit" style={{ display: 'none' }} disabled={isLoading} />

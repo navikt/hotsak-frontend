@@ -2,6 +2,13 @@ import { type Faro } from '@grafana/faro-web-sdk'
 
 declare global {
   interface Window {
+    SKYRA_CONFIG?: {
+      org: string
+      traits?: Record<string, string>
+    }
+    skyra?: {
+      setTraits(traits: Record<string, string>): void
+    }
     msw?: unknown
     appSettings: {
       NAIS_CLUSTER_NAME?: 'local' | 'dev-gcp' | 'prod-gcp' | string

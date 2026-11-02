@@ -44,6 +44,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     )
   }
 
+  // Todo: Denne kan fjernes hvis vi lanserer modal med muklighet til å redigere og sende kontaktinformasjon
   if (harAnnenKontaktperson) {
     beskrivelser.push('Det er en annen kontaktperson enn hjelpemiddelformidler. Denne må registreres.')
   }

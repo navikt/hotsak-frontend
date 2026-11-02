@@ -1,19 +1,23 @@
-import { Button, HelpText, HStack, InlineMessage, Loader, Textarea, TextField, VStack } from '@navikt/ds-react'
+import { Button, HelpText, HStack, InlineMessage, Loader, Textarea, VStack } from '@navikt/ds-react'
 import { forwardRef, type RefObject, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Controller, FormProvider, useWatch } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
+import { MAKS_LENGDE_KONTAKTOPPLYSNINGER } from './kontaktopplysninger.ts'
 import { Sak } from '../../types/types.internal'
 import { VedtaksResultat } from '../v2/behandling/behandlingTyper'
 import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 
+const MAKS_LENGDE_PROBLEMSAMMENDRAG = 220
+
 interface VedtakFormProps {
   sak: Sak
   onVedtak: (data: VedtakFormValues) => void
   postbegrunnelsePåkrevd?: boolean
   vedtaksresultat?: VedtaksResultat
-  problemsammendragRef?: RefObject<HTMLInputElement | null>
+  problemsammendragRef?: RefObject<HTMLTextAreaElement | null>
 }
 
 export interface VedtakFormHandle {
@@ -24,7 +28,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
   ({ onVedtak, postbegrunnelsePåkrevd = true, vedtaksresultat, problemsammendragRef }: VedtakFormProps, ref) => {
     const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
     const harPlassertMarkør = useRef(false)
-    const feltRef = useRef<HTMLInputElement>(null)
+    const feltRef = useRef<HTMLTextAreaElement>(null)
 
     const {
       form,
@@ -62,6 +66,10 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
 
       if (value.trim().startsWith(';')) {
         return 'Problemsammendrag må fylles ut'
+      }
+
+      if (value.trim().length > MAKS_LENGDE_PROBLEMSAMMENDRAG) {
+        return 'Problemsammendraget er for langt. OeBS har en begrensning på maks 220 tegn. Prøv å korte det ned litt.'
       }
 
       if (!sammendragMedLavere) {
@@ -115,7 +123,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                   validate: validerProblemsammendrag,
                 }}
                 render={({ field, fieldState }) => (
-                  <TextField
+                  <Textarea
                     label={
                       <HStack wrap={false} gap="space-8" align="center">
                         <Etikett>Problemsammendrag til OeBS </Etikett>
@@ -129,7 +137,13 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                       </HStack>
                     }
                     size="small"
+                    minRows={1}
+                    maxLength={MAKS_LENGDE_PROBLEMSAMMENDRAG}
                     {...field}
+                    onChange={(event) => field.onChange(event.target.value.replace(/\s*[\r\n]+\s*/g, ' '))}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') event.preventDefault()
+                    }}
                     ref={(element) => {
                       field.ref(element)
                       feltRef.current = element
@@ -210,6 +224,30 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 </VStack>
               )}
               {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
+              {!erPapirsøknad && (
+                <Eksperiment>
+                  <Controller
+                    name="kontaktopplysninger"
+                    control={form.control}
+                    rules={{
+                      validate: (value) =>
+                        (value ?? '').length <= MAKS_LENGDE_KONTAKTOPPLYSNINGER ||
+                        `Kontaktopplysninger kan ikke være lengre enn ${MAKS_LENGDE_KONTAKTOPPLYSNINGER} tegn`,
+                    }}
+                    render={({ field, fieldState }) => (
+                      <Textarea
+                        label="Kontaktopplysninger"
+                        size="small"
+                        minRows={2}
+                        maxLength={MAKS_LENGDE_KONTAKTOPPLYSNINGER}
+                        {...field}
+                        value={field.value ?? ''}
+                        error={fieldState.error?.message}
+                      />
+                    )}
+                  />
+                </Eksperiment>
+              )}
             </VStack>
           )}
           <button type="submit" style={{ display: 'none' }} disabled={isLoading} />

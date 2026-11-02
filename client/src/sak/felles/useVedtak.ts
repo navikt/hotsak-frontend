@@ -3,11 +3,13 @@ import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useServiceforespørsel } from '../../saksbilde/venstremeny/useProblemsammendrag.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { Hjelpemiddel } from '../../types/BehovsmeldingTypes.ts'
+import { utledKontaktopplysninger } from './kontaktopplysninger.ts'
 
 export interface VedtakFormValues {
   problemsammendrag: string
   postbegrunnelse?: string
   utleveringMerknad?: string
+  kontaktopplysninger?: string
 }
 
 export interface UseVedtakReturn {
@@ -38,6 +40,7 @@ export function useVedtak() {
       problemsammendrag: problemsammendrag,
       postbegrunnelse: originalePostbegrunnelser,
       utleveringMerknad: utleveringsmerknad,
+      kontaktopplysninger: utledKontaktopplysninger(behovsmelding.behovsmelding?.levering),
     },
   })
 

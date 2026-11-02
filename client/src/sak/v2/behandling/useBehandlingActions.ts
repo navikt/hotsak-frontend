@@ -87,15 +87,17 @@ export function useBehandlingActions() {
       problemsammendrag,
       postbegrunnelse,
       utleveringMerknad,
+      kontaktopplysninger,
     }: {
       problemsammendrag?: string
       postbegrunnelse?: string
       utleveringMerknad?: string
+      kontaktopplysninger?: string
     }) {
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
-          { problemsammendrag, postbegrunnelse, utleveringMerknad },
+          { problemsammendrag, postbegrunnelse, utleveringMerknad, kontaktopplysninger },
           { versjon }
         )
         await Promise.all([mutateBehandling(), mutateOppgaveOgSak(), mutateBrevForSak(sakId!), mutateNotater(sakId!)])

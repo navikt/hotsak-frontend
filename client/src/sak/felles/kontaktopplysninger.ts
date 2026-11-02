@@ -7,22 +7,19 @@ export function utledKontaktopplysninger(levering?: Levering): string {
   if (!levering) return ''
   const formidlerNavn = formaterNavn(levering.hjelpemiddelformidler?.navn)
   const formidlerTelefon = levering.hjelpemiddelformidler?.telefon
-  const annen = levering.annenKontaktperson
+  const annenKontaktperson = levering.annenKontaktperson
 
   switch (levering.utleveringKontaktperson) {
     case Kontaktperson.HJELPEMIDDELBRUKER: {
-      const kontaktTekst = annen?.telefon
-        ? `Kontakt ved levering: Bruker, tlf: ${annen.telefon}`
+      const kontaktTekst = annenKontaktperson?.telefon
+        ? `Kontakt ved levering: Bruker, tlf: ${annenKontaktperson.telefon}`
         : 'Kontakt bruker ved levering.'
       return `Innsender: ${formidlerNavn}, tlf: ${formidlerTelefon}.\n${kontaktTekst}`
     }
     case Kontaktperson.HJELPEMIDDELFORMIDLER:
-      return annen ? `Innsender: ${formaterNavn(annen.navn)}, tlf: ${annen.telefon}` : formidlerNavn
+      return `Innsender: ${formidlerNavn}, tlf: ${formidlerTelefon}`
     case Kontaktperson.ANNEN_KONTAKTPERSON:
-      return annen
-        ? `Innsender: ${formidlerNavn}, tlf: ${formidlerTelefon}.\nKontakt ved levering: ${formaterNavn(annen.navn)}, tlf: ${annen.telefon}`
-        : formidlerNavn
-    default:
-      return formidlerNavn
+      return `Innsender: ${formidlerNavn}, tlf: ${formidlerTelefon}.\nKontakt ved levering: ${formaterNavn(annenKontaktperson?.navn)}, tlf: ${annenKontaktperson?.telefon}`
   }
+  return ''
 }

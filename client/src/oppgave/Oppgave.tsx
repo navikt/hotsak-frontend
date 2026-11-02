@@ -9,12 +9,15 @@ import { isJournalføringsoppgave, isSaksbehandlingsoppgave, type Oppgave } from
 import { useOppgave } from './useOppgave.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavehendelser } from './useOppgavehendelser.ts'
+import { useSkyraOppgavetype } from './useSkyraOppgavetype.ts'
 
 const Saksbilde = lazy(() => import('../saksbilde/Saksbilde.tsx'))
 
 function OppgaveContent() {
   const { oppgave } = useOppgave()
   const { merkSomLest } = useOppgaveActions(oppgave)
+
+  useSkyraOppgavetype(oppgave.kategorisering.oppgavetype)
 
   useEffect(() => {
     if (oppgave) {

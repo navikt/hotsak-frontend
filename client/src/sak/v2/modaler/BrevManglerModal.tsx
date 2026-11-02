@@ -20,7 +20,7 @@ export function BrevManglerModal({
 }: BrevManglerModalProps) {
   return (
     <InfoModal
-      heading={`${gjenstående.includes(Gjenstående.BREV_MANGLER) ? 'Mangler brev' : 'Underveisbrev må sendes eller slettes'}`}
+      heading={`${gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT) ? 'Underveisbrev må sendes eller slettes' : 'Mangler brev'}`}
       open={open}
       width="500px"
       onClose={onClose}

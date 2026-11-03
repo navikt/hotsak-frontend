@@ -81,7 +81,7 @@ function NotatTekst(props: { notat: Notat }) {
           plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
         />
       </MardownEditorPreviewStyling>
-      {isClamped && (
+      {(isClamped || visFulltNotat) && (
         <div>
           <Button
             variant="tertiary"

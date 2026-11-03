@@ -11,23 +11,23 @@ const useNotater = vi.fn()
 const useKommentarer = vi.fn()
 let sakId: string | undefined = 'sak-1'
 
-vi.mock('../../../saksbilde/useSak', () => ({
+vi.mock('../../saksbilde/useSak', () => ({
   useSak: () => ({ sak: sakId ? { data: { sakId } } : undefined }),
 }))
 
-vi.mock('../../notat/useNotater', () => ({
+vi.mock('../notat/useNotater', () => ({
   useNotater: () => useNotater(),
 }))
 
-vi.mock('../../../oppgave/kommentar/useOppgavekommentarer', () => ({
+vi.mock('../../oppgave/kommentar/useOppgavekommentarer', () => ({
   useOppgavekommentarerForSak: () => useKommentarer(),
 }))
 
-vi.mock('../../notat/NotaterIcon', () => ({
+vi.mock('../notat/NotaterIcon', () => ({
   NotaterIcon: () => null,
 }))
 
-vi.mock('../../notat/UtlånsoversiktIcon', () => ({
+vi.mock('../notat/UtlånsoversiktIcon', () => ({
   UtlånsoversiktIcon: () => null,
 }))
 

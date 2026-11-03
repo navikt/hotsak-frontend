@@ -25,18 +25,18 @@ const dokument: Saksdokument = {
   logiskeVedlegg: [],
 }
 
-vi.mock('../../../saksbilde/useJournalposter', () => ({
+vi.mock('../../saksbilde/useJournalposter.ts', () => ({
   useJournalposterInngående: () => ({ dokumenter: [dokument] }),
 }))
 
-vi.mock('../../../dokument/DokumentContext.tsx', () => ({
+vi.mock('../../dokument/DokumentContext.tsx', () => ({
   useDokumentContext: () => ({
     valgtDokument: { journalpostId: '', dokumentId: '' },
     setValgtDokument,
   }),
 }))
 
-vi.mock('../../../saksregler/useSaksregler.ts', () => ({
+vi.mock('../../saksregler/useSaksregler.ts', () => ({
   // erPapirsøknad: true holder dokumentkortet åpent som default, se skalDokumentkortVæreÅpent.
   useSaksregler: () => ({ erPapirsøknad: true }),
 }))

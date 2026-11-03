@@ -6,7 +6,7 @@ import {
   type OppdaterNotatRequest,
   type OpprettNotatRequest,
 } from '../../sak/notat/notatTyper'
-import { Gjenstående, GjenståendeOverfør } from '../../sak/v2/behandling/behandlingTyper'
+import { Gjenstående, GjenståendeOverfør } from '../../sak/behandling/behandlingTyper'
 import { type StoreHandlersFactory } from '../data'
 import { lastDokument } from '../data/felles'
 import { type SakParams } from './params'

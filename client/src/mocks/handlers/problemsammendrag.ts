@@ -3,7 +3,7 @@ import { delay, http, HttpResponse } from 'msw'
 import type { StoreHandlersFactory } from '../data'
 import { respondNotFound } from './response'
 import { Sakstype } from '../../types/types.internal'
-import { Behandlingsutfall, VedtaksResultat } from '../../sak/v2/behandling/behandlingTyper'
+import { Behandlingsutfall, VedtaksResultat } from '../../sak/behandling/behandlingTyper'
 
 interface ProblemsammendragParams {
   sakId: string

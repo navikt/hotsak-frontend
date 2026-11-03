@@ -1,0 +1,73 @@
+import { useState } from 'react'
+
+import { LocalAlert, VStack } from '@navikt/ds-react'
+import { Tekst } from '../../felleskomponenter/typografi'
+import { type ISvar } from '../../innsikt/Besvarelse'
+import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog'
+import { useSakId } from '../../saksbilde/useSak'
+import { useSakActions } from '../../saksbilde/useSakActions'
+import { isNotatTypeJournalført } from '../notat/notatSelectors'
+import { useNotater } from '../notat/useNotater'
+import { useBehandling } from '../behandling/useBehandling'
+
+export interface OverførTilGosysModalProps {
+  open: boolean
+  onClose(): void
+}
+
+const OVERFØRING_ÅRSAK: ISvar = {
+  type: 'fritekst',
+  spørsmål: 'Hvorfor overføres saken til Gosys?',
+  sti: [],
+  svar: 'Søknaden er sendt inn på feil bruker, eller inneholder dokumenter som gjelder andre brukere',
+}
+
+export function OverførTilGosysModal({ open, onClose }: OverførTilGosysModalProps) {
+  const sakId = useSakId()
+  const { notater } = useNotater(sakId)
+  const { overførSakTilGosys, state } = useSakActions()
+  const { mutate: mutateBehandling } = useBehandling()
+  const [loading, setLoading] = useState(false)
+
+  async function onBekreft() {
+    setLoading(true)
+    try {
+      await overførSakTilGosys([OVERFØRING_ÅRSAK])
+      await mutateBehandling()
+      onClose()
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <BekreftelsesDialog
+      heading="Vil du overføre saken til Gosys?"
+      loading={loading || state.loading}
+      open={open}
+      bekreftButtonLabel="Overfør til Gosys"
+      onBekreft={onBekreft}
+      onClose={onClose}
+    >
+      {notater.ferdigstilte.length > 0 && (
+        <VStack gap="space-12">
+          {notater.ferdigstilte.find(isNotatTypeJournalført) && (
+            <LocalAlert status="warning" size="small">
+              <LocalAlert.Header>
+                <LocalAlert.Title>Saken har forvaltningsnotat - kontakt DigiHoT for hjelp</LocalAlert.Title>
+              </LocalAlert.Header>
+              <LocalAlert.Content>
+                <Tekst>
+                  Denne saken har et eller flere forvaltningsnotater knyttet til seg. Når saken overføres til Gosys vil
+                  disse notatene bli feilregistrert og miste knytning til den nye saken. Hvis dere har behov for å
+                  knytte disse notatene til den nye saken i Gosys, ta kontakt med DigiHoT på teamskanalen "DigiHoT -
+                  innspill, spørsmål og info", så hjelper vi dere.
+                </Tekst>
+              </LocalAlert.Content>
+            </LocalAlert>
+          )}
+        </VStack>
+      )}
+    </BekreftelsesDialog>
+  )
+}

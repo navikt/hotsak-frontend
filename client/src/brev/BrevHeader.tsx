@@ -7,6 +7,7 @@ import { isVedtaksbrev } from './brevSelectors.ts'
 import { type Brev, BrevmalTekst, type BrevmottakerResponse } from './brevTyper.ts'
 import { DelKopiMedFormidler } from './DelKopiMedFormidler.tsx'
 import { useBrevmottakere } from './useBrev.ts'
+import { Strek } from '../felleskomponenter/Strek.tsx'
 
 export interface BrevHeaderProps {
   brev: Brev[]
@@ -61,7 +62,7 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
                     </Button>
                   )}
                   {flereMottakere && (
-                    <Tag variant="warning" size="small">
+                    <Tag variant="moderate" data-color="warning" size="small">
                       Flere mottakere
                     </Tag>
                   )}
@@ -80,6 +81,7 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
           kanRedigere={kanRedigere}
         />
       )}
+      <Strek style={{ marginBlock: 0 }} />
     </Box>
   )
 }

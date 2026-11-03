@@ -5,7 +5,7 @@ import useSWRMutation from 'swr/mutation'
 import { useToast } from '../../felleskomponenter/toast/useToast'
 import { http, type HttpAccept, type HttpAcceptKey } from '../../io/HttpClient'
 import { type HttpError } from '../../io/HttpError'
-import { useMutateBehandling } from '../v2/behandling/useBehandling'
+import { useMutateBehandling } from '../behandling/useBehandling'
 import {
   type FeilregistrerNotatRequest,
   type FerdigstillNotatRequest,

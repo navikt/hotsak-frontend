@@ -5,9 +5,9 @@ import { useOppgaveUrl } from '../../oppgave/useOppgaveUrl.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
-import { Gjenstående, isBehandlingsutfallVedtak, VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
-import { useBehandling } from '../v2/behandling/useBehandling.ts'
-import { useBehandlingActions } from '../v2/behandling/useBehandlingActions.ts'
+import { Gjenstående, isBehandlingsutfallVedtak, VedtaksResultat } from '../behandling/behandlingTyper.ts'
+import { useBehandling } from '../behandling/useBehandling.ts'
+import { useBehandlingActions } from '../behandling/useBehandlingActions.ts'
 
 export function useSakHotkeys({
   onAnnetResultat,

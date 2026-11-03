@@ -1,0 +1,191 @@
+import { PencilIcon } from '@navikt/aksel-icons'
+import { Box, Button, HStack, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
+import { Produktbilde } from '../../../felleskomponenter/bilde/Produktbilde'
+import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard'
+import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
+import { EndreTilbehørModal } from '../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreTilbehørModal'
+import { useEndreHjelpemiddel } from '../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel'
+import { Opplysninger } from '../../../saksbilde/hjelpemidler/Opplysninger'
+import { Varsler } from '../../../saksbilde/hjelpemidler/Varsel'
+import { useSaksregler } from '../../../saksregler/useSaksregler'
+import { Tilbehør as Tilbehørtype } from '../../../types/BehovsmeldingTypes'
+import { Produkt as Produkttype } from '../../../types/types.internal'
+import { AntallTag } from '../../AntallTag'
+import { ResponsiveStack } from '../../../felleskomponenter/ResponsiveStack'
+import classes from './Tilbehørsliste.module.css'
+import { Produkt } from '../Produkt'
+import { EndretTilbehørBegrunnelse } from './EndretTilbehørBegrunnelse'
+
+export function FrittStåendeTilbehør({
+  sakId,
+  tilbehør,
+  produkter,
+}: {
+  sakId: string
+  tilbehør: Tilbehørtype[]
+  produkter: Produkttype[]
+}) {
+  const { kanEndreHjelpemiddel } = useSaksregler()
+  return (
+    <VStack gap="space-16">
+      <CompactExpandableCard tittel={'Tilbehør uten hovedhjelpemiddel'}>
+        <Box className={classes.tilbehørListe} paddingInline="space-12">
+          {tilbehør.map((t) => {
+            const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
+            return (
+              <Tilbehør
+                key={t.hmsArtNr}
+                tilbehør={t}
+                sakId={sakId}
+                produkt={produkt}
+                frittståendeTilbehør={true}
+                kanEndreHmsnr={kanEndreHjelpemiddel}
+              />
+            )
+          })}
+        </Box>
+      </CompactExpandableCard>
+    </VStack>
+  )
+}
+
+export function Tilbehørliste({
+  sakId,
+  tilbehør,
+  produkter,
+}: {
+  sakId: string
+  tilbehør: Tilbehørtype[]
+  produkter: Produkttype[]
+}) {
+  const { kanEndreHjelpemiddel } = useSaksregler()
+
+  return (
+    <VStack gap="space-2" className={classes.tilbehørListe}>
+      {tilbehør.map((t, idx) => {
+        const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
+        return <Tilbehør key={idx} sakId={sakId} tilbehør={t} produkt={produkt} kanEndreHmsnr={kanEndreHjelpemiddel} />
+      })}
+    </VStack>
+  )
+}
+
+function Tilbehør({
+  sakId,
+  tilbehør,
+  produkt,
+  frittståendeTilbehør = false,
+  kanEndreHmsnr,
+}: {
+  sakId: string
+  tilbehør: Tilbehørtype
+  produkt?: Produkttype
+  frittståendeTilbehør?: boolean
+  kanEndreHmsnr: boolean
+}) {
+  const harOpplysninger = tilbehør.opplysninger && tilbehør.opplysninger.length > 0
+  const harSaksbehandlingvarsel = tilbehør.saksbehandlingvarsel && tilbehør.saksbehandlingvarsel.length > 0
+  const [visAlternativerModal, setVisAlternativerModal] = useState(false)
+  const {
+    endreHjelpemiddel,
+    nåværendeHmsnr,
+    endretHjelpemiddelProdukt,
+    endretHjelpemiddel: endretHjelpemiddelResponse,
+  } = useEndreHjelpemiddel(sakId, {
+    id: tilbehør.tilbehørId!,
+    hmsArtNr: tilbehør.hmsArtNr || '',
+    navn: tilbehør.navn || '',
+  })
+  const endretTilbehør = endretHjelpemiddelResponse?.endretArtikkel
+  const harEndretTilbehør = endretTilbehør && tilbehør.hmsArtNr !== endretHjelpemiddelResponse.hmsArtNr
+
+  return (
+    <Box paddingBlock="space-8">
+      <ResponsiveStack>
+        <VStack gap="space-4">
+          {harEndretTilbehør && (
+            <Produkt
+              hmsnr={endretHjelpemiddelResponse.hmsArtNr}
+              navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
+              showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
+            />
+          )}
+          <HStack gap="space-12">
+            <Produkt
+              hmsnr={tilbehør.hmsArtNr || '-'}
+              navn={tilbehør.navn || '-'}
+              gjennomstrek={endretTilbehør !== undefined}
+            />
+          </HStack>
+          <HStack paddingBlock={'space-8 space-0'}>
+            <div>
+              <AntallTag antall={tilbehør.antall} />
+            </div>
+            {kanEndreHmsnr && (
+              <div>
+                <Button
+                  variant="tertiary"
+                  size="xsmall"
+                  icon={<PencilIcon aria-hidden />}
+                  onClick={() => {
+                    setVisAlternativerModal(true)
+                  }}
+                >
+                  Endre
+                </Button>
+              </div>
+            )}
+          </HStack>
+          {harEndretTilbehør && (
+            <Box paddingInline="space-16 space-0">
+              <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
+              <EndretTilbehørBegrunnelse endretTilbehør={endretTilbehør} />
+            </Box>
+          )}
+          {harSaksbehandlingvarsel && (
+            <Box>
+              <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
+            </Box>
+          )}
+          {harOpplysninger && (
+            <Box>
+              <Opplysninger opplysninger={tilbehør.opplysninger!} />
+            </Box>
+          )}
+          {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
+        </VStack>
+        {produkt && <Produktbilde src={produkt?.produktbildeUri} alt={tilbehør.navn} size="small" />}
+      </ResponsiveStack>
+      <EndreTilbehørModal
+        åpen={visAlternativerModal}
+        tilbehør={tilbehør}
+        grunndataProdukt={produkt}
+        nåværendeHmsnr={nåværendeHmsnr}
+        onLagre={endreHjelpemiddel}
+        onLukk={() => setVisAlternativerModal(false)}
+      />
+    </Box>
+  )
+}
+
+function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
+  return (
+    <>
+      {tilbehør.begrunnelse && (
+        <TextContainer>
+          <HStack gap="space-4" align="center">
+            <Etikett>Begrunnelse:</Etikett>
+            <BrytbarBrødtekst>{tilbehør.begrunnelse}</BrytbarBrødtekst>
+          </HStack>
+        </TextContainer>
+      )}
+
+      {tilbehør.fritakFraBegrunnelseÅrsak && (
+        <TextContainer>
+          <Tekst>Begrunnelse ikke påkrevd for dette tilbehøret.</Tekst>
+        </TextContainer>
+      )}
+    </>
+  )
+}

@@ -8,7 +8,7 @@ import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal'
 import { type SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 import { isNotatTypeInternt, isNotatTypeJournalført } from '../sak/notat/notatSelectors'
 import { useNotater } from '../sak/notat/useNotater'
-import { useBehandling } from '../sak/v2/behandling/useBehandling'
+import { useBehandling } from '../sak/behandling/useBehandling'
 import { useSakId } from './useSak'
 
 export interface OverførSakTilGosysModalProps {

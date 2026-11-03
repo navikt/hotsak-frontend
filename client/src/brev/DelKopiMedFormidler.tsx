@@ -73,7 +73,7 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
           <HStack gap="space-2">
             <Tekst weight="semibold">Del kopi med formidler</Tekst>
             <HelpText title="Vurder å dele kopi med formidler">
-              {digitalBehovsmelding ? (
+              {!digitalBehovsmelding ? (
                 <p>
                   Hvis du deler en kopi av brevet med formidler, vil en kopi av brevet distribueres til formidleren. Du
                   må selv vurdere om formidler skal motta en kopi av brevet.
@@ -124,6 +124,7 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
               <BrevadresseSkjema
                 initiellAdresse={formidlerSomMottaker?.adresse ?? initiellAdresse}
                 formidlerNavn={formidlerSomMottaker?.navn ?? formidlerNavn}
+                erEksisterendeMottaker={!!formidlerSomMottaker}
                 isLoading={leggTilBrevmottaker.isMutating || endreBrevmottaker.isMutating}
                 feilmelding={feilmelding}
                 onLagre={handleLagre}

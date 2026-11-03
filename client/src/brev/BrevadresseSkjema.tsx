@@ -6,6 +6,7 @@ import { type Veiadresse } from '../types/hotlibs.ts'
 interface BrevadresseSkjemaProps {
   initiellAdresse?: Veiadresse
   formidlerNavn?: string
+  erEksisterendeMottaker: boolean
   isLoading: boolean
   feilmelding?: string
   onLagre(adresse: Veiadresse, formidlerNavn: string): void
@@ -18,6 +19,7 @@ type Feil = Partial<Record<'formidlerNavn' | 'adresselinje1' | 'postnummer' | 'p
 export function BrevadresseSkjema({
   initiellAdresse,
   formidlerNavn: initialFormidlerNavn,
+  erEksisterendeMottaker,
   isLoading,
   feilmelding,
   onLagre,
@@ -27,7 +29,7 @@ export function BrevadresseSkjema({
   const [formidlerNavn, setFormidlerNavn] = useState(initialFormidlerNavn ?? '')
   const [adresselinje1, setAdresselinje1] = useState(initiellAdresse?.adresselinje1 ?? '')
   const [adresselinje2, setAdresselinje2] = useState(
-    initiellAdresse?.adresselinje2 ? (initiellAdresse.adresselinje2 ?? '') : formidlerNavn ? `v/ ${formidlerNavn}` : ''
+    initiellAdresse?.adresselinje2 || (!erEksisterendeMottaker && formidlerNavn ? `v/ ${formidlerNavn}` : '')
   )
   const [adresselinje3, setAdresselinje3] = useState(initiellAdresse?.adresselinje3 ?? '')
   const [postnummer, setPostnummer] = useState(initiellAdresse?.postnummer ?? '')

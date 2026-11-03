@@ -235,14 +235,17 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
               )}
               {gyldigDistribueresEtter && !erDistribuert && (
                 <BrevInfoCard title="Brev til distribusjon">
-                  Brevet ligger til distribusjon, og vil sendes automatisk den{' '}
+                  Brevet ligger til distribusjon, og distribusjonen vil starte den{' '}
                   {formaterTidsstempel(gyldigDistribueresEtter)}.
                 </BrevInfoCard>
               )}
-              {erDistribuert && valgtBrev.distribusjon[0].distribueresEtter && (
-                <BrevInfoCard title="Brev til distribusjon">
+              {erDistribuert && (
+                <BrevInfoCard title="Brev er distribuert">
                   Brevet er distribuert og ble sendt den{' '}
-                  {formaterTidsstempel(valgtBrev.distribusjon[0].distribueresEtter)}.
+                  {formaterTidsstempel(
+                    valgtBrev.distribusjon.find((distribusjon) => distribusjon.distribuert)?.distribuert
+                  )}
+                  .
                 </BrevInfoCard>
               )}
             </Box>

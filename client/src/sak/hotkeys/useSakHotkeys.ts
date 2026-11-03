@@ -46,7 +46,10 @@ export function useSakHotkeys({
       const oppdatert = await mutateBehandling()
       const gjenstående = oppdatert?.behandlinger[0]?.gjenstående || []
 
-      if (gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)) {
+      if (
+        gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) ||
+        gjenstående.includes(Gjenstående.BREV_MANGLER || gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT))
+      ) {
         onBrevMangler()
       } else if (gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)) {
         onNotatIkkeFerdigstilt()

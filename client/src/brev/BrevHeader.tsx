@@ -3,11 +3,14 @@ import { Box, Button, Heading, HStack, Tabs, Tag, VStack } from '@navikt/ds-reac
 import { type ReactNode, useState } from 'react'
 import { useMiljø } from '../utils/useMiljø.ts'
 
+import { Strek } from '../felleskomponenter/Strek.tsx'
+import { Etikett, Tekst } from '../felleskomponenter/typografi.tsx'
+import { usePerson, UsePersonResponse } from '../personoversikt/usePerson.ts'
+import { formaterNavn, storForbokstavIOrd } from '../utils/formater.ts'
 import { isVedtaksbrev } from './brevSelectors.ts'
 import { type Brev, BrevmalTekst, type BrevmottakerResponse } from './brevTyper.ts'
 import { DelKopiMedFormidler } from './DelKopiMedFormidler.tsx'
 import { useBrevmottakere } from './useBrev.ts'
-import { Strek } from '../felleskomponenter/Strek.tsx'
 
 export interface BrevHeaderProps {
   brev: Brev[]
@@ -24,6 +27,8 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
   const erVedtaksbrevValgt = brev.some((b) => b.brevId === valgtBrevId && isVedtaksbrev(b))
   const flereMottakere = (data?.brevmottakere?.length ?? 0) > 1
   const erUtkastValgt = brev.some((b) => b.brevId === valgtBrevId && b.brevstatus === 'UTKAST')
+  const brukerMottaker = data && data.brevmottakere?.find((m) => m.mottakertype === 'BRUKER')
+  const brukerPersonInfo = usePerson(brukerMottaker?.fnr)
 
   return (
     <Box borderRadius="12" marginBlock="space-0 space-4">
@@ -77,8 +82,10 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
         <BrevHeaderInnstillinger
           key={valgtBrevId}
           valgtBrevId={valgtBrevId}
-          mottakere={erVedtaksbrevValgt ? data : undefined}
+          mottakere={data}
           kanRedigere={kanRedigere}
+          brukerPersonInfo={brukerPersonInfo}
+          vedtaksbrev={erVedtaksbrevValgt}
         />
       )}
       <Strek style={{ marginBlock: 0 }} />
@@ -90,16 +97,51 @@ interface BrevHeaderInnstillingerProps {
   valgtBrevId?: string
   mottakere?: BrevmottakerResponse
   kanRedigere: boolean
+  vedtaksbrev: boolean
+  brukerPersonInfo?: UsePersonResponse
 }
 
-export function BrevHeaderInnstillinger({ valgtBrevId, mottakere, kanRedigere }: BrevHeaderInnstillingerProps) {
+export function BrevHeaderInnstillinger({
+  valgtBrevId,
+  mottakere,
+  kanRedigere,
+  vedtaksbrev,
+  brukerPersonInfo,
+}: BrevHeaderInnstillingerProps) {
+  const vergemål = brukerPersonInfo?.personInfo?.vergemål || []
+  const vergeNavn = vergemål
+    .map((it) => it.navn)
+    .filter((navn): navn is NonNullable<typeof navn> => !!navn)
+    .map((navn) => formaterNavn(navn))
+    .join(', ')
+
   return (
     <Box padding="space-20">
       <VStack gap="space-8">
         <Heading level="2" size="xsmall">
           Innstillinger for brevet
         </Heading>
-        {mottakere && <DelKopiMedFormidler brevId={valgtBrevId} mottakere={mottakere} kanRedigere={kanRedigere} />}
+        {vedtaksbrev && mottakere && (
+          <DelKopiMedFormidler brevId={valgtBrevId} mottakere={mottakere} kanRedigere={kanRedigere} />
+        )}
+        <Heading level="3" size="xsmall">
+          Mottakere
+        </Heading>
+        {mottakere &&
+          mottakere.brevmottakere.map((mottaker) => (
+            <VStack key={mottaker.id}>
+              <Etikett>{storForbokstavIOrd(mottaker.mottakertype)}</Etikett>
+              <Tekst>
+                {(mottaker.navn ??
+                  (mottaker.mottakertype == 'BRUKER'
+                    ? formaterNavn(brukerPersonInfo?.personInfo?.navn)
+                    : mottaker.mottakertype == 'VERGE'
+                      ? vergeNavn
+                      : '-')) ||
+                  '-'}
+              </Tekst>
+            </VStack>
+          ))}
       </VStack>
     </Box>
   )

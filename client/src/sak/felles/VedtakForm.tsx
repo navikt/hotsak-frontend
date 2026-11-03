@@ -3,14 +3,16 @@ import { forwardRef, type RefObject, useEffect, useImperativeHandle, useRef, use
 import { Controller, FormProvider, useWatch } from 'react-hook-form'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
-import { MAKS_LENGDE_KONTAKTOPPLYSNINGER } from './kontaktopplysninger.ts'
+import {
+  MAKS_LENGDE_KONTAKTOPPLYSNINGER,
+  MAKS_LENGDE_POSTBEGRUNNELSE,
+  MAKS_LENGDE_PROBLEMSAMMENDRAG,
+} from './oebsMaksLengder.ts'
 import { Sak } from '../../types/types.internal'
 import { VedtaksResultat } from '../behandling/behandlingTyper.ts'
 import { FritekstPanel } from './FritekstPanel'
 import { useVedtak, VedtakFormValues } from './useVedtak'
 import { useSaksregler } from '../../saksregler/useSaksregler'
-
-const MAKS_LENGDE_PROBLEMSAMMENDRAG = 220
 
 interface VedtakFormProps {
   sak: Sak
@@ -94,6 +96,9 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
       if (!value.trim().startsWith('POST ')) {
         return 'Begrunnelsen må starte med "POST"'
       }
+      if (value.length > MAKS_LENGDE_POSTBEGRUNNELSE) {
+        return `Begrunnelsen er for lang. Maks ${MAKS_LENGDE_POSTBEGRUNNELSE} tegn, inkludert linjeskift. Du må korte den ned.`
+      }
       return true
     }
 
@@ -173,6 +178,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                     }
                     description="Se over begrunnelsen og fjern sensitive opplysninger"
                     size="small"
+                    maxLength={MAKS_LENGDE_POSTBEGRUNNELSE}
                     error={form.formState.errors.postbegrunnelse?.message}
                     {...form.register('postbegrunnelse', {
                       validate: (value) => {
@@ -223,7 +229,6 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                   </HStack>
                 </VStack>
               )}
-              {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
               {!erPapirsøknad && (
                 <Eksperiment>
                   <Controller
@@ -248,6 +253,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                   />
                 </Eksperiment>
               )}
+              {utleveringsmerknad && vedtaksresultat === VedtaksResultat.INNVILGET && <FritekstPanel />}
             </VStack>
           )}
           <button type="submit" style={{ display: 'none' }} disabled={isLoading} />

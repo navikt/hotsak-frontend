@@ -1,8 +1,7 @@
 import { Box, Button, Heading, HStack, InlineMessage, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-
-const MAX_LENGDE_BESKJED = 150
+import { MAKS_LENGDE_NOTAT_5_17 } from './oebsMaksLengder'
 
 export function FritekstPanel() {
   const { control, clearErrors } = useFormContext()
@@ -35,14 +34,14 @@ export function FritekstPanel() {
                 size="small"
                 {...field}
                 value={field.value ?? ''}
-                maxLength={MAX_LENGDE_BESKJED}
+                maxLength={MAKS_LENGDE_NOTAT_5_17}
                 readOnly={harLagretBeskjed}
                 error={
                   fieldState.error?.message ||
-                  (beskjedlengdeError && `Kort ned beskjeden slik at den er under ${MAX_LENGDE_BESKJED} tegn.`)
+                  (beskjedlengdeError && `Kort ned beskjeden slik at den er under ${MAKS_LENGDE_NOTAT_5_17} tegn.`)
                 }
                 onChange={(e) => {
-                  if (beskjedlengdeError && e.target.value.length <= MAX_LENGDE_BESKJED) {
+                  if (beskjedlengdeError && e.target.value.length <= MAKS_LENGDE_NOTAT_5_17) {
                     setBeskjedlengdeError(false)
                   }
                   field.onChange(e)
@@ -72,7 +71,7 @@ export function FritekstPanel() {
                     variant="secondary"
                     size="small"
                     onClick={() => {
-                      if ((field.value ?? '').length > MAX_LENGDE_BESKJED) {
+                      if ((field.value ?? '').length > MAKS_LENGDE_NOTAT_5_17) {
                         setBeskjedlengdeError(true)
                         return
                       }

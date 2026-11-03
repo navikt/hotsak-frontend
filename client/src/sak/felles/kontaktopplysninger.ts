@@ -1,8 +1,6 @@
 import { Kontaktperson, type Levering } from '../../types/BehovsmeldingTypes.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 
-export const MAKS_LENGDE_KONTAKTOPPLYSNINGER = 150
-
 export function utledKontaktopplysninger(levering?: Levering): string {
   if (!levering) return ''
   const formidlerNavn = formaterNavn(levering.hjelpemiddelformidler?.navn)

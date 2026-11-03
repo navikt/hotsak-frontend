@@ -51,6 +51,24 @@ test.describe('Notater', () => {
     await expect(page.getByRole('button', { name: /Opprett forvaltningsnotat/i })).toBeVisible()
   })
 
+  test('viser «Vis mer» på langt notat uten at vinduet endrer størrelse', async ({ page }) => {
+    await åpneSak(page)
+    const form = await opprettNotatutkast(page)
+    await form.getByRole('textbox', { name: /editable markdown/i }).fill('Et langt notat. '.repeat(200))
+    await expect(page.getByTestId('utkast-lagret')).toBeVisible({ timeout: 5_000 })
+
+    await form.getByRole('radio', { name: /Interne saksopplysninger/i }).check()
+    await form.getByRole('button', { name: /Journalfør notat/i }).click()
+
+    const notat = page.getByTestId('notat-card').filter({ hasText: 'Tittel på notat' }).first()
+    await expect(notat.getByRole('button', { name: 'Vis mer' })).toBeVisible({ timeout: 5_000 })
+
+    await notat.getByRole('button', { name: 'Vis mer' }).click()
+    await expect(notat.getByRole('button', { name: 'Vis mindre' })).toBeVisible()
+    await notat.getByRole('button', { name: 'Vis mindre' }).click()
+    await expect(notat.getByRole('button', { name: 'Vis mer' })).toBeVisible()
+  })
+
   test('kan ikke ferdigstille saken med notatutkast', async ({ page }) => {
     await åpneSak(page)
     const form = await opprettNotatutkast(page)

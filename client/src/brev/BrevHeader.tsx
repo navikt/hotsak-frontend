@@ -23,7 +23,7 @@ export interface BrevHeaderProps {
 export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false, handlinger }: BrevHeaderProps) {
   const { erIkkeProd } = useMiljø()
   const [innstillingerÅpen, setInnstillingerÅpen] = useState(false)
-  const { data } = useBrevmottakere(valgtBrevId)
+  const { data } = useBrevmottakere(brev.find((b) => b.brevId === valgtBrevId)?.brevId)
   const erVedtaksbrevValgt = brev.some((b) => b.brevId === valgtBrevId && isVedtaksbrev(b))
   const flereMottakere = (data?.brevmottakere?.length ?? 0) > 1
   const erUtkastValgt = brev.some((b) => b.brevId === valgtBrevId && b.brevstatus === 'UTKAST')

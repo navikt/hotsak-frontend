@@ -10,45 +10,75 @@ export interface Endringsstatus {
 
 export function useLagreBrev(onLagreBrev?: (state: BreveditorState, serienummer: number) => Promise<void>) {
   const debounceLagring = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const ventendeLagring = useRef<{ state: BreveditorState; serienummer: number } | undefined>(undefined)
+  const pågåendeLagring = useRef<Promise<void> | undefined>(undefined)
+  const erMontert = useRef(true)
   const [endringsstatus, setEndringsstatus] = useState<Endringsstatus>({
     lagrerNå: false,
     erEndret: false,
   })
 
   useEffect(() => {
-    return () => clearTimeout(debounceLagring.current)
+    erMontert.current = true
+    return () => {
+      erMontert.current = false
+      clearTimeout(debounceLagring.current)
+    }
   }, [])
 
-  const lagreMedDebounceOgRetry = (constructedState: BreveditorState, serienummer: number) => {
-    if (onLagreBrev) {
-      setEndringsstatus((prev) => ({ ...prev, erEndret: true })) // Behold evt. error men sett erEndret=true.
-      clearTimeout(debounceLagring.current) // Kanseller pågående timere, enten de var startet på enste linjer eller i retry nedenfor
-      debounceLagring.current = setTimeout(async () => {
-        setEndringsstatus({ erEndret: true, lagrerNå: true, error: undefined }) // Vis at vi forsøker å lagre
-        await onLagreBrev(constructedState, serienummer)
-          .catch((e) => {
-            if (e?.status === 409) {
-              return
-            }
-            setEndringsstatus({ erEndret: true, lagrerNå: false, error: e.toString() }) // Vis at vi feilet
-            if (e?.status === 403) {
-              return
-            }
-            debounceLagring.current = setTimeout(
-              () => lagreMedDebounceOgRetry(constructedState, serienummer), // Try, try again...
-              2000
-            )
-            throw e // Hopp over then blokken under
-          })
-          .then(() => {
-            setEndringsstatus({ erEndret: false, lagrerNå: false, error: undefined })
-          })
-          .catch(() => {
-            /* Ignorer exception... */
-          })
-      }, 500)
+  async function flushLagring(): Promise<void> {
+    clearTimeout(debounceLagring.current)
+    while (pågåendeLagring.current || ventendeLagring.current) {
+      if (pågåendeLagring.current) {
+        await pågåendeLagring.current
+        continue
+      }
+      const lagring = ventendeLagring.current
+      if (!lagring || !onLagreBrev) return
+      ventendeLagring.current = undefined
+      setEndringsstatus({ erEndret: true, lagrerNå: true, error: undefined })
+      const forespørsel = Promise.resolve()
+        .then(() => onLagreBrev(lagring.state, lagring.serienummer))
+        .catch((error) => {
+          if (error?.status === 409) return
+          throw error
+        })
+      pågåendeLagring.current = forespørsel
+      try {
+        await forespørsel
+      } catch (error) {
+        ventendeLagring.current ??= lagring
+        if (erMontert.current) {
+          setEndringsstatus({ erEndret: true, lagrerNå: false, error: String(error) })
+          const httpStatus = (error as { status?: number } | undefined)?.status
+          if (httpStatus !== 403) {
+            planleggLagring(2000)
+          }
+        }
+        throw error
+      } finally {
+        pågåendeLagring.current = undefined
+      }
+    }
+    clearTimeout(debounceLagring.current)
+    if (erMontert.current) {
+      setEndringsstatus({ erEndret: false, lagrerNå: false, error: undefined })
     }
   }
 
-  return { endringsstatus, lagreMedDebounceOgRetry }
+  function planleggLagring(forsinkelse: number) {
+    clearTimeout(debounceLagring.current)
+    debounceLagring.current = setTimeout(() => {
+      void flushLagring().catch(() => undefined)
+    }, forsinkelse)
+  }
+
+  function lagreMedDebounceOgRetry(constructedState: BreveditorState, serienummer: number) {
+    if (!onLagreBrev) return
+    ventendeLagring.current = { state: constructedState, serienummer }
+    setEndringsstatus((prev) => ({ ...prev, erEndret: true }))
+    planleggLagring(500)
+  }
+
+  return { endringsstatus, lagreMedDebounceOgRetry, flushLagring }
 }

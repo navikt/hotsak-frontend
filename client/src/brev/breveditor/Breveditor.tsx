@@ -71,7 +71,7 @@ export function Breveditor(props: BreveditorProps) {
     placeholder,
     spesiellePlaceholderVerdier,
   } = props
-  const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
+  const { datoSoknadMottatt, hjelpemidlerSøktOm, flushLagringRef } = useBrevContext()
 
   const spesielleVerdier: PlaceholderSpesielleVerdier = {
     auto_dato_soknad_mottatt: datoSoknadMottatt
@@ -157,7 +157,16 @@ export function Breveditor(props: BreveditorProps) {
   }, [])
 
   const { widthScale, heightScale, widthRef, heightRef } = useEditorScale(visMarger)
-  const { endringsstatus, lagreMedDebounceOgRetry } = useLagreBrev(onLagreBrev)
+  const { endringsstatus, lagreMedDebounceOgRetry, flushLagring } = useLagreBrev(onLagreBrev)
+  useEffect(() => {
+    if (!flushLagringRef) return
+    flushLagringRef.current = flushLagring
+    return () => {
+      if (flushLagringRef.current === flushLagring) {
+        flushLagringRef.current = undefined
+      }
+    }
+  }, [flushLagringRef, flushLagring])
   const { personInfo } = usePerson(metadata.brukersFødselsnummer)
   const vergemål = personInfo?.vergemål || []
   const harVerge = vergemål.length > 0

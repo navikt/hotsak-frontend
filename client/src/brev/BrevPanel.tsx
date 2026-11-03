@@ -1,6 +1,7 @@
 import { Box, Button, InfoCard } from '@navikt/ds-react'
-import { type ReactNode, Suspense, useEffect, useState } from 'react'
+import { type ReactNode, Suspense, useEffect, useRef, useState } from 'react'
 
+import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
@@ -41,6 +42,9 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
   const [nå, setNå] = useState(Date.now)
+  const flushLagringRef = useRef<(() => Promise<void>) | undefined>(undefined)
+  const bytterBrevRef = useRef(false)
+  const { showErrorToast } = useToast()
 
   const aktivtBrevId = valgtBrevId === undefined ? initialBrevId : (valgtBrevId ?? undefined)
   const valgtBrev = brev.find((brev) => brev.brevId === aktivtBrevId)
@@ -98,10 +102,19 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
     return () => window.clearTimeout(timeoutId)
   }, [underveisbrevDistribueresEtter])
 
-  const handleVelgBrev = (brevId: string) => {
-    setPlaceholderFeil([])
-    setSynligKryssKnapp(false)
-    setValgtBrevId(brevId)
+  const handleVelgBrev = async (brevId: string) => {
+    if (bytterBrevRef.current || brevId === aktivtBrevId) return
+    bytterBrevRef.current = true
+    try {
+      await flushLagringRef.current?.()
+      setPlaceholderFeil([])
+      setSynligKryssKnapp(false)
+      setValgtBrevId(brevId)
+    } catch {
+      showErrorToast('Kunne ikke lagre brevet. Prøv å bytte fane igjen.')
+    } finally {
+      bytterBrevRef.current = false
+    }
   }
 
   const handleFerdigstill = async () => {
@@ -167,6 +180,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         setSynligKryssKnapp,
         datoSoknadMottatt: sak?.data.søknadMottatt,
         hjelpemidlerSøktOm: hjelpemidlerSøktOm(sak?.data.søknadGjelder),
+        flushLagringRef,
       }}
     >
       <div className={classes.panel}>

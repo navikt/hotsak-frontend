@@ -202,7 +202,12 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         {valgtBrev && kanRedigere && oppgave && (
           <Box className={classes.container} background="default">
             <Suspense>
-              <BrevRedigering oppgave={oppgave} behandling={gjeldendeBehandling} brevId={valgtBrev.brevId} />
+              <BrevRedigering
+                key={valgtBrev.brevId}
+                oppgave={oppgave}
+                behandling={gjeldendeBehandling}
+                brevId={valgtBrev.brevId}
+              />
             </Suspense>
           </Box>
         )}

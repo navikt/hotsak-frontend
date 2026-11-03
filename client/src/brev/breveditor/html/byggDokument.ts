@@ -1,9 +1,9 @@
 import { Value } from 'platejs'
+import { formaterNavn } from '../../../utils/formater.ts'
 import { Brevmottaker, Målform } from '../../brevTyper.ts'
 import { Metadata } from '../Breveditor'
 import versjonertStilarkV1 from '../versjonerte-brev-stilark/v1.less?raw'
 import { serialiserTilHtml } from './serialiserTilHtml'
-import { formaterNavn } from '../../../utils/formater.ts'
 
 export const GJELDENDE_STILARK_VERSJON = 'v1' as const
 
@@ -34,6 +34,7 @@ const MÅLFORMTEKSTER = {
     av: 'av',
     medVennligHilsen: 'Med vennlig hilsen',
     tittel: 'Vedtaksbrev fra Nav',
+    kopiTilHjelpemiddelformidler: 'Kopi til kommunal hjelpemiddelformidler',
   },
   [Målform.NYNORSK]: {
     lang: 'nn',
@@ -46,6 +47,7 @@ const MÅLFORMTEKSTER = {
     av: 'av',
     medVennligHilsen: 'Med venleg helsing',
     tittel: 'Vedtaksbrev frå Nav',
+    kopiTilHjelpemiddelformidler: 'Kopi til kommunal hjelpemiddelformidlar',
   },
 } as const satisfies Record<Målform, Record<string, string>>
 
@@ -53,10 +55,20 @@ export function hentMålformTekster(målform?: Målform) {
   return MÅLFORMTEKSTER[målform ?? Målform.BOKMÅL]
 }
 
-export function byggHeaderHtml(metadata: Metadata, vergeNavn?: string, målform?: Målform): string {
+export function byggHeaderHtml(
+  metadata: Metadata,
+  vergeNavn?: string,
+  formidlerMedKopi?: Brevmottaker,
+  målform?: Målform
+): string {
   const målformTekster = hentMålformTekster(målform)
+  const formidlerNavn = formaterNavn(formidlerMedKopi?.navn)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
   return (
-    `<header class="header">` +
+    `<header class="header${formidlerMedKopi ? ' med-formidlerkopi' : ''}">` +
     NAV_LOGO_SVG +
     `<div class="header-row">
         <dl>
@@ -65,6 +77,7 @@ export function byggHeaderHtml(metadata: Metadata, vergeNavn?: string, målform?
           <dd>${metadata.brukersNavn}</dd>
           <dt>${målformTekster.fødselsnummer}:</dt>
           <dd>${metadata.brukersFødselsnummer}</dd>
+          ${formidlerMedKopi ? `<dt>${målformTekster.kopiTilHjelpemiddelformidler}:</dt><dd>${formidlerNavn}</dd>` : ''}
           <dt>${målformTekster.saksnummer}:</dt>
           <dd>${metadata.saksnummer}</dd>
         </dl>
@@ -74,10 +87,9 @@ export function byggHeaderHtml(metadata: Metadata, vergeNavn?: string, målform?
   )
 }
 
-export function byggFooterHtml(metadata: Metadata, målform?: Målform, formidlerMedKopi?: Brevmottaker): string {
+export function byggFooterHtml(metadata: Metadata, målform?: Målform): string {
   const målformTekster = hentMålformTekster(målform)
   return `<footer>
-        ${formidlerMedKopi ? `Kopi til hjelpemiddelformidler: ${formaterNavn(formidlerMedKopi.navn)}<br /><br />` : ''} 
         ${målformTekster.medVennligHilsen} <br />
         ${metadata.saksbehandlerNavn}
         ${metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />
@@ -122,11 +134,11 @@ export function byggFullHtml(
           <style>${stilark}</style>
         </head>
         <body>` +
-    byggHeaderHtml(metadata, vergeNavn, målform) +
+    byggHeaderHtml(metadata, vergeNavn, formidlerMedKopi, målform) +
     `<main>` +
     (serialiserTilHtml(nyVerdi) || '') +
     `</main>` +
-    byggFooterHtml(metadata, målform, formidlerMedKopi) +
+    byggFooterHtml(metadata, målform) +
     `</body>
     </html>`
   )

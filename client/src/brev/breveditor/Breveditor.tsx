@@ -263,7 +263,7 @@ export function Breveditor(props: BreveditorProps) {
                 <div style={{ scale: widthScale }} className="scaled-width">
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
-                      <div className="header">
+                      <div className={`header${formidlerMedKopi ? ' med-formidlerkopi' : ''}`}>
                         <div className="header-row">
                           <dl>
                             {harVerge && (
@@ -276,6 +276,12 @@ export function Breveditor(props: BreveditorProps) {
                             <dd>{metadata.brukersNavn}</dd>
                             <dt>{målformTekster.fødselsnummer}:</dt>
                             <dd>{metadata.brukersFødselsnummer}</dd>
+                            {formidlerMedKopi && (
+                              <>
+                                <dt>{målformTekster.kopiTilHjelpemiddelformidler}:</dt>
+                                <dd>{formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi.navn ?? '')}</dd>
+                              </>
+                            )}
                             <dt>{målformTekster.saksnummer}:</dt>
                             <dd>{metadata.saksnummer}</dd>
                           </dl>
@@ -302,13 +308,6 @@ export function Breveditor(props: BreveditorProps) {
                         />
                       </PlateContainer>
                       <p>
-                        {formidlerMedKopi && (
-                          <>
-                            {`Kopi til hjelpemiddelformidler: ${formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi.navn ?? '')}`}
-                            <br />
-                            <br />
-                          </>
-                        )}
                         {målformTekster.medVennligHilsen} <br />
                         {metadata.saksbehandlerNavn}
                         {metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />

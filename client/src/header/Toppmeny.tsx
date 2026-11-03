@@ -48,7 +48,7 @@ export function Toppmeny() {
     <>
       <InternalHeader className={classes.root}>
         <InternalHeader.Title as="a" href="/" className={classes.title}>
-          Hotsak 1.5
+          Hotsak
         </InternalHeader.Title>
         <HStack justify="space-between" wrap={false} className={classes.navFlex}>
           <nav aria-label="Hovedmeny" className={classes.nav}>

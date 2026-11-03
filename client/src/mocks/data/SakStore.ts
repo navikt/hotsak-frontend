@@ -25,7 +25,7 @@ import {
   type LagreBehandlingRequest,
   UtfallLåst,
   VedtaksResultat,
-} from '../../sak/v2/behandling/behandlingTyper.ts'
+} from '../../sak/behandling/behandlingTyper.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Kilde } from '../../types/hotlibs.ts'
 import {

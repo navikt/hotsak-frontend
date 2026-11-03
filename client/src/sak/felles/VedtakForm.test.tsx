@@ -6,8 +6,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { Kilde } from '../../types/hotlibs.ts'
 import { type Sak, Saksstatus, SaksstatusKategori, Sakstype } from '../../types/types.internal.ts'
-import { VedtaksResultat } from '../v2/behandling/behandlingTyper.ts'
-import { FattVedtakModalV2 } from '../v2/modaler/FattVedtakModalV2.tsx'
+import { VedtaksResultat } from '../behandling/behandlingTyper.ts'
+import { FattVedtakModal } from '../modaler/FattVedtakModal.tsx'
 import { type VedtakFormHandle, VedtakForm } from './VedtakForm.tsx'
 
 const { papirsøknad, laster, svar } = vi.hoisted(() => ({
@@ -44,11 +44,11 @@ vi.mock('../../felleskomponenter/toast/useToast.ts', () => ({
   useToast: () => ({ showSuccessToast: vi.fn() }),
 }))
 
-vi.mock('../v2/behandling/useBehandlingActions.ts', () => ({
+vi.mock('../behandling/useBehandlingActions.ts', () => ({
   useBehandlingActions: () => ({ ferdigstillBehandling: vi.fn() }),
 }))
 
-vi.mock('../v2/paneler/usePanelHooks.ts', () => ({
+vi.mock('../paneler/usePanelHooks.ts', () => ({
   useClosePanel: () => vi.fn(),
 }))
 
@@ -108,14 +108,14 @@ describe('VedtakForm', () => {
     laster.current = true
     svar.current = undefined
     const { rerender } = render(
-      <FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />
+      <FattVedtakModal open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />
     )
 
     expect(screen.queryByRole('textbox', { name: /Problemsammendrag til OeBS/i })).not.toBeInTheDocument()
 
     svar.current = 'Tekst fra serviceforespørsel'
     laster.current = false
-    rerender(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
+    rerender(<FattVedtakModal open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
 
     const felt = await screen.findByRole<HTMLTextAreaElement>('textbox', { name: /Problemsammendrag til OeBS/i })
     await waitFor(() => {
@@ -140,7 +140,7 @@ describe('VedtakForm', () => {
     })
 
     try {
-      render(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
+      render(<FattVedtakModal open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
 
       const felt = await screen.findByRole<HTMLTextAreaElement>('textbox', { name: /Problemsammendrag til OeBS/i })
       await waitFor(() => expect(focus).toHaveBeenCalledWith(expect.objectContaining({ focusVisible: true })))
@@ -153,14 +153,14 @@ describe('VedtakForm', () => {
   })
 
   it('beholder fokus på Innvilg-knappen i vedtaksdialogen for digitale søknader', async () => {
-    render(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
+    render(<FattVedtakModal open sak={sak} vedtaksresultat={VedtaksResultat.INNVILGET} onClose={vi.fn()} />)
 
     await waitFor(() => expect(screen.getByRole('button', { name: 'Innvilg' })).toHaveFocus())
   })
 
   it('beholder fokus på Avslå-knappen når en papirsøknad avslås', async () => {
     papirsøknad.current = true
-    render(<FattVedtakModalV2 open sak={sak} vedtaksresultat={VedtaksResultat.AVSLÅTT} onClose={vi.fn()} />)
+    render(<FattVedtakModal open sak={sak} vedtaksresultat={VedtaksResultat.AVSLÅTT} onClose={vi.fn()} />)
 
     await waitFor(() => expect(screen.getByRole('button', { name: 'Avslå' })).toHaveFocus())
   })

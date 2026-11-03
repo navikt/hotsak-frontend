@@ -4,7 +4,7 @@ import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { http, type HttpAcceptKey } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { SaksbehandlingsoppgaveBase } from '../oppgave/oppgaveTypes.ts'
-import { useMutateBehandling } from '../sak/v2/behandling/useBehandling.ts'
+import { useMutateBehandling } from '../sak/behandling/useBehandling.ts'
 import {
   type Brev,
   type Brevdata,

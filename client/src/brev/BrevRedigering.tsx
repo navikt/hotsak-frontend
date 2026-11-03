@@ -10,8 +10,8 @@ import {
   isBehandlingsutfallHenleggelse,
   isBehandlingsutfallVedtak,
   VedtaksResultat,
-} from '../sak/v2/behandling/behandlingTyper.ts'
-import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
+} from '../sak/behandling/behandlingTyper.ts'
+import { useClosePanel } from '../sak/paneler/usePanelHooks.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less' // todo -> hvorfor less?

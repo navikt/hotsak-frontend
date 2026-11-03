@@ -38,14 +38,14 @@ export async function åpneJournalføringsoppgave(page: Page) {
 }
 
 /**
- * Wait for the SakV2 behandlingspanel to be visible.
+ * Wait for the Sak behandlingspanel to be visible.
  */
 export async function ventPåSaksbilde(page: Page) {
   await page.getByRole('combobox', { name: /resultat/i }).waitFor({ state: 'visible', timeout: 15_000 })
 }
 
 /**
- * Set the behandlingsresultat (vedtaksresultat) in SakV2.
+ * Set the behandlingsresultat (vedtaksresultat) in Sak.
  */
 export async function settBehandlingsresultat(page: Page, resultat: 'Innvilget' | 'Delvis innvilget' | 'Avslått') {
   const lagret = page.waitForResponse((r) => {
@@ -110,7 +110,7 @@ export async function fyllPlaceholder(page: Page, placeholderNavn: RegExp, tekst
 }
 
 /**
- * Pick an oppgave, open it, and wait for the SakV2 behandlingspanel to load.
+ * Pick an oppgave, open it, and wait for the Sak behandlingspanel to load.
  */
 export async function åpneSak(page: Page) {
   await plukkOppgave(page, 'Behandle sak')

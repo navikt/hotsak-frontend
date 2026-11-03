@@ -9,7 +9,7 @@ import {
   isBehandlingsutfallBestilling,
   LagreBehandlingRequest,
   VedtaksResultat,
-} from '../../sak/v2/behandling/behandlingTyper.ts'
+} from '../../sak/behandling/behandlingTyper.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 import { Saksstatus, TilgangResultat, TilgangType } from '../../types/types.internal'
 import { associateBy } from '../../utils/array.ts'

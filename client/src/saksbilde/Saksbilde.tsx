@@ -6,10 +6,10 @@ import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson'
-import { Behandlingsutfall, isBehandlingsutfallOverføring } from '../sak/v2/behandling/behandlingTyper.ts'
-import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
-import { SakbrukerinnstillingerProvider } from '../sak/v2/SakbrukerinnstillingerProvider'
-import { SakProvider } from '../sak/v2/SakProvider'
+import { Behandlingsutfall, isBehandlingsutfallOverføring } from '../sak/behandling/behandlingTyper.ts'
+import { useBehandling } from '../sak/behandling/useBehandling.ts'
+import { SakbrukerinnstillingerProvider } from '../sak/SakbrukerinnstillingerProvider.tsx'
+import { SakProvider } from '../sak/SakProvider.tsx'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { Saksstatus, type SakBase } from '../types/types.internal'
 import { OverførtGosysVisning } from './OverførtGosysVisning'
@@ -20,7 +20,7 @@ import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 
 const Barnebrillesaksbilde = lazy(() => import('./barnebriller/Barnebrillesaksbilde'))
-const SakV2 = lazy(() => import('../sak/v2/SakV2'))
+const Sak = lazy(() => import('../sak/Sak.tsx'))
 
 const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }) => {
   const { sak, isLoading: isSakLoading, error: sakError } = useSak()
@@ -70,7 +70,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
       <SakProvider sakstype={sakData.sakstype}>
         <SakbrukerinnstillingerProvider>
           <DokumentProvider>
-            <SakV2 oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
+            <Sak oppgave={oppgave} sak={sakData} behovsmelding={behovsmelding} />
           </DokumentProvider>
         </SakbrukerinnstillingerProvider>
       </SakProvider>

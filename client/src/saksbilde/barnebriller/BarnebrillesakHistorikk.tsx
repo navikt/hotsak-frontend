@@ -3,7 +3,7 @@ import { List, VStack } from '@navikt/ds-react'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { HistorikkHendelse } from '../høyrekolonne/historikk/HistorikkHendelse'
 import { useSakshistorikk } from '../høyrekolonne/historikk/useSakshistorikk'
-import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel'
+import { SidebarPanel } from '../../sak/sidebars/SidebarPanel'
 
 export function BarnebrillesakHistorikk() {
   const { hendelser, error, isLoading } = useSakshistorikk()

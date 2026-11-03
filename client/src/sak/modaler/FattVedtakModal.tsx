@@ -1,0 +1,168 @@
+import { InfoCard, VStack } from '@navikt/ds-react'
+import { useRef, useState } from 'react'
+
+import { useBrevForSak } from '../../brev/useBrev.ts'
+import { useToast } from '../../felleskomponenter/toast/useToast.ts'
+import { Tekst } from '../../felleskomponenter/typografi.tsx'
+import { usePerson } from '../../personoversikt/usePerson.ts'
+import { BekreftelsesDialog } from '../../saksbilde/komponenter/BekreftelsesDialog.tsx'
+import { Sak } from '../../types/types.internal.ts'
+import { assertNever } from '../../utils/type.ts'
+import { VedtakFormValues } from '../felles/useVedtak.ts'
+import { VedtakForm, VedtakFormHandle } from '../felles/VedtakForm.tsx'
+import { VedtaksResultat } from '../behandling/behandlingTyper.ts'
+import { useBehandlingActions } from '../behandling/useBehandlingActions.ts'
+import { useClosePanel } from '../paneler/usePanelHooks.ts'
+import classes from './FattVedtakModal.module.css'
+import { useSaksregler } from '../../saksregler/useSaksregler.ts'
+import { useMiljø } from '../../utils/useMiljø.ts'
+
+export interface FattVedtakModalProps {
+  open: boolean
+  onClose(): void
+  sak: Sak
+  vedtaksresultat: VedtaksResultat
+}
+
+export function FattVedtakModal({ open, onClose, sak, vedtaksresultat }: FattVedtakModalProps) {
+  const [vedtakLoader, setVedtakLoader] = useState(false)
+  const { ferdigstillBehandling } = useBehandlingActions()
+  const { showSuccessToast } = useToast()
+  const vedtakFormRef = useRef<VedtakFormHandle>(null)
+  const problemsammendragRef = useRef<HTMLTextAreaElement>(null)
+  const closePanel = useClosePanel('brevpanel')
+  const { personInfo } = usePerson(sak.bruker.fnr)
+  const vergemål = personInfo?.vergemål || []
+
+  const erAvslag = vedtaksresultat === VedtaksResultat.AVSLÅTT
+  const erDelvisInnvilget = vedtaksresultat === VedtaksResultat.DELVIS_INNVILGET
+  const erInnvilget = vedtaksresultat === VedtaksResultat.INNVILGET
+  const { harVedtaksbrev } = useBrevForSak(sak.sakId)
+
+  const { erPapirsøknad } = useSaksregler()
+  const { erProd } = useMiljø()
+
+  const fattVedtak = async (data: VedtakFormValues) => {
+    setVedtakLoader(true)
+
+    if (erInnvilget) {
+      await ferdigstillBehandling({
+        problemsammendrag: data.problemsammendrag,
+        postbegrunnelse: data.postbegrunnelse,
+        utleveringMerknad: data.utleveringMerknad,
+        kontaktopplysninger: erPapirsøknad || erProd ? undefined : data.kontaktopplysninger,
+      })
+    } else if (erDelvisInnvilget) {
+      await ferdigstillBehandling({
+        problemsammendrag: data.problemsammendrag,
+      })
+    }
+    if (erInnvilget) {
+      // lukker brevpanelet hvis det er åpent og det ikke finnes et brev og det innvilges
+      if (!harVedtaksbrev) closePanel()
+    }
+    setVedtakLoader(false)
+    showSuccessToast('Vedtak fattet')
+    onClose()
+  }
+
+  const fattAvslagsvedtak = async () => {
+    setVedtakLoader(true)
+    await ferdigstillBehandling({})
+
+    setVedtakLoader(false)
+    showSuccessToast('Vedtak fattet')
+    onClose()
+  }
+
+  const vedtakTekst = (() => {
+    switch (vedtaksresultat) {
+      case VedtaksResultat.INNVILGET:
+        return { verb: 'innvilge', knapp: 'Innvilg' }
+      case VedtaksResultat.DELVIS_INNVILGET:
+        return { verb: 'delvis innvilge', knapp: 'Delvis innvilg' }
+      case VedtaksResultat.AVSLÅTT:
+        return { verb: 'avslå', knapp: 'Avslå' }
+      default:
+        return assertNever(vedtaksresultat)
+    }
+  })()
+
+  return (
+    <BekreftelsesDialog
+      heading={`Vil du ${vedtakTekst?.verb} søknaden?`}
+      loading={vedtakLoader}
+      open={open}
+      width="700px"
+      buttonSize="medium"
+      bekreftButtonLabel={`${vedtakTekst?.knapp}${harVedtaksbrev ? ' og send brev' : ''}`}
+      initialFocusTo={erPapirsøknad && !erAvslag ? problemsammendragRef : undefined}
+      onInitialFocus={() => {
+        if (erPapirsøknad && !erAvslag) problemsammendragRef.current?.setSelectionRange(0, 0)
+      }}
+      onBekreft={() => {
+        if (erAvslag) {
+          fattAvslagsvedtak()
+        } else {
+          vedtakFormRef.current?.submit()
+        }
+      }}
+      onClose={onClose}
+    >
+      {(erInnvilget || erDelvisInnvilget) && (
+        <VStack gap="space-16">
+          {erDelvisInnvilget && (
+            <InfoCard data-color="warning" size="small">
+              <InfoCard.Header>
+                <InfoCard.Title>Du må legge til hjelpemidlene manuelt i OeBS</InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                <Tekst>
+                  Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespørselen i OeBS før du
+                  oppretter ordre.
+                </Tekst>
+              </InfoCard.Content>
+            </InfoCard>
+          )}
+          {harVedtaksbrev && (
+            <InfoCard data-color="info" size="small">
+              <InfoCard.Header>
+                <InfoCard.Title>
+                  Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}
+                </InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                <Tekst>Brevet vil bli sendt ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.</Tekst>
+              </InfoCard.Content>
+            </InfoCard>
+          )}
+          <Tekst spacing>
+            {`Når du går videre blir det opprettet en serviceforespørsel (SF) i OeBS.
+            ${!harVedtaksbrev ? ' Innbygger får varsel om vedtaksresultatet neste virkedag.' : ''}`}
+          </Tekst>
+
+          {(erInnvilget || erDelvisInnvilget) && (
+            <VedtakForm
+              sak={sak}
+              ref={vedtakFormRef}
+              problemsammendragRef={problemsammendragRef}
+              onVedtak={fattVedtak}
+              postbegrunnelsePåkrevd={erInnvilget}
+              vedtaksresultat={vedtaksresultat}
+            />
+          )}
+        </VStack>
+      )}
+      {erAvslag && (
+        <VStack gap="space-16">
+          <InfoCard size="small" className={classes.alertSpacing}>
+            <InfoCard.Content>
+              Du er i ferd med å sende ut et brev til bruker{vergemål.length > 0 ? ' og verge' : ''}. Brevet vil bli
+              sendt ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.
+            </InfoCard.Content>
+          </InfoCard>
+        </VStack>
+      )}
+    </BekreftelsesDialog>
+  )
+}

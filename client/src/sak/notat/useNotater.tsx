@@ -4,7 +4,7 @@ import useSWRMutation from 'swr/mutation'
 
 import { http, HttpAcceptKey } from '../../io/HttpClient.ts'
 import { type HttpError } from '../../io/HttpError.ts'
-import { useMutateBehandling } from '../v2/behandling/useBehandling.ts'
+import { useMutateBehandling } from '../behandling/useBehandling.ts'
 import { isAvventerJournalføring, isNotatFerdigstilt, isNotatUtkast } from './notatSelectors.ts'
 import { OpprettNotatRequest, type Notat, type Saksnotater } from './notatTyper.ts'
 

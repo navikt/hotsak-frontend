@@ -4,7 +4,7 @@ import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { Brevkode } from '../../../types/types.internal'
 import { useSortering } from '../../../utils/useSortering.ts'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
-import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
+import { SidebarPanel } from '../../../sak/sidebars/SidebarPanel.tsx'
 import { BrevKort } from './BrevKort'
 import { sorterKronologiskStigende } from '../../../utils/dato.ts'
 

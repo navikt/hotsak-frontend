@@ -1,6 +1,6 @@
 import { List, VStack } from '@navikt/ds-react'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
-import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
+import { SidebarPanel } from '../../../sak/sidebars/SidebarPanel.tsx'
 import { HistorikkHendelse } from './HistorikkHendelse'
 import { useSakshistorikk } from './useSakshistorikk.ts'
 

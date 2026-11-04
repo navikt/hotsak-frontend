@@ -9,7 +9,7 @@ import { type BrevmalInitialisering } from './breveditor/breveditorTyper.ts'
 import { GJELDENDE_STILARK_VERSJON } from './breveditor/html/byggDokument.ts'
 import {
   type Brev,
-  type BreveditorbrevUtenVedtak,
+  BreveditorbrevUtenVedtak,
   Brevmal,
   BrevmalTekst,
   BrevmalTekstBeskrivelse,
@@ -20,18 +20,17 @@ import { useBrevActions } from './useBrevActions.ts'
 
 interface NyttBrevProps {
   oppgave: Saksbehandlingsoppgave
-  tilgjengeligeBrevmaler: readonly BreveditorbrevUtenVedtak[]
   onOpprettet: (brev: Brev) => void
 }
 
-export function NyttBrev({ oppgave, tilgjengeligeBrevmaler, onOpprettet }: NyttBrevProps) {
+export function NyttBrev({ oppgave, onOpprettet }: NyttBrevProps) {
   const [valgtBrevmal, setValgtBrevmal] = useState<BreveditorbrevUtenVedtak>()
   const [antallUker, setAntallUker] = useState(4)
   const { opprettBrevutkast } = useBrevActions<BrevmalInitialisering>(oppgave)
   const [målform, setMålform] = useState<Målform>(Målform.BOKMÅL)
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
-  const kanOppretteBrev =
-    !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt && tilgjengeligeBrevmaler.length > 0
+  const kanOppretteBrev = !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt
+  const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     if (!valgtBrevmal) return

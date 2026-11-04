@@ -1,4 +1,4 @@
-import { Box, Button, InfoCard } from '@navikt/ds-react'
+import { Box, Button, InfoCard, VStack } from '@navikt/ds-react'
 import { type ReactNode, Suspense, useEffect, useRef, useState } from 'react'
 
 import { useToast } from '../felleskomponenter/toast/useToast.ts'
@@ -17,7 +17,7 @@ import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { BrevHeader } from './BrevHeader.tsx'
 import classes from './BrevPanel.module.css'
 import { BrevRedigering } from './BrevRedigering.tsx'
-import { type Brev, BreveditorbrevUtenVedtak, Brevmal, Brevstatus, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
+import { type Brev, Brevmal, Brevstatus, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
 import { NyttBrev } from './NyttBrev.tsx'
 import { SendBrevDialog } from './SendBrevDialog.tsx'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
@@ -50,9 +50,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const valgtBrev = brev.find((brev) => brev.brevId === aktivtBrevId)
   const { brev: brevMedData } = useBrev<BreveditorBrevdata>(valgtBrev?.brevId)
   const { ferdigstillBrevutkast, redigerBrevutkast, slettBrevutkast } = useBrevActions(oppgave, valgtBrev?.brevId)
-
-  const eksisterendeBrevmaler = new Set(brev.map((brev) => brev.brevmal))
-  const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter((brevmal) => !eksisterendeBrevmaler.has(brevmal))
 
   const aktivDistribusjon = valgtBrev?.distribusjon.find(
     (distribusjon) => distribusjon.skalDistribueres && !distribusjon.distribuert
@@ -148,11 +145,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
           Angre sending
         </Button>
       )}
-      {kanRedigere && !valgtBrev.ferdigstilt && (
-        <Button variant="tertiary" size="small" onClick={() => setSlettBrevModalOpen(true)}>
-          Slett utkast
-        </Button>
-      )}
       {kanRedigere && valgtBrev.ferdigstilt && (
         <Button variant="tertiary" size="small" loading={redigerBrevutkast.isMutating} onClick={handleRediger}>
           Rediger
@@ -191,6 +183,9 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
             onVelgBrev={handleVelgBrev}
             kanRedigere={kanRedigere}
             handlinger={handlinger}
+            onSlettUtkast={
+              kanRedigere && valgtBrev && !valgtBrev.ferdigstilt ? () => setSlettBrevModalOpen(true) : undefined
+            }
           />
         </div>
         {!valgtBrev && valgtBrevId != 'nytt-utkast' && (
@@ -205,7 +200,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
             {oppgave && (
               <NyttBrev
                 oppgave={oppgave}
-                tilgjengeligeBrevmaler={tilgjengeligeBrevmaler}
                 onOpprettet={(opprettetBrev) => {
                   handleVelgBrev(opprettetBrev.brevId)
                 }}
@@ -228,31 +222,33 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         {valgtBrev && !(kanRedigere && oppgave) && (
           <div className={classes.innhold}>
             <Box paddingInline="space-20" paddingBlock="space-0 space-20">
-              {oppgaveErAvsluttet && (
-                <BrevInfoCard title="Oppgaven er ferdigstilt">
-                  Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
-                </BrevInfoCard>
-              )}
-              {gyldigDistribueresEtter && !erDistribuert && (
-                <BrevInfoCard title="Brev til distribusjon">
-                  Brevet ligger til distribusjon, og distribusjonen vil starte den{' '}
-                  {formaterTidsstempel(gyldigDistribueresEtter)}.
-                </BrevInfoCard>
-              )}
-              {erDistribuert && (
-                <BrevInfoCard title="Brev er distribuert">
-                  Brevet er distribuert og ble sendt den{' '}
-                  {formaterTidsstempel(
-                    valgtBrev.distribusjon.find((distribusjon) => distribusjon.distribuert)?.distribuert
-                  )}
-                  .
-                </BrevInfoCard>
-              )}
+              <VStack gap="space-4">
+                {oppgaveErAvsluttet && (
+                  <BrevInfoCard title="Oppgaven er ferdigstilt">
+                    Denne oppgaven er ferdigstilt. Du kan ikke lenger redigere brevet.
+                  </BrevInfoCard>
+                )}
+                {gyldigDistribueresEtter && !erDistribuert && (
+                  <BrevInfoCard title="Brev til distribusjon">
+                    Brevet ligger til distribusjon, og distribusjonen vil starte den{' '}
+                    {formaterTidsstempel(gyldigDistribueresEtter)}.
+                  </BrevInfoCard>
+                )}
+                {erDistribuert && (
+                  <BrevInfoCard title="Brev er distribuert">
+                    Brevet er distribuert og ble sendt den{' '}
+                    {formaterTidsstempel(
+                      valgtBrev.distribusjon.find((distribusjon) => distribusjon.distribuert)?.distribuert
+                    )}
+                    .
+                  </BrevInfoCard>
+                )}
+              </VStack>
             </Box>
             <BrevForhåndsvisning brevId={valgtBrev.brevId} avsluttet={oppgaveErAvsluttet} />
           </div>
         )}
-        {valgtBrev && oppgave && (
+        {valgtBrev && oppgave && sendBrevDialogOpen && (
           <SendBrevDialog
             oppgave={oppgave}
             brevId={valgtBrev.brevId}
@@ -260,7 +256,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
             onClose={() => setSendBrevDialogOpen(false)}
           />
         )}
-        {valgtBrev && (
+        {valgtBrev && angreSendingAvBrevDialogOpen && (
           <AngreSendingAvBrevDialog
             oppgave={oppgave}
             brevId={valgtBrev.brevId}

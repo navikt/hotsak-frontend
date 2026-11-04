@@ -1,4 +1,4 @@
-import { ChevronDownIcon, PlusCircleIcon } from '@navikt/aksel-icons'
+import { ChevronDownIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, Tabs, Tag, VStack } from '@navikt/ds-react'
 import { type ReactNode, useState } from 'react'
 import { useMiljø } from '../utils/useMiljø.ts'
@@ -18,9 +18,17 @@ export interface BrevHeaderProps {
   onVelgBrev(brevId: string): void
   kanRedigere?: boolean
   handlinger?: ReactNode
+  onSlettUtkast?(): void
 }
 
-export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false, handlinger }: BrevHeaderProps) {
+export function BrevHeader({
+  brev,
+  valgtBrevId,
+  onVelgBrev,
+  kanRedigere = false,
+  handlinger,
+  onSlettUtkast,
+}: BrevHeaderProps) {
   const { erIkkeProd } = useMiljø()
   const [innstillingerÅpen, setInnstillingerÅpen] = useState(false)
   const { data } = useBrevmottakere(brev.find((b) => b.brevId === valgtBrevId)?.brevId)
@@ -53,26 +61,24 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
         <Box padding="space-8">
           <HStack justify="space-between">
             <HStack gap="space-4">
-              {erIkkeProd && (
-                <>
-                  {erUtkastValgt && (
-                    <Button
-                      variant="tertiary"
-                      size="small"
-                      aria-expanded={innstillingerÅpen}
-                      onClick={() => setInnstillingerÅpen(!innstillingerÅpen)}
-                      icon={<ChevronDownIcon fontSize="1.3rem" />}
-                    >
-                      Innstillinger
-                    </Button>
-                  )}
-                  {flereMottakere && (
-                    <Tag variant="moderate" data-color="warning" size="small">
-                      Flere mottakere
-                    </Tag>
-                  )}
-                </>
-              )}
+              <>
+                {erUtkastValgt && (
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    aria-expanded={innstillingerÅpen}
+                    onClick={() => setInnstillingerÅpen(!innstillingerÅpen)}
+                    icon={<ChevronDownIcon fontSize="1.3rem" />}
+                  >
+                    Innstillinger
+                  </Button>
+                )}
+                {flereMottakere && (
+                  <Tag variant="moderate" data-color="warning" size="small">
+                    Flere mottakere
+                  </Tag>
+                )}
+              </>
             </HStack>
             <HStack gap="space-4">{handlinger}</HStack>
           </HStack>
@@ -86,6 +92,7 @@ export function BrevHeader({ brev, valgtBrevId, onVelgBrev, kanRedigere = false,
           kanRedigere={kanRedigere}
           brukerPersonInfo={brukerPersonInfo}
           vedtaksbrev={erVedtaksbrevValgt}
+          onSlettUtkast={onSlettUtkast}
         />
       )}
       <Strek style={{ marginBlock: 0 }} />
@@ -99,6 +106,7 @@ interface BrevHeaderInnstillingerProps {
   kanRedigere: boolean
   vedtaksbrev: boolean
   brukerPersonInfo?: UsePersonResponse
+  onSlettUtkast?(): void
 }
 
 export function BrevHeaderInnstillinger({
@@ -107,8 +115,10 @@ export function BrevHeaderInnstillinger({
   kanRedigere,
   vedtaksbrev,
   brukerPersonInfo,
+  onSlettUtkast,
 }: BrevHeaderInnstillingerProps) {
   const vergemål = brukerPersonInfo?.personInfo?.vergemål || []
+  const { erIkkeProd } = useMiljø()
   const vergeNavn = vergemål
     .map((it) => it.navn)
     .filter((navn): navn is NonNullable<typeof navn> => !!navn)
@@ -121,7 +131,7 @@ export function BrevHeaderInnstillinger({
         <Heading level="2" size="xsmall">
           Innstillinger for brevet
         </Heading>
-        {vedtaksbrev && mottakere && (
+        {vedtaksbrev && mottakere && erIkkeProd && (
           <DelKopiMedFormidler brevId={valgtBrevId} mottakere={mottakere} kanRedigere={kanRedigere} />
         )}
         <Heading level="3" size="xsmall">
@@ -142,6 +152,13 @@ export function BrevHeaderInnstillinger({
               </Tekst>
             </VStack>
           ))}
+        {kanRedigere && onSlettUtkast && (
+          <HStack justify="end">
+            <Button variant="tertiary" data-color="danger" size="small" onClick={onSlettUtkast} icon={<TrashIcon />}>
+              Slett utkast
+            </Button>
+          </HStack>
+        )}
       </VStack>
     </Box>
   )

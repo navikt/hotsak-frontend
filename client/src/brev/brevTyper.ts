@@ -1,6 +1,6 @@
-import type { Veiadresse } from '../types/hotlibs.ts'
 import type { OppgaveId } from '../oppgave/oppgaveTypes'
 import type { NavIdent } from '../tilgang/Ansatt'
+import type { Veiadresse } from '../types/hotlibs.ts'
 import type { StilarkVersjon } from './breveditor/html/byggDokument.ts'
 
 export const Brevstatus = {
@@ -180,6 +180,12 @@ export interface OppdaterBrevutkastRequest<T extends Brevdata = Brevdata> {
 
 export interface FerdigstillBrevutkastRequest {
   oppgaveId: OppgaveId
+}
+
+export interface SendUnderveisbrevRequest {
+  oppgaveId: OppgaveId
+  settPåVentTil?: LocalDate
+  kommentar?: string
 }
 
 export interface BrevForSak {

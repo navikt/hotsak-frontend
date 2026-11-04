@@ -116,7 +116,8 @@ test.describe('Brevutkast', () => {
 
     await settBehandlingsresultat(page, 'Innvilget')
     await opprettVedtaksbrev(page)
-    await page.getByRole('button', { name: /Slett utkast/i }).waitFor({ state: 'visible', timeout: 10_000 })
+    await page.getByRole('button', { name: /^Innstillinger$/i }).waitFor({ state: 'visible', timeout: 10_000 })
+    await page.getByRole('button', { name: /^Innstillinger$/i }).click()
 
     await page.getByRole('button', { name: /Slett utkast/i }).click()
     const slettModal = page.getByRole('dialog', { name: /Vil du slette brevutkastet/i })

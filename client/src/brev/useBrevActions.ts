@@ -14,6 +14,7 @@ import {
   type SendUnderveisbrevRequest,
 } from './brevTyper.ts'
 import { brevKeyOf, useMutateBrevForSak, useMutateBrevPdf } from './useBrev.ts'
+import { mutateOppgave } from '../oppgave/useOppgave.ts'
 
 export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: SaksbehandlingsoppgaveBase, brevId?: string) {
   const { oppgaveId = '', versjon, sakId } = oppgave ?? {}
@@ -109,6 +110,7 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     },
     {
       async onSuccess() {
+        await mutateOppgave(oppgaveId)
         await mutateBehandlingOgBrevForSak(sakId!)
       },
     }

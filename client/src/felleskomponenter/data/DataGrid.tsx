@@ -228,6 +228,7 @@ function PageSizeSelect(props: PageSizeSelectProps) {
       <ToggleGroupItem value="20" label="20" />
       <ToggleGroupItem value="40" label="40" />
       <ToggleGroupItem value="60" label="60" />
+      <ToggleGroupItem value="1000" label="Maks" />
     </ToggleGroup>
   )
 }

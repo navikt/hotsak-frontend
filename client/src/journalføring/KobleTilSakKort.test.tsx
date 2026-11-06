@@ -202,6 +202,7 @@ describe('KobleTilSakKort', () => {
           brukerId: '01010199999',
           statuskategori: Statuskategori.ÅPEN,
           oppgavetype: [Oppgavetype.BEHANDLE_SAK],
+          pageNumber: 1,
           pageSize: 1000,
         },
       ])
@@ -421,8 +422,8 @@ describe('KobleTilSakKort', () => {
       expect(screen.getByText('En svært lang dokumenttittel uten mellomrom som skal forbli intakt')).toBeInTheDocument()
       expect(screen.getAllByText('03.02.2025')).toHaveLength(3)
       expect(screen.getByText('Utgående')).toHaveAttribute('data-color', 'meta-lime')
-      expect(screen.getByText('Inngående')).toHaveAttribute('data-color', 'meta-purple')
-      expect(screen.getByText('Notat')).toHaveAttribute('data-color', 'neutral')
+      expect(screen.getByText('Inngående')).toHaveAttribute('data-color', 'brand-beige')
+      expect(screen.getByText('Notat')).toHaveAttribute('data-color', 'info')
 
       const journalpost = screen.getByText('Første dokument').closest('ul')?.parentElement
       expect(journalpost?.children[1]).toHaveClass(classes.dokumentListe)

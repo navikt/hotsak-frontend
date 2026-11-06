@@ -100,7 +100,7 @@ export function intervalString(
     fra = fra.toISOString()
   } else if (isDuration(fra)) {
     fra = formatISODuration(fra)
-  } else {
+  } else if (!fra) {
     fra = ''
   }
 
@@ -108,7 +108,7 @@ export function intervalString(
     til = til.toISOString()
   } else if (isDuration(til)) {
     til = formatISODuration(til)
-  } else {
+  } else if (!til) {
     til = ''
   }
 

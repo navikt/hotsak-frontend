@@ -1,4 +1,4 @@
-import { subYears, format } from 'date-fns'
+import { format, subYears } from 'date-fns'
 import { useMemo, useState } from 'react'
 
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
@@ -12,7 +12,7 @@ export interface UseJournalposterPerSakResponse {
 
 export function useJournalposterPerSak(fnr?: string): UseJournalposterPerSakResponse {
   const [fraDato] = useState(() => format(subYears(new Date(), 1), 'yyyy-MM-dd'))
-  const { journalposter, isLoading, error } = useDokumentsøk({ fnr, fraDato })
+  const { journalposter, isLoading, error } = useDokumentsøk(fnr ? { fnr, fraDato } : undefined)
 
   const journalposterPerSak = useMemo(() => {
     const grupper = new Map<string, Journalpost[]>()

@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import { useMemo, useState } from 'react'
 
-import { calculateOffset, PageResponse } from '../../felleskomponenter/Page.ts'
+import { calculateOffset, type Pageable } from '../../felleskomponenter/Page.ts'
 import type {
   FinnAlternativeProdukterSideQuery,
   FinnAlternativeProdukterSideQueryVariables,
@@ -78,7 +78,7 @@ type ProduktLagerinfo = NonNullable<Produktinfo['wareHouseStock']>
  */
 const MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS = 10
 
-interface AlternativeProdukter extends PageResponse {
+interface AlternativeProdukter extends Omit<Pageable, 'totalPages' | 'isFirst' | 'isLast' | 'hasPrevious' | 'hasNext'> {
   alternativeProdukterByHmsArtNr: AlternativeProdukterByHmsArtNr
   harOppdatertLagerstatus: boolean
   harPaginering: boolean

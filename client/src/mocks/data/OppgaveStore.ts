@@ -267,6 +267,10 @@ export class OppgaveStore extends Dexie {
       pageSize,
       totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
       totalElements,
+      isFirst: true,
+      isLast: true,
+      hasPrevious: false,
+      hasNext: false,
     }
   }
 

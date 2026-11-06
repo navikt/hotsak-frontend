@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@12.14.0",
+  "packageManager": "pnpm@12.18.0",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -13,7 +13,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "npm-run-all": "^4.1.5",
-    "oxlint": "^1.89.0",
+    "oxlint": "^1.91.0",
     "prettier": "^3.9.10"
   },
   "scripts": {

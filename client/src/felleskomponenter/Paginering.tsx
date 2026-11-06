@@ -1,9 +1,10 @@
 import { Pagination, VStack } from '@navikt/ds-react'
 
-import { PageResponse, calculateTotalPages } from './Page.ts'
+import { calculateTotalPages, type PageRequest } from './Page.ts'
 import { Tekst } from './typografi.tsx'
 
-export interface PagineringProps extends PageResponse {
+export interface PagineringProps extends PageRequest {
+  totalElements: number
   tekst: string
   onPageChange(pageNumber: number): void
 }

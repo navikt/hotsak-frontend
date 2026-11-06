@@ -2,12 +2,13 @@ import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
 import { Children, ReactNode, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 
-import { Kopiknapp } from '../Kopiknapp.tsx'
-import { Tekst } from '../typografi.tsx'
 import { usePersonContext } from '../../personoversikt/PersonContext.tsx'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../../types/types.internal.ts'
 import { beregnAlder, formaterDato } from '../../utils/dato.ts'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../../utils/formater.ts'
+import { isLocal } from '../../utils/useMiljø.ts'
+import { Kopiknapp } from '../Kopiknapp.tsx'
+import { Tekst } from '../typografi.tsx'
 import classes from './personlinje.module.css'
 
 export interface PersonlinjeProps {
@@ -50,10 +51,11 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           as={Link}
           size="small"
           href="#"
-          onClick={(event: React.MouseEvent) => {
+          onClick={(event) => {
             event.preventDefault()
             setFodselsnummer(fnr)
-            navigate('/personoversikt/saker')
+            const to = isLocal() ? `/personoversikt/oppgaver?fnr=${fnr}` : '/personoversikt/oppgaver'
+            navigate(to)
           }}
           aria-live="polite"
         >

@@ -1,18 +1,32 @@
-import useSWR, { type SWRResponse } from 'swr'
+import useSWR from 'swr'
 
+import { type DataGridPaginationProps } from '../felleskomponenter/data/DataGrid.tsx'
 import { http } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { type FinnOppgaverRequest, type FinnOppgaverResponse } from './oppgaveTypes.ts'
 
-export type UseOppgavesøkResponse = SWRResponse<FinnOppgaverResponse, HttpError>
-
-export function useOppgavesøk(request?: FinnOppgaverRequest, keepPreviousData?: boolean): UseOppgavesøkResponse {
-  return useSWR(
+export function useOppgavesøk(
+  request?: FinnOppgaverRequest,
+  configuration: { keepPreviousData: boolean } = { keepPreviousData: true }
+) {
+  const { data, ...rest } = useSWR<FinnOppgaverResponse, HttpError, () => [string, FinnOppgaverRequest] | null>(
     () => (request ? ['/api/oppgaver/sok', request] : null),
-    (request) => {
-      const [url, body] = request
-      return http.post<FinnOppgaverRequest, FinnOppgaverResponse>(url, body)
-    },
-    { keepPreviousData: keepPreviousData ?? true }
+    ([url, body]) => http.post<FinnOppgaverRequest, FinnOppgaverResponse>(url, body),
+    { ...configuration }
   )
+
+  const pagination: DataGridPaginationProps = {
+    pageNumber: data?.pageNumber,
+    pageSize: data?.pageSize,
+    totalPages: data?.totalPages,
+  }
+
+  return {
+    data,
+    pagination,
+    totalElements: data?.totalElements ?? 0,
+    ...rest,
+  }
 }
+
+// const ingenOppgaver: never[] = []

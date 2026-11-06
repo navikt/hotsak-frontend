@@ -9,14 +9,13 @@ import {
 } from '@platejs/basic-nodes/react'
 import { ListPlugin } from '@platejs/list-classic/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
-import type { History } from '@platejs/slate'
-import { KEYS, type Value } from 'platejs'
+import { KEYS } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
-import { type Brevdata, type Målform } from '../brevTyper.ts'
+import { type Målform } from '../brevTyper.ts'
 import { useBrevmottakere } from '../useBrev.ts'
 import { useSerienummer } from '../useSerienummer.ts'
 import './Breveditor.less'
@@ -32,12 +31,7 @@ import { transformerPlaceholders } from './transformerPlaceholders.ts'
 import { useEditorScale } from './useEditorScale.ts'
 import { useLagreBrev } from './useLagreBrev.ts'
 import { Verktøylinje } from './verktøylinje/Verktøylinje.tsx'
-
-export interface BreveditorState extends Brevdata {
-  value: Value
-  valueAsHtml: string
-  history: History
-}
+import { type BreveditorState } from './breveditorTyper.ts'
 
 export interface Metadata {
   brukersNavn: string
@@ -60,6 +54,7 @@ export interface BreveditorProps {
   onStateChange?(newState: BreveditorState): void
   onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string
+  spesiellePlaceholderVerdier?: PlaceholderSpesielleVerdier
 }
 
 export function Breveditor(props: BreveditorProps) {
@@ -74,8 +69,9 @@ export function Breveditor(props: BreveditorProps) {
     onStateChange,
     onLagreBrev,
     placeholder,
+    spesiellePlaceholderVerdier,
   } = props
-  const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
+  const { datoSoknadMottatt, hjelpemidlerSøktOm, flushLagringRef } = useBrevContext()
 
   const spesielleVerdier: PlaceholderSpesielleVerdier = {
     auto_dato_soknad_mottatt: datoSoknadMottatt
@@ -85,6 +81,7 @@ export function Breveditor(props: BreveditorProps) {
     auto_hjelpemidler_avslått: hjelpemidlerSøktOm,
     auto_hjelpemidler_avslått_inline: hjelpemidlerSøktOm,
     auto_leveringstid: 'fem uker',
+    ...spesiellePlaceholderVerdier,
   }
 
   const editor = usePlateEditor(
@@ -160,7 +157,16 @@ export function Breveditor(props: BreveditorProps) {
   }, [])
 
   const { widthScale, heightScale, widthRef, heightRef } = useEditorScale(visMarger)
-  const { endringsstatus, lagreMedDebounceOgRetry } = useLagreBrev(onLagreBrev)
+  const { endringsstatus, lagreMedDebounceOgRetry, flushLagring } = useLagreBrev(onLagreBrev)
+  useEffect(() => {
+    if (!flushLagringRef) return
+    flushLagringRef.current = flushLagring
+    return () => {
+      if (flushLagringRef.current === flushLagring) {
+        flushLagringRef.current = undefined
+      }
+    }
+  }, [flushLagringRef, flushLagring])
   const { personInfo } = usePerson(metadata.brukersFødselsnummer)
   const vergemål = personInfo?.vergemål || []
   const harVerge = vergemål.length > 0
@@ -212,7 +218,7 @@ export function Breveditor(props: BreveditorProps) {
   // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
   useEffect(() => {
     if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn, målform)
+      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn, målform, formidlerMedKopi)
       if (initialState.valueAsHtml !== ferskHtml) {
         const oppdatertState: BreveditorState = {
           value: initialState.value,
@@ -246,7 +252,7 @@ export function Breveditor(props: BreveditorProps) {
           if ((onStateChange != null || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: BreveditorState = {
               value: nyVerdi,
-              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn, målform),
+              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn, målform, formidlerMedKopi),
               history: changedEditor.history,
             }
             if (!state.current || state.current.value !== nyVerdi) {
@@ -266,7 +272,7 @@ export function Breveditor(props: BreveditorProps) {
                 <div style={{ scale: widthScale }} className="scaled-width">
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
-                      <div className="header">
+                      <div className={`header${formidlerMedKopi ? ' med-formidlerkopi' : ''}`}>
                         <div className="header-row">
                           <dl>
                             {harVerge && (
@@ -279,6 +285,12 @@ export function Breveditor(props: BreveditorProps) {
                             <dd>{metadata.brukersNavn}</dd>
                             <dt>{målformTekster.fødselsnummer}:</dt>
                             <dd>{metadata.brukersFødselsnummer}</dd>
+                            {formidlerMedKopi && (
+                              <>
+                                <dt>{målformTekster.kopiTilHjelpemiddelformidler}:</dt>
+                                <dd>{formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi.navn ?? '')}</dd>
+                              </>
+                            )}
                             <dt>{målformTekster.saksnummer}:</dt>
                             <dd>{metadata.saksnummer}</dd>
                           </dl>
@@ -305,13 +317,6 @@ export function Breveditor(props: BreveditorProps) {
                         />
                       </PlateContainer>
                       <p>
-                        {formidlerMedKopi && (
-                          <>
-                            {`Kopi til hjelpemiddelformidler: ${formaterNavn(formidler?.navn)}`}
-                            <br />
-                            <br />
-                          </>
-                        )}
                         {målformTekster.medVennligHilsen} <br />
                         {metadata.saksbehandlerNavn}
                         {metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />

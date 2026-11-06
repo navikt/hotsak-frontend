@@ -1,0 +1,34 @@
+.snø {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.snøfnugg {
+  position: absolute;
+  top: -2rem;
+  color: #b3d4f5;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fall {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(2rem, 50vh) rotate(180deg);
+  }
+  to {
+    transform: translate(0, 105vh) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snø {
+    display: none;
+  }
+}

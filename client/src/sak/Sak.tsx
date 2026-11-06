@@ -4,19 +4,18 @@ import { useEffect, useRef, useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../brev/BrevPanel.tsx'
-import { isVedtaksbrev } from '../brev/brevSelectors.ts'
+import { isBreveditorbrev, isVedtaksbrev } from '../brev/brevSelectors.ts'
 import { useBrevForSak } from '../brev/useBrev.ts'
 import { useDokumentContext } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
-import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
-import { usePerson } from '../personoversikt/usePerson.ts'
 import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
+import { Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
+import { usePerson } from '../personoversikt/usePerson.ts'
 import { useJournalposterInngående } from '../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
-import { type Innsenderbehovsmelding } from '../types/BehovsmeldingTypes.ts'
+import { Innsenderbehovsmelding } from '../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../types/types.internal.ts'
 import { FeatureToggle } from '../unleash/FeatureToggle.ts'
-import { useSakHotkeys } from './hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
   Gjenstående,
@@ -26,8 +25,11 @@ import {
 } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
+import { GodkjennBestillingModal } from './bestilling/GodkjennBestillingModal.tsx'
+import { useSakHotkeys } from './hotkeys/useSakHotkeys.ts'
 import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
+import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { OverførTilGosysModal } from './modaler/OverførTilGosysModal.tsx'
@@ -37,16 +39,14 @@ import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { AvrundetPanel } from './paneler/AvrundetPanel.tsx'
 import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
-import { SakKontrollPanel } from './SakKontrollPanel.tsx'
-import { sidebarBredde } from './SakPanelTabTypes.tsx'
 import classes from './Sak.module.css'
 import { useSakContext } from './SakContextType.ts'
+import { SakKontrollPanel } from './SakKontrollPanel.tsx'
+import { sidebarBredde } from './SakPanelTabTypes.tsx'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
-import { GodkjennBestillingModal } from './bestilling/GodkjennBestillingModal.tsx'
-import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
 
 function SakContent({
   oppgave,
@@ -82,8 +82,9 @@ function SakContent({
   const { gjeldendeBehandling } = useBehandling()
   const behandlingsutfall = gjeldendeBehandling?.utfall
 
-  const { finnBrev } = useBrevForSak(sak.sakId)
+  const { brevForSak, finnBrev } = useBrevForSak(sak.sakId)
   const vedtaksbrev = finnBrev(isVedtaksbrev)
+  const breveditorbrev = brevForSak?.brev.filter(isBreveditorbrev) ?? []
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
@@ -99,7 +100,9 @@ function SakContent({
 
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
   const brevutkastIkkeFerdigstilt =
-    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
+    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) ||
+    gjenstående.includes(Gjenstående.BREV_MANGLER) ||
+    gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT)
 
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({ groupId: 'sakv2', storage: localStorage })
 
@@ -150,8 +153,8 @@ function SakContent({
             </Panel>
           )}
           <ResizablePanel panelId="brevpanel" panel={brevPanel} visible={brevPanel.visible}>
-            <AvrundetPanel>
-              <BrevPanel oppgave={oppgave} brev={vedtaksbrev} />
+            <AvrundetPanel paddingBlock="space-4">
+              <BrevPanel oppgave={oppgave} brev={breveditorbrev} initialBrevId={vedtaksbrev?.brevId} />
             </AvrundetPanel>
           </ResizablePanel>
           <ResizablePanel

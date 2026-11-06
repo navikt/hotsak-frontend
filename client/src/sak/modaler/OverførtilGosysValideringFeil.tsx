@@ -34,6 +34,12 @@ export function OverførtilGosysValideringFeil({
                 For å kunne overføre saken til Gosys må notatutkast slettes eller ferdigstilles.
               </Tekst>
             )
+          case GjenståendeOverfør.UNDERVEISBREV_MÅ_SENDES_ELLER_SLETTES:
+            return (
+              <Tekst key="UNDERVEISBREV_MÅ_SENDES_ELLER_SLETTES" spacing>
+                For å kunne overføre saken til Gosys må påbegynte underveisbrev sendes eller slettes.
+              </Tekst>
+            )
         }
       })}
     </InfoModal>

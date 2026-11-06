@@ -1,3 +1,4 @@
+import { isToday } from 'date-fns'
 import Dexie, { Table, type UpdateSpec } from 'dexie'
 
 import { isBrevmalBarnebrillerVedtak } from '../../brev/brevSelectors.ts'
@@ -786,13 +787,19 @@ export class SakStore extends Dexie {
     ) {
       return brev
     }
-    if (!isBreveditorbrevUtenVedtak(brev.brevmal) || brev.brevstatus !== Brevstatus.FERDIGSTILT) {
+    if (
+      !isBreveditorbrevUtenVedtak(brev.brevmal) ||
+      (brev.brevstatus !== Brevstatus.UTKAST && brev.brevstatus !== Brevstatus.FERDIGSTILT)
+    ) {
       return null
     }
 
+    const ferdigstiltIdag = brev.ferdigstilt && isToday(brev.ferdigstilt)
     await this.brev.update(brevId, {
       endret: nåIso(),
       endretAv: Saksbehandlere.innlogget().id,
+      ferdigstilt: ferdigstiltIdag ? brev.ferdigstilt : nåIso(),
+      ferdigstiltAv: ferdigstiltIdag ? brev.ferdigstiltAv : Saksbehandlere.innlogget().id,
       brevstatus: Brevstatus.FERDIGSTILT,
       distribusjon: [
         {

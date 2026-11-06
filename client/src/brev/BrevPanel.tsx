@@ -114,15 +114,18 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
     }
   }
 
-  const handleFerdigstill = async () => {
+  const validerBrev = () => {
     setSynligKryssKnapp(true)
     const editorState = brevMedData && isBreveditorState(brevMedData.data) ? brevMedData.data.value : undefined
-    if (!editorState) return
+    if (!editorState) return false
 
     const feil = validerPlaceholders(editorState)
     setPlaceholderFeil(feil)
-    if (feil.length > 0) return
+    return feil.length === 0
+  }
 
+  const handleFerdigstill = async () => {
+    if (!validerBrev()) return
     await ferdigstillBrevutkast.trigger()
   }
 
@@ -138,6 +141,28 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
     setValgtBrevId(brev.find((b) => b.brevId !== valgtBrev.brevId)?.brevId ?? null)
   }
 
+  const handleForhåndsvis = async () => {
+    try {
+      await flushLagringRef.current?.()
+      await ferdigstillBrevutkast.trigger()
+    } catch {
+      showErrorToast('Kunne ikke forhåndsvise brevet.')
+    }
+  }
+
+  const handleSendBrev = async () => {
+    try {
+      await flushLagringRef.current?.()
+      if (!validerBrev()) {
+        if (valgtBrev?.ferdigstilt) await redigerBrevutkast.trigger()
+        return
+      }
+      setSendBrevDialogOpen(true)
+    } catch {
+      showErrorToast('Kunne ikke lagre brevet.')
+    }
+  }
+
   const handlinger = valgtBrev && (
     <>
       {kanAngreBrev && brevUtenVedtak && erIkkeProd && (
@@ -150,13 +175,18 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
           Rediger
         </Button>
       )}
-      {kanRedigere && !valgtBrev.ferdigstilt && (
+      {kanRedigere && !valgtBrev.ferdigstilt && sendesMedBehandling && (
         <Button variant="primary" size="small" loading={ferdigstillBrevutkast.isMutating} onClick={handleFerdigstill}>
-          {sendesMedBehandling ? 'Ferdigstill utkast' : 'Ferdigstill og forhåndsvis'}
+          Ferdigstill utkast
         </Button>
       )}
-      {kanRedigere && valgtBrev.ferdigstilt && brevUtenVedtak && (
-        <Button variant="primary" size="small" onClick={() => setSendBrevDialogOpen(true)}>
+      {kanRedigere && !valgtBrev.ferdigstilt && brevUtenVedtak && (
+        <Button variant="secondary" size="small" loading={ferdigstillBrevutkast.isMutating} onClick={handleForhåndsvis}>
+          Forhåndsvis
+        </Button>
+      )}
+      {kanRedigere && brevUtenVedtak && (
+        <Button variant="primary" size="small" onClick={handleSendBrev}>
           Send brev
         </Button>
       )}

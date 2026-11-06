@@ -19,7 +19,7 @@ import { type BreveditorBrevdata, type BreveditorState, isBreveditorState } from
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { useBrevmal } from './brevmaler/useBrevmal.ts'
 import classes from './BrevRedigering.module.css'
-import { Brevmal } from './brevTyper.ts'
+import { Brevmal, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
 
@@ -39,17 +39,16 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
 
   // sett brev tilbake til utkast hvis dato det ble ferdigstilt er før i dag, slik at det får dagens dato
   useEffect(() => {
-    if (
-      brev?.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV &&
-      brev.ferdigstilt &&
-      !isToday(brev.ferdigstilt) &&
-      !isBehandlingFerdigstilt(behandling)
-    ) {
+    if (!brev?.ferdigstilt || isToday(brev.ferdigstilt)) return
+
+    if (brev.brevmal === Brevmal.BREVEDITOR_VEDTAKSBREV && !isBehandlingFerdigstilt(behandling)) {
       redigerBrevutkast.trigger().then(() => {
         showInfoToast(
           'Brevet knyttet til denne behandlingen ble ferdigstilt før dagens dato og er nå satt tilbake til utkast. Ferdigstill brevet på nytt hvis du skal ferdigstille behandlingen.'
         )
       })
+    } else if (isBreveditorbrevUtenVedtak(brev.brevmal)) {
+      redigerBrevutkast.trigger()
     }
   }, [brev?.ferdigstilt])
 

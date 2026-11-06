@@ -40,23 +40,21 @@ export function BrevHeader({
 
   return (
     <Box borderRadius="12" marginBlock="space-0 space-4">
-      {erIkkeProd && (
-        <Tabs value={valgtBrevId ?? ''} onChange={onVelgBrev} size="small">
-          <Tabs.List>
-            {brev.map((b) => (
-              <Tabs.Tab key={b.brevId} value={b.brevId} label={BrevmalTekst[b.brevmal]} />
-            ))}
-            {erIkkeProd && (
-              <Tabs.Tab
-                key="nytt-utkast"
-                value="nytt-utkast"
-                label="Nytt utkast"
-                icon={<PlusCircleIcon fontSize="1.5rem" />}
-              />
-            )}
-          </Tabs.List>
-        </Tabs>
-      )}
+      <Tabs value={valgtBrevId ?? ''} onChange={onVelgBrev} size="small">
+        <Tabs.List>
+          {brev.map((b) => (
+            <Tabs.Tab key={b.brevId} value={b.brevId} label={BrevmalTekst[b.brevmal]} />
+          ))}
+          {erIkkeProd && (
+            <Tabs.Tab
+              key="nytt-utkast"
+              value="nytt-utkast"
+              label="Nytt utkast"
+              icon={<PlusCircleIcon fontSize="1.5rem" />}
+            />
+          )}
+        </Tabs.List>
+      </Tabs>
       {valgtBrevId && valgtBrevId != 'nytt-utkast' && (
         <Box padding="space-8">
           <HStack justify="space-between">

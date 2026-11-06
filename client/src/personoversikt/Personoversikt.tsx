@@ -3,12 +3,13 @@ import { useMemo } from 'react'
 import { Route, Routes } from 'react-router'
 
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
+import { DataGridFilterProvider } from '../felleskomponenter/data/DataGridFilterProvider.tsx'
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
+import { LasterPersonlinje, Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { useUtlånoversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useUtlånoversikt'
-import { LasterPersonlinje, Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { naturalBy } from '../utils/array.ts'
 import { sorterKronologiskStigende } from '../utils/dato.ts'
 import { select } from '../utils/select.ts'
@@ -20,6 +21,7 @@ import { PersonoversiktTabs } from './PersonoversiktTabs.tsx'
 import { Saksoversikt } from './Saksoversikt'
 import { usePerson } from './usePerson'
 import { useSaksoversikt } from './useSaksoversikt.ts'
+import { DataGridProvider } from '../felleskomponenter/data/DataGridProvider.tsx'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -60,6 +62,26 @@ function PersonoversiktContent() {
           <Box paddingBlock="space-16" paddingInline="space-32">
             <Routes>
               <Route
+                path="/oppgaver"
+                element={
+                  <DataGridProvider orderBy="" direction="none" key="oppgaver">
+                    <DataGridFilterProvider suffix="PersonoversiktOppgaver">
+                      <OppgaveoversiktPerson fnr={fodselsnummer} />
+                    </DataGridFilterProvider>
+                  </DataGridProvider>
+                }
+              />
+              <Route
+                path="/dokumenter"
+                element={
+                  <DataGridProvider orderBy="" direction="none" key="dokumenter">
+                    <DataGridFilterProvider suffix="PersonoversiktDokumenter">
+                      <DokumentoversiktPerson fnr={fodselsnummer} />
+                    </DataGridFilterProvider>
+                  </DataGridProvider>
+                }
+              />
+              <Route
                 path="/saker"
                 element={
                   error ? (
@@ -73,8 +95,6 @@ function PersonoversiktContent() {
                   )
                 }
               />
-              <Route path="/oppgaver" element={<OppgaveoversiktPerson fnr={fodselsnummer} />} />
-              <Route path="/dokumenter" element={<DokumentoversiktPerson fnr={fodselsnummer} />} />
               <Route
                 path="/hjelpemidler"
                 element={

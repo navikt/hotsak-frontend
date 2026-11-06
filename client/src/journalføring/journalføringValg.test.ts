@@ -24,6 +24,7 @@ const journalpost: Journalpost = {
     { journalpostId: 'journalpost-1', dokumentId: 'dokument-2', tittel: ' Andre tittel ', logiskeVedlegg: [] },
   ],
   innsender: { fnr: '01010199999', navn: { fornavn: 'Test', etternavn: 'Test' } },
+  innsynsregel: { kode: 'BRUK_STANDARDREGLER', term: 'Standardreglene avgjør om dokumentet vises' },
 }
 
 describe('byggDokumentPayload', () => {

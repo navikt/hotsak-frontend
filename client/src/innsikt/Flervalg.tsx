@@ -17,7 +17,7 @@ export function Flervalg(props: SpørsmålProps<IFlervalg>) {
   } = props
   const name = joinToName(navn, sanitizeName(tekst), 'svar')
   const { control, formState } = useFormContext()
-  const error = get(formState.errors, name)
+  const error = get(formState.errors, name) as any // fixme
   return (
     <Controller
       name={name}

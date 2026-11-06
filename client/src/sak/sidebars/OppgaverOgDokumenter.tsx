@@ -1,15 +1,15 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons'
-import { BodyShort, Box, Button, Detail, HStack, Select, Tabs, VStack } from '@navikt/ds-react'
-import { type ChangeEvent, useMemo, useState } from 'react'
-import { useDokumentsøk } from '../../dokument/useDokumentsøk'
-import { DataGrid } from '../../felleskomponenter/data/DataGrid'
-import { type Oppgave } from '../../oppgave/oppgaveTypes'
-import { useOppgavesøk } from '../../oppgave/useOppgavesøk'
-import { oppgaveColumns } from '../../oppgaveliste/oppgaveColumns'
-import { selectOppgaveId } from '../../oppgaveliste/oppgaveSelectors'
-import { dokumentColumns, journalpostKey, journalposttypeTagKortere } from '../../personoversikt/dokumentColumns'
-import { useSak } from '../../saksbilde/useSak'
-import { type Journalpost } from '../../types/types.internal'
+import { Box, Detail, Select, Tabs, VStack } from '@navikt/ds-react'
+import { useMemo, useState } from 'react'
+
+import { useDokumentsøk } from '../../../dokument/useDokumentsøk'
+import { DataGrid } from '../../../felleskomponenter/data/DataGrid'
+import type { PageRequest } from '../../../felleskomponenter/Page'
+import { useOppgavesøk } from '../../../oppgave/useOppgavesøk'
+import { oppgaveColumns } from '../../../oppgaveliste/oppgaveColumns'
+import { selectOppgaveId } from '../../../oppgaveliste/oppgaveSelectors'
+import { dokumentColumns, journalpostKey, journalposttypeTagKortere } from '../../../personoversikt/dokumentColumns'
+import { useSak } from '../../../saksbilde/useSak'
+import { type Journalpost } from '../../../types/types.internal'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
 import {
   datoIntervallForFilter,
@@ -21,47 +21,16 @@ import {
 } from './OppgaverOgDokumenterUtils'
 import { SidebarPanel, SidebarPanelBox, SidebarPanelHeading } from './SidebarPanel'
 
-const ingenOppgaver: Oppgave[] = []
-
-const oppgaveCols = [
-  { ...oppgaveColumns.behandlingstema, filter: undefined },
-  { ...oppgaveColumns.sakIdMedEksternFallback, sortKey: undefined },
-  { ...oppgaveColumns.oppgavetypeÅpneOppgave, filter: undefined },
-  { ...oppgaveColumns.behandlingstype, filter: undefined },
-  { ...oppgaveColumns.ferdigstilt, sortKey: undefined },
-]
-
-const dokuCols = [
-  dokumentColumns.tittelMedLink,
-  dokumentColumns.sakIdKunTekst,
-  { ...dokumentColumns.journalpostId },
-  { ...dokumentColumns.journalpostOpprettetTid, formatDate: true, width: 100 },
-  {
-    ...dokumentColumns.journalposttype,
-    width: 50,
-    renderCell: ({ journalposttype }: Journalpost) => journalposttypeTagKortere(journalposttype),
-  },
-]
-
 export function OppgaverOgDokumenter() {
   const { sak } = useSak()
+
   const [currentTab, setCurrentTab] = useState<OppgaverOgDokumenterTab>(OppgaverOgDokumenterTabs.OPPGAVER)
   const [filter, setFilter] = useState<OppgaverOgDokumenterFilterValue>(OppgaverOgDokumenterFilter.SISTE_2_UKER)
 
   const fnr = sak?.data.bruker.fnr
-  const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([null])
-  const etter = cursorHistory[cursorHistory.length - 1]
-  const { fraDato, tilDato } = useMemo(() => datoIntervallForFilter(filter), [filter])
-  const { journalposter, isValidating, isLoading, sideInfo, error } = useDokumentsøk({
-    fnr,
-    første: 5,
-    etter,
-    fraDato,
-    tilDato,
-    keepPreviousData: true,
-  })
+
   const opprettetIntervall = useMemo(() => opprettetIntervallForFilter(filter), [filter])
-  const [oppgaverPageNumber, setOppgaverPageNumber] = useState(1)
+  const [pageRequestOppgaver, setPageRequestOppgaver] = usePageRequest()
   const oppgaverResponse = useOppgavesøk(
     fnr
       ? {
@@ -70,49 +39,45 @@ export function OppgaverOgDokumenter() {
           opprettetIntervall,
           alleFagsystemer: true,
           sorteringsrekkefølge: 'DESC',
-          pageNumber: oppgaverPageNumber,
-          pageSize: 5,
+          ...pageRequestOppgaver,
         }
-      : undefined,
-    true
+      : undefined
   )
 
-  const totaleOppgaver =
-    useOppgavesøk(
-      fnr
-        ? {
-            brukerId: fnr,
-            pageNumber: 1,
-            alleFagsystemer: true,
-            pageSize: 1,
-          }
-        : undefined
-    ).data?.totalElements ?? 0
+  const { fraDato, tilDato } = useMemo(() => datoIntervallForFilter(filter), [filter])
+  const [pageRequestDokumenter, setPageRequestDokumenter] = usePageRequest()
+  const journalposterResponse = useDokumentsøk(
+    fnr
+      ? {
+          fnr,
+          fraDato,
+          tilDato,
+          ...pageRequestDokumenter,
+        }
+      : undefined
+  )
 
-  const totaleDokumenter =
-    useDokumentsøk({
-      fnr,
-      første: 1,
-    }).sideInfo?.totaltAntall ?? 0
+  const totaleOppgaver = useOppgavesøk(
+    fnr
+      ? {
+          brukerId: fnr,
+          alleFagsystemer: true,
+          pageNumber: 1,
+          pageSize: 1,
+        }
+      : undefined
+  ).totalElements
+  const totaleDokumenter = useDokumentsøk(
+    fnr
+      ? {
+          fnr,
+          pageNumber: 1,
+          pageSize: 1,
+        }
+      : undefined
+  ).totalElements
 
   const alleOppgaver = oppgaverResponse.data?.oppgaver ?? ingenOppgaver
-
-  const nesteSide = () => {
-    if (sideInfo?.finnesNesteSide && sideInfo.sluttpeker) {
-      setCursorHistory((prev) => [...prev, sideInfo.sluttpeker])
-    }
-  }
-
-  const forrigeSide = () => {
-    setCursorHistory((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev))
-  }
-
-  const sidenummer = cursorHistory.length
-  const harForrigeSide = cursorHistory.length > 1
-  const harNesteSide = sideInfo?.finnesNesteSide ?? false
-
-  const harForrigeOppgaveSide = oppgaverPageNumber > 1
-  const harNesteOppgaveSide = oppgaverPageNumber < (oppgaverResponse.data?.totalPages ?? 1)
 
   if (!sak) return null
 
@@ -135,10 +100,11 @@ export function OppgaverOgDokumenter() {
               hideLabel
               size="small"
               value={filter}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                setFilter(e.target.value as OppgaverOgDokumenterFilterValue)
-                setCursorHistory([null])
-                setOppgaverPageNumber(1)
+              onChange={(event) => {
+                setFilter(event.target.value as OppgaverOgDokumenterFilterValue)
+                setPageRequestOppgaver(DEFAULT_PAGE_REQUEST)
+                setPageRequestDokumenter(DEFAULT_PAGE_REQUEST)
+                journalposterResponse.reset()
               }}
             >
               <option value={OppgaverOgDokumenterFilter.ALLE}>Vis alle</option>
@@ -149,8 +115,8 @@ export function OppgaverOgDokumenter() {
               <Detail>
                 Viser{' '}
                 {currentTab === OppgaverOgDokumenterTabs.OPPGAVER
-                  ? `${oppgaverResponse.data?.totalElements ?? 0} `
-                  : `${sideInfo?.totaltAntall ?? 0} `}
+                  ? `${oppgaverResponse.totalElements} `
+                  : `${journalposterResponse.totalElements} `}
                 av{' '}
                 {currentTab === OppgaverOgDokumenterTabs.OPPGAVER
                   ? `${totaleOppgaver} oppgaver`
@@ -170,65 +136,29 @@ export function OppgaverOgDokumenter() {
                 textSize="small"
                 loading={oppgaverResponse.isLoading}
                 validating={oppgaverResponse.isValidating}
+                onPageChange={setPageRequestOppgaver}
+                {...oppgaverResponse.pagination}
               />
             </SidebarPanel>
-            <HStack gap="space-8" align="center" justify="center" paddingBlock="space-8">
-              <Button
-                size="small"
-                variant="tertiary"
-                icon={<ChevronLeftIcon />}
-                onClick={() => setOppgaverPageNumber((prev) => prev - 1)}
-                disabled={!harForrigeOppgaveSide}
-              >
-                Forrige
-              </Button>
-              <BodyShort size="small">Side {oppgaverPageNumber}</BodyShort>
-              <Button
-                size="small"
-                variant="tertiary"
-                icon={<ChevronRightIcon />}
-                iconPosition="right"
-                onClick={() => setOppgaverPageNumber((prev) => prev + 1)}
-                disabled={oppgaverResponse.isValidating || !harNesteOppgaveSide}
-              >
-                Neste
-              </Button>
-            </HStack>
           </Tabs.Panel>
 
           <Tabs.Panel value={OppgaverOgDokumenterTabs.DOKUMENTER}>
-            <SidebarPanel spacing={false} tittel="" error={error && 'Feil ved henting av dokumenter.'}>
+            <SidebarPanel
+              tittel=""
+              error={journalposterResponse.error && 'Feil ved henting av dokumenter.'}
+              spacing={false}
+            >
               <DataGrid
-                rows={journalposter}
-                columns={dokuCols}
+                rows={journalposterResponse.journalposter}
+                columns={dokumentCols}
                 keyFactory={journalpostKey}
                 size="small"
                 textSize="small"
-                loading={isLoading}
-                validating={isValidating}
+                loading={journalposterResponse.isLoading}
+                validating={journalposterResponse.isValidating}
+                onPageChange={setPageRequestDokumenter}
+                {...journalposterResponse.pagination}
               />
-              <HStack gap="space-8" align="center" justify="center" paddingBlock="space-8">
-                <Button
-                  size="small"
-                  variant="tertiary"
-                  icon={<ChevronLeftIcon />}
-                  onClick={forrigeSide}
-                  disabled={!harForrigeSide}
-                >
-                  Forrige
-                </Button>
-                <BodyShort size="small">Side {sidenummer}</BodyShort>
-                <Button
-                  size="small"
-                  variant="tertiary"
-                  icon={<ChevronRightIcon />}
-                  iconPosition="right"
-                  onClick={nesteSide}
-                  disabled={isValidating || !harNesteSide}
-                >
-                  Neste
-                </Button>
-              </HStack>
             </SidebarPanel>
           </Tabs.Panel>
         </VStack>
@@ -236,3 +166,34 @@ export function OppgaverOgDokumenter() {
     </>
   )
 }
+
+const DEFAULT_PAGE_REQUEST: PageRequest = { pageNumber: 1, pageSize: 5 }
+
+function usePageRequest() {
+  return useState<PageRequest>(DEFAULT_PAGE_REQUEST)
+}
+
+const ingenOppgaver: never[] = []
+
+const oppgaveCols = [
+  { ...oppgaveColumns.behandlingstema, filter: undefined },
+  { ...oppgaveColumns.sakIdMedEksternFallback, sortKey: undefined },
+  { ...oppgaveColumns.oppgavetypeÅpneOppgave, filter: undefined },
+  { ...oppgaveColumns.behandlingstype, filter: undefined },
+  { ...oppgaveColumns.ferdigstilt, sortKey: undefined },
+]
+
+const dokumentCols = [
+  dokumentColumns.tittel,
+  dokumentColumns.fagsakId,
+  { ...dokumentColumns.journalpostId },
+  { ...dokumentColumns.journalpostOpprettetTid, formatDate: true, width: 100 },
+  {
+    ...dokumentColumns.journalposttype,
+    width: 50,
+    filter: undefined,
+    renderCell({ journalposttype }: Journalpost) {
+      return journalposttypeTagKortere(journalposttype)
+    },
+  },
+]

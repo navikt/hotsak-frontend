@@ -1,4 +1,6 @@
-import { Button, Link, Tag, TagProps } from '@navikt/ds-react'
+import { Link, Tag, TagProps } from '@navikt/ds-react'
+import { Link as ReactRouterLink } from 'react-router'
+
 import { DataGridColumn } from '../felleskomponenter/data/DataGrid'
 import { Journalpost } from '../types/types.internal'
 
@@ -15,8 +17,17 @@ export const dokumentColumns = {
   journalposttype: {
     field: 'journalposttype',
     header: 'Type',
-    width: 175,
-    renderCell: ({ journalposttype }) => journalposttypeTag(journalposttype),
+    width: 100,
+    filter: {
+      options: new Map([
+        ['I', 'Inngående'],
+        ['U', 'Utgående'],
+        ['N', 'Notat'],
+      ]),
+    },
+    renderCell({ journalposttype }) {
+      return journalposttypeTag(journalposttype)
+    },
   },
   journalpostOpprettetTid: {
     field: 'journalpostOpprettetTid',
@@ -24,34 +35,35 @@ export const dokumentColumns = {
     width: 145,
     formatDateTime: true,
   },
+  fagsakId: {
+    field: 'fagsakId',
+    header: 'Saksnr.',
+    width: 100,
+    renderCell({ sak, sakId }) {
+      if (sakId) return sakId
+      if (sak) return sak.fagsakId
+      return null
+    },
+  },
+  sakIdLink: {
+    field: 'sakIdLink',
+    width: 100,
+    renderCell({ sak, sakId }) {
+      if (sakId)
+        return (
+          <Link as={ReactRouterLink} to={`/sak/${sakId}`}>
+            Gå til saken
+          </Link>
+        )
+      if (sak) return sak.fagsakId
+      return null
+    },
+  },
   tittel: {
     field: 'tittel',
     header: 'Tittel',
-  },
-  dokumenter: {
-    field: 'dokumenter',
-    header: 'Dokument',
-    renderCell: (journalpost) => {
-      const førsteDokument = journalpost.dokumenter[0]
-      if (!førsteDokument) return null
-      return (
-        <Link href={`/api/journalpost/${førsteDokument.journalpostId}/${førsteDokument.dokumentId}`} target="_blank">
-          {førsteDokument.tittel}
-        </Link>
-      )
-    },
-  },
-  sakId: {
-    field: 'sakId',
-    header: 'Sak',
-    width: 100,
-    renderCell: ({ sakId }) => (sakId ? <Link href={`/sak/${sakId}`}>Åpne sak</Link> : null),
-  },
-  tittelMedLink: {
-    field: 'tittel',
-    header: 'Tittel',
     width: 180,
-    renderCell: (journalpost) => {
+    renderCell(journalpost) {
       const førsteDokument = journalpost.dokumenter[0]
       if (!førsteDokument) return null
       return (
@@ -61,29 +73,17 @@ export const dokumentColumns = {
       )
     },
   },
-  sakIdKunTekst: {
-    field: 'sakId',
-    header: 'Saks-ID',
-    width: 100,
-  },
-  opprettSak: {
-    field: 'opprettSak',
-    header: '',
-    width: 135,
-    renderCell: ({ journalposttype }) =>
-      journalposttype === 'I' ? (
-        <Button size="small" variant="secondary">
-          Opprett sak
-        </Button>
-      ) : null,
-  },
   journalstatus: {
     field: 'journalstatus',
     header: 'Status',
     width: 100,
-    renderCell: ({ journalstatus }) => (journalstatus ? <Tag size="small">{journalstatus}</Tag> : null),
+    renderCell({ journalstatus }) {
+      return journalstatus ? <Tag size="small">{journalstatus}</Tag> : null
+    },
   },
 } satisfies DokumentColumns
+
+export type DokumentColumnField = keyof typeof dokumentColumns
 
 export function journalpostKey(journalpost: Journalpost): string {
   return journalpost.journalpostId
@@ -91,9 +91,9 @@ export function journalpostKey(journalpost: Journalpost): string {
 
 export function journalposttypeTag(type: Journalpost['journalposttype']) {
   const config: Record<typeof type, { label: string; color: TagProps['data-color'] }> = {
-    I: { label: 'Inngående', color: 'meta-purple' },
+    I: { label: 'Inngående', color: 'brand-beige' },
     U: { label: 'Utgående', color: 'meta-lime' },
-    N: { label: 'Notat', color: 'neutral' },
+    N: { label: 'Notat', color: 'info' },
   }
   const { label, color } = config[type]
   return (

@@ -7,24 +7,24 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { http } from '../io/HttpClient.ts'
 import { HttpError } from '../io/HttpError.ts'
-import { lagJournalføringssaker } from '../mocks/data/lagSak.ts'
 import { lagJournalpost as lagMockJournalpost } from '../mocks/data/lagJournalpost.ts'
 import { lagOppgave } from '../mocks/data/lagOppgave.ts'
+import { lagJournalføringssaker } from '../mocks/data/lagSak.ts'
 import { type Oppgavekommentar } from '../oppgave/kommentar/useOppgavekommentarer.ts'
 import {
+  Oppgavetype,
+  Statuskategori,
   type FinnOppgaverRequest,
   type FinnOppgaverResponse,
   type Oppgave,
-  Oppgavetype,
-  Statuskategori,
 } from '../oppgave/oppgaveTypes.ts'
 import { PersonContext } from '../personoversikt/PersonContext.tsx'
 import { Saksstatus, type Journalpost } from '../types/types.internal.ts'
+import classes from './KobleTilSakKort.module.css'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
+import { SakKort } from './SakKort.tsx'
 import { Sakstype } from './journalføringTypes.ts'
 import { MAKS_SAKER_SYNLIG, type SakvalgVisning } from './useKobleTilSak.ts'
-import classes from './KobleTilSakKort.module.css'
-import { SakKort } from './SakKort.tsx'
 
 function lagSak(sakId: string, fagsaksystem = 'HOTSAK'): SakvalgVisning {
   return {
@@ -77,6 +77,10 @@ function mockHttpPost(
     pageSize: request.pageSize ?? 1000,
     totalElements: 0,
     totalPages: 1,
+    isFirst: true,
+    isLast: true,
+    hasPrevious: false,
+    hasNext: false,
   })
 ) {
   return vi.spyOn(http, 'post').mockImplementation(async (url, body) => {
@@ -99,7 +103,17 @@ function lagBehandleSakOppgave(oppgaveId: string, sakId: string, beskrivelse = '
 }
 
 function lagOppgaveRespons(oppgaver: Oppgave[]): FinnOppgaverResponse {
-  return { oppgaver, pageNumber: 1, pageSize: 1000, totalPages: 1, totalElements: oppgaver.length }
+  return {
+    oppgaver,
+    pageNumber: 1,
+    pageSize: 1000,
+    totalPages: 1,
+    totalElements: oppgaver.length,
+    isFirst: true,
+    isLast: true,
+    hasPrevious: false,
+    hasNext: false,
+  }
 }
 
 function forventOppgavefelt(kort: HTMLElement, etikett: string, verdi: string) {

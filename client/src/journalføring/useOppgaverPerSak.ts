@@ -10,10 +10,11 @@ export function useOppgaverPerSak(fodselsnummer?: string) {
           brukerId: fodselsnummer,
           statuskategori: Statuskategori.ÅPEN,
           oppgavetype: [Oppgavetype.BEHANDLE_SAK],
+          pageNumber: 1,
           pageSize: 1000,
         }
       : undefined,
-    false
+    { keepPreviousData: false }
   )
 
   const oppgaverPerSak = useMemo(() => {

@@ -34,22 +34,28 @@ function tilJournalføringOppgave(oppgave: Oppgave): JournalføringV2Response['o
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakStore, oppgaveStore }) => [
   http.post<never, DokumentsøkRequest, DokumentsøkResponse>(`/api/dokumenter/sok`, async ({ request }) => {
-    const { første = 100, etter = null, fraDato, tilDato } = await request.json()
-    const alle = (await journalpostStore.søk()).filter((journalpost) => {
-      if (fraDato && journalpost.journalpostOpprettetTid < fraDato) return false
-      if (tilDato && journalpost.journalpostOpprettetTid.slice(0, 10) > tilDato) return false
+    const { pageNumber = 1, pageSize = 100, cursor, fraDato, tilDato } = await request.json()
+    const alle = (await journalpostStore.søk()).filter((it) => {
+      if (fraDato && it.journalpostOpprettetTid < fraDato) return false
+      if (tilDato && it.journalpostOpprettetTid.slice(0, 10) > tilDato) return false
       return true
     })
-    const start = etter ? alle.findIndex((j) => j.journalpostId === etter) + 1 : 0
-    const side = alle.slice(start, start + første)
-    const sideInfo = {
-      sluttpeker: side[side.length - 1]?.journalpostId ?? null,
-      finnesNesteSide: start + første < alle.length,
-      antall: side.length,
-      totaltAntall: alle.length,
-    }
+    const start = cursor ? alle.findIndex((it) => it.journalpostId === cursor) + 1 : 0
+    const journalposter = alle.slice(start, start + pageSize)
     await delay(200)
-    return HttpResponse.json({ journalposter: side, sideInfo })
+    const hasNext = start + pageSize < alle.length
+    return HttpResponse.json({
+      journalposter,
+      cursor: journalposter[journalposter.length - 1]?.journalpostId ?? null,
+      pageNumber,
+      pageSize,
+      totalElements: alle.length,
+      totalPages: 1,
+      isFirst: true,
+      isLast: !hasNext,
+      hasPrevious: pageNumber > 1,
+      hasNext,
+    })
   }),
 
   http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {

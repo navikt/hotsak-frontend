@@ -1,7 +1,11 @@
-import useSWR, { type SWRResponse } from 'swr'
-import { http } from '../io/HttpClient.ts'
+import { useCallback, useState } from 'react'
+import useSWR from 'swr'
 
-import type { Journalpost } from '../types/types.internal.ts'
+import { type DataGridPaginationProps } from '../felleskomponenter/data/DataGrid.tsx'
+import { type Pageable, type PageRequest } from '../felleskomponenter/Page.ts'
+import { http } from '../io/HttpClient.ts'
+import { type HttpError } from '../io/HttpError.ts'
+import { type Journalpost } from '../types/types.internal.ts'
 
 export interface SideInfo {
   sluttpeker: string | null
@@ -10,49 +14,62 @@ export interface SideInfo {
   totaltAntall: number
 }
 
-export interface DokumentsøkRequest {
+export interface DokumentsøkRequest extends Partial<PageRequest> {
   fnr: string
-  første?: number
-  etter?: string | null
+  journalposttype?: string[]
+  journalstatus?: string[]
   fraDato?: string
   tilDato?: string
+
+  cursor?: string
 }
-export interface DokumentsøkResponse {
+
+export interface DokumentsøkResponse extends Pageable {
   journalposter: Journalpost[]
-  sideInfo?: SideInfo
+  cursor?: string
 }
 
-export interface useDokumentsøkResponse extends Omit<SWRResponse<DokumentsøkResponse>, 'data'> {
-  journalposter: Journalpost[]
-  sideInfo?: SideInfo
-}
+export function useDokumentsøk(
+  request?: DokumentsøkRequest,
+  configuration: { keepPreviousData: boolean } = { keepPreviousData: true }
+) {
+  const [pageCursors, setPageCursors] = useState<Map<number, string | undefined>>(() => new Map([[1, request?.cursor]]))
 
-type DokumentsøkKey = [string, string, number, string | null, string | undefined, string | undefined] | null
-
-export function useDokumentsøk({
-  fnr,
-  første = 100,
-  etter = null,
-  fraDato,
-  tilDato,
-  keepPreviousData = false,
-}: {
-  fnr?: string
-  første?: number
-  etter?: string | null
-  fraDato?: string
-  tilDato?: string
-  keepPreviousData?: boolean
-}): useDokumentsøkResponse {
-  const { data, ...rest } = useSWR<DokumentsøkResponse, unknown, DokumentsøkKey>(
-    fnr ? ['/api/dokumenter/sok', fnr, første, etter, fraDato, tilDato] : null,
-    ([url, fnr, første, etter, fraDato, tilDato]) =>
-      http.post<DokumentsøkRequest, DokumentsøkResponse>(url, { fnr, første, etter, fraDato, tilDato }),
-    { keepPreviousData }
+  const { data, ...rest } = useSWR<DokumentsøkResponse, HttpError, () => [string, DokumentsøkRequest] | null>(
+    () => (request?.fnr && pageCursors.has(request?.pageNumber ?? 1) ? ['/api/dokumenter/sok', request] : null),
+    async ([url, body]) =>
+      http.post<DokumentsøkRequest, DokumentsøkResponse>(url, {
+        ...body,
+        cursor: pageCursors.get(body.pageNumber ?? 1),
+      }),
+    {
+      ...configuration,
+      onSuccess(data) {
+        if (!data.hasNext || !data.cursor) return
+        setPageCursors((currentState) => {
+          const newState = new Map(currentState)
+          newState.set(data.pageNumber + 1, data.cursor)
+          return newState
+        })
+      },
+    }
   )
+
+  const pagination: DataGridPaginationProps = {
+    pageNumber: data?.pageNumber,
+    pageSize: data?.pageSize,
+    totalPages: data?.totalPages,
+  }
+
+  const reset = useCallback(() => setPageCursors(new Map([[1, request?.cursor]])), [request?.cursor])
+
   return {
-    journalposter: data?.journalposter ?? [],
-    sideInfo: data?.sideInfo,
+    journalposter: data?.journalposter ?? ingenJournalposter,
+    pagination,
+    totalElements: data?.totalElements ?? 0,
+    reset,
     ...rest,
   }
 }
+
+const ingenJournalposter: never[] = []

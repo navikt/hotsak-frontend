@@ -12,7 +12,7 @@ export function Fritekst(props: SpørsmålProps<IFritekst>) {
   } = props
   const name = joinToName(navn, sanitizeName(tekst), 'svar')
   const { register, formState } = useFormContext()
-  const error = get(formState.errors, name)
+  const error = get(formState.errors, name) as any // fixme
   return (
     <Textarea
       size={size}

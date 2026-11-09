@@ -5,6 +5,7 @@ import { RadioCard, RadioCardGroup } from '@navikt/ds-react/PREVIEW'
 import { HttpError } from '../io/HttpError.ts'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { type BrevmalInitialisering } from './breveditor/breveditorTyper.ts'
 import { GJELDENDE_STILARK_VERSJON } from './breveditor/html/byggDokument.ts'
 import {
@@ -30,7 +31,10 @@ export function NyttBrev({ oppgave, onOpprettet }: NyttBrevProps) {
   const [målform, setMålform] = useState<Målform>(Målform.BOKMÅL)
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const kanOppretteBrev = !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt
-  const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak
+  const { erIkkeProd } = useMiljø()
+  const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter(
+    (brevmal) => erIkkeProd || brevmal !== Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER
+  )
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     if (!valgtBrevmal) return

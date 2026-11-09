@@ -3,9 +3,11 @@ import { Box, Button, Heading, HStack, Tabs, Tag, VStack } from '@navikt/ds-reac
 import { type ReactNode, useState } from 'react'
 import { useMiljø } from '../utils/useMiljø.ts'
 
+import { useFlag } from '@unleash/toolbar/next'
 import { Strek } from '../felleskomponenter/Strek.tsx'
 import { Etikett, Tekst } from '../felleskomponenter/typografi.tsx'
 import { usePerson, UsePersonResponse } from '../personoversikt/usePerson.ts'
+import { FeatureToggle } from '../unleash/FeatureToggle.ts'
 import { formaterNavn, storForbokstavIOrd } from '../utils/formater.ts'
 import { isVedtaksbrev } from './brevSelectors.ts'
 import { type Brev, BrevmalTekst, type BrevmottakerResponse } from './brevTyper.ts'
@@ -30,6 +32,7 @@ export function BrevHeader({
   onSlettUtkast,
 }: BrevHeaderProps) {
   const { erIkkeProd } = useMiljø()
+  const erPilot = useFlag(FeatureToggle.journalforing) || erIkkeProd
   const [innstillingerÅpen, setInnstillingerÅpen] = useState(false)
   const { data } = useBrevmottakere(brev.find((b) => b.brevId === valgtBrevId)?.brevId)
   const erVedtaksbrevValgt = brev.some((b) => b.brevId === valgtBrevId && isVedtaksbrev(b))
@@ -40,27 +43,27 @@ export function BrevHeader({
 
   return (
     <Box borderRadius="12" marginBlock="space-0 space-4">
-      <Tabs value={valgtBrevId ?? ''} onChange={onVelgBrev} size="small">
-        <Tabs.List>
-          {brev.map((b) => (
-            <Tabs.Tab key={b.brevId} value={b.brevId} label={BrevmalTekst[b.brevmal]} />
-          ))}
-          {erIkkeProd && (
+      {erPilot && (
+        <Tabs value={valgtBrevId ?? ''} onChange={onVelgBrev} size="small">
+          <Tabs.List>
+            {brev.map((b) => (
+              <Tabs.Tab key={b.brevId} value={b.brevId} label={BrevmalTekst[b.brevmal]} />
+            ))}
             <Tabs.Tab
               key="nytt-utkast"
               value="nytt-utkast"
               label="Nytt utkast"
               icon={<PlusCircleIcon fontSize="1.5rem" />}
             />
-          )}
-        </Tabs.List>
-      </Tabs>
-      {valgtBrevId && valgtBrevId != 'nytt-utkast' && (
+          </Tabs.List>
+        </Tabs>
+      )}
+      {valgtBrevId && valgtBrevId != 'nytt-utkast' && handlinger && (
         <Box padding="space-8">
           <HStack justify="space-between">
             <HStack gap="space-4">
               <>
-                {erUtkastValgt && (
+                {erUtkastValgt && erPilot && (
                   <Button
                     variant="tertiary"
                     size="small"
@@ -69,6 +72,11 @@ export function BrevHeader({
                     icon={<ChevronDownIcon fontSize="1.3rem" />}
                   >
                     Innstillinger
+                  </Button>
+                )}
+                {kanRedigere && onSlettUtkast && !erPilot && (
+                  <Button variant="tertiary" size="small" onClick={onSlettUtkast}>
+                    Slett utkast
                   </Button>
                 )}
                 {flereMottakere && (
@@ -93,7 +101,7 @@ export function BrevHeader({
           onSlettUtkast={onSlettUtkast}
         />
       )}
-      <Strek style={{ marginBlock: 0 }} />
+      {handlinger && <Strek style={{ marginBlock: 0 }} />}
     </Box>
   )
 }
@@ -116,7 +124,6 @@ export function BrevHeaderInnstillinger({
   onSlettUtkast,
 }: BrevHeaderInnstillingerProps) {
   const vergemål = brukerPersonInfo?.personInfo?.vergemål || []
-  const { erIkkeProd } = useMiljø()
   const vergeNavn = vergemål
     .map((it) => it.navn)
     .filter((navn): navn is NonNullable<typeof navn> => !!navn)
@@ -129,7 +136,7 @@ export function BrevHeaderInnstillinger({
         <Heading level="2" size="xsmall">
           Innstillinger for brevet
         </Heading>
-        {vedtaksbrev && mottakere && erIkkeProd && (
+        {vedtaksbrev && mottakere && (
           <DelKopiMedFormidler brevId={valgtBrevId} mottakere={mottakere} kanRedigere={kanRedigere} />
         )}
         <Heading level="3" size="xsmall">

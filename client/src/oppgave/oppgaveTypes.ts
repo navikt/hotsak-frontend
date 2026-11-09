@@ -1,6 +1,6 @@
-import type { PageResponse } from '../felleskomponenter/Page.ts'
+import type { Pageable } from '../felleskomponenter/Page.ts'
 import type { Bydel, Enhet, Kommune, Personnavn } from '../types/hotlibs.ts'
-import type { Saksstatus, Saksbehandler, Sakstype } from '../types/types.internal'
+import type { Saksbehandler, Saksstatus, Sakstype } from '../types/types.internal'
 import type { IntervalString } from '../utils/dato.ts'
 
 /**
@@ -235,9 +235,8 @@ export interface FinnOppgaverRequest {
   pageSize?: number
 }
 
-export interface FinnOppgaverResponse extends PageResponse {
+export interface FinnOppgaverResponse extends Pageable {
   oppgaver: Oppgave[]
-  totalPages: number
 }
 
 export enum OppgaveTildelt {

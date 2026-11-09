@@ -1,13 +1,15 @@
-import { HStack, Pagination, Skeleton, Table, type TableProps } from '@navikt/ds-react'
+import { HStack, Pagination, Skeleton, Table, ToggleGroup, type TableProps } from '@navikt/ds-react'
 import clsx from 'clsx'
-import { type Key, type ReactNode, useMemo, useState } from 'react'
+import { useMemo, useState, type Key, type ReactNode } from 'react'
 
+import { ToggleGroupItem } from '@navikt/ds-react/ToggleGroup'
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
 import { FormatDateTime } from '../format/FormatDateTime.tsx'
+import { type PageRequest } from '../Page.ts'
 import classes from './DataGrid.module.css'
 import { type DataGridFilter } from './DataGridFilter.ts'
-import type { DataGridFilterAction } from './DataGridFilterContext.ts'
+import { type DataGridFilterAction } from './DataGridFilterContext.ts'
 import { DataGridFilterMenu } from './DataGridFilterMenu.tsx'
 
 export interface DataGridColumn<T extends object> {
@@ -33,7 +35,14 @@ export interface DataGridColumn<T extends object> {
   renderCell?(row: T): ReactNode
 }
 
-export interface DataGridProps<T extends object, K extends string = string> extends TableProps {
+export interface DataGridPaginationProps extends Partial<PageRequest> {
+  totalPages?: number
+  pageSizeSelect?: boolean
+  onPageChange?(pageRequest: PageRequest): void
+}
+
+export interface DataGridProps<T extends object, K extends string = string>
+  extends DataGridPaginationProps, TableProps {
   rows: ReadonlyArray<T>
   columns: ReadonlyArray<DataGridColumn<T>>
   scope?: string
@@ -41,10 +50,6 @@ export interface DataGridProps<T extends object, K extends string = string> exte
   emptyMessage?: string
   loading?: boolean
   validating?: boolean
-
-  pagination?: boolean
-  pageNumber?: number
-  pageSize?: number
 
   filterMode?: 'matchet' | 'alle'
 
@@ -64,10 +69,12 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     textSize,
     emptyMessage = 'Ingen data funnet',
     loading,
-    pagination,
-    validating,
     pageNumber = 1,
-    // pageSize = 50,
+    pageSize = 20,
+    totalPages = 0,
+    pageSizeSelect,
+    onPageChange,
+    validating,
     keyFactory,
     renderContent,
     onFilterChange,
@@ -175,16 +182,54 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
           }
         })}
       </Table.Body>
-      {pagination && (
+      {totalPages > 0 && (
         <tfoot>
           <Table.Row>
             <Table.DataCell colSpan={colSpan} textSize={textSize}>
-              <Pagination page={pageNumber} count={20} size="xsmall" prevNextTexts />
+              <HStack gap="space-8" align="center" justify="center">
+                <Pagination
+                  page={pageNumber}
+                  count={totalPages}
+                  onPageChange={onPageChange ? (pageNumber) => onPageChange({ pageNumber, pageSize }) : undefined}
+                  size="xsmall"
+                  prevNextTexts
+                />
+                {pageSizeSelect && (
+                  <>
+                    <div>|</div>
+                    <PageSizeSelect pageNumber={pageNumber} pageSize={pageSize} onPageChange={onPageChange} />
+                  </>
+                )}
+              </HStack>
             </Table.DataCell>
           </Table.Row>
         </tfoot>
       )}
     </Table>
+  )
+}
+
+interface PageSizeSelectProps extends PageRequest {
+  onPageChange?(pageRequest: PageRequest): void
+}
+
+function PageSizeSelect(props: PageSizeSelectProps) {
+  const { pageNumber, pageSize, onPageChange } = props
+  return (
+    <ToggleGroup
+      value={pageSize?.toString()}
+      onChange={(value) => {
+        if (onPageChange) onPageChange({ pageNumber, pageSize: Number(value) })
+      }}
+      size="xsmall"
+      label="Antall"
+      className={classes.pageSizeSelect}
+    >
+      <ToggleGroupItem value="20" label="20" />
+      <ToggleGroupItem value="40" label="40" />
+      <ToggleGroupItem value="60" label="60" />
+      <ToggleGroupItem value="1000" label="Maks" />
+    </ToggleGroup>
   )
 }
 

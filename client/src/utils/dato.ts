@@ -10,6 +10,7 @@ import {
   formatISODuration,
   isDate,
   isToday,
+  isValid,
   parseISO,
   setDefaultOptions,
   toDate,
@@ -85,18 +86,50 @@ export function beregnAlder(fødselsdato: Dato) {
 }
 
 export type IntervalString = `${string}/${string}`
-export function intervalString(fra: Date | Duration | string, til: Date | Duration | string): IntervalString {
+export function intervalString(
+  fra: DateRange | Date | Duration | string,
+  til?: Date | Duration | string
+): IntervalString {
+  if (isDateRange(fra)) {
+    const from = fra.from?.toISOString() ?? ''
+    const to = fra.to?.toISOString() ?? ''
+    return `${from}/${to}`
+  }
+
   if (isDate(fra)) {
     fra = fra.toISOString()
   } else if (isDuration(fra)) {
     fra = formatISODuration(fra)
+  } else if (!fra) {
+    fra = ''
   }
+
   if (isDate(til)) {
     til = til.toISOString()
   } else if (isDuration(til)) {
     til = formatISODuration(til)
+  } else if (!til) {
+    til = ''
   }
+
   return `${fra}/${til}`
+}
+
+export interface DateRange {
+  from?: Date
+  to?: Date
+}
+
+export function isDateRange(value: unknown): value is DateRange {
+  if (value == null || typeof value !== 'object') {
+    return false
+  }
+  const range = value as Record<string, unknown>
+  return (
+    ('from' in range || 'to' in range) &&
+    (range.from === undefined || (isDate(range.from) && isValid(range.from))) &&
+    (range.to === undefined || (isDate(range.to) && isValid(range.to)))
+  )
 }
 
 function isDuration(value: unknown): value is Duration {

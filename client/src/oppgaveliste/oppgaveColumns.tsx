@@ -1,6 +1,7 @@
 import { ClockDashedIcon, PersonCircleIcon, TimerPauseIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
+import { BodyShort, Box, HStack, Link, Tag, type TagProps, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
+import { Link as ReactRouterLink } from 'react-router'
 
 import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilter.ts'
@@ -12,15 +13,15 @@ import {
   Oppgavetype,
   OppgavetypeLabel,
 } from '../oppgave/oppgaveTypes.ts'
-import { SaksstatusLabel, Saksstatus } from '../types/types.internal.ts'
+import { Saksstatus, SaksstatusLabel } from '../types/types.internal.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
-import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
-import classes from './oppgaveColumns.module.css'
-import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
-import { ÅpneOppgave } from './ÅpneOppgave.tsx'
-import { OppgavetypeÅpneOppgaveCell } from './OppgavetypeÅpneOppgaveCell.tsx'
 import { EnhetensOppgaverMenu } from './EnhetensOppgaverMenu.tsx'
 import { MedarbeidersOppgaverMenu } from './MedarbeidersOppgaverMenu.tsx'
+import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
+import classes from './oppgaveColumns.module.css'
+import { OppgavetypeÅpneOppgaveCell } from './OppgavetypeÅpneOppgaveCell.tsx'
+import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
+import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 
 type OppgaveColumns = {
   [K in string]: DataGridColumn<Oppgave> & { field: K }
@@ -46,6 +47,17 @@ export const oppgaveColumns = {
     width: 85,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
+    },
+  },
+  gåTilOppgave: {
+    field: 'gåTilOppgave',
+    width: 85,
+    renderCell(row) {
+      return (
+        <Link as={ReactRouterLink} to={`/oppgave/${row.oppgaveId}`} style={{ whiteSpace: 'nowrap' }}>
+          Gå til oppgaven
+        </Link>
+      )
     },
   },
   oppgaveId: {
@@ -196,7 +208,7 @@ export const oppgaveColumns = {
         case Oppgaveprioritet.KRITISK:
           return <Tag {...tagProps} data-color="danger" variant="strong" />
         default:
-          return prioritet
+          return <Box paddingBlock="space-2">{prioritet}</Box>
       }
     },
   },
@@ -296,17 +308,10 @@ export const oppgaveColumns = {
         ['(Tomme)', '(Tomme)'],
         [Saksstatus.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
         [Saksstatus.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-        [Saksstatus.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
         [Saksstatus.AVVENTER_GODKJENNER, 'Til godkjenning'],
         [Saksstatus.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
-        /*
-        [OppgaveStatusType.SENDT_GOSYS, 'Overført til Gosys'],
-        [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
-        [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
-        [OppgaveStatusType.AVVIST, 'Avvist'],
-        [OppgaveStatusType.HENLAGT, 'Henlagt'],
-        [OppgaveStatusType.ANNULERT, 'Annulert'],
-        */
+        [Saksstatus.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
+        [Saksstatus.FERDIGBEHANDLET, 'Ferdigbehandlet'],
       ]),
       sortOptions: false,
     },

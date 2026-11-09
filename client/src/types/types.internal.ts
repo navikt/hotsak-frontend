@@ -394,6 +394,7 @@ export interface Journalpost {
   journalstatus: JournalpostStatusType
   journalposttype: 'I' | 'U' | 'N'
   dokumenter: Dokument[]
+  innsynsregel: OppgaveKodeverk
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
   sak?: JournalpostSak | null

@@ -69,6 +69,7 @@ export function lagJournalpost(
       fnr: fnrInnsender,
       navn: fnrInnsender === fnrBruker ? brukerNavn : lagTilfeldigNavn(),
     },
+    innsynsregel: { kode: 'BRUK_STANDARDREGLER', term: 'Standardreglene avgjør om dokumentet vises' },
   }
 }
 

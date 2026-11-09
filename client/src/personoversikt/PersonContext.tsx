@@ -1,4 +1,5 @@
-import { createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useState } from 'react'
+import { createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useMemo, useState } from 'react'
+import { useLocation } from 'react-router'
 
 interface PersonContextType {
   fodselsnummer: string
@@ -10,20 +11,21 @@ const initialState: PersonContextType = {
   setFodselsnummer() {},
 }
 
-const PersonContext = createContext<PersonContextType>(initialState)
+export const PersonContext = createContext<PersonContextType>(initialState)
 PersonContext.displayName = 'Person'
 
-function PersonProvider({ children }: { children: ReactNode }) {
-  const [fodselsnummer, setFodselsnummer] = useState(initialState.fodselsnummer)
-  return <PersonContext value={{ fodselsnummer, setFodselsnummer }}>{children}</PersonContext>
+export function PersonProvider({ children }: { children: ReactNode }) {
+  const location = useLocation()
+  const fnr = new URLSearchParams(location.search).get('fnr') ?? initialState.fodselsnummer
+  const [fodselsnummer, setFodselsnummer] = useState(fnr)
+  const value = useMemo(() => ({ fodselsnummer, setFodselsnummer }), [fodselsnummer])
+  return <PersonContext value={value}>{children}</PersonContext>
 }
 
-function usePersonContext(): PersonContextType {
+export function usePersonContext(): PersonContextType {
   const context = useContext(PersonContext)
   if (!context) {
     throw new Error('usePersonContext must be used within a PersonProvider')
   }
   return context
 }
-
-export { PersonContext, PersonProvider, usePersonContext }

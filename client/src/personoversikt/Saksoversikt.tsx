@@ -143,6 +143,7 @@ const columns: ReadonlyArray<DataGridColumn<SaksoversiktSak | SaksoversiktBarneb
   {
     field: 'behandletAv',
     header: 'Saksbehandler',
+    width: 250,
   },
   {
     field: 'behandlingsutfallTidspunkt',

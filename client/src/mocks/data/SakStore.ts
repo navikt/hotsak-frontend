@@ -590,6 +590,7 @@ export class SakStore extends Dexie {
       isFerdigstilt: false,
       isJournalført: false,
       isDistribuert: false,
+      kanAngreBrev: false,
       distribusjon: [],
       serienummer: 0,
       data,

@@ -221,7 +221,7 @@ function PageSizeSelect(props: PageSizeSelectProps) {
       onChange={(value) => {
         if (onPageChange) onPageChange({ pageNumber, pageSize: Number(value) })
       }}
-      size="xsmall"
+      size="small"
       label="Antall"
       className={classes.pageSizeSelect}
     >

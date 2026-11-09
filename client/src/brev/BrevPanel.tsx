@@ -41,7 +41,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const [angreSendingAvBrevDialogOpen, setAngreSendingAvBrevDialogOpen] = useState(false)
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
-  const [nå, setNå] = useState(Date.now)
   const flushLagringRef = useRef<(() => Promise<void>) | undefined>(undefined)
   const bytterBrevRef = useRef(false)
   const { showErrorToast } = useToast()
@@ -63,12 +62,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const harGyldigDistribusjonstidspunkt = Number.isFinite(distribusjonstidspunkt)
   const gyldigDistribueresEtter = harGyldigDistribusjonstidspunkt ? underveisbrevDistribueresEtter : undefined
 
-  const kanAngreBrev =
-    harAktivDistribusjon &&
-    harGyldigDistribusjonstidspunkt &&
-    distribusjonstidspunkt > nå &&
-    !oppgaveErAvsluttet &&
-    oppgaveErUnderBehandlingAvInnloggetAnsatt
+  const kanAngreBrev = valgtBrev?.kanAngreBrev && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt
 
   const kanRedigere =
     !!valgtBrev &&
@@ -87,17 +81,6 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
       setValgtBrevId(initialBrevId)
     }
   }, [initialBrevId])
-
-  useEffect(() => {
-    if (!underveisbrevDistribueresEtter) return
-
-    const frist = Date.parse(underveisbrevDistribueresEtter)
-    if (!Number.isFinite(frist)) return
-
-    const timeoutId = window.setTimeout(() => setNå(Date.now()), Math.max(0, frist - Date.now()))
-
-    return () => window.clearTimeout(timeoutId)
-  }, [underveisbrevDistribueresEtter])
 
   const handleVelgBrev = async (brevId: string) => {
     if (bytterBrevRef.current || brevId === aktivtBrevId) return

@@ -149,6 +149,7 @@ export interface Brev<T extends Brevdata = Brevdata> extends Brevutkast<T> {
   isFerdigstilt: boolean
   isJournalført: boolean
   isDistribuert: boolean
+  kanAngreBrev: boolean
   distribusjon: Brevdistribusjon[]
   serienummer: number
 }

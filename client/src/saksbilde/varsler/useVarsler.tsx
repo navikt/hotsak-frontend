@@ -1,6 +1,7 @@
 import { BehovsmeldingType, LeveringTilleggsinfo, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
 import { Varsel } from '../../types/types.internal'
 import { useBehovsmelding } from '../useBehovsmelding'
+import { useMiljø } from '../../utils/useMiljø'
 
 interface VarslerDataResponse {
   harAnnenLeveringsadresse: boolean
@@ -15,7 +16,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
   const { behovsmelding } = useBehovsmelding()
 
   const beskrivelser: string[] = []
-
+  const { erProd } = useMiljø()
   const erSøknad = behovsmelding?.type === BehovsmeldingType.SØKNAD
   const harAnnenLeveringsadresse =
     erSøknad && behovsmelding?.levering?.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE
@@ -45,7 +46,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
   }
 
   // Todo: Denne kan fjernes hvis vi lanserer modal med muklighet til å redigere og sende kontaktinformasjon
-  if (harAnnenKontaktperson) {
+  if (erProd && harAnnenKontaktperson) {
     beskrivelser.push('Det er en annen kontaktperson enn hjelpemiddelformidler. Denne må registreres.')
   }
 

@@ -88,7 +88,16 @@ export function JournalføringV2Skjema({
     },
   })
 
-  const { handleSubmit, control, setValue, getValues, trigger, register } = form
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    getValues,
+    trigger,
+    register,
+    formState: { isSubmitting },
+  } = form
+  const isJournalfører = isSubmitting || journalfør.isMutating
 
   useEffect(() => {
     register('mottattDato')
@@ -214,7 +223,7 @@ export function JournalføringV2Skjema({
       </HStack>
 
       <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate className={classes.form}>
+        <form onSubmit={(e) => e.preventDefault()} noValidate className={classes.form}>
           <VStack gap="space-16" className={classes.innhold}>
             <div>
               <HStack gap="space-12" paddingBlock="space-0">
@@ -318,12 +327,19 @@ export function JournalføringV2Skjema({
             <StickyHStack align="center" justify="start">
               <HStack gap="space-4" paddingInline="space-16" paddingBlock="space-8">
                 <Button
-                  type={sakType === 'eksisterende' ? 'button' : 'submit'}
+                  type="button"
                   variant="primary"
                   size="small"
-                  loading={journalfør.isMutating}
-                  disabled={journalfør.isMutating}
-                  onClick={sakType === 'eksisterende' ? onSubmitKobleTilSak : () => setVisDokumenttittelFeil(true)}
+                  loading={isJournalfører}
+                  disabled={isJournalfører}
+                  onClick={async () => {
+                    if (sakType === 'eksisterende') {
+                      await onSubmitKobleTilSak()
+                    } else {
+                      setVisDokumenttittelFeil(true)
+                      await handleSubmit(onSubmit)()
+                    }
+                  }}
                 >
                   {sakType === 'eksisterende' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
                 </Button>

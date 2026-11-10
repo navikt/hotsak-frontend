@@ -88,6 +88,11 @@ function PartFelt({ label, srLabel, inputLabel, velgLabel, fnr, kanRedigere, par
                   size="small"
                   value={part.inputFnr}
                   onChange={(e) => part.setInputFnr(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key !== 'Enter' || e.nativeEvent.isComposing) return
+                    e.preventDefault()
+                    if (!part.laster) part.velg()
+                  }}
                   autoFocus
                 />
                 <HStack gap="space-4">

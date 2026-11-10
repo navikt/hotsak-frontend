@@ -125,6 +125,24 @@ describe('JournalføringParter', () => {
     expect(screen.queryByRole('textbox', { name: 'Fødselsnummer' })).not.toBeInTheDocument()
   })
 
+  it('velger bruker med Enter uten å sende inn omkringliggende skjema', async () => {
+    vi.mocked(http.post).mockResolvedValue(nyPerson)
+    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault())
+    const user = userEvent.setup()
+    render(
+      <form onSubmit={onSubmit}>
+        <TestParter />
+      </form>
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Endre bruker' }))
+    await user.clear(screen.getByRole('textbox', { name: 'Fødselsnummer' }))
+    await user.type(screen.getByRole('textbox', { name: 'Fødselsnummer' }), `${nyttFnr}{Enter}`)
+
+    await waitFor(() => expect(screen.getByRole('status', { name: 'Aktivt fødselsnummer' })).toHaveTextContent(nyttFnr))
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
   it('beholder aktiv person ved mislykket oppslag', async () => {
     vi.mocked(http.post).mockRejectedValue(new Error('Person ikke funnet'))
     const user = userEvent.setup()

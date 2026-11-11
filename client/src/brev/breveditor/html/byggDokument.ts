@@ -72,14 +72,14 @@ export function byggHeaderHtml(
     NAV_LOGO_SVG +
     `<div class="header-row">
         <dl>
-          ${vergeNavn ? `<dt>${målformTekster.verge}:</dt><dd>${vergeNavn}</dd>` : ''}
+          ${vergeNavn ? `<dt>${målformTekster.verge}:</dt><dd>${vergeNavn}</dd><br />` : ''}
           <dt>${vergeNavn ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
           <dd>${metadata.brukersNavn}</dd>
           <dt>${målformTekster.fødselsnummer}:</dt>
           <dd>${metadata.brukersFødselsnummer}</dd>
-          ${formidlerMedKopi ? `<dt>${målformTekster.kopiTilHjelpemiddelformidler}:</dt><dd>${formidlerNavn}</dd>` : ''}
           <dt>${målformTekster.saksnummer}:</dt>
           <dd>${metadata.saksnummer}</dd>
+          ${formidlerMedKopi ? `<br /><dt>${målformTekster.kopiTilHjelpemiddelformidler}:</dt><dd>${formidlerNavn}</dd>` : ''}
         </dl>
         <span>${metadata.brevOpprettet}</span>
       </div>

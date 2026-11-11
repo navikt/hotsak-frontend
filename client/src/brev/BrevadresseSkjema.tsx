@@ -36,6 +36,13 @@ export function BrevadresseSkjema({
   const [poststed, setPoststed] = useState(initiellAdresse?.poststed ?? '')
   const [feil, setFeil] = useState<Feil>({})
 
+  function handleFormidlerNavnChange(navn: string) {
+    if (!adresselinje2.trim() || adresselinje2 === `v/ ${formidlerNavn}`) {
+      setAdresselinje2(navn.trim() ? `v/ ${navn}` : '')
+    }
+    setFormidlerNavn(navn)
+  }
+
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     const nyeFeil: Feil = {}
@@ -67,7 +74,7 @@ export function BrevadresseSkjema({
             size="small"
             label="Formidlers navn"
             value={formidlerNavn}
-            onChange={(e) => setFormidlerNavn(e.target.value)}
+            onChange={(e) => handleFormidlerNavnChange(e.target.value)}
             error={feil.formidlerNavn}
           />
         )}

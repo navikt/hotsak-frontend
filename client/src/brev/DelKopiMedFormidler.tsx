@@ -75,14 +75,14 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
             <HelpText title="Vurder å dele kopi med formidler">
               {!digitalBehovsmelding ? (
                 <p>
-                  Hvis du deler en kopi av brevet med formidler, vil en kopi av brevet distribueres til formidleren. Du
-                  må selv vurdere om formidler skal motta en kopi av brevet.
+                  Du må selv vurdere om formidler skal motta en kopi av brevet. Hvis du deler en kopi av brevet med
+                  formidler, vil en kopi av brevet distribueres til formidleren.
                 </p>
               ) : (
                 <p>
-                  Hvis du deler en kopi av brevet med formidler, vil det bli synlig på formidler sine sider i 4 uker fra
-                  vedtaksdatoen i tillegg til å distribueres som brev. Du må selv vurdere om formidler skal motta en
-                  kopi av brevet.
+                  Du må selv vurdere om formidler skal motta en kopi av brevet. Hvis du deler en kopi av brevet med
+                  formidler, vil det bli synlig på formidler sine innloggede sider i 4 uker fra vedtaksdatoen i tillegg
+                  til å distribueres som brev.
                 </p>
               )}
             </HelpText>

@@ -12,12 +12,12 @@ const adresse: Veiadresse = {
   poststed: 'Oslo',
 }
 
-function renderSkjema(erEksisterendeMottaker: boolean, adresselinje2?: string) {
+function renderSkjema(erEksisterendeMottaker: boolean, adresselinje2?: string, formidlerNavn = 'Ola Nordmann') {
   const onLagre = vi.fn()
   render(
     <BrevadresseSkjema
       initiellAdresse={{ ...adresse, adresselinje2 }}
-      formidlerNavn="Ola Nordmann"
+      formidlerNavn={formidlerNavn}
       erEksisterendeMottaker={erEksisterendeMottaker}
       isLoading={false}
       onLagre={onLagre}
@@ -29,6 +29,36 @@ function renderSkjema(erEksisterendeMottaker: boolean, adresselinje2?: string) {
 }
 
 describe('BrevadresseSkjema', () => {
+  it.each([true, false])(
+    'updates an empty address line 2 as the name is typed for existing recipient %s',
+    async (erEksisterendeMottaker) => {
+      const user = userEvent.setup()
+      renderSkjema(erEksisterendeMottaker, '', '')
+      const navnefelt = screen.getByRole('textbox', { name: 'Formidlers navn' })
+      const adresselinje2 = screen.getByRole('textbox', { name: 'Adresselinje 2 (valgfri)' })
+
+      await user.type(navnefelt, 'Kari Nordmann')
+      expect(adresselinje2).toHaveValue('v/ Kari Nordmann')
+
+      await user.clear(navnefelt)
+      expect(adresselinje2).toHaveValue('')
+    }
+  )
+
+  it('preserves a manually edited address line 2 when the name changes', async () => {
+    const user = userEvent.setup()
+    renderSkjema(false)
+    const adresselinje2 = screen.getByRole('textbox', { name: 'Adresselinje 2 (valgfri)' })
+    await user.clear(adresselinje2)
+    await user.type(adresselinje2, 'Avdeling 2')
+
+    const navnefelt = screen.getByRole('textbox', { name: 'Formidlers navn' })
+    await user.clear(navnefelt)
+    await user.type(navnefelt, 'Kari Nordmann')
+
+    expect(adresselinje2).toHaveValue('Avdeling 2')
+  })
+
   it.each([undefined, ''])(
     'preserves an empty address line 2 (%s) when editing and saving unrelated changes',
     async (adresselinje2) => {

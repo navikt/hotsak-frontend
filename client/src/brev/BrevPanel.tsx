@@ -264,7 +264,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         {valgtBrev && oppgave && sendBrevDialogOpen && (
           <SendBrevDialog
             oppgave={oppgave}
-            brevId={valgtBrev.brevId}
+            brev={valgtBrev}
             open={sendBrevDialogOpen}
             onClose={() => setSendBrevDialogOpen(false)}
           />

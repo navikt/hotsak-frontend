@@ -28,6 +28,11 @@ export function selectBehandlingstypeTerm(it: Oppgave): string {
   return it.kategorisering.behandlingstype?.term || OPPGAVE_FILTER_OPTION_TOMME
 }
 
+const ingenNøkkelord: readonly string[] = []
+export function selectNøkkelord(it: Oppgave): ReadonlyArray<string> {
+  return it.nøkkelord || ingenNøkkelord
+}
+
 export function selectMappenavn(it: Oppgave): string {
   return it.mappenavn || OPPGAVE_FILTER_OPTION_TOMME
 }

@@ -176,6 +176,26 @@ export const oppgaveColumns = {
       return storForbokstavIOrd(beskrivelse)
     },
   },
+  nøkkelord: {
+    field: 'nøkkelord',
+    header: 'Nøkkelord',
+    width: 200,
+    filter: {
+      options: new Set(),
+      sortOptions: true,
+    },
+    renderCell({ nøkkelord = [] }) {
+      return (
+        <HStack gap="space-4" wrap>
+          {nøkkelord.map((it) => (
+            <Tag key={it} data-color="neutral" variant="outline" size="xsmall">
+              {it}
+            </Tag>
+          ))}
+        </HStack>
+      )
+    },
+  },
   mappenavn: {
     field: 'mappenavn',
     header: 'Mappe',

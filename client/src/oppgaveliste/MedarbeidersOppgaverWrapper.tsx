@@ -23,6 +23,7 @@ const defaultColumns: DefaultOppgaveColumns = [
   'behandlingstema',
   'behandlingstype',
   'beskrivelse',
+  'nøkkelord',
   'mappenavn',
   'prioritet',
   'innsenderNavn',

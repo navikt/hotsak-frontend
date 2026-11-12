@@ -10,6 +10,7 @@ import {
   selectBrukerKommuneNavn,
   selectInnsenderNavn,
   selectMappenavn,
+  selectNøkkelord,
   selectOppgavetype,
   selectTildeltSaksbehandlerNavn,
 } from './oppgaveSelectors.ts'
@@ -26,15 +27,16 @@ export function useOppgaveFilterOptions(oppgaver: Oppgave[]): OppgaveFilterOptio
   const isSaksbehandlerBarnebriller = useIsSaksbehandlerBarnebriller()
   return useMemo(() => {
     return {
-      saksbehandler: toSet(oppgaver, selectTildeltSaksbehandlerNavn),
+      saksbehandler: mapToSet(oppgaver, selectTildeltSaksbehandlerNavn),
       oppgavetype: isSaksbehandlerBarnebriller
         ? oppgavetypeOptionsBarnebriller
-        : toDataGridFilterOptions(OppgavetypeLabel, ...toSet(oppgaver, selectOppgavetype)),
-      behandlingstema: toSet(oppgaver, selectBehandlingstemaTerm),
-      behandlingstype: toSet(oppgaver, selectBehandlingstypeTerm),
-      mappenavn: toSet(oppgaver, selectMappenavn),
-      innsenderNavn: toSet(oppgaver, selectInnsenderNavn),
-      kommune: toSet(oppgaver, selectBrukerKommuneNavn),
+        : toDataGridFilterOptions(OppgavetypeLabel, ...mapToSet(oppgaver, selectOppgavetype)),
+      behandlingstema: mapToSet(oppgaver, selectBehandlingstemaTerm),
+      behandlingstype: mapToSet(oppgaver, selectBehandlingstypeTerm),
+      nøkkelord: flatMapToSet(oppgaver, selectNøkkelord),
+      mappenavn: mapToSet(oppgaver, selectMappenavn),
+      innsenderNavn: mapToSet(oppgaver, selectInnsenderNavn),
+      kommune: mapToSet(oppgaver, selectBrukerKommuneNavn),
     }
   }, [oppgaver, isSaksbehandlerBarnebriller])
 }
@@ -47,10 +49,10 @@ const oppgavetypeOptionsBarnebriller = toDataGridFilterOptions(
   Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
 )
 
-function toSet<T, R>(items: T[], selector: (item: T) => R): Set<R> {
-  const destination = new Set<R>()
-  items.forEach((item) => {
-    destination.add(selector(item))
-  })
-  return destination
+function mapToSet<T, R>(items: ReadonlyArray<T>, selector: (item: T) => R): Set<R> {
+  return new Set(items.map(selector))
+}
+
+function flatMapToSet<T, R>(items: ReadonlyArray<T>, selector: (item: T) => ReadonlyArray<R>): Set<R> {
+  return new Set(items.flatMap(selector))
 }

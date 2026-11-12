@@ -1,5 +1,4 @@
 import { DatePicker, useDatepicker } from '@navikt/ds-react'
-import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
@@ -10,23 +9,23 @@ import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from 
 import { type Oppgave } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 
+const today = new Date()
+
 export function FortsettBehandlingModal({ oppgave }: { oppgave: Oppgave }) {
   const { åpenModal } = useOppgaveContext()
   const lukkModal = useOppgaveLukkModalHandler()
 
-  const today = useMemo(() => new Date(), [])
   const form = useForm({
     defaultValues: {
-      fristFerdigstillelse: today,
+      fristDato: today,
     },
   })
 
-  const { datepickerProps: datepickerPropsFristFerdigstillelse, inputProps: inputPropsFristFerdigstillelse } =
-    useDatepicker({
-      fromDate: today,
-      defaultSelected: today,
-      onDateChange: (date) => form.setValue('fristFerdigstillelse', date ?? today),
-    })
+  const { datepickerProps: datepickerPropsFristDato, inputProps: inputPropsFristDato } = useDatepicker({
+    fromDate: today,
+    defaultSelected: today,
+    onDateChange: (date) => form.setValue('fristDato', date ?? today),
+  })
 
   const { endreOppgave } = useOppgaveActions(oppgave)
   const { logOppgaveGjenopptatt } = useUmami()
@@ -34,7 +33,7 @@ export function FortsettBehandlingModal({ oppgave }: { oppgave: Oppgave }) {
   const handleSubmit = form.handleSubmit(async (data) => {
     await endreOppgave.trigger({
       aktivDato: tilLocalDateString(today),
-      fristFerdigstillelse: tilLocalDateString(data.fristFerdigstillelse),
+      fristDato: tilLocalDateString(data.fristDato),
     })
     logOppgaveGjenopptatt()
     showSuccessToast('Oppgaven ble gjenopptatt')
@@ -50,8 +49,8 @@ export function FortsettBehandlingModal({ oppgave }: { oppgave: Oppgave }) {
         submitButtonLabel="Fortsett behandling"
         onSubmit={handleSubmit}
       >
-        <DatePicker {...datepickerPropsFristFerdigstillelse}>
-          <DatePicker.Input {...inputPropsFristFerdigstillelse} label="Oppdatert frist" size="small" />
+        <DatePicker {...datepickerPropsFristDato}>
+          <DatePicker.Input {...inputPropsFristDato} label="Oppdatert frist" size="small" />
         </DatePicker>
       </FormModal>
     </FormProvider>

@@ -185,8 +185,8 @@ export class OppgaveStore extends Dexie {
       changes.aktivDato = request.aktivDato
       changes.isPåVent = isFuture(request.aktivDato)
     }
-    if (request.fristFerdigstillelse) {
-      changes.fristFerdigstillelse = request.fristFerdigstillelse
+    if (request.fristDato) {
+      changes.fristDato = request.fristDato
     }
     if (request.mappeId !== undefined) {
       changes.mappeId = request.mappeId ?? undefined
@@ -243,10 +243,10 @@ export class OppgaveStore extends Dexie {
         return opprettetTidspunkt >= fra && opprettetTidspunkt <= til
       })
       .sort((a, b) => {
-        let key: 'fristFerdigstillelse' | 'opprettetTidspunkt' = 'fristFerdigstillelse'
+        let key: 'fristDato' | 'opprettetTidspunkt' = 'fristDato'
         switch (request.sorteringsfelt) {
           case 'FRIST':
-            key = 'fristFerdigstillelse'
+            key = 'fristDato'
             break
           case 'OPPRETTET_TIDSPUNKT':
             key = 'opprettetTidspunkt'

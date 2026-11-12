@@ -22,6 +22,7 @@ const defaultColumns: DefaultOppgaveColumns = [
   'behandlingstema',
   'behandlingstype',
   'beskrivelse',
+  'nøkkelord',
   'mappenavn',
   'prioritet',
   'innsenderNavn',
@@ -30,6 +31,6 @@ const defaultColumns: DefaultOppgaveColumns = [
   'kommune',
   ['saksstatus', false],
   'opprettetTidspunkt',
-  'fristFerdigstillelse',
+  'fristDato',
   'enhetensOppgaverMenu',
 ]

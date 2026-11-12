@@ -21,7 +21,7 @@ export interface EndreOppgavetildelingRequest {
 export interface EndreOppgaveRequest {
   behandlingstema?: string
   aktivDato?: string
-  fristFerdigstillelse?: string
+  fristDato?: string
   kommentar?: string
   mappeId?: string | null
 }

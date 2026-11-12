@@ -16,6 +16,17 @@ export class DataGridCollection<T extends object> {
     return new DataGridCollection(this.items.filter((item) => filter.values.has(selector(item))))
   }
 
+  filterByAny<R extends DataGridFilterValue>(
+    selector: (item: T) => ReadonlyArray<R> | null | undefined,
+    filter?: DataGridFilterValues<R>
+  ): DataGridCollection<T> {
+    const values = filter?.values
+    if (values == null || !values.size) return this
+    return new DataGridCollection(
+      this.items.filter((item) => (selector(item) ?? []).some((value) => values.has(value)))
+    )
+  }
+
   toSorted(comparator?: Comparator<T>): DataGridCollection<T> {
     if (!comparator) return this
     return new DataGridCollection(this.items.toSorted(comparator))

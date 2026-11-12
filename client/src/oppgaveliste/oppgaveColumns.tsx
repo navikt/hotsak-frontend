@@ -336,7 +336,7 @@ export const oppgaveColumns = {
     sortKey: 'fristFerdigstillelse',
     width: 130,
     renderCell(row) {
-      const { fristFerdigstillelse, ferdigstiltTidspunkt } = row
+      const { fristDato: fristFerdigstillelse, ferdigstiltTidspunkt } = row
       if (!fristFerdigstillelse) return null
       return (
         <HStack align="center" gap="space-8" wrap={false}>

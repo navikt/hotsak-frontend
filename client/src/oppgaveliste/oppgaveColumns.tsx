@@ -188,7 +188,7 @@ export const oppgaveColumns = {
       return (
         <HStack gap="space-4" wrap>
           {nøkkelord.map((it) => (
-            <Tag key={it} data-color="neutral" variant="outline" size="xsmall">
+            <Tag key={it} data-color="neutral" variant="outline" size="small">
               {it}
             </Tag>
           ))}

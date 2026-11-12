@@ -330,18 +330,18 @@ export const oppgaveColumns = {
     width: 120,
     formatDateTime: true,
   },
-  fristFerdigstillelse: {
-    field: 'fristFerdigstillelse',
+  fristDato: {
+    field: 'fristDato',
     header: 'Frist',
-    sortKey: 'fristFerdigstillelse',
+    sortKey: 'fristDato',
     width: 130,
     renderCell(row) {
-      const { fristDato: fristFerdigstillelse, ferdigstiltTidspunkt } = row
-      if (!fristFerdigstillelse) return null
+      const { fristDato, ferdigstiltTidspunkt } = row
+      if (!fristDato) return null
       return (
         <HStack align="center" gap="space-8" wrap={false}>
-          <FormatDate date={fristFerdigstillelse} />
-          {!ferdigstiltTidspunkt && isBefore(fristFerdigstillelse, Date.now()) && (
+          <FormatDate date={fristDato} />
+          {!ferdigstiltTidspunkt && isBefore(fristDato, Date.now()) && (
             <Tooltip content="Fristen er passert">
               <ClockDashedIcon color="var(--ax-text-danger-decoration)" width={20} height={20} />
             </Tooltip>

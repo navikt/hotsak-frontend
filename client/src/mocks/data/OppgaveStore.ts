@@ -185,8 +185,8 @@ export class OppgaveStore extends Dexie {
       changes.aktivDato = request.aktivDato
       changes.isPåVent = isFuture(request.aktivDato)
     }
-    if (request.fristFerdigstillelse) {
-      changes.fristDato = request.fristFerdigstillelse
+    if (request.fristDato) {
+      changes.fristDato = request.fristDato
     }
     if (request.mappeId !== undefined) {
       changes.mappeId = request.mappeId ?? undefined

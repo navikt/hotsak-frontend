@@ -4,7 +4,7 @@ import { createContext, type Dispatch, useCallback, useContext } from 'react'
 import { useUmami } from '../sporing/useUmami.ts'
 
 export interface OppgavelisteSortState extends SortState {
-  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | 'fødselsdato' | 'alder' | string
+  orderBy: 'fristDato' | 'opprettetTidspunkt' | 'fnr' | 'fødselsdato' | 'alder' | string
 }
 
 export const OppgaveToolbarTab = {
@@ -28,7 +28,7 @@ export const initialState: OppgavelisteState = {
   currentTab: OppgaveToolbarTab.AKTIVE,
   currentPage: 1,
   sort: {
-    orderBy: 'fristFerdigstillelse',
+    orderBy: 'fristDato',
     direction: 'ascending',
   },
   filterModus: 'matchet',
@@ -74,7 +74,7 @@ export function useOppgavelisteSortChangeHandler(): (sortKey: string) => void {
       logOppgavelisteSortert({ kolonne: sortKey, rekkefølge: direction === 'descending' ? 'stigende' : 'synkende' })
       dispatch({
         type: 'sort',
-        orderBy: sortKey || 'fristFerdigstillelse',
+        orderBy: sortKey || 'fristDato',
       })
     },
     [logOppgavelisteSortert, direction, dispatch]

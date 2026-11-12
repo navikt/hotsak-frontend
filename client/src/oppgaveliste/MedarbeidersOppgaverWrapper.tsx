@@ -31,6 +31,6 @@ const defaultColumns: DefaultOppgaveColumns = [
   'kommune',
   ['saksstatus', false],
   'opprettetTidspunkt',
-  'fristFerdigstillelse',
+  'fristDato',
   'medarbeidersOppgaverMenu',
 ]

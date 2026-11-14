@@ -1,3 +1,4 @@
+import { isToday } from 'date-fns'
 import Dexie, { Table, type UpdateSpec } from 'dexie'
 
 import { isBrevmalBarnebrillerVedtak } from '../../brev/brevSelectors.ts'
@@ -6,6 +7,8 @@ import {
   Brevmal,
   Brevmottaker,
   Brevstatus,
+  isBreveditorbrevUtenVedtak,
+  type EndreMottakerRequest,
   type LeggTilMottakerRequest,
   Mottakertype,
   Målform,
@@ -50,7 +53,7 @@ import {
 } from '../../types/types.internal'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { enheter } from './enheter.ts'
-import { nåIso } from './felles.ts'
+import { nesteArbeidsdagKlokkenÅtte, nåIso } from './felles.ts'
 import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import {
@@ -570,8 +573,12 @@ export class SakStore extends Dexie {
     }
   }
 
-  async opprettBrevutkast(sakId: string, request: OpprettBrevutkastRequest): Promise<Brev> {
+  async opprettBrevutkast(sakId: string, request: OpprettBrevutkastRequest): Promise<Brev | null> {
     const { data = {}, ...rest } = request.brevutkast
+    const brevForSak = await this.hentBrevForSak(sakId)
+    if (brevForSak.some((brev) => brev.brevmal === rest.brevmal)) {
+      return null
+    }
 
     const brevId = await this.brev.add({
       sakId,
@@ -579,6 +586,11 @@ export class SakStore extends Dexie {
       opprettet: nåIso(),
       opprettetAv: Saksbehandlere.innlogget().id,
       brevstatus: Brevstatus.UTKAST,
+      isUtkast: true,
+      isFerdigstilt: false,
+      isJournalført: false,
+      isDistribuert: false,
+      kanAngreBrev: false,
       distribusjon: [],
       serienummer: 0,
       data,
@@ -625,7 +637,7 @@ export class SakStore extends Dexie {
     const { data = {}, ...rest } = request.brevutkast
 
     const eksisterendeBrev = await this.hentBrev(brevId)
-    if (request.serienummer <= eksisterendeBrev.serienummer) {
+    if (eksisterendeBrev.brevstatus !== Brevstatus.UTKAST || request.serienummer <= eksisterendeBrev.serienummer) {
       return null
     }
 
@@ -640,12 +652,15 @@ export class SakStore extends Dexie {
     return this.hentBrev(brevId)
   }
 
-  async slettBrevutkast(brevId: ID): Promise<void> {
+  async slettBrevutkast(brevId: ID): Promise<boolean> {
     brevId = Number(brevId)
     const brev = await this.hentBrev(brevId)
+    if (brev.brevstatus !== Brevstatus.UTKAST) {
+      return false
+    }
     this.brev.delete(brevId)
     if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
-      return
+      return true
     }
 
     await this.brevmottakere.delete(brevId)
@@ -679,10 +694,15 @@ export class SakStore extends Dexie {
         }
       }
     }
+    return true
   }
 
-  async ferdigstillBrevutkast(brevId: ID): Promise<Brev> {
+  async ferdigstillBrevutkast(brevId: ID): Promise<Brev | null> {
     brevId = Number(brevId)
+    const eksisterendeBrev = await this.hentBrev(brevId)
+    if (eksisterendeBrev.brevstatus !== Brevstatus.UTKAST) {
+      return null
+    }
 
     await this.brev.update(brevId, {
       ferdigstilt: nåIso(),
@@ -728,8 +748,12 @@ export class SakStore extends Dexie {
     return brev
   }
 
-  async redigerBrevutkast(brevId: ID): Promise<Brev> {
+  async redigerBrevutkast(brevId: ID): Promise<Brev | null> {
     brevId = Number(brevId)
+    const eksisterendeBrev = await this.hentBrev(brevId)
+    if (eksisterendeBrev.brevstatus !== Brevstatus.FERDIGSTILT) {
+      return null
+    }
 
     await this.brev.update(brevId, {
       endret: nåIso(),
@@ -752,6 +776,61 @@ export class SakStore extends Dexie {
     }
 
     return brev
+  }
+
+  async sendUnderveisBrev(brevId: ID): Promise<Brev | null> {
+    brevId = Number(brevId)
+    const brev = await this.hentBrev(brevId)
+    if (
+      brev.brevstatus === Brevstatus.TIL_DISTRIBUSJON ||
+      brev.brevstatus === Brevstatus.JOURNALFØRT ||
+      brev.brevstatus === Brevstatus.DISTRIBUERT
+    ) {
+      return brev
+    }
+    if (
+      !isBreveditorbrevUtenVedtak(brev.brevmal) ||
+      (brev.brevstatus !== Brevstatus.UTKAST && brev.brevstatus !== Brevstatus.FERDIGSTILT)
+    ) {
+      return null
+    }
+
+    const ferdigstiltIdag = brev.ferdigstilt && isToday(brev.ferdigstilt)
+    await this.brev.update(brevId, {
+      endret: nåIso(),
+      endretAv: Saksbehandlere.innlogget().id,
+      ferdigstilt: ferdigstiltIdag ? brev.ferdigstilt : nåIso(),
+      ferdigstiltAv: ferdigstiltIdag ? brev.ferdigstiltAv : Saksbehandlere.innlogget().id,
+      brevstatus: Brevstatus.FERDIGSTILT,
+      distribusjon: [
+        {
+          brevId: brevId.toString(),
+          mottakertype: Mottakertype.BRUKER,
+          fnr: '13820599335',
+          skalDistribueres: true,
+          distribueresEtter: nesteArbeidsdagKlokkenÅtte(),
+        },
+      ],
+    })
+
+    return this.hentBrev(brevId)
+  }
+
+  async angreUnderveisBrev(brevId: ID): Promise<Brev | null> {
+    brevId = Number(brevId)
+    const brev = await this.hentBrev(brevId)
+    if (brev.brevstatus !== Brevstatus.FERDIGSTILT) {
+      return null
+    }
+
+    await this.brev.update(brevId, {
+      endret: nåIso(),
+      endretAv: Saksbehandlere.innlogget().id,
+      brevstatus: Brevstatus.FERDIGSTILT,
+      distribusjon: [],
+    })
+
+    return this.hentBrev(brevId)
   }
 
   async hentBrev(brevId: ID): Promise<Brev> {
@@ -781,10 +860,25 @@ export class SakStore extends Dexie {
     await this.brevmottakere.add({
       brevId: brevId.toString(),
       fnr: request.fnr,
+      orgnr: request.orgnr,
+      navn: request.navn,
+      adresse: request.adresse,
       mottakertype: request.mottakertype,
       opprettet: nåIso(),
       opprettetAv: Saksbehandlere.innlogget().id,
       kanSlettes: kanBrevmottakerSlettes(brev.brevmal, request.mottakertype),
+    })
+  }
+
+  async endreBrevmottaker(
+    _sakId: string,
+    _brevId: string,
+    brevmottakerId: string,
+    request: EndreMottakerRequest
+  ): Promise<void> {
+    await this.brevmottakere.update(Number(brevmottakerId), {
+      ...(request.navn !== undefined && { navn: request.navn }),
+      ...(request.adresse !== undefined && { adresse: request.adresse }),
     })
   }
 

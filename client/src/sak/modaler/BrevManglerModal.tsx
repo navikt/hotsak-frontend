@@ -19,7 +19,12 @@ export function BrevManglerModal({
   henleggelsesutfall,
 }: BrevManglerModalProps) {
   return (
-    <InfoModal heading="Mangler brev" open={open} width="500px" onClose={onClose}>
+    <InfoModal
+      heading={`${gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT) ? 'Underveisbrev må sendes eller slettes' : 'Mangler brev'}`}
+      open={open}
+      width="500px"
+      onClose={onClose}
+    >
       {gjenstående.includes(Gjenstående.BREV_MANGLER) && vedtaksresultat && (
         <>
           <Tekst spacing>
@@ -49,6 +54,9 @@ export function BrevManglerModal({
           Før du kan {vedtaksresultat ? 'fatte vedtaket' : 'henlegge søknaden'} må du ferdigstille brevet du har
           påstartet.
         </Tekst>
+      )}
+      {gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT) && (
+        <Tekst spacing>For å kunne fatte vedtaket må du sende eller slette påbegynte underveisbrev.</Tekst>
       )}
     </InfoModal>
   )

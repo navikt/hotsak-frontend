@@ -1,5 +1,6 @@
 import type { OppgaveId } from '../oppgave/oppgaveTypes'
 import type { NavIdent } from '../tilgang/Ansatt'
+import type { Veiadresse } from '../types/hotlibs.ts'
 import type { StilarkVersjon } from './breveditor/html/byggDokument.ts'
 
 export const Brevstatus = {
@@ -14,6 +15,8 @@ export type Brevstatus = Enum<typeof Brevstatus>
 export const Brevmal = {
   // Breveditor
   BREVEDITOR_VEDTAKSBREV: 'BREVEDITOR_VEDTAKSBREV',
+  BREVEDITOR_SVARTIDSBREV: 'BREVEDITOR_SVARTIDSBREV',
+  BREVEDITOR_INNHENTE_OPPLYSNINGER: 'BREVEDITOR_INNHENTE_OPPLYSNINGER',
 
   // Barnebriller
   BARNEBRILLER_INNHENTE_OPPLYSNINGER: 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
@@ -22,6 +25,16 @@ export const Brevmal = {
   BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER: 'BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER',
 } as const
 export type Brevmal = Enum<typeof Brevmal>
+
+export const BreveditorbrevUtenVedtak = [
+  Brevmal.BREVEDITOR_SVARTIDSBREV,
+  Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER,
+] as const satisfies readonly Brevmal[]
+export type BreveditorbrevUtenVedtak = (typeof BreveditorbrevUtenVedtak)[number]
+
+export function isBreveditorbrevUtenVedtak(brevmal: string): brevmal is BreveditorbrevUtenVedtak {
+  return BreveditorbrevUtenVedtak.some((brevmalUtenVedtak) => brevmalUtenVedtak === brevmal)
+}
 
 export const Mottakertype = {
   BRUKER: 'BRUKER',
@@ -32,7 +45,10 @@ export type Mottakertype = Enum<typeof Mottakertype>
 
 export interface Brevmottaker {
   id: string
-  fnr: string
+  fnr?: string
+  orgnr?: string
+  navn?: string
+  adresse?: Veiadresse
   mottakertype: Mottakertype
   brevId: string
   opprettet: Instant
@@ -41,20 +57,55 @@ export interface Brevmottaker {
 }
 
 export const BrevmalTekst = {
-  [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Vedtaksbrevet',
-  [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrevet',
-  [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrevet',
-  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrevet',
-  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrevet',
+  [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Vedtaksbrev',
+  [Brevmal.BREVEDITOR_SVARTIDSBREV]: 'Svartidsbrev',
+  [Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER]: 'Innhente opplysninger',
+  [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrev',
 } as const
+
+export const BrevmalTekstBeskrivelse = {
+  [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Informerer om utfallet av saken i et vedtaksbrev.',
+  [Brevmal.BREVEDITOR_SVARTIDSBREV]: 'Informerer om forventet behandlingstid.',
+  [Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER]: 'Be om dokumentasjon som mangler.',
+  [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG]: 'Barnebrillebrev',
+  [Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER]: 'Barnebrillebrev',
+} as const
+
+export function brevstatusTekst(status: Brevstatus): string {
+  switch (status) {
+    case Brevstatus.UTKAST:
+      return 'Utkast'
+    case Brevstatus.FERDIGSTILT:
+      return 'Ferdigstilt'
+    case Brevstatus.JOURNALFØRT:
+      return 'Journalført'
+    case Brevstatus.TIL_DISTRIBUSJON:
+      return 'Til distribusjon'
+    case Brevstatus.DISTRIBUERT:
+      return 'Sendt'
+  }
+}
 
 export interface BrevmottakerResponse {
   brevmottakere: Brevmottaker[]
 }
 
 export interface LeggTilMottakerRequest {
-  fnr: string
   mottakertype: Mottakertype
+  fnr?: string
+  orgnr?: string
+  navn?: string
+  adresse?: Veiadresse
+}
+
+export interface EndreMottakerRequest {
+  navn?: string
+  adresse?: Veiadresse
 }
 
 export const Målform = {
@@ -94,6 +145,11 @@ export interface Brev<T extends Brevdata = Brevdata> extends Brevutkast<T> {
   ferdigstilt?: Instant
   ferdigstiltAv?: NavIdent
   brevstatus: Brevstatus
+  isUtkast: boolean
+  isFerdigstilt: boolean
+  isJournalført: boolean
+  isDistribuert: boolean
+  kanAngreBrev: boolean
   distribusjon: Brevdistribusjon[]
   serienummer: number
 }
@@ -101,12 +157,16 @@ export interface Brev<T extends Brevdata = Brevdata> extends Brevutkast<T> {
 export interface Brevdistribusjon {
   brevId: string
   mottakertype: Mottakertype
-  fnr: string
+  fnr?: string
+  orgnr?: string
+  navn?: string
+  adresse?: Veiadresse
   journalført?: Instant
   journalpostId?: string
   skalDistribueres?: boolean
   distribusjonId?: string
   distribuert?: Instant
+  distribueresEtter?: Instant
 }
 
 export interface OpprettBrevutkastRequest<T extends Brevdata = Brevdata> {
@@ -121,6 +181,12 @@ export interface OppdaterBrevutkastRequest<T extends Brevdata = Brevdata> {
 
 export interface FerdigstillBrevutkastRequest {
   oppgaveId: OppgaveId
+}
+
+export interface SendUnderveisbrevRequest {
+  oppgaveId: OppgaveId
+  settPåVentTil?: LocalDate
+  kommentar?: string
 }
 
 export interface BrevForSak {

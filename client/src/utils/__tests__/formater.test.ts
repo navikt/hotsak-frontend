@@ -135,11 +135,23 @@ describe('formater', () => {
     it('formaterer veiadresse', () => {
       expect(
         formaterAdresse({
-          adresse: 'STORGATA 1',
+          adresselinje1: 'STORGATA 1',
           postnummer: '0182',
           poststed: 'OSLO',
         })
       ).toBe('Storgata 1, 0182 Oslo')
+    })
+
+    it('tar med adresselinje 2 og 3', () => {
+      expect(
+        formaterAdresse({
+          adresselinje1: 'STORGATA 1',
+          adresselinje2: 'V/ KARI NORDMANN',
+          adresselinje3: 'POSTBOKS 5',
+          postnummer: '0182',
+          poststed: 'OSLO',
+        })
+      ).toBe('Storgata 1, V/ Kari Nordmann, Postboks 5, 0182 Oslo')
     })
 
     it('returnerer tom streng for undefined', () => {

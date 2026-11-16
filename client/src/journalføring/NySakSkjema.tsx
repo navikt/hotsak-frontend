@@ -1,23 +1,15 @@
 import { DatePicker, Heading, Textarea, VStack, HStack, Label, BodyShort, ErrorMessage } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { useMemo, useState } from 'react'
 
-import { type GjelderOption, useGjelderOptions } from '../oppgave/useKodeverkOppgave.ts'
+import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { type JournalføringSkjemaVerdier, type SakstypeKode } from './journalføringTypes.ts'
 import { TilordneOppgave } from './TilordneOppgave.tsx'
 import classes from './JournalføringSkjema.module.css'
-import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
 import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
 import { addWeeks, formatISO, parseISO } from 'date-fns'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
-
-function filtrertePåSøk(options: GjelderOption[], søk: string): GjelderOption[] {
-  if (!søk) return options
-  const ord = søk.toLowerCase().split(' ').filter(Boolean)
-  return options.filter((o) => ord.every((ord) => o.searchTerms.includes(ord)))
-}
 
 interface NySakSkjemaProps {
   kanRedigere: boolean
@@ -39,28 +31,6 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, f
   const valgtPrioritet = watch('prioritet')
   const valgtBehandlingstype = watch('behandlingstype')
   const valgtBehandlingstema = watch('behandlingstema')
-
-  const [gjelderSøk, setGjelderSøk] = useState('')
-  const gjelderOptions = useGjelderOptions()
-
-  const filtrerteGjelderComboboxOptions = filtrertePåSøk(gjelderOptions, gjelderSøk).map(({ label, value }) => ({
-    label,
-    value,
-  }))
-
-  const gjelderComboboxOptions = useMemo(
-    () => gjelderOptions.map(({ label, value }) => ({ label, value })),
-    [gjelderOptions]
-  )
-
-  const valgtGjelderOptions = gjelderOptions.filter(
-    (o) => o.value === `${valgtBehandlingstema}|${valgtBehandlingstype}`
-  )
-
-  const valgtGjelderComboboxOptions = useMemo(
-    () => valgtGjelderOptions.map(({ label, value }) => ({ label, value })),
-    [valgtGjelderOptions]
-  )
 
   return (
     <VStack gap="space-20">
@@ -173,32 +143,17 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, f
                   Boolean(verdier.behandlingstema || verdier.behandlingstype) || 'Du må velge hva saken gjelder',
               }}
               render={({ field, fieldState }) => (
-                <UNSAFE_Combobox
+                <GjelderCombobox
                   ref={field.ref}
                   name={field.name}
-                  label="Gjelder"
-                  size="small"
-                  shouldAutocomplete
-                  allowNewValues={false}
                   readOnly={!kanRedigere}
                   className={classes.kodeverkSelect}
-                  options={gjelderComboboxOptions}
-                  filteredOptions={filtrerteGjelderComboboxOptions}
-                  selectedOptions={valgtGjelderComboboxOptions}
-                  value={gjelderSøk}
                   error={fieldState.error?.message}
                   onBlur={field.onBlur}
-                  onChange={(value) => setGjelderSøk(value)}
-                  onToggleSelected={(value, isSelected) => {
-                    if (isSelected) {
-                      const [tmKode, btKode] = value.split('|')
-                      setValue('behandlingstype', btKode ?? '')
-                      field.onChange(tmKode ?? '')
-                    } else {
-                      setValue('behandlingstype', '')
-                      field.onChange('')
-                    }
-                    setGjelderSøk('')
+                  value={{ behandlingstema: valgtBehandlingstema, behandlingstype: valgtBehandlingstype }}
+                  onChange={({ behandlingstema, behandlingstype }) => {
+                    setValue('behandlingstype', behandlingstype)
+                    field.onChange(behandlingstema)
                   }}
                 />
               )}

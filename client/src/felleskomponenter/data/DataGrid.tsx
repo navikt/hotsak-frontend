@@ -1,12 +1,12 @@
-import { HStack, Pagination, Skeleton, Table, ToggleGroup, type TableProps } from '@navikt/ds-react'
+import { HStack, Skeleton, Table, type TableProps } from '@navikt/ds-react'
 import clsx from 'clsx'
 import { useMemo, useState, type Key, type ReactNode } from 'react'
 
-import { ToggleGroupItem } from '@navikt/ds-react/ToggleGroup'
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
 import { FormatDateTime } from '../format/FormatDateTime.tsx'
 import { type PageRequest } from '../Page.ts'
+import { CursorPaginering } from '../Paginering.tsx'
 import classes from './DataGrid.module.css'
 import { type DataGridFilter } from './DataGridFilter.ts'
 import { type DataGridFilterAction } from './DataGridFilterContext.ts'
@@ -186,50 +186,18 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         <tfoot>
           <Table.Row>
             <Table.DataCell colSpan={colSpan} textSize={textSize}>
-              <HStack gap="space-8" align="center" justify="center">
-                <Pagination
-                  page={pageNumber}
-                  count={totalPages}
+              <HStack gap="space-12" align="center" justify="center" marginBlock="space-4">
+                <CursorPaginering
+                  pageNumber={pageNumber}
+                  pageSize={pageSize}
                   onPageChange={onPageChange ? (pageNumber) => onPageChange({ pageNumber, pageSize }) : undefined}
-                  size="xsmall"
-                  prevNextTexts
                 />
-                {pageSizeSelect && (
-                  <>
-                    <div>|</div>
-                    <PageSizeSelect pageNumber={pageNumber} pageSize={pageSize} onPageChange={onPageChange} />
-                  </>
-                )}
               </HStack>
             </Table.DataCell>
           </Table.Row>
         </tfoot>
       )}
     </Table>
-  )
-}
-
-interface PageSizeSelectProps extends PageRequest {
-  onPageChange?(pageRequest: PageRequest): void
-}
-
-function PageSizeSelect(props: PageSizeSelectProps) {
-  const { pageNumber, pageSize, onPageChange } = props
-  return (
-    <ToggleGroup
-      value={pageSize?.toString()}
-      onChange={(value) => {
-        if (onPageChange) onPageChange({ pageNumber, pageSize: Number(value) })
-      }}
-      size="xsmall"
-      label="Antall"
-      className={classes.pageSizeSelect}
-    >
-      <ToggleGroupItem value="20" label="20" />
-      <ToggleGroupItem value="40" label="40" />
-      <ToggleGroupItem value="60" label="60" />
-      <ToggleGroupItem value="1000" label="Maks" />
-    </ToggleGroup>
   )
 }
 

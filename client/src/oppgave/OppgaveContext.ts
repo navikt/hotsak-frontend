@@ -8,6 +8,7 @@ export enum OppgaveModalType {
   OVERFØR_TIL_GOSYS,
   LEGG_TILBAKE,
   ENDRE_MAPPE,
+  ENDRE_OPPGAVE,
 }
 
 export interface OppgaveState {

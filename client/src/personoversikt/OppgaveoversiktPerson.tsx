@@ -43,7 +43,6 @@ export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
       renderContent={() => {}}
       onPageChange={setPageRequest}
       zebraStripes
-      pageSizeSelect
       {...pagination}
     />
   )

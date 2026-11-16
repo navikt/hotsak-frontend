@@ -3,7 +3,7 @@ import { toWeakETag } from './etag.ts'
 import { HttpError } from './HttpError.ts'
 import { contentTypeIsJson, contentTypeIsPdf, contentTypeIsText } from './response.ts'
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export const validHttpAcceptValues = ['application/json', 'application/pdf'] as const
 
@@ -64,6 +64,11 @@ export interface HttpClient {
     body?: RequestBody,
     options?: RequestOptions
   ): Promise<ResponseBody>
+  patch<RequestBody = unknown, ResponseBody = unknown>(
+    url: string,
+    body?: RequestBody,
+    options?: RequestOptions
+  ): Promise<ResponseBody>
   delete(url: string, options?: RequestOptions): Promise<void>
 }
 
@@ -93,6 +98,13 @@ export const http: HttpClient = {
     options?: RequestOptions
   ): Promise<ResponseBody> {
     return request('PUT', url, body, options)
+  },
+  patch<RequestBody = unknown, ResponseBody = unknown>(
+    url: string,
+    body?: RequestBody,
+    options?: RequestOptions
+  ): Promise<ResponseBody> {
+    return request('PATCH', url, body, options)
   },
   delete(url: string, options?: RequestOptions): Promise<void> {
     return request('DELETE', url, undefined, options)

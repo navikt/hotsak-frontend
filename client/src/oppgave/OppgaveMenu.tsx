@@ -103,6 +103,13 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       >
         Endre mappe
       </OppgaveModalActionMenuItem>
+      <OppgaveModalActionMenuItem
+        modal={OppgaveModalType.ENDRE_OPPGAVE}
+        underBehandlingAvInnloggetAnsatt={true}
+        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
+      >
+        Endre oppgave
+      </OppgaveModalActionMenuItem>
       <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
     </ActionMenu.Group>
   )

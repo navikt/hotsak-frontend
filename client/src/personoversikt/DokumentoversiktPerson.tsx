@@ -46,7 +46,6 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
       renderContent={DokumentdetaljerPerson}
       onPageChange={setPageRequest}
       zebraStripes
-      pageSizeSelect
       {...pagination}
     />
   )

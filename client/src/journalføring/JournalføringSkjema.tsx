@@ -63,7 +63,7 @@ export function JournalføringSkjema({
   const [tilordnetEnhet, setTilordnetEnhet] = useState<TilordnetEnhet>()
 
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
-  const aktivFraDatoDefault = new Date()
+  const [aktivFraDatoDefault] = useState(() => new Date())
   const fristDefault = addWeeks(mottattDatoDefault, 4)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [avsenderFnr, setAvsenderFnr] = useState(journalpost.fnrInnsender)

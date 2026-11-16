@@ -9,7 +9,7 @@ export enum OverstyrInnsynsregler {
 
 export type TilordnetEnhet = 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
 
-export interface JournalføringV2SkjemaVerdier {
+export interface JournalføringSkjemaVerdier {
   tema: Tema
   behandlingstype: string
   behandlingstema: string
@@ -53,17 +53,7 @@ export interface Stønadsklassifisering {
   stk3: unknown[]
 }
 
-export type JournalførJournalpostRequest = Omit<JournalføringV2Request, 'dokumenter' | 'saksgrunnlag' | 'avsenderFnr'>
-
-export interface JournalførJournalpostResponse {
-  sakId: string
-  /**
-   * Id for behandle sak-oppgaven som følger journalføring.
-   */
-  oppgaveId?: string
-}
-
-export interface JournalføringV2Saksgrunnlag {
+export interface JournalføringSaksgrunnlag {
   tema: Tema
   prioritet: Oppgaveprioritet
   oppgavetype: Oppgavetype
@@ -80,14 +70,14 @@ export interface JournalføringV2Saksgrunnlag {
   mappeId?: string
 }
 
-export interface JournalføringV2Request {
+export interface JournalføringRequest {
   oppgaveId: string
   journalpostId: string
   tittel: string
   brukerFnr: string
   avsenderFnr: string
   overstyrInnsynsregler: OverstyrInnsynsregler
-  saksgrunnlag?: JournalføringV2Saksgrunnlag
+  saksgrunnlag?: JournalføringSaksgrunnlag
   sak?: {
     sakstype: Sakstype
     fagsakId?: string
@@ -101,7 +91,7 @@ export enum Sakstype {
   GENERELL_SAK = 'GENERELL_SAK',
 }
 
-export interface JournalføringV2Response {
+export interface JournalføringResponse {
   sakId: string
   journalpostId?: string
   oppgavegrunnlagId?: string

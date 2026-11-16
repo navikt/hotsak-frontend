@@ -5,24 +5,18 @@ import { type HttpError } from '../io/HttpError.ts'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { mutateOppgave } from '../oppgave/useOppgave.ts'
 import { useMiljø } from '../utils/useMiljø.ts'
-import type {
-  JournalføringV2Request,
-  JournalføringV2Response,
-  JournalførJournalpostRequest,
-  OverstyrInnsynsregler,
-} from './journalføringTypes.ts'
+import type { JournalføringRequest, JournalføringResponse, OverstyrInnsynsregler } from './journalføringTypes.ts'
 
-type JournalføringV1Arg = Omit<JournalførJournalpostRequest, 'oppgaveId' | 'journalpostId'>
-type JournalføringV2Arg = Omit<JournalføringV2Request, 'oppgaveId' | 'journalpostId'>
+type JournalføringArg = Omit<JournalføringRequest, 'oppgaveId' | 'journalpostId'>
 
-type JournalføringRequestBody = Omit<JournalføringV2Request, 'avsenderFnr' | 'dokumenter' | 'overstyrInnsynsregler'> & {
+type JournalføringRequestBody = Omit<JournalføringRequest, 'avsenderFnr' | 'dokumenter' | 'overstyrInnsynsregler'> & {
   avsenderFnr?: string
-  dokumenter?: JournalføringV2Request['dokumenter']
+  dokumenter?: JournalføringRequest['dokumenter']
   overstyrInnsynsregler?: OverstyrInnsynsregler
 }
 
 export function byggJournalføringRequest(
-  arg: JournalføringV1Arg | JournalføringV2Arg,
+  arg: JournalføringArg,
   oppgaveId: string,
   journalpostId: string,
   erProd: boolean
@@ -48,15 +42,10 @@ export function useJournalføringActions(oppgave: Oppgave) {
   const journalpostId = oppgave.journalpostId
   const journalpostKey = journalpostId ? `/api/journalpost/${journalpostId}/journalforing` : null
 
-  const journalfør = useSWRMutation<
-    JournalføringV2Response,
-    HttpError,
-    string | null,
-    JournalføringV1Arg | JournalføringV2Arg
-  >(
+  const journalfør = useSWRMutation<JournalføringResponse, HttpError, string | null, JournalføringArg>(
     journalpostKey,
     (url, { arg }) =>
-      http.post<JournalføringRequestBody, JournalføringV2Response>(
+      http.post<JournalføringRequestBody, JournalføringResponse>(
         url,
         byggJournalføringRequest(arg, oppgaveId, journalpostId!, erProd),
         { versjon }
@@ -72,5 +61,3 @@ export function useJournalføringActions(oppgave: Oppgave) {
     journalfør,
   }
 }
-
-export type UseJournalføringActionsResponse = ReturnType<typeof useJournalføringActions>

@@ -4,9 +4,9 @@ import { useMemo, useState } from 'react'
 
 import { type GjelderOption, useGjelderOptions } from '../oppgave/useKodeverkOppgave.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { type JournalføringV2SkjemaVerdier, type SakstypeKode } from './journalføringTypes.ts'
+import { type JournalføringSkjemaVerdier, type SakstypeKode } from './journalføringTypes.ts'
 import { TilordneOppgave } from './TilordneOppgave.tsx'
-import classes from './JournalføringV2Skjema.module.css'
+import classes from './JournalføringSkjema.module.css'
 import { UNSAFE_Combobox } from '@navikt/ds-react'
 import { OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
 import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
@@ -32,7 +32,7 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, f
     watch,
     setValue,
     formState: { errors },
-  } = useFormContext<JournalføringV2SkjemaVerdier>()
+  } = useFormContext<JournalføringSkjemaVerdier>()
 
   const valgtMottattDato = watch('mottattDato')
   const valgtAktivFra = watch('aktivFra')

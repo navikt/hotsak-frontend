@@ -1,114 +1,105 @@
-import { Box, HStack, Loader } from '@navikt/ds-react'
-import { useEffect } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
+import { Group, Panel } from 'react-resizable-panels'
 
-import { useDokumentContext } from '../dokument/DokumentContext'
-import { DokumentPanel } from '../dokument/DokumentPanel'
+import { useDokumentContext } from '../dokument/DokumentContext.tsx'
+import { DokumentPanel } from '../dokument/DokumentPanel.tsx'
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
-import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
-import { Etikett } from '../felleskomponenter/typografi'
-import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
-import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
-import { usePersonContext } from '../personoversikt/PersonContext'
-import { usePerson } from '../personoversikt/usePerson'
+import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding.tsx'
 import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
-import { useJournalpost } from '../saksbilde/useJournalpost'
+import { ResizeHandle } from '../felleskomponenter/resize/ResizeHandle.tsx'
+import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
+import { usePersonContext } from '../personoversikt/PersonContext.tsx'
+import { usePerson } from '../personoversikt/usePerson.ts'
+import { type Journalpost } from '../types/types.internal.ts'
+import { JournalføringLoader } from './JournalføringLoader.tsx'
 import classes from './Journalføring.module.css'
-import { JournalpostSkjema } from './JournalpostSkjema'
-import { JournalpostVisning } from './JournalpostVisning'
-import { useJournalføringActions } from './useJournalføringActions.ts'
+import { JournalføringSkjema } from './JournalføringSkjema.tsx'
+import { hentJournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
-export interface JournalføringProps {
+interface JournalføringProps {
   oppgave: Journalføringsoppgave
+  journalpost: Journalpost
+  erBarnebrilleSøknad: boolean
+  mutateJournalpost(): void
 }
 
-export function Journalføring({ oppgave }: JournalføringProps) {
-  const { journalpostId } = oppgave
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
-  const { journalpost, error, isLoading, mutate } = useJournalpost(journalpostId)
+export function Journalføring({ oppgave, journalpost, mutateJournalpost, erBarnebrilleSøknad }: JournalføringProps) {
+  const { journalpostId, dokumenter } = journalpost
   const { setValgtDokument } = useDokumentContext()
-  const { fodselsnummer, setFodselsnummer } = usePersonContext()
-  const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
-
-  const dokumenter = journalpost?.dokumenter
 
   useEffect(() => {
-    if (journalpost?.fnrInnsender) {
-      setFodselsnummer(journalpost.fnrInnsender)
-    }
-  }, [journalpost?.fnrInnsender, setFodselsnummer])
-
-  useEffect(() => {
-    if (journalpostId && dokumenter && dokumenter.length > 0) {
-      const førsteDokment = dokumenter[0]
-      setValgtDokument({ journalpostId, dokumentId: førsteDokment.dokumentId })
+    if (dokumenter.length > 0) {
+      setValgtDokument({ journalpostId, dokumentId: dokumenter[0].dokumentId })
     }
   }, [journalpostId, dokumenter, setValgtDokument])
 
-  const { journalfør } = useJournalføringActions(oppgave)
-
-  if (error) {
-    if (error?.status === 403) {
-      return <FeilmeldingAlert>Du har ikke tilgang til å se denne journalposten.</FeilmeldingAlert>
-    } else if (error?.status === 404) {
-      return <FeilmeldingAlert>Journalpost {journalpostId} ikke funnet.</FeilmeldingAlert>
-    } else {
-      return <FeilmeldingAlert>Teknisk feil. Klarte ikke å hente journalposten.</FeilmeldingAlert>
-    }
+  if (!journalpost.fnrBruker) {
+    return <FeilmeldingAlert>Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.</FeilmeldingAlert>
   }
 
-  if (personInfoError) {
-    return <PersonFeilmelding personError={personInfoError} />
+  if (!journalpost.fnrInnsender) {
+    return <FeilmeldingAlert>Journalposten mangler avsender. Kan ikke journalføre uten fødselsnummer.</FeilmeldingAlert>
   }
 
-  if (isLoading || personInfoLoading || !journalpost || !personInfo) {
-    return (
-      <div className={classes.wrapper}>
-        <Personlinje person={personInfo} loading={personInfoLoading} />
-        <div className={classes.container}>
-          <div className={classes.toKolonner}>
-            <div className={classes.skjemaOgVisning}>
-              <HStack paddingBlock="space-16 space-0">
-                <span>
-                  <Loader size="medium" title="Henter journalpost..." />
-                </span>
-                <Box paddingInline="space-16 space-0">
-                  <Etikett>Henter journalpost...</Etikett>
-                </Box>
-              </HStack>
-            </div>
-            <DokumentPanel />
-          </div>
-        </div>
-      </div>
-    )
+  return (
+    <AktivPersonBoundary key={journalpostId} fnr={journalpost.fnrBruker}>
+      <JournalføringInnhold
+        oppgave={oppgave}
+        journalpost={journalpost}
+        mutateJournalpost={mutateJournalpost}
+        erBarnebrilleSøknad={erBarnebrilleSøknad}
+      />
+    </AktivPersonBoundary>
+  )
+}
+
+function AktivPersonBoundary({ fnr, children }: { fnr: string; children: ReactNode }) {
+  const { setFodselsnummer } = usePersonContext()
+  const [initialisert, setInitialisert] = useState(false)
+
+  useEffect(() => {
+    setFodselsnummer(fnr)
+    setInitialisert(true)
+  }, [fnr, setFodselsnummer])
+
+  if (!initialisert) {
+    return <JournalføringLoader />
+  }
+
+  return children
+}
+
+function JournalføringInnhold({ oppgave, journalpost, mutateJournalpost, erBarnebrilleSøknad }: JournalføringProps) {
+  const { fodselsnummer } = usePersonContext()
+  const { personInfo, error: personError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
+
+  if (personError) {
+    return <PersonFeilmelding personError={personError} />
   }
 
   return (
     <div className={classes.wrapper}>
-      <Personlinje person={personInfo} loading={personInfoLoading} />
+      <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
       <div className={classes.container}>
-        <div className={classes.toKolonner}>
-          <div className={classes.skjemaOgVisning}>
-            {oppgaveErUnderBehandlingAvInnloggetAnsatt ? (
-              <JournalpostSkjema
+        <Group orientation="horizontal" className={classes.panelGroup}>
+          <Panel defaultSize={40} minSize="350px" id="skjema">
+            <div className={classes.skjemaKolonne}>
+              <JournalføringSkjema
                 oppgave={oppgave}
                 journalpost={journalpost}
-                personInfo={personInfo}
-                journalfør={journalfør}
-                mutateJournalpost={mutate}
+                mutateJournalpost={mutateJournalpost}
+                erBarnebrilleSøknad={erBarnebrilleSøknad}
+                standardverdier={hentJournalføringStandardverdier(journalpost.dokumenter[0]?.brevkode)}
               />
-            ) : (
-              <JournalpostVisning
-                sakId={journalfør.data?.sakId}
-                oppgave={oppgave}
-                journalpost={journalpost}
-                personInfo={personInfo}
-                mutateJournalpost={mutate}
-              />
-            )}
-          </div>
-          <DokumentPanel />
-        </div>
+            </div>
+          </Panel>
+          <ResizeHandle />
+          <Panel defaultSize={60} minSize="300px" id="dokument">
+            <div className={classes.dokumentKolonne}>
+              <DokumentPanel />
+            </div>
+          </Panel>
+        </Group>
       </div>
     </div>
   )

@@ -13,8 +13,7 @@ import { type Journalpost } from '../types/types.internal'
 
 vi.mock('../saksbilde/useJournalpost.ts', () => ({ useJournalpostSuspense: vi.fn() }))
 vi.mock('../felleskomponenter/personlinje/Personlinje.tsx', () => ({ LasterPersonlinje: () => null }))
-vi.mock('../journalføring/Journalføring.tsx', () => ({ default: () => <div>Journalføring V1</div> }))
-vi.mock('../journalføring/JournalføringV2.tsx', () => ({ default: () => <div>Journalføring V2</div> }))
+vi.mock('../journalføring/Journalføring.tsx', () => ({ default: () => <div>Journalføring</div> }))
 
 const journalpost = lagJournalpost('9006', 'Søknad om hjelpemidler')
 const testOppgave = lagJournalføringsoppgave(journalpost)
@@ -61,10 +60,10 @@ describe('JournalføringRouter', () => {
     render(<JournalføringRouter oppgave={oppgave} />)
 
     expect(await screen.findByText(melding)).toBeInTheDocument()
-    expect(screen.queryByText(/Journalføring V/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Journalføring$/)).not.toBeInTheDocument()
   })
 
-  it('velger V2 for vanlige søknader', async () => {
+  it('viser journalføring for vanlige søknader', async () => {
     vi.mocked(useJournalpostSuspense).mockReturnValue({
       journalpost: medBrevkode('NAV 10-07.03'),
       mutate: vi.fn(),
@@ -72,6 +71,6 @@ describe('JournalføringRouter', () => {
     })
     render(<JournalføringRouter oppgave={oppgave} />)
 
-    expect(await screen.findByText('Journalføring V2')).toBeInTheDocument()
+    expect(await screen.findByText('Journalføring')).toBeInTheDocument()
   })
 })

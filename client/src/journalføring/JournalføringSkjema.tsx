@@ -22,20 +22,20 @@ import { NySakSkjema } from './NySakSkjema.tsx'
 import {
   OverstyrInnsynsregler,
   Sakstype,
-  type JournalføringV2Response,
-  type JournalføringV2SkjemaVerdier,
+  type JournalføringResponse,
+  type JournalføringSkjemaVerdier,
   type TilordnetEnhet,
 } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import classes from './JournalføringV2Skjema.module.css'
+import classes from './JournalføringSkjema.module.css'
 import { byggDokumentPayload, byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
 import { harUgyldigeDokumenttitler } from './dokumenttittelValidering.ts'
 import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
-interface JournalføringV2SkjemaProps {
+interface JournalføringSkjemaProps {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
   mutateJournalpost(): void
@@ -43,13 +43,13 @@ interface JournalføringV2SkjemaProps {
   standardverdier: JournalføringStandardverdier
 }
 
-export function JournalføringV2Skjema({
+export function JournalføringSkjema({
   oppgave,
   journalpost,
   mutateJournalpost,
   erBarnebrilleSøknad,
   standardverdier,
-}: JournalføringV2SkjemaProps) {
+}: JournalføringSkjemaProps) {
   const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
   const [valgtSak, setValgtSak] = useState<Sakvalg | null>(null)
   const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
@@ -59,7 +59,7 @@ export function JournalføringV2Skjema({
     journalpostId: journalpost.journalpostId,
     endringer: {},
   })
-  const [journalføringResultat, setJournalføringResultat] = useState<JournalføringV2Response | null>(null)
+  const [journalføringResultat, setJournalføringResultat] = useState<JournalføringResponse | null>(null)
   const [tilordnetEnhet, setTilordnetEnhet] = useState<TilordnetEnhet>()
 
   const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
@@ -74,7 +74,7 @@ export function JournalføringV2Skjema({
   const åpneModal = useOppgaveÅpneModalHandler()
   const { id: innloggetAnsattId } = useInnloggetAnsatt()
 
-  const form = useForm<JournalføringV2SkjemaVerdier>({
+  const form = useForm<JournalføringSkjemaVerdier>({
     mode: 'onChange',
     defaultValues: {
       tema: 'HJE',
@@ -157,7 +157,7 @@ export function JournalføringV2Skjema({
     return gyldige
   }
 
-  const onSubmit = async (verdier: JournalføringV2SkjemaVerdier) => {
+  const onSubmit = async (verdier: JournalføringSkjemaVerdier) => {
     if (!erDokumenttitlerGyldige()) return
 
     const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()

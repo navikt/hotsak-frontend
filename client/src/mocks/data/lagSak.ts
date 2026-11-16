@@ -142,7 +142,7 @@ export function lagBarnebrillesak(sakId: string): InsertBarnebrillesak {
 
 /**
  * Lager mock-saker for brukeren på journalføringssaken (9006),
- * slik at "Koble til sak"-funksjonaliteten i JournalføringV2 har data å vise.
+ * slik at "Koble til sak"-funksjonaliteten i Journalføring har data å vise.
  */
 export function lagJournalføringssaker(brukerFnr: string): InsertHjelpemiddelsak[] {
   const bruker = {

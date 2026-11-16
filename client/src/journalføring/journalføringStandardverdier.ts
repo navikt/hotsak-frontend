@@ -1,9 +1,9 @@
-import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 
 export const BREVKODE_BRILLER_TIL_BARN: readonly string[] = ['NAV 10-07.34', 'NAVe 10-07.34']
 
 export type JournalføringStandardverdier = Pick<
-  JournalføringV2SkjemaVerdier,
+  JournalføringSkjemaVerdier,
   'behandlingstema' | 'behandlingstype' | 'tilordnetEnhet'
 >
 

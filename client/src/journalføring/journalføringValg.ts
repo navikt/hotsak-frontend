@@ -1,6 +1,6 @@
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { normaliserDokumenttittel } from './dokumenttittelValidering.ts'
-import { Sakstype, type JournalføringV2Request, type TilordnetEnhet } from './journalføringTypes.ts'
+import { Sakstype, type JournalføringRequest, type TilordnetEnhet } from './journalføringTypes.ts'
 
 export type Sakvalg =
   | {
@@ -26,7 +26,7 @@ export function byggDokumentPayload(
   journalpost: Journalpost,
   dokumentTitler: Record<string, string>,
   annetInnhold: Record<string, string[]>
-): Pick<JournalføringV2Request, 'tittel' | 'dokumenter'> {
+): Pick<JournalføringRequest, 'tittel' | 'dokumenter'> {
   const tittel = normaliserDokumenttittel(
     dokumentTitler[journalpost.dokumenter[0]?.dokumentId ?? ''] ??
       journalpost.dokumenter[0]?.tittel ??
@@ -50,7 +50,7 @@ export function finnTildeltSaksbehandler(
   return undefined
 }
 
-export function byggJournalføringSak(valgtSak: Sakvalg): NonNullable<JournalføringV2Request['sak']> {
+export function byggJournalføringSak(valgtSak: Sakvalg): NonNullable<JournalføringRequest['sak']> {
   if (valgtSak.sakstype === Sakstype.GENERELL_SAK) {
     return { sakstype: Sakstype.GENERELL_SAK }
   }

@@ -6,7 +6,7 @@ import { ComboboxController } from '../felleskomponenter/skjema/ComboboxControll
 import { useOppgaveMapper } from '../oppgave/useOppgave.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 
 interface TilordneOppgaveProps {
@@ -15,7 +15,7 @@ interface TilordneOppgaveProps {
 
 export function TilordneOppgave({ tildeltEnhet }: TilordneOppgaveProps) {
   const [medarbeiderSøk, setMedarbeiderSøk] = useState('')
-  const { register, control } = useFormContext<JournalføringV2SkjemaVerdier>()
+  const { register, control } = useFormContext<JournalføringSkjemaVerdier>()
   const { behandlere } = useOppgavebehandlere()
   const mapper = useOppgaveMapper()
   const { gjeldendeEnhet, navn } = useInnloggetAnsatt()

@@ -8,8 +8,7 @@ import { JournalføringLoader } from '../journalføring/JournalføringLoader.tsx
 import { useJournalpostSuspense } from '../saksbilde/useJournalpost.ts'
 import { type Journalføringsoppgave } from './oppgaveTypes.ts'
 
-//const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
-const JournalføringV2 = lazy(() => import('../journalføring/JournalføringV2.tsx'))
+const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
 
 export function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppgave }) {
   return (
@@ -19,22 +18,15 @@ export function JournalføringRouter({ oppgave }: { oppgave: Journalføringsoppg
       errorComponent={JournalpostFeilmelding}
       resetKeys={[oppgave.journalpostId]}
     >
-      <VelgJournalføring oppgave={oppgave} />
+      <JournalføringMedJournalpost oppgave={oppgave} />
     </AsyncBoundary>
   )
 }
 
-function VelgJournalføring({ oppgave }: { oppgave: Journalføringsoppgave }) {
-  // TODO Kall hooken lenger ned og ikke prop drill. Er barnebrillesøknad kan også brukes fleres steder. Logikken er litt duplisert foreløpig
+function JournalføringMedJournalpost({ oppgave }: { oppgave: Journalføringsoppgave }) {
   const { journalpost, mutate, erBarnebrilleSøknad } = useJournalpostSuspense(oppgave.journalpostId)
-  //const { erProd } = useMiljø()
-
-  //if (erProd && erBarnebrilleSøknad) {
-  // return <Journalføring oppgave={oppgave} />
-  //}
-
   return (
-    <JournalføringV2
+    <Journalføring
       oppgave={oppgave}
       journalpost={journalpost}
       mutateJournalpost={mutate}

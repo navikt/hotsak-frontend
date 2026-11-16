@@ -8,12 +8,12 @@ import { describe, expect, it, vi } from 'vitest'
 import { lagJournalpost } from '../mocks/data/lagJournalpost.ts'
 import { type Journalpost } from '../types/types.internal.ts'
 import { JournalføringDokumenter } from './JournalføringDokumenter.tsx'
-import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 
 const journalpost: Journalpost = { ...lagJournalpost('1', 'Søknad'), dokumenter: [] }
 
 function TestSkjema() {
-  const form = useForm<JournalføringV2SkjemaVerdier>({
+  const form = useForm<JournalføringSkjemaVerdier>({
     defaultValues: { dokumenterKontrollert: false, overstyrInnsynsregler: '' },
   })
   return (

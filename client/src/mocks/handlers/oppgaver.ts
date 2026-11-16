@@ -7,7 +7,7 @@ import {
   type OppgaveId,
   type OppgaveMapperResponse,
 } from '../../oppgave/oppgaveTypes.ts'
-import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
+import { type EndreOppgaveRequest, type PatchOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
 import { type Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { type StoreHandlersFactory } from '../data'
 import { Saksbehandlere } from '../data/Saksbehandlere.ts'
@@ -152,6 +152,17 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
   http.put<OppgaveParams, EndreOppgaveRequest>(`/api/oppgaver/:oppgaveId`, async ({ request, params }) => {
     const { oppgaveId } = params
     await oppgaveStore.endre(oppgaveId, await request.json())
+    await delay(200)
+    return respondNoContent()
+  }),
+
+  http.patch<OppgaveParams, PatchOppgaveRequest>(`/api/oppgaver/:oppgaveId`, async ({ request, params }) => {
+    const { oppgaveId } = params
+    const oppgave = await oppgaveStore.hent(oppgaveId)
+    if (!oppgave) {
+      return respondNotFound()
+    }
+    await oppgaveStore.patch(oppgaveId, await request.json())
     await delay(200)
     return respondNoContent()
   }),

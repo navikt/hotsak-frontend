@@ -2,8 +2,10 @@ import { Heading, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
+import { DokumentInnsyn } from './DokumentInnsyn.tsx'
 import { DokumentRad } from './DokumentRad.tsx'
 import { hentAnnetInnhold } from './journalføringValg.ts'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 interface JournalføringDokumenterProps {
   journalpost: Journalpost
@@ -23,12 +25,14 @@ export function JournalføringDokumenter({
   visTittelFeil,
 }: JournalføringDokumenterProps) {
   const [annetInnhold, setAnnetInnhold] = useState<Record<string, string[]>>({})
-
   return (
-    <VStack gap="space-8">
+    <VStack gap="space-12" paddingBlock="space-24 space-0">
       <Heading level="2" size="small">
         Dokumenter
       </Heading>
+      <Eksperiment>
+        <DokumentInnsyn readOnly={readOnly} />
+      </Eksperiment>
       {journalpost.dokumenter.map((dok: Dokument, idx: number) => (
         <DokumentRad
           key={dok.dokumentId}

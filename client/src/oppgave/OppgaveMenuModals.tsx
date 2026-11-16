@@ -6,6 +6,7 @@ import { OverførTilMedarbeiderModal } from './OverførTilMedarbeiderModal.tsx'
 import { SettPåVentModal } from './SettPåVentModal.tsx'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser.ts'
 import { EndreMappeFraOppgave } from './EndreMappeFraOppgave.tsx'
+import { EndreOppgaveFraOppgave } from './EndreOppgaveFraOppgave.tsx'
 
 export interface OppgaveMenuModalsProps {
   oppgave: Oppgave
@@ -22,6 +23,7 @@ export function OppgaveMenuModals(props: OppgaveMenuModalsProps) {
       <OverførTilMedarbeiderModal oppgave={oppgave} />
       <OverførOppgaveTilGosysModal oppgave={oppgave} spørreundersøkelseId={spørreundersøkelseId} />
       <EndreMappeFraOppgave oppgave={oppgave} />
+      <EndreOppgaveFraOppgave oppgave={oppgave} />
     </>
   )
 }

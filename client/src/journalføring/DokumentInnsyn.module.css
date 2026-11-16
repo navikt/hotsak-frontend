@@ -1,0 +1,4 @@
+.innsynSelect :global(.aksel-select__container) {
+  width: fit-content;
+  max-width: 100%;
+}

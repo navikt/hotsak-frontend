@@ -20,6 +20,7 @@ import { JournalføringParter } from './JournalføringParter.tsx'
 import { JournalføringSakvalg } from './JournalføringSakvalg.tsx'
 import { NySakSkjema } from './NySakSkjema.tsx'
 import {
+  OverstyrInnsynsregler,
   Sakstype,
   type JournalføringV2Response,
   type JournalføringV2SkjemaVerdier,
@@ -80,6 +81,8 @@ export function JournalføringV2Skjema({
       prioritet: Oppgaveprioritet.NORMAL,
       ...standardverdier,
       kommentar: '',
+      dokumenterKontrollert: false,
+      overstyrInnsynsregler: '',
       stønadsklassifisering: 'DA',
       stønadType: 'S',
       mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
@@ -162,6 +165,7 @@ export function JournalføringV2Skjema({
       tittel,
       brukerFnr,
       avsenderFnr,
+      overstyrInnsynsregler: verdier.overstyrInnsynsregler as OverstyrInnsynsregler,
       saksgrunnlag: {
         tema: verdier.tema,
         prioritet: verdier.prioritet,
@@ -191,13 +195,15 @@ export function JournalføringV2Skjema({
       setValgtSakIdFeil('Du må velge en sak å koble til')
       return
     }
-    if (!erDokumenttitlerGyldige()) return
+    const innsynGyldig = await trigger(['dokumenterKontrollert', 'overstyrInnsynsregler'])
+    if (!erDokumenttitlerGyldige() || !innsynGyldig) return
 
     const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
       tittel,
       brukerFnr,
       avsenderFnr,
+      overstyrInnsynsregler: getValues('overstyrInnsynsregler') as OverstyrInnsynsregler,
       sak: byggJournalføringSak(valgtSak),
       dokumenter,
     })

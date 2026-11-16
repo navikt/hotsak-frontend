@@ -25,14 +25,14 @@ export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
   const form = useForm({
     defaultValues: {
       aktivDato: tomorrow,
-      fristFerdigstillelse: tomorrow,
+      fristDato: tomorrow,
       leggTilbake: false,
       kommentar: '',
     },
   })
 
   const aktivDato = form.watch('aktivDato')
-  const fristFerdigstillelse = form.watch('fristFerdigstillelse')
+  const fristDato = form.watch('fristDato')
 
   const { datepickerProps: datepickerPropsAktivDato, inputProps: inputPropsAktivDato } = useDatepicker({
     fromDate: tomorrow,
@@ -41,32 +41,32 @@ export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
   })
 
   const {
-    datepickerProps: datepickerPropsFristFerdigstillelse,
-    inputProps: inputPropsFristFerdigstillelse,
-    setSelected: setSelectedFristFerdigstillelse,
+    datepickerProps: datepickerPropsFristDato,
+    inputProps: inputPropsFristDato,
+    setSelected: setSelectedFristDato,
   } = useDatepicker({
     fromDate: aktivDato,
     defaultSelected: tomorrow,
     onDateChange: (date) => {
-      form.setValue('fristFerdigstillelse', date ?? tomorrow)
-      form.clearErrors('fristFerdigstillelse')
+      form.setValue('fristDato', date ?? tomorrow)
+      form.clearErrors('fristDato')
     },
   })
 
   useEffect(() => {
-    if (isBefore(fristFerdigstillelse, aktivDato)) {
-      form.setValue('fristFerdigstillelse', aktivDato)
-      setSelectedFristFerdigstillelse(aktivDato)
-      form.clearErrors('fristFerdigstillelse')
+    if (isBefore(fristDato, aktivDato)) {
+      form.setValue('fristDato', aktivDato)
+      setSelectedFristDato(aktivDato)
+      form.clearErrors('fristDato')
     }
-  }, [aktivDato, fristFerdigstillelse, form, setSelectedFristFerdigstillelse])
+  }, [aktivDato, fristDato, form, setSelectedFristDato])
 
   const { endreOppgave } = useOppgaveActions(oppgave)
   const { logOppgaveSattPåVent } = useUmami()
   const { showSuccessToast } = useToast()
   const handleSubmit = form.handleSubmit(async (data) => {
-    if (isBefore(data.fristFerdigstillelse, data.aktivDato)) {
-      form.setError('fristFerdigstillelse', {
+    if (isBefore(data.fristDato, data.aktivDato)) {
+      form.setError('fristDato', {
         type: 'manual',
         message: 'Frist kan ikke være før dato for «Sett på vent til»',
       })
@@ -74,7 +74,7 @@ export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
     }
     await endreOppgave.trigger({
       aktivDato: tilLocalDateString(data.aktivDato),
-      fristFerdigstillelse: tilLocalDateString(data.fristFerdigstillelse),
+      fristDato: tilLocalDateString(data.fristDato),
       kommentar: isNotBlank(data.kommentar) ? data.kommentar : undefined,
     })
     if (data.leggTilbake) {
@@ -98,12 +98,12 @@ export function SettPåVentModal({ oppgave }: { oppgave: Oppgave }) {
           <DatePicker {...datepickerPropsAktivDato}>
             <DatePicker.Input {...inputPropsAktivDato} label="Sett på vent til" size="small" />
           </DatePicker>
-          <DatePicker {...datepickerPropsFristFerdigstillelse}>
+          <DatePicker {...datepickerPropsFristDato}>
             <DatePicker.Input
-              {...inputPropsFristFerdigstillelse}
+              {...inputPropsFristDato}
               label="Frist"
               size="small"
-              error={form.formState.errors.fristFerdigstillelse?.message}
+              error={form.formState.errors.fristDato?.message}
             />
           </DatePicker>
           <Eksperiment>

@@ -17,6 +17,17 @@ async function velgGjelder(page: import('@playwright/test').Page) {
     .click()
 }
 
+async function bekreftDokumentinnsyn(page: import('@playwright/test').Page) {
+  await page
+    .getByRole('checkbox', {
+      name: 'Dokumentene ligger på riktig bruker og det ligger ingen dokumentasjon om andre brukere der',
+    })
+    .check()
+  await page
+    .getByRole('combobox', { name: 'Skal bruker ha innsyn i dokumentene på nav.no?' })
+    .selectOption('VISES_MANUELT_GODKJENT')
+}
+
 async function hentParter(page: import('@playwright/test').Page) {
   return page.evaluate(async () => {
     const response = await fetch('/api/journalpost/9006')
@@ -56,6 +67,7 @@ test.describe('Journalføring', () => {
     await expect(kobleTilSak).toBeVisible()
     await kobleTilSak.click()
     await page.getByRole('radio', { name: /Velg sak 9901:/ }).check()
+    await bekreftDokumentinnsyn(page)
 
     const journalføringRequest = page.waitForRequest(
       (request) =>
@@ -67,6 +79,7 @@ test.describe('Journalføring', () => {
     expect(request.postDataJSON()).toMatchObject({
       brukerFnr,
       avsenderFnr: nyAvsenderFnr,
+      overstyrInnsynsregler: 'VISES_MANUELT_GODKJENT',
       sak: { sakstype: 'FAGSAK', fagsakId: '9901', fagsaksystem: 'HOTSAK' },
     })
     const respons = await journalføring
@@ -94,12 +107,16 @@ test.describe('Journalføring', () => {
       await åpneJournalføringsoppgave(page)
       await page.getByRole('radio', { name: /^Koble til sak \(\d+\)$/ }).click()
       await page.getByRole('radio', { name: radio }).check()
+      await bekreftDokumentinnsyn(page)
 
       const journalføring = ventPåJournalføring(page)
       await page.getByRole('button', { name: 'Journalfør og koble til sak' }).click()
       const respons = await journalføring
       expect(respons.ok()).toBe(true)
-      expect(respons.request().postDataJSON()).toMatchObject({ sak })
+      expect(respons.request().postDataJSON()).toMatchObject({
+        sak,
+        overstyrInnsynsregler: 'VISES_MANUELT_GODKJENT',
+      })
 
       const modal = page.getByRole('dialog', { name: 'Dokumentene ble knyttet til eksisterende sak' })
       await expect(modal).toBeVisible()
@@ -120,6 +137,7 @@ test.describe('Journalføring', () => {
     await expect(page.getByText(`Fnr: ${annetFnr.slice(0, 6)} ${annetFnr.slice(6)}`)).toBeVisible()
     await velgGjelder(page)
     await page.getByRole('combobox', { name: 'Legg i mappe (frivillig)' }).selectOption('663')
+    await bekreftDokumentinnsyn(page)
 
     const journalføringRequest = page.waitForRequest(
       (request) =>
@@ -131,6 +149,7 @@ test.describe('Journalføring', () => {
     expect(request.postDataJSON()).toMatchObject({
       brukerFnr: annetFnr,
       avsenderFnr,
+      overstyrInnsynsregler: 'VISES_MANUELT_GODKJENT',
       saksgrunnlag: { mappeId: '663' },
     })
     const respons = await journalføring

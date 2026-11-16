@@ -25,7 +25,7 @@ export function OppgaverOgDokumenter() {
   const { sak } = useSak()
 
   const [currentTab, setCurrentTab] = useState<OppgaverOgDokumenterTab>(OppgaverOgDokumenterTabs.OPPGAVER)
-  const [filter, setFilter] = useState<OppgaverOgDokumenterFilterValue>(OppgaverOgDokumenterFilter.SISTE_2_UKER)
+  const [filter, setFilter] = useState<OppgaverOgDokumenterFilterValue>(OppgaverOgDokumenterFilter.SISTE_6_MND)
 
   const fnr = sak?.data.bruker.fnr
 
@@ -167,7 +167,7 @@ export function OppgaverOgDokumenter() {
   )
 }
 
-const DEFAULT_PAGE_REQUEST: PageRequest = { pageNumber: 1, pageSize: 5 }
+const DEFAULT_PAGE_REQUEST: PageRequest = { pageNumber: 1, pageSize: 30 }
 
 function usePageRequest() {
   return useState<PageRequest>(DEFAULT_PAGE_REQUEST)

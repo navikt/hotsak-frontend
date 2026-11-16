@@ -17,6 +17,7 @@ import {
   selectIsHastesak,
   selectIsPåVent,
   selectMappenavn,
+  selectNøkkelord,
   selectOppgavetype,
   selectPrioritet,
   selectSaksstatus,
@@ -127,6 +128,7 @@ function filtrer(
     .filterBy(selectOppgavetype, filter('oppgavetype'))
     .filterBy(selectBehandlingstemaTerm, filter('behandlingstema'))
     .filterBy(selectBehandlingstypeTerm, filter('behandlingstype'))
+    .filterByAny(selectNøkkelord, filter('nøkkelord'))
     .filterBy(selectMappenavn, filter('mappenavn'))
     .filterBy(selectPrioritet, filter('prioritet'))
     .filterBy(selectInnsenderNavn, filter('innsenderNavn'))

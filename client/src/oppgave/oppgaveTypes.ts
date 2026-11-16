@@ -25,9 +25,15 @@ export const OppgavetypeLabel: Record<Oppgavetype, string> = {
 }
 
 export enum Oppgavestatus {
+  // kun v1
   OPPRETTET = 'OPPRETTET',
   ÅPNET = 'ÅPNET',
   UNDER_BEHANDLING = 'UNDER_BEHANDLING',
+
+  // kun v2
+  ÅPEN = 'ÅPEN',
+
+  // v1 og v2
   FERDIGSTILT = 'FERDIGSTILT',
   FEILREGISTRERT = 'FEILREGISTRERT',
 }
@@ -36,6 +42,8 @@ export const OppgavestatusLabel: Record<Oppgavestatus, string> = {
   OPPRETTET: 'Mottatt',
   ÅPNET: 'Mottatt',
   UNDER_BEHANDLING: 'Under behandling',
+
+  ÅPEN: 'Åpen',
   FERDIGSTILT: 'Ferdigstilt',
   FEILREGISTRERT: 'Feilregistrert',
 }
@@ -70,29 +78,28 @@ export interface OppgaveBase {
 }
 
 export interface Oppgave extends OppgaveBase {
-  statuskategori: Statuskategori
   oppgavestatus: Oppgavestatus
-  prioritet: Oppgaveprioritet
-  kategorisering: Oppgavekategorisering
-  beskrivelse?: string
+  statuskategori: Statuskategori
 
-  // tildeling
+  prioritet: Oppgaveprioritet
+  beskrivelse?: string
+  kategorisering: Oppgavekategorisering
+  nøkkelord?: string[]
+
+  // fordeling
   tildeltEnhet: Enhet
   tildeltSaksbehandler?: Saksbehandler
+  mappeId?: string
+  mappenavn?: string
 
-  // tilgang
-  opprettetAv?: string
-  opprettetAvEnhet?: Enhet
-  endretAv?: string
-  endretAvEnhet?: Enhet
+  // behandlingsperiode
+  aktivDato: string
+  fristDato?: string
 
   // tidspunkter
-  aktivDato: string
-  fristFerdigstillelse?: string
   opprettetTidspunkt?: string
   endretTidspunkt?: string
   ferdigstiltTidspunkt?: string
-  isPåVent?: boolean
 
   // tilknytning
   fnr?: string
@@ -100,22 +107,20 @@ export interface Oppgave extends OppgaveBase {
   innsender?: OppgaveInnsender
   journalpostId?: string
   sak?: OppgaveSak
-  behandlesAvApplikasjon?: string
   eksternSakId?: string
+  behandlesAvApplikasjon?: string
 
   // totrinnskontroll
   totrinnskontroll?: OppgaveTotrinnskontroll
 
-  // mappe
-  mappeId?: string
-  mappenavn?: string
-
-  // oppgavebehandling
-  sistLest?: string
+  // utvidelser
   isUlest?: boolean
+  sistLest?: string
 
+  //
   isBehandlesAvApplikasjonHotsak: boolean
   isJournalføringsoppgave: boolean
+  isPåVent?: boolean
 }
 
 export interface OppgaveMappe {

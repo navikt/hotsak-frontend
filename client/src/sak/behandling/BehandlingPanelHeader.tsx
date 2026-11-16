@@ -43,9 +43,7 @@ export function BehandlingPanelHeader({ oppgave, sak }: { oppgave?: Saksbehandli
           <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
           <InlineKopiknapp copyText={sak.sakId} tooltip="Kopier saksnummer" />
         </HStack>
-        {oppgave?.fristFerdigstillelse && (
-          <Tekst textColor="subtle">Frist: {formaterDatoKort(oppgave.fristFerdigstillelse)}</Tekst>
-        )}
+        {oppgave?.fristDato && <Tekst textColor="subtle">Frist: {formaterDatoKort(oppgave.fristDato)}</Tekst>}
       </HStack>
       {!erBestilling && (
         <>

@@ -1,6 +1,12 @@
 import type { Tema } from '../kodeverk/kodeverkTypes.ts'
 import type { Oppgaveprioritet, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 
+export enum OverstyrInnsynsregler {
+  VISES_MANUELT_GODKJENT = 'VISES_MANUELT_GODKJENT',
+  SKJULES_FEILSENDT = 'SKJULES_FEILSENDT',
+  SKJULES_BRUKERS_ONSKE = 'SKJULES_BRUKERS_ONSKE',
+}
+
 export type TilordnetEnhet = 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
 
 export interface JournalføringV2SkjemaVerdier {
@@ -18,6 +24,8 @@ export interface JournalføringV2SkjemaVerdier {
   tilordnetEnhet: TilordnetEnhet
   mappeId?: string
   medarbeider: string
+  dokumenterKontrollert: boolean
+  overstyrInnsynsregler: OverstyrInnsynsregler | ''
 }
 
 export type SakstypeKode = 'A' | 'K' | 'KT' | 'R' | 'S' | 'T'
@@ -78,6 +86,7 @@ export interface JournalføringV2Request {
   tittel: string
   brukerFnr: string
   avsenderFnr: string
+  overstyrInnsynsregler: OverstyrInnsynsregler
   saksgrunnlag?: JournalføringV2Saksgrunnlag
   sak?: {
     sakstype: Sakstype

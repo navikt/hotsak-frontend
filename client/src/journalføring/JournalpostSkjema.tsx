@@ -12,7 +12,7 @@ import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { type Journalpost, type Person, SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
-import { Sakstype as Fagsakstype } from './journalføringTypes.ts'
+import { OverstyrInnsynsregler, Sakstype as Fagsakstype } from './journalføringTypes.ts'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
 import type { UseJournalføringActionsResponse } from './useJournalføringActions.ts'
 
@@ -43,6 +43,8 @@ export function JournalpostSkjema({
     journalfør
       .trigger({
         tittel: journalpostTittel,
+        avsenderFnr: '',
+        overstyrInnsynsregler: OverstyrInnsynsregler.VISES_MANUELT_GODKJENT,
         brukerFnr: fodselsnummer,
         sak:
           valgtEksisterendeSakId !== ''

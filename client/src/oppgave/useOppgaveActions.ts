@@ -21,9 +21,19 @@ export interface EndreOppgavetildelingRequest {
 export interface EndreOppgaveRequest {
   behandlingstema?: string
   aktivDato?: string
-  fristFerdigstillelse?: string
+  fristDato?: string
   kommentar?: string
   mappeId?: string | null
+}
+
+export interface PatchOppgaveRequest {
+  behandlingstema?: string
+  nøkkelord?: string[]
+  mappeId?: string | null
+  tildeltSaksbehandler?: NavIdent
+  aktivDato?: string
+  fristDato?: string
+  kommentar?: string
 }
 
 /**
@@ -68,6 +78,18 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
   const endreOppgave = useSWRMutation<void, HttpError, typeof oppgaveKey, EndreOppgaveRequest>(
     oppgaveKey,
     (url, { arg: body }) => http.put(url, body, { versjon }),
+    {
+      async onSuccess() {
+        if (isOppgaveContext) {
+          mutateSak(sakId)
+        }
+      },
+    }
+  )
+
+  const patchOppgave = useSWRMutation<void, HttpError, typeof oppgaveKey, PatchOppgaveRequest>(
+    oppgaveKey,
+    (url, { arg: body }) => http.patch(url, body, { versjon }),
     {
       async onSuccess() {
         if (isOppgaveContext) {
@@ -135,9 +157,14 @@ export function useOppgaveActions(oppgave: OppgaveBase, isOppgaveContext = true)
     fjernOppgavetildeling,
 
     /**
-     * Endre oppgave.
+     * Endre oppgave (v1).
      */
     endreOppgave,
+
+    /**
+     * Endre oppgave (v2).
+     */
+    patchOppgave,
 
     /**
      * Merk oppgave som lest.

@@ -14,7 +14,7 @@ import {
   Oppgavetype,
   Statuskategori,
 } from '../../oppgave/oppgaveTypes.ts'
-import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
+import { type EndreOppgaveRequest, type PatchOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
 import { Sakstype } from '../../types/types.internal.ts'
 import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
@@ -185,13 +185,41 @@ export class OppgaveStore extends Dexie {
       changes.aktivDato = request.aktivDato
       changes.isPåVent = isFuture(request.aktivDato)
     }
-    if (request.fristFerdigstillelse) {
-      changes.fristFerdigstillelse = request.fristFerdigstillelse
+    if (request.fristDato) {
+      changes.fristDato = request.fristDato
     }
     if (request.mappeId !== undefined) {
       changes.mappeId = request.mappeId ?? undefined
     }
     return this.oppgaver.update(oppgaveId, changes)
+  }
+
+  async patch(oppgaveId: OppgaveId, request: PatchOppgaveRequest) {
+    console.log(`Patcher oppgave med oppgaveId: ${oppgaveId}`, request)
+    const { nøkkelord, tildeltSaksbehandler, kommentar, ...rest } = request
+    await this.endre(oppgaveId, rest)
+    const changes: Partial<Oppgave> = {}
+    if (nøkkelord !== undefined) {
+      changes.nøkkelord = nøkkelord
+    }
+    if (tildeltSaksbehandler) {
+      changes.tildeltSaksbehandler = Saksbehandlere.hent(tildeltSaksbehandler)
+      changes.oppgavestatus = Oppgavestatus.UNDER_BEHANDLING
+    }
+    if (Object.keys(changes).length > 0) {
+      await this.oppgaver.update(oppgaveId, changes)
+    }
+    if (kommentar) {
+      const saksbehandler = Saksbehandlere.innlogget()
+      await this.lagreKommentar(oppgaveId, {
+        oppgaveId,
+        tekst: kommentar,
+        registrertAv: saksbehandler,
+        registrertAvEnhet: saksbehandler.gjeldendeEnhet,
+        registrertAvSystem: 'HOTSAK',
+        registrertTidspunkt: new Date().toISOString(),
+      })
+    }
   }
 
   async overfør(oppgaveId: OppgaveId) {
@@ -243,10 +271,10 @@ export class OppgaveStore extends Dexie {
         return opprettetTidspunkt >= fra && opprettetTidspunkt <= til
       })
       .sort((a, b) => {
-        let key: 'fristFerdigstillelse' | 'opprettetTidspunkt' = 'fristFerdigstillelse'
+        let key: 'fristDato' | 'opprettetTidspunkt' = 'fristDato'
         switch (request.sorteringsfelt) {
           case 'FRIST':
-            key = 'fristFerdigstillelse'
+            key = 'fristDato'
             break
           case 'OPPRETTET_TIDSPUNKT':
             key = 'opprettetTidspunkt'

@@ -4,17 +4,42 @@ import { http } from '../io/HttpClient.ts'
 import { type HttpError } from '../io/HttpError.ts'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { mutateOppgave } from '../oppgave/useOppgave.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import type {
   JournalføringV2Request,
   JournalføringV2Response,
   JournalførJournalpostRequest,
+  OverstyrInnsynsregler,
 } from './journalføringTypes.ts'
 
 type JournalføringV1Arg = Omit<JournalførJournalpostRequest, 'oppgaveId' | 'journalpostId'>
 type JournalføringV2Arg = Omit<JournalføringV2Request, 'oppgaveId' | 'journalpostId'>
 
+type JournalføringRequestBody = Omit<JournalføringV2Request, 'avsenderFnr' | 'dokumenter' | 'overstyrInnsynsregler'> & {
+  avsenderFnr?: string
+  dokumenter?: JournalføringV2Request['dokumenter']
+  overstyrInnsynsregler?: OverstyrInnsynsregler
+}
+
+export function byggJournalføringRequest(
+  arg: JournalføringV1Arg | JournalføringV2Arg,
+  oppgaveId: string,
+  journalpostId: string,
+  erProd: boolean
+): JournalføringRequestBody {
+  const { overstyrInnsynsregler, ...request } = arg
+
+  return {
+    ...request,
+    ...(erProd ? {} : { overstyrInnsynsregler }),
+    oppgaveId,
+    journalpostId,
+  }
+}
+
 export function useJournalføringActions(oppgave: Oppgave) {
   const { oppgaveId, versjon } = oppgave
+  const { erProd } = useMiljø()
 
   if (!oppgaveId) {
     throw new Error('Mangler oppgaveId!')
@@ -31,13 +56,9 @@ export function useJournalføringActions(oppgave: Oppgave) {
   >(
     journalpostKey,
     (url, { arg }) =>
-      http.post<JournalførJournalpostRequest | JournalføringV2Request, JournalføringV2Response>(
+      http.post<JournalføringRequestBody, JournalføringV2Response>(
         url,
-        {
-          ...arg,
-          oppgaveId,
-          journalpostId: journalpostId!,
-        },
+        byggJournalføringRequest(arg, oppgaveId, journalpostId!, erProd),
         { versjon }
       ),
     {

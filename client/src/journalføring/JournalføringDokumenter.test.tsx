@@ -42,7 +42,7 @@ describe('JournalføringDokumenter innsyn', () => {
 
     expect(
       await screen.findByText(
-        'Dersom dokumentene er feilsendt må du overføre saken til Gosys og følge rutinen for håndtering av avvik'
+        'Du må bekrefte. Dersom dokumentene er registrert på feil bruker eller inneholder opplysninger om andre brukere må du overføre saken til Gosys og følge rutinen for håndtering av avvik.'
       )
     ).toBeVisible()
   })

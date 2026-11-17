@@ -196,9 +196,12 @@ export class OppgaveStore extends Dexie {
 
   async patch(oppgaveId: OppgaveId, request: PatchOppgaveRequest) {
     console.log(`Patcher oppgave med oppgaveId: ${oppgaveId}`, request)
-    const { nøkkelord, tildeltSaksbehandler, kommentar, ...rest } = request
+    const { nøkkelord, tildeltSaksbehandler, kommentar, prioritet, ...rest } = request
     await this.endre(oppgaveId, rest)
     const changes: Partial<Oppgave> = {}
+    if (prioritet !== undefined) {
+      changes.prioritet = prioritet
+    }
     if (nøkkelord !== undefined) {
       changes.nøkkelord = nøkkelord
     }

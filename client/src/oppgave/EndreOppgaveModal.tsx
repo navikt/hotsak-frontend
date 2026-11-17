@@ -11,11 +11,11 @@ import { naturalBy } from '../utils/array.ts'
 import { tilDato, tilLocalDateString } from '../utils/dato.ts'
 import { isNotBlank } from '../utils/type.ts'
 import { mutateOppgavekommentarer } from './kommentar/useOppgavekommentarer.ts'
-import { type Oppgave } from './oppgaveTypes.ts'
-import { mutateOppgave, useOppgaveMapper } from './useOppgave.ts'
-import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
+import { type Oppgave, Oppgaveprioritet, OppgaveprioritetLabel } from './oppgaveTypes.ts'
 import { harBehandlingstema, useKodeverkGjelder } from './useKodeverkOppgave.ts'
+import { mutateOppgave, useOppgaveMapper, useOppgaveNøkkelord } from './useOppgave.ts'
 import { type PatchOppgaveRequest, useOppgaveActions } from './useOppgaveActions.ts'
+import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
 
 export interface EndreOppgaveModalProps {
   oppgave: Oppgave
@@ -24,6 +24,8 @@ export interface EndreOppgaveModalProps {
 
 interface EndreOppgaveSkjemaverdier {
   behandlingstema: string
+  behandlingstype: string
+  prioritet: Oppgaveprioritet
   nøkkelord: string[]
   mappeId: string
   tildeltSaksbehandler: string
@@ -36,6 +38,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
   const { oppgave, onClose } = props
 
   const mapper = useOppgaveMapper()
+  const nøkkelord = useOppgaveNøkkelord()
   const { behandlere } = useOppgavebehandlere(oppgave.oppgaveId)
   const kodeverkGjelder = useKodeverkGjelder(oppgave.kategorisering.behandlingstype?.kode)
 
@@ -64,6 +67,8 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
   const defaultValues = useMemo<EndreOppgaveSkjemaverdier>(
     () => ({
       behandlingstema: oppgave.kategorisering.behandlingstema?.kode ?? '',
+      behandlingstype: oppgave.kategorisering.behandlingstype?.kode ?? '',
+      prioritet: oppgave.prioritet,
       nøkkelord: oppgave.nøkkelord ?? [],
       mappeId: oppgave.mappeId ?? '',
       tildeltSaksbehandler: oppgave.tildeltSaksbehandler?.id ?? '',
@@ -150,44 +155,6 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
             ))}
           </Select>
 
-          <Controller
-            name="nøkkelord"
-            control={form.control}
-            render={({ field }) => (
-              <UNSAFE_Combobox
-                label="Nøkkelord"
-                description="Velg eller skriv inn nye nøkkelord"
-                size="small"
-                isMultiSelect
-                allowNewValues
-                options={defaultValues.nøkkelord}
-                selectedOptions={field.value}
-                onToggleSelected={(value, isSelected) => {
-                  field.onChange(
-                    isSelected ? [...field.value, value] : field.value.filter((nøkkelord) => nøkkelord !== value)
-                  )
-                }}
-              />
-            )}
-          />
-
-          <Select label="Mappe" size="small" {...form.register('mappeId')}>
-            <option value="">Ingen mappe</option>
-            {mapper.map((mappe) => (
-              <option key={mappe.id} value={mappe.id.toString()}>
-                {mappe.navn}
-              </option>
-            ))}
-          </Select>
-
-          <ComboboxController
-            control={form.control}
-            name="tildeltSaksbehandler"
-            label="Tildelt saksbehandler"
-            size="small"
-            options={saksbehandlerOptions}
-          />
-
           <DatePicker {...datepickerPropsAktivDato}>
             <DatePicker.Input
               {...inputPropsAktivDato}
@@ -200,11 +167,58 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <DatePicker {...datepickerPropsFristDato}>
             <DatePicker.Input
               {...inputPropsFristDato}
-              label="Frist"
+              label="Frist dato"
               size="small"
               error={form.formState.errors.fristDato?.message}
             />
           </DatePicker>
+
+          <Select label="Prioritet" size="small" {...form.register('prioritet')}>
+            {Object.values(Oppgaveprioritet).map((prioritet) => (
+              <option key={prioritet} value={prioritet}>
+                {OppgaveprioritetLabel[prioritet]}
+              </option>
+            ))}
+          </Select>
+
+          <Controller
+            name="nøkkelord"
+            control={form.control}
+            render={({ field }) => (
+              <UNSAFE_Combobox
+                label="Nøkkelord"
+                description="Velg eller skriv inn nye nøkkelord"
+                size="small"
+                isMultiSelect
+                allowNewValues
+                options={[...new Set([...nøkkelord, ...defaultValues.nøkkelord])]}
+                selectedOptions={field.value}
+                maxSelected={2}
+                onToggleSelected={(value, isSelected) => {
+                  field.onChange(
+                    isSelected ? [...field.value, value] : field.value.filter((nøkkelord) => nøkkelord !== value)
+                  )
+                }}
+              />
+            )}
+          />
+
+          <ComboboxController
+            control={form.control}
+            name="tildeltSaksbehandler"
+            label="Tildelt saksbehandler"
+            size="small"
+            options={saksbehandlerOptions}
+          />
+
+          <Select label="Mappe" size="small" {...form.register('mappeId')}>
+            <option value="">Ingen mappe</option>
+            {mapper.map((mappe) => (
+              <option key={mappe.id} value={mappe.id.toString()}>
+                {mappe.navn}
+              </option>
+            ))}
+          </Select>
 
           <Textarea
             label="Kommentar (valgfri)"
@@ -233,6 +247,10 @@ function lagPatchOppgaveRequest(
 
   if (endret.behandlingstema && endret.behandlingstema !== opprinnelig.behandlingstema) {
     body.behandlingstema = endret.behandlingstema
+  }
+
+  if (endret.prioritet !== opprinnelig.prioritet) {
+    body.prioritet = endret.prioritet
   }
 
   if (!erLike(endret.nøkkelord, opprinnelig.nøkkelord)) {

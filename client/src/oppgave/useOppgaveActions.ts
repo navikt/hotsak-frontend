@@ -8,7 +8,7 @@ import { mutateSak } from '../sak/useSak.ts'
 import { useUmami } from '../sporing/useUmami.ts'
 import { type NavIdent } from '../tilgang/Ansatt.ts'
 import { mutateOppgavekommentarer, mutateOppgavekommentarerForSak } from './kommentar/useOppgavekommentarer.ts'
-import { type OppgaveBase } from './oppgaveTypes.ts'
+import { type OppgaveBase, type Oppgaveprioritet } from './oppgaveTypes.ts'
 
 export interface EndreOppgavetildelingRequest {
   /**
@@ -27,7 +27,9 @@ export interface EndreOppgaveRequest {
 }
 
 export interface PatchOppgaveRequest {
+  prioritet?: Oppgaveprioritet
   behandlingstema?: string
+  behandlingstype?: string
   nøkkelord?: string[]
   mappeId?: string | null
   tildeltSaksbehandler?: NavIdent

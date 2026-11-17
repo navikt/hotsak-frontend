@@ -5,7 +5,6 @@ import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { DokumentInnsyn } from './DokumentInnsyn.tsx'
 import { DokumentRad } from './DokumentRad.tsx'
 import { hentAnnetInnhold } from './journalføringValg.ts'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 interface JournalføringDokumenterProps {
   journalpost: Journalpost
@@ -30,9 +29,7 @@ export function JournalføringDokumenter({
       <Heading level="2" size="small">
         Dokumenter
       </Heading>
-      <Eksperiment>
-        <DokumentInnsyn readOnly={readOnly} />
-      </Eksperiment>
+      <DokumentInnsyn readOnly={readOnly} />
       {journalpost.dokumenter.map((dok: Dokument, idx: number) => (
         <DokumentRad
           key={dok.dokumentId}

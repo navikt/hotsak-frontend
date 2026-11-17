@@ -12,16 +12,8 @@ const journalføring = {
 }
 
 describe('byggJournalføringRequest', () => {
-  it('utelater innsynsregler fra request i prod', () => {
-    const request = byggJournalføringRequest(journalføring, 'oppgave-1', 'journalpost-1', true)
-
-    expect(request).not.toHaveProperty('overstyrInnsynsregler')
-    expect(request.dokumenter).toEqual([])
-  })
-
-  it('inkluderer innsynsregler fra request i andre miljøer', () => {
-    const request = byggJournalføringRequest(journalføring, 'oppgave-1', 'journalpost-1', false)
-
+  it('inkluderer innsynsregler fra request', () => {
+    const request = byggJournalføringRequest(journalføring, 'oppgave-1', 'journalpost-1')
     expect(request.overstyrInnsynsregler).toBe(OverstyrInnsynsregler.VISES_MANUELT_GODKJENT)
   })
 })

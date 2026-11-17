@@ -3,7 +3,7 @@ import { formatISO } from 'date-fns'
 import { type ReactNode, useState } from 'react'
 
 import { formaterDato } from '../utils/dato.ts'
-import classes from './JournalføringV2Skjema.module.css'
+import classes from './JournalføringSkjema.module.css'
 
 export function InlineRedigerbarSelect({
   label,

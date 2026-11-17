@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 import { describe, expect, it, vi } from 'vitest'
 
-import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 import { TilordneOppgave } from './TilordneOppgave.tsx'
 
 vi.mock('../oppgave/useOppgave.ts', () => ({
@@ -33,7 +33,7 @@ vi.mock('../tilgang/useTilgang.ts', () => ({
 }))
 
 function TestSkjema() {
-  const form = useForm<JournalføringV2SkjemaVerdier>({
+  const form = useForm<JournalføringSkjemaVerdier>({
     defaultValues: {
       tilordnetEnhet: 'enhetensOppgaveliste',
     },

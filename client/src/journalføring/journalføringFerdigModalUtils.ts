@@ -1,5 +1,5 @@
 import { type OppgaveId, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
-import { type JournalføringV2Response, type TilordnetEnhet } from './journalføringTypes.ts'
+import { type JournalføringResponse, type TilordnetEnhet } from './journalføringTypes.ts'
 
 export type JournalføringFerdigVariant = 'ny-sak' | 'eksisterende-hotsak' | 'ekstern-fagsak'
 
@@ -40,14 +40,14 @@ export function lagJournalføringFerdigModalmodell(
   }
 }
 
-export function finnOppgaveIdForSak(resultat: JournalføringV2Response | null): OppgaveId | undefined {
+export function finnOppgaveIdForSak(resultat: JournalføringResponse | null): OppgaveId | undefined {
   return resultat?.oppgaver.find(
     ({ oppgavetype, statuskategori }) =>
       oppgavetype === Oppgavetype.BEHANDLE_SAK && statuskategori === Statuskategori.ÅPEN
   )?.oppgaveId
 }
 
-export function finnStiTilSak(resultat: JournalføringV2Response): string {
+export function finnStiTilSak(resultat: JournalføringResponse): string {
   const oppgaveIdForSak = finnOppgaveIdForSak(resultat)
   return oppgaveIdForSak ? `/oppgave/${oppgaveIdForSak}` : `/sak/${resultat.sakId}`
 }

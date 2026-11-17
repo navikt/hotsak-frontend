@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router'
 
 import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { finnModalvariant, finnStiTilSak, lagJournalføringFerdigModalmodell } from './journalføringFerdigModalUtils.ts'
-import { type JournalføringV2Response, type TilordnetEnhet } from './journalføringTypes.ts'
+import { type JournalføringResponse, type TilordnetEnhet } from './journalføringTypes.ts'
 import { useJournalpostSakFerdigstiltHendelse } from './useJournalpostSakFerdigstiltHendelse.ts'
 
 interface JournalføringFerdigModalProps {
   open: boolean
-  resultat: JournalføringV2Response | null
+  resultat: JournalføringResponse | null
   sakType: 'ny' | 'eksisterende'
   tilordnetEnhet?: TilordnetEnhet
   skjulTilSaken?: boolean

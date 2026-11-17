@@ -3,11 +3,11 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { OverstyrInnsynsregler, type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { OverstyrInnsynsregler, type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 import classes from './DokumentInnsyn.module.css'
 
 export function DokumentInnsyn({ readOnly }: { readOnly: boolean }) {
-  const { control, watch, getValues, setValue } = useFormContext<JournalføringV2SkjemaVerdier>()
+  const { control, watch, getValues, setValue } = useFormContext<JournalføringSkjemaVerdier>()
   const dokumenterKontrollert = watch('dokumenterKontrollert')
 
   return (
@@ -30,7 +30,7 @@ export function DokumentInnsyn({ readOnly }: { readOnly: boolean }) {
           rules={{
             validate: (verdi) =>
               verdi ||
-              'Dersom dokumentene er feilsendt må du overføre saken til Gosys og følge rutinen for håndtering av avvik',
+              'Du må bekrefte. Dersom dokumentene er registrert på feil bruker eller inneholder opplysninger om andre brukere må du overføre saken til Gosys og følge rutinen for håndtering av avvik.',
           }}
           render={({ field: { value, onChange, onBlur, ref }, fieldState }) => (
             <TextContainer>
@@ -86,7 +86,6 @@ export function DokumentInnsyn({ readOnly }: { readOnly: boolean }) {
         >
           <option value="">Velg</option>
           <option value={OverstyrInnsynsregler.VISES_MANUELT_GODKJENT}>Bruker kan se dokumentene på nav.no</option>
-          <option value={OverstyrInnsynsregler.SKJULES_FEILSENDT}>Skjules fordi dokumentet er feilsendt</option>
           <option value={OverstyrInnsynsregler.SKJULES_BRUKERS_ONSKE}>Skjules etter brukers ønske</option>
         </SelectController>
       </TextContainer>

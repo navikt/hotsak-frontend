@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { ActionMenu } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
 import { type Oppgave, type OppgaveId, Oppgavetype, Statuskategori } from './oppgaveTypes.ts'
@@ -103,13 +104,15 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       >
         Endre mappe
       </OppgaveModalActionMenuItem>
-      <OppgaveModalActionMenuItem
-        modal={OppgaveModalType.ENDRE_OPPGAVE}
-        underBehandlingAvInnloggetAnsatt={true}
-        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
-      >
-        Endre oppgave
-      </OppgaveModalActionMenuItem>
+      <Eksperiment>
+        <OppgaveModalActionMenuItem
+          modal={OppgaveModalType.ENDRE_OPPGAVE}
+          underBehandlingAvInnloggetAnsatt={true}
+          disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
+        >
+          Endre oppgave
+        </OppgaveModalActionMenuItem>
+      </Eksperiment>
       <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
     </ActionMenu.Group>
   )

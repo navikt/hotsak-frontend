@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
-import type { JournalføringV2Response } from './journalføringTypes.ts'
+import type { JournalføringResponse } from './journalføringTypes.ts'
 import {
   finnModalvariant,
   finnOppgaveIdForSak,
@@ -9,7 +9,7 @@ import {
   lagJournalføringFerdigModalmodell,
 } from './journalføringFerdigModalUtils.ts'
 
-const resultat: JournalføringV2Response = {
+const resultat: JournalføringResponse = {
   sakId: 'sak-1',
   oppgaver: [
     {

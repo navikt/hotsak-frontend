@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { describe, expect, it, vi } from 'vitest'
 
 import { Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
-import { type JournalføringV2SkjemaVerdier } from './journalføringTypes.ts'
+import { type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 import { NySakSkjema } from './NySakSkjema.tsx'
 
 vi.mock('../oppgave/useKodeverkOppgave.ts', () => ({
@@ -21,7 +21,7 @@ vi.mock('./TilordneOppgave.tsx', () => ({
 }))
 
 function TestSkjema({ onSubmit }: { onSubmit(): void }) {
-  const form = useForm<JournalføringV2SkjemaVerdier>({
+  const form = useForm<JournalføringSkjemaVerdier>({
     mode: 'onChange',
     defaultValues: {
       tema: 'HJE',

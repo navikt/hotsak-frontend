@@ -15,10 +15,10 @@ import {
   LagretHendelse,
   LagretJournalpost,
 } from './lagJournalpost.ts'
-import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
+import { JOURNALFOERING_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { lagPerson, PersonStore } from './PersonStore.ts'
 import { Saksbehandlere } from './Saksbehandlere.ts'
-import type { JournalføringV2Request } from '../../journalføring/journalføringTypes.ts'
+import type { JournalføringRequest } from '../../journalføring/journalføringTypes.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 
 export class JournalpostStore extends Dexie {
@@ -78,29 +78,29 @@ export class JournalpostStore extends Dexie {
 
     const v2Poster = [
       lagJournalpost('9006', 'Søknad om hjelpemidler', {
-        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        brukerFnr: JOURNALFOERING_BRUKER_FNR,
         sak: { datoOpprettet: '2026-06-02T09:20:00.000Z', fagsakId: '9901', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9007', 'Søknad om hjelpemidler', {
-        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        brukerFnr: JOURNALFOERING_BRUKER_FNR,
         sak: { datoOpprettet: '2026-07-14T11:10:00.000Z', fagsakId: '9902', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9008', 'Søknad om hjelpemidler', {
-        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        brukerFnr: JOURNALFOERING_BRUKER_FNR,
         sak: { datoOpprettet: '2026-06-02T09:20:00.000Z', fagsakId: '9901', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9009', 'Søknad om hjelpemiddel til kognisjon, kommunikasjon og lese- og skrivevansker', {
-        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        brukerFnr: JOURNALFOERING_BRUKER_FNR,
         avsenderFnr: '02020299999',
         kanal: { kode: 'NAV_NO', term: 'Nav.no' },
         sak: { datoOpprettet: '2026-07-14T11:10:00.000Z', fagsakId: '9902', fagsaksystem: 'HJELPEMIDLER' },
       }),
       lagJournalpost('9010', 'Søknad om hjelpemidler', {
-        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        brukerFnr: JOURNALFOERING_BRUKER_FNR,
         sak: { datoOpprettet: '2026-10-02T09:05:00.000Z', fagsakId: '1234A01', fagsaksystem: 'IT01' },
       }),
       lagJournalpost('9011', 'Søknad om hjelpemidler', {
-        brukerFnr: JOURNALFOERING_V2_BRUKER_FNR,
+        brukerFnr: JOURNALFOERING_BRUKER_FNR,
         sak: { datoOpprettet: '2026-10-16T10:35:00.000Z', fagsakId: '1234A02', fagsaksystem: 'IT01' },
       }),
     ]
@@ -186,20 +186,7 @@ export class JournalpostStore extends Dexie {
     return this.hendelser.where('sakId').equals(sakId).toArray()
   }
 
-  // TODO Denne kan fjernes når all journalføring er over på ny måte å journalføre på
-  async journalfør(journalpostId: string, tittel: string) {
-    const dokument = await this.dokumenter.where('journalpostId').equals(journalpostId).first()
-    const dokumentId = Number(dokument?.dokumentId)
-
-    await this.dokumenter.update(dokumentId, { ...dokument, tittel })
-
-    return this.journalposter.update(journalpostId, {
-      tittel,
-      journalstatus: JournalpostStatusType.JOURNALFOERT,
-    })
-  }
-
-  async journalførV2(journalføringRequest: JournalføringV2Request) {
+  async journalfør(journalføringRequest: JournalføringRequest) {
     const { journalpostId, tittel, dokumenter } = journalføringRequest
     const journalpost = await this.journalposter.get(journalpostId)
     const dokument = await this.dokumenter.where('journalpostId').equals(journalpostId).first()

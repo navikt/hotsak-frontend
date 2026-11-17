@@ -2,13 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.toKolonner {
-  display: grid;
-  grid-template-columns: 35rem 1fr;
-  grid-template-rows: 1fr;
-  height: 100%;
+  overflow: hidden;
 }
 
 .container {
@@ -16,8 +10,18 @@
   min-height: 0;
 }
 
-.skjemaOgVisning {
+.panelGroup {
+  height: 100%;
+}
+
+.skjemaKolonne {
+  height: 100%;
   overflow-y: auto;
   border-right: 1px solid var(--ax-border-neutral-subtle);
-  padding: var(--ax-space-16);
+}
+
+.dokumentKolonne {
+  height: 100%;
+  overflow: hidden;
+  background: var(--ax-bg-subtle);
 }

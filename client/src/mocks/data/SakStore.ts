@@ -15,10 +15,7 @@ import {
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
 } from '../../brev/brevTyper.ts'
-import {
-  type JournalføringV2Request,
-  type JournalførJournalpostRequest,
-} from '../../journalføring/journalføringTypes.ts'
+import { type JournalføringRequest } from '../../journalføring/journalføringTypes.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
   type Behandling,
@@ -54,7 +51,7 @@ import {
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { enheter } from './enheter.ts'
 import { nesteArbeidsdagKlokkenÅtte, nåIso } from './felles.ts'
-import { JOURNALFOERING_V2_BRUKER_FNR } from './journalpostKonstanter.ts'
+import { JOURNALFOERING_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import {
   erInsertBarnebrillesak,
@@ -146,7 +143,7 @@ export class SakStore extends Dexie {
 
     return this.lagreAlle([
       ...hjelpemiddelsaker,
-      ...lagJournalføringssaker(JOURNALFOERING_V2_BRUKER_FNR),
+      ...lagJournalføringssaker(JOURNALFOERING_BRUKER_FNR),
       lagBarnebrillesak('1001'),
       lagBarnebrillesak('1002'),
       lagBarnebrillesak('1003'),
@@ -505,7 +502,7 @@ export class SakStore extends Dexie {
     })
   }
 
-  async opprettJournalføringSak(request: JournalføringV2Request): Promise<{ sakId: string; sak: Sak }> {
+  async opprettJournalføringSak(request: JournalføringRequest): Promise<{ sakId: string; sak: Sak }> {
     const count = await this.saker.count()
     const sakId = String(count + 1)
     const nå = nåIso()
@@ -535,14 +532,7 @@ export class SakStore extends Dexie {
     return { sakId, sak }
   }
 
-  async opprettSak(journalføring: JournalførJournalpostRequest) {
-    const sak = lagBarnebrillesak(journalføring.oppgaveId + journalføring.journalpostId)
-    sak.bruker.fnr = journalføring.brukerFnr
-    sak.journalposter = [journalføring.journalpostId]
-    return this.saker.add(sak)
-  }
-
-  async knyttJournalpostTilSak(journalføring: JournalførJournalpostRequest) {
+  async knyttJournalpostTilSak(journalføring: JournalføringRequest) {
     const sakId = journalføring.sak?.fagsakId
     if (!sakId) {
       return

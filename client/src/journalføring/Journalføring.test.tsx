@@ -13,7 +13,7 @@ import { type Journalføringsoppgave, Oppgavetype } from '../oppgave/oppgaveType
 import { PersonContext, usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { type Journalpost } from '../types/types.internal.ts'
-import { JournalføringV2 } from './JournalføringV2.tsx'
+import { Journalføring } from './Journalføring.tsx'
 
 const fnrFraForrigeOppgave = '02020299999'
 const journalpostensFnr = '01010199999'
@@ -37,8 +37,8 @@ vi.mock('../personoversikt/usePerson.ts', async () => {
     }),
   }
 })
-vi.mock('./JournalføringV2Skjema.tsx', () => ({
-  JournalføringV2Skjema: ({ standardverdier }: { standardverdier: unknown }) => {
+vi.mock('./JournalføringSkjema.tsx', () => ({
+  JournalføringSkjema: ({ standardverdier }: { standardverdier: unknown }) => {
     const { fodselsnummer } = usePersonContext()
     skjemaFnr.push(fodselsnummer)
     skjemaStandardverdier.push(standardverdier)
@@ -84,7 +84,7 @@ function MedGammeltFødselsnummerIContext({ children, strict = true }: { childre
 
 const lastPersonAsynkront = vi.mocked(usePerson).getMockImplementation()!
 
-describe('JournalføringV2', () => {
+describe('Journalføring', () => {
   afterEach(() => {
     vi.mocked(usePerson).mockImplementation(lastPersonAsynkront)
   })
@@ -92,7 +92,7 @@ describe('JournalføringV2', () => {
   it('viser journalpostens bruker og bruker aldri fødselsnummeret fra forrige oppgave', async () => {
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2
+        <Journalføring
           oppgave={oppgave}
           journalpost={journalpost}
           mutateJournalpost={vi.fn()}
@@ -119,7 +119,7 @@ describe('JournalføringV2', () => {
     }
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2
+        <Journalføring
           oppgave={lagOppgave(jp)}
           journalpost={jp}
           mutateJournalpost={vi.fn()}
@@ -141,7 +141,7 @@ describe('JournalføringV2', () => {
     }
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2
+        <Journalføring
           oppgave={lagOppgave(jp)}
           journalpost={jp}
           mutateJournalpost={vi.fn()}
@@ -158,7 +158,7 @@ describe('JournalføringV2', () => {
     const jp = { ...journalpost, fnrBruker: '' }
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2
+        <Journalføring
           oppgave={lagOppgave(jp)}
           journalpost={jp}
           mutateJournalpost={vi.fn()}
@@ -180,7 +180,7 @@ describe('JournalføringV2', () => {
     }
     const { container, rerender } = render(
       <MedGammeltFødselsnummerIContext strict={false}>
-        <JournalføringV2
+        <Journalføring
           oppgave={oppgave}
           journalpost={journalpost}
           mutateJournalpost={vi.fn()}
@@ -194,7 +194,7 @@ describe('JournalføringV2', () => {
     vi.mocked(usePerson).mockClear()
     rerender(
       <MedGammeltFødselsnummerIContext strict={false}>
-        <JournalføringV2
+        <Journalføring
           oppgave={lagOppgave(journalpostB)}
           journalpost={journalpostB}
           mutateJournalpost={vi.fn()}
@@ -237,7 +237,7 @@ describe('JournalføringV2', () => {
 
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2
+        <Journalføring
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
@@ -278,7 +278,7 @@ describe('JournalføringV2', () => {
 
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2
+        <Journalføring
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
@@ -305,7 +305,7 @@ describe('JournalføringV2', () => {
 
     render(
       <MedGammeltFødselsnummerIContext>
-        <JournalføringV2
+        <Journalføring
           oppgave={oppgave}
           journalpost={journalpost}
           mutateJournalpost={vi.fn()}

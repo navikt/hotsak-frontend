@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
-import type { JournalføringV2Response } from './journalføringTypes.ts'
+import type { JournalføringResponse } from './journalføringTypes.ts'
 
 const navigate = vi.fn()
 const useJournalpostSakFerdigstiltHendelse = vi.fn()
@@ -18,7 +18,7 @@ vi.mock('./useJournalpostSakFerdigstiltHendelse.ts', () => ({
   useJournalpostSakFerdigstiltHendelse: (sakId?: string) => useJournalpostSakFerdigstiltHendelse(sakId),
 }))
 
-const resultatEksisterendeSak: JournalføringV2Response = {
+const resultatEksisterendeSak: JournalføringResponse = {
   sakId: 'sak-1',
   oppgaver: [
     {

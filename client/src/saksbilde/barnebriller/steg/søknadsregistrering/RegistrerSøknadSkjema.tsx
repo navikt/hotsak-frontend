@@ -5,7 +5,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import classes from './RegistrerSøknadSkjema.module.css'
 
-import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { http } from '../../../../io/HttpClient.ts'
 import {
@@ -23,6 +22,7 @@ import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
+import { Dokumenter } from '../../../../dokument/Dokumenter.tsx'
 
 export function RegistrerSøknadSkjema() {
   const sakId = useSakId()

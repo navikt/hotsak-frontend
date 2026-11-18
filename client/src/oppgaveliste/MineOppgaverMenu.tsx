@@ -1,7 +1,6 @@
 import { ActionMenu } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { EndreOppgaveModal } from '../oppgave/EndreOppgaveModal.tsx'
 import { type Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveActions } from '../oppgave/useOppgaveActions.ts'
@@ -30,14 +29,12 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
         >
           Fjern tildeling
         </ActionMenu.Item>
-        <Eksperiment>
-          <ActionMenu.Item
-            disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
-            onSelect={() => setEndreOppgaveOpen(true)}
-          >
-            Endre oppgaven
-          </ActionMenu.Item>
-        </Eksperiment>
+        <ActionMenu.Item
+          disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
+          onSelect={() => setEndreOppgaveOpen(true)}
+        >
+          Endre oppgaven
+        </ActionMenu.Item>
       </OppgaveMenu>
       {endreOppgaveOpen && <EndreOppgaveModal oppgave={oppgave} onClose={() => setEndreOppgaveOpen(false)} />}
     </>

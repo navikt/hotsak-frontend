@@ -8,6 +8,7 @@ export interface UsePersonResponse {
   personInfo?: Person
   error?: HttpError
   isLoading: boolean
+  manglerIOebs: boolean
 }
 
 export function usePerson(fnr?: string): UsePersonResponse {
@@ -21,6 +22,7 @@ export function usePerson(fnr?: string): UsePersonResponse {
 
   return {
     personInfo,
+    manglerIOebs: personInfo != null && !personInfo.brukernummer,
     error,
     isLoading,
   }

@@ -8,26 +8,30 @@ import { isVedtaksbrev } from '../brev/brevSelectors.ts'
 import { useBrevForSak } from '../brev/useBrev.ts'
 import { useDokumentContext } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
+import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson.ts'
-import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { useJournalposterInngående } from '../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { type Innsenderbehovsmelding } from '../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../types/types.internal.ts'
 import { FeatureToggle } from '../unleash/FeatureToggle.ts'
-import { useSakHotkeys } from './hotkeys/useSakHotkeys.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import {
   Gjenstående,
   isBehandlingsutfallHenleggelse,
   isBehandlingsutfallOverføring,
   isBehandlingsutfallVedtak,
+  VedtaksResultat,
 } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
+import { GodkjennBestillingModal } from './bestilling/GodkjennBestillingModal.tsx'
+import { useSakHotkeys } from './hotkeys/useSakHotkeys.ts'
 import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
+import { BrukerManglerIOebsModal } from './modaler/BrukerManglerIOebsModal.tsx'
+import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { OverførTilGosysModal } from './modaler/OverførTilGosysModal.tsx'
@@ -37,16 +41,14 @@ import { UgyldigSnarveiModal } from './modaler/UgyldigSnarveiModal.tsx'
 import { AvrundetPanel } from './paneler/AvrundetPanel.tsx'
 import { ResizablePanel } from './paneler/ResizablePanel.tsx'
 import { PapirsøknadPanel } from './PapirsøknadPanel.tsx'
-import { SakKontrollPanel } from './SakKontrollPanel.tsx'
-import { sidebarBredde } from './SakPanelTabTypes.tsx'
 import classes from './Sak.module.css'
 import { useSakContext } from './SakContextType.ts'
+import { SakKontrollPanel } from './SakKontrollPanel.tsx'
+import { sidebarBredde } from './SakPanelTabTypes.tsx'
 import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
-import { GodkjennBestillingModal } from './bestilling/GodkjennBestillingModal.tsx'
-import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
 
 function SakContent({
   oppgave,
@@ -61,7 +63,8 @@ function SakContent({
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
   const [visHenleggModal, setVisHenleggModal] = useState(false)
   const [visOverførGosysModal, setVisOverførGosysModal] = useState(false)
-  const { personInfo, isLoading: personInfoLoading } = usePerson(sak.bruker.fnr)
+  const { personInfo, isLoading: personInfoLoading, manglerIOebs } = usePerson(sak.bruker.fnr)
+  const [visBrukerManglerIOebs, setVisBrukerManglerIOebs] = useState(false)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
@@ -81,6 +84,8 @@ function SakContent({
 
   const { gjeldendeBehandling } = useBehandling()
   const behandlingsutfall = gjeldendeBehandling?.utfall
+  const innvilgelseSperretPgaOebs =
+    manglerIOebs && isBehandlingsutfallVedtak(behandlingsutfall) && behandlingsutfall.utfall !== VedtaksResultat.AVSLÅTT
 
   const { finnBrev } = useBrevForSak(sak.sakId)
   const vedtaksbrev = finnBrev(isVedtaksbrev)
@@ -93,7 +98,7 @@ function SakContent({
     onAnnetResultat: () => setAnnetResultatValgt(true),
     onBrevMangler: () => setVisBrevMangler(true),
     onNotatIkkeFerdigstilt: () => setVisNotatIkkeFerdigstilt(true),
-    onFattVedtak: () => setVisFerdigstillModal(true),
+    onFattVedtak: () => (manglerIOebs ? setVisBrukerManglerIOebs(true) : setVisFerdigstillModal(true)),
     onGodkjenneBestilling: () => setVisGodkjennBestillingModal(true),
   })
 
@@ -172,7 +177,6 @@ function SakContent({
               <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
             </AvrundetPanel>
           </ResizablePanel>
-
           <ResizablePanel
             panelId="kontaktinformasjonpanel"
             panel={kontaktinformasjonPanel}
@@ -219,6 +223,7 @@ function SakContent({
         />
       )}
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
+      <BrukerManglerIOebsModal open={visBrukerManglerIOebs} onClose={() => setVisBrukerManglerIOebs(false)} />
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <BrevManglerModal
           open={visBrevMangler}
@@ -272,6 +277,8 @@ function SakContent({
       } else {
         setVisOverførGosysModal(true)
       }
+    } else if (innvilgelseSperretPgaOebs) {
+      setVisBrukerManglerIOebs(true)
     } else if (brevutkastIkkeFerdigstilt) {
       setVisBrevMangler(true)
     } else if (notaterIkkeFerdigstilt) {

@@ -14,6 +14,10 @@ export function lagTilfeldigInteger(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+export function lagTilfeldigBrukernummer(): string {
+  return lagTilfeldigInteger(1_000_000, 9_999_999).toString()
+}
+
 export function lagTilfeldigDato(år: number): Date {
   const now = new Date()
   const isCurrentYear = now.getFullYear() == år

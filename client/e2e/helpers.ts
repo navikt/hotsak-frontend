@@ -117,3 +117,14 @@ export async function åpneSak(page: Page) {
   await page.getByRole('button', { name: /Åpne/i }).first().click()
   await ventPåSaksbilde(page)
 }
+
+export async function åpneSakSomMatcher(page: Page, tekst: string | RegExp) {
+  await page.goto('/')
+  await page.getByRole('link', { name: /Enhetens oppgaver/i }).click()
+  await page.getByRole('table').waitFor({ state: 'visible' })
+
+  const rad = page.getByRole('row').filter({ hasText: 'Behandle sak' }).filter({ hasText: tekst }).first()
+  await rad.getByRole('button', { name: /Ta oppgaven/i }).click()
+  await rad.getByRole('button', { name: /Åpne/i }).click()
+  await ventPåSaksbilde(page)
+}

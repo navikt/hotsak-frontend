@@ -15,7 +15,12 @@ import {
 import { BehovsmeldingCase } from './BehovsmeldingStore.ts'
 import { lagTilfeldigBosted } from './bosted.ts'
 import { enheter } from './enheter.ts'
-import { lagTilfeldigDato, lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles.ts'
+import {
+  lagTilfeldigBrukernummer,
+  lagTilfeldigDato,
+  lagTilfeldigFødselsdato,
+  lagTilfeldigTelefonnummer,
+} from './felles.ts'
 import { fødselsdatoFraFødselsnummer, kjønnFraFødselsnummer, lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 
@@ -80,7 +85,9 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
       bydel: undefined,
       kjønn: kjønnFraFødselsnummer(fnrBruker),
       telefonnummer: behovsmelding.bruker.telefon,
-      brukernummer: bruker.brukernummer,
+      brukernummer: behovsmeldingCase.brukerManglerIOebs
+        ? undefined
+        : (bruker.brukernummer ?? lagTilfeldigBrukernummer()),
       kontonummer: undefined,
     },
     innsender: {

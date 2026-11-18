@@ -300,7 +300,11 @@ describe('Journalføring', () => {
     [404, 'Person ikke funnet i PDL'],
     [500, 'Teknisk feil. Klarte ikke å hente person fra PDL.'],
   ])('viser feilmelding og skjuler skjemaet når personoppslaget feiler med %i', async (status, melding) => {
-    vi.mocked(usePerson).mockReturnValue({ error: new HttpError('feil', status), isLoading: false })
+    vi.mocked(usePerson).mockReturnValue({
+      error: new HttpError('feil', status),
+      isLoading: false,
+      manglerIOebs: false,
+    })
     skjemaFnr.length = 0
 
     render(

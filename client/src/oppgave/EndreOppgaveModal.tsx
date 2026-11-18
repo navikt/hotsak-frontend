@@ -139,7 +139,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
       <FormModal
         open
         onClose={onClose}
-        heading="Endre oppgave"
+        heading="Endre oppgaven"
         submitButtonLabel="Lagre endringer"
         width="600px"
         onSubmit={handleSubmit}

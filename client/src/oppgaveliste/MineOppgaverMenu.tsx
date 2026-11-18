@@ -35,7 +35,7 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
             disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
             onSelect={() => setEndreOppgaveOpen(true)}
           >
-            Endre oppgave
+            Endre oppgaven
           </ActionMenu.Item>
         </Eksperiment>
       </OppgaveMenu>

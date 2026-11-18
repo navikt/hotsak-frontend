@@ -46,6 +46,13 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   const isJournalføring = oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
   return (
     <ActionMenu.Group label="Oppgave">
+      <OppgaveModalActionMenuItem
+        modal={OppgaveModalType.ENDRE_OPPGAVE}
+        underBehandlingAvInnloggetAnsatt={true}
+        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
+      >
+        Endre oppgaven
+      </OppgaveModalActionMenuItem>
       {isJournalføring && (
         <OppgaveModalActionMenuItem
           modal={OppgaveModalType.OVERFØR_TIL_GOSYS}
@@ -54,13 +61,6 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
           Overfør til Gosys
         </OppgaveModalActionMenuItem>
       )}
-      <OppgaveModalActionMenuItem
-        modal={OppgaveModalType.ENDRE_OPPGAVE}
-        underBehandlingAvInnloggetAnsatt={true}
-        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
-      >
-        Endre oppgave
-      </OppgaveModalActionMenuItem>
       <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
     </ActionMenu.Group>
   )

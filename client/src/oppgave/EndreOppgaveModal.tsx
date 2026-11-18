@@ -5,14 +5,13 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { ComboboxController } from '../felleskomponenter/skjema/ComboboxController.tsx'
+import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { useMutateOppgaver } from '../oppgaveliste/useMutateOppgaver.ts'
-import { naturalBy } from '../utils/array.ts'
 import { tilDato, tilLocalDateString } from '../utils/dato.ts'
 import { isNotBlank } from '../utils/type.ts'
 import { mutateOppgavekommentarer } from './kommentar/useOppgavekommentarer.ts'
 import { type Oppgave, Oppgaveprioritet, OppgaveprioritetLabel } from './oppgaveTypes.ts'
-import { harBehandlingstema, useKodeverkGjelder } from './useKodeverkOppgave.ts'
 import { mutateOppgave, useOppgaveMapper, useOppgaveNøkkelord } from './useOppgave.ts'
 import { type PatchOppgaveRequest, useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
@@ -40,20 +39,6 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
   const mapper = useOppgaveMapper()
   const nøkkelord = useOppgaveNøkkelord()
   const { behandlere } = useOppgavebehandlere(oppgave.oppgaveId)
-  const kodeverkGjelder = useKodeverkGjelder(oppgave.kategorisering.behandlingstype?.kode)
-
-  const behandlingstemaOptions = useMemo(() => {
-    const options = new Map(
-      kodeverkGjelder
-        .filter(harBehandlingstema)
-        .map<[string, string]>(({ behandlingstema: { kode, term } }) => [kode, term])
-    )
-    const gjeldende = oppgave.kategorisering.behandlingstema
-    if (gjeldende && !options.has(gjeldende.kode)) {
-      options.set(gjeldende.kode, gjeldende.term)
-    }
-    return Array.from(options).sort(naturalBy(([, term]) => term))
-  }, [kodeverkGjelder, oppgave.kategorisering.behandlingstema])
 
   const saksbehandlerOptions = useMemo(() => {
     const options = behandlere.map((behandler) => ({ label: behandler.navn, value: behandler.id }))
@@ -82,6 +67,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
   const form = useForm<EndreOppgaveSkjemaverdier>({ defaultValues })
 
   const aktivDato = form.watch('aktivDato')
+  const behandlingstype = form.watch('behandlingstype')
 
   const { datepickerProps: datepickerPropsAktivDato, inputProps: inputPropsAktivDato } = useDatepicker({
     defaultSelected: defaultValues.aktivDato,
@@ -146,14 +132,24 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
         onSubmit={handleSubmit}
       >
         <VStack gap="space-16">
-          <Select label="Gjelder" size="small" {...form.register('behandlingstema')}>
-            {!defaultValues.behandlingstema && <option value="">Velg hva oppgaven gjelder</option>}
-            {behandlingstemaOptions.map(([kode, term]) => (
-              <option key={kode} value={kode}>
-                {term}
-              </option>
-            ))}
-          </Select>
+          <Controller
+            name="behandlingstema"
+            control={form.control}
+            render={({ field }) => (
+              <GjelderCombobox
+                ref={field.ref}
+                name={field.name}
+                label="Gjelder"
+                size="small"
+                onBlur={field.onBlur}
+                value={{ behandlingstema: field.value, behandlingstype }}
+                onChange={({ behandlingstema, behandlingstype }) => {
+                  form.setValue('behandlingstype', behandlingstype, { shouldDirty: true })
+                  field.onChange(behandlingstema)
+                }}
+              />
+            )}
+          />
 
           <DatePicker {...datepickerPropsAktivDato}>
             <DatePicker.Input
@@ -245,8 +241,12 @@ function lagPatchOppgaveRequest(
 ): PatchOppgaveRequest {
   const body: PatchOppgaveRequest = {}
 
-  if (endret.behandlingstema && endret.behandlingstema !== opprinnelig.behandlingstema) {
+  if (
+    endret.behandlingstema !== opprinnelig.behandlingstema ||
+    endret.behandlingstype !== opprinnelig.behandlingstype
+  ) {
     body.behandlingstema = endret.behandlingstema
+    body.behandlingstype = endret.behandlingstype
   }
 
   if (endret.prioritet !== opprinnelig.prioritet) {

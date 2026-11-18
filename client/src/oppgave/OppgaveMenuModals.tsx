@@ -12,8 +12,8 @@ export function OppgaveMenuModals(props: OppgaveMenuModalsProps) {
   const { oppgave, spørreundersøkelseId } = props
   return (
     <>
-      <OverførOppgaveTilGosysModal oppgave={oppgave} spørreundersøkelseId={spørreundersøkelseId} />
       <EndreOppgaveFraOppgave oppgave={oppgave} />
+      <OverførOppgaveTilGosysModal oppgave={oppgave} spørreundersøkelseId={spørreundersøkelseId} />
     </>
   )
 }

@@ -18,9 +18,13 @@ vi.mock('./useOppgave.ts', () => ({
 vi.mock('./useOppgavebehandlere.ts', () => ({
   useOppgavebehandlere: () => ({ behandlere: [] }),
 }))
-vi.mock('./useKodeverkOppgave.ts', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('./useKodeverkOppgave.ts')>()),
-  useKodeverkGjelder: () => [],
+vi.mock('./useKodeverkOppgave.ts', () => ({
+  useGjelderOptions: () => [
+    { label: 'Rullestol | Barn', value: 'ab0001|ae0001', searchTerms: 'rullestol barn' },
+    { label: 'Rullestol | Voksen', value: 'ab0001|ae0002', searchTerms: 'rullestol voksen' },
+    { label: 'Seng | Voksen', value: 'ab0002|ae0002', searchTerms: 'seng voksen' },
+    { label: 'Voksen', value: '|ae0002', searchTerms: 'voksen' },
+  ],
 }))
 vi.mock('./useOppgaveActions.ts', () => ({
   useOppgaveActions: () => ({ patchOppgave: { trigger } }),
@@ -38,7 +42,12 @@ const oppgave: Oppgave = {
   oppgavestatus: Oppgavestatus.OPPRETTET,
   statuskategori: Statuskategori.ÅPEN,
   prioritet: Oppgaveprioritet.NORMAL,
-  kategorisering: { oppgavetype: Oppgavetype.JOURNALFØRING, tema: 'HJE' },
+  kategorisering: {
+    oppgavetype: Oppgavetype.JOURNALFØRING,
+    tema: 'HJE',
+    behandlingstema: { kode: 'ab0001', term: 'Rullestol' },
+    behandlingstype: { kode: 'ae0001', term: 'Barn' },
+  },
   tildeltEnhet: { nummer: '4700', navn: 'Testenhet' },
   aktivDato: '2026-11-17',
   nøkkelord: ['Eget nøkkelord'],
@@ -85,6 +94,40 @@ describe('EndreOppgaveModal', () => {
       expect(field.compareDocumentPosition(fields[index + 1]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     })
     expect(screen.getByRole('combobox', { name: 'Prioritet' })).toHaveValue(Oppgaveprioritet.NORMAL)
+  })
+
+  it('lagrer både behandlingstema og behandlingstype når Gjelder endres', async () => {
+    const user = userEvent.setup()
+    render(<EndreOppgaveModal oppgave={oppgave} onClose={vi.fn()} />)
+
+    await user.click(screen.getByRole('combobox', { name: 'Gjelder' }))
+    expect(screen.getByRole('option', { name: 'Rullestol | Barn' })).toHaveAttribute('aria-selected', 'true')
+    await user.click(screen.getByRole('option', { name: 'Seng | Voksen' }))
+    await user.click(screen.getByRole('button', { name: 'Lagre endringer' }))
+
+    await waitFor(() => expect(trigger).toHaveBeenCalledWith({ behandlingstema: 'ab0002', behandlingstype: 'ae0002' }))
+  })
+
+  it('lagrer behandlingstype når en annen type velges for samme behandlingstema', async () => {
+    const user = userEvent.setup()
+    render(<EndreOppgaveModal oppgave={oppgave} onClose={vi.fn()} />)
+
+    await user.click(screen.getByRole('combobox', { name: 'Gjelder' }))
+    await user.click(screen.getByRole('option', { name: 'Rullestol | Voksen' }))
+    await user.click(screen.getByRole('button', { name: 'Lagre endringer' }))
+
+    await waitFor(() => expect(trigger).toHaveBeenCalledWith({ behandlingstema: 'ab0001', behandlingstype: 'ae0002' }))
+  })
+
+  it('lagrer tomt behandlingstema når et Gjelder-alternativ bare har behandlingstype', async () => {
+    const user = userEvent.setup()
+    render(<EndreOppgaveModal oppgave={oppgave} onClose={vi.fn()} />)
+
+    await user.click(screen.getByRole('combobox', { name: 'Gjelder' }))
+    await user.click(screen.getByRole('option', { name: 'Voksen' }))
+    await user.click(screen.getByRole('button', { name: 'Lagre endringer' }))
+
+    await waitFor(() => expect(trigger).toHaveBeenCalledWith({ behandlingstema: '', behandlingstype: 'ae0002' }))
   })
 
   it('sender bare prioritet når prioriteten endres', async () => {

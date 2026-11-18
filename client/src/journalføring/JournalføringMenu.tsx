@@ -21,7 +21,6 @@ export function JournalføringMenu({ oppgave, spørreundersøkelseId, onAction }
             Meny
           </Button>
         </ActionMenu.Trigger>
-
         <ActionMenu.Content>
           <OppgaveMenu oppgave={oppgave} onAction={onAction} />
         </ActionMenu.Content>

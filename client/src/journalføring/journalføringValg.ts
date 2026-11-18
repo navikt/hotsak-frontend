@@ -1,6 +1,12 @@
+import { Målform } from '../brev/brevTyper.ts'
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { normaliserDokumenttittel } from './dokumenttittelValidering.ts'
-import { Sakstype, type JournalføringRequest, type TilordnetEnhet } from './journalføringTypes.ts'
+import {
+  Sakstype,
+  type JournalføringRequest,
+  type SvartidsbrevValg,
+  type TilordnetEnhet,
+} from './journalføringTypes.ts'
 
 export type Sakvalg =
   | {
@@ -59,5 +65,13 @@ export function byggJournalføringSak(valgtSak: Sakvalg): NonNullable<Journalfø
     sakstype: Sakstype.FAGSAK,
     fagsakId: valgtSak.sakId,
     fagsaksystem: valgtSak.fagsaksystem,
+  }
+}
+
+export function byggSvartidsbrev({ antallUker, målform, årsak }: SvartidsbrevValg) {
+  return {
+    antallUker: `${antallUker} ${målform === Målform.NYNORSK ? 'veker' : 'uker'}`,
+    målform,
+    årsak: årsak.trim(),
   }
 }

@@ -33,7 +33,9 @@ export function NyttBrev({ oppgave, onOpprettet }: NyttBrevProps) {
   const kanOppretteBrev = !!oppgave && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt
   const { erIkkeProd } = useMiljø()
   const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter(
-    (brevmal) => erIkkeProd || brevmal !== Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER
+    (brevmal) =>
+      brevmal !== Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING &&
+      (erIkkeProd || brevmal !== Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER)
   )
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {

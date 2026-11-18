@@ -25,13 +25,19 @@ import {
   type JournalføringResponse,
   type JournalføringSkjemaVerdier,
   type TilordnetEnhet,
+  type SvartidsbrevValg,
 } from './journalføringTypes.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import classes from './JournalføringSkjema.module.css'
-import { byggDokumentPayload, byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
+import {
+  byggDokumentPayload,
+  byggJournalføringSak,
+  byggSvartidsbrev,
+  finnTildeltSaksbehandler,
+} from './journalføringValg.ts'
 import { harUgyldigeDokumenttitler } from './dokumenttittelValidering.ts'
 import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
@@ -73,6 +79,8 @@ export function JournalføringSkjema({
   const kanRedigere = oppgaveErUnderBehandlingAvInnloggetAnsatt
   const åpneModal = useOppgaveÅpneModalHandler()
   const { id: innloggetAnsattId } = useInnloggetAnsatt()
+  const [svartidsbrevValg, setSvartidsbrevValg] = useState<SvartidsbrevValg | null>(null)
+  const [visSvartidsbrevFeil, setVisSvartidsbrevFeil] = useState(false)
 
   const form = useForm<JournalføringSkjemaVerdier>({
     mode: 'onChange',
@@ -159,6 +167,10 @@ export function JournalføringSkjema({
 
   const onSubmit = async (verdier: JournalføringSkjemaVerdier) => {
     if (!erDokumenttitlerGyldige()) return
+    if (svartidsbrevValg && !svartidsbrevValg.årsak.trim()) {
+      setVisSvartidsbrevFeil(true)
+      return
+    }
 
     const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
@@ -182,6 +194,7 @@ export function JournalføringSkjema({
         tildeltSaksbehandler: finnTildeltSaksbehandler(verdier.tilordnetEnhet, innloggetAnsattId, verdier.medarbeider),
         mappeId: verdier.mappeId,
       },
+      svartidsbrev: svartidsbrevValg ? byggSvartidsbrev(svartidsbrevValg) : undefined,
       dokumenter,
     })
     if (resultat) {
@@ -325,6 +338,9 @@ export function JournalføringSkjema({
                 setFrist={setFrist}
                 fristProps={fristProps}
                 fristInputProps={fristInputProps}
+                oppgave={oppgave}
+                onSvartidsbrevChange={setSvartidsbrevValg}
+                visSvartidsbrevFeil={visSvartidsbrevFeil}
               />
             )}
           </VStack>

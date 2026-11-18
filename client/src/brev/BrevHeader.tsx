@@ -119,7 +119,6 @@ export function BrevHeaderInnstillinger({
   valgtBrevId,
   mottakere,
   kanRedigere,
-  vedtaksbrev,
   brukerPersonInfo,
   onSlettUtkast,
 }: BrevHeaderInnstillingerProps) {
@@ -136,9 +135,7 @@ export function BrevHeaderInnstillinger({
         <Heading level="2" size="xsmall">
           Innstillinger for brevet
         </Heading>
-        {vedtaksbrev && mottakere && (
-          <DelKopiMedFormidler brevId={valgtBrevId} mottakere={mottakere} kanRedigere={kanRedigere} />
-        )}
+        {mottakere && <DelKopiMedFormidler brevId={valgtBrevId} mottakere={mottakere} kanRedigere={kanRedigere} />}
         <Heading level="3" size="xsmall">
           Mottakere
         </Heading>

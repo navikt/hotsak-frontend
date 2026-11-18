@@ -1,15 +1,22 @@
-import { DatePicker, Heading, Textarea, VStack, HStack, Label, BodyShort, ErrorMessage } from '@navikt/ds-react'
+import { BodyShort, DatePicker, ErrorMessage, Heading, HStack, Label, Textarea, VStack } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
+import { addWeeks, formatISO, parseISO } from 'date-fns'
 import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { type JournalføringSkjemaVerdier, type SakstypeKode } from './journalføringTypes.ts'
-import { TilordneOppgave } from './TilordneOppgave.tsx'
-import classes from './JournalføringSkjema.module.css'
-import { OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
-import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
-import { addWeeks, formatISO, parseISO } from 'date-fns'
+import {
+  Journalføringsoppgave,
+  Oppgaveprioritet,
+  OppgaveprioritetLabel,
+  Oppgavetype,
+  OppgavetypeLabel,
+} from '../oppgave/oppgaveTypes.ts'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
+import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
+import { JournalføringSvartidsbrev } from './JournalføringSvartidsbrev.tsx'
+import { JournalføringSkjemaVerdier, SakstypeKode, type SvartidsbrevValg } from './journalføringTypes.ts'
+import classes from './JournalføringSkjema.module.css'
+import { TilordneOppgave } from './TilordneOppgave.tsx'
 
 interface NySakSkjemaProps {
   kanRedigere: boolean
@@ -17,9 +24,21 @@ interface NySakSkjemaProps {
   setFrist: (dato: Date) => void
   fristProps: object
   fristInputProps: object
+  oppgave: Journalføringsoppgave
+  onSvartidsbrevChange: (valg: SvartidsbrevValg | null) => void
+  visSvartidsbrevFeil?: boolean
 }
 
-export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, fristInputProps }: NySakSkjemaProps) {
+export function NySakSkjema({
+  kanRedigere,
+  tildeltEnhet,
+  setFrist,
+  fristProps,
+  fristInputProps,
+  oppgave,
+  onSvartidsbrevChange,
+  visSvartidsbrevFeil,
+}: NySakSkjemaProps) {
   const {
     watch,
     setValue,
@@ -186,6 +205,13 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, f
           )}
         />
       </TextContainer>
+
+      <JournalføringSvartidsbrev
+        oppgave={oppgave}
+        mottattDato={valgtMottattDato}
+        visÅrsakFeil={visSvartidsbrevFeil}
+        onChange={onSvartidsbrevChange}
+      />
 
       <TilordneOppgave tildeltEnhet={tildeltEnhet} />
     </VStack>

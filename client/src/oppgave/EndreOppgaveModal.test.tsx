@@ -130,6 +130,25 @@ describe('EndreOppgaveModal', () => {
     await waitFor(() => expect(trigger).toHaveBeenCalledWith({ behandlingstema: '', behandlingstype: 'ae0002' }))
   })
 
+  it('sender tildeltSaksbehandler som null når tildelt saksbehandler fjernes', async () => {
+    const user = userEvent.setup()
+    render(
+      <EndreOppgaveModal
+        oppgave={{
+          ...oppgave,
+          tildeltSaksbehandler: { id: 'S112233', navn: 'Silje' } as Oppgave['tildeltSaksbehandler'],
+        }}
+        onClose={vi.fn()}
+      />
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Fjern tildelt saksbehandler' }))
+    expect(screen.getByText('(Ikke tildelt)', { selector: '.aksel-combobox__selected-options--no-bg' })).toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'Lagre endringer' }))
+
+    await waitFor(() => expect(trigger).toHaveBeenCalledWith({ tildeltSaksbehandler: null }))
+  })
+
   it('sender bare prioritet når prioriteten endres', async () => {
     const user = userEvent.setup()
     render(<EndreOppgaveModal oppgave={oppgave} onClose={vi.fn()} />)

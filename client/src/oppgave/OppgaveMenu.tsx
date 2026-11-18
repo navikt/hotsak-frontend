@@ -48,7 +48,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
     <ActionMenu.Group label="Oppgave">
       <OppgaveModalActionMenuItem
         modal={OppgaveModalType.ENDRE_OPPGAVE}
-        underBehandlingAvInnloggetAnsatt={true}
+        underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
         disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
       >
         Endre oppgaven

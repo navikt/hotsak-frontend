@@ -1,4 +1,16 @@
-import { DatePicker, ErrorMessage, Select, Textarea, UNSAFE_Combobox, useDatepicker, VStack } from '@navikt/ds-react'
+import { PersonMinusIcon } from '@navikt/aksel-icons'
+import {
+  Box,
+  Button,
+  DatePicker,
+  ErrorMessage,
+  HStack,
+  Select,
+  Textarea,
+  UNSAFE_Combobox,
+  useDatepicker,
+  VStack,
+} from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 import { useMemo } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
@@ -46,7 +58,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
     if (gjeldende && !options.some((option) => option.value === gjeldende.id)) {
       options.unshift({ label: gjeldende.navn, value: gjeldende.id })
     }
-    return options
+    return [{ label: '(Ikke tildelt)', value: '' }, ...options]
   }, [behandlere, oppgave.tildeltSaksbehandler])
 
   const defaultValues = useMemo<EndreOppgaveSkjemaverdier>(
@@ -68,6 +80,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
 
   const aktivDato = form.watch('aktivDato')
   const behandlingstype = form.watch('behandlingstype')
+  const tildeltSaksbehandler = form.watch('tildeltSaksbehandler')
 
   const { datepickerProps: datepickerPropsAktivDato, inputProps: inputPropsAktivDato } = useDatepicker({
     defaultSelected: defaultValues.aktivDato,
@@ -199,13 +212,28 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
             )}
           />
 
-          <ComboboxController
-            control={form.control}
-            name="tildeltSaksbehandler"
-            label="Tildelt saksbehandler"
-            size="small"
-            options={saksbehandlerOptions}
-          />
+          <HStack gap="space-8" align="end" wrap={false}>
+            <Box flexGrow="1">
+              <ComboboxController
+                control={form.control}
+                name="tildeltSaksbehandler"
+                label="Tildelt saksbehandler"
+                size="small"
+                options={saksbehandlerOptions}
+              />
+            </Box>
+            <Button
+              type="button"
+              variant="tertiary"
+              data-color="neutral"
+              size="small"
+              icon={<PersonMinusIcon aria-hidden />}
+              title="Fjern tildelt saksbehandler"
+              aria-label="Fjern tildelt saksbehandler"
+              disabled={!tildeltSaksbehandler}
+              onClick={() => form.setValue('tildeltSaksbehandler', '', { shouldDirty: true })}
+            />
+          </HStack>
 
           <Select label="Mappe" size="small" {...form.register('mappeId')}>
             <option value="">Ingen mappe</option>
@@ -261,8 +289,8 @@ function lagPatchOppgaveRequest(
     body.mappeId = endret.mappeId || null
   }
 
-  if (endret.tildeltSaksbehandler && endret.tildeltSaksbehandler !== opprinnelig.tildeltSaksbehandler) {
-    body.tildeltSaksbehandler = endret.tildeltSaksbehandler
+  if (endret.tildeltSaksbehandler !== opprinnelig.tildeltSaksbehandler) {
+    body.tildeltSaksbehandler = endret.tildeltSaksbehandler || null
   }
 
   const aktivDato = endret.aktivDato && tilLocalDateString(endret.aktivDato)

@@ -32,7 +32,7 @@ export interface PatchOppgaveRequest {
   behandlingstype?: string
   nøkkelord?: string[]
   mappeId?: string | null
-  tildeltSaksbehandler?: NavIdent
+  tildeltSaksbehandler?: NavIdent | null
   aktivDato?: string
   fristDato?: string
   kommentar?: string

@@ -224,6 +224,9 @@ export class OppgaveStore extends Dexie {
     if (tildeltSaksbehandler) {
       changes.tildeltSaksbehandler = Saksbehandlere.hent(tildeltSaksbehandler)
       changes.oppgavestatus = Oppgavestatus.UNDER_BEHANDLING
+    } else if (tildeltSaksbehandler === null) {
+      changes.tildeltSaksbehandler = undefined
+      changes.oppgavestatus = Oppgavestatus.OPPRETTET
     }
     if (Object.keys(changes).length > 0) {
       await this.oppgaver.update(oppgaveId, changes)

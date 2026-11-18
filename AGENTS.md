@@ -1,5 +1,10 @@
 # AGENTS.md
 
+## Erfaringer fra tidligere sessions (obligatorisk)
+
+- **Start hver oppgave** i dette repoet med å laste skillen `hotsak-erfaringer` (`.github/skills/hotsak-erfaringer/SKILL.md`), og følg den.
+- **Avslutt hver oppgave**, og håndter all feedback fra utvikleren, med å vurdere om det kom fram en varig lærdom. Oppdater i så fall skillen etter reglene i «Vedlikehold av denne skillen», og si fra i svaret.
+
 ## Teknologier og rammeverk
 
 - [pnpm](https://pnpm.io/)

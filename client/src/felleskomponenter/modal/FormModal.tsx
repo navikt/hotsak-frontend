@@ -2,6 +2,8 @@ import { Button, Dialog, type DialogPopupProps } from '@navikt/ds-react'
 import { type ReactNode, type SubmitEventHandler } from 'react'
 import { useFormContext } from 'react-hook-form'
 
+import classes from './FormModal.module.css'
+
 export interface FormModalProps {
   open?: boolean
   onClose(): void | Promise<void>
@@ -31,7 +33,7 @@ export function FormModal(props: FormModalProps) {
         <Dialog.Header>
           <Dialog.Title>{heading}</Dialog.Title>
         </Dialog.Header>
-        <form onSubmit={onSubmit}>
+        <form className={classes.form} onSubmit={onSubmit}>
           <Dialog.Body>{children}</Dialog.Body>
           <Dialog.Footer>
             <Button

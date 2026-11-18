@@ -82,6 +82,10 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
     })
   }),
 
+  http.get<never, never, string[]>('/api/oppgaver/nokkelord', async () => {
+    return HttpResponse.json(['Bevegelse', 'Kognisjon', 'Syn'])
+  }),
+
   http.post<never, FinnOppgaverRequest, FinnOppgaverResponse>(`/api/oppgaver/sok`, async ({ request }) => {
     await delay(200)
     const response = await oppgaveStore.finn(await request.json())

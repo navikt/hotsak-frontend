@@ -28,9 +28,16 @@ export function useOppgave(): UseOppgaveResponse {
   }
 }
 
+const ingenMapper: never[] = []
 export function useOppgaveMapper(): ReadonlyArray<OppgaveMappe> {
   const { data } = useSWRImmutable<OppgaveMapperResponse>('/api/oppgaver/mapper')
-  return data?.mapper ?? []
+  return data?.mapper ?? ingenMapper
+}
+
+const ingenNøkkelord: never[] = []
+export function useOppgaveNøkkelord(): ReadonlyArray<string> {
+  const { data } = useSWRImmutable<string[]>('/api/oppgaver/nokkelord')
+  return data ?? ingenNøkkelord
 }
 
 export function preloadOppgave(oppgaveId: OppgaveId) {

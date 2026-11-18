@@ -1,0 +1,6 @@
+/* Lets Dialog.Body scroll while Dialog.Footer stays visible. */
+.form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}

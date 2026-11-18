@@ -1,14 +1,8 @@
 import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
 export enum OppgaveModalType {
-  SETT_PÅ_VENT,
-  FORTSETT_BEHANDLING,
-  ENDRE_GJELDER,
-  OVERFØR_TIL_MEDARBEIDER,
-  OVERFØR_TIL_GOSYS,
-  LEGG_TILBAKE,
-  ENDRE_MAPPE,
   ENDRE_OPPGAVE,
+  OVERFØR_TIL_GOSYS,
 }
 
 export interface OppgaveState {

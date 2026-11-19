@@ -74,6 +74,7 @@ describe('JournalføringParter', () => {
               ? opprinneligAvsender
               : opprinneligPerson,
       isLoading: false,
+      manglerIOebs: false,
     }))
   })
 

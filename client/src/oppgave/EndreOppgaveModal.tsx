@@ -1,21 +1,34 @@
-import { DatePicker, ErrorMessage, Select, Textarea, UNSAFE_Combobox, useDatepicker, VStack } from '@navikt/ds-react'
+import { PersonMinusIcon } from '@navikt/aksel-icons'
+import {
+  Box,
+  Button,
+  DatePicker,
+  ErrorMessage,
+  HStack,
+  Select,
+  Textarea,
+  UNSAFE_Combobox,
+  useDatepicker,
+  VStack,
+} from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 import { useMemo } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { ComboboxController } from '../felleskomponenter/skjema/ComboboxController.tsx'
+import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { useToast } from '../felleskomponenter/toast/useToast.ts'
 import { useMutateOppgaver } from '../oppgaveliste/useMutateOppgaver.ts'
-import { naturalBy } from '../utils/array.ts'
 import { tilDato, tilLocalDateString } from '../utils/dato.ts'
 import { isNotBlank } from '../utils/type.ts'
 import { mutateOppgavekommentarer } from './kommentar/useOppgavekommentarer.ts'
-import { type Oppgave } from './oppgaveTypes.ts'
-import { mutateOppgave, useOppgaveMapper } from './useOppgave.ts'
-import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
-import { harBehandlingstema, useKodeverkGjelder } from './useKodeverkOppgave.ts'
+import { type Oppgave, Oppgaveprioritet, OppgaveprioritetLabel } from './oppgaveTypes.ts'
+import { mutateOppgave, useOppgaveMapper, useOppgaveNøkkelord } from './useOppgave.ts'
 import { type PatchOppgaveRequest, useOppgaveActions } from './useOppgaveActions.ts'
+import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
+
+const MAKS_LENGDE_NØKKELORD = 40
 
 export interface EndreOppgaveModalProps {
   oppgave: Oppgave
@@ -24,6 +37,8 @@ export interface EndreOppgaveModalProps {
 
 interface EndreOppgaveSkjemaverdier {
   behandlingstema: string
+  behandlingstype: string
+  prioritet: Oppgaveprioritet
   nøkkelord: string[]
   mappeId: string
   tildeltSaksbehandler: string
@@ -36,21 +51,8 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
   const { oppgave, onClose } = props
 
   const mapper = useOppgaveMapper()
+  const nøkkelord = useOppgaveNøkkelord()
   const { behandlere } = useOppgavebehandlere(oppgave.oppgaveId)
-  const kodeverkGjelder = useKodeverkGjelder(oppgave.kategorisering.behandlingstype?.kode)
-
-  const behandlingstemaOptions = useMemo(() => {
-    const options = new Map(
-      kodeverkGjelder
-        .filter(harBehandlingstema)
-        .map<[string, string]>(({ behandlingstema: { kode, term } }) => [kode, term])
-    )
-    const gjeldende = oppgave.kategorisering.behandlingstema
-    if (gjeldende && !options.has(gjeldende.kode)) {
-      options.set(gjeldende.kode, gjeldende.term)
-    }
-    return Array.from(options).sort(naturalBy(([, term]) => term))
-  }, [kodeverkGjelder, oppgave.kategorisering.behandlingstema])
 
   const saksbehandlerOptions = useMemo(() => {
     const options = behandlere.map((behandler) => ({ label: behandler.navn, value: behandler.id }))
@@ -58,12 +60,14 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
     if (gjeldende && !options.some((option) => option.value === gjeldende.id)) {
       options.unshift({ label: gjeldende.navn, value: gjeldende.id })
     }
-    return options
+    return [{ label: '(Ikke tildelt)', value: '' }, ...options]
   }, [behandlere, oppgave.tildeltSaksbehandler])
 
   const defaultValues = useMemo<EndreOppgaveSkjemaverdier>(
     () => ({
       behandlingstema: oppgave.kategorisering.behandlingstema?.kode ?? '',
+      behandlingstype: oppgave.kategorisering.behandlingstype?.kode ?? '',
+      prioritet: oppgave.prioritet,
       nøkkelord: oppgave.nøkkelord ?? [],
       mappeId: oppgave.mappeId ?? '',
       tildeltSaksbehandler: oppgave.tildeltSaksbehandler?.id ?? '',
@@ -77,6 +81,8 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
   const form = useForm<EndreOppgaveSkjemaverdier>({ defaultValues })
 
   const aktivDato = form.watch('aktivDato')
+  const behandlingstype = form.watch('behandlingstype')
+  const tildeltSaksbehandler = form.watch('tildeltSaksbehandler')
 
   const { datepickerProps: datepickerPropsAktivDato, inputProps: inputPropsAktivDato } = useDatepicker({
     defaultSelected: defaultValues.aktivDato,
@@ -135,57 +141,29 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
       <FormModal
         open
         onClose={onClose}
-        heading="Endre oppgave"
+        heading="Endre oppgaven"
         submitButtonLabel="Lagre endringer"
         width="600px"
         onSubmit={handleSubmit}
       >
         <VStack gap="space-16">
-          <Select label="Gjelder" size="small" {...form.register('behandlingstema')}>
-            {!defaultValues.behandlingstema && <option value="">Velg hva oppgaven gjelder</option>}
-            {behandlingstemaOptions.map(([kode, term]) => (
-              <option key={kode} value={kode}>
-                {term}
-              </option>
-            ))}
-          </Select>
-
           <Controller
-            name="nøkkelord"
+            name="behandlingstema"
             control={form.control}
             render={({ field }) => (
-              <UNSAFE_Combobox
-                label="Nøkkelord"
-                description="Velg eller skriv inn nye nøkkelord"
+              <GjelderCombobox
+                ref={field.ref}
+                name={field.name}
+                label="Gjelder"
                 size="small"
-                isMultiSelect
-                allowNewValues
-                options={defaultValues.nøkkelord}
-                selectedOptions={field.value}
-                onToggleSelected={(value, isSelected) => {
-                  field.onChange(
-                    isSelected ? [...field.value, value] : field.value.filter((nøkkelord) => nøkkelord !== value)
-                  )
+                onBlur={field.onBlur}
+                value={{ behandlingstema: field.value, behandlingstype }}
+                onChange={({ behandlingstema, behandlingstype }) => {
+                  form.setValue('behandlingstype', behandlingstype, { shouldDirty: true })
+                  field.onChange(behandlingstema)
                 }}
               />
             )}
-          />
-
-          <Select label="Mappe" size="small" {...form.register('mappeId')}>
-            <option value="">Ingen mappe</option>
-            {mapper.map((mappe) => (
-              <option key={mappe.id} value={mappe.id.toString()}>
-                {mappe.navn}
-              </option>
-            ))}
-          </Select>
-
-          <ComboboxController
-            control={form.control}
-            name="tildeltSaksbehandler"
-            label="Tildelt saksbehandler"
-            size="small"
-            options={saksbehandlerOptions}
           />
 
           <DatePicker {...datepickerPropsAktivDato}>
@@ -200,11 +178,79 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <DatePicker {...datepickerPropsFristDato}>
             <DatePicker.Input
               {...inputPropsFristDato}
-              label="Frist"
+              label="Frist dato"
               size="small"
               error={form.formState.errors.fristDato?.message}
             />
           </DatePicker>
+
+          <Select label="Prioritet" size="small" {...form.register('prioritet')}>
+            {Object.values(Oppgaveprioritet).map((prioritet) => (
+              <option key={prioritet} value={prioritet}>
+                {OppgaveprioritetLabel[prioritet]}
+              </option>
+            ))}
+          </Select>
+
+          <Controller
+            name="nøkkelord"
+            control={form.control}
+            rules={{
+              validate: (verdier) =>
+                verdier.every((verdi) => verdi.length <= MAKS_LENGDE_NØKKELORD) ||
+                `Nøkkelord kan ikke være lengre enn ${MAKS_LENGDE_NØKKELORD} tegn`,
+            }}
+            render={({ field, fieldState }) => (
+              <UNSAFE_Combobox
+                label="Nøkkelord"
+                description="Velg eller skriv inn nye nøkkelord"
+                size="small"
+                error={fieldState.error?.message}
+                isMultiSelect
+                allowNewValues
+                options={[...new Set([...nøkkelord, ...defaultValues.nøkkelord])]}
+                selectedOptions={field.value}
+                maxSelected={2}
+                onToggleSelected={(value, isSelected) => {
+                  field.onChange(
+                    isSelected ? [...field.value, value] : field.value.filter((nøkkelord) => nøkkelord !== value)
+                  )
+                }}
+              />
+            )}
+          />
+
+          <HStack gap="space-8" align="end" wrap={false}>
+            <Box flexGrow="1">
+              <ComboboxController
+                control={form.control}
+                name="tildeltSaksbehandler"
+                label="Tildelt saksbehandler"
+                size="small"
+                options={saksbehandlerOptions}
+              />
+            </Box>
+            <Button
+              type="button"
+              variant="tertiary"
+              data-color="neutral"
+              size="small"
+              icon={<PersonMinusIcon aria-hidden />}
+              title="Fjern tildelt saksbehandler"
+              aria-label="Fjern tildelt saksbehandler"
+              disabled={!tildeltSaksbehandler}
+              onClick={() => form.setValue('tildeltSaksbehandler', '', { shouldDirty: true })}
+            />
+          </HStack>
+
+          <Select label="Mappe" size="small" {...form.register('mappeId')}>
+            <option value="">Ingen mappe</option>
+            {mapper.map((mappe) => (
+              <option key={mappe.id} value={mappe.id.toString()}>
+                {mappe.navn}
+              </option>
+            ))}
+          </Select>
 
           <Textarea
             label="Kommentar (valgfri)"
@@ -231,8 +277,16 @@ function lagPatchOppgaveRequest(
 ): PatchOppgaveRequest {
   const body: PatchOppgaveRequest = {}
 
-  if (endret.behandlingstema && endret.behandlingstema !== opprinnelig.behandlingstema) {
+  if (
+    endret.behandlingstema !== opprinnelig.behandlingstema ||
+    endret.behandlingstype !== opprinnelig.behandlingstype
+  ) {
     body.behandlingstema = endret.behandlingstema
+    body.behandlingstype = endret.behandlingstype
+  }
+
+  if (endret.prioritet !== opprinnelig.prioritet) {
+    body.prioritet = endret.prioritet
   }
 
   if (!erLike(endret.nøkkelord, opprinnelig.nøkkelord)) {
@@ -243,8 +297,8 @@ function lagPatchOppgaveRequest(
     body.mappeId = endret.mappeId || null
   }
 
-  if (endret.tildeltSaksbehandler && endret.tildeltSaksbehandler !== opprinnelig.tildeltSaksbehandler) {
-    body.tildeltSaksbehandler = endret.tildeltSaksbehandler
+  if (endret.tildeltSaksbehandler !== opprinnelig.tildeltSaksbehandler) {
+    body.tildeltSaksbehandler = endret.tildeltSaksbehandler || null
   }
 
   const aktivDato = endret.aktivDato && tilLocalDateString(endret.aktivDato)

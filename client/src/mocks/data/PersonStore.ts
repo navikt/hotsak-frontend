@@ -3,7 +3,12 @@ import Dexie, { Table } from 'dexie'
 
 import type { Person } from '../../types/types.internal'
 import { lagTilfeldigBosted } from './bosted'
-import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
+import {
+  lagTilfeldigBrukernummer,
+  lagTilfeldigFødselsdato,
+  lagTilfeldigInteger,
+  lagTilfeldigTelefonnummer,
+} from './felles'
 import { kjønnFraFødselsnummer, lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 
@@ -34,6 +39,7 @@ export class PersonStore extends Dexie {
       fnr,
       navn,
       fødselsdato: formatISO(lagTilfeldigFødselsdato(9), { representation: 'date' }),
+      brukernummer: lagTilfeldigBrukernummer(),
       telefonnummer: lagTilfeldigTelefonnummer(),
       kjønn: kjønnFraFødselsnummer(fnr),
       kommune: {
@@ -65,6 +71,7 @@ export function lagPerson(alder: number = lagTilfeldigInteger(5, 95)): Person {
     fnr,
     navn,
     fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
+    brukernummer: lagTilfeldigBrukernummer(),
     telefonnummer: lagTilfeldigTelefonnummer(),
     kjønn: kjønnFraFødselsnummer(fnr),
     kommune: {

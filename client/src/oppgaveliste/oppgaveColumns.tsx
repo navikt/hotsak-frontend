@@ -15,8 +15,6 @@ import {
 } from '../oppgave/oppgaveTypes.ts'
 import { Saksstatus, SaksstatusLabel } from '../types/types.internal.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
-import { EnhetensOppgaverMenu } from './EnhetensOppgaverMenu.tsx'
-import { MedarbeidersOppgaverMenu } from './MedarbeidersOppgaverMenu.tsx'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
 import classes from './oppgaveColumns.module.css'
 import { OppgavetypeÅpneOppgaveCell } from './OppgavetypeÅpneOppgaveCell.tsx'
@@ -408,15 +406,15 @@ export const oppgaveColumns = {
   enhetensOppgaverMenu: {
     field: 'enhetensOppgaverMenu',
     width: 50,
-    renderCell(row) {
-      return <EnhetensOppgaverMenu oppgave={row} />
+    renderCell() {
+      return null
     },
   },
   medarbeidersOppgaverMenu: {
     field: 'medarbeidersOppgaverMenu',
     width: 50,
-    renderCell(row) {
-      return <MedarbeidersOppgaverMenu oppgave={row} />
+    renderCell() {
+      return null
     },
   },
   saksbehandlerKort: {

@@ -1,9 +1,11 @@
 import { Box, HStack, VStack } from '@navikt/ds-react'
+import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett.tsx'
 import { CompactExpandableCard } from '../felleskomponenter/panel/CompactExpandableCard.tsx'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { Hast } from '../saksbilde/hjelpemidler/Hast.tsx'
+import { Varsler } from '../saksbilde/hjelpemidler/Varsel.tsx'
 import { Innsenderbehovsmelding } from '../types/BehovsmeldingTypes.ts'
 import { Sak, Sakstype } from '../types/types.internal.ts'
 import { formaterTidsstempel } from '../utils/dato.ts'
@@ -14,8 +16,6 @@ import { Signatur } from './behovsmelding/signatur/Signatur.tsx'
 import { Vilkår } from './behovsmelding/Vilkår.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
-import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett.tsx'
-import { Varsler } from '../saksbilde/hjelpemidler/Varsel.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('behovsmeldingspanel')

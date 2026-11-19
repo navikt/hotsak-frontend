@@ -2,7 +2,6 @@ import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { ActionMenu } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
 import { type Oppgave, type OppgaveId, Oppgavetype, Statuskategori } from './oppgaveTypes.ts'
@@ -21,11 +20,8 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
     oppgaveErKlarTilBehandling,
     oppgaveErUnderBehandlingAvAnnenAnsatt,
     oppgaveErUnderBehandlingAvInnloggetAnsatt,
-    oppgaveErPåVent,
-    gjeldendeEnhet,
   } = useOppgaveregler(oppgave)
-  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
-  const { logOppgaveLagtTilbake } = useUmami()
+  const { endreOppgavetildeling } = useOppgaveActions(oppgave)
 
   if (!oppgave) {
     return null
@@ -50,34 +46,12 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   const isJournalføring = oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
   return (
     <ActionMenu.Group label="Oppgave">
-      {oppgaveErPåVent ? (
-        <OppgaveModalActionMenuItem
-          modal={OppgaveModalType.FORTSETT_BEHANDLING}
-          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
-        >
-          Fortsett behandling
-        </OppgaveModalActionMenuItem>
-      ) : (
-        <OppgaveModalActionMenuItem
-          modal={OppgaveModalType.SETT_PÅ_VENT}
-          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
-        >
-          Sett oppgaven på vent
-        </OppgaveModalActionMenuItem>
-      )}
-      {!isJournalføring && (
-        <OppgaveModalActionMenuItem
-          modal={OppgaveModalType.ENDRE_GJELDER}
-          underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
-        >
-          Endre hva oppgaven gjelder
-        </OppgaveModalActionMenuItem>
-      )}
       <OppgaveModalActionMenuItem
-        modal={OppgaveModalType.OVERFØR_TIL_MEDARBEIDER}
+        modal={OppgaveModalType.ENDRE_OPPGAVE}
         underBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
+        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
       >
-        Overfør til medarbeider
+        Endre oppgaven
       </OppgaveModalActionMenuItem>
       {isJournalføring && (
         <OppgaveModalActionMenuItem
@@ -87,32 +61,6 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
           Overfør til Gosys
         </OppgaveModalActionMenuItem>
       )}
-      <ActionMenu.Item
-        disabled={!oppgaveErUnderBehandlingAvInnloggetAnsatt}
-        onSelect={async () => {
-          await fjernOppgavetildeling.trigger()
-          logOppgaveLagtTilbake()
-          if (onAction) return onAction()
-        }}
-      >
-        {`Legg tilbake til ${gjeldendeEnhet?.navn}`}
-      </ActionMenu.Item>
-      <OppgaveModalActionMenuItem
-        modal={OppgaveModalType.ENDRE_MAPPE}
-        underBehandlingAvInnloggetAnsatt={true}
-        disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
-      >
-        Endre mappe
-      </OppgaveModalActionMenuItem>
-      <Eksperiment>
-        <OppgaveModalActionMenuItem
-          modal={OppgaveModalType.ENDRE_OPPGAVE}
-          underBehandlingAvInnloggetAnsatt={true}
-          disabled={oppgave.statuskategori === Statuskategori.AVSLUTTET}
-        >
-          Endre oppgave
-        </OppgaveModalActionMenuItem>
-      </Eksperiment>
       <GosysLinkItem oppgaveId={oppgave.oppgaveId} />
     </ActionMenu.Group>
   )

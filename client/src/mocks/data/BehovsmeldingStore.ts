@@ -10,6 +10,7 @@ export interface BehovsmeldingCase {
   fnrInnsender: string
   opprettet: string
   sakId: string
+  brukerManglerIOebs?: boolean
 }
 
 export class BehovsmeldingStore {

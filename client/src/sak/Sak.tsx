@@ -22,6 +22,7 @@ import {
   isBehandlingsutfallHenleggelse,
   isBehandlingsutfallOverføring,
   isBehandlingsutfallVedtak,
+  VedtaksResultat,
 } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
@@ -29,6 +30,7 @@ import { GodkjennBestillingModal } from './bestilling/GodkjennBestillingModal.ts
 import { useSakHotkeys } from './hotkeys/useSakHotkeys.ts'
 import { KontaktinformasjonPanel } from './KontaktinformasjonPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
+import { BrukerManglerIOebsModal } from './modaler/BrukerManglerIOebsModal.tsx'
 import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
@@ -61,7 +63,8 @@ function SakContent({
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
   const [visHenleggModal, setVisHenleggModal] = useState(false)
   const [visOverførGosysModal, setVisOverførGosysModal] = useState(false)
-  const { personInfo, isLoading: personInfoLoading } = usePerson(sak.bruker.fnr)
+  const { personInfo, isLoading: personInfoLoading, manglerIOebs } = usePerson(sak.bruker.fnr)
+  const [visBrukerManglerIOebs, setVisBrukerManglerIOebs] = useState(false)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
@@ -81,6 +84,8 @@ function SakContent({
 
   const { gjeldendeBehandling } = useBehandling()
   const behandlingsutfall = gjeldendeBehandling?.utfall
+  const innvilgelseSperretPgaOebs =
+    manglerIOebs && isBehandlingsutfallVedtak(behandlingsutfall) && behandlingsutfall.utfall !== VedtaksResultat.AVSLÅTT
 
   const { brevForSak, finnBrev } = useBrevForSak(sak.sakId)
   const vedtaksbrev = finnBrev(isVedtaksbrev)
@@ -94,7 +99,7 @@ function SakContent({
     onAnnetResultat: () => setAnnetResultatValgt(true),
     onBrevMangler: () => setVisBrevMangler(true),
     onNotatIkkeFerdigstilt: () => setVisNotatIkkeFerdigstilt(true),
-    onFattVedtak: () => setVisFerdigstillModal(true),
+    onFattVedtak: () => (manglerIOebs ? setVisBrukerManglerIOebs(true) : setVisFerdigstillModal(true)),
     onGodkjenneBestilling: () => setVisGodkjennBestillingModal(true),
   })
 
@@ -175,7 +180,6 @@ function SakContent({
               <BehovsmeldingsPanel sak={sak} behovsmelding={behovsmelding} />
             </AvrundetPanel>
           </ResizablePanel>
-
           <ResizablePanel
             panelId="kontaktinformasjonpanel"
             panel={kontaktinformasjonPanel}
@@ -222,6 +226,7 @@ function SakContent({
         />
       )}
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
+      <BrukerManglerIOebsModal open={visBrukerManglerIOebs} onClose={() => setVisBrukerManglerIOebs(false)} />
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <BrevManglerModal
           open={visBrevMangler}
@@ -275,6 +280,8 @@ function SakContent({
       } else {
         setVisOverførGosysModal(true)
       }
+    } else if (innvilgelseSperretPgaOebs) {
+      setVisBrukerManglerIOebs(true)
     } else if (brevutkastIkkeFerdigstilt) {
       setVisBrevMangler(true)
     } else if (notaterIkkeFerdigstilt) {

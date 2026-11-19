@@ -1,6 +1,6 @@
 import { formatISO, subMonths } from 'date-fns'
 
-import { BehovsmeldingType } from '../../types/BehovsmeldingTypes.ts'
+import { BehovsmeldingType, type Innsenderbehovsmelding, ProduktkategoriType } from '../../types/BehovsmeldingTypes.ts'
 import { Kilde } from '../../types/hotlibs.ts'
 import {
   type Barnebrillesak,
@@ -46,20 +46,28 @@ export function erInsertBarnebrillesak(sak?: InsertSak | null): sak is InsertBar
 export type LagretHjelpemiddelsak = Sak & { journalposter?: string[] }
 export type InsertHjelpemiddelsak = LagretHjelpemiddelsak & { behovsmeldingCasePath: string }
 
+export function erTilskuddRimeligeHjelpemidler(behovsmelding: Innsenderbehovsmelding): boolean {
+  // Eldre mock-filer mangler produktkategorier
+  const produktkategorier = behovsmelding.hjelpemidler.produktkategorier ?? []
+  return produktkategorier.some(
+    (produktkategori) => produktkategori.type === ProduktkategoriType.TILSKUDD_RIMELIGE_HJELPEMIDLER
+  )
+}
+
 export function lagHjelpemiddelsakForBehovsmeldingCase(
   behovsmeldingCasePath: string,
   behovsmeldingCase: BehovsmeldingCase,
   kommuner: Record<string, string> = {}
 ): InsertHjelpemiddelsak {
   const { behovsmelding, behovsmeldingGjelder, fnrBruker, fnrInnsender, opprettet } = behovsmeldingCase
-  let sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
+  let sakstype: Sak['sakstype']
   const { type: behovsmeldingstype, bruker, levering } = behovsmelding
   switch (behovsmeldingstype) {
     case BehovsmeldingType.BESTILLING:
       sakstype = Sakstype.BESTILLING
       break
     case BehovsmeldingType.SØKNAD:
-      sakstype = Sakstype.SØKNAD
+      sakstype = erTilskuddRimeligeHjelpemidler(behovsmelding) ? Sakstype.TILSKUDD : Sakstype.SØKNAD
       break
     default:
       throw new Error(`Ukjent behovsmeldingstype: ${behovsmeldingstype}`)

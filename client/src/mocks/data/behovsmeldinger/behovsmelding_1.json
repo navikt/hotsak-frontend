@@ -31,12 +31,6 @@
       "legacyopplysninger": []
     },
     "brukersituasjon": {
-      "bekreftedeVilkår": [
-        "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
-        "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
-        "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1",
-        "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
-      ],
       "vilkår": [
         {
           "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",

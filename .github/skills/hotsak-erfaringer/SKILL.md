@@ -42,6 +42,7 @@ Kompakt erfaringslogg. Gjelder i tillegg til `AGENTS.md`. Ved konflikt vinner si
 - `PersonStore` bruker fnr som nøkkel, og siste lagring vinner. En testperson trenger derfor et eget fnr.
 - Mock-personer får et tilfeldig `brukernummer`. Saken «Test: bruker finnes ikke i OeBS» (`bruker_mangler_i_oebs.json`, flagget `brukerManglerIOebs`) dekker bruker uten brukernummer.
 - Mock-hjelpere som brukes av både MSW og Vite-middleware må være rene og uten assets. PDF-er og iframes som hentes direkte på URL, går ikke gjennom MSW.
+- `BehovsmeldingTypes.ts` følger hotlibs `behovsmeldingsmodell/v2/Innsenderbehovsmelding.kt`, som er master. Eldre mock-JSON mangler nyere felt (f.eks. `produktkategorier`), så mock-kode må tåle det.
 
 ## Verktøy og sandkasse (cplt)
 

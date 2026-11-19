@@ -31,10 +31,13 @@ describe('JournalføringSvartidsbrev', () => {
     const fetch = vi.spyOn(globalThis, 'fetch')
     renderSkjema()
 
-    await user.click(screen.getByRole('checkbox', { name: 'Ja' }))
+    await user.click(screen.getByRole('checkbox', { name: 'Ja, opprett brev' }))
     await user.selectOptions(screen.getByLabelText('Forventet behandlingstid'), '12')
-    await user.type(screen.getByLabelText(/Årsak til lengre behandlingstid/), 'Vi mangler opplysninger fra kommunen.')
-    await user.click(screen.getByRole('button', { name: 'Forhåndsvis dokument' }))
+    await user.type(
+      screen.getByLabelText(/Forklar hvorfor saken ikke kan behandles i løpet av 1 måned/),
+      'Vi mangler opplysninger fra kommunen.'
+    )
+    await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))
 
     await screen.findByRole('dialog', { name: 'Forhåndsvisning av svartidsbrev' })
     const ramme = (await screen.findByTitle('Forhåndsvisning av svartidsbrev')) as HTMLIFrameElement
@@ -54,7 +57,7 @@ describe('JournalføringSvartidsbrev', () => {
 
     await user.keyboard('{Escape}')
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
-    await user.click(screen.getByRole('button', { name: 'Forhåndsvis dokument' }))
+    await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))
     expect(await screen.findByRole('dialog', { name: 'Forhåndsvisning av svartidsbrev' })).not.toBeNull()
   })
 
@@ -62,10 +65,13 @@ describe('JournalføringSvartidsbrev', () => {
     const user = userEvent.setup()
     renderSkjema()
 
-    await user.click(screen.getByRole('checkbox', { name: 'Ja' }))
+    await user.click(screen.getByRole('checkbox', { name: 'Ja, opprett brev' }))
     await user.click(screen.getByRole('radio', { name: 'Nynorsk' }))
-    await user.type(screen.getByLabelText(/Årsak til lengre behandlingstid/), 'Vi ventar på svar frå kommunen.')
-    await user.click(screen.getByRole('button', { name: 'Forhåndsvis dokument' }))
+    await user.type(
+      screen.getByLabelText(/Forklar hvorfor saken ikke kan behandles i løpet/),
+      'Vi ventar på svar frå kommunen.'
+    )
+    await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))
 
     const ramme = (await screen.findByTitle('Forhåndsvisning av svartidsbrev')) as HTMLIFrameElement
     const dokument = new DOMParser().parseFromString(ramme.srcdoc, 'text/html')

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Målform, Mottakertype, type Brevmottaker } from '../../brevTyper'
+import { Mottakertype, Målform, type Brevmottaker } from '../../brevTyper'
 import { byggHeaderHtml } from './byggDokument'
 
 vi.mock('../versjonerte-brev-stilark/v1.less?raw', () => ({ default: '' }))
@@ -25,20 +25,20 @@ describe('byggHeaderHtml', () => {
   it('viser formidler øverst og saken gjelder når formidler er mottaker', () => {
     const html = byggHeaderHtml(metadata, '', formidler, Målform.BOKMÅL, true)
     expect(html).not.toContain('Kopi til')
-    expect(html).not.toContain('med-formidlerkopi')
-    expect(html.indexOf('Formidler:')).toBeLessThan(html.indexOf('Saken gjelder:'))
+    expect(html).toContain('med-formidlerkopi')
+    expect(html.indexOf('Kommunal hjelpemiddelformidler:')).toBeLessThan(html.indexOf('Saken gjelder:'))
     expect(html).toContain('<dd>Ola Formidler</dd>')
   })
 
   it('viser verge før formidler og bruker nynorsk-tekster', () => {
     const html = byggHeaderHtml(metadata, 'Verge Vergesen', formidler, Målform.NYNORSK, true)
-    expect(html.indexOf('Verje:')).toBeLessThan(html.indexOf('Formidlar:'))
-    expect(html.indexOf('Formidlar:')).toBeLessThan(html.indexOf('Saken gjeld:'))
+    expect(html.indexOf('Verje:')).toBeLessThan(html.indexOf('Kommunal hjelpemiddelformidlar:'))
+    expect(html.indexOf('Kommunal hjelpemiddelformidlar:')).toBeLessThan(html.indexOf('Saken gjeld:'))
   })
 
   it('viser ingen formidlerlinje når formidler mangler', () => {
     const html = byggHeaderHtml(metadata, '', undefined, Målform.BOKMÅL, true)
-    expect(html).not.toContain('Formidler:')
+    expect(html).not.toContain('Kommunal hjelpemiddelformidler:')
     expect(html).toContain('<dt>Navn:</dt>')
   })
 })

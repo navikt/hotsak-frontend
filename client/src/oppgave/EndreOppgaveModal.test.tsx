@@ -81,8 +81,8 @@ describe('EndreOppgaveModal', () => {
 
     const fields = [
       screen.getByLabelText('Gjelder'),
-      screen.getByLabelText('Aktiv dato'),
-      screen.getByLabelText('Frist dato'),
+      screen.getByLabelText('Sett oppgaven på vent til'),
+      screen.getByLabelText('Frist'),
       screen.getByLabelText('Prioritet'),
       screen.getByLabelText('Nøkkelord'),
       screen.getByLabelText('Tildelt saksbehandler'),
@@ -175,15 +175,18 @@ describe('EndreOppgaveModal', () => {
     await waitFor(() => expect(trigger).toHaveBeenCalledWith({ nøkkelord: ['Eget nøkkelord', 'Nytt nøkkelord'] }))
   })
 
-  it('viser feil og lagrer ikke når et nøkkelord er lengre enn 40 tegn', async () => {
+  it.each([
+    ['kortere enn 3', 'ab'],
+    ['lengre enn 20', 'a'.repeat(21)],
+  ])('viser feil og lagrer ikke når et nøkkelord er %s tegn', async (_, nyttNøkkelord) => {
     const user = userEvent.setup()
     render(<EndreOppgaveModal oppgave={oppgave} onClose={vi.fn()} />)
 
-    await user.type(screen.getByRole('combobox', { name: 'Nøkkelord' }), 'a'.repeat(41))
+    await user.type(screen.getByRole('combobox', { name: 'Nøkkelord' }), nyttNøkkelord)
     await user.keyboard('{Enter}')
     await user.click(screen.getByRole('button', { name: 'Lagre endringer' }))
 
-    expect(await screen.findByText('Nøkkelord kan ikke være lengre enn 40 tegn')).toBeVisible()
+    expect(await screen.findByText('Nøkkelord må være mellom 3 og 20 tegn')).toBeVisible()
     expect(trigger).not.toHaveBeenCalled()
   })
 })

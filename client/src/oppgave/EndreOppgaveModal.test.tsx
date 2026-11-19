@@ -81,8 +81,8 @@ describe('EndreOppgaveModal', () => {
 
     const fields = [
       screen.getByLabelText('Gjelder'),
-      screen.getByLabelText('Aktiv dato'),
-      screen.getByLabelText('Frist dato'),
+      screen.getByLabelText('Sett oppgaven på vent til'),
+      screen.getByLabelText('Frist'),
       screen.getByLabelText('Prioritet'),
       screen.getByLabelText('Nøkkelord'),
       screen.getByLabelText('Tildelt saksbehandler'),

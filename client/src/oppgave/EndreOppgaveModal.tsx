@@ -169,7 +169,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <DatePicker {...datepickerPropsAktivDato}>
             <DatePicker.Input
               {...inputPropsAktivDato}
-              label="Aktiv dato"
+              label="Sett oppgaven på vent til"
               size="small"
               error={form.formState.errors.aktivDato?.message}
             />
@@ -178,7 +178,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <DatePicker {...datepickerPropsFristDato}>
             <DatePicker.Input
               {...inputPropsFristDato}
-              label="Frist dato"
+              label="Frist"
               size="small"
               error={form.formState.errors.fristDato?.message}
             />

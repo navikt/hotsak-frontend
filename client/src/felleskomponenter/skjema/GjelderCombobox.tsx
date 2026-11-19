@@ -81,6 +81,12 @@ export function GjelderCombobox({
 
 function filtrertePåSøk(options: GjelderOption[], søk: string): GjelderOption[] {
   if (!søk) return options
-  const ord = søk.toLowerCase().split(' ').filter(Boolean)
-  return options.filter((o) => ord.every((ord) => o.searchTerms.includes(ord)))
+  const søkeord = søk.toLowerCase().split(' ')
+  return options.filter((o) =>
+    søkeord.every((ord, index) => {
+      if (!ord) return true
+      if (index === søkeord.length - 1) return o.searchTerms.includes(ord)
+      return o.searchTerms.split(' ').some((heleOrd) => heleOrd === ord || heleOrd.startsWith(`${ord}/`))
+    })
+  )
 }

@@ -1,4 +1,16 @@
-import { DatePicker, Heading, Textarea, VStack, HStack, Label, BodyShort, ErrorMessage } from '@navikt/ds-react'
+import {
+  BodyShort,
+  DatePicker,
+  ErrorMessage,
+  Heading,
+  HStack,
+  Label,
+  Textarea,
+  useDatepicker,
+  VStack,
+} from '@navikt/ds-react'
+import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
+import { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
@@ -8,23 +20,50 @@ import { TilordneOppgave } from './TilordneOppgave.tsx'
 import classes from './JournalføringSkjema.module.css'
 import { OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
 import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
-import { addWeeks, formatISO, parseISO } from 'date-fns'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
 
 interface NySakSkjemaProps {
   kanRedigere: boolean
   tildeltEnhet: string
-  setFrist: (dato: Date) => void
-  fristProps: object
-  fristInputProps: object
 }
 
-export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, fristInputProps }: NySakSkjemaProps) {
+export function NySakSkjema({ kanRedigere, tildeltEnhet }: NySakSkjemaProps) {
   const {
     watch,
     setValue,
+    getValues,
+    register,
+    trigger,
     formState: { errors },
   } = useFormContext<JournalføringSkjemaVerdier>()
+
+  useEffect(() => {
+    register('mottattDato')
+    register('frist')
+    register('aktivFra', {
+      validate: (value) => {
+        const fristVerdi = getValues('frist')
+        if (value && fristVerdi && isAfter(parseISO(value), parseISO(fristVerdi))) {
+          return 'Aktiv fra kan ikke være etter fristen'
+        }
+        return true
+      },
+    })
+  }, [register, getValues])
+
+  const {
+    datepickerProps: fristProps,
+    inputProps: fristInputProps,
+    setSelected: setFrist,
+  } = useDatepicker({
+    defaultSelected: parseISO(getValues('frist')),
+    onDateChange: (dato) => {
+      if (dato) {
+        setValue('frist', formatISO(dato, { representation: 'date' }))
+        trigger('aktivFra')
+      }
+    },
+  })
 
   const valgtMottattDato = watch('mottattDato')
   const valgtAktivFra = watch('aktivFra')
@@ -159,13 +198,8 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet, setFrist, fristProps, f
               )}
             />
           </VStack>
-          <DatePicker {...(fristProps as Parameters<typeof DatePicker>[0])}>
-            <DatePicker.Input
-              {...(fristInputProps as Parameters<typeof DatePicker.Input>[0])}
-              label="Frist"
-              size="small"
-              readOnly={!kanRedigere}
-            />
+          <DatePicker {...fristProps}>
+            <DatePicker.Input {...fristInputProps} label="Frist" size="small" readOnly={!kanRedigere} />
           </DatePicker>
         </HStack>
       </TextContainer>

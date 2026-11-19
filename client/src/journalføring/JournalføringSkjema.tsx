@@ -1,23 +1,23 @@
-import { BodyShort, Button, Heading, HStack, useDatepicker, VStack, Tag } from '@navikt/ds-react'
-import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
-import { useEffect, useRef, useState } from 'react'
+import { Heading, HStack, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Skillelinje } from '../felleskomponenter/Strek.tsx'
-import { StickyHStack } from '../felleskomponenter/StickyHStack.tsx'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
-import { OppgaveModalType, useOppgaveÅpneModalHandler } from '../oppgave/OppgaveContext.ts'
-import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
+import { TextContainer } from '../felleskomponenter/typografi.tsx'
+import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { JournalpostStatusType, type Journalpost } from '../types/types.internal.ts'
-import { formaterDato } from '../utils/dato.ts'
 import { JournalføringDokumenter } from './JournalføringDokumenter.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
+import { JournalføringHandlinger } from './JournalføringHandlinger.tsx'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { JournalføringParter } from './JournalføringParter.tsx'
 import { JournalføringSakvalg } from './JournalføringSakvalg.tsx'
+import classes from './JournalføringSkjema.module.css'
+import { JournalpostInfo } from './JournalpostInfo.tsx'
+import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { NySakSkjema } from './NySakSkjema.tsx'
 import {
   OverstyrInnsynsregler,
@@ -26,14 +26,11 @@ import {
   type JournalføringSkjemaVerdier,
   type TilordnetEnhet,
 } from './journalføringTypes.ts'
-import { useJournalføringActions } from './useJournalføringActions.ts'
-import { KobleTilSakKort } from './KobleTilSakKort.tsx'
-import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
-import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import classes from './JournalføringSkjema.module.css'
-import { byggDokumentPayload, byggJournalføringSak, finnTildeltSaksbehandler } from './journalføringValg.ts'
-import { harUgyldigeDokumenttitler } from './dokumenttittelValidering.ts'
 import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
+import { byggJournalføringSak, byggSaksgrunnlag, lagSkjemaverdier as lagDefaultVerdier } from './journalføringValg.ts'
+import { useDokumentredigering } from './useDokumentredigering.ts'
+import { useJournalføringActions } from './useJournalføringActions.ts'
+import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
 
 interface JournalføringSkjemaProps {
   oppgave: Journalføringsoppgave
@@ -53,86 +50,33 @@ export function JournalføringSkjema({
   const [sakType, setSakType] = useState<'ny' | 'eksisterende'>('ny')
   const [valgtSak, setValgtSak] = useState<Sakvalg | null>(null)
   const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
-  const [dokumentTitler, setDokumentTitler] = useState<Record<string, string>>({})
-  const [visDokumenttittelFeil, setVisDokumenttittelFeil] = useState(false)
-  const annetInnhold = useRef<{ journalpostId: string; endringer: Record<string, string[]> }>({
-    journalpostId: journalpost.journalpostId,
-    endringer: {},
-  })
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringResponse | null>(null)
   const [tilordnetEnhet, setTilordnetEnhet] = useState<TilordnetEnhet>()
-
-  const mottattDatoDefault = parseISO(journalpost.journalpostOpprettetTid)
-  const [aktivFraDatoDefault] = useState(() => new Date())
-  const fristDefault = addWeeks(mottattDatoDefault, 4)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [avsenderFnr, setAvsenderFnr] = useState(journalpost.fnrInnsender)
 
+  const dokumentredigering = useDokumentredigering(journalpost)
   const { journalfør } = useJournalføringActions(oppgave)
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
-  const kanRedigere = oppgaveErUnderBehandlingAvInnloggetAnsatt
-  const åpneModal = useOppgaveÅpneModalHandler()
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt: kanRedigere } = useOppgaveregler(oppgave)
   const { id: innloggetAnsattId } = useInnloggetAnsatt()
 
-  const form = useForm<JournalføringSkjemaVerdier>({
-    mode: 'onChange',
-    defaultValues: {
-      tema: 'HJE',
-      prioritet: Oppgaveprioritet.NORMAL,
-      ...standardverdier,
-      kommentar: '',
-      dokumenterKontrollert: false,
-      overstyrInnsynsregler: '',
-      stønadsklassifisering: 'DA',
-      stønadType: 'S',
-      mottattDato: formatISO(mottattDatoDefault, { representation: 'date' }),
-      aktivFra: formatISO(aktivFraDatoDefault, { representation: 'date' }),
-      frist: formatISO(fristDefault, { representation: 'date' }),
-    },
-  })
-
+  const [defaultValues] = useState(() => lagDefaultVerdier(journalpost, standardverdier, new Date()))
+  const form = useForm<JournalføringSkjemaVerdier>({ mode: 'onChange', defaultValues })
   const {
     handleSubmit,
     control,
-    setValue,
     getValues,
     trigger,
-    register,
     formState: { isSubmitting },
   } = form
   const isJournalfører = isSubmitting || journalfør.isMutating
 
-  useEffect(() => {
-    register('mottattDato')
-    register('frist')
-    register('aktivFra', {
-      validate: (value) => {
-        const fristVerdi = getValues('frist')
-        if (value && fristVerdi && isAfter(parseISO(value), parseISO(fristVerdi))) {
-          return 'Aktiv fra kan ikke være etter fristen'
-        }
-        return true
-      },
-    })
-  }, [register, getValues])
-
-  const {
-    datepickerProps: fristProps,
-    inputProps: fristInputProps,
-    setSelected: setFrist,
-  } = useDatepicker({
-    defaultSelected: fristDefault,
-    onDateChange: (dato) => {
-      if (dato) {
-        setValue('frist', formatISO(dato, { representation: 'date' }))
-        trigger('aktivFra')
-      }
-    },
-  })
-  useEffect(() => {
+  const [forrigeFodselsnummer, setForrigeFodselsnummer] = useState(fodselsnummer)
+  if (fodselsnummer !== forrigeFodselsnummer) {
+    setForrigeFodselsnummer(fodselsnummer)
     setValgtSak(null)
     setValgtSakIdFeil(null)
-  }, [fodselsnummer])
+  }
 
   const {
     saker,
@@ -141,48 +85,17 @@ export function JournalføringSkjema({
     error: sakerError,
   } = useKobleTilSak(kanRedigere ? fodselsnummer : undefined, journalpost.dokumenter[0]?.brevkode)
 
-  const registrertDato = formaterDato(journalpost.journalpostOpprettetTid)
   const tildeltEnhet = `${oppgave.tildeltEnhet.navn} - ${oppgave.tildeltEnhet.nummer}`
 
-  function byggJournalføringPayload() {
-    const endringer =
-      annetInnhold.current.journalpostId === journalpost.journalpostId ? annetInnhold.current.endringer : {}
-    const { tittel, dokumenter } = byggDokumentPayload(journalpost, dokumentTitler, endringer)
-    return { tittel, brukerFnr: fodselsnummer, avsenderFnr, dokumenter }
-  }
+  async function journalførOgOpprettSak(verdier: JournalføringSkjemaVerdier) {
+    if (!dokumentredigering.validerTitler()) return
 
-  function erDokumenttitlerGyldige() {
-    const gyldige = !harUgyldigeDokumenttitler(journalpost.dokumenter, dokumentTitler)
-    setVisDokumenttittelFeil(!gyldige)
-    return gyldige
-  }
-
-  const onSubmit = async (verdier: JournalføringSkjemaVerdier) => {
-    if (!erDokumenttitlerGyldige()) return
-
-    const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
-      tittel,
-      brukerFnr,
+      ...dokumentredigering.byggDokumentPayload(),
+      brukerFnr: fodselsnummer,
       avsenderFnr,
       overstyrInnsynsregler: verdier.overstyrInnsynsregler as OverstyrInnsynsregler,
-      saksgrunnlag: {
-        tema: verdier.tema,
-        prioritet: verdier.prioritet,
-        oppgavetype: Oppgavetype.BEHANDLE_SAK,
-        behandlingstype: verdier.behandlingstype,
-        behandlingstema: verdier.behandlingstema,
-        stønadsklassifisering: verdier.stønadsklassifisering,
-        stønad: verdier.stønadType,
-        kommentar: verdier.kommentar,
-        mottattDato: verdier.mottattDato,
-        aktivDato: verdier.aktivFra,
-        fristDato: verdier.frist,
-        tildeltEnhet: oppgave.tildeltEnhet.nummer,
-        tildeltSaksbehandler: finnTildeltSaksbehandler(verdier.tilordnetEnhet, innloggetAnsattId, verdier.medarbeider),
-        mappeId: verdier.mappeId,
-      },
-      dokumenter,
+      saksgrunnlag: byggSaksgrunnlag(verdier, oppgave.tildeltEnhet.nummer, innloggetAnsattId),
     })
     if (resultat) {
       setTilordnetEnhet(verdier.tilordnetEnhet)
@@ -190,26 +103,33 @@ export function JournalføringSkjema({
     }
   }
 
-  const onSubmitKobleTilSak = async () => {
+  async function journalførOgKobleTilSak() {
     if (!valgtSak) {
       setValgtSakIdFeil('Du må velge en sak å koble til')
       return
     }
     const innsynGyldig = await trigger(['dokumenterKontrollert', 'overstyrInnsynsregler'])
-    if (!erDokumenttitlerGyldige() || !innsynGyldig) return
+    if (!dokumentredigering.validerTitler() || !innsynGyldig) return
 
-    const { tittel, brukerFnr, avsenderFnr, dokumenter } = byggJournalføringPayload()
     const resultat = await journalfør.trigger({
-      tittel,
-      brukerFnr,
+      ...dokumentredigering.byggDokumentPayload(),
+      brukerFnr: fodselsnummer,
       avsenderFnr,
       overstyrInnsynsregler: getValues('overstyrInnsynsregler') as OverstyrInnsynsregler,
       sak: byggJournalføringSak(valgtSak),
-      dokumenter,
     })
     if (resultat) {
       setTilordnetEnhet(undefined)
       setJournalføringResultat(resultat)
+    }
+  }
+
+  async function onJournalfør() {
+    if (sakType === 'eksisterende') {
+      await journalførOgKobleTilSak()
+    } else {
+      dokumentredigering.visTittelfeilmeldinger()
+      await handleSubmit(journalførOgOpprettSak)()
     }
   }
 
@@ -231,18 +151,7 @@ export function JournalføringSkjema({
       <FormProvider {...form}>
         <form onSubmit={(e) => e.preventDefault()} noValidate className={classes.form}>
           <VStack gap="space-16" className={classes.innhold}>
-            <div>
-              <HStack gap="space-12" paddingBlock="space-0">
-                <BodyShort size="small">
-                  <strong>Kilde:</strong>
-                  {`${journalpost.kanal.kode === 'SKAN_IM' ? ' Skanning' : ` ${journalpost.kanal.term}`}`}
-                </BodyShort>
-                <BodyShort size="small">
-                  <strong>Registrert dato:</strong> {registrertDato}
-                </BodyShort>
-              </HStack>
-              <Skillelinje />
-            </div>
+            <JournalpostInfo journalpost={journalpost} />
 
             <VStack gap="space-8">
               <Heading level="2" size="small">
@@ -273,18 +182,11 @@ export function JournalføringSkjema({
             <JournalføringDokumenter
               key={journalpost.journalpostId}
               journalpost={journalpost}
-              dokumentTitler={dokumentTitler}
-              onTittelChange={(id, tittel) => setDokumentTitler((prev) => ({ ...prev, [id]: tittel }))}
-              onChipsChange={(id, chips) => {
-                const endringer =
-                  annetInnhold.current.journalpostId === journalpost.journalpostId ? annetInnhold.current.endringer : {}
-                annetInnhold.current = {
-                  journalpostId: journalpost.journalpostId,
-                  endringer: { ...endringer, [id]: chips },
-                }
-              }}
+              dokumentTitler={dokumentredigering.dokumentTitler}
+              onTittelChange={dokumentredigering.settTittel}
+              onChipsChange={dokumentredigering.settAnnetInnhold}
               readOnly={!kanRedigere}
-              visTittelFeil={visDokumenttittelFeil}
+              visTittelFeil={dokumentredigering.visTittelFeil}
             />
 
             <JournalføringSakvalg
@@ -318,55 +220,16 @@ export function JournalføringSkjema({
               </VStack>
             )}
 
-            {sakType === 'ny' && kanRedigere && (
-              <NySakSkjema
-                kanRedigere={kanRedigere}
-                tildeltEnhet={tildeltEnhet}
-                setFrist={setFrist}
-                fristProps={fristProps}
-                fristInputProps={fristInputProps}
-              />
-            )}
+            {sakType === 'ny' && kanRedigere && <NySakSkjema kanRedigere={kanRedigere} tildeltEnhet={tildeltEnhet} />}
           </VStack>
 
-          {kanRedigere && (
-            <StickyHStack align="center" justify="start">
-              <HStack gap="space-4" paddingInline="space-16" paddingBlock="space-8">
-                <Button
-                  type="button"
-                  variant="primary"
-                  size="small"
-                  loading={isJournalfører}
-                  disabled={isJournalfører}
-                  onClick={async () => {
-                    if (sakType === 'eksisterende') {
-                      await onSubmitKobleTilSak()
-                    } else {
-                      setVisDokumenttittelFeil(true)
-                      await handleSubmit(onSubmit)()
-                    }
-                  }}
-                >
-                  {sakType === 'eksisterende' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
-                </Button>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="small"
-                  onClick={() => åpneModal(OppgaveModalType.OVERFØR_TIL_GOSYS)}
-                >
-                  Overfør til Gosys
-                </Button>
-              </HStack>
-            </StickyHStack>
-          )}
-          {journalpost.journalstatus === JournalpostStatusType.JOURNALFOERT && (
-            <StickyHStack align="center" justify="start" paddingBlock="space-8" paddingInline="space-8">
-              <Tag data-color="info" variant="moderate" size="medium">
-                Journalført
-              </Tag>
-            </StickyHStack>
-          )}
+          <JournalføringHandlinger
+            kanRedigere={kanRedigere}
+            erJournalført={journalpost.journalstatus === JournalpostStatusType.JOURNALFOERT}
+            sakType={sakType}
+            isJournalfører={isJournalfører}
+            onJournalfør={onJournalfør}
+          />
         </form>
       </FormProvider>
 

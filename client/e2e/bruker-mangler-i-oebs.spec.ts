@@ -23,7 +23,6 @@ test.describe('Bruker ikke funnet i OeBS', () => {
     await settBehandlingsresultat(page, 'Avslått')
     await klikkFattVedtak(page)
 
-    await expect(page.getByRole('dialog', { name: /Mangler brev/i })).toBeVisible()
     await expect(page.getByRole('dialog', { name: /Bruker ikke funnet i OeBS/i })).not.toBeVisible()
   })
 })

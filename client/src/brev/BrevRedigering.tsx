@@ -19,6 +19,7 @@ import { type BreveditorBrevdata, type BreveditorState, isBreveditorState } from
 import { BrevForhåndsvisning } from './BrevForhåndsvisning.tsx'
 import { useBrevmal } from './brevmaler/useBrevmal.ts'
 import classes from './BrevRedigering.module.css'
+import { erFormidlerAlltidMottaker } from './brevSelectors.ts'
 import { Brevmal, isBreveditorbrevUtenVedtak } from './brevTyper.ts'
 import { useBrev } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
@@ -118,6 +119,7 @@ export function BrevRedigering({ oppgave, behandling, brevId }: BrevRedigeringPr
         målform={brev.målform}
         spesiellePlaceholderVerdier={isBreveditorState(brev.data) ? undefined : brev.data.templateValues}
         onLagreBrev={handleLagreBrev}
+        formidlerErMottaker={erFormidlerAlltidMottaker(brev.brevmal)}
       />
     </div>
   )

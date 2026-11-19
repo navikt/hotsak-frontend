@@ -4,11 +4,12 @@ import {
   Checkbox,
   CheckboxGroup,
   Dialog,
-  HStack,
+  InlineMessage,
   Label,
   Radio,
   RadioGroup,
   Select,
+  Stack,
   Textarea,
   VStack,
 } from '@navikt/ds-react'
@@ -39,8 +40,8 @@ import type { Person } from '../types/types.internal'
 import { formaterDatoLang } from '../utils/dato'
 import { formaterNavn } from '../utils/formater'
 import classes from './JournalføringSvartidsbrev.module.css'
-import { byggSvartidsbrev } from './journalføringValg'
 import { type SvartidsbrevValg } from './journalføringTypes'
+import { byggSvartidsbrev } from './journalføringValg'
 
 const ÅRSAK_MAKSLENGDE = 500
 
@@ -77,20 +78,24 @@ export function JournalføringSvartidsbrev({
 
   return (
     <VStack gap="space-12">
-      <HStack gap="space-12" align="center">
-        <Label size="small">Send svartidsbrev?</Label>
-        <CheckboxGroup
-          hideLegend
-          legend="Send svartidsbrev?"
-          onChange={(value) => setSendSvartidsbrev(value.includes('Ja'))}
-          size="small"
-        >
-          <Checkbox value="Ja">Ja</Checkbox>
-        </CheckboxGroup>
-      </HStack>
+      <Label size="small">Vil du sende brev om forventet saksbehandlingstid til bruker?</Label>
+      <CheckboxGroup
+        hideLegend
+        legend="Send svartidsbrev?"
+        onChange={(value) => setSendSvartidsbrev(value.includes('Ja'))}
+        size="small"
+      >
+        <Checkbox value="Ja">Ja, opprett brev</Checkbox>
+      </CheckboxGroup>
       {sendSvartidsbrev && (
         <Box background="neutral-soft" padding="space-8" borderRadius="8">
           <VStack gap="space-12">
+            <RadioGroup legend="Målform" size="small" value={målform} onChange={(value: Målform) => setMålform(value)}>
+              <Stack gap="space-0 space-24" direction={{ xs: 'column', sm: 'row' }} wrap={false}>
+                <Radio value={Målform.BOKMÅL}>Bokmål</Radio>
+                <Radio value={Målform.NYNORSK}>Nynorsk</Radio>
+              </Stack>
+            </RadioGroup>
             <Select
               size="small"
               label="Forventet behandlingstid"
@@ -103,22 +108,21 @@ export function JournalføringSvartidsbrev({
             </Select>
             <Textarea
               size="small"
-              label="Årsak til lengre behandlingstid"
-              description="Teksten flettes inn i brevet. Skriv så bruker forstår den."
+              label="Forklar hvorfor saken ikke kan behandles i løpet av 1 måned"
+              description="Begrunnelsen blir en del av brevet."
               maxLength={ÅRSAK_MAKSLENGDE}
               value={årsak}
               onChange={(event) => setÅrsak(event.target.value)}
               error={visÅrsakFeil && !årsak.trim() ? 'Du må oppgi en årsak' : undefined}
             />
-            <RadioGroup legend="Målform" size="small" value={målform} onChange={(value: Målform) => setMålform(value)}>
-              <Radio value={Målform.BOKMÅL}>Bokmål</Radio>
-              <Radio value={Målform.NYNORSK}>Nynorsk</Radio>
-            </RadioGroup>
             <div>
               <Button type="button" size="xsmall" variant="tertiary" onClick={() => setVisForhåndsvisning(true)}>
-                Forhåndsvis dokument
+                Forhåndsvis brev
               </Button>
             </div>
+            <InlineMessage status="info" size="small">
+              Brevet legges til utsending når du journalfører saken.
+            </InlineMessage>
           </VStack>
         </Box>
       )}

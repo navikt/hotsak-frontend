@@ -33,6 +33,8 @@ function loadTemplate(key: string): Promise<{ default: string }> {
       return import('./maler/svartidsbrev-journalføring.md?raw')
     case 'svartidsbrev-journalføring-nn':
       return import('./maler/svartidsbrev-journalføring-nn.md?raw')
+    case 'innhente-opplysninger-nn':
+      return import('./maler/innhente-opplysninger-nn.md?raw')
     case 'innhente-opplysninger':
       return import('./maler/innhente-opplysninger.md?raw')
     default:

@@ -28,3 +28,8 @@ export const isBrevmalBarnebrillerVedtak: Predicate<Brev> = isBrevmalOneOf(
   Brevmal.BARNEBRILLER_VEDTAK_AVSLAG,
   Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER
 )
+
+// Formidler er alltid mottaker (ikke bare kopimottaker) av disse brevene
+export function erFormidlerAlltidMottaker(brevmal?: Brevmal): boolean {
+  return brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER
+}

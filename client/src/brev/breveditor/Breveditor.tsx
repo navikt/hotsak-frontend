@@ -55,6 +55,7 @@ export interface BreveditorProps {
   onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string
   spesiellePlaceholderVerdier?: PlaceholderSpesielleVerdier
+  formidlerErMottaker?: boolean
 }
 
 export function Breveditor(props: BreveditorProps) {
@@ -70,6 +71,7 @@ export function Breveditor(props: BreveditorProps) {
     onLagreBrev,
     placeholder,
     spesiellePlaceholderVerdier,
+    formidlerErMottaker = false,
   } = props
   const { datoSoknadMottatt, hjelpemidlerSøktOm, flushLagringRef } = useBrevContext()
 
@@ -181,6 +183,8 @@ export function Breveditor(props: BreveditorProps) {
   const { data } = useBrevmottakere(brevId)
   const formidlerMedKopi = data?.brevmottakere.find((mottaker) => mottaker.mottakertype === 'FORMIDLER')
   const { personInfo: formidler } = usePerson(formidlerMedKopi?.fnr)
+  const formidlerNavn = formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi?.navn ?? '')
+  const visFormidlerSomMottaker = formidlerErMottaker && !!formidlerMedKopi
 
   // Stopp refresh/lukking av nettsiden hvis man har ulagrede endringer
   useBeforeUnload(
@@ -218,7 +222,15 @@ export function Breveditor(props: BreveditorProps) {
   // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
   useEffect(() => {
     if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn, målform, formidlerMedKopi)
+      const ferskHtml = byggFullHtml(
+        metadata,
+        initialState.value,
+        stilarkVersjon,
+        vergeNavn,
+        målform,
+        formidlerMedKopi,
+        formidlerErMottaker
+      )
       if (initialState.valueAsHtml !== ferskHtml) {
         const oppdatertState: BreveditorState = {
           value: initialState.value,
@@ -252,7 +264,15 @@ export function Breveditor(props: BreveditorProps) {
           if ((onStateChange != null || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: BreveditorState = {
               value: nyVerdi,
-              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn, målform, formidlerMedKopi),
+              valueAsHtml: byggFullHtml(
+                metadata,
+                nyVerdi,
+                stilarkVersjon,
+                vergeNavn,
+                målform,
+                formidlerMedKopi,
+                formidlerErMottaker
+              ),
               history: changedEditor.history,
             }
             if (!state.current || state.current.value !== nyVerdi) {
@@ -272,7 +292,9 @@ export function Breveditor(props: BreveditorProps) {
                 <div style={{ scale: widthScale }} className="scaled-width">
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
-                      <div className={`header${formidlerMedKopi ? ' med-formidlerkopi' : ''}`}>
+                      <div
+                        className={`header${(formidlerMedKopi && !formidlerErMottaker) || formidlerErMottaker ? ' med-formidlerkopi' : ''}`}
+                      >
                         <div className="header-row">
                           <dl>
                             {harVerge && (
@@ -282,17 +304,27 @@ export function Breveditor(props: BreveditorProps) {
                                 <br />
                               </>
                             )}
-                            <dt> {harVerge ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
+                            {visFormidlerSomMottaker && (
+                              <>
+                                <dt>{målformTekster.formidler}:</dt>
+                                <dd>{formidlerNavn}</dd>
+                                <br />
+                              </>
+                            )}
+                            <dt>
+                              {' '}
+                              {harVerge || visFormidlerSomMottaker ? målformTekster.sakenGjelder : målformTekster.navn}:
+                            </dt>
                             <dd>{metadata.brukersNavn}</dd>
                             <dt>{målformTekster.fødselsnummer}:</dt>
                             <dd>{metadata.brukersFødselsnummer}</dd>
                             <dt>{målformTekster.saksnummer}:</dt>
                             <dd>{metadata.saksnummer}</dd>
-                            {formidlerMedKopi && (
+                            {formidlerMedKopi && !formidlerErMottaker && (
                               <>
                                 <br />
                                 <dt>{målformTekster.kopiTilHjelpemiddelformidler}:</dt>
-                                <dd>{formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi.navn ?? '')}</dd>
+                                <dd>{formidlerNavn}</dd>
                               </>
                             )}
                           </dl>

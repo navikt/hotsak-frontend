@@ -21,7 +21,7 @@ import { type Brev, Brevmal, Brevstatus, isBreveditorbrevUtenVedtak } from './br
 import { NyttBrev } from './NyttBrev.tsx'
 import { SendBrevDialog } from './SendBrevDialog.tsx'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
-import { useBrev } from './useBrev.ts'
+import { useBrev, useBrevmottakere } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
 
 export interface BrevPanelProps {
@@ -63,6 +63,8 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   const gyldigDistribueresEtter = harGyldigDistribusjonstidspunkt ? underveisbrevDistribueresEtter : undefined
 
   const kanAngreBrev = valgtBrev?.kanAngreBrev && !oppgaveErAvsluttet && oppgaveErUnderBehandlingAvInnloggetAnsatt
+  const { data: brevmottakere } = useBrevmottakere(valgtBrev?.brevId)
+  const formidlerMottaker = brevmottakere && brevmottakere.brevmottakere?.find((m) => m.mottakertype === 'FORMIDLER')
 
   const kanRedigere =
     !!valgtBrev &&
@@ -134,6 +136,10 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   }
 
   const handleSendBrev = async () => {
+    if (!formidlerMottaker && valgtBrev?.brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER) {
+      showErrorToast('Ingen formidler mottaker funnet. Legg til formidler som mottaker i "Innstillinger" for brevet')
+      return
+    }
     try {
       await flushLagringRef.current?.()
       if (!validerBrev()) {

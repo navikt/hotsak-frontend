@@ -26,6 +26,7 @@ const MÅLFORMTEKSTER = {
   [Målform.BOKMÅL]: {
     lang: 'nb',
     verge: 'Verge',
+    formidler: 'Kommunal hjelpemiddelformidler',
     sakenGjelder: 'Saken gjelder',
     navn: 'Navn',
     fødselsnummer: 'Fødselsnummer',
@@ -39,6 +40,7 @@ const MÅLFORMTEKSTER = {
   [Målform.NYNORSK]: {
     lang: 'nn',
     verge: 'Verje',
+    formidler: 'Kommunal hjelpemiddelformidlar',
     sakenGjelder: 'Saken gjeld',
     navn: 'Namn',
     fødselsnummer: 'Fødselsnummer',
@@ -59,7 +61,8 @@ export function byggHeaderHtml(
   metadata: Metadata,
   vergeNavn?: string,
   formidlerMedKopi?: Brevmottaker,
-  målform?: Målform
+  målform?: Målform,
+  formidlerErMottaker = false
 ): string {
   const målformTekster = hentMålformTekster(målform)
   const formidlerNavn = formaterNavn(formidlerMedKopi?.navn)
@@ -67,19 +70,21 @@ export function byggHeaderHtml(
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
+  const visFormidlerSomMottaker = formidlerErMottaker && !!formidlerMedKopi
   return (
-    `<header class="header${formidlerMedKopi ? ' med-formidlerkopi' : ''}">` +
+    `<header class="header${(formidlerMedKopi && !formidlerErMottaker) || formidlerErMottaker ? ' med-formidlerkopi' : ''}">` +
     NAV_LOGO_SVG +
     `<div class="header-row">
         <dl>
           ${vergeNavn ? `<dt>${målformTekster.verge}:</dt><dd>${vergeNavn}</dd><br />` : ''}
-          <dt>${vergeNavn ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
+          ${visFormidlerSomMottaker ? `<dt>${målformTekster.formidler}:</dt><dd>${formidlerNavn}</dd><br />` : ''}
+          <dt>${vergeNavn || visFormidlerSomMottaker ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
           <dd>${metadata.brukersNavn}</dd>
           <dt>${målformTekster.fødselsnummer}:</dt>
           <dd>${metadata.brukersFødselsnummer}</dd>
           <dt>${målformTekster.saksnummer}:</dt>
           <dd>${metadata.saksnummer}</dd>
-          ${formidlerMedKopi ? `<br /><dt>${målformTekster.kopiTilHjelpemiddelformidler}:</dt><dd>${formidlerNavn}</dd>` : ''}
+          ${formidlerMedKopi && !formidlerErMottaker ? `<br /><dt>${målformTekster.kopiTilHjelpemiddelformidler}:</dt><dd>${formidlerNavn}</dd>` : ''}
         </dl>
         <span>${metadata.brevOpprettet}</span>
       </div>
@@ -103,7 +108,8 @@ export function byggFullHtml(
   stilarkVersjon: StilarkVersjon,
   vergeNavn?: string,
   målform?: Målform,
-  formidlerMedKopi?: Brevmottaker
+  formidlerMedKopi?: Brevmottaker,
+  formidlerErMottaker = false
 ): string {
   const stilark = hentStilark(stilarkVersjon)
   const målformTekster = hentMålformTekster(målform)
@@ -134,7 +140,7 @@ export function byggFullHtml(
           <style>${stilark}</style>
         </head>
         <body>` +
-    byggHeaderHtml(metadata, vergeNavn, formidlerMedKopi, målform) +
+    byggHeaderHtml(metadata, vergeNavn, formidlerMedKopi, målform, formidlerErMottaker) +
     `<main>` +
     (serialiserTilHtml(nyVerdi) || '') +
     `</main>` +

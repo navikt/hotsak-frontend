@@ -28,6 +28,8 @@ import { mutateOppgave, useOppgaveMapper, useOppgaveNøkkelord } from './useOppg
 import { type PatchOppgaveRequest, useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
 
+const MAKS_LENGDE_NØKKELORD = 40
+
 export interface EndreOppgaveModalProps {
   oppgave: Oppgave
   onClose(): void
@@ -193,11 +195,17 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <Controller
             name="nøkkelord"
             control={form.control}
-            render={({ field }) => (
+            rules={{
+              validate: (verdier) =>
+                verdier.every((verdi) => verdi.length <= MAKS_LENGDE_NØKKELORD) ||
+                `Nøkkelord kan ikke være lengre enn ${MAKS_LENGDE_NØKKELORD} tegn`,
+            }}
+            render={({ field, fieldState }) => (
               <UNSAFE_Combobox
                 label="Nøkkelord"
                 description="Velg eller skriv inn nye nøkkelord"
                 size="small"
+                error={fieldState.error?.message}
                 isMultiSelect
                 allowNewValues
                 options={[...new Set([...nøkkelord, ...defaultValues.nøkkelord])]}

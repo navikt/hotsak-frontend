@@ -174,4 +174,16 @@ describe('EndreOppgaveModal', () => {
 
     await waitFor(() => expect(trigger).toHaveBeenCalledWith({ nøkkelord: ['Eget nøkkelord', 'Nytt nøkkelord'] }))
   })
+
+  it('viser feil og lagrer ikke når et nøkkelord er lengre enn 40 tegn', async () => {
+    const user = userEvent.setup()
+    render(<EndreOppgaveModal oppgave={oppgave} onClose={vi.fn()} />)
+
+    await user.type(screen.getByRole('combobox', { name: 'Nøkkelord' }), 'a'.repeat(41))
+    await user.keyboard('{Enter}')
+    await user.click(screen.getByRole('button', { name: 'Lagre endringer' }))
+
+    expect(await screen.findByText('Nøkkelord kan ikke være lengre enn 40 tegn')).toBeVisible()
+    expect(trigger).not.toHaveBeenCalled()
+  })
 })

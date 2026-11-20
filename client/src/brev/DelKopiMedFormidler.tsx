@@ -27,6 +27,8 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
   const formidlerSomMottaker = mottakere.brevmottakere.find(
     (mottaker) => mottaker.mottakertype === Mottakertype.FORMIDLER
   )
+
+  const erObligatoriskMottaker = formidlerSomMottaker?.kanSlettes === false
   const innsender = sak?.data.innsender
   const digitalBehovsmelding = behovsmelding?.isDigitalBehovsmelding ?? false
   const formidlerNavn = digitalBehovsmelding && innsender ? formaterNavn(innsender.navn) : undefined
@@ -63,32 +65,36 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
 
   return (
     <Box marginBlock="space-12 space-8">
-      <CheckboxGroup legend="Del kopi med formidler" hideLegend size="small">
-        <Checkbox
-          checked={!!formidlerSomMottaker || visSkjema}
-          disabled={isMutating || !kanRedigere}
-          description={`Formidleren får kopien ${digitalBehovsmelding ? 'digitalt og som brev' : 'som brev'}.`}
-          onChange={(e) => handleFormidlerKopi(e.target.checked)}
-        >
-          <HStack gap="space-2">
-            <Tekst weight="semibold">Del kopi med formidler</Tekst>
-            <HelpText title="Vurder å dele kopi med formidler">
-              {!digitalBehovsmelding ? (
-                <p>
-                  Du må selv vurdere om formidler skal motta en kopi av brevet. Hvis du deler en kopi av brevet med
-                  formidler, vil en kopi av brevet distribueres til formidleren.
-                </p>
-              ) : (
-                <p>
-                  Du må selv vurdere om formidler skal motta en kopi av brevet. Hvis du deler en kopi av brevet med
-                  formidler, vil det bli synlig på formidler sine innloggede sider i 4 uker fra vedtaksdatoen i tillegg
-                  til å distribueres som brev.
-                </p>
-              )}
-            </HelpText>
-          </HStack>
-        </Checkbox>
-      </CheckboxGroup>
+      {erObligatoriskMottaker ? (
+        <Tekst weight="semibold">Formidler er obligatorisk mottaker av brevet</Tekst>
+      ) : (
+        <CheckboxGroup legend="Del kopi med formidler" hideLegend size="small">
+          <Checkbox
+            checked={!!formidlerSomMottaker || visSkjema}
+            disabled={isMutating || !kanRedigere}
+            description={`Formidleren får kopien ${digitalBehovsmelding ? 'digitalt og som brev' : 'som brev'}.`}
+            onChange={(e) => handleFormidlerKopi(e.target.checked)}
+          >
+            <HStack gap="space-2">
+              <Tekst weight="semibold">Del kopi med formidler</Tekst>
+              <HelpText title="Vurder å dele kopi med formidler">
+                {!digitalBehovsmelding ? (
+                  <p>
+                    Du må selv vurdere om formidler skal motta en kopi av brevet. Hvis du deler en kopi av brevet med
+                    formidler, vil en kopi av brevet distribueres til formidleren.
+                  </p>
+                ) : (
+                  <p>
+                    Du må selv vurdere om formidler skal motta en kopi av brevet. Hvis du deler en kopi av brevet med
+                    formidler, vil det bli synlig på formidler sine innloggede sider i 4 uker fra vedtaksdatoen i
+                    tillegg til å distribueres som brev.
+                  </p>
+                )}
+              </HelpText>
+            </HStack>
+          </Checkbox>
+        </CheckboxGroup>
+      )}
       {(formidlerSomMottaker || visSkjema) && (
         <Box borderWidth="1" padding="space-8" borderRadius="8" borderColor="neutral-subtleA">
           <VStack gap="space-4">

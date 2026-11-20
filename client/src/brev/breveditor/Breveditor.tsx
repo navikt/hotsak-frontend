@@ -169,7 +169,7 @@ export function Breveditor(props: BreveditorProps) {
       }
     }
   }, [flushLagringRef, flushLagring])
-  const { personInfo } = usePerson(metadata.brukersFødselsnummer)
+  const { personInfo, isLoading: personLaster } = usePerson(metadata.brukersFødselsnummer)
   const vergemål = personInfo?.vergemål || []
   const harVerge = vergemål.length > 0
   const vergeNavn = vergemål
@@ -180,9 +180,9 @@ export function Breveditor(props: BreveditorProps) {
   const målformTekster = hentMålformTekster(målform)
 
   // Kopi til formidler
-  const { data } = useBrevmottakere(brevId)
+  const { data, isLoading: mottakereLaster } = useBrevmottakere(brevId)
   const formidlerMedKopi = data?.brevmottakere.find((mottaker) => mottaker.mottakertype === 'FORMIDLER')
-  const { personInfo: formidler } = usePerson(formidlerMedKopi?.fnr)
+  const { personInfo: formidler, isLoading: formidlerLaster } = usePerson(formidlerMedKopi?.fnr)
   const formidlerNavn = formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi?.navn ?? '')
   const visFormidlerSomMottaker = formidlerErMottaker && !!formidlerMedKopi
 
@@ -219,30 +219,36 @@ export function Breveditor(props: BreveditorProps) {
     [editor]
   )
 
-  // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
+  // Lagrer HTML når editoren åpnes, uten at brukeren må redigere først. Nye brev har tom HTML i backend til de er
+  // lagret første gang, og eksisterende brev oppdateres hvis metadata har endret seg (f.eks. ny saksbehandler etter
+  // overføring). Venter til person og mottakere er lastet, ellers mangler header (verge, formidler) i html
+  const harSynkronisertHtml = useRef(false)
+  const klarTilSynkronisering = !personLaster && !mottakereLaster && !formidlerLaster
   useEffect(() => {
-    if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(
-        metadata,
-        initialState.value,
-        stilarkVersjon,
-        vergeNavn,
-        målform,
-        formidlerMedKopi,
-        formidlerErMottaker
-      )
-      if (initialState.valueAsHtml !== ferskHtml) {
-        const oppdatertState: BreveditorState = {
-          value: initialState.value,
-          valueAsHtml: ferskHtml,
-          history: initialState.history,
-        }
-        state.current = oppdatertState
-        onStateChange?.(oppdatertState)
-        lagreMedDebounceOgRetry(oppdatertState, nesteSerienummer())
-      }
+    if (harSynkronisertHtml.current || !klarTilSynkronisering || !onLagreBrev) return
+    harSynkronisertHtml.current = true
+
+    const value = initialState?.value ?? editor.children
+    const ferskHtml = byggFullHtml(
+      metadata,
+      value,
+      stilarkVersjon,
+      vergeNavn,
+      målform,
+      formidlerMedKopi,
+      formidlerErMottaker
+    )
+    if (initialState?.valueAsHtml === ferskHtml) return
+
+    const oppdatertState: BreveditorState = {
+      value,
+      valueAsHtml: ferskHtml,
+      history: initialState?.history ?? editor.history,
     }
-  }, [])
+    state.current = oppdatertState
+    onStateChange?.(oppdatertState)
+    lagreMedDebounceOgRetry(oppdatertState, nesteSerienummer())
+  }, [klarTilSynkronisering])
 
   return (
     <BreveditorContext

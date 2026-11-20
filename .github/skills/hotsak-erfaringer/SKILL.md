@@ -49,7 +49,7 @@ Kompakt erfaringslogg. Gjelder i tillegg til `AGENTS.md`. Ved konflikt vinner si
 - Tester: `pnpm run test:copilot` og `pnpm run e2e:copilot`. Disse leser ikke `.env`. Enkeltfiler: `VITE_ENV_DIR=.testenv npx vitest --run <sti>`.
 - Python er sperret i cplt. Bruk edit-verktøyet til filendringer.
 - `client/.env` er sperret (content exclusion). Ikke prøv å lese den. `pnpm run build` og `vite build` feiler derfor. Verifiser med `tsc -b` og `pnpm run lint`.
-- `/usr/local/bin/pnpm` (corepack) gir EPERM i cplt. Kjør `export PATH=~/Library/pnpm/bin:$PATH` først. Playwright sin webServer starter `pnpm run dev`.
+- `/usr/local/bin/pnpm` (corepack) gir EPERM i cplt. Kjør `export PATH=~/Library/pnpm/bin:$PATH` først. Playwright sin webServer starter `pnpm run dev`. Gir også `~/Library/pnpm/bin/node` EPERM, kan ingen tester kjøres. Si fra og be utvikleren kjøre dem.
 - I cplt er `~/.npmrc` ulesbar, så pnpm henter `@navikt/*` fra npmjs og skriver om `client/pnpm-lock.yaml`. Sjekk `git status` etter pnpm-kjøringer og tilbakestill lock-filen med `git checkout -- client/pnpm-lock.yaml`.
 
 ## Vedlikehold av denne skillen

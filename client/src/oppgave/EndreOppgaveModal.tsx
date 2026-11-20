@@ -28,6 +28,9 @@ import { mutateOppgave, useOppgaveMapper, useOppgaveNøkkelord } from './useOppg
 import { type PatchOppgaveRequest, useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
 
+const MIN_LENGDE_NØKKELORD = 3
+const MAKS_LENGDE_NØKKELORD = 20
+
 export interface EndreOppgaveModalProps {
   oppgave: Oppgave
   onClose(): void
@@ -167,7 +170,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <DatePicker {...datepickerPropsAktivDato}>
             <DatePicker.Input
               {...inputPropsAktivDato}
-              label="Aktiv dato"
+              label="Sett oppgaven på vent til"
               size="small"
               error={form.formState.errors.aktivDato?.message}
             />
@@ -176,7 +179,7 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <DatePicker {...datepickerPropsFristDato}>
             <DatePicker.Input
               {...inputPropsFristDato}
-              label="Frist dato"
+              label="Frist"
               size="small"
               error={form.formState.errors.fristDato?.message}
             />
@@ -193,11 +196,18 @@ export function EndreOppgaveModal(props: EndreOppgaveModalProps) {
           <Controller
             name="nøkkelord"
             control={form.control}
-            render={({ field }) => (
+            rules={{
+              validate: (verdier) =>
+                verdier.every(
+                  (verdi) => verdi.length >= MIN_LENGDE_NØKKELORD && verdi.length <= MAKS_LENGDE_NØKKELORD
+                ) || `Nøkkelord må være mellom ${MIN_LENGDE_NØKKELORD} og ${MAKS_LENGDE_NØKKELORD} tegn`,
+            }}
+            render={({ field, fieldState }) => (
               <UNSAFE_Combobox
                 label="Nøkkelord"
                 description="Velg eller skriv inn nye nøkkelord"
                 size="small"
+                error={fieldState.error?.message}
                 isMultiSelect
                 allowNewValues
                 options={[...new Set([...nøkkelord, ...defaultValues.nøkkelord])]}

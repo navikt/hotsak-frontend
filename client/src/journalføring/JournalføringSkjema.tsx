@@ -252,6 +252,7 @@ export function JournalføringSkjema({
             sakType={sakType}
             isJournalfører={isJournalfører}
             onJournalfør={onJournalfør}
+            svartidsbrevValg={svartidsbrevValg}
           />
         </form>
       </FormProvider>

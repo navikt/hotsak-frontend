@@ -51,6 +51,10 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
   const handleFilterReset = useDataGridFilterResetHandler(field, scope)
+  function handleFilterChange(action: DataGridFilterAction<string, K>) {
+    dispatch(action)
+    onFilterChange?.(action)
+  }
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -64,6 +68,20 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <ActionMenu.Group label="Inkluder følgende">
+          <ActionMenu.CheckboxItem
+            checked={options.length > 0 && options.every(([value]) => current.values.has(value))}
+            onCheckedChange={(checked) => {
+              if (checked) {
+                options.forEach(([value]) => {
+                  handleFilterChange({ type: 'addFieldValue', scope, field, value })
+                })
+              } else {
+                handleFilterReset()
+              }
+            }}
+          >
+            Velg alle
+          </ActionMenu.CheckboxItem>
           {options.map(([value, label]) => (
             <ActionMenu.CheckboxItem
               key={value.toString()}
@@ -75,10 +93,7 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
                   field,
                   value,
                 }
-                dispatch(action)
-                if (onFilterChange) {
-                  onFilterChange(action)
-                }
+                handleFilterChange(action)
               }}
             >
               {counts ? `${label} (${counts.get(value as V) ?? 0})` : label}
@@ -86,7 +101,7 @@ export function DataGridFilterMenu<K extends string = string, V extends DataGrid
           ))}
           {enabled && (
             <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleFilterReset}>
-              Fjern filter
+              Fjern alle
             </ActionMenu.Item>
           )}
         </ActionMenu.Group>

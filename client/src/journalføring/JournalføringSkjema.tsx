@@ -108,7 +108,7 @@ export function JournalføringSkjema({
       setValgtSakIdFeil('Du må velge en sak å koble til')
       return
     }
-    const innsynGyldig = await trigger(['dokumenterKontrollert', 'overstyrInnsynsregler'])
+    const innsynGyldig = await trigger(['dokumentkontroll', 'dokumentavvik', 'overstyrInnsynsregler'])
     if (!dokumentredigering.validerTitler() || !innsynGyldig) return
 
     const resultat = await journalfør.trigger({

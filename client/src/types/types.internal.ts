@@ -43,12 +43,12 @@ export interface SakBase {
  * Sak for digital behovsmeldig pt.
  */
 export interface Sak extends SakBase {
-  sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
+  sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD | Sakstype.TILSKUDD
   hast?: Hast
 }
 
 export interface Barnebrillesak extends SakBase {
-  sakstype: Sakstype.BARNEBRILLER | Sakstype.TILSKUDD
+  sakstype: Sakstype.BARNEBRILLER
   steg: StegType
   vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering

@@ -19,11 +19,31 @@ export interface BehovsmeldingBase {
 export interface Innsenderbehovsmelding extends BehovsmeldingBase {
   bruker: Bruker
   brukersituasjon: Brukersituasjon
-  hjelpemidler?: Hjelpemidler
-  levering?: Levering
+  hjelpemidler: Hjelpemidler
+  levering: Levering
+  innsender: Innsender
   saksbehandlingvarsel: Varsel[]
   kilde: 'DIGITAL_BEHOVSMELDING'
   isDigitalBehovsmelding: true
+}
+
+export interface Innsender {
+  roller?: Innsenderrolletype[]
+  erKommunaltAnsatt?: boolean
+  kurs: Godkjenningskurs[]
+  sjekketUtlånsoversiktForKategorier?: string[]
+}
+
+export enum Innsenderrolletype {
+  BESTILLER = 'BESTILLER',
+  KOMMUNAL_FORMIDLER = 'KOMMUNAL_FORMIDLER',
+  IKKE_KOMMUNAL_FORMIDLER = 'IKKE_KOMMUNAL_FORMIDLER',
+}
+
+export interface Godkjenningskurs {
+  id: number
+  title: string
+  kilde: string
 }
 
 /**
@@ -43,6 +63,7 @@ export enum BehovsmeldingType {
   SØKNAD = 'SØKNAD',
   BESTILLING = 'BESTILLING',
   BYTTE = 'BYTTE',
+  BRUKERPASSBYTTE = 'BRUKERPASSBYTTE',
 }
 
 export enum Prioritet {
@@ -56,6 +77,7 @@ export enum Bruksarena {
   OMSORGSBOLIG_BOFELLESKAP_SERVICEBOLIG = 'OMSORGSBOLIG_BOFELLESKAP_SERVICEBOLIG',
   BARNEHAGE = 'BARNEHAGE',
   GRUNN_ELLER_VIDEREGÅENDESKOLE = 'GRUNN_ELLER_VIDEREGÅENDESKOLE',
+  GRUNN_ELLER_VIDEREGÅENDE_SKOLE = 'GRUNN_ELLER_VIDEREGÅENDE_SKOLE',
   SKOLEFRITIDSORDNING = 'SKOLEFRITIDSORDNING',
   INSTITUSJON = 'INSTITUSJON',
   INSTITUSJON_BARNEBOLIG = 'INSTITUSJON_BARNEBOLIG',
@@ -81,10 +103,10 @@ export enum BytteÅrsak {
 
 export interface Levering {
   hjelpemiddelformidler: Hjelpemiddelformidler
-  oppfølgingsansvarlig: Oppfølgingsansvarlig
+  oppfølgingsansvarlig?: Oppfølgingsansvarlig
   annenOppfølgingsansvarlig?: AnnenOppfølgingsansvarlig
   utleveringsmåte?: Utleveringsmåte
-  annenUtleveringsadresse: Veiadresse
+  annenUtleveringsadresse?: Veiadresse
   annenUtleveringskommune?: Kommune
   annenUtleveringsbydel?: Bydel
   annenUtleveringMottaker?: string
@@ -114,6 +136,8 @@ export interface Hjelpemiddelformidler {
   adresse: Veiadresse
   epost: string
   treffesEnklest: string
+  kommunenavn?: string
+  kommunenummer?: string
 }
 
 export enum Utleveringsmåte {
@@ -168,7 +192,7 @@ export interface Bruker {
   fnr: string
   navn: Personnavn
   signaturtype: Signaturtype
-  telefon: string
+  telefon?: string
   veiadresse?: Veiadresse
   kommunenummer?: string
   brukernummer?: string
@@ -193,7 +217,6 @@ export enum Brukerkilde {
 }
 
 export interface Brukersituasjon {
-  bekreftedeVilkår: BrukersituasjonVilkår[]
   vilkår: Vilkår[]
   funksjonsnedsettelser: Funksjonsnedsettelse[]
   funksjonsbeskrivelse?: Funksjonsbeskrivelse
@@ -240,7 +263,38 @@ export interface Vilkår {
 export interface Hjelpemidler {
   hjelpemidler: Hjelpemiddel[]
   tilbehør: Tilbehør[]
+  produktkategorier: Produktkategori[]
   totaltAntall: number
+}
+
+export interface Produktkategori {
+  id: string
+  type: ProduktkategoriType
+  navn: string
+  antall: number
+  delkontrakttittel: string
+  bruksarenaer: Bruksarena[]
+  opplysninger: Opplysning[]
+  hjelpemidler?: ProduktlisteItem[]
+  tilbehør?: ProduktlisteItem[]
+}
+
+export enum ProduktkategoriType {
+  LYDOVERFØRINGSANLEGG = 'LYDOVERFØRINGSANLEGG',
+  DØRAUTOMATIKK = 'DØRAUTOMATIKK',
+  STELLEBORD_VEGGMONTERT = 'STELLEBORD_VEGGMONTERT',
+  KROPPSTØRKER = 'KROPPSTØRKER',
+  SPYL_OG_TØRKEFUNKSJON = 'SPYL_OG_TØRKEFUNKSJON',
+  TILSKUDD_RIMELIGE_HJELPEMIDLER = 'TILSKUDD_RIMELIGE_HJELPEMIDLER',
+  BADEKAR = 'BADEKAR',
+  STASJONÆR_RAMPE = 'STASJONÆR_RAMPE',
+}
+
+export interface ProduktlisteItem {
+  hmsArtNr: string
+  navn: string
+  antall: number
+  opplysninger: Opplysning[]
 }
 
 export interface Hjelpemiddel {
@@ -261,15 +315,21 @@ export interface HjelpemiddelProdukt {
   artikkelnavn: string
   iso8: string
   iso8Tittel: string
+  /**
+   * Tom streng for saker sendt inn før ca. 2026-01-09.
+   */
+  iso8KortTittel: string
   rangering?: number
   delkontrakttittel: string
   sortimentkategori: string // fra digithot-sortiment
+  delkontraktId?: string
 }
 
 export interface Tilbehør {
   hmsArtNr: string
   tilbehørId?: string
   navn: string
+  iso6?: string
   antall: number
   opplysninger?: Opplysning[]
   begrunnelse?: string
@@ -299,12 +359,23 @@ export enum UtlevertType {
 
 export enum OpplysningId {
   LAVERE_RANGERING_BEGRUNNELSE = 'LAVERE_RANGERING_BEGRUNNELSE',
+  TILSKUDD_RIMELIGE_HJELPEMIDLER_UTBETALES_TIL = 'TILSKUDD_RIMELIGE_HJELPEMIDLER_UTBETALES_TIL',
 }
 
 export interface Opplysning {
   ledetekst: LokalisertTekst
   innhold: Tekst[]
+  /**
+   * Mangler i eldre behovsmeldinger. Da er innholdstype LISTE hvis innhold har flere elementer, ellers TEKST.
+   */
+  innholdstype?: OpplysningInnholdstype
   key?: OpplysningKey
+}
+
+export enum OpplysningInnholdstype {
+  TEKST = 'TEKST',
+  LISTE = 'LISTE',
+  NØKKEL_VERDI = 'NØKKEL_VERDI',
 }
 
 export interface OpplysningKey {
@@ -336,4 +407,8 @@ export interface Tekst {
   fritekst?: string
   forhåndsdefinertTekst?: LokalisertTekst
   begrepsforklaring?: LokalisertTekst
+  /**
+   * Brukes bare ved innholdstype NØKKEL_VERDI.
+   */
+  ledetekst?: LokalisertTekst
 }

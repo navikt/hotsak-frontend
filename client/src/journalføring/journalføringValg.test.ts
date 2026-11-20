@@ -7,6 +7,7 @@ import {
   byggJournalføringSak,
   finnTildeltSaksbehandler,
   hentAnnetInnhold,
+  lagSkjemaverdier,
 } from './journalføringValg.ts'
 
 const journalpost: Journalpost = {
@@ -133,6 +134,25 @@ describe('byggJournalføringSak', () => {
       sakstype: Sakstype.FAGSAK,
       fagsakId: '1234A01',
       fagsaksystem: 'IT01',
+    })
+  })
+})
+
+describe('lagSkjemaverdier', () => {
+  it('setter mottatt dato fra journalposten, frist fire uker etter og aktiv fra til i dag', () => {
+    const verdier = lagSkjemaverdier(
+      journalpost,
+      { behandlingstema: 'ab0420', behandlingstype: 'ae0034', tilordnetEnhet: 'minOppgaveliste' },
+      new Date(2026, 2, 15)
+    )
+
+    expect(verdier).toMatchObject({
+      mottattDato: '2026-01-01',
+      frist: '2026-01-29',
+      aktivFra: '2026-03-15',
+      behandlingstema: 'ab0420',
+      behandlingstype: 'ae0034',
+      tilordnetEnhet: 'minOppgaveliste',
     })
   })
 })

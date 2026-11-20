@@ -1,12 +1,18 @@
+import { addWeeks, formatISO, parseISO } from 'date-fns'
+
 import { Målform } from '../brev/brevTyper.ts'
+import { Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { normaliserDokumenttittel } from './dokumenttittelValidering.ts'
 import {
   Sakstype,
   type JournalføringRequest,
+  type JournalføringSaksgrunnlag,
+  type JournalføringSkjemaVerdier,
   type SvartidsbrevValg,
   type TilordnetEnhet,
 } from './journalføringTypes.ts'
+import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
 export type Sakvalg =
   | {
@@ -54,6 +60,54 @@ export function finnTildeltSaksbehandler(
   if (tilordnetEnhet === 'minOppgaveliste') return innloggetAnsattId
   if (tilordnetEnhet === 'medarbeidersOppgaveliste') return medarbeider
   return undefined
+}
+
+function tilISODato(dato: Date): string {
+  return formatISO(dato, { representation: 'date' })
+}
+
+export function lagSkjemaverdier(
+  journalpost: Journalpost,
+  standardverdier: JournalføringStandardverdier,
+  iDag: Date
+): Partial<JournalføringSkjemaVerdier> {
+  const mottattDato = parseISO(journalpost.journalpostOpprettetTid)
+  return {
+    tema: 'HJE',
+    prioritet: Oppgaveprioritet.NORMAL,
+    ...standardverdier,
+    kommentar: '',
+    dokumenterKontrollert: false,
+    overstyrInnsynsregler: '',
+    stønadsklassifisering: 'DA',
+    stønadType: 'S',
+    mottattDato: tilISODato(mottattDato),
+    aktivFra: tilISODato(iDag),
+    frist: tilISODato(addWeeks(mottattDato, 4)),
+  }
+}
+
+export function byggSaksgrunnlag(
+  verdier: JournalføringSkjemaVerdier,
+  tildeltEnhet: string,
+  innloggetAnsattId: string
+): JournalføringSaksgrunnlag {
+  return {
+    tema: verdier.tema,
+    prioritet: verdier.prioritet,
+    oppgavetype: Oppgavetype.BEHANDLE_SAK,
+    behandlingstype: verdier.behandlingstype,
+    behandlingstema: verdier.behandlingstema,
+    stønadsklassifisering: verdier.stønadsklassifisering,
+    stønad: verdier.stønadType,
+    kommentar: verdier.kommentar,
+    mottattDato: verdier.mottattDato,
+    aktivDato: verdier.aktivFra,
+    fristDato: verdier.frist,
+    tildeltEnhet,
+    tildeltSaksbehandler: finnTildeltSaksbehandler(verdier.tilordnetEnhet, innloggetAnsattId, verdier.medarbeider),
+    mappeId: verdier.mappeId,
+  }
 }
 
 export function byggJournalføringSak(valgtSak: Sakvalg): NonNullable<JournalføringRequest['sak']> {

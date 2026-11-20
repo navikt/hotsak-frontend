@@ -113,7 +113,11 @@ export function JournalføringSvartidsbrev({
               maxLength={ÅRSAK_MAKSLENGDE}
               value={årsak}
               onChange={(event) => setÅrsak(event.target.value)}
-              error={visÅrsakFeil && !årsak.trim() ? 'Du må oppgi en årsak' : undefined}
+              error={
+                visÅrsakFeil && !årsak.trim()
+                  ? 'Du må forklare hvorfor saken ikke kan behandles i løpet av 1 måned'
+                  : undefined
+              }
             />
             <div>
               <Button type="button" size="xsmall" variant="tertiary" onClick={() => setVisForhåndsvisning(true)}>

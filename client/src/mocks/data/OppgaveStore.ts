@@ -31,6 +31,9 @@ interface LagretOppgavekommentar extends Oppgavekommentar {
 
 type InsertOppgavekommentar = Omit<LagretOppgavekommentar, 'id'>
 
+const BEHANDLINGSTEMA_TILSKUDD_SMÅHJELPEMIDLER = 'ab0559'
+const BEHANDLINGSTYPE_DIGITAL_SØKNAD = 'ae0227'
+
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
   private readonly kommentarer!: Table<LagretOppgavekommentar, number, InsertOppgavekommentar>
@@ -66,6 +69,12 @@ export class OppgaveStore extends Dexie {
         if (sak.sakstype === Sakstype.BARNEBRILLER) {
           behandlingstema = { kode: '', term: 'Briller til barn' }
           behandlingstype = { kode: '', term: 'Søknad' }
+        } else if (sak.sakstype === Sakstype.TILSKUDD) {
+          const gjelder = this.kodeverkStore
+            .finnBehandlingstema(BEHANDLINGSTEMA_TILSKUDD_SMÅHJELPEMIDLER)
+            .find((it) => it.behandlingstype?.kode === BEHANDLINGSTYPE_DIGITAL_SØKNAD)
+          behandlingstema = gjelder!.behandlingstema!
+          behandlingstype = gjelder!.behandlingstype!
         } else {
           const behovsmeldingCase = await this.behovsmeldingStore.hentForSak(sak)
           if (behovsmeldingCase && behovsmeldingCase?.behovsmelding.hjelpemidler?.hjelpemidler?.length) {

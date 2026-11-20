@@ -5,7 +5,9 @@ import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 import { describe, expect, it, vi } from 'vitest'
 
-import { Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
+import { lagJournalpost } from '../mocks/data/lagJournalpost.ts'
+import { lagJournalføringsoppgave } from '../mocks/data/lagOppgave.ts'
+import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 import { NySakSkjema } from './NySakSkjema.tsx'
 
@@ -19,6 +21,18 @@ vi.mock('../oppgave/useKodeverkOppgave.ts', () => ({
 vi.mock('./TilordneOppgave.tsx', () => ({
   TilordneOppgave: () => null,
 }))
+
+vi.mock('./JournalføringSvartidsbrev.tsx', () => ({
+  JournalføringSvartidsbrev: () => null,
+}))
+
+const journalpost = lagJournalpost('9006', 'Søknad om hjelpemidler')
+const testOppgave = lagJournalføringsoppgave(journalpost)
+const oppgave: Journalføringsoppgave = {
+  ...testOppgave,
+  kategorisering: { ...testOppgave.kategorisering, oppgavetype: Oppgavetype.JOURNALFØRING },
+  journalpostId: journalpost.journalpostId,
+}
 
 function TestSkjema({ onSubmit }: { onSubmit(): void }) {
   const form = useForm<JournalføringSkjemaVerdier>({
@@ -43,7 +57,7 @@ function TestSkjema({ onSubmit }: { onSubmit(): void }) {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <NySakSkjema kanRedigere tildeltEnhet="Testenhet" />
+        <NySakSkjema kanRedigere tildeltEnhet="Testenhet" oppgave={oppgave} onSvartidsbrevChange={() => {}} />
         <button type="submit">Journalfør</button>
       </form>
     </FormProvider>

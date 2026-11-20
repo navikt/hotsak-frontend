@@ -27,6 +27,16 @@ function loadTemplate(key: string): Promise<{ default: string }> {
       return import('./maler/henleggelse.md?raw')
     case 'henleggelse-nn':
       return import('./maler/henleggelse-nn.md?raw')
+    case 'svartidsbrev':
+      return import('./maler/svartidsbrev.md?raw')
+    case 'svartidsbrev-journalføring':
+      return import('./maler/svartidsbrev-journalføring.md?raw')
+    case 'svartidsbrev-journalføring-nn':
+      return import('./maler/svartidsbrev-journalføring-nn.md?raw')
+    case 'innhente-opplysninger-nn':
+      return import('./maler/innhente-opplysninger-nn.md?raw')
+    case 'innhente-opplysninger':
+      return import('./maler/innhente-opplysninger.md?raw')
     default:
       return Promise.resolve({ default: '' })
   }

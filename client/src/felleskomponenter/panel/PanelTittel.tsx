@@ -4,11 +4,13 @@ import { Button, Heading, HStack, type HStackProps } from '@navikt/ds-react'
 export function PanelTittel({
   tittel,
   icon,
+  handlinger,
   lukkPanel,
   paddingInline = 'space-0 space-12',
 }: {
   tittel: string
   icon?: React.ReactNode
+  handlinger?: React.ReactNode
   lukkPanel(): void
   paddingInline?: HStackProps['paddingInline']
 }) {
@@ -21,13 +23,16 @@ export function PanelTittel({
         {icon && icon}
       </HStack>
 
-      <Button
-        data-color="neutral"
-        variant="tertiary"
-        size="small"
-        icon={<XMarkIcon title={`Lukk ${tittel}`} fontSize="20px" />}
-        onClick={lukkPanel}
-      />
+      <HStack gap="space-8" align="center">
+        {handlinger}
+        <Button
+          data-color="neutral"
+          variant="tertiary"
+          size="small"
+          icon={<XMarkIcon title={`Lukk ${tittel}`} fontSize="20px" />}
+          onClick={lukkPanel}
+        />
+      </HStack>
     </HStack>
   )
 }

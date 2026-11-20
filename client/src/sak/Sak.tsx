@@ -4,16 +4,16 @@ import { useEffect, useRef, useState } from 'react'
 import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 
 import { BrevPanel } from '../brev/BrevPanel.tsx'
-import { isVedtaksbrev } from '../brev/brevSelectors.ts'
+import { isBreveditorbrev, isVedtaksbrev } from '../brev/brevSelectors.ts'
 import { useBrevForSak } from '../brev/useBrev.ts'
 import { useDokumentContext } from '../dokument/DokumentContext.tsx'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
-import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
+import { Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useJournalposterInngående } from '../saksbilde/useJournalposter.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
-import { type Innsenderbehovsmelding } from '../types/BehovsmeldingTypes.ts'
+import { Innsenderbehovsmelding } from '../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../types/types.internal.ts'
 import { FeatureToggle } from '../unleash/FeatureToggle.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
@@ -87,8 +87,9 @@ function SakContent({
   const innvilgelseSperretPgaOebs =
     manglerIOebs && isBehandlingsutfallVedtak(behandlingsutfall) && behandlingsutfall.utfall !== VedtaksResultat.AVSLÅTT
 
-  const { finnBrev } = useBrevForSak(sak.sakId)
+  const { brevForSak, finnBrev } = useBrevForSak(sak.sakId)
   const vedtaksbrev = finnBrev(isVedtaksbrev)
+  const breveditorbrev = brevForSak?.brev.filter(isBreveditorbrev) ?? []
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
@@ -104,7 +105,9 @@ function SakContent({
 
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
   const brevutkastIkkeFerdigstilt =
-    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
+    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) ||
+    gjenstående.includes(Gjenstående.BREV_MANGLER) ||
+    gjenstående.includes(Gjenstående.UNDERVEISBREV_IKKE_SENDT)
 
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({ groupId: 'sakv2', storage: localStorage })
 
@@ -155,8 +158,8 @@ function SakContent({
             </Panel>
           )}
           <ResizablePanel panelId="brevpanel" panel={brevPanel} visible={brevPanel.visible}>
-            <AvrundetPanel>
-              <BrevPanel oppgave={oppgave} brev={vedtaksbrev} />
+            <AvrundetPanel paddingBlock="space-4">
+              <BrevPanel oppgave={oppgave} brev={breveditorbrev} initialBrevId={vedtaksbrev?.brevId} />
             </AvrundetPanel>
           </ResizablePanel>
           <ResizablePanel

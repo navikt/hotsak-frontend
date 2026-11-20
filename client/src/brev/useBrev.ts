@@ -12,6 +12,7 @@ import {
   type Brevdata,
   type BrevForSak,
   type BrevmottakerResponse,
+  type EndreMottakerRequest,
   type LeggTilMottakerRequest,
 } from './brevTyper'
 
@@ -67,12 +68,21 @@ export function useBrevmottakerActions(brevId?: string) {
     ([url], { arg: body }) => http.post<LeggTilMottakerRequest, void>(url, body)
   )
 
+  const endreBrevmottaker = useSWRMutation<
+    void,
+    HttpError,
+    HttpAcceptKey | null,
+    { brevmottakerId: string } & EndreMottakerRequest
+  >(key, ([url], { arg: { brevmottakerId, ...body } }) =>
+    http.put<EndreMottakerRequest, void>(`${url}/${brevmottakerId}`, body)
+  )
+
   const slettBrevmottaker = useSWRMutation<void, HttpError, HttpAcceptKey | null, string>(
     key,
     ([url], { arg: brevmottakerId }) => http.delete(`${url}/${brevmottakerId}`)
   )
 
-  return { leggTilBrevmottaker, slettBrevmottaker }
+  return { leggTilBrevmottaker, endreBrevmottaker, slettBrevmottaker }
 }
 
 export function useBrevForSak(sakId?: string) {

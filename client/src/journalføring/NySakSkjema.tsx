@@ -15,19 +15,35 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { type JournalføringSkjemaVerdier, type SakstypeKode } from './journalføringTypes.ts'
+import { JournalføringSvartidsbrev } from './JournalføringSvartidsbrev.tsx'
+import { type JournalføringSkjemaVerdier, type SakstypeKode, type SvartidsbrevValg } from './journalføringTypes.ts'
 import { TilordneOppgave } from './TilordneOppgave.tsx'
 import classes from './JournalføringSkjema.module.css'
-import { OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
+import {
+  type Journalføringsoppgave,
+  Oppgaveprioritet,
+  OppgaveprioritetLabel,
+  Oppgavetype,
+  OppgavetypeLabel,
+} from '../oppgave/oppgaveTypes.ts'
 import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
 
 interface NySakSkjemaProps {
   kanRedigere: boolean
   tildeltEnhet: string
+  oppgave: Journalføringsoppgave
+  onSvartidsbrevChange: (valg: SvartidsbrevValg | null) => void
+  visSvartidsbrevFeil?: boolean
 }
 
-export function NySakSkjema({ kanRedigere, tildeltEnhet }: NySakSkjemaProps) {
+export function NySakSkjema({
+  kanRedigere,
+  tildeltEnhet,
+  oppgave,
+  onSvartidsbrevChange,
+  visSvartidsbrevFeil,
+}: NySakSkjemaProps) {
   const {
     watch,
     setValue,
@@ -220,6 +236,13 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet }: NySakSkjemaProps) {
           )}
         />
       </TextContainer>
+
+      <JournalføringSvartidsbrev
+        oppgave={oppgave}
+        mottattDato={valgtMottattDato}
+        visÅrsakFeil={visSvartidsbrevFeil}
+        onChange={onSvartidsbrevChange}
+      />
 
       <TilordneOppgave tildeltEnhet={tildeltEnhet} />
     </VStack>

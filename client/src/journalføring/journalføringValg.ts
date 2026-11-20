@@ -1,5 +1,6 @@
 import { addWeeks, formatISO, parseISO } from 'date-fns'
 
+import { Målform } from '../brev/brevTyper.ts'
 import { Oppgaveprioritet, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { type Dokument, type Journalpost } from '../types/types.internal.ts'
 import { normaliserDokumenttittel } from './dokumenttittelValidering.ts'
@@ -8,6 +9,7 @@ import {
   type JournalføringRequest,
   type JournalføringSaksgrunnlag,
   type JournalføringSkjemaVerdier,
+  type SvartidsbrevValg,
   type TilordnetEnhet,
 } from './journalføringTypes.ts'
 import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
@@ -117,5 +119,13 @@ export function byggJournalføringSak(valgtSak: Sakvalg): NonNullable<Journalfø
     sakstype: Sakstype.FAGSAK,
     fagsakId: valgtSak.sakId,
     fagsaksystem: valgtSak.fagsaksystem,
+  }
+}
+
+export function byggSvartidsbrev({ antallUker, målform, årsak }: SvartidsbrevValg) {
+  return {
+    antallUker: `${antallUker} ${målform === Målform.NYNORSK ? 'veker' : 'uker'}`,
+    målform,
+    årsak: årsak.trim(),
   }
 }

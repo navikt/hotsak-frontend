@@ -28,7 +28,9 @@ export interface HarPersonnavn {
 }
 
 export interface Veiadresse {
-  adresse: string
+  adresselinje1: string
+  adresselinje2?: string
+  adresselinje3?: string
   postnummer: string
   poststed: string
 }

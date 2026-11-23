@@ -34,9 +34,9 @@ export function useGjelderOptions(): GjelderOption[] {
       alleGjelder
         .filter((gjelder) => gjelder.behandlingstema != null || gjelder.behandlingstype != null)
         .sort((a, b) => {
-          const temasammenligning = (a.behandlingstema?.term ?? '').localeCompare(b.behandlingstema?.term ?? '', 'nb')
+          const temasammenligning = sammenlignTerm(a.behandlingstema?.term, b.behandlingstema?.term)
           if (temasammenligning !== 0) return temasammenligning
-          return (a.behandlingstype?.term ?? '').localeCompare(b.behandlingstype?.term ?? '', 'nb')
+          return sammenlignTerm(a.behandlingstype?.term, b.behandlingstype?.term)
         })
         .map((gjelder) => {
           const behandlingstema = gjelder.behandlingstema?.term ?? ''
@@ -53,6 +53,11 @@ export function useGjelderOptions(): GjelderOption[] {
         }),
     [alleGjelder]
   )
+}
+
+/** Sorterer «/» som mellomrom, slik at «Briller/linser» kommer før «Briller til barn». */
+function sammenlignTerm(a = '', b = ''): number {
+  return a.replaceAll('/', ' ').localeCompare(b.replaceAll('/', ' '), 'nb')
 }
 
 // TODO preload

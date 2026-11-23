@@ -1,3 +1,4 @@
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router'
 
 export interface PageRequest {
@@ -38,18 +39,28 @@ export function usePageRequest(
 ) {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const pageRequest: PageRequest = {
-    pageNumber: toPositiveInt(searchParams.get(pageNumberName), 1),
-    pageSize: toPositiveInt(searchParams.get(pageSizeName), defaultPageSize),
-  }
+  const pageNumber = toPositiveInt(searchParams.get(pageNumberName), 1)
+  const pageSize = toPositiveInt(searchParams.get(pageSizeName), defaultPageSize)
 
-  const setPageRequest = (next: Partial<PageRequest>) => {
-    setSearchParams((params) => {
-      if (next.pageNumber !== undefined) params.set(pageNumberName, String(next.pageNumber))
-      if (next.pageSize !== undefined) params.set(pageSizeName, String(next.pageSize))
-      return params
-    })
-  }
+  const pageRequest = useMemo<PageRequest>(() => ({ pageNumber, pageSize }), [pageNumber, pageSize])
+
+  // setSearchParams changes identity whenever the URL changes; keep the latest in a ref
+  const setSearchParamsRef = useRef(setSearchParams)
+  useLayoutEffect(() => {
+    setSearchParamsRef.current = setSearchParams
+  }, [setSearchParams])
+
+  const setPageRequest = useCallback(
+    (next: Partial<PageRequest>) => {
+      setSearchParamsRef.current((prev) => {
+        const params = new URLSearchParams(prev)
+        if (next.pageNumber !== undefined) params.set(pageNumberName, String(next.pageNumber))
+        if (next.pageSize !== undefined) params.set(pageSizeName, String(next.pageSize))
+        return params
+      })
+    },
+    [pageNumberName, pageSizeName]
+  )
 
   return [pageRequest, setPageRequest] as const
 }

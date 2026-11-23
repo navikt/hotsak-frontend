@@ -92,7 +92,7 @@ export const oppgaveColumns = {
     renderCell(row) {
       return (
         <BodyShort as="span" size="small" className={classes.saksbehandler}>
-          {row.tildeltSaksbehandler?.navn ?? 'Ukjent'}
+          {row.tildeltSaksbehandler?.navn ?? ''}
         </BodyShort>
       )
     },

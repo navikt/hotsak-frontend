@@ -3,6 +3,7 @@ import { BodyShort, Box, HGrid, Loader } from '@navikt/ds-react'
 import { Fragment, useState } from 'react'
 
 import { DataGrid, type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
+import type { DataGridFilterValues } from '../felleskomponenter/data/DataGridFilter.ts'
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { DataGridToolbar } from '../felleskomponenter/data/DataGridToolbar.tsx'
 import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
@@ -10,7 +11,7 @@ import { IconLink } from '../felleskomponenter/IconLink.tsx'
 import { usePageRequest } from '../felleskomponenter/Page.ts'
 import type { FinnOppgaverRequest, Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgavesøk } from '../oppgave/useOppgavesøk.ts'
-import { oppgaveColumns } from '../oppgaveliste/oppgaveColumns.tsx'
+import { oppgaveColumns, type OppgaveColumnField } from '../oppgaveliste/oppgaveColumns.tsx'
 import { OppgaveDetails } from '../oppgaveliste/OppgaveDetails.tsx'
 import { OppgaveDetailsItem } from '../oppgaveliste/OppgaveDetailsItem.tsx'
 import { selectOppgaveId } from '../oppgaveliste/oppgaveSelectors.ts'
@@ -26,7 +27,7 @@ export interface OppgaveoversiktPersonProps {
 export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
   const { fnr } = props
 
-  const filterContext = useDataGridFilterContext<'oppgavetype'>()
+  const filterContext = useDataGridFilterContext<OppgaveColumnField>()
   const [{ pageNumber, pageSize }, setPageRequest] = usePageRequest(50, 'opn', 'ops')
   const [sort, setSort] = useState<Pick<FinnOppgaverRequest, 'sorteringsfelt' | 'sorteringsrekkefølge'>>({
     sorteringsfelt: 'OPPRETTET_TIDSPUNKT',
@@ -35,7 +36,8 @@ export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
   const { error, data, pagination, isLoading, isValidating } = useOppgavesøk(
     fnr
       ? {
-          oppgavetype: filterContext.oppgavetype ? [...(filterContext.oppgavetype.values as any)] : undefined,
+          prioritet: filterValues(filterContext.prioritet),
+          oppgavetype: filterValues(filterContext.oppgavetype),
           brukerId: fnr,
           opprettetIntervall: undefined,
           pageNumber,
@@ -141,6 +143,13 @@ function OppgaveDetailsDokumenter({ sakId }: { sakId: string }) {
   )
 }
 
+function filterValues(filter?: DataGridFilterValues): any[] | undefined {
+  if (filter && filter.values && filter.values.size > 0) {
+    return [...filter.values]
+  }
+  return
+}
+
 const ingenOppgaver: never[] = []
 
 const columns = [
@@ -156,6 +165,8 @@ const columns = [
   },
   { ...oppgaveColumns.behandlingstema, filter: undefined },
   { ...oppgaveColumns.behandlingstype, filter: undefined },
+  { ...oppgaveColumns.nøkkelord, filter: undefined },
+  { ...oppgaveColumns.mappenavn, filter: undefined },
   { ...oppgaveColumns.prioritet, filter: undefined },
   oppgaveColumns.opprettetTidspunkt,
   { ...oppgaveColumns.ferdigstiltTidspunkt, sortKey: undefined },

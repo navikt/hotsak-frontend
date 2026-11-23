@@ -215,14 +215,22 @@ export interface OppgaveTotrinnskontroll {
 
 export interface FinnOppgaverRequest {
   statuskategori?: Statuskategori
-  oppgavetype?: Oppgavetype[]
+  prioritet?: Oppgaveprioritet[]
 
-  // tildeling
+  // kategorisering
+  oppgavetype?: Oppgavetype[]
+  behandlingstema?: string[]
+  behandlingstype?: string[]
+
+  // tilknytning
   brukerId?: string
   journalpostId?: string[]
   sakId?: string[]
 
+  // fordeling
   tildelt?: OppgaveTildelt
+  tildeltSaksbehandler?: string[]
+  mappeId?: string[]
 
   alleFagsystemer?: boolean
 

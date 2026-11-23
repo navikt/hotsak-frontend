@@ -7,7 +7,7 @@ import type { PageRequest } from '../../felleskomponenter/Page'
 import { useOppgavesøk } from '../../oppgave/useOppgavesøk'
 import { oppgaveColumns } from '../../oppgaveliste/oppgaveColumns'
 import { selectOppgaveId } from '../../oppgaveliste/oppgaveSelectors'
-import { dokumentColumns, journalpostKey, journalposttypeTagKortere } from '../../personoversikt/dokumentColumns'
+import { dokumentColumns, journalpostKey, journalposttypeTagKort } from '../../personoversikt/dokumentColumns'
 import { useSak } from '../../saksbilde/useSak'
 import { type Journalpost } from '../../types/types.internal'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
@@ -193,7 +193,7 @@ const dokumentCols = [
     width: 50,
     filter: undefined,
     renderCell({ journalposttype }: Journalpost) {
-      return journalposttypeTagKortere(journalposttype)
+      return journalposttypeTagKort(journalposttype)
     },
   },
 ]

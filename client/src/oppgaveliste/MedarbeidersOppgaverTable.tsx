@@ -28,7 +28,6 @@ export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps)
       keyFactory={selectOppgaveId}
       renderContent={OppgaveDetails}
       size="small"
-      stickyHeader
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
       loading={loading}
@@ -36,6 +35,7 @@ export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps)
       onSortChange={handleSortChange}
       onFilterChange={handleFilterChange}
       filterMode={filterModus}
+      stickyHeader
       zebraStripes
     />
   )

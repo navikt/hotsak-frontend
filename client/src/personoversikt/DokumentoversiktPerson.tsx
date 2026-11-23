@@ -1,10 +1,12 @@
 import { useEffect, useMemo } from 'react'
 
+import { Box } from '@navikt/ds-react'
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
 import { Details, DetailsItem } from '../felleskomponenter/Details.tsx'
 import { usePageRequest } from '../felleskomponenter/Page.ts'
 import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
+import { DataGridToolbar } from '../felleskomponenter/data/DataGridToolbar.tsx'
 import type { Journalpost } from '../types/types.internal.ts'
 import { dokumentColumns, journalpostKey, type DokumentColumnField } from './dokumentColumns.tsx'
 
@@ -16,8 +18,8 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
   const { fnr } = props
 
   const filterContext = useDataGridFilterContext<DokumentColumnField>()
-  const [{ pageNumber, pageSize }, setPageRequest] = usePageRequest(20, 'dpn', 'dps')
-  const { error, journalposter, pagination, isLoading, isValidating, reset } = useDokumentsøk({
+  const [{ pageNumber, pageSize }, setPageRequest] = usePageRequest(50, 'dpn', 'dps')
+  const { error, journalposter, pagination, totalElements, isLoading, isValidating, reset } = useDokumentsøk({
     fnr,
     journalposttype: filterContext.journalposttype ? [...(filterContext.journalposttype.values as any)] : undefined,
     fraDato: undefined, // selectedRange?.from?.toISOString(),
@@ -34,20 +36,29 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
   }
 
   return (
-    <DataGrid
-      rows={journalposter}
-      columns={columns}
-      keyFactory={journalpostKey}
-      size="small"
-      textSize="small"
-      loading={isLoading}
-      validating={isValidating}
-      emptyMessage="Fant ingen dokumenter for person"
-      renderContent={DokumentdetaljerPerson}
-      onPageChange={setPageRequest}
-      zebraStripes
-      {...pagination}
-    />
+    <Box>
+      <DataGridToolbar
+        elements={journalposter.length}
+        elementsName="dokumenter"
+        totalElements={totalElements}
+        {...pagination}
+      />
+      <DataGrid
+        rows={journalposter}
+        columns={columns}
+        keyFactory={journalpostKey}
+        size="small"
+        textSize="small"
+        loading={isLoading}
+        validating={isValidating}
+        emptyMessage="Fant ingen dokumenter for person"
+        renderContent={DokumentdetaljerPerson}
+        onPageChange={setPageRequest}
+        stickyHeader
+        zebraStripes
+        {...pagination}
+      />
+    </Box>
   )
 }
 

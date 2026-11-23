@@ -13,7 +13,7 @@ import {
 } from './OppgavelisteContext.tsx'
 
 export interface OppgavelisteProviderProps {
-  suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
+  suffix: 'Mine' | 'Enhetens' | 'Medarbeiders' | 'Innbyggers'
   defaultColumns: DefaultOppgaveColumns
   children: ReactNode
 }

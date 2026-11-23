@@ -1,5 +1,4 @@
 import { Box } from '@navikt/ds-react'
-import { useMemo } from 'react'
 
 import { OppgaveTildelt, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { intervalString } from '../utils/dato.ts'
@@ -10,10 +9,11 @@ import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 
 const ANTALL_DAGER_FERDIGSTILTE = 10
 
+const iDag = new Date()
+
 export function MineOppgaver() {
   const { currentTab } = useOppgavelisteContext()
   const ferdigstilte = currentTab === OppgaveToolbarTab.FERDIGSTILTE
-  const iDag = useMemo(() => new Date(), [])
   const åpneOppgaver = useClientSideOppgaver({
     statuskategori: Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEG,

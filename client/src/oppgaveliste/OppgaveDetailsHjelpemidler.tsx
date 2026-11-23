@@ -1,19 +1,19 @@
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyShort, HGrid, Loader } from '@navikt/ds-react'
 import { Fragment } from 'react'
-import { ExternalLinkIcon } from '@navikt/aksel-icons'
 
+import { IconLink } from '../felleskomponenter/IconLink.tsx'
 import { useArtiklerForOppgave } from '../oppgave/useArtiklerForOppgave.ts'
 import { naturalBy } from '../utils/array.ts'
 import { select } from '../utils/select.ts'
+import classes from './OppgaveDetailsHjelpemidler.module.css'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
-import classes from './OppgaveHjelpemidler.module.css'
-import { IconLink } from '../felleskomponenter/IconLink.tsx'
 
-export interface OppgaveHjelpemidlerProps {
-  sakId?: ID
+export interface OppgaveDetailsHjelpemidlerProps {
+  sakId?: string
 }
 
-export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {
+export function OppgaveDetailsHjelpemidler(props: OppgaveDetailsHjelpemidlerProps) {
   const { sakId } = props
   const { artikler, isLoading } = useArtiklerForOppgave(sakId)
   return (
@@ -21,7 +21,12 @@ export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {
       {isLoading ? (
         <Loader />
       ) : (
-        <HGrid gap="space-12" columns="min-content min-content min-content max-content">
+        <HGrid gap="space-12" columns="min-content min-content min-content max-content" align="start">
+          {artikler.length === 0 && (
+            <BodyShort size="small" className={classes.text}>
+              Ingen registrerte.
+            </BodyShort>
+          )}
           {artikler.map((artikkel) => (
             <Fragment key={artikkel.id ?? artikkel.hmsArtNr}>
               {artikkel.url ? (

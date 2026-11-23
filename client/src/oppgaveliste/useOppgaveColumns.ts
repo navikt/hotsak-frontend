@@ -6,7 +6,11 @@ import { getOppgaveColumn } from './oppgaveColumns.tsx'
 import { useOppgavelisteColumnsContext } from './OppgavelisteColumnsContext.ts'
 import { useOppgavelisteContext } from './OppgavelisteContext.tsx'
 import { useOppgaveFiltre } from './useOppgaveFiltre.ts'
-import { type OppgaveFilterCounts, type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
+import {
+  OPPGAVE_FILTER_OPTION_TOMME,
+  type OppgaveFilterCounts,
+  type OppgaveFilterOptions,
+} from './useOppgaveFilterOptions.ts'
 
 export function useOppgaveColumns(
   filterOptions: OppgaveFilterOptions,
@@ -19,7 +23,8 @@ export function useOppgaveColumns(
     return columnsState.map(({ id, checked }): DataGridColumn<Oppgave> => {
       const options = filterOptions[id]
       const column = getOppgaveColumn(id)
-      const allOptions = finnAlleVerdier(id, filtre)
+      const alleVerdier = finnAlleVerdier(id, filtre)
+      const allOptions = alleVerdier ? new Set([...alleVerdier, OPPGAVE_FILTER_OPTION_TOMME]) : undefined
       const counts = visAntallIFiltre ? filterCounts?.[id] : undefined
       return {
         ...column,

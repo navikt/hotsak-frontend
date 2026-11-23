@@ -28,7 +28,6 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       keyFactory={selectOppgaveId}
       renderContent={OppgaveDetails}
       size="small"
-      stickyHeader
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
       loading={loading}
@@ -37,6 +36,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       onFilterChange={handleFilterChange}
       filterMode={filterModus}
       isHighlighted={selectIsUlest}
+      stickyHeader
       zebraStripes
     />
   )

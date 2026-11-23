@@ -95,13 +95,13 @@ describe('JournalføringDokumenter innsyn', () => {
     render(<TestSkjema onSubmit={onSubmit} />)
 
     await user.click(screen.getByRole('radio', { name: /^Nei/ }))
-    await user.click(screen.getByRole('radio', { name: /men gjelder ikke overføring/ }))
+    await user.click(screen.getByRole('radio', { name: /Dokumentene er registrert på feil bruker/ }))
 
     expect(screen.getByText('Du må overføre saken til Gosys')).toBeVisible()
     expect(screen.queryByRole('combobox', innsynSelect)).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Send' }))
     expect(onSubmit).not.toHaveBeenCalled()
-    expect(screen.getByRole('radio', { name: /men gjelder ikke overføring/ })).toHaveFocus()
+    expect(screen.getByRole('radio', { name: /Dokumentene er registrert på feil bruker/ })).toHaveFocus()
   })
 })

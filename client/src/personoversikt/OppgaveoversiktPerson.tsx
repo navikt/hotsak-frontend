@@ -5,6 +5,7 @@ import { Fragment, useState } from 'react'
 import { DataGrid, type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { DataGridToolbar } from '../felleskomponenter/data/DataGridToolbar.tsx'
+import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
 import { IconLink } from '../felleskomponenter/IconLink.tsx'
 import { usePageRequest } from '../felleskomponenter/Page.ts'
 import type { FinnOppgaverRequest, Oppgave } from '../oppgave/oppgaveTypes.ts'
@@ -96,7 +97,7 @@ function OppgaveDetailsDokumenter({ sakId }: { sakId: string }) {
       {isLoading ? (
         <Loader />
       ) : (
-        <HGrid gap="space-12" columns="max-content min-content" align="start">
+        <HGrid gap="space-12" columns="max-content min-content min-content" align="center">
           {dokumenter.map((dokument) => {
             const href = `/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`
 
@@ -127,6 +128,9 @@ function OppgaveDetailsDokumenter({ sakId }: { sakId: string }) {
                 >
                   {dokument.tittel}
                 </BodyShort>
+                <BodyShort size="small" className={classes.text} title="Tidspunkt for når dokumentet ble opprettet">
+                  <FormatDateTime dateTime={dokument.opprettet} />
+                </BodyShort>
                 {journalposttypeTagKort(type)}
               </Fragment>
             )
@@ -155,5 +159,6 @@ const columns = [
   { ...oppgaveColumns.prioritet, filter: undefined },
   oppgaveColumns.opprettetTidspunkt,
   { ...oppgaveColumns.ferdigstiltTidspunkt, sortKey: undefined },
+  { ...oppgaveColumns.saksbehandler, filter: undefined },
   oppgaveColumns.gåTilOppgave,
 ]

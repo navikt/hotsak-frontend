@@ -19,17 +19,20 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
 
   const filterContext = useDataGridFilterContext<DokumentColumnField>()
   const [{ pageNumber, pageSize }, setPageRequest] = usePageRequest(50, 'dpn', 'dps')
-  const { error, journalposter, pagination, totalElements, isLoading, isValidating, reset } = useDokumentsøk({
-    fnr,
-    journalposttype: filterContext.journalposttype ? [...(filterContext.journalposttype.values as any)] : undefined,
-    fraDato: undefined, // selectedRange?.from?.toISOString(),
-    tilDato: undefined, // selectedRange?.to?.toISOString(),
-    pageNumber,
-    pageSize,
-  })
+  const { error, journalposter, pagination, totalElements, isLoading, isValidating, resetPageCursors } = useDokumentsøk(
+    {
+      fnr,
+      journalposttype: filterContext.journalposttype ? [...(filterContext.journalposttype.values as any)] : undefined,
+      fraDato: undefined, // selectedRange?.from?.toISOString(),
+      tilDato: undefined, // selectedRange?.to?.toISOString(),
+      pageNumber,
+      pageSize,
+    }
+  )
   useEffect(() => {
-    reset()
-  }, [filterContext.journalposttype])
+    setPageRequest({ pageNumber: 1, pageSize: 50 })
+    resetPageCursors()
+  }, [filterContext.journalposttype, setPageRequest, resetPageCursors])
 
   if (error) {
     return <div>Feil ved henting av dokumenter</div>

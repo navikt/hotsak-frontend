@@ -20,6 +20,7 @@ export interface BrevHeaderProps {
   onVelgBrev(brevId: string): void
   kanRedigere?: boolean
   handlinger?: ReactNode
+  oppgaveErUnderBehandlingAvInnloggetAnsatt?: boolean
   onSlettUtkast?(): void
 }
 
@@ -29,6 +30,7 @@ export function BrevHeader({
   onVelgBrev,
   kanRedigere = false,
   handlinger,
+  oppgaveErUnderBehandlingAvInnloggetAnsatt,
   onSlettUtkast,
 }: BrevHeaderProps) {
   const { erIkkeProd } = useMiljø()
@@ -49,12 +51,14 @@ export function BrevHeader({
             {brev.map((b) => (
               <Tabs.Tab key={b.brevId} value={b.brevId} label={BrevmalTekst[b.brevmal]} />
             ))}
-            <Tabs.Tab
-              key="nytt-utkast"
-              value="nytt-utkast"
-              label="Nytt utkast"
-              icon={<PlusCircleIcon fontSize="1.5rem" />}
-            />
+            {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
+              <Tabs.Tab
+                key="nytt-utkast"
+                value="nytt-utkast"
+                label="Nytt utkast"
+                icon={<PlusCircleIcon fontSize="1.5rem" />}
+              />
+            )}
           </Tabs.List>
         </Tabs>
       )}

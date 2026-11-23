@@ -202,6 +202,7 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
             onVelgBrev={handleVelgBrev}
             kanRedigere={kanRedigere}
             handlinger={handlinger}
+            oppgaveErUnderBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
             onSlettUtkast={
               kanRedigere && valgtBrev && !valgtBrev.ferdigstilt ? () => setSlettBrevModalOpen(true) : undefined
             }

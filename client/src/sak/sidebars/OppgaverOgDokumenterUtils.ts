@@ -1,5 +1,8 @@
-import { intervalString, type IntervalString, tilLocalDateString } from '../../utils/dato'
 import { subYears } from 'date-fns'
+import { intervalString, type IntervalString, tilLocalDateString } from '../../utils/dato'
+
+import { type Oppgave, OppgavetypeLabel } from '../../oppgave/oppgaveTypes'
+import { type Journalpost } from '../../types/types.internal'
 
 export const OppgaverOgDokumenterTabs = {
   OPPGAVER: 'OPPGAVER',
@@ -60,4 +63,52 @@ export interface OppgaverOgDokumenterState {
 export const initialState: OppgaverOgDokumenterState = {
   currentTab: OppgaverOgDokumenterTabs.OPPGAVER,
   filter: 'siste2uker',
+}
+
+const visDatoFormat = new Intl.DateTimeFormat('nb-NO', { dateStyle: 'short' })
+
+function formaterVisDato(dato: string): string {
+  return visDatoFormat.format(new Date(dato))
+}
+
+function matcherSøk(søk: string, ...felter: Array<string | null | undefined>): boolean {
+  const ord = søk.trim().toLocaleLowerCase('nb-NO').split(/\s+/).filter(Boolean)
+  if (ord.length === 0) return true
+  const tekst = felter.filter(Boolean).join(' ').toLocaleLowerCase('nb-NO')
+  return ord.every((o) => tekst.includes(o))
+}
+
+export function filtrerOppgaver(oppgaver: ReadonlyArray<Oppgave>, søk: string): ReadonlyArray<Oppgave> {
+  if (!søk.trim()) return oppgaver
+  return oppgaver.filter((oppgave) =>
+    matcherSøk(
+      søk,
+      oppgave.sakId,
+      oppgave.eksternSakId,
+      OppgavetypeLabel[oppgave.kategorisering.oppgavetype],
+      oppgave.ferdigstiltTidspunkt ? formaterVisDato(oppgave.ferdigstiltTidspunkt) : 'åpen',
+      oppgave.kategorisering.behandlingstype?.term,
+      oppgave.ferdigstiltTidspunkt
+    )
+  )
+}
+
+export function filtrerJournalposter(
+  journalposter: ReadonlyArray<Journalpost>,
+  søk: string
+): ReadonlyArray<Journalpost> {
+  if (!søk.trim()) return journalposter
+  return journalposter.filter((journalpost) =>
+    matcherSøk(
+      søk,
+      journalpost.tittel,
+      journalpost.journalpostId,
+      journalpost.sak?.fagsakId,
+      journalpost.sakId,
+      formaterVisDato(journalpost.journalpostOpprettetTid),
+      journalpost.journalposttype === 'I' ? 'inngående' : journalpost.journalposttype === 'U' ? 'utgående' : 'notat',
+      journalpost.behandlingstema?.term,
+      ...journalpost.dokumenter.map((dokument) => dokument.tittel)
+    )
+  )
 }

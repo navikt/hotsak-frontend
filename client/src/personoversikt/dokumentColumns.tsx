@@ -89,67 +89,41 @@ export function journalpostKey(journalpost: Journalpost): string {
   return journalpost.journalpostId
 }
 
+type JournalposttypeTagProps = TagProps
+
+const journalpostTypes: Record<Journalpost['journalposttype'], JournalposttypeTagProps> = {
+  I: { children: 'Inngående', title: 'Inngående dokument', 'data-color': 'brand-beige' },
+  U: { children: 'Utgående', title: 'Utgående dokument', 'data-color': 'meta-lime' },
+  N: { children: 'Notat', title: 'Notat', 'data-color': 'info' },
+}
+
 export function journalposttypeTag(type: Journalpost['journalposttype']) {
-  const config: Record<typeof type, { label: string; color: TagProps['data-color'] }> = {
-    I: { label: 'Inngående', color: 'brand-beige' },
-    U: { label: 'Utgående', color: 'meta-lime' },
-    N: { label: 'Notat', color: 'info' },
-  }
-  const { label, color } = config[type]
-  return (
-    <Tag size="small" variant="outline" data-color={color}>
-      {label}
-    </Tag>
-  )
+  return <Tag size="small" variant="outline" {...journalpostTypes[type]} />
 }
 
 export function journalposttypeTagKort(type: Journalpost['journalposttype']) {
-  const config: Record<typeof type, { label: string }> = {
-    I: { label: 'Inngående' },
-    U: { label: 'Utgående' },
-    N: { label: 'Notat' },
+  const types: Record<typeof type, JournalposttypeTagProps> = {
+    I: { ...journalpostTypes['I'], children: 'I' },
+    U: { ...journalpostTypes['U'], children: 'U' },
+    N: { ...journalpostTypes['N'], children: 'N' },
   }
-  const { label } = config[type]
-  return (
-    <Tag size="small" variant="outline">
-      {label}
-    </Tag>
-  )
-}
-
-export function journalposttypeTagKortere(type: Journalpost['journalposttype']) {
-  const config: Record<typeof type, { label: string; tooltip: string }> = {
-    I: { label: 'I', tooltip: 'Inngående dokument' },
-    U: { label: 'U', tooltip: 'Utgående dokument' },
-    N: { label: 'N', tooltip: 'Notat' },
-  }
-  const { label, tooltip } = config[type]
-  return (
-    <Tag size="small" variant="outline" title={tooltip}>
-      {label}
-    </Tag>
-  )
+  return <Tag size="small" variant="outline" {...types[type]} />
 }
 
 export function journalpoststatusTagKort(type: Journalpost['journalstatus']) {
-  const config: Record<typeof type, { label: string; color: TagProps['data-color']; tooltip: string }> = {
-    MOTTATT: { label: 'M', color: 'neutral', tooltip: 'Mottatt' },
-    JOURNALFOERT: { label: 'JF', color: 'neutral', tooltip: 'Journalført' },
-    FERDIGSTILT: { label: 'F', color: 'neutral', tooltip: 'Ferdigstilt' },
-    EKSPEDERT: { label: 'E', color: 'neutral', tooltip: 'Ekspedert' },
-    UNDER_ARBEID: { label: 'UA', color: 'neutral', tooltip: 'Under arbeid' },
-    FEILREGISTRERT: { label: 'FR', color: 'neutral', tooltip: 'Feilregistrert' },
-    UTGAAR: { label: 'U', color: 'neutral', tooltip: 'Utgår' },
-    AVBRUTT: { label: 'A', color: 'neutral', tooltip: 'Avbrutt' },
-    UKJENT_BRUKER: { label: 'UB', color: 'neutral', tooltip: 'Ukjent bruker' },
-    RESERVERT: { label: 'R', color: 'neutral', tooltip: 'Reservert' },
-    OPPLASTING_DOKUMENT: { label: 'OD', color: 'neutral', tooltip: 'Opplasting dokument' },
-    UKJENT: { label: '?', color: 'neutral', tooltip: 'Ukjent' },
+  const types: Record<typeof type, TagProps> = {
+    MOTTATT: { children: 'M', 'data-color': 'neutral', title: 'Mottatt' },
+    JOURNALFOERT: { children: 'JF', 'data-color': 'neutral', title: 'Journalført' },
+    FERDIGSTILT: { children: 'F', 'data-color': 'neutral', title: 'Ferdigstilt' },
+    EKSPEDERT: { children: 'E', 'data-color': 'neutral', title: 'Ekspedert' },
+    UNDER_ARBEID: { children: 'UA', 'data-color': 'neutral', title: 'Under arbeid' },
+    FEILREGISTRERT: { children: 'FR', 'data-color': 'neutral', title: 'Feilregistrert' },
+    UTGAAR: { children: 'U', 'data-color': 'neutral', title: 'Utgår' },
+    AVBRUTT: { children: 'A', 'data-color': 'neutral', title: 'Avbrutt' },
+    UKJENT_BRUKER: { children: 'UB', 'data-color': 'neutral', title: 'Ukjent bruker' },
+    RESERVERT: { children: 'R', 'data-color': 'neutral', title: 'Reservert' },
+    OPPLASTING_DOKUMENT: { children: 'OD', 'data-color': 'neutral', title: 'Opplasting dokument' },
+    UKJENT: { children: '?', 'data-color': 'neutral', title: 'Ukjent' },
   }
-  const { label, color, tooltip } = config[type]
-  return (
-    <Tag size="small" variant="outline" data-color={color} title={tooltip}>
-      {label}
-    </Tag>
-  )
+  return <Tag size="small" variant="outline" {...types[type]} />
 }

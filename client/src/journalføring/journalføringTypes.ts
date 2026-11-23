@@ -6,7 +6,11 @@ export enum OverstyrInnsynsregler {
   VISES_MANUELT_GODKJENT = 'VISES_MANUELT_GODKJENT',
   SKJULES_FEILSENDT = 'SKJULES_FEILSENDT',
   SKJULES_BRUKERS_ONSKE = 'SKJULES_BRUKERS_ONSKE',
+  BRUK_STANDARDREGLER = 'BRUK_STANDARDREGLER',
 }
+
+export type Dokumentkontroll = 'ja' | 'nei'
+export type Dokumentavvik = 'overføring' | 'annet'
 
 export type TilordnetEnhet = 'minOppgaveliste' | 'enhetensOppgaveliste' | 'medarbeidersOppgaveliste'
 
@@ -25,7 +29,8 @@ export interface JournalføringSkjemaVerdier {
   tilordnetEnhet: TilordnetEnhet
   mappeId?: string
   medarbeider: string
-  dokumenterKontrollert: boolean
+  dokumentkontroll: Dokumentkontroll | ''
+  dokumentavvik: Dokumentavvik | ''
   overstyrInnsynsregler: OverstyrInnsynsregler | ''
 }
 

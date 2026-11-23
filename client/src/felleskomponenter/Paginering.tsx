@@ -27,11 +27,12 @@ export function Paginering(props: PagineringProps) {
 }
 
 export interface CursorPagineringProp extends PageRequest {
+  totalPages: number
   onPageChange?(pageNumber: number): void
 }
 
 export function CursorPaginering(props: CursorPagineringProp) {
-  const { pageNumber, onPageChange } = props
+  const { pageNumber, totalPages, onPageChange } = props
   const buttonsProps: ButtonProps = {
     size: 'xsmall',
     type: 'button',
@@ -52,8 +53,16 @@ export function CursorPaginering(props: CursorPagineringProp) {
       >
         Forrige
       </Button>
-      <Box as="li">Side {pageNumber}</Box>
-      <Button {...buttonsProps} onClick={handleClickNeste} icon={<ChevronRightIcon />} iconPosition="right">
+      <Box as="li">
+        Side {pageNumber} av {totalPages}
+      </Box>
+      <Button
+        {...buttonsProps}
+        onClick={handleClickNeste}
+        disabled={pageNumber === totalPages}
+        icon={<ChevronRightIcon />}
+        iconPosition="right"
+      >
         Neste
       </Button>
     </HStack>

@@ -190,6 +190,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
                 <CursorPaginering
                   pageNumber={pageNumber}
                   pageSize={pageSize}
+                  totalPages={totalPages}
                   onPageChange={onPageChange ? (pageNumber) => onPageChange({ pageNumber, pageSize }) : undefined}
                 />
               </HStack>

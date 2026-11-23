@@ -27,7 +27,6 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
       scope={currentTab}
       keyFactory={selectOppgaveId}
       renderContent={OppgaveDetails}
-      stickyHeader
       size="small"
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
@@ -36,6 +35,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
       onSortChange={handleSortChange}
       onFilterChange={handleFilterChange}
       filterMode={filterModus}
+      stickyHeader
       zebraStripes
     />
   )

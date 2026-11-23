@@ -19,9 +19,8 @@ async function velgGjelder(page: import('@playwright/test').Page) {
 
 async function bekreftDokumentinnsyn(page: import('@playwright/test').Page) {
   await page
-    .getByRole('checkbox', {
-      name: 'Dokumentene ligger på riktig bruker og det ligger ingen dokumentasjon om andre brukere der',
-    })
+    .getByRole('radiogroup', { name: /Kan du bekrefte at dokumentene ligger på riktig bruker/ })
+    .getByRole('radio', { name: 'Ja' })
     .check()
   await page
     .getByRole('combobox', { name: 'Skal bruker ha innsyn i dokumentene på nav.no?' })

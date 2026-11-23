@@ -35,6 +35,7 @@ export function NyttBrev({ oppgave, onOpprettet }: NyttBrevProps) {
   const tilgjengeligeBrevmaler = BreveditorbrevUtenVedtak.filter(
     (brevmal) =>
       brevmal !== Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING &&
+      brevmal !== Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING_ENKEL &&
       (erIkkeProd || brevmal !== Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER)
   )
 

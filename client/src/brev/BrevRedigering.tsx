@@ -132,6 +132,9 @@ function utledBrevmal(behandling?: Behandling, brevmal?: Brevmal): string | unde
   if (brevmal === Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING) {
     return 'svartidsbrev-journalføring'
   }
+  if (brevmal === Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING_ENKEL) {
+    return 'svartidsbrev-journalføring-enkel'
+  }
   if (brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER) {
     return 'innhente-opplysninger'
   }

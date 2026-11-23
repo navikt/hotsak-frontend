@@ -32,6 +32,7 @@ import {
   byggJournalføringSak,
   byggSaksgrunnlag,
   byggSvartidsbrev,
+  svartidsbrevManglerÅrsak,
   lagSkjemaverdier as lagDefaultVerdier,
 } from './journalføringValg.ts'
 import { useDokumentredigering } from './useDokumentredigering.ts'
@@ -97,7 +98,7 @@ export function JournalføringSkjema({
 
   async function journalførOgOpprettSak(verdier: JournalføringSkjemaVerdier) {
     if (!dokumentredigering.validerTitler()) return
-    if (svartidsbrevValg && !svartidsbrevValg.årsak.trim()) {
+    if (svartidsbrevValg && svartidsbrevManglerÅrsak(svartidsbrevValg)) {
       return
     }
 
@@ -141,7 +142,7 @@ export function JournalføringSkjema({
       await journalførOgKobleTilSak()
     } else {
       dokumentredigering.visTittelfeilmeldinger()
-      if (svartidsbrevValg && !svartidsbrevValg.årsak.trim()) {
+      if (svartidsbrevValg && svartidsbrevManglerÅrsak(svartidsbrevValg)) {
         setVisSvartidsbrevFeil(true)
       }
       await handleSubmit(journalførOgOpprettSak)()

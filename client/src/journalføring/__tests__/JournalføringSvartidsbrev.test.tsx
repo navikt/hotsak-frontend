@@ -61,12 +61,44 @@ describe('JournalføringSvartidsbrev', () => {
     expect(await screen.findByRole('dialog', { name: 'Forhåndsvisning av svartidsbrev' })).not.toBeNull()
   })
 
-  it('previews the Nynorsk template with veker', async () => {
+  it('uses the simple template without reason for 4 weeks', async () => {
+    const user = userEvent.setup()
+    renderSkjema()
+
+    await user.click(screen.getByRole('checkbox', { name: 'Ja, opprett brev' }))
+    expect(screen.queryByLabelText(/Forklar hvorfor saken ikke kan behandles i løpet/)).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))
+
+    const ramme = (await screen.findByTitle('Forhåndsvisning av svartidsbrev')) as HTMLIFrameElement
+    const dokument = new DOMParser().parseFromString(ramme.srcdoc, 'text/html')
+    const hovedinnhold = dokument.querySelector('main')?.textContent
+    expect(dokument.querySelector('h1')?.textContent).toContain('Vi har mottatt søknaden din')
+    expect(hovedinnhold).toContain('innen 4 uker')
+    expect(hovedinnhold).toContain('18. september 2026')
+    expect(hovedinnhold).not.toContain('auto_')
+  })
+
+  it('previews the simple Nynorsk template with veker', async () => {
     const user = userEvent.setup()
     renderSkjema()
 
     await user.click(screen.getByRole('checkbox', { name: 'Ja, opprett brev' }))
     await user.click(screen.getByRole('radio', { name: 'Nynorsk' }))
+    await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))
+
+    const ramme = (await screen.findByTitle('Forhåndsvisning av svartidsbrev')) as HTMLIFrameElement
+    const dokument = new DOMParser().parseFromString(ramme.srcdoc, 'text/html')
+    expect(dokument.querySelector('h1')?.textContent).toContain('Vi har fått søknaden din')
+    expect(dokument.querySelector('main')?.textContent).toContain('innan 4 veker')
+  })
+
+  it('previews the Nynorsk template with reason for longer waiting time', async () => {
+    const user = userEvent.setup()
+    renderSkjema()
+
+    await user.click(screen.getByRole('checkbox', { name: 'Ja, opprett brev' }))
+    await user.click(screen.getByRole('radio', { name: 'Nynorsk' }))
+    await user.selectOptions(screen.getByLabelText('Forventet behandlingstid'), '8')
     await user.type(
       screen.getByLabelText(/Forklar hvorfor saken ikke kan behandles i løpet/),
       'Vi ventar på svar frå kommunen.'
@@ -77,7 +109,7 @@ describe('JournalføringSvartidsbrev', () => {
     const dokument = new DOMParser().parseFromString(ramme.srcdoc, 'text/html')
     const hovedinnhold = dokument.querySelector('main')?.textContent
     expect(dokument.querySelector('h1')?.textContent).toContain('Vi treng meir tid')
-    expect(hovedinnhold).toContain('innan 4 veker')
+    expect(hovedinnhold).toContain('innan 8 veker')
     expect(hovedinnhold).toContain('Vi ventar på svar frå kommunen.')
     expect(hovedinnhold).not.toContain('auto_')
   })

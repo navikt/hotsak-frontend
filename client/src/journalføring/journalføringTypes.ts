@@ -93,7 +93,7 @@ export interface JournalføringRequest {
   svartidsbrev?: {
     antallUker: string
     målform: Målform
-    årsak: string
+    årsak?: string
   }
   sak?: {
     sakstype: Sakstype

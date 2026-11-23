@@ -17,6 +17,7 @@ export const Brevmal = {
   BREVEDITOR_VEDTAKSBREV: 'BREVEDITOR_VEDTAKSBREV',
   BREVEDITOR_SVARTIDSBREV: 'BREVEDITOR_SVARTIDSBREV',
   BREVEDITOR_SVARTIDSBREV_JOURNALFØRING: 'BREVEDITOR_SVARTIDSBREV_JOURNALFØRING',
+  BREVEDITOR_SVARTIDSBREV_JOURNALFØRING_ENKEL: 'BREVEDITOR_SVARTIDSBREV_JOURNALFØRING_ENKEL',
   BREVEDITOR_INNHENTE_OPPLYSNINGER: 'BREVEDITOR_INNHENTE_OPPLYSNINGER',
 
   // Barnebriller
@@ -31,6 +32,7 @@ export const BreveditorbrevUtenVedtak = [
   Brevmal.BREVEDITOR_SVARTIDSBREV,
   Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER,
   Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING,
+  Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING_ENKEL,
 ] as const satisfies readonly Brevmal[]
 export type BreveditorbrevUtenVedtak = (typeof BreveditorbrevUtenVedtak)[number]
 
@@ -62,6 +64,7 @@ export const BrevmalTekst = {
   [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Vedtaksbrev',
   [Brevmal.BREVEDITOR_SVARTIDSBREV]: 'Svartidsbrev',
   [Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING]: 'Svartidsbrev',
+  [Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING_ENKEL]: 'Svartidsbrev',
   [Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER]: 'Innhente opplysninger',
   [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrev',
   [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrev',
@@ -73,6 +76,7 @@ export const BrevmalTekstBeskrivelse = {
   [Brevmal.BREVEDITOR_VEDTAKSBREV]: 'Informerer om utfallet av saken i et vedtaksbrev.',
   [Brevmal.BREVEDITOR_SVARTIDSBREV]: 'Informerer om forventet behandlingstid.',
   [Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING]: 'Informerer om forventet behandlingstid.',
+  [Brevmal.BREVEDITOR_SVARTIDSBREV_JOURNALFØRING_ENKEL]: 'Informerer om forventet behandlingstid.',
   [Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER]: 'Be om dokumentasjon som mangler.',
   [Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: 'Barnebrillebrev',
   [Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE]: 'Barnebrillebrev',

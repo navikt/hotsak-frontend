@@ -41,7 +41,7 @@ import { formaterDatoLang } from '../utils/dato'
 import { formaterNavn } from '../utils/formater'
 import classes from './JournalføringSvartidsbrev.module.css'
 import { type SvartidsbrevValg } from './journalføringTypes'
-import { byggSvartidsbrev } from './journalføringValg'
+import { byggSvartidsbrev, svartidsbrevKreverÅrsak } from './journalføringValg'
 
 const ÅRSAK_MAKSLENGDE = 500
 
@@ -71,6 +71,7 @@ export function JournalføringSvartidsbrev({
   const [brevOpprettet] = useState(() => formaterDatoLang(new Date().toISOString()))
   const { fodselsnummer } = usePersonContext()
   const { personInfo } = usePerson(fodselsnummer)
+  const kreverÅrsak = svartidsbrevKreverÅrsak(antallUker)
 
   useEffect(() => {
     onChange?.(sendSvartidsbrev ? { antallUker, målform, årsak } : null)
@@ -103,22 +104,25 @@ export function JournalføringSvartidsbrev({
               onChange={(event) => setAntallUker(Number(event.target.value))}
             >
               <option value={4}>4 uker</option>
+              <option value={8}>8 uker</option>
               <option value={12}>12 uker</option>
               <option value={18}>18 uker</option>
             </Select>
-            <Textarea
-              size="small"
-              label="Forklar hvorfor saken ikke kan behandles i løpet av 1 måned"
-              description="Begrunnelsen blir en del av brevet."
-              maxLength={ÅRSAK_MAKSLENGDE}
-              value={årsak}
-              onChange={(event) => setÅrsak(event.target.value)}
-              error={
-                visÅrsakFeil && !årsak.trim()
-                  ? 'Du må forklare hvorfor saken ikke kan behandles i løpet av 1 måned'
-                  : undefined
-              }
-            />
+            {kreverÅrsak && (
+              <Textarea
+                size="small"
+                label="Forklar hvorfor saken ikke kan behandles i løpet av 1 måned"
+                description="Begrunnelsen blir en del av brevet."
+                maxLength={ÅRSAK_MAKSLENGDE}
+                value={årsak}
+                onChange={(event) => setÅrsak(event.target.value)}
+                error={
+                  visÅrsakFeil && !årsak.trim()
+                    ? 'Du må forklare hvorfor saken ikke kan behandles i løpet av 1 måned'
+                    : undefined
+                }
+              />
+            )}
             <div>
               <Button type="button" size="xsmall" variant="tertiary" onClick={() => setVisForhåndsvisning(true)}>
                 Forhåndsvis brev
@@ -168,7 +172,8 @@ export function SvartidsbrevForhåndsvisning({
   personInfo,
   metadata,
 }: SvartidsbrevForhåndsvisningProps) {
-  const mal = useBrevmal('svartidsbrev-journalføring', målform)
+  const kreverÅrsak = svartidsbrevKreverÅrsak(antallUker)
+  const mal = useBrevmal(kreverÅrsak ? 'svartidsbrev-journalføring' : 'svartidsbrev-journalføring-enkel', målform)
   const vergemål = personInfo?.vergemål || []
   const vergeNavn = vergemål
     .map((it) => it.navn)

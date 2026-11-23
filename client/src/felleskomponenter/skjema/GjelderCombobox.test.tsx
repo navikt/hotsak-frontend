@@ -18,50 +18,35 @@ vi.mock('../../oppgave/useKodeverkOppgave.ts', () => ({
     { label: 'Brilleramme', value: 'ab0008|', searchTerms: 'brilleramme' },
     { label: 'Søknad om briller', value: 'ab0009|', searchTerms: 'søknad om briller' },
     { label: 'Linser/briller', value: 'ab0010|', searchTerms: 'linser/briller' },
+    {
+      label: 'Briller til barn | Hastebestilling',
+      value: 'ab0004|ae0011',
+      searchTerms: 'briller til barn hastebestilling',
+    },
   ],
 }))
 
 const tom = { behandlingstema: '', behandlingstype: '' }
 
 describe('GjelderCombobox', () => {
-  it('beholder delordssøk uten mellomrom og avgrenser til hele ord med mellomrom', async () => {
-    render(<GjelderCombobox value={tom} onChange={() => {}} />)
-    const søkefelt = screen.getByRole('combobox', { name: 'Gjelder' })
-
-    await userEvent.type(søkefelt, 'briller')
-
-    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual([
-      'Briller',
-      'Briller til barn',
-      'Filterbriller',
-      'Behandlingsbriller',
-      'Briller/linser',
-      'Brilleramme',
-      'Søknad om briller',
-      'Linser/briller',
-    ])
-
-    await userEvent.type(søkefelt, ' ')
-
-    expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual([
-      'Briller',
-      'Briller til barn',
-      'Briller/linser',
-      'Søknad om briller',
-    ])
-
-    await userEvent.keyboard('{Backspace}')
-
-    expect(screen.getByRole('option', { name: 'Filterbriller' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Behandlingsbriller' })).toBeInTheDocument()
-  })
-
   it.each([
-    ['BRILLER  ', ['Briller', 'Briller til barn', 'Briller/linser', 'Søknad om briller']],
-    ['briller ba', ['Briller til barn']],
-    ['briller linser', ['Briller/linser']],
-    ['briller/linser ', ['Briller/linser']],
-    ['brille ', []],
+    [
+      'BRILLER ',
+      [
+        'Briller',
+        'Briller til barn',
+        'Briller/linser',
+        'Brilleramme',
+        'Søknad om briller',
+        'Linser/briller',
+        'Briller til barn | Hastebestilling',
+      ],
+    ],
+    ['briller ba', ['Briller til barn', 'Briller til barn | Hastebestilling']],
+    ['bri li', ['Briller/linser', 'Linser/briller']],
+    ['briller lin', ['Briller/linser', 'Linser/briller']],
+    ['briller/linser ', ['Briller/linser', 'Linser/briller']],
+    ['riller', []],
   ])('filtrerer på «%s»', async (søk, forventedeTreff) => {
     render(<GjelderCombobox value={tom} onChange={() => {}} />)
 

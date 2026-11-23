@@ -33,7 +33,7 @@ export function useDokumentsøk(
   request?: DokumentsøkRequest,
   configuration: { keepPreviousData: boolean } = { keepPreviousData: true }
 ) {
-  const [pageCursors, setPageCursors] = useState<Map<number, string | undefined>>(() => new Map([[1, request?.cursor]]))
+  const [pageCursors, setPageCursors] = useState<Map<number, string | undefined>>(() => new Map([[1, undefined]]))
 
   const { data, ...rest } = useSWR<DokumentsøkResponse, HttpError, () => [string, DokumentsøkRequest] | null>(
     () => (request?.fnr && pageCursors.has(request?.pageNumber ?? 1) ? ['/api/dokumenter/sok', request] : null),
@@ -61,13 +61,13 @@ export function useDokumentsøk(
     totalPages: data?.totalPages,
   }
 
-  const reset = useCallback(() => setPageCursors(new Map([[1, request?.cursor]])), [request?.cursor])
+  const resetPageCursors = useCallback(() => setPageCursors(new Map([[1, undefined]])), [])
 
   return {
     journalposter: data?.journalposter ?? ingenJournalposter,
     pagination,
     totalElements: data?.totalElements ?? 0,
-    reset,
+    resetPageCursors,
     ...rest,
   }
 }

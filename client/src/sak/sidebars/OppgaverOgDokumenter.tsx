@@ -104,7 +104,7 @@ export function OppgaverOgDokumenter() {
                 setFilter(event.target.value as OppgaverOgDokumenterFilterValue)
                 setPageRequestOppgaver(DEFAULT_PAGE_REQUEST)
                 setPageRequestDokumenter(DEFAULT_PAGE_REQUEST)
-                journalposterResponse.reset()
+                journalposterResponse.resetPageCursors()
               }}
             >
               <option value={OppgaverOgDokumenterFilter.ALLE}>Vis alle</option>

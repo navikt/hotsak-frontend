@@ -243,6 +243,7 @@ export function JournalføringSkjema({
                 oppgave={oppgave}
                 onSvartidsbrevChange={setSvartidsbrevValg}
                 visSvartidsbrevFeil={visSvartidsbrevFeil}
+                erBarnebrilleSøknad={erBarnebrilleSøknad}
               />
             )}
           </VStack>

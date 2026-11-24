@@ -15,10 +15,6 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { JournalføringSvartidsbrev } from './JournalføringSvartidsbrev.tsx'
-import { type JournalføringSkjemaVerdier, type SakstypeKode, type SvartidsbrevValg } from './journalføringTypes.ts'
-import { TilordneOppgave } from './TilordneOppgave.tsx'
-import classes from './JournalføringSkjema.module.css'
 import {
   type Journalføringsoppgave,
   Oppgaveprioritet,
@@ -26,8 +22,12 @@ import {
   Oppgavetype,
   OppgavetypeLabel,
 } from '../oppgave/oppgaveTypes.ts'
-import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
+import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
+import classes from './JournalføringSkjema.module.css'
+import { JournalføringSvartidsbrev } from './JournalføringSvartidsbrev.tsx'
+import { type JournalføringSkjemaVerdier, type SakstypeKode, type SvartidsbrevValg } from './journalføringTypes.ts'
+import { TilordneOppgave } from './TilordneOppgave.tsx'
 
 interface NySakSkjemaProps {
   kanRedigere: boolean
@@ -35,6 +35,7 @@ interface NySakSkjemaProps {
   oppgave: Journalføringsoppgave
   onSvartidsbrevChange: (valg: SvartidsbrevValg | null) => void
   visSvartidsbrevFeil?: boolean
+  erBarnebrilleSøknad: boolean
 }
 
 export function NySakSkjema({
@@ -43,6 +44,7 @@ export function NySakSkjema({
   oppgave,
   onSvartidsbrevChange,
   visSvartidsbrevFeil,
+  erBarnebrilleSøknad,
 }: NySakSkjemaProps) {
   const {
     watch,
@@ -237,12 +239,14 @@ export function NySakSkjema({
         />
       </TextContainer>
 
-      <JournalføringSvartidsbrev
-        oppgave={oppgave}
-        mottattDato={valgtMottattDato}
-        visÅrsakFeil={visSvartidsbrevFeil}
-        onChange={onSvartidsbrevChange}
-      />
+      {!erBarnebrilleSøknad && (
+        <JournalføringSvartidsbrev
+          oppgave={oppgave}
+          mottattDato={valgtMottattDato}
+          visÅrsakFeil={visSvartidsbrevFeil}
+          onChange={onSvartidsbrevChange}
+        />
+      )}
 
       <TilordneOppgave tildeltEnhet={tildeltEnhet} />
     </VStack>

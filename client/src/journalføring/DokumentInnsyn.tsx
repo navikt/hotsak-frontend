@@ -90,8 +90,8 @@ export function DokumentInnsyn({ readOnly }: { readOnly: boolean }) {
                     Overføring av hjelpemiddel fra en bruker til en annen
                   </Radio>
                   <Radio ref={value === 'annet' ? ref : undefined} value="annet" onBlur={onBlur}>
-                    Dokumentene er registrert på feil bruker eller inneholder informasjon om andre brukere – men gjelder
-                    ikke overføring
+                    Dokumentene er registrert på feil bruker eller inneholder informasjon om andre brukere som ikke er
+                    relevant for saken
                   </Radio>
                 </RadioGroup>
               )}

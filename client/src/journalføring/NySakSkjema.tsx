@@ -13,6 +13,7 @@ import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
 import { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
+import { useFlag } from '@unleash/toolbar/next'
 import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import {
@@ -23,6 +24,8 @@ import {
   OppgavetypeLabel,
 } from '../oppgave/oppgaveTypes.ts'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
+import { FeatureToggle } from '../unleash/FeatureToggle.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
 import classes from './JournalføringSkjema.module.css'
 import { JournalføringSvartidsbrev } from './JournalføringSvartidsbrev.tsx'
@@ -88,6 +91,9 @@ export function NySakSkjema({
   const valgtPrioritet = watch('prioritet')
   const valgtBehandlingstype = watch('behandlingstype')
   const valgtBehandlingstema = watch('behandlingstema')
+
+  const { erIkkeProd } = useMiljø()
+  const erPilot = useFlag(FeatureToggle.journalforing) || erIkkeProd
 
   return (
     <VStack gap="space-20">
@@ -239,7 +245,7 @@ export function NySakSkjema({
         />
       </TextContainer>
 
-      {!erBarnebrilleSøknad && (
+      {!erBarnebrilleSøknad && erPilot && (
         <JournalføringSvartidsbrev
           oppgave={oppgave}
           mottattDato={valgtMottattDato}

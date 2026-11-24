@@ -57,7 +57,13 @@ function TestSkjema({ onSubmit }: { onSubmit(): void }) {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <NySakSkjema kanRedigere tildeltEnhet="Testenhet" oppgave={oppgave} onSvartidsbrevChange={() => {}} />
+        <NySakSkjema
+          kanRedigere
+          tildeltEnhet="Testenhet"
+          oppgave={oppgave}
+          onSvartidsbrevChange={() => {}}
+          erBarnebrilleSøknad={false}
+        />
         <button type="submit">Journalfør</button>
       </form>
     </FormProvider>

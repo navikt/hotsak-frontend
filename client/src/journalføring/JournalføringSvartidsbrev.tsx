@@ -89,7 +89,7 @@ export function JournalføringSvartidsbrev({
         <Checkbox value="Ja">Ja, opprett brev</Checkbox>
       </CheckboxGroup>
       {sendSvartidsbrev && (
-        <Box background="neutral-soft" padding="space-8" borderRadius="8">
+        <Box background="accent-soft" padding="space-8" borderRadius="12" borderWidth="1" borderColor="neutral-subtle">
           <VStack gap="space-12">
             <RadioGroup legend="Målform" size="small" value={målform} onChange={(value: Målform) => setMålform(value)}>
               <Stack gap="space-0 space-24" direction={{ xs: 'column', sm: 'row' }} wrap={false}>
@@ -134,7 +134,7 @@ export function JournalføringSvartidsbrev({
           </VStack>
         </Box>
       )}
-      <ForhåndsvisDokumentModal2
+      <ForhåndsvisBrevDialog
         open={visForhåndsvisning}
         onOpenChange={setVisForhåndsvisning}
         antallUker={antallUker}
@@ -231,12 +231,12 @@ export function SvartidsbrevForhåndsvisning({
   )
 }
 
-interface ForhåndsvisDokumentModal2Props extends SvartidsbrevForhåndsvisningProps {
+interface ForhåndsvisBrevDialogProps extends SvartidsbrevForhåndsvisningProps {
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function ForhåndsvisDokumentModal2({
+export function ForhåndsvisBrevDialog({
   open,
   onOpenChange,
   antallUker,
@@ -245,7 +245,7 @@ export function ForhåndsvisDokumentModal2({
   målform,
   personInfo,
   metadata,
-}: ForhåndsvisDokumentModal2Props) {
+}: ForhåndsvisBrevDialogProps) {
   return (
     <Dialog size="small" open={open} onOpenChange={onOpenChange}>
       <Dialog.Popup closeOnOutsideClick={true} height="100%" width="80%">

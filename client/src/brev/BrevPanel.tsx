@@ -110,8 +110,13 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   }
 
   const handleFerdigstill = async () => {
-    if (!validerBrev()) return
-    await ferdigstillBrevutkast.trigger()
+    try {
+      await flushLagringRef.current?.()
+      if (!validerBrev()) return
+      await ferdigstillBrevutkast.trigger()
+    } catch {
+      showErrorToast('Kunne ikke ferdigstille brevet. Prøv igjen.')
+    }
   }
 
   const handleRediger = async () => {

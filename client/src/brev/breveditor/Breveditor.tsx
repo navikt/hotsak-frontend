@@ -219,16 +219,13 @@ export function Breveditor(props: BreveditorProps) {
     [editor]
   )
 
-  // Lagrer HTML når editoren åpnes, uten at brukeren må redigere først. Nye brev har tom HTML i backend til de er
-  // lagret første gang, og eksisterende brev oppdateres hvis metadata har endret seg (f.eks. ny saksbehandler etter
-  // overføring). Venter til person og mottakere er lastet, ellers mangler header (verge, formidler) i html
-  const harSynkronisertHtml = useRef(false)
+  // Lagrer også endringer i brevhodet uten at brukeren må redigere teksten.
+  // Venter til person og mottakere er lastet, ellers mangler verge og formidler i HTML.
   const klarTilSynkronisering = !personLaster && !mottakereLaster && !formidlerLaster
   useEffect(() => {
-    if (harSynkronisertHtml.current || !klarTilSynkronisering || !onLagreBrev) return
-    harSynkronisertHtml.current = true
+    if (!klarTilSynkronisering || !onLagreBrev) return
 
-    const value = initialState?.value ?? editor.children
+    const value = editor.children
     const ferskHtml = byggFullHtml(
       metadata,
       value,
@@ -238,17 +235,31 @@ export function Breveditor(props: BreveditorProps) {
       formidlerMedKopi,
       formidlerErMottaker
     )
-    if (initialState?.valueAsHtml === ferskHtml) return
+    if ((state.current?.valueAsHtml ?? initialState?.valueAsHtml) === ferskHtml) return
 
     const oppdatertState: BreveditorState = {
       value,
       valueAsHtml: ferskHtml,
-      history: initialState?.history ?? editor.history,
+      history: editor.history,
     }
     state.current = oppdatertState
     onStateChange?.(oppdatertState)
     lagreMedDebounceOgRetry(oppdatertState, nesteSerienummer())
-  }, [klarTilSynkronisering])
+  }, [
+    klarTilSynkronisering,
+    metadata,
+    stilarkVersjon,
+    vergeNavn,
+    målform,
+    formidlerMedKopi,
+    formidlerErMottaker,
+    editor,
+    initialState,
+    onLagreBrev,
+    onStateChange,
+    lagreMedDebounceOgRetry,
+    nesteSerienummer,
+  ])
 
   return (
     <BreveditorContext

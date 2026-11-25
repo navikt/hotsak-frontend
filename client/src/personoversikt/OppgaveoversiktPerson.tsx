@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyShort, Box, HGrid, Loader } from '@navikt/ds-react'
-import { Fragment, useState } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 
 import { DataGrid, type DataGridContentProps } from '../felleskomponenter/data/DataGrid.tsx'
 import type { DataGridFilterValues } from '../felleskomponenter/data/DataGridFilter.ts'
@@ -47,6 +47,16 @@ export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
       : undefined
   )
 
+  const handleSortChange = useCallback((sortKey: string) => {
+    setSort((state) => {
+      const sorteringsfelt: FinnOppgaverRequest['sorteringsfelt'] =
+        sortKey === 'fristDato' ? 'FRIST' : 'OPPRETTET_TIDSPUNKT'
+      const sorteringsrekkefølge: FinnOppgaverRequest['sorteringsrekkefølge'] =
+        state.sorteringsrekkefølge === 'DESC' ? 'ASC' : 'DESC'
+      return { sorteringsfelt, sorteringsrekkefølge }
+    })
+  }, [])
+
   if (error) {
     return <div>Feil ved henting av oppgaver</div>
   }
@@ -55,7 +65,7 @@ export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
 
   return (
     <Box>
-      <DataGridToolbar elements={oppgaver.length} elementsName="oppgaver" {...data} />
+      <DataGridToolbar elements={oppgaver.length} elementsName="oppgaver" paddingBlock="space-0 space-8" {...data} />
       <DataGrid
         rows={oppgaver}
         columns={columns}
@@ -67,15 +77,7 @@ export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
         emptyMessage="Fant ingen oppgaver for person"
         renderContent={InternalOppgaveDetails}
         onPageChange={setPageRequest}
-        onSortChange={() => {
-          setSort((state) => {
-            if (state.sorteringsrekkefølge === 'DESC') {
-              return { ...state, sorteringsrekkefølge: 'ASC' }
-            } else {
-              return { ...state, sorteringsrekkefølge: 'DESC' }
-            }
-          })
-        }}
+        onSortChange={handleSortChange}
         stickyHeader
         zebraStripes
         {...pagination}
@@ -169,6 +171,7 @@ const columns = [
   { ...oppgaveColumns.mappenavn, filter: undefined },
   { ...oppgaveColumns.prioritet, filter: undefined },
   oppgaveColumns.opprettetTidspunkt,
+  oppgaveColumns.fristDato,
   { ...oppgaveColumns.ferdigstiltTidspunkt, sortKey: undefined },
   { ...oppgaveColumns.saksbehandler, filter: undefined },
   oppgaveColumns.gåTilOppgave,

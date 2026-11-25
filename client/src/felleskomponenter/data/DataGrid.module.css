@@ -16,8 +16,3 @@
 .loadingBody {
   opacity: 0.5;
 }
-
-.pageSizeSelect {
-  display: flex;
-  align-items: center;
-}

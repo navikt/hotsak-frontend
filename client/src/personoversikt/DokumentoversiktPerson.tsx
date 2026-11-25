@@ -44,6 +44,7 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
         elements={journalposter.length}
         elementsName="dokumenter"
         totalElements={totalElements}
+        paddingBlock="space-0 space-8"
         {...pagination}
       />
       <DataGrid

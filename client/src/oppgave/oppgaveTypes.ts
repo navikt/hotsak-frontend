@@ -116,6 +116,7 @@ export interface Oppgave extends OppgaveBase {
   // utvidelser
   isUlest?: boolean
   sistLest?: string
+  hendelser?: OppgaveHendelseBase[]
 
   //
   isBehandlesAvApplikasjonHotsak: boolean
@@ -133,6 +134,21 @@ export interface OppgaveMappe {
   opprettetTidspunkt: string
   endretAv: string | null
   endretTidspunkt: string | null
+}
+
+export interface OppgaveHendelseBase {
+  id: string
+  oppgaveId: string
+  type: 'OPPGAVE_ENDRET' | 'NY_KOMMENTAR' | 'NYE_SAKSDOKUMENTER'
+  tidspunkt: Instant
+}
+
+export interface OppgaveEndretHendelse extends OppgaveHendelseBase {
+  type: 'OPPGAVE_ENDRET'
+}
+
+export interface OppgaveNyKommentarHendelse extends OppgaveHendelseBase {
+  type: 'NY_KOMMENTAR'
 }
 
 export interface OppgaveMapperResponse {

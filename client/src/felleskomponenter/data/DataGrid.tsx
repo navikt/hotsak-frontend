@@ -37,7 +37,6 @@ export interface DataGridColumn<T extends object> {
 
 export interface DataGridPaginationProps extends Partial<PageRequest> {
   totalPages?: number
-  pageSizeSelect?: boolean
   onPageChange?(pageRequest: PageRequest): void
 }
 
@@ -72,7 +71,6 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     pageNumber = 1,
     pageSize = 20,
     totalPages = 0,
-    pageSizeSelect,
     onPageChange,
     validating,
     keyFactory,
@@ -182,7 +180,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
           }
         })}
       </Table.Body>
-      {totalPages > 0 && (
+      {totalPages > 1 && (
         <tfoot>
           <Table.Row>
             <Table.DataCell colSpan={colSpan} textSize={textSize}>

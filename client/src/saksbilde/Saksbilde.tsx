@@ -3,6 +3,7 @@ import { useErrorBoundary } from 'react-error-boundary'
 import { DokumentProvider } from '../dokument/DokumentContext'
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
+import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson'
@@ -13,7 +14,6 @@ import { SakProvider } from '../sak/SakProvider.tsx'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { Saksstatus, type SakBase } from '../types/types.internal'
 import { OverførtGosysVisning } from './OverførtGosysVisning'
-import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { SakLoader } from './SakLoader'
 import classes from './Saksbilde.module.css'
 import { useBehovsmelding } from './useBehovsmelding'
@@ -27,10 +27,10 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
   const { erBarnebrillesak } = useSaksregler()
   const { behovsmelding, isLoading: isBehovsmeldingLoading, error: behovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
-  const { personInfo, error: personInfoError, isLoading: isPersonLoading } = usePerson(sak?.data.bruker.fnr)
+  const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
   const { gjeldendeBehandling } = useBehandling()
 
-  if (isSakLoading || isPersonLoading || isBehovsmeldingLoading) return <SakLoader />
+  if (isSakLoading || personInfoLoading || isBehovsmeldingLoading) return <SakLoader />
 
   if (personInfoError) {
     return <PersonFeilmelding personError={personInfoError} />
@@ -56,7 +56,7 @@ const SaksbildeContent = memo(({ oppgave }: { oppgave?: Saksbehandlingsoppgave }
     return (
       <div className={classes.wrapper}>
         <Sidetittel tittel={`Sak ${sakData.sakId}`} />
-        <Personlinje loading={isPersonLoading} person={personInfo} skjulTelefonnummer />
+        <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <DokumentProvider>
           <Barnebrillesaksbilde oppgave={oppgave} />
         </DokumentProvider>

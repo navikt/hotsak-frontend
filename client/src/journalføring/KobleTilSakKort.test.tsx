@@ -18,13 +18,14 @@ import {
   type FinnOppgaverResponse,
   type Oppgave,
 } from '../oppgave/oppgaveTypes.ts'
-import { PersonContext } from '../personoversikt/PersonContext.tsx'
 import { Saksstatus, type Journalpost } from '../types/types.internal.ts'
 import classes from './KobleTilSakKort.module.css'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { SakKort } from './SakKort.tsx'
 import { Sakstype } from './journalføringTypes.ts'
 import { MAKS_SAKER_SYNLIG, type SakvalgVisning } from './useKobleTilSak.ts'
+
+const brukerFnr = '01010199999'
 
 function lagSak(sakId: string, fagsaksystem = 'HOTSAK'): SakvalgVisning {
   return {
@@ -57,16 +58,12 @@ function lagJournalpost(
   }
 }
 
-function renderMedPerson(
+function renderInternal(
   ui: React.ReactNode,
   fetcher: (url: string) => Promise<unknown> = async () => undefined,
   fallback?: Record<string, unknown>
 ) {
-  return render(
-    <SWRConfig value={{ provider: () => new Map(), fetcher, fallback }}>
-      <PersonContext value={{ fodselsnummer: '01010199999', setFodselsnummer: vi.fn() }}>{ui}</PersonContext>
-    </SWRConfig>
-  )
+  return render(<SWRConfig value={{ provider: () => new Map(), fetcher, fallback }}>{ui}</SWRConfig>)
 }
 
 function mockHttpPost(
@@ -132,7 +129,7 @@ async function åpneSakskort(tittel: string) {
 
 describe('KobleTilSakKort', () => {
   it('viser lasteindikator mens sakene hentes', () => {
-    render(<KobleTilSakKort saker={[]} isLoading valgtSak={null} onChange={() => {}} />)
+    render(<KobleTilSakKort brukerFnr={brukerFnr} saker={[]} isLoading valgtSak={null} onChange={() => {}} />)
 
     expect(screen.getByText('Henter saker...', { selector: 'p' })).toBeInTheDocument()
   })
@@ -140,6 +137,7 @@ describe('KobleTilSakKort', () => {
   it('viser feilmelding når hentingen feiler', () => {
     render(
       <KobleTilSakKort
+        brukerFnr={brukerFnr}
         saker={[]}
         isLoading={false}
         error={HttpError.INTERNAL_SERVER_ERROR}
@@ -152,14 +150,16 @@ describe('KobleTilSakKort', () => {
   })
 
   it('viser tom-melding når brukeren ikke har valgbare saker', () => {
-    render(<KobleTilSakKort saker={[]} isLoading={false} valgtSak={null} onChange={() => {}} />)
+    render(<KobleTilSakKort brukerFnr={brukerFnr} saker={[]} isLoading={false} valgtSak={null} onChange={() => {}} />)
 
     expect(screen.getByText('Ingen saker funnet for denne brukeren.')).toBeInTheDocument()
   })
 
   it('melder fra om valgt sak', async () => {
     const onChange = vi.fn()
-    render(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={onChange} />)
+    render(
+      <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={onChange} />
+    )
 
     await userEvent.click(screen.getByRole('radio', { name: /Velg sak 9901/ }))
 
@@ -168,7 +168,9 @@ describe('KobleTilSakKort', () => {
 
   it('melder fra om Generell sak som valgt sak', async () => {
     const onChange = vi.fn()
-    render(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={onChange} />)
+    render(
+      <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={onChange} />
+    )
 
     await userEvent.click(screen.getByRole('radio', { name: 'Velg Generell sak' }))
 
@@ -187,8 +189,9 @@ describe('KobleTilSakKort', () => {
     })
 
     try {
-      renderMedPerson(
+      renderInternal(
         <KobleTilSakKort
+          brukerFnr={brukerFnr}
           saker={[lagSak('9901'), lagSak('9902', 'IT01')]}
           isLoading={false}
           valgtSak={null}
@@ -247,7 +250,10 @@ describe('KobleTilSakKort', () => {
     const fetcher = vi.fn(async (url: string) => (url.endsWith('/kommentarer') ? kommentarer : undefined))
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />, fetcher)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />,
+        fetcher
+      )
       await waitFor(() => expect(post.mock.calls.some(([url]) => url === '/api/oppgaver/sok')).toBe(true))
       expect(fetcher).not.toHaveBeenCalledWith('/api/oppgaver/oppgave-9901/kommentarer')
 
@@ -275,7 +281,9 @@ describe('KobleTilSakKort', () => {
     const post = mockHttpPost([], () => lagOppgaveRespons([utenBehandlingstype]))
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
+      )
       await åpneSakskort('Hjelpemidler')
 
       const kort = screen.getByRole('radio', { name: /Velg sak 9901/ }).closest('section') as HTMLElement
@@ -292,7 +300,9 @@ describe('KobleTilSakKort', () => {
     })
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
+      )
       await åpneSakskort('Hjelpemidler')
 
       expect(await screen.findByText('Journalpost beholdes')).toBeInTheDocument()
@@ -311,7 +321,10 @@ describe('KobleTilSakKort', () => {
     })
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />, fetcher)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />,
+        fetcher
+      )
       await åpneSakskort('Hjelpemidler')
 
       const kort = screen.getByRole('radio', { name: /Velg sak 9901/ }).closest('section') as HTMLElement
@@ -328,7 +341,9 @@ describe('KobleTilSakKort', () => {
     const post = mockHttpPost()
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
+      )
       await åpneSakskort('Hjelpemidler')
 
       expect(screen.queryByText('Gjelder:')).not.toBeInTheDocument()
@@ -339,7 +354,9 @@ describe('KobleTilSakKort', () => {
 
   it('begrenser listen og lar brukeren vise alle saker', async () => {
     const saker = Array.from({ length: MAKS_SAKER_SYNLIG + 2 }, (_, nr) => lagSak(`sak-${nr}`))
-    render(<KobleTilSakKort saker={saker} isLoading={false} valgtSak={null} onChange={() => {}} />)
+    render(
+      <KobleTilSakKort brukerFnr={brukerFnr} saker={saker} isLoading={false} valgtSak={null} onChange={() => {}} />
+    )
 
     expect(screen.getAllByRole('radio')).toHaveLength(MAKS_SAKER_SYNLIG + 1)
 
@@ -354,7 +371,9 @@ describe('KobleTilSakKort', () => {
     const saker = Array.from({ length: MAKS_SAKER_SYNLIG + 1 }, (_, nr) => lagSak(`sak-${nr}`))
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={saker} isLoading={false} valgtSak={null} onChange={() => {}} />)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={saker} isLoading={false} valgtSak={null} onChange={() => {}} />
+      )
 
       await waitFor(() => expect(post.mock.calls.filter(([url]) => url === '/api/dokumenter/sok')).toHaveLength(1))
       await userEvent.click(screen.getByRole('button', { name: `Vis alle (${saker.length})` }))
@@ -376,8 +395,9 @@ describe('KobleTilSakKort', () => {
     ])
 
     try {
-      renderMedPerson(
+      renderInternal(
         <KobleTilSakKort
+          brukerFnr={brukerFnr}
           saker={[lagSak('9901'), lagSak('9901', 'IT01')]}
           isLoading={false}
           valgtSak={null}
@@ -414,7 +434,9 @@ describe('KobleTilSakKort', () => {
     ])
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
+      )
       await åpneSakskort('Hjelpemidler')
 
       expect(await screen.findByText('Første dokument')).toBeInTheDocument()
@@ -458,8 +480,8 @@ describe('KobleTilSakKort', () => {
     }
 
     try {
-      renderMedPerson(
-        <KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />,
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />,
         async () => undefined,
         { '/api/sak/9901/behovsmelding': behovsmelding }
       )
@@ -493,7 +515,10 @@ describe('KobleTilSakKort', () => {
     const fetcher = vi.fn(async () => ({ isDigitalBehovsmelding: false }))
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />, fetcher)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />,
+        fetcher
+      )
       expect(fetcher).not.toHaveBeenCalled()
 
       await åpneSakskort('Hjelpemidler')
@@ -508,8 +533,14 @@ describe('KobleTilSakKort', () => {
     const fetcher = vi.fn(async () => ({}))
 
     try {
-      renderMedPerson(
-        <KobleTilSakKort saker={[lagSak('12', 'IT01')]} isLoading={false} valgtSak={null} onChange={() => {}} />,
+      renderInternal(
+        <KobleTilSakKort
+          brukerFnr={brukerFnr}
+          saker={[lagSak('12', 'IT01')]}
+          isLoading={false}
+          valgtSak={null}
+          onChange={() => {}}
+        />,
         fetcher
       )
       await åpneSakskort('Infotrygd')
@@ -524,7 +555,9 @@ describe('KobleTilSakKort', () => {
     const post = mockHttpPost()
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
+      )
       await åpneSakskort('Hjelpemidler')
 
       expect(await screen.findByText('Ingen dokumenter funnet for denne saken.')).toBeInTheDocument()
@@ -542,7 +575,9 @@ describe('KobleTilSakKort', () => {
     })
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+      renderInternal(
+        <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
+      )
       await åpneSakskort('Hjelpemidler')
 
       expect(await screen.findByText('Kunne ikke hente journalposter for saken.')).toBeInTheDocument()
@@ -558,7 +593,15 @@ describe('KobleTilSakKort', () => {
     const sakMedStatus = { ...énSak[0], saksstatus: Saksstatus.MOTTATT }
 
     try {
-      renderMedPerson(<KobleTilSakKort saker={[sakMedStatus]} isLoading={false} valgtSak={null} onChange={onChange} />)
+      renderInternal(
+        <KobleTilSakKort
+          brukerFnr={brukerFnr}
+          saker={[sakMedStatus]}
+          isLoading={false}
+          valgtSak={null}
+          onChange={onChange}
+        />
+      )
       const åpneSak = screen.getByRole('link', { name: 'Åpne, sak 9901, i ny fane' })
       expect(åpneSak).toBeVisible()
       expect(åpneSak).toHaveTextContent('Åpne')
@@ -585,7 +628,9 @@ describe('KobleTilSakKort', () => {
   })
 
   it('viser Generell sak øverst uten metadata', () => {
-    render(<KobleTilSakKort saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />)
+    render(
+      <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
+    )
 
     const radioer = screen.getAllByRole('radio')
     expect(radioer[0]).toHaveAccessibleName('Velg Generell sak')
@@ -598,7 +643,15 @@ describe('KobleTilSakKort', () => {
 
   it('viser radio og tittel i egen rad over sakdetaljer og status/dato', () => {
     const sakMedStatus = { ...énSak[0], saksstatus: Saksstatus.MOTTATT }
-    render(<KobleTilSakKort saker={[sakMedStatus]} isLoading={false} valgtSak={null} onChange={() => {}} />)
+    render(
+      <KobleTilSakKort
+        brukerFnr={brukerFnr}
+        saker={[sakMedStatus]}
+        isLoading={false}
+        valgtSak={null}
+        onChange={() => {}}
+      />
+    )
 
     const radio = screen.getByRole('radio', { name: /Velg sak 9901/ })
     const heading = screen.getByRole('heading', { name: 'Hjelpemidler' })

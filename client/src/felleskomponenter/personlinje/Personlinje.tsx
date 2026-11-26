@@ -1,43 +1,25 @@
-import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
-import { Children, ReactNode, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router'
+import { HStack, Label, Skeleton, Tag } from '@navikt/ds-react'
+import { Children, ReactNode } from 'react'
 
 import { usePersonContext } from '../../personoversikt/PersonContext.tsx'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../../types/types.internal.ts'
 import { beregnAlder, formaterDato } from '../../utils/dato.ts'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../../utils/formater.ts'
-import { isLocal } from '../../utils/useMiljø.ts'
 import { Kopiknapp } from '../Kopiknapp.tsx'
+import { RouterLink } from '../RouterLink.tsx'
 import { Tekst } from '../typografi.tsx'
 import classes from './personlinje.module.css'
 
 export interface PersonlinjeProps {
+  loading: boolean
   person?: Person
   skjulTelefonnummer?: boolean
-  loading: boolean
 }
 
-export function Personlinje({ person, loading, skjulTelefonnummer = false }: PersonlinjeProps) {
+export function Personlinje(props: PersonlinjeProps) {
+  const { person, loading, skjulTelefonnummer = false } = props
+
   const { setFodselsnummer } = usePersonContext()
-  const navigate = useNavigate()
-  const sattFodselsnummer = useRef<string>(undefined)
-
-  useEffect(() => {
-    if (person?.fnr) {
-      setFodselsnummer(person.fnr)
-      sattFodselsnummer.current = person.fnr
-    }
-  }, [person?.fnr, setFodselsnummer])
-
-  useEffect(() => {
-    return () => {
-      // Tøm bare hvis ingen andre har byttet fødselsnummer siden, f.eks. et søk som navigerer bort herfra.
-      const satt = sattFodselsnummer.current
-      if (satt) {
-        setFodselsnummer((gjeldende) => (gjeldende === satt ? '' : gjeldende))
-      }
-    }
-  }, [setFodselsnummer])
 
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />
@@ -48,15 +30,10 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
     <Container>
       <Element>
         <Label
-          as={Link}
+          as={RouterLink}
+          to="/personoversikt/oppgaver"
+          onClick={() => fnr && setFodselsnummer(fnr)}
           size="small"
-          href="#"
-          onClick={(event) => {
-            event.preventDefault()
-            setFodselsnummer(fnr)
-            const to = isLocal() ? `/personoversikt/oppgaver?fnr=${fnr}` : '/personoversikt/oppgaver'
-            navigate(to)
-          }}
           aria-live="polite"
         >
           {fødselsdato ? `${formaterNavn(person)} (${beregnAlder(fødselsdato)} år)` : formaterNavn(person)}

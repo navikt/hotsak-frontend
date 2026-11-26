@@ -224,6 +224,7 @@ export function JournalføringSkjema({
                   Koble til eksisterende sak
                 </Heading>
                 <KobleTilSakKort
+                  brukerFnr={fodselsnummer}
                   saker={saker}
                   isLoading={sakerIsLoading}
                   error={sakerError}

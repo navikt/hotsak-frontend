@@ -1,6 +1,5 @@
-import { Fragment, useEffect, useMemo } from 'react'
-
 import { BodyShort, Box, HGrid } from '@navikt/ds-react'
+import { Fragment, useEffect, useMemo } from 'react'
 
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
 import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
@@ -22,14 +21,18 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
   const filterContext = useDataGridFilterContext<DokumentColumnField>()
   const [{ pageNumber, pageSize }, setPageRequest] = usePageRequest(50, 'dpn', 'dps')
   const { error, journalposter, pagination, totalElements, isLoading, isValidating, resetPageCursors } = useDokumentsøk(
-    {
-      fnr,
-      journalposttype: filterContext.journalposttype ? [...(filterContext.journalposttype.values as any)] : undefined,
-      fraDato: undefined, // selectedRange?.from?.toISOString(),
-      tilDato: undefined, // selectedRange?.to?.toISOString(),
-      pageNumber,
-      pageSize,
-    }
+    fnr
+      ? {
+          fnr,
+          journalposttype: filterContext.journalposttype
+            ? [...(filterContext.journalposttype.values as any)]
+            : undefined,
+          fraDato: undefined, // selectedRange?.from?.toISOString(),
+          tilDato: undefined, // selectedRange?.to?.toISOString(),
+          pageNumber,
+          pageSize,
+        }
+      : undefined
   )
   useEffect(() => {
     setPageRequest({ pageNumber: 1, pageSize: 50 })

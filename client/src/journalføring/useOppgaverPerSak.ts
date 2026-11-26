@@ -3,11 +3,11 @@ import { useMemo } from 'react'
 import { type Oppgave, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { useOppgavesøk } from '../oppgave/useOppgavesøk.ts'
 
-export function useOppgaverPerSak(fodselsnummer?: string) {
+export function useOppgaverPerSak(brukerId?: string) {
   const { data, error } = useOppgavesøk(
-    fodselsnummer
+    brukerId
       ? {
-          brukerId: fodselsnummer,
+          brukerId,
           statuskategori: Statuskategori.ÅPEN,
           oppgavetype: [Oppgavetype.BEHANDLE_SAK],
           pageNumber: 1,

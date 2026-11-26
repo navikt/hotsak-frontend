@@ -16,12 +16,12 @@
   align-items: stretch;
 }
 
-.eksperimentPanelGroup {
+.panelGroup {
   flex: 1;
   min-width: 0;
 }
 
-.eksperimentSidebarPanel {
+.sidebarPanel {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -31,7 +31,7 @@
   overflow: hidden;
 }
 
-.eksperimentSidebarPanel > * {
+.sidebarPanel > * {
   flex: 1;
   min-width: 0;
 }

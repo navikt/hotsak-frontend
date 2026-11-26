@@ -17,10 +17,10 @@ export function PanelTittel({
   return (
     <HStack justify="space-between" paddingInline={paddingInline} align={'center'}>
       <HStack gap="space-8" align="center">
+        {icon}
         <Heading level="1" size="xsmall" spacing={false}>
           {tittel}
         </Heading>
-        {icon && icon}
       </HStack>
 
       <HStack gap="space-8" align="center">

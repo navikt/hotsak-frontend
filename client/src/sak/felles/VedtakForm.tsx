@@ -241,7 +241,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                     }}
                     render={({ field, fieldState }) => (
                       <Textarea
-                        label="Kontaktopplysninger"
+                        label="Kontaktopplysninger til kommunen (5.17-skjema)"
                         size="small"
                         minRows={2}
                         maxLength={MAKS_LENGDE_KONTAKTOPPLYSNINGER}

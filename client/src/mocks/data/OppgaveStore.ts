@@ -15,12 +15,13 @@ import {
   Statuskategori,
 } from '../../oppgave/oppgaveTypes.ts'
 import { type EndreOppgaveRequest, type PatchOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
-import { Sakstype } from '../../types/types.internal.ts'
+import { Sakstype, SøknadslinjeType } from '../../types/types.internal.ts'
 import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import { KodeverkStore } from './KodeverkStore.ts'
+import { erLagretHjelpemiddelsak } from './lagSak.ts'
 import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
 import { Saksbehandlere } from './Saksbehandlere.ts'
 import { SakStore } from './SakStore'
@@ -69,7 +70,10 @@ export class OppgaveStore extends Dexie {
         if (sak.sakstype === Sakstype.BARNEBRILLER) {
           behandlingstema = { kode: '', term: 'Briller til barn' }
           behandlingstype = { kode: '', term: 'Søknad' }
-        } else if (sak.sakstype === Sakstype.TILSKUDD) {
+        } else if (
+          erLagretHjelpemiddelsak(sak) &&
+          sak.søknadslinjer?.some((linje) => linje.type === SøknadslinjeType.TILSKUDD_RIMELIGE_HJELPEMIDLER)
+        ) {
           const gjelder = this.kodeverkStore
             .finnBehandlingstema(BEHANDLINGSTEMA_TILSKUDD_SMÅHJELPEMIDLER)
             .find((it) => it.behandlingstype?.kode === BEHANDLINGSTYPE_DIGITAL_SØKNAD)

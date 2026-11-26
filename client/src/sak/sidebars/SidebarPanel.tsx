@@ -11,7 +11,7 @@ export interface SidebarPanelProps {
   loading?: false | string
   paddingInline?: BoxProps['paddingInline']
   paddingBlock?: BoxProps['paddingBlock']
-  children: ReactNode
+  children?: ReactNode
   icon?: ReactNode
 }
 

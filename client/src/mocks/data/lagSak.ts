@@ -11,6 +11,7 @@ import {
   SaksstatusKategori,
   Sakstype,
   StegType,
+  SøknadslinjeType,
 } from '../../types/types.internal.ts'
 import { BehovsmeldingCase } from './BehovsmeldingStore.ts'
 import { lagTilfeldigBosted } from './bosted.ts'
@@ -67,7 +68,7 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
       sakstype = Sakstype.BESTILLING
       break
     case BehovsmeldingType.SØKNAD:
-      sakstype = erTilskuddRimeligeHjelpemidler(behovsmelding) ? Sakstype.TILSKUDD : Sakstype.SØKNAD
+      sakstype = Sakstype.SØKNAD
       break
     default:
       throw new Error(`Ukjent behovsmeldingstype: ${behovsmeldingstype}`)
@@ -76,6 +77,9 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
     behovsmeldingCasePath,
     sakId: behovsmeldingCase.sakId,
     sakstype,
+    søknadslinjer: erTilskuddRimeligeHjelpemidler(behovsmelding)
+      ? [{ id: `${behovsmeldingCase.sakId}-1`, type: SøknadslinjeType.TILSKUDD_RIMELIGE_HJELPEMIDLER }]
+      : undefined,
     saksstatus: Saksstatus.AVVENTER_SAKSBEHANDLER,
     saksstatusGyldigFra: opprettet,
     statuskategori: SaksstatusKategori.ÅPEN,

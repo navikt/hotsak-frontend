@@ -1,7 +1,7 @@
 import { Box, Button, HStack, InlineMessage, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { formaterKontonummer } from '../../../../utils/formater'
-import { useKontonummer } from './useKontonummer'
+import { useKontonummer } from '../../../useKontonummer.ts'
 import { useSakId } from '../../../useSak.ts'
 
 export interface UtbetalingsmottakerProps {

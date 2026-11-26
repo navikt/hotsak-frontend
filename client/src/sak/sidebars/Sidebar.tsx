@@ -19,7 +19,7 @@ export interface SidebarProps {
   oppgave?: Saksbehandlingsoppgave
 }
 
-export function SidebarEksperiment({ oppgave }: SidebarProps) {
+export function Sidebar({ oppgave }: SidebarProps) {
   const { aktivSidebar } = useSakContext()
   const { sak } = useSak()
   useUtlånoversikt(sak?.data.bruker.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
@@ -37,6 +37,8 @@ export function SidebarEksperiment({ oppgave }: SidebarProps) {
             <Notater oppgave={oppgave} />
           </SidebarPanel>
         )
+      case SidebarValg.PENGESTØTTE:
+        return <SidebarPanel tittel="Pengestøtte" />
       case SidebarValg.OPPGAVER_OG_DOKUMENTER:
         return <OppgaverOgDokumenter />
       default:

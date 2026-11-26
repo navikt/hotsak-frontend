@@ -95,27 +95,13 @@ const columns: ReadonlyArray<DataGridColumn<SaksoversiktSak | SaksoversiktBarneb
     header: 'Sakstype',
     renderCell(row) {
       if (erSaksoversiktBarnebrillekrav(row)) {
-        return <Oppgaveetikett type={Sakstype.TILSKUDD} showLabel />
+        return <Oppgaveetikett type={Sakstype.BARNEBRILLER} showLabel />
       }
-      const erBarnebriller = row.sakstype === Sakstype.BARNEBRILLER
-
       if ((row as SaksoversiktSak).oppgaveId) {
-        return (
-          <Oppgaveetikett
-            type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}
-            labelLinkTo={`/oppgave/${row.oppgaveId}`}
-            showLabel
-          />
-        )
+        return <Oppgaveetikett type={row.sakstype} labelLinkTo={`/oppgave/${row.oppgaveId}`} showLabel />
       }
 
-      return (
-        <Oppgaveetikett
-          type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}
-          labelLinkTo={erBarnebriller ? `/sak/${row.sakId}` : `/sak/${row.sakId}`}
-          showLabel
-        />
-      )
+      return <Oppgaveetikett type={row.sakstype} labelLinkTo={`/sak/${row.sakId}`} showLabel />
     },
   },
   {

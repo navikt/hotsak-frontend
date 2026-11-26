@@ -44,8 +44,20 @@ export interface SakBase {
  * Sak for digital behovsmeldig pt.
  */
 export interface Sak extends SakBase {
-  sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD | Sakstype.TILSKUDD
+  sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
+  søknadslinjer?: Søknadslinje[]
   hast?: Hast
+}
+
+export interface Søknadslinje {
+  id: string
+  type: SøknadslinjeType
+}
+
+export enum SøknadslinjeType {
+  HJELPEMIDDEL = 'HJELPEMIDDEL',
+  TILBEHØR = 'TILBEHØR',
+  TILSKUDD_RIMELIGE_HJELPEMIDLER = 'TILSKUDD_RIMELIGE_HJELPEMIDLER',
 }
 
 export interface Barnebrillesak extends SakBase {
@@ -468,7 +480,6 @@ export enum Sakstype {
   BARNEBRILLER = 'BARNEBRILLER',
   BESTILLING = 'BESTILLING',
   SØKNAD = 'SØKNAD',
-  TILSKUDD = 'TILSKUDD',
 }
 
 export interface Saksbehandler extends Ansatt {}

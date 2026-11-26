@@ -1,21 +1,21 @@
-import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
-import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
-import { OppgaveDetails } from './OppgaveDetails.tsx'
-import { useOppgavelisteContext, useOppgavelisteSortChangeHandler } from './OppgavelisteContext.tsx'
-import { selectOppgaveId } from './oppgaveSelectors.ts'
-import { useOppgaveColumns } from './useOppgaveColumns.ts'
-import { type OppgaveFilterCounts, type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
-import { useOppgavelisteFiltrertHandler } from './useOppgavelistemetrikker.ts'
+import { DataGrid, type DataGridProps } from '../felleskomponenter/data/DataGrid'
+import type { Oppgave } from '../oppgave/oppgaveTypes'
+import { OppgaveDetails } from './OppgaveDetails'
+import { useOppgavelisteContext, useOppgavelisteSortChangeHandler } from './OppgavelisteContext'
+import { selectOppgaveId } from './oppgaveSelectors'
+import { useOppgaveColumns } from './useOppgaveColumns'
+import type { OppgaveFilterCounts, OppgaveFilterOptions } from './useOppgaveFilterOptions'
+import { useOppgavelisteFiltrertHandler } from './useOppgavelistemetrikker'
 
-export interface MedarbeidersOppgaverTableProps {
+export interface OppgaverTableProps extends Omit<DataGridProps<Oppgave, any>, 'rows' | 'columns' | 'keyFactory'> {
   oppgaver: ReadonlyArray<Oppgave>
   filterOptions: OppgaveFilterOptions
   filterCounts?: OppgaveFilterCounts
   loading?: boolean
 }
 
-export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps) {
-  const { oppgaver, filterOptions, filterCounts, loading } = props
+export function OppgaverTable(props: OppgaverTableProps) {
+  const { oppgaver, filterOptions, filterCounts, loading, ...rest } = props
   const columns = useOppgaveColumns(filterOptions, filterCounts)
   const { currentTab, sort, filterModus } = useOppgavelisteContext()
   const handleSortChange = useOppgavelisteSortChangeHandler()
@@ -37,6 +37,7 @@ export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps)
       filterMode={filterModus}
       stickyHeader
       zebraStripes
+      {...rest}
     />
   )
 }

@@ -10,22 +10,22 @@ import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 import { useTilbakemeldinger } from '../saksbilde/useTilbakemeldinger.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { Saksstatus, Sakstype } from '../types/types.internal.ts'
+import { OppgaveDetailsDokumenter } from './OppgaveDetailsDokumenter.tsx'
 import { OppgaveDetailsHjelpemidler } from './OppgaveDetailsHjelpemidler.tsx'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
 
 export interface OppgaveDetailsProps extends DataGridContentProps<Oppgave> {
-  visBruker?: boolean
   children?: ReactNode
 }
 
 export function OppgaveDetails(props: OppgaveDetailsProps) {
   const { row: oppgave, children } = props
   const oppgaveId = oppgave.oppgaveId
-  const { kategorisering, bruker, sak } = oppgave
+  const { kategorisering, bruker, sak, sakId } = oppgave
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
   const { id: saksbehandlerId } = useInnloggetAnsatt()
-  const visBruker = props.visBruker ?? oppgave.tildeltSaksbehandler?.id === saksbehandlerId
+  const visBruker = oppgave.tildeltSaksbehandler?.id === saksbehandlerId
 
   if (oppgave.sak?.saksstatus === Saksstatus.OVERFØRT_GOSYS) {
     return <OppgaveDetailsSakOverførtGosys sakId={oppgave.sakId} oppgaveUrl={oppgaveUrl} />
@@ -34,10 +34,7 @@ export function OppgaveDetails(props: OppgaveDetailsProps) {
   if (kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING) {
     return (
       <VStack gap="space-20">
-        <VStack gap="space-12">
-          {visBruker && <OppgaveDetailsBruker bruker={bruker} />}
-          <OppgaveDetailsItem label="Beskrivelse" value={oppgave.beskrivelse} />
-        </VStack>
+        <VStack gap="space-12">{visBruker && <OppgaveDetailsBruker bruker={bruker} />}</VStack>
       </VStack>
     )
   }
@@ -46,8 +43,8 @@ export function OppgaveDetails(props: OppgaveDetailsProps) {
     <VStack gap="space-20">
       <VStack gap="space-12">
         {visBruker && <OppgaveDetailsBruker bruker={bruker} />}
-        {sak?.søknadGjelder && <OppgaveDetailsItem label="Beskrivelse" value={sak?.søknadGjelder} />}
-        {sak?.sakstype !== Sakstype.BARNEBRILLER && <OppgaveDetailsHjelpemidler sakId={oppgave.sakId} />}
+        {sakId && <OppgaveDetailsDokumenter sakId={sakId} />}
+        {sak?.sakstype !== Sakstype.BARNEBRILLER && <OppgaveDetailsHjelpemidler sakId={sakId} />}
         {children}
         <OppgaveSisteKommentar oppgaveId={oppgave.oppgaveId} />
         <div>

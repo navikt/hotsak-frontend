@@ -12,6 +12,7 @@ import {
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
 } from '../../brev/brevTyper.ts'
+import { Journalposttype } from '../../dokument/dokumentTypes.ts'
 import { type JournalføringRequest } from '../../journalføring/journalføringTypes.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
@@ -32,7 +33,6 @@ import {
   type OppdaterVilkårRequest,
   type Sak,
   type Saksdokument,
-  SaksdokumentType,
   Saksstatus,
   SaksstatusKategori,
   Sakstype,
@@ -801,7 +801,7 @@ export class SakStore extends Dexie {
       await this.saksdokumenter.add({
         sakId,
         journalpostId,
-        type: SaksdokumentType.INNGÅENDE,
+        type: Journalposttype.INNGÅENDE,
         opprettet: nåIso(),
         saksbehandler,
         dokumentId: dokument.dokumentId,
@@ -818,7 +818,7 @@ export class SakStore extends Dexie {
     this.saksdokumenter.add({
       sakId,
       journalpostId: '123456789',
-      type: SaksdokumentType.UTGÅENDE,
+      type: Journalposttype.UTGÅENDE,
       brevkode: Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER,
       opprettet: nåIso(),
       saksbehandler: saksbehandler,

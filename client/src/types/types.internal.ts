@@ -1,3 +1,4 @@
+import type { Journalposttype, Journalstatus } from '../dokument/dokumentTypes.ts'
 import { OppgaveKodeverk } from '../oppgave/oppgaveTypes.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
 import type { Bydel, Enhet, HarPersonnavn, Kilde, Kommune, Personnavn } from './hotlibs.ts'
@@ -391,8 +392,8 @@ export interface Journalpost {
   kanal: OppgaveKodeverk
   fnrInnsender: string
   fnrBruker: string
-  journalstatus: JournalpostStatusType
-  journalposttype: 'I' | 'U' | 'N'
+  journalstatus: Journalstatus
+  journalposttype: Journalposttype
   dokumenter: Dokument[]
   innsynsregel: OppgaveKodeverk
   innsender: FødselsnummerOgNavn
@@ -425,12 +426,6 @@ export interface LogiskVedlegg {
   tittel: string
 }
 
-export enum SaksdokumentType {
-  INNGÅENDE = 'INNGÅENDE',
-  UTGÅENDE = 'UTGÅENDE',
-  NOTAT = 'NOTAT',
-}
-
 export enum Brevkode {
   INNHENTE_OPPLYSNINGER_BARNEBRILLER = 'innhente_opplysninger_barnebriller',
 }
@@ -438,7 +433,7 @@ export enum Brevkode {
 export interface Saksdokument {
   sakId: string
   journalpostId: string
-  type: SaksdokumentType
+  type: Journalposttype
   opprettet: string
   originalTekst?: SaksdokumentOriginalTekst
   dokumentId: string
@@ -466,21 +461,6 @@ export enum Sakstype {
 }
 
 export interface Saksbehandler extends Ansatt {}
-
-export enum JournalpostStatusType {
-  MOTTATT = 'MOTTATT',
-  JOURNALFOERT = 'JOURNALFOERT',
-  FERDIGSTILT = 'FERDIGSTILT',
-  EKSPEDERT = 'EKSPEDERT',
-  UNDER_ARBEID = 'UNDER_ARBEID',
-  FEILREGISTRERT = 'FEILREGISTRERT',
-  UTGAAR = 'UTGAAR',
-  AVBRUTT = 'AVBRUTT',
-  UKJENT_BRUKER = 'UKJENT_BRUKER',
-  RESERVERT = 'RESERVERT',
-  OPPLASTING_DOKUMENT = 'OPPLASTING_DOKUMENT',
-  UKJENT = 'UKJENT',
-}
 
 export enum Saksstatus {
   MOTTATT = 'MOTTATT',

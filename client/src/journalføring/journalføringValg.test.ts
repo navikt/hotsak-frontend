@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { type Journalpost, JournalpostStatusType } from '../types/types.internal.ts'
+import { Journalstatus } from '../dokument/dokumentTypes.ts'
+import { type Journalpost } from '../types/types.internal.ts'
 import { Sakstype } from './journalføringTypes.ts'
 import {
   byggDokumentPayload,
@@ -18,7 +19,7 @@ const journalpost: Journalpost = {
   kanal: { kode: 'SKAN_IM', term: 'Skanning' },
   fnrInnsender: '01010199999',
   fnrBruker: '01010199999',
-  journalstatus: JournalpostStatusType.MOTTATT,
+  journalstatus: Journalstatus.MOTTATT,
   journalposttype: 'I',
   dokumenter: [
     { journalpostId: 'journalpost-1', dokumentId: 'dokument-1', tittel: ' Første tittel ', logiskeVedlegg: [] },

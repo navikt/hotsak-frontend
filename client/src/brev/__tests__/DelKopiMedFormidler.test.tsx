@@ -33,13 +33,21 @@ describe('DelKopiMedFormidler', () => {
   })
 
   it('beholder frivillig kopi til formidler for andre brevmaler', async () => {
+    const user = userEvent.setup()
     render(<DelKopiMedFormidler brevId="brev-1" mottakere={{ brevmottakere: [] }} kanRedigere />)
     expect(screen.queryByRole('textbox', { name: 'Adresselinje 1' })).not.toBeInTheDocument()
 
-    await userEvent.setup().click(screen.getByRole('checkbox', { name: /Del kopi med formidler/ }))
+    const checkbox = screen.getByRole('checkbox', { name: /Del kopi med formidler/ })
+    await user.click(checkbox)
 
+    expect(checkbox).toBeChecked()
     expect(screen.getByRole('textbox', { name: 'Adresselinje 1' })).toBeVisible()
     expect(screen.getByRole('button', { name: 'Avbryt' })).toBeVisible()
+
+    await user.click(screen.getByRole('button', { name: 'Avbryt' }))
+
+    expect(checkbox).not.toBeChecked()
+    expect(screen.queryByRole('textbox', { name: 'Adresselinje 1' })).not.toBeInTheDocument()
   })
 
   it('lar ikke en eksisterende obligatorisk formidler velges bort', () => {

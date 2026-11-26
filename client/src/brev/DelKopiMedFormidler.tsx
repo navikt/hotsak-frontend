@@ -75,12 +75,17 @@ export function DelKopiMedFormidler({
       {erObligatoriskMottaker ? (
         <Tekst weight="semibold">Formidler er obligatorisk mottaker av brevet</Tekst>
       ) : (
-        <CheckboxGroup legend="Del kopi med formidler" hideLegend size="small">
+        <CheckboxGroup
+          legend="Del kopi med formidler"
+          hideLegend
+          size="small"
+          value={formidlerSomMottaker || visSkjema ? ['formidler'] : []}
+          onChange={(valgte: string[]) => handleFormidlerKopi(valgte.includes('formidler'))}
+        >
           <Checkbox
-            checked={!!formidlerSomMottaker || visSkjema}
+            value="formidler"
             disabled={isMutating || !kanRedigere}
             description={`Formidleren får kopien ${digitalBehovsmelding ? 'digitalt og som brev' : 'som brev'}.`}
-            onChange={(e) => handleFormidlerKopi(e.target.checked)}
           >
             <HStack gap="space-2">
               <Tekst weight="semibold">Del kopi med formidler</Tekst>

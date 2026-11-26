@@ -11,6 +11,10 @@ import { type Journalføringsoppgave, Oppgaveprioritet, Oppgavetype } from '../o
 import { type JournalføringSkjemaVerdier } from './journalføringTypes.ts'
 import { NySakSkjema } from './NySakSkjema.tsx'
 
+vi.mock('@unleash/toolbar/next', () => ({
+  useFlag: () => false,
+}))
+
 vi.mock('../oppgave/useKodeverkOppgave.ts', () => ({
   useGjelderOptions: () => [
     { label: 'Bare behandlingstema', value: 'ab0550|', searchTerms: 'bare behandlingstema' },

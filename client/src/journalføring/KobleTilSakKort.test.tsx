@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom/vitest'
 
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { cleanup, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { SWRConfig } from 'swr'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { http } from '../io/HttpClient.ts'
 import { HttpError } from '../io/HttpError.ts'
@@ -63,7 +63,9 @@ function renderInternal(
   fetcher: (url: string) => Promise<unknown> = async () => undefined,
   fallback?: Record<string, unknown>
 ) {
-  return render(<SWRConfig value={{ provider: () => new Map(), fetcher, fallback }}>{ui}</SWRConfig>)
+  return render(
+    <SWRConfig value={{ provider: () => new Map(), fetcher, fallback, shouldRetryOnError: false }}>{ui}</SWRConfig>
+  )
 }
 
 function mockHttpPost(
@@ -128,14 +130,23 @@ async function åpneSakskort(tittel: string) {
 }
 
 describe('KobleTilSakKort', () => {
+  beforeEach(() => {
+    mockHttpPost()
+  })
+
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
   it('viser lasteindikator mens sakene hentes', () => {
-    render(<KobleTilSakKort brukerFnr={brukerFnr} saker={[]} isLoading valgtSak={null} onChange={() => {}} />)
+    renderInternal(<KobleTilSakKort brukerFnr={brukerFnr} saker={[]} isLoading valgtSak={null} onChange={() => {}} />)
 
     expect(screen.getByText('Henter saker...', { selector: 'p' })).toBeInTheDocument()
   })
 
   it('viser feilmelding når hentingen feiler', () => {
-    render(
+    renderInternal(
       <KobleTilSakKort
         brukerFnr={brukerFnr}
         saker={[]}
@@ -150,14 +161,16 @@ describe('KobleTilSakKort', () => {
   })
 
   it('viser tom-melding når brukeren ikke har valgbare saker', () => {
-    render(<KobleTilSakKort brukerFnr={brukerFnr} saker={[]} isLoading={false} valgtSak={null} onChange={() => {}} />)
+    renderInternal(
+      <KobleTilSakKort brukerFnr={brukerFnr} saker={[]} isLoading={false} valgtSak={null} onChange={() => {}} />
+    )
 
     expect(screen.getByText('Ingen saker funnet for denne brukeren.')).toBeInTheDocument()
   })
 
   it('melder fra om valgt sak', async () => {
     const onChange = vi.fn()
-    render(
+    renderInternal(
       <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={onChange} />
     )
 
@@ -168,7 +181,7 @@ describe('KobleTilSakKort', () => {
 
   it('melder fra om Generell sak som valgt sak', async () => {
     const onChange = vi.fn()
-    render(
+    renderInternal(
       <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={onChange} />
     )
 
@@ -354,7 +367,7 @@ describe('KobleTilSakKort', () => {
 
   it('begrenser listen og lar brukeren vise alle saker', async () => {
     const saker = Array.from({ length: MAKS_SAKER_SYNLIG + 2 }, (_, nr) => lagSak(`sak-${nr}`))
-    render(
+    renderInternal(
       <KobleTilSakKort brukerFnr={brukerFnr} saker={saker} isLoading={false} valgtSak={null} onChange={() => {}} />
     )
 
@@ -628,7 +641,7 @@ describe('KobleTilSakKort', () => {
   })
 
   it('viser Generell sak øverst uten metadata', () => {
-    render(
+    renderInternal(
       <KobleTilSakKort brukerFnr={brukerFnr} saker={énSak} isLoading={false} valgtSak={null} onChange={() => {}} />
     )
 
@@ -643,7 +656,7 @@ describe('KobleTilSakKort', () => {
 
   it('viser radio og tittel i egen rad over sakdetaljer og status/dato', () => {
     const sakMedStatus = { ...énSak[0], saksstatus: Saksstatus.MOTTATT }
-    render(
+    renderInternal(
       <KobleTilSakKort
         brukerFnr={brukerFnr}
         saker={[sakMedStatus]}

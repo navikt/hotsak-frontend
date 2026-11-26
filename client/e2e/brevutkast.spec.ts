@@ -168,6 +168,10 @@ test.describe('Brevutkast', () => {
     )
     await page.reload()
     await ventPåSaksbilde(page)
+    const brevKnapp = page.getByRole('button', { name: 'Brev', exact: true })
+    if ((await brevKnapp.getAttribute('aria-pressed')) !== 'true') {
+      await brevKnapp.click()
+    }
     await page.getByRole('tab', { name: 'Nytt utkast' }).click()
     await page.getByRole('radio', { name: /Innhente opplysninger/i }).check()
     await page.getByRole('button', { name: 'Opprett utkast', exact: true }).click()

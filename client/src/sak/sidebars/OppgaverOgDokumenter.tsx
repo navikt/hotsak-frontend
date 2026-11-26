@@ -11,6 +11,7 @@ import { selectOppgaveId } from '../../oppgaveliste/oppgaveSelectors'
 import { dokumentColumns, journalpostKey } from '../../personoversikt/dokumentColumns'
 import { useSak } from '../../saksbilde/useSak'
 import { type Journalpost } from '../../types/types.internal'
+import { useMiljø } from '../../utils/useMiljø'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
 import {
   datoIntervallForFilter,
@@ -31,6 +32,7 @@ export function OppgaverOgDokumenter() {
   const [filter, setFilter] = useState<OppgaverOgDokumenterFilterValue>(OppgaverOgDokumenterFilter.SISTE_6_MND)
 
   const [søk, setSøk] = useState('')
+  const { erIkkeProd } = useMiljø()
 
   const fnr = sak?.data.bruker.fnr
 
@@ -129,17 +131,19 @@ export function OppgaverOgDokumenter() {
                 <option value={OppgaverOgDokumenterFilter.SISTE_2_UKER}>Siste 2 uker</option>
                 <option value={OppgaverOgDokumenterFilter.SISTE_6_MND}>Siste 6 måneder</option>
               </Select>
-              <div>
-                <Search
-                  label="Søk i viste rader"
-                  hideLabel={false}
-                  size="small"
-                  variant="simple"
-                  value={søk}
-                  onChange={setSøk}
-                  onClear={() => setSøk('')}
-                />
-              </div>
+              {erIkkeProd && (
+                <div>
+                  <Search
+                    label="Søk i viste rader"
+                    hideLabel={false}
+                    size="small"
+                    variant="simple"
+                    value={søk}
+                    onChange={setSøk}
+                    onClear={() => setSøk('')}
+                  />
+                </div>
+              )}
             </HStack>
             <Box paddingBlock="space-8">
               <Detail>

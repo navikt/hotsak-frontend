@@ -26,19 +26,18 @@ describe('byggHeaderHtml', () => {
     const html = byggHeaderHtml(metadata, '', formidler, Målform.BOKMÅL, true)
     expect(html).not.toContain('Kopi til')
     expect(html).toContain('med-formidlerkopi')
-    expect(html.indexOf('Kommunal hjelpemiddelformidler:')).toBeLessThan(html.indexOf('Saken gjelder:'))
+    expect(html).toMatch(/<dt>Sendt til:<\/dt>.*<dt>Saken gjelder:<\/dt>/s)
     expect(html).toContain('<dd>Ola Formidler</dd>')
   })
 
-  it('viser verge før formidler og bruker nynorsk-tekster', () => {
+  it('viser formidler før verge og bruker nynorsk-tekster', () => {
     const html = byggHeaderHtml(metadata, 'Verge Vergesen', formidler, Målform.NYNORSK, true)
-    expect(html.indexOf('Verje:')).toBeLessThan(html.indexOf('Kommunal hjelpemiddelformidlar:'))
-    expect(html.indexOf('Kommunal hjelpemiddelformidlar:')).toBeLessThan(html.indexOf('Saken gjeld:'))
+    expect(html).toMatch(/<dt>Sendt til:<\/dt>.*<dt>Verje:<\/dt>.*<dt>Saken gjeld:<\/dt>/s)
   })
 
   it('viser ingen formidlerlinje når formidler mangler', () => {
     const html = byggHeaderHtml(metadata, '', undefined, Målform.BOKMÅL, true)
-    expect(html).not.toContain('Kommunal hjelpemiddelformidler:')
+    expect(html).not.toContain('<dt>Sendt til:</dt>')
     expect(html).toContain('<dt>Navn:</dt>')
   })
 

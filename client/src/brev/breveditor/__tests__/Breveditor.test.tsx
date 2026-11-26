@@ -313,7 +313,7 @@ describe('Breveditor lagring av brevhodet', () => {
         '# Bruker: [auto_bruker_navn]\n\nSøknad gjelder [auto_bruker_navn]. Søknaden ble sendt inn [auto_dato_soknad_innsendt] av [auto_formidler_navn], som er [auto_formidler_stilling].',
     })
 
-    expect(screen.getByRole('heading', { name: 'Bruker: Kari Nordmann' })).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Bruker: Kari Nordmann')
     const brevtekst = screen.getByRole('textbox', { name: 'Breveditor' }).textContent
     expect(brevtekst).toContain('Søknad gjelder Kari Nordmann.')
     expect(brevtekst).toContain('Ola Formidler')

@@ -86,6 +86,7 @@ export const oppgaveColumns = {
     field: 'nytt',
     header: 'Nytt',
     width: 125,
+    experiment: true,
     filter: {
       options: new Set(),
       sortOptions: true,

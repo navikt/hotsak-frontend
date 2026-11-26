@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { SWRConfig } from 'swr'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { type Journalføringsoppgave } from '../../oppgave/oppgaveTypes'
+import { PersonContext } from '../../personoversikt/PersonContext'
 import { JournalføringSvartidsbrev } from '../JournalføringSvartidsbrev'
 
 vi.mock('../../brev/breveditor/versjonerte-brev-stilark/v1.less?raw', async () => {
@@ -15,10 +16,12 @@ vi.mock('../../brev/breveditor/versjonerte-brev-stilark/v1.less?raw', async () =
 function renderSkjema() {
   render(
     <SWRConfig value={{ provider: () => new Map() }}>
-      <JournalføringSvartidsbrev
-        oppgave={{ oppgaveId: 'oppgave-1' } as Journalføringsoppgave}
-        mottattDato="2026-09-18"
-      />
+      <PersonContext value={{ fodselsnummer: '', setFodselsnummer: vi.fn() }}>
+        <JournalføringSvartidsbrev
+          oppgave={{ oppgaveId: 'oppgave-1' } as Journalføringsoppgave}
+          mottattDato="2026-09-18"
+        />
+      </PersonContext>
     </SWRConfig>
   )
 }

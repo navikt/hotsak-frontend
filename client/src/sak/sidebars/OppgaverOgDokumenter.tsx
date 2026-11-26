@@ -1,4 +1,4 @@
-import { Box, Detail, Select, Tabs, VStack } from '@navikt/ds-react'
+import { Box, Detail, HStack, Search, Select, Tabs, VStack } from '@navikt/ds-react'
 import { useMemo, useState } from 'react'
 
 import { JournalposttypeTag } from '../../dokument/DokumentTag'
@@ -14,6 +14,8 @@ import { type Journalpost } from '../../types/types.internal'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
 import {
   datoIntervallForFilter,
+  filtrerJournalposter,
+  filtrerOppgaver,
   OppgaverOgDokumenterFilter,
   OppgaverOgDokumenterFilterValue,
   OppgaverOgDokumenterTab,
@@ -27,6 +29,8 @@ export function OppgaverOgDokumenter() {
 
   const [currentTab, setCurrentTab] = useState<OppgaverOgDokumenterTab>(OppgaverOgDokumenterTabs.OPPGAVER)
   const [filter, setFilter] = useState<OppgaverOgDokumenterFilterValue>(OppgaverOgDokumenterFilter.SISTE_6_MND)
+
+  const [søk, setSøk] = useState('')
 
   const fnr = sak?.data.bruker.fnr
 
@@ -79,6 +83,11 @@ export function OppgaverOgDokumenter() {
   ).totalElements
 
   const alleOppgaver = oppgaverResponse.data?.oppgaver ?? ingenOppgaver
+  const oppgaver = useMemo(() => filtrerOppgaver(alleOppgaver, søk), [alleOppgaver, søk])
+  const journalposter = useMemo(
+    () => filtrerJournalposter(journalposterResponse.journalposter, søk),
+    [journalposterResponse.journalposter, søk]
+  )
 
   if (!sak) return null
 
@@ -88,7 +97,14 @@ export function OppgaverOgDokumenter() {
         <SidebarPanelHeading tittel="Oppgaver og dokumenter" />
       </SidebarPanelBox>
 
-      <Tabs value={currentTab} size="small" onChange={(value) => setCurrentTab(value as OppgaverOgDokumenterTab)}>
+      <Tabs
+        value={currentTab}
+        size="small"
+        onChange={(value) => {
+          setCurrentTab(value as OppgaverOgDokumenterTab)
+          setSøk('')
+        }}
+      >
         <VStack gap="space-12">
           <Tabs.List>
             <Tabs.Tab value={OppgaverOgDokumenterTabs.OPPGAVER} label={`Oppgaver (${totaleOppgaver})`} />
@@ -96,32 +112,40 @@ export function OppgaverOgDokumenter() {
           </Tabs.List>
 
           <Box width="fit-content" paddingInline="space-8">
-            <Select
-              label="Tidsperiode"
-              hideLabel
-              size="small"
-              value={filter}
-              onChange={(event) => {
-                setFilter(event.target.value as OppgaverOgDokumenterFilterValue)
-                setPageRequestOppgaver(DEFAULT_PAGE_REQUEST)
-                setPageRequestDokumenter(DEFAULT_PAGE_REQUEST)
-                journalposterResponse.resetPageCursors()
-              }}
-            >
-              <option value={OppgaverOgDokumenterFilter.ALLE}>Vis alle</option>
-              <option value={OppgaverOgDokumenterFilter.SISTE_2_UKER}>Siste 2 uker</option>
-              <option value={OppgaverOgDokumenterFilter.SISTE_6_MND}>Siste 6 måneder</option>
-            </Select>
+            <HStack gap="space-12">
+              <Select
+                label="Tidsperiode"
+                size="small"
+                value={filter}
+                onChange={(event) => {
+                  setFilter(event.target.value as OppgaverOgDokumenterFilterValue)
+                  setSøk('')
+                  setPageRequestOppgaver(DEFAULT_PAGE_REQUEST)
+                  setPageRequestDokumenter(DEFAULT_PAGE_REQUEST)
+                  journalposterResponse.resetPageCursors()
+                }}
+              >
+                <option value={OppgaverOgDokumenterFilter.ALLE}>Vis alle</option>
+                <option value={OppgaverOgDokumenterFilter.SISTE_2_UKER}>Siste 2 uker</option>
+                <option value={OppgaverOgDokumenterFilter.SISTE_6_MND}>Siste 6 måneder</option>
+              </Select>
+              <div>
+                <Search
+                  label="Søk i viste rader"
+                  hideLabel={false}
+                  size="small"
+                  variant="simple"
+                  value={søk}
+                  onChange={setSøk}
+                  onClear={() => setSøk('')}
+                />
+              </div>
+            </HStack>
             <Box paddingBlock="space-8">
               <Detail>
-                Viser{' '}
-                {currentTab === OppgaverOgDokumenterTabs.OPPGAVER
-                  ? `${oppgaverResponse.totalElements} `
-                  : `${journalposterResponse.totalElements} `}
-                av{' '}
-                {currentTab === OppgaverOgDokumenterTabs.OPPGAVER
-                  ? `${totaleOppgaver} oppgaver`
-                  : `${totaleDokumenter} dokumenter`}
+                {søk.trim()
+                  ? `${currentTab === OppgaverOgDokumenterTabs.OPPGAVER ? oppgaver.length : journalposter.length} treff i viste rader`
+                  : `Viser ${currentTab === OppgaverOgDokumenterTabs.OPPGAVER ? oppgaverResponse.totalElements : journalposterResponse.totalElements} av ${currentTab === OppgaverOgDokumenterTabs.OPPGAVER ? `${totaleOppgaver} oppgaver` : `${totaleDokumenter} dokumenter`}`}
               </Detail>
             </Box>
           </Box>
@@ -129,7 +153,7 @@ export function OppgaverOgDokumenter() {
           <Tabs.Panel value={OppgaverOgDokumenterTabs.OPPGAVER}>
             <SidebarPanel tittel="" error={oppgaverResponse.error && 'Feil ved henting av oppgaver.'} spacing={false}>
               <DataGrid
-                rows={alleOppgaver}
+                rows={oppgaver}
                 columns={oppgaveCols}
                 renderContent={OppgaveDetailsSaksbilde}
                 keyFactory={selectOppgaveId}
@@ -150,7 +174,7 @@ export function OppgaverOgDokumenter() {
               spacing={false}
             >
               <DataGrid
-                rows={journalposterResponse.journalposter}
+                rows={journalposter}
                 columns={dokumentCols}
                 keyFactory={journalpostKey}
                 size="small"

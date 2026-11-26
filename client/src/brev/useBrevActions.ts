@@ -11,8 +11,10 @@ import {
   type FerdigstillBrevutkastRequest,
   type OppdaterBrevutkastRequest,
   type OpprettBrevutkastRequest,
+  type SendUnderveisbrevRequest,
 } from './brevTyper.ts'
 import { brevKeyOf, useMutateBrevForSak, useMutateBrevPdf } from './useBrev.ts'
+import { mutateOppgave } from '../oppgave/useOppgave.ts'
 
 export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: SaksbehandlingsoppgaveBase, brevId?: string) {
   const { oppgaveId = '', versjon, sakId } = oppgave ?? {}
@@ -96,6 +98,36 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     }
   )
 
+  const sendUnderveisBrev = useSWRMutation<
+    void,
+    HttpError,
+    HttpAcceptKey | null,
+    Omit<SendUnderveisbrevRequest, 'oppgaveId'>
+  >(
+    brevKey,
+    async ([url], { arg }) => {
+      await http.post<SendUnderveisbrevRequest>(`${url}/distribusjon`, { ...arg, oppgaveId }, { versjon })
+    },
+    {
+      async onSuccess() {
+        await mutateOppgave(oppgaveId)
+        await mutateBehandlingOgBrevForSak(sakId!)
+      },
+    }
+  )
+
+  const angreUnderveisBrev = useSWRMutation<void, HttpError, HttpAcceptKey | null>(
+    brevKey,
+    async ([url]) => {
+      await http.post(`${url}/angring`, { oppgaveId }, { versjon })
+    },
+    {
+      async onSuccess() {
+        await mutateBehandlingOgBrevForSak(sakId!)
+      },
+    }
+  )
+
   return {
     opprettBrevutkast,
     oppdaterBrevutkast,
@@ -103,6 +135,8 @@ export function useBrevActions<T extends Brevdata = Brevdata>(oppgave?: Saksbeha
     forhåndsvisBrev,
     ferdigstillBrevutkast,
     redigerBrevutkast,
+    sendUnderveisBrev,
+    angreUnderveisBrev,
   }
 }
 

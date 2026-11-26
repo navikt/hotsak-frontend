@@ -2,6 +2,7 @@ import { Button, HStack, Tag } from '@navikt/ds-react'
 
 import { StickyHStack } from '../felleskomponenter/StickyHStack.tsx'
 import { OppgaveModalType, useOppgaveÅpneModalHandler } from '../oppgave/OppgaveContext.ts'
+import { SvartidsbrevValg } from './journalføringTypes.ts'
 
 interface JournalføringHandlingerProps {
   kanRedigere: boolean
@@ -9,6 +10,7 @@ interface JournalføringHandlingerProps {
   sakType: 'ny' | 'eksisterende'
   isJournalfører: boolean
   onJournalfør(): void
+  svartidsbrevValg: SvartidsbrevValg | null
 }
 
 export function JournalføringHandlinger({
@@ -17,6 +19,7 @@ export function JournalføringHandlinger({
   sakType,
   isJournalfører,
   onJournalfør,
+  svartidsbrevValg,
 }: JournalføringHandlingerProps) {
   const åpneModal = useOppgaveÅpneModalHandler()
 
@@ -33,7 +36,11 @@ export function JournalføringHandlinger({
               disabled={isJournalfører}
               onClick={onJournalfør}
             >
-              {sakType === 'eksisterende' ? 'Journalfør og koble til sak' : 'Journalfør og opprett sak'}
+              {sakType === 'eksisterende'
+                ? 'Journalfør og koble til sak'
+                : svartidsbrevValg
+                  ? 'Journalfør, opprett sak og send brev'
+                  : 'Journalfør og opprett sak'}
             </Button>
             <Button
               type="button"

@@ -339,6 +339,17 @@ export interface Hendelse {
   opprettet: string
   bruker?: string
   detaljer?: string
+  lenke?: SakshistorikkLenke
+}
+
+export interface SakshistorikkLenke {
+  tittel: string
+  lenke: string
+  type: SakshistorikkLenkeType
+}
+
+export enum SakshistorikkLenkeType {
+  BREV = 'BREV',
 }
 
 export interface Varsel {

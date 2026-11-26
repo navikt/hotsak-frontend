@@ -1,3 +1,4 @@
+import type { Målform } from '../brev/brevTyper.ts'
 import type { Tema } from '../kodeverk/kodeverkTypes.ts'
 import type { Oppgaveprioritet, Oppgavetype, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 
@@ -75,6 +76,12 @@ export interface JournalføringSaksgrunnlag {
   mappeId?: string
 }
 
+export interface SvartidsbrevValg {
+  antallUker: number
+  målform: Målform
+  årsak: string
+}
+
 export interface JournalføringRequest {
   oppgaveId: string
   journalpostId: string
@@ -83,6 +90,11 @@ export interface JournalføringRequest {
   avsenderFnr: string
   overstyrInnsynsregler: OverstyrInnsynsregler
   saksgrunnlag?: JournalføringSaksgrunnlag
+  svartidsbrev?: {
+    antallUker: string
+    målform: Målform
+    årsak?: string
+  }
   sak?: {
     sakstype: Sakstype
     fagsakId?: string

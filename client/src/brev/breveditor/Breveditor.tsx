@@ -9,22 +9,30 @@ import {
 } from '@platejs/basic-nodes/react'
 import { ListPlugin } from '@platejs/list-classic/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
-import type { History } from '@platejs/slate'
-import { KEYS, type Value } from 'platejs'
+import { KEYS } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePerson } from '../../personoversikt/usePerson.ts'
+import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
+import { type Behovsmelding } from '../../types/BehovsmeldingTypes.ts'
+import { formaterDatoLang } from '../../utils/dato.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useBrevContext } from '../BrevContext.ts'
-import { type Brevdata, type Målform } from '../brevTyper.ts'
+import { Mottakertype, type Målform } from '../brevTyper.ts'
 import { useBrevmottakere } from '../useBrev.ts'
 import { useSerienummer } from '../useSerienummer.ts'
 import './Breveditor.less'
 import { BreveditorContext } from './BreveditorContext.ts'
+import { type BreveditorState } from './breveditorTyper.ts'
 import { useBeforeUnload } from './hooks.ts'
 import { byggFullHtml, hentMålformTekster, type StilarkVersjon } from './html/byggDokument.ts'
 import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøylinje/FlytendeLinkVerktøylinjeKit.tsx'
-import { PlaceholderSpesielleVerdier } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
+import {
+  EMPTY_CHAR,
+  SpesiellePlaceholdere,
+  type PlaceholderSpesielleVerdier,
+} from './plugins/placeholder/parseTekstMedPlaceholders.ts'
+import { ELEMENT_PLACEHOLDER, type PlaceholderElement } from './plugins/placeholder/PlaceholderElement.ts'
 import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary/PlaceholderErrorSummary.tsx'
 import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
 import { TabSyncPlugin } from './plugins/tab-sync/TabSyncPlugin.tsx'
@@ -32,12 +40,6 @@ import { transformerPlaceholders } from './transformerPlaceholders.ts'
 import { useEditorScale } from './useEditorScale.ts'
 import { useLagreBrev } from './useLagreBrev.ts'
 import { Verktøylinje } from './verktøylinje/Verktøylinje.tsx'
-
-export interface BreveditorState extends Brevdata {
-  value: Value
-  valueAsHtml: string
-  history: History
-}
 
 export interface Metadata {
   brukersNavn: string
@@ -60,6 +62,14 @@ export interface BreveditorProps {
   onStateChange?(newState: BreveditorState): void
   onLagreBrev?(newState: BreveditorState, serienummer: number): Promise<void>
   placeholder?: string
+  spesiellePlaceholderVerdier?: PlaceholderSpesielleVerdier
+  formidlerErMottaker?: boolean
+}
+
+const EMPTY_CHAR_REGEX = new RegExp(EMPTY_CHAR, 'g')
+
+function hentSynligTekst(text: string): string {
+  return text.replace(EMPTY_CHAR_REGEX, '')
 }
 
 export function Breveditor(props: BreveditorProps) {
@@ -74,19 +84,36 @@ export function Breveditor(props: BreveditorProps) {
     onStateChange,
     onLagreBrev,
     placeholder,
+    spesiellePlaceholderVerdier,
+    formidlerErMottaker = false,
   } = props
-  const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
+  const { datoSoknadMottatt, hjelpemidlerSøktOm, flushLagringRef } = useBrevContext()
+  const { personInfo, isLoading: personLaster } = usePerson(metadata.brukersFødselsnummer)
+  const { data, isLoading: mottakereLaster } = useBrevmottakere(brevId)
+  const formidlerMedKopi = data?.brevmottakere.find((mottaker) => mottaker.mottakertype === Mottakertype.FORMIDLER)
+  const { personInfo: formidler, isLoading: formidlerLaster } = usePerson(formidlerMedKopi?.fnr)
+  const { behovsmelding } = useBehovsmelding<Behovsmelding>()
+  const formidlerNavn = formidler ? formaterNavn(formidler.navn) : (formidlerMedKopi?.navn ?? '')
+  const formidlerStilling = behovsmelding?.isDigitalBehovsmelding
+    ? (behovsmelding.levering.hjelpemiddelformidler.stilling ?? '')
+    : undefined
 
   const spesielleVerdier: PlaceholderSpesielleVerdier = {
     auto_dato_soknad_mottatt: datoSoknadMottatt
       ? new Date(datoSoknadMottatt).toLocaleDateString('no-NB', { day: '2-digit', month: 'long', year: 'numeric' })
       : undefined,
+    auto_bruker_navn: metadata.brukersNavn,
+    auto_dato_soknad_innsendt: behovsmelding?.innsendingsdato
+      ? formaterDatoLang(behovsmelding.innsendingsdato)
+      : undefined,
+    auto_formidler_stilling: formidlerStilling?.toLowerCase() || undefined,
     auto_hjelpemidler_innvilget: hjelpemidlerSøktOm,
     auto_hjelpemidler_avslått: hjelpemidlerSøktOm,
     auto_hjelpemidler_avslått_inline: hjelpemidlerSøktOm,
     auto_leveringstid: 'fem uker',
+    ...spesiellePlaceholderVerdier,
+    auto_formidler_navn: formidlerMedKopi?.navn || formidlerNavn || undefined,
   }
-
   const editor = usePlateEditor(
     {
       enabled: true as const,
@@ -138,6 +165,29 @@ export function Breveditor(props: BreveditorProps) {
     []
   )
 
+  // hvis formidlers navn etterfylles oppdateres placeholderne automatisk
+  useEffect(() => {
+    const verdi = spesielleVerdier.auto_formidler_navn
+    if (!verdi) return
+
+    const placeholders = Array.from(
+      editor.api.nodes({
+        at: [],
+        match: (node) =>
+          (node as PlaceholderElement).type === ELEMENT_PLACEHOLDER &&
+          (node as PlaceholderElement).autoVerdi === SpesiellePlaceholdere.FORMIDLER_NAVN,
+      })
+    ) as [PlaceholderElement, number[]][]
+
+    for (const [node, path] of placeholders) {
+      const tekst = node.children.map((child) => child.text).join('')
+      if (hentSynligTekst(tekst).length > 0) continue
+
+      const range = editor.api.range(path)
+      if (range) editor.tf.insertText(verdi, { at: range })
+    }
+  }, [spesielleVerdier.auto_formidler_navn, editor])
+
   // Diverse state
   const state = useRef<BreveditorState | undefined>(undefined)
   const nesteSerienummer = useSerienummer(brevId, initialSerienummer)
@@ -160,9 +210,24 @@ export function Breveditor(props: BreveditorProps) {
   }, [])
 
   const { widthScale, heightScale, widthRef, heightRef } = useEditorScale(visMarger)
-  const { endringsstatus, lagreMedDebounceOgRetry } = useLagreBrev(onLagreBrev)
-  const { personInfo } = usePerson(metadata.brukersFødselsnummer)
-  const vergemål = personInfo?.vergemål || []
+  const { endringsstatus, lagreMedDebounceOgRetry, flushLagring } = useLagreBrev(onLagreBrev)
+  useEffect(() => {
+    if (!flushLagringRef) return
+    flushLagringRef.current = flushLagring
+    return () => {
+      if (flushLagringRef.current === flushLagring) {
+        flushLagringRef.current = undefined
+      }
+    }
+  }, [flushLagringRef, flushLagring])
+  const visFormidlerSomMottaker = formidlerErMottaker && !!formidlerMedKopi
+  const brukerErKopimottaker =
+    data?.brevmottakere.some((mottaker) => mottaker.mottakertype === Mottakertype.BRUKER) ?? false
+  const vergeMottakere = data?.brevmottakere.filter((mottaker) => mottaker.mottakertype === Mottakertype.VERGE) ?? []
+  const vergemål = (personInfo?.vergemål || []).filter(
+    (verge) =>
+      !formidlerErMottaker || (verge.fnr != null && vergeMottakere.some((mottaker) => mottaker.fnr === verge.fnr))
+  )
   const harVerge = vergemål.length > 0
   const vergeNavn = vergemål
     .map((it) => it.navn)
@@ -170,11 +235,6 @@ export function Breveditor(props: BreveditorProps) {
     .map((navn) => formaterNavn(navn))
     .join(', ')
   const målformTekster = hentMålformTekster(målform)
-
-  // Kopi til formidler
-  const { data } = useBrevmottakere(brevId)
-  const formidlerMedKopi = data?.brevmottakere.find((mottaker) => mottaker.mottakertype === 'FORMIDLER')
-  const { personInfo: formidler } = usePerson(formidlerMedKopi?.fnr)
 
   // Stopp refresh/lukking av nettsiden hvis man har ulagrede endringer
   useBeforeUnload(
@@ -209,22 +269,49 @@ export function Breveditor(props: BreveditorProps) {
     [editor]
   )
 
-  // Ved mount: oppdater lagret HTML hvis metadata har endret seg (f.eks. ny saksbehandler etter overføring)
+  // Lagrer også endringer i brevhodet uten at brukeren må redigere teksten.
+  // Venter til person og mottakere er lastet, ellers mangler verge og formidler i HTML.
+  const klarTilSynkronisering = !personLaster && !mottakereLaster && !formidlerLaster
   useEffect(() => {
-    if (initialState?.value && onLagreBrev) {
-      const ferskHtml = byggFullHtml(metadata, initialState.value, stilarkVersjon, vergeNavn, målform)
-      if (initialState.valueAsHtml !== ferskHtml) {
-        const oppdatertState: BreveditorState = {
-          value: initialState.value,
-          valueAsHtml: ferskHtml,
-          history: initialState.history,
-        }
-        state.current = oppdatertState
-        onStateChange?.(oppdatertState)
-        lagreMedDebounceOgRetry(oppdatertState, nesteSerienummer())
-      }
+    if (!klarTilSynkronisering || !onLagreBrev) return
+
+    const value = editor.children
+    const ferskHtml = byggFullHtml(
+      metadata,
+      value,
+      stilarkVersjon,
+      vergeNavn,
+      målform,
+      formidlerMedKopi,
+      formidlerErMottaker,
+      brukerErKopimottaker
+    )
+    if ((state.current?.valueAsHtml ?? initialState?.valueAsHtml) === ferskHtml) return
+
+    const oppdatertState: BreveditorState = {
+      value,
+      valueAsHtml: ferskHtml,
+      history: editor.history,
     }
-  }, [])
+    state.current = oppdatertState
+    onStateChange?.(oppdatertState)
+    lagreMedDebounceOgRetry(oppdatertState, nesteSerienummer())
+  }, [
+    klarTilSynkronisering,
+    metadata,
+    stilarkVersjon,
+    vergeNavn,
+    målform,
+    formidlerMedKopi,
+    formidlerErMottaker,
+    brukerErKopimottaker,
+    editor,
+    initialState,
+    onLagreBrev,
+    onStateChange,
+    lagreMedDebounceOgRetry,
+    nesteSerienummer,
+  ])
 
   return (
     <BreveditorContext
@@ -246,7 +333,16 @@ export function Breveditor(props: BreveditorProps) {
           if ((onStateChange != null || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: BreveditorState = {
               value: nyVerdi,
-              valueAsHtml: byggFullHtml(metadata, nyVerdi, stilarkVersjon, vergeNavn, målform),
+              valueAsHtml: byggFullHtml(
+                metadata,
+                nyVerdi,
+                stilarkVersjon,
+                vergeNavn,
+                målform,
+                formidlerMedKopi,
+                formidlerErMottaker,
+                brukerErKopimottaker
+              ),
               history: changedEditor.history,
             }
             if (!state.current || state.current.value !== nyVerdi) {
@@ -266,21 +362,48 @@ export function Breveditor(props: BreveditorProps) {
                 <div style={{ scale: widthScale }} className="scaled-width">
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
-                      <div className="header">
+                      <div
+                        className={`header${(formidlerMedKopi && !formidlerErMottaker) || formidlerErMottaker ? ' med-formidlerkopi' : ''}`}
+                      >
                         <div className="header-row">
                           <dl>
+                            {visFormidlerSomMottaker && (
+                              <>
+                                <dt>{målformTekster.formidler}:</dt>
+                                <dd>{formidlerNavn}</dd>
+                                <br />
+                              </>
+                            )}
                             {harVerge && (
                               <>
                                 <dt>{målformTekster.verge}:</dt>
                                 <dd>{vergeNavn}</dd>
+                                <br />
                               </>
                             )}
-                            <dt> {harVerge ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
+                            <dt>
+                              {' '}
+                              {harVerge || visFormidlerSomMottaker ? målformTekster.sakenGjelder : målformTekster.navn}:
+                            </dt>
                             <dd>{metadata.brukersNavn}</dd>
                             <dt>{målformTekster.fødselsnummer}:</dt>
                             <dd>{metadata.brukersFødselsnummer}</dd>
                             <dt>{målformTekster.saksnummer}:</dt>
                             <dd>{metadata.saksnummer}</dd>
+                            {formidlerErMottaker && brukerErKopimottaker && (
+                              <>
+                                <br />
+                                <dt>{målformTekster.kopiTil}:</dt>
+                                <dd>{metadata.brukersNavn}</dd>
+                              </>
+                            )}
+                            {formidlerMedKopi && !formidlerErMottaker && (
+                              <>
+                                <br />
+                                <dt>{målformTekster.kopiTilHjelpemiddelformidler}:</dt>
+                                <dd>{formidlerNavn}</dd>
+                              </>
+                            )}
                           </dl>
                           <span>{metadata.brevOpprettet}</span>
                         </div>
@@ -305,13 +428,6 @@ export function Breveditor(props: BreveditorProps) {
                         />
                       </PlateContainer>
                       <p>
-                        {formidlerMedKopi && (
-                          <>
-                            {`Kopi til hjelpemiddelformidler: ${formaterNavn(formidler?.navn)}`}
-                            <br />
-                            <br />
-                          </>
-                        )}
                         {målformTekster.medVennligHilsen} <br />
                         {metadata.saksbehandlerNavn}
                         {metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />

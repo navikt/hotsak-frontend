@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import { createContext, type RefObject, useContext } from 'react'
 import { PlaceholderFeil } from './breveditor/plugins/placeholder/PlaceholderFeil'
 
 export interface BrevContextType {
@@ -8,6 +8,7 @@ export interface BrevContextType {
   setSynligKryssKnapp(synlig: boolean): void
   datoSoknadMottatt: string | undefined
   hjelpemidlerSøktOm: string[] | undefined
+  flushLagringRef?: RefObject<(() => Promise<void>) | undefined>
 }
 
 export const BrevContext = createContext<BrevContextType | undefined>(undefined)

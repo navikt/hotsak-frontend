@@ -1,5 +1,6 @@
 import { Value } from 'platejs'
-import { Målform } from '../../brevTyper.ts'
+import { formaterNavn } from '../../../utils/formater.ts'
+import { Brevmottaker, Målform } from '../../brevTyper.ts'
 import { Metadata } from '../Breveditor'
 import versjonertStilarkV1 from '../versjonerte-brev-stilark/v1.less?raw'
 import { serialiserTilHtml } from './serialiserTilHtml'
@@ -25,6 +26,7 @@ const MÅLFORMTEKSTER = {
   [Målform.BOKMÅL]: {
     lang: 'nb',
     verge: 'Verge',
+    formidler: 'Sendt til',
     sakenGjelder: 'Saken gjelder',
     navn: 'Navn',
     fødselsnummer: 'Fødselsnummer',
@@ -33,10 +35,13 @@ const MÅLFORMTEKSTER = {
     av: 'av',
     medVennligHilsen: 'Med vennlig hilsen',
     tittel: 'Vedtaksbrev fra Nav',
+    kopiTil: 'Kopi til',
+    kopiTilHjelpemiddelformidler: 'Kopi til kommunal hjelpemiddelformidler',
   },
   [Målform.NYNORSK]: {
     lang: 'nn',
     verge: 'Verje',
+    formidler: 'Sendt til',
     sakenGjelder: 'Saken gjeld',
     navn: 'Namn',
     fødselsnummer: 'Fødselsnummer',
@@ -45,6 +50,8 @@ const MÅLFORMTEKSTER = {
     av: 'av',
     medVennligHilsen: 'Med venleg helsing',
     tittel: 'Vedtaksbrev frå Nav',
+    kopiTil: 'Kopi til',
+    kopiTilHjelpemiddelformidler: 'Kopi til kommunal hjelpemiddelformidlar',
   },
 } as const satisfies Record<Målform, Record<string, string>>
 
@@ -52,20 +59,36 @@ export function hentMålformTekster(målform?: Målform) {
   return MÅLFORMTEKSTER[målform ?? Målform.BOKMÅL]
 }
 
-export function byggHeaderHtml(metadata: Metadata, vergeNavn?: string, målform?: Målform): string {
+export function byggHeaderHtml(
+  metadata: Metadata,
+  vergeNavn?: string,
+  formidlerMedKopi?: Brevmottaker,
+  målform?: Målform,
+  formidlerErMottaker = false,
+  brukerErKopimottaker = false
+): string {
   const målformTekster = hentMålformTekster(målform)
+  function escapeHtml(verdi: string): string {
+    return verdi.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  }
+  const formidlerNavn = escapeHtml(formaterNavn(formidlerMedKopi?.navn))
+  const brukersNavnSomKopimottaker = escapeHtml(metadata.brukersNavn)
+  const visFormidlerSomMottaker = formidlerErMottaker && !!formidlerMedKopi
   return (
-    `<header class="header">` +
+    `<header class="header${(formidlerMedKopi && !formidlerErMottaker) || formidlerErMottaker ? ' med-formidlerkopi' : ''}">` +
     NAV_LOGO_SVG +
     `<div class="header-row">
         <dl>
-          ${vergeNavn ? `<dt>${målformTekster.verge}:</dt><dd>${vergeNavn}</dd>` : ''}
-          <dt>${vergeNavn ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
+          ${visFormidlerSomMottaker ? `<dt>${målformTekster.formidler}:</dt><dd>${formidlerNavn}</dd><br />` : ''}
+          ${vergeNavn ? `<dt>${målformTekster.verge}:</dt><dd>${vergeNavn}</dd><br />` : ''}
+          <dt>${vergeNavn || visFormidlerSomMottaker ? målformTekster.sakenGjelder : målformTekster.navn}:</dt>
           <dd>${metadata.brukersNavn}</dd>
           <dt>${målformTekster.fødselsnummer}:</dt>
           <dd>${metadata.brukersFødselsnummer}</dd>
           <dt>${målformTekster.saksnummer}:</dt>
           <dd>${metadata.saksnummer}</dd>
+          ${formidlerErMottaker && brukerErKopimottaker ? `<br /><dt>${målformTekster.kopiTil}:</dt><dd>${brukersNavnSomKopimottaker}</dd>` : ''}
+          ${formidlerMedKopi && !formidlerErMottaker ? `<br /><dt>${målformTekster.kopiTilHjelpemiddelformidler}:</dt><dd>${formidlerNavn}</dd>` : ''}
         </dl>
         <span>${metadata.brevOpprettet}</span>
       </div>
@@ -88,7 +111,10 @@ export function byggFullHtml(
   nyVerdi: Value,
   stilarkVersjon: StilarkVersjon,
   vergeNavn?: string,
-  målform?: Målform
+  målform?: Målform,
+  formidlerMedKopi?: Brevmottaker,
+  formidlerErMottaker = false,
+  brukerErKopimottaker = false
 ): string {
   const stilark = hentStilark(stilarkVersjon)
   const målformTekster = hentMålformTekster(målform)
@@ -119,7 +145,7 @@ export function byggFullHtml(
           <style>${stilark}</style>
         </head>
         <body>` +
-    byggHeaderHtml(metadata, vergeNavn, målform) +
+    byggHeaderHtml(metadata, vergeNavn, formidlerMedKopi, målform, formidlerErMottaker, brukerErKopimottaker) +
     `<main>` +
     (serialiserTilHtml(nyVerdi) || '') +
     `</main>` +

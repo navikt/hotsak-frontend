@@ -13,21 +13,42 @@ import { addWeeks, formatISO, isAfter, parseISO } from 'date-fns'
 import { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
+import { useFlag } from '@unleash/toolbar/next'
 import { GjelderCombobox } from '../felleskomponenter/skjema/GjelderCombobox.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
-import { type JournalføringSkjemaVerdier, type SakstypeKode } from './journalføringTypes.ts'
-import { TilordneOppgave } from './TilordneOppgave.tsx'
-import classes from './JournalføringSkjema.module.css'
-import { OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel, Oppgaveprioritet } from '../oppgave/oppgaveTypes.ts'
-import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
+import {
+  type Journalføringsoppgave,
+  Oppgaveprioritet,
+  OppgaveprioritetLabel,
+  Oppgavetype,
+  OppgavetypeLabel,
+} from '../oppgave/oppgaveTypes.ts'
 import { stønadsklassifiseringData, stønadstype } from '../oppgave/stønadsklassifiseringData.ts'
+import { FeatureToggle } from '../unleash/FeatureToggle.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
+import { InlineRedigerbarDato, InlineRedigerbarSelect } from './InlineRedigerbareFelt.tsx'
+import classes from './JournalføringSkjema.module.css'
+import { JournalføringSvartidsbrev } from './JournalføringSvartidsbrev.tsx'
+import { type JournalføringSkjemaVerdier, type SakstypeKode, type SvartidsbrevValg } from './journalføringTypes.ts'
+import { TilordneOppgave } from './TilordneOppgave.tsx'
 
 interface NySakSkjemaProps {
   kanRedigere: boolean
   tildeltEnhet: string
+  oppgave: Journalføringsoppgave
+  onSvartidsbrevChange: (valg: SvartidsbrevValg | null) => void
+  visSvartidsbrevFeil?: boolean
+  erBarnebrilleSøknad: boolean
 }
 
-export function NySakSkjema({ kanRedigere, tildeltEnhet }: NySakSkjemaProps) {
+export function NySakSkjema({
+  kanRedigere,
+  tildeltEnhet,
+  oppgave,
+  onSvartidsbrevChange,
+  visSvartidsbrevFeil,
+  erBarnebrilleSøknad,
+}: NySakSkjemaProps) {
   const {
     watch,
     setValue,
@@ -70,6 +91,9 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet }: NySakSkjemaProps) {
   const valgtPrioritet = watch('prioritet')
   const valgtBehandlingstype = watch('behandlingstype')
   const valgtBehandlingstema = watch('behandlingstema')
+
+  const { erIkkeProd } = useMiljø()
+  const erPilot = useFlag(FeatureToggle.journalforing) || erIkkeProd
 
   return (
     <VStack gap="space-20">
@@ -220,6 +244,15 @@ export function NySakSkjema({ kanRedigere, tildeltEnhet }: NySakSkjemaProps) {
           )}
         />
       </TextContainer>
+
+      {!erBarnebrilleSøknad && erPilot && (
+        <JournalføringSvartidsbrev
+          oppgave={oppgave}
+          mottattDato={valgtMottattDato}
+          visÅrsakFeil={visSvartidsbrevFeil}
+          onChange={onSvartidsbrevChange}
+        />
+      )}
 
       <TilordneOppgave tildeltEnhet={tildeltEnhet} />
     </VStack>

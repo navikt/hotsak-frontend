@@ -26,9 +26,16 @@ import {
   Sakstype,
   type JournalføringResponse,
   type JournalføringSkjemaVerdier,
+  type SvartidsbrevValg,
   type TilordnetEnhet,
 } from './journalføringTypes.ts'
-import { byggJournalføringSak, byggSaksgrunnlag, lagSkjemaverdier as lagDefaultVerdier } from './journalføringValg.ts'
+import {
+  byggJournalføringSak,
+  byggSaksgrunnlag,
+  byggSvartidsbrev,
+  lagSkjemaverdier as lagDefaultVerdier,
+  svartidsbrevManglerÅrsak,
+} from './journalføringValg.ts'
 import { useDokumentredigering } from './useDokumentredigering.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
 import { erFagsak, useKobleTilSak, type Sakvalg } from './useKobleTilSak.ts'
@@ -53,6 +60,8 @@ export function JournalføringSkjema({
   const [valgtSakIdFeil, setValgtSakIdFeil] = useState<string | null>(null)
   const [journalføringResultat, setJournalføringResultat] = useState<JournalføringResponse | null>(null)
   const [tilordnetEnhet, setTilordnetEnhet] = useState<TilordnetEnhet>()
+  const [svartidsbrevValg, setSvartidsbrevValg] = useState<SvartidsbrevValg | null>(null)
+  const [visSvartidsbrevFeil, setVisSvartidsbrevFeil] = useState(false)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [avsenderFnr, setAvsenderFnr] = useState(journalpost.fnrInnsender)
 
@@ -90,6 +99,9 @@ export function JournalføringSkjema({
 
   async function journalførOgOpprettSak(verdier: JournalføringSkjemaVerdier) {
     if (!dokumentredigering.validerTitler()) return
+    if (svartidsbrevValg && svartidsbrevManglerÅrsak(svartidsbrevValg)) {
+      return
+    }
 
     const resultat = await journalfør.trigger({
       ...dokumentredigering.byggDokumentPayload(),
@@ -97,6 +109,7 @@ export function JournalføringSkjema({
       avsenderFnr,
       overstyrInnsynsregler: verdier.overstyrInnsynsregler as OverstyrInnsynsregler,
       saksgrunnlag: byggSaksgrunnlag(verdier, oppgave.tildeltEnhet.nummer, innloggetAnsattId),
+      svartidsbrev: svartidsbrevValg ? byggSvartidsbrev(svartidsbrevValg) : undefined,
     })
     if (resultat) {
       setTilordnetEnhet(verdier.tilordnetEnhet)
@@ -130,6 +143,9 @@ export function JournalføringSkjema({
       await journalførOgKobleTilSak()
     } else {
       dokumentredigering.visTittelfeilmeldinger()
+      if (svartidsbrevValg && svartidsbrevManglerÅrsak(svartidsbrevValg)) {
+        setVisSvartidsbrevFeil(true)
+      }
       await handleSubmit(journalførOgOpprettSak)()
     }
   }
@@ -222,7 +238,16 @@ export function JournalføringSkjema({
               </VStack>
             )}
 
-            {sakType === 'ny' && kanRedigere && <NySakSkjema kanRedigere={kanRedigere} tildeltEnhet={tildeltEnhet} />}
+            {sakType === 'ny' && kanRedigere && (
+              <NySakSkjema
+                kanRedigere={kanRedigere}
+                tildeltEnhet={tildeltEnhet}
+                oppgave={oppgave}
+                onSvartidsbrevChange={setSvartidsbrevValg}
+                visSvartidsbrevFeil={visSvartidsbrevFeil}
+                erBarnebrilleSøknad={erBarnebrilleSøknad}
+              />
+            )}
           </VStack>
 
           <JournalføringHandlinger
@@ -231,6 +256,7 @@ export function JournalføringSkjema({
             sakType={sakType}
             isJournalfører={isJournalfører}
             onJournalfør={onJournalfør}
+            svartidsbrevValg={svartidsbrevValg}
           />
         </form>
       </FormProvider>

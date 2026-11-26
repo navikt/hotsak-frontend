@@ -19,6 +19,11 @@ export function storForbokstavIAlleOrd(tekst?: string): string {
     .join('')
 }
 
+export function storeBokstaverIOrd(ord?: string): string {
+  if (!ord) return ''
+  return ord.toUpperCase()
+}
+
 export function formaterKontonummer(kontonummer?: string): string {
   if (!kontonummer) return ''
   return `${kontonummer.slice(0, 4)}.${kontonummer.slice(4, 6)}.${kontonummer.slice(6)}`
@@ -64,8 +69,9 @@ export function formaterBeløp(verdi?: number | string): string {
 
 export function formaterAdresse(verdi?: Veiadresse): string {
   if (!verdi) return ''
-  const { adresse, postnummer, poststed } = verdi
-  return `${storForbokstavIAlleOrd(adresse)}, ${postnummer} ${storForbokstavIAlleOrd(poststed)}`
+  const { adresselinje1, adresselinje2, adresselinje3, postnummer, poststed } = verdi
+  const linjer = [adresselinje1, adresselinje2, adresselinje3].filter(Boolean).map(storForbokstavIAlleOrd)
+  return `${linjer.join(', ')}, ${postnummer} ${storForbokstavIAlleOrd(poststed)}`
 }
 
 export function fjernMellomrom(verdi?: string): string {

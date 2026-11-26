@@ -1,5 +1,5 @@
 import { type Predicate } from '../utils/predicate'
-import { type Brev, Brevmal, Brevstatus } from './brevTyper'
+import { type Brev, BreveditorbrevUtenVedtak, Brevmal, Brevstatus } from './brevTyper'
 
 export function isBrevmal(brevmal: Brevmal): Predicate<Brev> {
   return (brev) => brev.brevmal === brevmal
@@ -18,9 +18,18 @@ export const isBrevstatusFerdigstilt: Predicate<Brev> = isBrevstatus(Brevstatus.
 export const isBrevstatusDistribuert: Predicate<Brev> = isBrevstatus(Brevstatus.DISTRIBUERT)
 
 export const isVedtaksbrev: Predicate<Brev> = isBrevmal(Brevmal.BREVEDITOR_VEDTAKSBREV)
+export const isBreveditorbrev: Predicate<Brev> = isBrevmalOneOf(
+  Brevmal.BREVEDITOR_VEDTAKSBREV,
+  ...BreveditorbrevUtenVedtak
+)
 
 export const isBrevmalBarnebrillerVedtak: Predicate<Brev> = isBrevmalOneOf(
   Brevmal.BARNEBRILLER_VEDTAK_INNVILGELSE,
   Brevmal.BARNEBRILLER_VEDTAK_AVSLAG,
   Brevmal.BARNEBRILLER_VEDTAK_AVSLAG_MANGLENDE_OPPLYSNINGER
 )
+
+// Formidler er alltid mottaker (ikke bare kopimottaker) av disse brevene
+export function erFormidlerAlltidMottaker(brevmal?: Brevmal): boolean {
+  return brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER
+}

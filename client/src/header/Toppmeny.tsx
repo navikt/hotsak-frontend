@@ -1,8 +1,9 @@
-import { MenuGridIcon, ThemeIcon } from '@navikt/aksel-icons'
+import { MenuGridIcon, SnowIcon, ThemeIcon } from '@navikt/aksel-icons'
 import { ActionMenu, HStack, InternalHeader } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 import { Link, type To, useLocation, useNavigate } from 'react-router'
 
+import { useFlag } from '@unleash/toolbar/next'
 import { HurtigtasterModal } from '../hotkeys/HurtigtasterModal.tsx'
 import { useGlobaleHotkeys } from '../hotkeys/useGlobaleHotkeys.ts'
 import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
@@ -10,13 +11,16 @@ import { usePersonContext } from '../personoversikt/PersonContext'
 import { useUmami } from '../sporing/useUmami.ts'
 import { AnsattGruppe } from '../tilgang/Ansatt.ts'
 import { useInnloggetAnsatt, useTilgangContext } from '../tilgang/useTilgang.ts'
+import { FeatureToggle } from '../unleash/FeatureToggle.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { useMiljø } from '../utils/useMiljø.ts'
 import { useIsLargeScreen } from '../utils/useViewportSize.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
+import { Snø } from './Snø.tsx'
 import { Søk } from './Søk'
 import classes from './Toppmeny.module.css'
 import { useDarkMode } from './useDarkMode.ts'
+import { useJulemodus } from './useJulemodus.ts'
 import { useModia } from './useModia.ts'
 
 export function Toppmeny() {
@@ -25,9 +29,12 @@ export function Toppmeny() {
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const erTeamdigihot = erMedlemAvEnAvGrupper(AnsattGruppe.TEAMDIGIHOT)
   const { erIkkeProd } = useMiljø()
+  const erPilot = useFlag(FeatureToggle.journalforing) || erIkkeProd
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const [darkMode, setDarkMode] = useDarkMode()
+  const [julemodus, setJulemodus] = useJulemodus()
+  const erOppgaveliste = useErOppgaveliste()
   const { logTemaByttet } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
@@ -48,6 +55,7 @@ export function Toppmeny() {
     <>
       <InternalHeader className={classes.root}>
         <InternalHeader.Title as="a" href="/" className={classes.title}>
+          {julemodus && <Julehatt />}
           Hotsak
         </InternalHeader.Title>
         <HStack justify="space-between" wrap={false} className={classes.navFlex}>
@@ -129,6 +137,11 @@ export function Toppmeny() {
               >
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
+              {erPilot && (
+                <ActionMenu.Item icon={<SnowIcon />} onSelect={() => setJulemodus(!julemodus)}>
+                  {julemodus ? 'Skru av julemodus' : 'Skru på julemodus'}
+                </ActionMenu.Item>
+              )}
             </ActionMenu.Group>
             {!isLargeScreen && (
               <ActionMenu.Group label="Tilbakemelding">
@@ -182,7 +195,23 @@ export function Toppmeny() {
         </ActionMenu>
       </InternalHeader>
       <HurtigtasterModal open={hurtigtaster.open} onClose={hurtigtaster.lukk} />
+      {julemodus && erOppgaveliste && <Snø />}
     </>
+  )
+}
+
+function useErOppgaveliste() {
+  const { pathname } = useLocation()
+  return pathname === '/' || pathname.startsWith('/oppgaver')
+}
+
+function Julehatt() {
+  return (
+    <svg className={classes.julehatt} viewBox="0 0 32 28" aria-hidden="true" focusable="false">
+      <path d="M4 22 C8 10, 18 2, 28 6 L24 14 L26 22 Z" fill="#c30000" />
+      <rect x="2" y="20" width="26" height="6" rx="3" fill="#fff" />
+      <circle cx="28" cy="6" r="3.5" fill="#fff" />
+    </svg>
   )
 }
 

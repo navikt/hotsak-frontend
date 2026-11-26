@@ -29,7 +29,7 @@ function OppgaveContent() {
   return (
     <>
       <Sidetittel tittel={`Oppgave ${oppgave.oppgaveId}`} />
-      <OppgaveProvider sakId={oppgave.sakId}>
+      <OppgaveProvider brukerFnr={oppgave.bruker?.fnr} sakId={oppgave.sakId}>
         <OppgavetypeSwitch oppgave={oppgave} />
       </OppgaveProvider>
     </>

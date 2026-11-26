@@ -137,6 +137,7 @@ test.describe('Brevutkast', () => {
   })
 
   test('oppretter innhentingsbrev uten bruker som standard og lar bruker velges', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 })
     const sakRespons = page.waitForResponse(
       (respons) => /^\/api\/sak\/[^/]+$/.test(new URL(respons.url()).pathname) && respons.request().method() === 'GET'
     )
@@ -202,19 +203,19 @@ test.describe('Brevutkast', () => {
     await innstillinger.getByRole('textbox', { name: 'Poststed' }).fill('OSLO')
     await innstillinger.getByRole('button', { name: 'Lagre mottaker', exact: true }).click()
     await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
-    await expect(innstillinger.getByText(/E2E gate 1/)).toBeVisible()
+    await expect(innstillinger.getByText(/E2E gate 1/i)).toBeVisible()
 
     await sendTilBruker.check()
     await expect(mottakere.getByText('Bruker', { exact: true })).toBeVisible()
     await expect(mottakere.getByText('Verge', { exact: true })).toHaveCount(1)
     await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
-    await expect(innstillinger.getByText(/E2E gate 1/)).toBeVisible()
+    await expect(innstillinger.getByText(/E2E gate 1/i)).toBeVisible()
 
     await sendTilBruker.uncheck()
     await expect(mottakere.getByText('Bruker', { exact: true })).toHaveCount(0)
     await expect(mottakere.getByText('Verge', { exact: true })).toHaveCount(0)
     await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
-    await expect(innstillinger.getByText(/E2E gate 1/)).toBeVisible()
+    await expect(innstillinger.getByText(/E2E gate 1/i)).toBeVisible()
   })
 
   test('kan ikke fatte vedtak med et brevutkast som ikke er ferdigstilt', async ({ page }) => {

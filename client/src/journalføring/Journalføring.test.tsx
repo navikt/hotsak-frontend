@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Fragment, type ReactNode, StrictMode, useState } from 'react'
 import { MemoryRouter } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -9,6 +10,7 @@ import { HttpError } from '../io/HttpError.ts'
 import { lagPerson } from '../mocks/data/PersonStore.ts'
 import { lagJournalpost } from '../mocks/data/lagJournalpost.ts'
 import { lagJournalføringsoppgave } from '../mocks/data/lagOppgave.ts'
+import { OppgaveProvider } from '../oppgave/OppgaveProvider.tsx'
 import { type Journalføringsoppgave, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { PersonContext, usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
@@ -75,11 +77,16 @@ function MedGammeltFødselsnummerIContext({ children, strict = true }: { childre
       <MemoryRouter>
         <PersonContext value={{ fodselsnummer, setFodselsnummer }}>
           <span data-context-fnr={fodselsnummer} />
-          {children}
+          <OppgaveProvider brukerFnr={journalpostensFnr}>{children}</OppgaveProvider>
         </PersonContext>
       </MemoryRouter>
     </Modus>
   )
+}
+
+function ByttBruker({ fnr }: { fnr: string }) {
+  const { setFodselsnummer } = usePersonContext()
+  return <button onClick={() => setFodselsnummer(fnr)}>Velg bruker B</button>
 }
 
 const lastPersonAsynkront = vi.mocked(usePerson).getMockImplementation()!
@@ -89,7 +96,7 @@ describe('Journalføring', () => {
     vi.mocked(usePerson).mockImplementation(lastPersonAsynkront)
   })
 
-  it('viser journalpostens bruker og bruker aldri fødselsnummeret fra forrige oppgave', async () => {
+  it('viser oppgavens bruker og bruker aldri fødselsnummeret fra overordnet context', async () => {
     render(
       <MedGammeltFødselsnummerIContext>
         <Journalføring
@@ -108,7 +115,7 @@ describe('Journalføring', () => {
     expect(skjemaFnr).not.toContain(fnrFraForrigeOppgave)
   })
 
-  it('bruker journalpostens bruker i personlinja når avsenderen har et annet fødselsnummer', async () => {
+  it('bruker oppgavens bruker i personlinja når avsenderen har et annet fødselsnummer', async () => {
     const jp = {
       ...lagJournalpost('9009', 'Søknad om hjelpemiddel', {
         brukerFnr: journalpostensFnr,
@@ -171,15 +178,12 @@ describe('Journalføring', () => {
     expect(screen.queryByText(`Skjema for ${journalpostensFnr}`)).not.toBeInTheDocument()
   })
 
-  it('bytter til bruker B når journalposten byttes fra A til B', async () => {
-    // Uten StrictMode: StrictMode kjører gatens effect på nytt etter cleanup og skjuler rekkefølgefeil.
+  it('oppdaterer personlinja og skjemaet når valgt bruker endres fra A til B', async () => {
+    const user = userEvent.setup()
     const fnrB = '03030399999'
-    const journalpostB = {
-      ...lagJournalpost('9007', 'Søknad om hjelpemidler', { brukerFnr: fnrB }),
-      dokumenter: [],
-    }
-    const { container, rerender } = render(
+    const { container } = render(
       <MedGammeltFødselsnummerIContext strict={false}>
+        <ByttBruker fnr={fnrB} />
         <Journalføring
           oppgave={oppgave}
           journalpost={journalpost}
@@ -192,16 +196,7 @@ describe('Journalføring', () => {
 
     skjemaFnr.length = 0
     vi.mocked(usePerson).mockClear()
-    rerender(
-      <MedGammeltFødselsnummerIContext strict={false}>
-        <Journalføring
-          oppgave={lagOppgave(journalpostB)}
-          journalpost={journalpostB}
-          mutateJournalpost={vi.fn()}
-          erBarnebrilleSøknad={false}
-        />
-      </MedGammeltFødselsnummerIContext>
-    )
+    await user.click(screen.getByRole('button', { name: 'Velg bruker B' }))
 
     expect(await screen.findByText('Fnr: 030303 99999')).toBeInTheDocument()
     expect(screen.getByText(`Skjema for ${fnrB}`)).toBeInTheDocument()

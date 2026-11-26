@@ -2,16 +2,16 @@ import { BodyShort, Box, Button, ErrorMessage, HStack, Loader, VStack } from '@n
 import { useState } from 'react'
 
 import { type HttpError } from '../io/HttpError.ts'
-import { usePersonContext } from '../personoversikt/PersonContext.tsx'
-import classes from './KobleTilSakKort.module.css'
-import { GOSYS_GENERELL_SAK, type Sakvalg } from './journalføringValg.ts'
 import { Sakstype } from './journalføringTypes.ts'
+import { GOSYS_GENERELL_SAK, type Sakvalg } from './journalføringValg.ts'
+import classes from './KobleTilSakKort.module.css'
 import { SakKort } from './SakKort.tsx'
 import { useJournalposterPerSak } from './useJournalposterPerSak.ts'
 import { MAKS_SAKER_SYNLIG, type SakvalgVisning } from './useKobleTilSak.ts'
 import { useOppgaverPerSak } from './useOppgaverPerSak.ts'
 
-interface KobleTilSakKortProps {
+export interface KobleTilSakKortProps {
+  brukerFnr: string
   saker: SakvalgVisning[]
   isLoading: boolean
   error?: HttpError
@@ -20,15 +20,15 @@ interface KobleTilSakKortProps {
   feilmelding?: string
 }
 
-export function KobleTilSakKort({ saker, isLoading, error, valgtSak, onChange, feilmelding }: KobleTilSakKortProps) {
+export function KobleTilSakKort(props: KobleTilSakKortProps) {
+  const { brukerFnr, saker, isLoading, error, valgtSak, onChange, feilmelding } = props
   const [visAlle, setVisAlle] = useState(false)
-  const { fodselsnummer } = usePersonContext()
-  const { oppgaverPerSak, oppgaverFeil } = useOppgaverPerSak(fodselsnummer)
+  const { oppgaverPerSak, oppgaverFeil } = useOppgaverPerSak(brukerFnr)
   const {
     journalposterPerSak,
     isLoading: journalposterLaster,
     error: journalposterFeil,
-  } = useJournalposterPerSak(fodselsnummer)
+  } = useJournalposterPerSak(brukerFnr)
   const synligeSaker = visAlle ? saker : saker.slice(0, MAKS_SAKER_SYNLIG)
   const harFlere = saker.length > MAKS_SAKER_SYNLIG
 

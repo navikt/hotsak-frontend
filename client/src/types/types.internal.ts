@@ -584,9 +584,9 @@ export interface Person extends HarPersonnavn {
   kjønn: Kjønn
   kommune?: Kommune
   bydel?: Bydel
+  vergemål?: Vergemål[]
   gradering?: Adressebeskyttelse
   isSkjermet: boolean
-  vergemål?: Vergemål[]
 }
 
 export interface Vergemål {

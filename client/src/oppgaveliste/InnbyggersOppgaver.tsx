@@ -23,14 +23,22 @@ export default function InnbyggersOppgaverWrapper({ fnr }: { fnr: string }) {
 function InnbyggersOppgaver({ brukerId }: { brukerId: string }) {
   const { currentTab } = useOppgavelisteContext()
   const ferdigstilte = currentTab === OppgaveToolbarTab.FERDIGSTILTE
-  const åpneOppgaver = useClientSideOppgaver({
-    statuskategori: Statuskategori.ÅPEN,
-    brukerId,
-  })
-  const ferdigstilteOppgaver = useClientSideOppgaver({
-    statuskategori: Statuskategori.AVSLUTTET,
-    brukerId,
-  })
+  const åpneOppgaver = useClientSideOppgaver(
+    brukerId
+      ? {
+          statuskategori: Statuskategori.ÅPEN,
+          brukerId,
+        }
+      : undefined
+  )
+  const ferdigstilteOppgaver = useClientSideOppgaver(
+    brukerId
+      ? {
+          statuskategori: Statuskategori.AVSLUTTET,
+          brukerId,
+        }
+      : undefined
+  )
   const { oppgaver, filterOptions, filterCounts, isLoading, antallViste } = ferdigstilte
     ? ferdigstilteOppgaver
     : åpneOppgaver

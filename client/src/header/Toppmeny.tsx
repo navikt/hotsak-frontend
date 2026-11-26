@@ -38,7 +38,7 @@ export function Toppmeny() {
     const fnrEllerSakId = fjernMellomrom(value)
     if (fnrEllerSakId.length === 11) {
       setFodselsnummer(fnrEllerSakId)
-      navigate('/personoversikt/saker')
+      navigate('/personoversikt/oppgaver')
     } else {
       navigate(`/sak/${fnrEllerSakId}`)
     }

@@ -32,7 +32,7 @@ import {
 
 const pageNumber = 1
 const pageSize = 1_000
-const ingenOppgaver: Oppgave[] = []
+const ingenOppgaver: never[] = []
 
 export interface UseClientSideOppgaverResponse {
   oppgaver: ReadonlyArray<Oppgave>
@@ -53,14 +53,18 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
   const { currentTab, sort } = useOppgavelisteContext()
   const { tildelt, ...rest } = request
 
-  const response = useOppgavesøk({
-    tildelt,
-    sorteringsfelt: sort.orderBy === 'opprettetTidspunkt' ? 'OPPRETTET_TIDSPUNKT' : 'FRIST',
-    sorteringsrekkefølge: sort.direction === 'descending' ? 'DESC' : 'ASC',
-    pageNumber,
-    pageSize,
-    ...rest,
-  })
+  const response = useOppgavesøk(
+    request.statuskategori || request.brukerId
+      ? {
+          tildelt,
+          sorteringsfelt: sort.orderBy === 'opprettetTidspunkt' ? 'OPPRETTET_TIDSPUNKT' : 'FRIST',
+          sorteringsrekkefølge: sort.direction === 'descending' ? 'DESC' : 'ASC',
+          pageNumber,
+          pageSize,
+          ...rest,
+        }
+      : undefined
+  )
   const alleOppgaver = response.data?.oppgaver ?? ingenOppgaver
 
   const filterState = useDataGridFilterContext<OppgaveColumnField>(currentTab)

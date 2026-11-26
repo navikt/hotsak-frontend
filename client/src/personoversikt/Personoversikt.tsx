@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router'
 
 import { AsyncBoundary } from '../felleskomponenter/AsyncBoundary.tsx'
 import { DataGridFilterProvider } from '../felleskomponenter/data/DataGridFilterProvider.tsx'
+import { DataGridProvider } from '../felleskomponenter/data/DataGridProvider.tsx'
 import { FeilmeldingAlert } from '../felleskomponenter/feil/FeilmeldingAlert.tsx'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { LasterPersonlinje, Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
@@ -21,7 +22,6 @@ import { PersonoversiktTabs } from './PersonoversiktTabs.tsx'
 import { Saksoversikt } from './Saksoversikt'
 import { usePerson } from './usePerson'
 import { useSaksoversikt } from './useSaksoversikt.ts'
-import { DataGridProvider } from '../felleskomponenter/data/DataGridProvider.tsx'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()

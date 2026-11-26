@@ -1,10 +1,11 @@
-import { ClockDashedIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, PersonEnvelopeIcon, SackKronerIcon } from '@navikt/aksel-icons'
 import { Box, Button, Tooltip, VStack } from '@navikt/ds-react'
 import { useEffect, useRef } from 'react'
 
 import { useOppgavekommentarerForSak } from '../../oppgave/kommentar/useOppgavekommentarer'
 import { type Saksbehandlingsoppgave } from '../../oppgave/oppgaveTypes'
 import { useSak } from '../../saksbilde/useSak'
+import { useSaksregler } from '../../saksregler/useSaksregler'
 import { NotaterIcon } from '../notat/NotaterIcon'
 import { UtlånsoversiktIcon } from '../notat/UtlånsoversiktIcon'
 import { useNotater } from '../notat/useNotater'
@@ -22,17 +23,26 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
   const sidePanel = panelState.panels.sidebarpanel
   const { antallNotater, harHentetNotater } = useNotater(sak?.data.sakId)
   const sidebarErInitialisert = useRef(false)
+  const { harTilskudd } = useSaksregler()
 
   const totaltAntall = antallNotater + antallKommentarer
 
   useEffect(() => {
-    if (!harHentetNotater || !harHentetKommentarer || sidebarErInitialisert.current) return
+    if (!sak || sidebarErInitialisert.current) return
+
+    if (harTilskudd) {
+      sidebarErInitialisert.current = true
+      setAktivSidebar(SidebarValg.PENGESTØTTE)
+      return
+    }
+
+    if (!harHentetNotater || !harHentetKommentarer) return
 
     sidebarErInitialisert.current = true
     if (totaltAntall > 0) {
       setAktivSidebar(SidebarValg.NOTATER)
     }
-  }, [totaltAntall, harHentetNotater, harHentetKommentarer, setAktivSidebar])
+  }, [sak, harTilskudd, totaltAntall, harHentetNotater, harHentetKommentarer, setAktivSidebar])
 
   function velgSidebar(sidebar: SidebarValg) {
     sidebarErInitialisert.current = true
@@ -77,6 +87,22 @@ export function VertikalIkonBar({ oppgave }: VertikalIkonBarProps) {
             icon={<UtlånsoversiktIcon />}
           />
         </Tooltip>
+        {harTilskudd && (
+          <Tooltip content="Pengestøtte" placement="left">
+            <Button
+              size="small"
+              variant="tertiary"
+              data-color="neutral"
+              style={
+                sidePanel.visible && aktivSidebar === SidebarValg.PENGESTØTTE
+                  ? { outline: '2px solid var(--ax-border-accent)', background: 'var(--ax-bg-accent-soft)' }
+                  : {}
+              }
+              onClick={() => velgSidebar(SidebarValg.PENGESTØTTE)}
+              icon={<SackKronerIcon title="Pengestøtte" />}
+            />
+          </Tooltip>
+        )}
         <Tooltip content="Notater" placement="left">
           <Button
             size="small"

@@ -47,11 +47,11 @@ function Label({ labelLinkTo, children }: LabelProps) {
   }
 }
 
-function LabelTag({ labelLinkTo, type, children }: { labelLinkTo?: string; type: Sakstype; children?: ReactNode }) {
+function LabelTag({ labelLinkTo, tekst, children }: { labelLinkTo?: string; tekst: string; children?: ReactNode }) {
   return (
     <HStack gap="space-8" wrap={false}>
       {children}
-      <Label labelLinkTo={labelLinkTo}>{storForbokstavIAlleOrd(type)}</Label>
+      <Label labelLinkTo={labelLinkTo}>{tekst}</Label>
     </HStack>
   )
 }
@@ -66,7 +66,7 @@ export function Oppgaveetikett({ type, showLabel = false, labelLinkTo }: Oppgave
   switch (type) {
     case Sakstype.SØKNAD:
       return showLabel ? (
-        <LabelTag labelLinkTo={labelLinkTo} type={type}>
+        <LabelTag labelLinkTo={labelLinkTo} tekst={storForbokstavIAlleOrd(type)}>
           <SøknadEtikett aria-hidden />
         </LabelTag>
       ) : (
@@ -74,15 +74,15 @@ export function Oppgaveetikett({ type, showLabel = false, labelLinkTo }: Oppgave
       )
     case Sakstype.BESTILLING:
       return showLabel ? (
-        <LabelTag labelLinkTo={labelLinkTo} type={type}>
+        <LabelTag labelLinkTo={labelLinkTo} tekst={storForbokstavIAlleOrd(type)}>
           <BestillingEtikett aria-hidden />
         </LabelTag>
       ) : (
         <BestillingEtikett aria-hidden />
       )
-    case Sakstype.TILSKUDD:
+    case Sakstype.BARNEBRILLER:
       return showLabel ? (
-        <LabelTag labelLinkTo={labelLinkTo} type={type}>
+        <LabelTag labelLinkTo={labelLinkTo} tekst="Tilskudd">
           <TilskuddEtikett aria-hidden />
         </LabelTag>
       ) : (

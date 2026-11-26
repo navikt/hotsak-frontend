@@ -30,7 +30,7 @@ export interface StickyBunnlinjeProps {
 export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps) {
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErPåVent } = useOppgaveregler(oppgave)
   const { gjeldendeBehandling } = useBehandling()
-  const { erBestilling } = useSaksregler()
+  const { erBestilling, harTilskudd } = useSaksregler()
 
   const knappevariant = useMemo(
     () =>
@@ -50,7 +50,7 @@ export function StickyBunnlinje({ oppgave, sak, onClick }: StickyBunnlinjeProps)
         ) : (
           oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
-              {velgKnappetekst(gjeldendeBehandling?.utfall)}
+              {velgKnappetekst(gjeldendeBehandling?.utfall, harTilskudd)}
             </Button>
           )
         )}
@@ -78,8 +78,8 @@ function Behandlingsutfall({ behandling }: { behandling: FerdigstiltBehandling }
   )
 }
 
-function velgKnappetekst(utfall?: Behandlingsutfall): string {
+function velgKnappetekst(utfall: Behandlingsutfall | undefined, harTilskudd: boolean): string {
   if (isBehandlingsutfallOverføring(utfall)) return 'Overfør til Gosys'
   if (utfall?.type === 'HENLEGGELSE') return 'Lukk saken'
-  return 'Fatt vedtak'
+  return harTilskudd ? 'Send til godkjenning' : 'Fatt vedtak'
 }

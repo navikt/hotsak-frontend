@@ -1,0 +1,200 @@
+{
+  "behovsmeldingId": "5b0c1c8e-2f7a-4d43-9a51-0f6f3c1e7a01",
+  "beskrivelse": "tilskudd_mottaker_mangler_kontonummer",
+  "behovsmelding": {
+    "id": "5b0c1c8e-2f7a-4d43-9a51-0f6f3c1e7a01",
+    "type": "SØKNAD",
+    "kilde": "DIGITAL_BEHOVSMELDING",
+    "bruker": {
+      "fnr": "14818097215",
+      "navn": {
+        "fornavn": "Glad",
+        "etternavn": "Ballong"
+      },
+      "kilde": "PDL",
+      "telefon": "41414141",
+      "veiadresse": {
+        "adresse": "Kirkeveien 7",
+        "poststed": "Hasvik",
+        "postnummer": "9590",
+        "adresselinje1": "Kirkeveien 7"
+      },
+      "brukernummer": "30523759",
+      "signaturtype": "FULLMAKT",
+      "kommunenummer": "5616",
+      "legacyopplysninger": []
+    },
+    "vedlegg": [],
+    "levering": {
+      "utleveringMerknad": "",
+      "hjelpemiddelformidler": {
+        "navn": {
+          "fornavn": "Berømt",
+          "etternavn": "Aktivitet"
+        },
+        "epost": "a@b.com",
+        "adresse": {
+          "adresse": "sdfg",
+          "poststed": "KLØFTA",
+          "postnummer": "2040",
+          "adresselinje1": "sdfg"
+        },
+        "telefon": "45454545",
+        "stilling": "sdfg",
+        "arbeidssted": "sdg",
+        "kommunenavn": "ULLENSAKER",
+        "kommunenummer": "3209",
+        "treffesEnklest": "Helst ikke"
+      },
+      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+      "automatiskUtledetTilleggsinfo": []
+    },
+    "metadata": {
+      "bestillingsordningsjekk": {
+        "version": "5d9adbd7a099f233b9dcbadcb6ed39421fd8086c",
+        "metaInfo": {
+          "tilbehør": [],
+          "hovedProdukter": [],
+          "tilbehørIkkePåBestillingsordning": [],
+          "hovedProdukterIkkePåBestillingsordning": []
+        },
+        "kriterier": {
+          "kildeErPdl": true,
+          "harIngenBytter": true,
+          "brukersAdresseErSatt": true,
+          "brukerHarAdresseIOeBS": true,
+          "brukerBorIkkeIUtlandet": true,
+          "inneholderIkkeFritekst": true,
+          "brukerErIkkeSkjermetPerson": true,
+          "harIkkeForMangeOrdrelinjer": true,
+          "brukerHarHjelpemidlerFraFør": true,
+          "ingenProdukterErAlleredeUtlevert": true,
+          "leveringTilFolkeregistrertAdresse": false,
+          "alleTilbehørPåBestillingsOrdning": true,
+          "alleHovedProdukterPåBestillingsOrdning": true
+        },
+        "kanVæreBestilling": false
+      }
+    },
+    "innsender": {
+      "kurs": [],
+      "roller": ["IKKE_KOMMUNAL_FORMIDLER"],
+      "erKommunaltAnsatt": false,
+      "sjekketUtlånsoversiktForKategorier": []
+    },
+    "prioritet": "NORMAL",
+    "hjelpemidler": {
+      "tilbehør": [],
+      "hjelpemidler": [],
+      "totaltAntall": 1,
+      "produktkategorier": [
+        {
+          "id": "0e4f6a2b-3c5d-4e7f-8a9b-1c2d3e4f5a01",
+          "navn": "Tilskudd til rimelige hjelpemidler",
+          "type": "TILSKUDD_RIMELIGE_HJELPEMIDLER",
+          "antall": 1,
+          "vedlegg": [],
+          "komponenter": [],
+          "bruksarenaer": [],
+          "opplysninger": [
+            {
+              "key": {
+                "id": "TILSKUDD_RIMELIGE_HJELPEMIDLER_UTBETALES_TIL",
+                "versjon": 1
+              },
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Verge",
+                    "nn": "Verje"
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Hvem skal tilskuddet utbetales til?",
+                "nn": "Kven skal tilskotet utbetalast til?"
+              },
+              "innholdstype": "TEKST"
+            },
+            {
+              "key": {
+                "id": "TILSKUDD_RIMELIGE_HJELPEMIDLER_MOTTAKER_FORNAVN",
+                "versjon": 1
+              },
+              "innhold": [
+                {
+                  "fritekst": "Vilde"
+                }
+              ],
+              "ledetekst": {
+                "nb": "Fornavn",
+                "nn": "Førenamn"
+              },
+              "innholdstype": "TEKST"
+            },
+            {
+              "key": {
+                "id": "TILSKUDD_RIMELIGE_HJELPEMIDLER_MOTTAKER_ETTERNAVN",
+                "versjon": 1
+              },
+              "innhold": [
+                {
+                  "fritekst": "Verge"
+                }
+              ],
+              "ledetekst": {
+                "nb": "Etternavn",
+                "nn": "Etternamn"
+              },
+              "innholdstype": "TEKST"
+            },
+            {
+              "key": {
+                "id": "TILSKUDD_RIMELIGE_HJELPEMIDLER_MOTTAKER_FNR",
+                "versjon": 1
+              },
+              "innhold": [
+                {
+                  "fritekst": "03826299412"
+                }
+              ],
+              "ledetekst": {
+                "nb": "Fødselsnummer",
+                "nn": "Fødselsnummer"
+              },
+              "innholdstype": "TEKST"
+            }
+          ],
+          "delkontrakttittel": "Pengestøtte"
+        }
+      ]
+    },
+    "hjmBrukersFnr": "14818097215",
+    "skjemaversjon": 2,
+    "brukersituasjon": {
+      "vilkår": [
+        {
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          },
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1"
+        }
+      ],
+      "funksjonsbeskrivelse": {
+        "beskrivelse": "gammal",
+        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
+      },
+      "funksjonsnedsettelser": []
+    },
+    "innsendingsdato": "2026-11-19",
+    "innsendingstidspunkt": "2026-11-19T11:26:26.604911946Z",
+    "saksbehandlingvarsel": [],
+    "isDigitalBehovsmelding": true
+  },
+  "behovsmeldingGjelder": "Test: tilskudd uten kontonummer",
+  "fnrBruker": "14818097215",
+  "fnrInnsender": "13820599335",
+  "opprettet": "2026-11-19T11:26:26.604Z",
+  "sakId": "104"
+}

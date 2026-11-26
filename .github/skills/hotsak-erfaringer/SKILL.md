@@ -25,6 +25,7 @@ Kompakt erfaringslogg. Gjelder i tillegg til `AGENTS.md`. Ved konflikt vinner si
 - Boolske flagg fra asynkrone data skal bare være `true` når data bekrefter tilstanden, for eksempel `manglerIOebs` (som er `false` under lasting og ved feil). Da unngår du blinkende varsler og sperrer.
 - Bruk SWR sin `isLoading` og cache i stedet for egen state. Samme SWR-nøkkel deler kallet.
 - Bruk typede, diskriminerte modeller framfor sentinel-verdier eller duplisert state.
+- Tilskudd (pengestøtte) er `SØKNAD` med søknadslinje `TILSKUDD_RIMELIGE_HJELPEMIDLER`, sjekket med `harTilskudd` i `useSaksregler`. Søknadslinjer finnes bare på `Sak` fra `useSak`, ikke på `oppgave.sak`.
 - Modaler i saksbildet: state og `modalVelger` i `sak/Sak.tsx`, og `InfoModal` for rene beskjeder (se `ResultatManglerModal`). Hurtigtaster i `sak/hotkeys/useSakHotkeys.ts` må følge de samme reglene som knappene.
 - Skjema: validering hører til den aktive flyten. Vis feil på feltet. Ikke send skjemaet ved Enter. Journalføring sendes med knappen og venter på svaret.
 - Scrolling er avgrenset til panelet: bare innholdet (for eksempel dokument-iframe) skal scrolle, ikke det resizable panelet.
@@ -41,6 +42,7 @@ Kompakt erfaringslogg. Gjelder i tillegg til `AGENTS.md`. Ved konflikt vinner si
 - Hold ID-er og koblinger mellom sak, journalpost og person konsistente. Unngå `bulkAdd` med dupliserte nøkler, og ikke koble alle journalposter til alle saker.
 - `PersonStore` bruker fnr som nøkkel, og siste lagring vinner. En testperson trenger derfor et eget fnr.
 - Mock-personer får et tilfeldig `brukernummer`. Saken «Test: bruker finnes ikke i OeBS» (`bruker_mangler_i_oebs.json`, flagget `brukerManglerIOebs`) dekker bruker uten brukernummer.
+- Mock-fnr: `fødselsdatoFraFødselsnummer` tolker `yy` nærmest dagens dato, så år under ca. 77 blir 20xx og gir negativ alder. Bruk fødselsår 77–99.
 - Mock-hjelpere som brukes av både MSW og Vite-middleware må være rene og uten assets. PDF-er og iframes som hentes direkte på URL, går ikke gjennom MSW.
 - `BehovsmeldingTypes.ts` følger hotlibs `behovsmeldingsmodell/v2/Innsenderbehovsmelding.kt`, som er master. Eldre mock-JSON mangler nyere felt (f.eks. `produktkategorier`), så mock-kode må tåle det.
 

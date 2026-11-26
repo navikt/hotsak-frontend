@@ -12,6 +12,7 @@ import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { type Saksbehandlingsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useJournalposterInngående } from '../saksbilde/useJournalposter.ts'
+import { useKontonummer } from '../saksbilde/useKontonummer.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { type Innsenderbehovsmelding } from '../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../types/types.internal.ts'
@@ -25,6 +26,7 @@ import {
   VedtaksResultat,
 } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
+import { utledPengestøtte } from './behovsmelding/pengestøtte/pengestøtte.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { GodkjennBestillingModal } from './bestilling/GodkjennBestillingModal.tsx'
 import { useSakHotkeys } from './hotkeys/useSakHotkeys.ts'
@@ -33,6 +35,7 @@ import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
 import { BrukerManglerIOebsModal } from './modaler/BrukerManglerIOebsModal.tsx'
 import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
 import { HenleggModal } from './modaler/HenleggModal.tsx'
+import { KontonummerManglerModal } from './modaler/KontonummerManglerModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { OverførTilGosysModal } from './modaler/OverførTilGosysModal.tsx'
 import { OverførtilGosysValideringFeil } from './modaler/OverførtilGosysValideringFeil.tsx'
@@ -45,10 +48,10 @@ import classes from './Sak.module.css'
 import { useSakContext } from './SakContextType.ts'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { sidebarBredde } from './SakPanelTabTypes.tsx'
-import { SidebarEksperiment } from './sidebars/SidebarEksperiment.tsx'
+import { Sidebar } from './sidebars/Sidebar.tsx'
 import { VertikalIkonBar } from './sidebars/VertikalIkonBar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
-import { useEksperimentSidebar } from './useEksperimentSidebar.ts'
+import { useSidebar } from './useSidebar.ts'
 
 function SakContent({
   oppgave,
@@ -69,7 +72,10 @@ function SakContent({
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const [annetResultatValgt, setAnnetResultatValgt] = useState(false)
-  const { erPapirsøknad, erBestilling } = useSaksregler()
+  const [visKontonummerMangler, setVisKontonummerMangler] = useState(false)
+  const { erPapirsøknad, erBestilling, harTilskudd } = useSaksregler()
+  const mottakerFnr = harTilskudd ? utledPengestøtte(behovsmelding)?.mottaker.fnr : undefined
+  const { manglerKontonummer } = useKontonummer(sak.sakId, mottakerFnr)
   const erJournalføringPilot = useFlag(FeatureToggle.journalforing)
 
   const {
@@ -84,8 +90,10 @@ function SakContent({
 
   const { gjeldendeBehandling } = useBehandling()
   const behandlingsutfall = gjeldendeBehandling?.utfall
-  const innvilgelseSperretPgaOebs =
-    manglerIOebs && isBehandlingsutfallVedtak(behandlingsutfall) && behandlingsutfall.utfall !== VedtaksResultat.AVSLÅTT
+  const erVedtakSomIkkeErAvslag =
+    isBehandlingsutfallVedtak(behandlingsutfall) && behandlingsutfall.utfall !== VedtaksResultat.AVSLÅTT
+  const innvilgelseSperretPgaOebs = manglerIOebs && erVedtakSomIkkeErAvslag
+  const innvilgelseSperretPgaKontonummer = manglerKontonummer && erVedtakSomIkkeErAvslag
 
   const { finnBrev } = useBrevForSak(sak.sakId)
   const vedtaksbrev = finnBrev(isVedtaksbrev)
@@ -98,7 +106,15 @@ function SakContent({
     onAnnetResultat: () => setAnnetResultatValgt(true),
     onBrevMangler: () => setVisBrevMangler(true),
     onNotatIkkeFerdigstilt: () => setVisNotatIkkeFerdigstilt(true),
-    onFattVedtak: () => (manglerIOebs ? setVisBrukerManglerIOebs(true) : setVisFerdigstillModal(true)),
+    onFattVedtak: () => {
+      if (manglerIOebs) {
+        setVisBrukerManglerIOebs(true)
+      } else if (manglerKontonummer) {
+        setVisKontonummerMangler(true)
+      } else {
+        setVisFerdigstillModal(true)
+      }
+    },
     onGodkjenneBestilling: () => setVisGodkjennBestillingModal(true),
   })
 
@@ -123,7 +139,7 @@ function SakContent({
     }
   }, [vedtaksbrev, panelDispatch])
 
-  const { setEksperimentSidebarPanel, handleEksperimentSidebarResize } = useEksperimentSidebar({
+  const { setSidebarPanel, handleSidebarResize } = useSidebar({
     sidePanelVisible: sidePanel.visible,
     sidePanelDefaultSize: sidebarBredde[aktivSidebar] ?? sidePanel.defaultSize,
     sidebarOpenDefaultSizeRequestId,
@@ -192,14 +208,14 @@ function SakContent({
             panelId="sidebarpanel"
             panel={sidePanel}
             canShowResizeHandle={sidePanel.visible}
-            panelRef={setEksperimentSidebarPanel}
+            panelRef={setSidebarPanel}
             defaultSize={sidePanel.visible ? (sidebarBredde[aktivSidebar] ?? sidePanel.defaultSize) : 0}
             collapsible
             collapsedSize={0}
             groupResizeBehavior="preserve-pixel-size"
-            onResize={handleEksperimentSidebarResize}
+            onResize={handleSidebarResize}
           >
-            <div className={classes.eksperimentSidebarPanel}>
+            <div className={classes.sidebarPanel}>
               <Box
                 background="default"
                 paddingBlock="space-12 space-0"
@@ -208,7 +224,7 @@ function SakContent({
                 borderColor="neutral-subtle"
                 borderWidth="1 0 0 1"
               >
-                <SidebarEksperiment oppgave={oppgave} />
+                <Sidebar oppgave={oppgave} />
               </Box>
             </div>
           </ResizablePanel>
@@ -224,6 +240,7 @@ function SakContent({
       )}
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
       <BrukerManglerIOebsModal open={visBrukerManglerIOebs} onClose={() => setVisBrukerManglerIOebs(false)} />
+      <KontonummerManglerModal open={visKontonummerMangler} onClose={() => setVisKontonummerMangler(false)} />
       {isBehandlingsutfallVedtak(behandlingsutfall) && (
         <BrevManglerModal
           open={visBrevMangler}
@@ -279,6 +296,8 @@ function SakContent({
       }
     } else if (innvilgelseSperretPgaOebs) {
       setVisBrukerManglerIOebs(true)
+    } else if (innvilgelseSperretPgaKontonummer) {
+      setVisKontonummerMangler(true)
     } else if (brevutkastIkkeFerdigstilt) {
       setVisBrevMangler(true)
     } else if (notaterIkkeFerdigstilt) {

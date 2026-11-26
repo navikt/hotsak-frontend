@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { SidebarValg } from '../SakPanelTabTypes'
@@ -10,9 +10,14 @@ const setAktivSidebar = vi.fn()
 const useNotater = vi.fn()
 const useKommentarer = vi.fn()
 let sakId: string | undefined = 'sak-1'
+let harTilskudd = false
 
 vi.mock('../../saksbilde/useSak', () => ({
   useSak: () => ({ sak: sakId ? { data: { sakId } } : undefined }),
+}))
+
+vi.mock('../../saksregler/useSaksregler', () => ({
+  useSaksregler: () => ({ harTilskudd }),
 }))
 
 vi.mock('../notat/useNotater', () => ({
@@ -47,6 +52,7 @@ describe('VertikalIkonBar', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     sakId = 'sak-1'
+    harTilskudd = false
     useKommentarer.mockReturnValue({ antallKommentarer: 0, harHentetKommentarer: true })
   })
 
@@ -106,5 +112,23 @@ describe('VertikalIkonBar', () => {
     useNotater.mockReturnValue({ antallNotater: 0, harHentetNotater: true })
     rerender(<VertikalIkonBar />)
     expect(setAktivSidebar).toHaveBeenCalledExactlyOnceWith(SidebarValg.NOTATER)
+  })
+
+  it('åpner pengestøttepanelet som standard i tilskuddssaker, også når saken har notater', () => {
+    harTilskudd = true
+    useNotater.mockReturnValue({ antallNotater: 1, harHentetNotater: true })
+
+    render(<VertikalIkonBar />)
+
+    expect(setAktivSidebar).toHaveBeenCalledExactlyOnceWith(SidebarValg.PENGESTØTTE)
+    expect(screen.getByRole('button', { name: 'Pengestøtte' })).toBeInTheDocument()
+  })
+
+  it('viser ikke pengestøtteknappen når saken ikke har tilskudd', () => {
+    useNotater.mockReturnValue({ antallNotater: 0, harHentetNotater: true })
+
+    render(<VertikalIkonBar />)
+
+    expect(screen.queryByRole('button', { name: 'Pengestøtte' })).not.toBeInTheDocument()
   })
 })

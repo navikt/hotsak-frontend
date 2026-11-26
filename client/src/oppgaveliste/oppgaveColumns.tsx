@@ -6,6 +6,7 @@ import { Link as ReactRouterLink } from 'react-router'
 import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilter.ts'
 import { FormatDate } from '../felleskomponenter/format/FormatDate.tsx'
+import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
 import {
   type Oppgave,
   Oppgaveprioritet,
@@ -35,14 +36,14 @@ export const oppgaveColumns = {
   },
   taOppgave: {
     field: 'taOppgave',
-    width: 105,
+    width: 125,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },
   },
   overtaOppgave: {
     field: 'overtaOppgave',
-    width: 85,
+    width: 120,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },
@@ -79,6 +80,18 @@ export const oppgaveColumns = {
     width: 125,
     renderCell(row) {
       return row.sakId ? row.sakId : (row.eksternSakId ?? 'Ukjent')
+    },
+  },
+  nytt: {
+    field: 'nytt',
+    header: 'Nytt',
+    width: 125,
+    filter: {
+      options: new Set(),
+      sortOptions: true,
+    },
+    renderCell() {
+      return null
     },
   },
   saksbehandler: {
@@ -345,7 +358,7 @@ export const oppgaveColumns = {
     field: 'opprettetTidspunkt',
     header: 'Opprettet',
     sortKey: 'opprettetTidspunkt',
-    width: 120,
+    width: 150,
     formatDateTime: true,
   },
   fristDato: {
@@ -379,6 +392,16 @@ export const oppgaveColumns = {
     sortKey: 'ferdigstiltTidspunkt',
     width: 125,
     formatDateTime: true,
+    renderCell(row) {
+      if (!row.ferdigstiltTidspunkt) {
+        return (
+          <Tag data-color="info" variant="outline" size="small">
+            Åpen
+          </Tag>
+        )
+      }
+      return <FormatDateTime dateTime={row.ferdigstiltTidspunkt} />
+    },
   },
   ferdigstilt: {
     field: 'ferdigstiltTidspunkt',
@@ -388,12 +411,12 @@ export const oppgaveColumns = {
     renderCell(row) {
       if (!row.ferdigstiltTidspunkt) {
         return (
-          <Tag size="xsmall" data-color="info">
+          <Tag data-color="info" variant="outline" size="xsmall">
             Åpen
           </Tag>
         )
       }
-      return <FormatDate date={row.ferdigstiltTidspunkt} />
+      return <FormatDateTime dateTime={row.ferdigstiltTidspunkt} />
     },
   },
   mineOppgaverMenu: {

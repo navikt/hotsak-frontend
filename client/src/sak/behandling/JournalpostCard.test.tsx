@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom/vitest'
-
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
-import { type Saksdokument, SaksdokumentType } from '../../types/types.internal.ts'
+import { Journalposttype } from '../../dokument/dokumentTypes.ts'
+import { type Saksdokument } from '../../types/types.internal.ts'
 import { JournalpostCard, skalDokumentkortVæreÅpent } from './JournalpostCard.tsx'
 
 const { setValgtDokument, setDokumentpanelSynlig } = vi.hoisted(() => ({
@@ -15,7 +15,7 @@ const { setValgtDokument, setDokumentpanelSynlig } = vi.hoisted(() => ({
 const dokument: Saksdokument = {
   sakId: 'sak-1',
   journalpostId: 'journalpost-1',
-  type: SaksdokumentType.INNGÅENDE,
+  type: Journalposttype.INNGÅENDE,
   opprettet: new Date().toISOString(),
   originalTekst: undefined,
   dokumentId: 'dokument-1',

@@ -37,7 +37,6 @@ export interface DataGridColumn<T extends object> {
 
 export interface DataGridPaginationProps extends Partial<PageRequest> {
   totalPages?: number
-  pageSizeSelect?: boolean
   onPageChange?(pageRequest: PageRequest): void
 }
 
@@ -50,6 +49,7 @@ export interface DataGridProps<T extends object, K extends string = string>
   emptyMessage?: string
   loading?: boolean
   validating?: boolean
+  truncate?: boolean
 
   filterMode?: 'matchet' | 'alle'
 
@@ -69,12 +69,12 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     textSize,
     emptyMessage = 'Ingen data funnet',
     loading,
+    validating,
+    truncate,
     pageNumber = 1,
     pageSize = 20,
     totalPages = 0,
-    pageSizeSelect,
     onPageChange,
-    validating,
     keyFactory,
     renderContent,
     onFilterChange,
@@ -158,7 +158,12 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
             }
 
             return (
-              <Table.DataCell key={column.field} textSize={textSize} width={column.width}>
+              <Table.DataCell
+                key={column.field}
+                textSize={textSize}
+                width={column.width}
+                className={clsx({ [classes.truncateCell]: truncate })}
+              >
                 {value}
               </Table.DataCell>
             )
@@ -182,7 +187,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
           }
         })}
       </Table.Body>
-      {totalPages > 0 && (
+      {totalPages > 1 && (
         <tfoot>
           <Table.Row>
             <Table.DataCell colSpan={colSpan} textSize={textSize}>

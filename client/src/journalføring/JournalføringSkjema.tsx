@@ -2,13 +2,14 @@ import { Heading, HStack, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { Journalstatus } from '../dokument/dokumentTypes.ts'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { JournalpostStatusType, type Journalpost } from '../types/types.internal.ts'
+import { type Journalpost } from '../types/types.internal.ts'
 import { JournalføringDokumenter } from './JournalføringDokumenter.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
 import { JournalføringHandlinger } from './JournalføringHandlinger.tsx'
@@ -19,6 +20,7 @@ import classes from './JournalføringSkjema.module.css'
 import { JournalpostInfo } from './JournalpostInfo.tsx'
 import { KobleTilSakKort } from './KobleTilSakKort.tsx'
 import { NySakSkjema } from './NySakSkjema.tsx'
+import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
 import {
   OverstyrInnsynsregler,
   Sakstype,
@@ -26,11 +28,10 @@ import {
   type JournalføringSkjemaVerdier,
   type TilordnetEnhet,
 } from './journalføringTypes.ts'
-import { type JournalføringStandardverdier } from './journalføringStandardverdier.ts'
 import { byggJournalføringSak, byggSaksgrunnlag, lagSkjemaverdier as lagDefaultVerdier } from './journalføringValg.ts'
 import { useDokumentredigering } from './useDokumentredigering.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
-import { erFagsak, type Sakvalg, useKobleTilSak } from './useKobleTilSak.ts'
+import { erFagsak, useKobleTilSak, type Sakvalg } from './useKobleTilSak.ts'
 
 interface JournalføringSkjemaProps {
   oppgave: Journalføringsoppgave
@@ -225,7 +226,7 @@ export function JournalføringSkjema({
 
           <JournalføringHandlinger
             kanRedigere={kanRedigere}
-            erJournalført={journalpost.journalstatus === JournalpostStatusType.JOURNALFOERT}
+            erJournalført={journalpost.journalstatus === Journalstatus.JOURNALFOERT}
             sakType={sakType}
             isJournalfører={isJournalfører}
             onJournalfør={onJournalfør}

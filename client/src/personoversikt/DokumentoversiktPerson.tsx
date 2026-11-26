@@ -1,14 +1,16 @@
-import { useEffect, useMemo } from 'react'
+import { Fragment, useEffect, useMemo } from 'react'
 
-import { Box } from '@navikt/ds-react'
+import { BodyShort, Box, HGrid } from '@navikt/ds-react'
+
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
-import { Details, DetailsItem } from '../felleskomponenter/Details.tsx'
-import { usePageRequest } from '../felleskomponenter/Page.ts'
 import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { DataGridToolbar } from '../felleskomponenter/data/DataGridToolbar.tsx'
+import { Details, DetailsItem } from '../felleskomponenter/Details.tsx'
+import { usePageRequest } from '../felleskomponenter/Page.ts'
 import type { Journalpost } from '../types/types.internal.ts'
 import { dokumentColumns, journalpostKey, type DokumentColumnField } from './dokumentColumns.tsx'
+import classes from './DokumentoversiktPerson.module.css'
 
 export interface DokumentoversiktPersonProps {
   fnr: string
@@ -44,6 +46,7 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
         elements={journalposter.length}
         elementsName="dokumenter"
         totalElements={totalElements}
+        paddingBlock="space-0 space-8"
         {...pagination}
       />
       <DataGrid
@@ -77,6 +80,19 @@ function DokumentdetaljerPerson({ row: journalpost }: { row: Journalpost }) {
   return (
     <div>
       <Details>
+        {journalpost.dokumenter.length > 0 && (
+          <DetailsItem label="Dokumenter">
+            <HGrid columns="min-content">
+              {journalpost.dokumenter.map((dokument) => (
+                <Fragment key={dokument.dokumentId}>
+                  <BodyShort size="small" className={classes.text}>
+                    {dokument.tittel}
+                  </BodyShort>
+                </Fragment>
+              ))}
+            </HGrid>
+          </DetailsItem>
+        )}
         {vedlegg && <DetailsItem label="Vedlegg">{vedlegg}</DetailsItem>}
         <DetailsItem label="Innsynsregel">{journalpost.innsynsregel.term}</DetailsItem>
       </Details>

@@ -1,7 +1,11 @@
 import Dexie, { Table } from 'dexie'
 
-import { type Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
+import { Journalstatus } from '../../dokument/dokumentTypes.ts'
+import type { JournalføringRequest } from '../../journalføring/journalføringTypes.ts'
+import { type Journalpost } from '../../types/types.internal.ts'
+import { formaterNavn } from '../../utils/formater.ts'
 import { nåIso } from './felles.ts'
+import { JOURNALFOERING_BRUKER_FNR } from './journalpostKonstanter.ts'
 import {
   BARNEBRILLE_BREVKODE,
   InsertDokument,
@@ -15,11 +19,8 @@ import {
   LagretHendelse,
   LagretJournalpost,
 } from './lagJournalpost.ts'
-import { JOURNALFOERING_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { lagPerson, PersonStore } from './PersonStore.ts'
 import { Saksbehandlere } from './Saksbehandlere.ts'
-import type { JournalføringRequest } from '../../journalføring/journalføringTypes.ts'
-import { formaterNavn } from '../../utils/formater.ts'
 
 export class JournalpostStore extends Dexie {
   private readonly journalposter!: Table<LagretJournalpost, string, InsertJournalpost>
@@ -235,7 +236,7 @@ export class JournalpostStore extends Dexie {
       fnrBruker: oppdatertBruker.fnr,
       innsender: oppdatertInnsender,
       fnrInnsender: oppdatertInnsender.fnr,
-      journalstatus: JournalpostStatusType.JOURNALFOERT,
+      journalstatus: Journalstatus.JOURNALFOERT,
     })
   }
 }

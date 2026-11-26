@@ -8,9 +8,9 @@ import { Oppgaver } from './oppgaveliste/Oppgaver.tsx'
 import { Protected } from './tilgang/Protected.tsx'
 
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
-const MineOppgaver = lazy(() => import('./oppgaveliste/MineOppgaverWrapper.tsx'))
-const EnhetensOppgaver = lazy(() => import('./oppgaveliste/EnhetensOppgaverWrapper.tsx'))
-const MedarbeidersOppgaver = lazy(() => import('./oppgaveliste/MedarbeidersOppgaverWrapper.tsx'))
+const MineOppgaver = lazy(() => import('./oppgaveliste/MineOppgaver.tsx'))
+const EnhetensOppgaver = lazy(() => import('./oppgaveliste/EnhetensOppgaver.tsx'))
+const MedarbeidersOppgaver = lazy(() => import('./oppgaveliste/MedarbeidersOppgaver.tsx'))
 
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 

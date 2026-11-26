@@ -91,6 +91,7 @@ export function NyttBrev({ oppgave, onOpprettet }: NyttBrevProps) {
                   onChange={(event) => setAntallUker(Number(event.target.value))}
                 >
                   <option value={4}>4 uker</option>
+                  <option value={8}>8 uker</option>
                   <option value={12}>12 uker</option>
                   <option value={18}>18 uker</option>
                 </Select>

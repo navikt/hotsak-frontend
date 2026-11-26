@@ -1,7 +1,8 @@
 import useSwr, { SWRResponse } from 'swr'
 
+import { Journalposttype } from '../dokument/dokumentTypes.ts'
 import type { HttpError } from '../io/HttpError.ts'
-import { type Saksdokument, SaksdokumentType } from '../types/types.internal.ts'
+import { type Saksdokument } from '../types/types.internal.ts'
 import { useSakId } from './useSak.ts'
 
 interface UseSaksdokumenterResponse extends Omit<SWRResponse<Saksdokument[], HttpError>, 'data'> {
@@ -11,7 +12,7 @@ interface UseSaksdokumenterResponse extends Omit<SWRResponse<Saksdokument[], Htt
 export function useJournalposterInngående(): UseSaksdokumenterResponse {
   const sakId = useSakId()
   const { data = ingenSaksdokumenter, ...rest } = useSwr<Saksdokument[]>(
-    sakId ? `/api/sak/${sakId}/dokumenter?type=${encodeURIComponent(SaksdokumentType.INNGÅENDE)}` : null
+    sakId ? `/api/sak/${sakId}/dokumenter?type=${encodeURIComponent(Journalposttype.INNGÅENDE)}` : null
   )
   return {
     dokumenter: data,

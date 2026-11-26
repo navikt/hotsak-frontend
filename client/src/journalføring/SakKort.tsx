@@ -2,11 +2,12 @@ import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyShort, ErrorMessage, HGrid, HStack, Link, Loader, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
+import { JournalposttypeTag } from '../dokument/DokumentTag.tsx'
 import { FinnHjelpemiddelLink } from '../felleskomponenter/FinnHjelpemiddelLink.tsx'
 import { CompactExpandableCard } from '../felleskomponenter/panel/CompactExpandableCard.tsx'
 import { Etikett } from '../felleskomponenter/typografi.tsx'
 import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
-import { journalposttypeTag } from '../personoversikt/dokumentColumns.tsx'
+import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 import { useBehovsmelding } from '../saksbilde/useBehovsmelding.ts'
 import { type Behovsmelding } from '../types/BehovsmeldingTypes.ts'
 import { OmrådeFilterLabel, SaksstatusLabel, type Journalpost } from '../types/types.internal.ts'
@@ -15,7 +16,6 @@ import { Sakstype } from './journalføringTypes.ts'
 import classes from './KobleTilSakKort.module.css'
 import { OppgaveDetaljer } from './OppgaveDetaljer.tsx'
 import { HOTSAK_SYSTEM, type SakvalgVisning } from './useKobleTilSak.ts'
-import { useOppgaveUrl } from '../oppgave/useOppgaveUrl.ts'
 
 interface SakKortProps {
   sak: SakvalgVisning
@@ -151,7 +151,7 @@ export function SakKort({
                       </BodyShort>
                     ))}
                   </ul>
-                  {journalposttypeTag(journalpost.journalposttype)}
+                  <JournalposttypeTag journalposttype={journalpost.journalposttype} />
                 </li>
               ))}
             </ul>

@@ -2,13 +2,14 @@ import { Heading, HStack, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { Journalstatus } from '../dokument/dokumentTypes.ts'
 import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
 import { TextContainer } from '../felleskomponenter/typografi.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { JournalpostStatusType, type Journalpost } from '../types/types.internal.ts'
+import { type Journalpost } from '../types/types.internal.ts'
 import { JournalføringDokumenter } from './JournalføringDokumenter.tsx'
 import { JournalføringFerdigModal } from './JournalføringFerdigModal.tsx'
 import { JournalføringHandlinger } from './JournalføringHandlinger.tsx'
@@ -32,8 +33,8 @@ import {
   byggJournalføringSak,
   byggSaksgrunnlag,
   byggSvartidsbrev,
-  svartidsbrevManglerÅrsak,
   lagSkjemaverdier as lagDefaultVerdier,
+  svartidsbrevManglerÅrsak,
 } from './journalføringValg.ts'
 import { useDokumentredigering } from './useDokumentredigering.ts'
 import { useJournalføringActions } from './useJournalføringActions.ts'
@@ -250,7 +251,7 @@ export function JournalføringSkjema({
 
           <JournalføringHandlinger
             kanRedigere={kanRedigere}
-            erJournalført={journalpost.journalstatus === JournalpostStatusType.JOURNALFOERT}
+            erJournalført={journalpost.journalstatus === Journalstatus.JOURNALFOERT}
             sakType={sakType}
             isJournalfører={isJournalfører}
             onJournalfør={onJournalfør}

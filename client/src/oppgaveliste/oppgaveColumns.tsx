@@ -36,14 +36,14 @@ export const oppgaveColumns = {
   },
   taOppgave: {
     field: 'taOppgave',
-    width: 105,
+    width: 125,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },
   },
   overtaOppgave: {
     field: 'overtaOppgave',
-    width: 85,
+    width: 120,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
     },
@@ -358,7 +358,7 @@ export const oppgaveColumns = {
     field: 'opprettetTidspunkt',
     header: 'Opprettet',
     sortKey: 'opprettetTidspunkt',
-    width: 120,
+    width: 150,
     formatDateTime: true,
   },
   fristDato: {

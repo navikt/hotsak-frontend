@@ -1,11 +1,6 @@
+import { Journalstatus } from '../../dokument/dokumentTypes.ts'
 import { type OppgaveKodeverk } from '../../oppgave/oppgaveTypes.ts'
-import {
-  type Dokument,
-  type Hendelse,
-  type Journalpost,
-  type JournalpostSak,
-  JournalpostStatusType,
-} from '../../types/types.internal.ts'
+import { type Dokument, type Hendelse, type Journalpost, type JournalpostSak } from '../../types/types.internal.ts'
 import { lagTilfeldigInteger, nåIso } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { HJELPEMIDDEL_JOURNALPOST_IDS as HJELPEMIDDEL_IDS } from './journalpostKonstanter.ts'
@@ -55,7 +50,7 @@ export function lagJournalpost(
     ...(behandlingstema ? { behandlingstema } : {}),
     kanal: kanal ?? { kode: 'SKAN_IM', term: 'Skanning Iron Mountain' },
     journalposttype: journalposttyper[lagTilfeldigInteger(0, 2)],
-    journalstatus: JournalpostStatusType.MOTTATT,
+    journalstatus: Journalstatus.MOTTATT,
     journalpostOpprettetTid,
     fnrInnsender,
     fnrBruker,

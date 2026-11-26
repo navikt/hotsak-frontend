@@ -9,6 +9,13 @@
   width: 48px;
 }
 
+.truncateCell {
+  max-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .placeholderCell {
   padding: var(--ax-space-10, 10px);
 }

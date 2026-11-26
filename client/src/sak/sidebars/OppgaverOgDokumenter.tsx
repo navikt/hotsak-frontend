@@ -1,13 +1,14 @@
 import { Box, Detail, HStack, Search, Select, Tabs, VStack } from '@navikt/ds-react'
 import { useMemo, useState } from 'react'
 
+import { JournalposttypeTag } from '../../dokument/DokumentTag'
 import { useDokumentsøk } from '../../dokument/useDokumentsøk'
 import { DataGrid } from '../../felleskomponenter/data/DataGrid'
 import type { PageRequest } from '../../felleskomponenter/Page'
 import { useOppgavesøk } from '../../oppgave/useOppgavesøk'
 import { oppgaveColumns } from '../../oppgaveliste/oppgaveColumns'
 import { selectOppgaveId } from '../../oppgaveliste/oppgaveSelectors'
-import { dokumentColumns, journalpostKey, journalposttypeTagKort } from '../../personoversikt/dokumentColumns'
+import { dokumentColumns, journalpostKey } from '../../personoversikt/dokumentColumns'
 import { useSak } from '../../saksbilde/useSak'
 import { type Journalpost } from '../../types/types.internal'
 import { OppgaveDetailsSaksbilde } from './OppgaverDetailsSaksbilde'
@@ -217,7 +218,7 @@ const dokumentCols = [
     width: 50,
     filter: undefined,
     renderCell({ journalposttype }: Journalpost) {
-      return journalposttypeTagKort(journalposttype)
+      return <JournalposttypeTag journalposttype={journalposttype} size="xsmall" short />
     },
   },
 ]

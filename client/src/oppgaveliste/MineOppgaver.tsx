@@ -1,17 +1,28 @@
 import { Box } from '@navikt/ds-react'
 
+import { Sidetittel } from '../felleskomponenter/Sidetittel.tsx'
 import { OppgaveTildelt, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { intervalString } from '../utils/dato.ts'
-import { MineOppgaverTable } from './MineOppgaverTable.tsx'
+import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgaveToolbarTab, useOppgavelisteContext } from './OppgavelisteContext.tsx'
+import { OppgavelisteProvider } from './OppgavelisteProvider.tsx'
+import { OppgaverTable } from './OppgaverTable.tsx'
+import { selectIsUlest } from './oppgaveSelectors.ts'
 import { OppgaveToolbar, type OppgaveToolbarProps } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 
-const ANTALL_DAGER_FERDIGSTILTE = 10
+export default function MineOppgaverWrapper() {
+  return (
+    <>
+      <Sidetittel tittel="Mine oppgaver" />
+      <OppgavelisteProvider suffix="Mine" defaultColumns={defaultColumns}>
+        <MineOppgaver />
+      </OppgavelisteProvider>
+    </>
+  )
+}
 
-const iDag = new Date()
-
-export function MineOppgaver() {
+function MineOppgaver() {
   const { currentTab } = useOppgavelisteContext()
   const ferdigstilte = currentTab === OppgaveToolbarTab.FERDIGSTILTE
   const åpneOppgaver = useClientSideOppgaver({
@@ -39,12 +50,42 @@ export function MineOppgaver() {
   return (
     <Box marginInline="space-20">
       <OppgaveToolbar {...toolbarProps} />
-      <MineOppgaverTable
+      <OppgaverTable
         oppgaver={oppgaver}
         filterOptions={filterOptions}
         filterCounts={filterCounts}
         loading={isLoading}
+        isHighlighted={selectIsUlest}
       />
     </Box>
   )
 }
+
+const ANTALL_DAGER_FERDIGSTILTE = 10
+
+const iDag = new Date()
+
+const defaultColumns: DefaultOppgaveColumns = [
+  'åpneOppgave',
+  'nytt',
+  ['oppgaveId', false],
+  ['sakId', false],
+  'oppgavetype',
+  'behandlingstema',
+  'behandlingstype',
+  'beskrivelse',
+  'nøkkelord',
+  'mappenavn',
+  'prioritet',
+  'innsenderNavn',
+  ['brukerFnr', false],
+  ['brukerNavn', false],
+  ['brukerFødselsdato', false],
+  'brukerAlder',
+  'kommune',
+  ['saksstatus', false],
+  'opprettetTidspunkt',
+  'fristDato',
+  ['ferdigstiltTidspunkt', false],
+  'mineOppgaverMenu',
+]

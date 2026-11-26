@@ -3,6 +3,7 @@ import { ActionMenu, HStack, InternalHeader } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
 import { Link, type To, useLocation, useNavigate } from 'react-router'
 
+import { useFlag } from '@unleash/toolbar/next'
 import { HurtigtasterModal } from '../hotkeys/HurtigtasterModal.tsx'
 import { useGlobaleHotkeys } from '../hotkeys/useGlobaleHotkeys.ts'
 import { useHurtigtasterModal } from '../hotkeys/useHurtigtasterModal.tsx'
@@ -10,6 +11,7 @@ import { usePersonContext } from '../personoversikt/PersonContext'
 import { useUmami } from '../sporing/useUmami.ts'
 import { AnsattGruppe } from '../tilgang/Ansatt.ts'
 import { useInnloggetAnsatt, useTilgangContext } from '../tilgang/useTilgang.ts'
+import { FeatureToggle } from '../unleash/FeatureToggle.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { useMiljø } from '../utils/useMiljø.ts'
 import { useIsLargeScreen } from '../utils/useViewportSize.ts'
@@ -27,6 +29,7 @@ export function Toppmeny() {
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const erTeamdigihot = erMedlemAvEnAvGrupper(AnsattGruppe.TEAMDIGIHOT)
   const { erIkkeProd } = useMiljø()
+  const erPilot = useFlag(FeatureToggle.journalforing) || erIkkeProd
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const [darkMode, setDarkMode] = useDarkMode()
@@ -134,7 +137,7 @@ export function Toppmeny() {
               >
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
-              {erIkkeProd && (
+              {erPilot && (
                 <ActionMenu.Item icon={<SnowIcon />} onSelect={() => setJulemodus(!julemodus)}>
                   {julemodus ? 'Skru av julemodus' : 'Skru på julemodus'}
                 </ActionMenu.Item>

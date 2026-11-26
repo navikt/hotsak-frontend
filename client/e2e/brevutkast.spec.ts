@@ -205,13 +205,15 @@ test.describe('Brevutkast', () => {
     await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
     await expect(innstillinger.getByText(/E2E gate 1/i)).toBeVisible()
 
-    await sendTilBruker.check()
+    await sendTilBruker.click()
+    await expect(sendTilBruker).toBeChecked()
     await expect(mottakere.getByText('Bruker', { exact: true })).toBeVisible()
     await expect(mottakere.getByText('Verge', { exact: true })).toHaveCount(1)
     await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
     await expect(innstillinger.getByText(/E2E gate 1/i)).toBeVisible()
 
-    await sendTilBruker.uncheck()
+    await sendTilBruker.click()
+    await expect(sendTilBruker).not.toBeChecked()
     await expect(mottakere.getByText('Bruker', { exact: true })).toHaveCount(0)
     await expect(mottakere.getByText('Verge', { exact: true })).toHaveCount(0)
     await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()

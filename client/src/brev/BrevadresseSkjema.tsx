@@ -10,7 +10,7 @@ interface BrevadresseSkjemaProps {
   isLoading: boolean
   feilmelding?: string
   onLagre(adresse: Veiadresse, formidlerNavn: string): void
-  onAvbryt(): void
+  onAvbryt?(): void
   digitalBehovsmelding: boolean
 }
 
@@ -124,9 +124,11 @@ export function BrevadresseSkjema({
           <Button type="submit" size="small" loading={isLoading}>
             Lagre mottaker
           </Button>
-          <Button type="button" size="small" variant="tertiary" onClick={onAvbryt} disabled={isLoading}>
-            Avbryt
-          </Button>
+          {onAvbryt && (
+            <Button type="button" size="small" variant="tertiary" onClick={onAvbryt} disabled={isLoading}>
+              Avbryt
+            </Button>
+          )}
         </HStack>
       </VStack>
     </form>

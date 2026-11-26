@@ -41,4 +41,42 @@ describe('byggHeaderHtml', () => {
     expect(html).not.toContain('Kommunal hjelpemiddelformidler:')
     expect(html).toContain('<dt>Navn:</dt>')
   })
+
+  it('viser kopi til bruker kun for innhentingsbrev med bruker som mottaker', () => {
+    const html = byggHeaderHtml(metadata, '', formidler, Målform.BOKMÅL, true, true)
+    expect(html).toContain('<dt>Kopi til:</dt><dd>Kari Nordmann</dd>')
+  })
+
+  it('viser ikke kopi til bruker som standard, ved verge alene eller i andre brevmaler', () => {
+    const utenBruker = byggHeaderHtml(metadata, '', formidler, Målform.BOKMÅL, true)
+    const vergeAlene = byggHeaderHtml(metadata, '', formidler, Målform.BOKMÅL, true, false)
+    const annenMal = byggHeaderHtml(metadata, '', formidler, Målform.BOKMÅL, false, true)
+
+    expect(utenBruker).not.toContain('<dt>Kopi til:</dt>')
+    expect(vergeAlene).not.toContain('<dt>Kopi til:</dt>')
+    expect(annenMal).not.toContain('<dt>Kopi til:</dt>')
+    expect(annenMal).toContain('Kopi til kommunal hjelpemiddelformidler')
+  })
+
+  it('bruker kopi til-label på bokmål og nynorsk', () => {
+    const bokmål = byggHeaderHtml(metadata, '', formidler, Målform.BOKMÅL, true, true)
+    const nynorsk = byggHeaderHtml(metadata, '', formidler, Målform.NYNORSK, true, true)
+
+    expect(bokmål).toContain('<dt>Kopi til:</dt>')
+    expect(nynorsk).toContain('<dt>Kopi til:</dt>')
+  })
+
+  it('escaper brukers navn i kopi til-linjen', () => {
+    const html = byggHeaderHtml(
+      { ...metadata, brukersNavn: 'Kari <Nordmann & Co>' },
+      '',
+      formidler,
+      Målform.BOKMÅL,
+      true,
+      true
+    )
+
+    expect(html).toContain('<dt>Kopi til:</dt><dd>Kari &lt;Nordmann &amp; Co&gt;</dd>')
+    expect(html).not.toContain('<dt>Kopi til:</dt><dd>Kari <Nordmann & Co></dd>')
+  })
 })

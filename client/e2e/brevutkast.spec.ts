@@ -1,7 +1,15 @@
 import { expect, type Page, test } from '@playwright/test'
 
 import { type FinnOppgaverResponse } from '../src/oppgave/oppgaveTypes'
-import { fyllPlaceholder, klikkFattVedtak, opprettVedtaksbrev, settBehandlingsresultat, åpneSak } from './helpers'
+import { type Sak, type SakResponse } from '../src/types/types.internal'
+import {
+  fyllPlaceholder,
+  klikkFattVedtak,
+  opprettVedtaksbrev,
+  settBehandlingsresultat,
+  ventPåSaksbilde,
+  åpneSak,
+} from './helpers'
 
 async function åpneRedigerbartUtkast(page: Page) {
   await page.goto('/oppgaver/mine')
@@ -126,6 +134,83 @@ test.describe('Brevutkast', () => {
     await expect(slettModal).not.toBeVisible({ timeout: 10_000 })
 
     await expect(page.getByRole('button', { name: /Opprett vedtaksbrev/i })).toBeVisible()
+  })
+
+  test('oppretter innhentingsbrev uten bruker som standard og lar bruker velges', async ({ page }) => {
+    const sakRespons = page.waitForResponse(
+      (respons) => /^\/api\/sak\/[^/]+$/.test(new URL(respons.url()).pathname) && respons.request().method() === 'GET'
+    )
+    await åpneSak(page)
+    const { data: sak }: SakResponse<Sak> = await (await sakRespons).json()
+    await page.evaluate(
+      async ({ fnr, modulePath }) => {
+        const { PersonStore }: typeof import('../src/mocks/data/PersonStore') = await import(
+          /* @vite-ignore */ modulePath
+        )
+        const personStore = new PersonStore()
+        try {
+          const person = await personStore.hent(fnr)
+          if (!person) throw new Error('Fant ikke bruker i PersonStore')
+          await personStore.lagreAlle([
+            {
+              ...person,
+              vergemål: [
+                { fnr: '02029012345', navn: { fornavn: 'Test', etternavn: 'Verge' } },
+                { navn: { fornavn: 'Uten', etternavn: 'Fødselsnummer' } },
+              ],
+            },
+          ])
+        } finally {
+          personStore.close()
+        }
+      },
+      { fnr: sak.bruker.fnr, modulePath: '/src/mocks/data/PersonStore.ts' }
+    )
+    await page.reload()
+    await ventPåSaksbilde(page)
+    await page.getByRole('tab', { name: 'Nytt utkast' }).click()
+    await page.getByRole('radio', { name: /Innhente opplysninger/i }).check()
+    await page.getByRole('button', { name: 'Opprett utkast', exact: true }).click()
+
+    const innstillingerKnapp = page.getByRole('button', { name: 'Innstillinger', exact: true })
+    await expect(innstillingerKnapp).toBeVisible()
+    await innstillingerKnapp.click()
+
+    const innstillinger = page.getByRole('heading', { name: 'Innstillinger for brevet' }).locator('xpath=..')
+    const mottakere = innstillinger.getByRole('heading', { name: 'Mottakere' }).locator('xpath=..')
+    const sendTilBruker = innstillinger.getByRole('checkbox', { name: 'Send også til bruker' })
+    await expect(sendTilBruker).not.toBeChecked()
+    await expect(mottakere.getByText('Bruker', { exact: true })).toHaveCount(0)
+    await expect(mottakere.getByText('Verge', { exact: true })).toHaveCount(0)
+    await expect(innstillinger.getByText('Formidler er obligatorisk mottaker av brevet')).toBeVisible()
+
+    const endreFormidler = innstillinger.getByRole('button', { name: 'Endre', exact: true })
+    if (await endreFormidler.count()) {
+      await endreFormidler.click()
+    }
+
+    const formidlerNavn = innstillinger.getByRole('textbox', { name: 'Formidlers navn' })
+    if (await formidlerNavn.count()) {
+      await formidlerNavn.fill('E2E Formidler')
+    }
+    await innstillinger.getByRole('textbox', { name: 'Adresselinje 1' }).fill('E2E gate 1')
+    await innstillinger.getByRole('textbox', { name: 'Postnummer' }).fill('0123')
+    await innstillinger.getByRole('textbox', { name: 'Poststed' }).fill('OSLO')
+    await innstillinger.getByRole('button', { name: 'Lagre mottaker', exact: true }).click()
+    await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
+    await expect(innstillinger.getByText(/E2E gate 1/)).toBeVisible()
+
+    await sendTilBruker.check()
+    await expect(mottakere.getByText('Bruker', { exact: true })).toBeVisible()
+    await expect(mottakere.getByText('Verge', { exact: true })).toHaveCount(1)
+    await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
+    await expect(innstillinger.getByText(/E2E gate 1/)).toBeVisible()
+
+    await sendTilBruker.uncheck()
+    await expect(mottakere.getByText('Bruker', { exact: true })).toHaveCount(0)
+    await expect(mottakere.getByText('Verge', { exact: true })).toHaveCount(0)
+    await expect(mottakere.getByText('Formidler', { exact: true })).toBeVisible()
+    await expect(innstillinger.getByText(/E2E gate 1/)).toBeVisible()
   })
 
   test('kan ikke fatte vedtak med et brevutkast som ikke er ferdigstilt', async ({ page }) => {

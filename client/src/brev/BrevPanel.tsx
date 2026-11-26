@@ -23,6 +23,7 @@ import { SendBrevDialog } from './SendBrevDialog.tsx'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrev, useBrevmottakere } from './useBrev.ts'
 import { useBrevActions } from './useBrevActions.ts'
+import { useBrukerSomMottaker } from './useBrukerSomMottaker.ts'
 
 export interface BrevPanelProps {
   oppgave?: Saksbehandlingsoppgave
@@ -47,6 +48,8 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
 
   const aktivtBrevId = valgtBrevId === undefined ? initialBrevId : (valgtBrevId ?? undefined)
   const valgtBrev = brev.find((brev) => brev.brevId === aktivtBrevId)
+  const erInnhentingsbrev = valgtBrev?.brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER
+  const brukerSomMottaker = useBrukerSomMottaker(erInnhentingsbrev ? valgtBrev.brevId : undefined)
   const { brev: brevMedData } = useBrev<BreveditorBrevdata>(valgtBrev?.brevId)
   const { ferdigstillBrevutkast, redigerBrevutkast, slettBrevutkast } = useBrevActions(oppgave, valgtBrev?.brevId)
 
@@ -86,6 +89,10 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
 
   const handleVelgBrev = async (brevId: string) => {
     if (bytterBrevRef.current || brevId === aktivtBrevId) return
+    if (brukerSomMottaker.lagrer) {
+      showErrorToast('Vent til mottakerne er oppdatert før du bytter brev.')
+      return
+    }
     bytterBrevRef.current = true
     try {
       await flushLagringRef.current?.()
@@ -141,6 +148,10 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
   }
 
   const handleSendBrev = async () => {
+    if (erInnhentingsbrev && !brukerSomMottaker.kanSende) {
+      showErrorToast('Mottakerlisten er ikke klar. Kontroller bruker og verge i innstillingene for brevet.')
+      return
+    }
     if (!formidlerMottaker && valgtBrev?.brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER) {
       showErrorToast('Ingen formidler mottaker funnet. Legg til formidler som mottaker i "Innstillinger" for brevet')
       return
@@ -175,12 +186,23 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
         </Button>
       )}
       {kanRedigere && !valgtBrev.ferdigstilt && brevUtenVedtak && (
-        <Button variant="secondary" size="small" loading={ferdigstillBrevutkast.isMutating} onClick={handleForhåndsvis}>
+        <Button
+          variant="secondary"
+          size="small"
+          loading={ferdigstillBrevutkast.isMutating}
+          disabled={erInnhentingsbrev && !brukerSomMottaker.kanSende}
+          onClick={handleForhåndsvis}
+        >
           Forhåndsvis
         </Button>
       )}
       {kanRedigere && brevUtenVedtak && (
-        <Button variant="primary" size="small" onClick={handleSendBrev}>
+        <Button
+          variant="primary"
+          size="small"
+          disabled={erInnhentingsbrev && !brukerSomMottaker.kanSende}
+          onClick={handleSendBrev}
+        >
           Send brev
         </Button>
       )}
@@ -209,8 +231,11 @@ export function BrevPanel({ oppgave, brev, initialBrevId }: BrevPanelProps) {
             handlinger={handlinger}
             oppgaveErUnderBehandlingAvInnloggetAnsatt={oppgaveErUnderBehandlingAvInnloggetAnsatt}
             onSlettUtkast={
-              kanRedigere && valgtBrev && !valgtBrev.ferdigstilt ? () => setSlettBrevModalOpen(true) : undefined
+              kanRedigere && valgtBrev && !valgtBrev.ferdigstilt && !brukerSomMottaker.lagrer
+                ? () => setSlettBrevModalOpen(true)
+                : undefined
             }
+            brukerSomMottaker={erInnhentingsbrev ? brukerSomMottaker : undefined}
           />
         </div>
         {!valgtBrev && valgtBrevId != 'nytt-utkast' && (

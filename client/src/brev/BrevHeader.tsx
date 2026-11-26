@@ -1,18 +1,19 @@
-import { ChevronDownIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons'
-import { Box, Button, Heading, HStack, Tabs, Tag, VStack } from '@navikt/ds-react'
+import { ChevronDownIcon, ChevronUpIcon, PlusCircleIcon, TrashIcon } from '@navikt/aksel-icons'
+import { Box, Button, Checkbox, CheckboxGroup, Heading, HStack, Tabs, Tag, VStack } from '@navikt/ds-react'
 import { type ReactNode, useState } from 'react'
 import { useMiljø } from '../utils/useMiljø.ts'
 
 import { useFlag } from '@unleash/toolbar/next'
 import { Strek } from '../felleskomponenter/Strek.tsx'
 import { Etikett, Tekst } from '../felleskomponenter/typografi.tsx'
-import { usePerson, UsePersonResponse } from '../personoversikt/usePerson.ts'
+import { usePerson, type UsePersonResponse } from '../personoversikt/usePerson.ts'
 import { FeatureToggle } from '../unleash/FeatureToggle.ts'
 import { formaterNavn, storForbokstavIOrd } from '../utils/formater.ts'
-import { isVedtaksbrev } from './brevSelectors.ts'
+import { erFormidlerAlltidMottaker, isVedtaksbrev } from './brevSelectors.ts'
 import { type Brev, BrevmalTekst, type BrevmottakerResponse } from './brevTyper.ts'
 import { DelKopiMedFormidler } from './DelKopiMedFormidler.tsx'
 import { useBrevmottakere } from './useBrev.ts'
+import { type BrukerSomMottaker } from './useBrukerSomMottaker.ts'
 
 export interface BrevHeaderProps {
   brev: Brev[]
@@ -22,6 +23,7 @@ export interface BrevHeaderProps {
   handlinger?: ReactNode
   oppgaveErUnderBehandlingAvInnloggetAnsatt?: boolean
   onSlettUtkast?(): void
+  brukerSomMottaker?: BrukerSomMottaker
 }
 
 export function BrevHeader({
@@ -32,6 +34,7 @@ export function BrevHeader({
   handlinger,
   oppgaveErUnderBehandlingAvInnloggetAnsatt,
   onSlettUtkast,
+  brukerSomMottaker,
 }: BrevHeaderProps) {
   const { erIkkeProd } = useMiljø()
   const erPilot = useFlag(FeatureToggle.journalforing) || erIkkeProd
@@ -42,6 +45,7 @@ export function BrevHeader({
   const erUtkastValgt = brev.some((b) => b.brevId === valgtBrevId && b.brevstatus === 'UTKAST')
   const brukerMottaker = data && data.brevmottakere?.find((m) => m.mottakertype === 'BRUKER')
   const brukerPersonInfo = usePerson(brukerMottaker?.fnr)
+  const valgtBrev = brev.find((b) => b.brevId === valgtBrevId)
 
   return (
     <Box borderRadius="12" marginBlock="space-0 space-4">
@@ -73,7 +77,9 @@ export function BrevHeader({
                     size="small"
                     aria-expanded={innstillingerÅpen}
                     onClick={() => setInnstillingerÅpen(!innstillingerÅpen)}
-                    icon={<ChevronDownIcon fontSize="1.3rem" />}
+                    icon={
+                      innstillingerÅpen ? <ChevronUpIcon fontSize="1.3rem" /> : <ChevronDownIcon fontSize="1.3rem" />
+                    }
                   >
                     Innstillinger
                   </Button>
@@ -101,6 +107,8 @@ export function BrevHeader({
           mottakere={data}
           kanRedigere={kanRedigere}
           brukerPersonInfo={brukerPersonInfo}
+          brukerSomMottaker={brukerSomMottaker}
+          formidlerErObligatorisk={erFormidlerAlltidMottaker(valgtBrev?.brevmal)}
           vedtaksbrev={erVedtaksbrevValgt}
           onSlettUtkast={onSlettUtkast}
         />
@@ -117,6 +125,8 @@ interface BrevHeaderInnstillingerProps {
   vedtaksbrev: boolean
   brukerPersonInfo?: UsePersonResponse
   onSlettUtkast?(): void
+  brukerSomMottaker?: BrukerSomMottaker
+  formidlerErObligatorisk?: boolean
 }
 
 export function BrevHeaderInnstillinger({
@@ -125,6 +135,8 @@ export function BrevHeaderInnstillinger({
   kanRedigere,
   brukerPersonInfo,
   onSlettUtkast,
+  brukerSomMottaker,
+  formidlerErObligatorisk = false,
 }: BrevHeaderInnstillingerProps) {
   const vergemål = brukerPersonInfo?.personInfo?.vergemål || []
   const vergeNavn = vergemål
@@ -139,7 +151,31 @@ export function BrevHeaderInnstillinger({
         <Heading level="2" size="xsmall">
           Innstillinger for brevet
         </Heading>
-        {mottakere && <DelKopiMedFormidler brevId={valgtBrevId} mottakere={mottakere} kanRedigere={kanRedigere} />}
+        {mottakere && (
+          <DelKopiMedFormidler
+            brevId={valgtBrevId}
+            mottakere={mottakere}
+            kanRedigere={kanRedigere}
+            formidlerErObligatorisk={formidlerErObligatorisk}
+          />
+        )}
+        {brukerSomMottaker && (
+          <CheckboxGroup
+            legend="Flere mottakere"
+            hideLegend
+            size="small"
+            value={brukerSomMottaker.valgt ? ['bruker'] : []}
+            onChange={(valgte: string[]) => brukerSomMottaker.velgBruker(valgte.includes('bruker'))}
+          >
+            <Checkbox
+              value="bruker"
+              disabled={!kanRedigere || !brukerSomMottaker.kanEndre}
+              description="Eventuelle verger får også brevet."
+            >
+              Send også til bruker
+            </Checkbox>
+          </CheckboxGroup>
+        )}
         <Heading level="3" size="xsmall">
           Mottakere
         </Heading>
@@ -152,7 +188,9 @@ export function BrevHeaderInnstillinger({
                   (mottaker.mottakertype == 'BRUKER'
                     ? formaterNavn(brukerPersonInfo?.personInfo?.navn)
                     : mottaker.mottakertype == 'VERGE'
-                      ? vergeNavn
+                      ? brukerSomMottaker
+                        ? formaterNavn(vergemål.find((verge) => verge.fnr === mottaker.fnr)?.navn)
+                        : vergeNavn
                       : '-')) ||
                   '-'}
               </Tekst>

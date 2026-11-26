@@ -1,33 +1,25 @@
-# Innhenting av opplysningar
+# Vi treng fleire opplysningar for å behandle hjelpemiddelsaka til \[auto_bruker_navn\]
 
-Vi har fått søknaden din om hjelpemiddel \[auto_dato_soknad_mottatt\]. Saka manglar opplysningar.
+Vi har fått søknaden om hjelpemiddel til \[auto_bruker_navn\]. Søknaden vart send inn \[auto_dato_soknad_innsendt\] av \[auto_formidler_navn\], som er \[auto_formidler_stilling\].
 
-For at vi skal kunne behandle saka, treng vi at du sender oss:
+Vi manglar opplysningar for å kunne behandle søknaden.
 
-- \[Legg inn det som må sendast inn\]
+\[Forklar kven som skal sende inn opplysningane\]
 
-## Slik sender du opplysningane
+## Dette er opplysningane vi treng
 
-Vi ber deg sende oss opplysningane vi manglar saman med førstesida som er lagd ved dette brevet. Det er viktig at du legg førstesida øvst.
+For at vi skal kunne behandle søknaden, treng vi desse opplysningane:
 
-## Frist for innsending
+- \[Beskriv kva opplysningar som manglar\]
 
-Du må sende oss opplysningane innan 3 veker frå du fekk dette brevet.
+## Slik sender du inn opplysningane
 
-## Kva skjer viss du ikkje sender opplysningane?
+Send opplysningane saman med førstesida som følgjer med dette brevet. Det er viktig at du legg førstesida øvst.
 
-Viss vi ikkje får opplysningane innan fristen på 3 veker, kan saka bli avslått på grunn av manglande opplysningar. Dette går fram av folketrygdloven § 21-3.
+## Fristen for å sende opplysningane
 
-## Du har rett til innsyn i saka di
+Opplysningane må sendast til oss innan 3 veker frå brevet vart mottatt.
 
-Du har rett til å sjå dokumenta i saka di. Dette følgjer av forvaltningsloven § 18. Kontakt oss om du vil sjå dokumenta i saka di. Du kan lese meir om kva rettar du har og korleis Nav behandlar personopplysningane dine på [nav.no/personvernerklaering](https://nav.no/personvernerklaering).
+## Viss vi ikkje får opplysningane
 
-## Har du spørsmål?
-
-Vi har plikt til å rettleie deg om rettane og pliktene dine i saka, både før, under og etter saksbehandlinga. Dette følgjer av forvaltningsloven § 11.
-
-Du finn meir informasjon på [nav.no/hjelpemidler](https://nav.no/hjelpemidler).
-
-På [nav.no/kontakt](https://nav.no/kontakt) kan du skrive til oss.
-
-Om du ikkje finn svar på [nav.no](https://nav.no), kan du ringje oss på telefon 55 55 11 11 kvardagar 09.00-11.15 og 12.15-14.30.
+Viss vi ikkje får opplysningane innan fristen på 3 veker, må vi vurdere søknaden ut frå opplysningane vi har. Det kan føre til at søknaden blir avslått. Dette går fram av folketrygdloven § 21-3.

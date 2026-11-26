@@ -53,6 +53,7 @@ import { enheter } from './enheter.ts'
 import { nesteArbeidsdagKlokkenÅtte, nåIso } from './felles.ts'
 import { JOURNALFOERING_BRUKER_FNR } from './journalpostKonstanter.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
+import { formaterNavn } from '../../utils/formater.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
@@ -587,14 +588,38 @@ export class SakStore extends Dexie {
       ...rest,
     })
 
-    await this.brevmottakere.add({
-      brevId: brevId.toString(),
-      fnr: '13820599335',
-      mottakertype: Mottakertype.BRUKER,
-      opprettet: nåIso(),
-      opprettetAv: Saksbehandlere.innlogget().id,
-      kanSlettes: kanBrevmottakerSlettes(rest.brevmal, Mottakertype.BRUKER),
-    })
+    if (rest.brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER) {
+      const formidler = (await this.hentBehovsmelding(sakId))?.levering?.hjelpemiddelformidler
+      const navn = formidler?.navn
+      const adresse = formidler?.adresse
+
+      if (
+        navn &&
+        adresse &&
+        [navn.fornavn, navn.etternavn, adresse.adresselinje1, adresse.postnummer, adresse.poststed].every(
+          (felt) => !!felt?.trim()
+        )
+      ) {
+        await this.brevmottakere.add({
+          brevId: brevId.toString(),
+          navn: formaterNavn(navn),
+          adresse,
+          mottakertype: Mottakertype.FORMIDLER,
+          opprettet: nåIso(),
+          opprettetAv: Saksbehandlere.innlogget().id,
+          kanSlettes: kanBrevmottakerSlettes(rest.brevmal, Mottakertype.FORMIDLER),
+        })
+      }
+    } else {
+      await this.brevmottakere.add({
+        brevId: brevId.toString(),
+        fnr: '13820599335',
+        mottakertype: Mottakertype.BRUKER,
+        opprettet: nåIso(),
+        opprettetAv: Saksbehandlere.innlogget().id,
+        kanSlettes: kanBrevmottakerSlettes(rest.brevmal, Mottakertype.BRUKER),
+      })
+    }
 
     const brev = await this.hentBrev(brevId)
     if (brev.brevmal !== Brevmal.BREVEDITOR_VEDTAKSBREV) {
@@ -847,16 +872,53 @@ export class SakStore extends Dexie {
 
   async leggTilBrevmottaker(_sakId: string, brevId: string, request: LeggTilMottakerRequest): Promise<void> {
     const brev = await this.hentBrev(Number(brevId))
-    await this.brevmottakere.add({
+    const opprettet = nåIso()
+    const opprettetAv = Saksbehandlere.innlogget().id
+    const brevmottaker = {
       brevId: brevId.toString(),
       fnr: request.fnr,
       orgnr: request.orgnr,
       navn: request.navn,
       adresse: request.adresse,
       mottakertype: request.mottakertype,
-      opprettet: nåIso(),
-      opprettetAv: Saksbehandlere.innlogget().id,
+      opprettet,
+      opprettetAv,
       kanSlettes: kanBrevmottakerSlettes(brev.brevmal, request.mottakertype),
+    }
+
+    if (
+      brev.brevmal !== Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER ||
+      request.mottakertype !== Mottakertype.BRUKER ||
+      !request.fnr
+    ) {
+      await this.brevmottakere.add(brevmottaker)
+      return
+    }
+
+    // Personen hentes før skrivingen, siden PersonStore er en egen database
+    const person = await this.personStore.hent(request.fnr)
+    if (!person) {
+      throw new Error('Fant ikke person for brevmottaker')
+    }
+    const vergefnr = new Set<string>()
+    const verger: Omit<Brevmottaker, 'id'>[] = []
+    for (const verge of person.vergemål ?? []) {
+      if (!verge.fnr || vergefnr.has(verge.fnr)) {
+        continue
+      }
+      vergefnr.add(verge.fnr)
+      verger.push({
+        brevId: brevId.toString(),
+        fnr: verge.fnr,
+        navn: verge.navn && formaterNavn(verge.navn),
+        mottakertype: Mottakertype.VERGE,
+        opprettet,
+        opprettetAv,
+        kanSlettes: kanBrevmottakerSlettes(brev.brevmal, Mottakertype.VERGE),
+      })
+    }
+    await this.transaction('rw', this.brevmottakere, async () => {
+      await this.brevmottakere.bulkAdd([brevmottaker, ...verger])
     })
   }
 
@@ -873,7 +935,24 @@ export class SakStore extends Dexie {
   }
 
   async slettBrevmottaker(_sakId: string, _brevId: string, brevmottakerId: string): Promise<void> {
-    await this.brevmottakere.delete(Number(brevmottakerId))
+    await this.transaction('rw', this.brev, this.brevmottakere, async () => {
+      const id = Number(brevmottakerId)
+      const brevmottaker = await this.brevmottakere.get(id)
+      const brev = brevmottaker && (await this.brev.get(Number(brevmottaker.brevId)))
+      const sletteIder = [id]
+      if (
+        brevmottaker?.mottakertype === Mottakertype.BRUKER &&
+        brev?.brevmal === Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER
+      ) {
+        const verger = await this.brevmottakere
+          .where('brevId')
+          .equals(brevmottaker.brevId)
+          .and((mottaker) => mottaker.mottakertype === Mottakertype.VERGE)
+          .primaryKeys()
+        sletteIder.push(...verger)
+      }
+      await this.brevmottakere.bulkDelete(sletteIder)
+    })
   }
 
   async leggTilInngåendeSaksdokumenter(sakId: string, journalpostId: string) {
@@ -1065,6 +1144,7 @@ function utledVedtakStatus(vedtaksResultat?: VedtaksResultat): VedtakStatusType 
 
 const obligatoriskeMottakere: Partial<Record<Brevmal, Mottakertype[]>> = {
   [Brevmal.BREVEDITOR_VEDTAKSBREV]: [Mottakertype.BRUKER, Mottakertype.VERGE],
+  [Brevmal.BREVEDITOR_INNHENTE_OPPLYSNINGER]: [Mottakertype.FORMIDLER],
 }
 
 function kanBrevmottakerSlettes(brevmal: Brevmal, mottakertype: Mottakertype): boolean {

@@ -2,22 +2,28 @@ import { Buildings3Icon } from '@navikt/aksel-icons'
 import { Box, Button, Checkbox, CheckboxGroup, HStack, HelpText, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Tekst } from '../felleskomponenter/typografi'
-import { HttpError } from '../io/HttpError'
+import { type HttpError } from '../io/HttpError'
 import { useBehovsmelding } from '../saksbilde/useBehovsmelding'
 import { useSak } from '../saksbilde/useSak'
-import { Veiadresse } from '../types/hotlibs'
+import { type Veiadresse } from '../types/hotlibs'
 import { formaterAdresse, formaterNavn, storeBokstaverIOrd } from '../utils/formater'
 import { BrevadresseSkjema } from './BrevadresseSkjema'
-import { BrevmottakerResponse, Mottakertype } from './brevTyper'
+import { type BrevmottakerResponse, Mottakertype } from './brevTyper'
 import { useBrevmottakerActions } from './useBrev'
 
 interface DelKopiMedFormidlerProps {
   brevId?: string
   mottakere: BrevmottakerResponse
   kanRedigere: boolean
+  formidlerErObligatorisk?: boolean
 }
 
-export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiMedFormidlerProps) {
+export function DelKopiMedFormidler({
+  brevId,
+  mottakere,
+  kanRedigere,
+  formidlerErObligatorisk = false,
+}: DelKopiMedFormidlerProps) {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const { leggTilBrevmottaker, endreBrevmottaker, slettBrevmottaker } = useBrevmottakerActions(brevId)
@@ -28,7 +34,8 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
     (mottaker) => mottaker.mottakertype === Mottakertype.FORMIDLER
   )
 
-  const erObligatoriskMottaker = formidlerSomMottaker?.kanSlettes === false
+  const erObligatoriskMottaker = formidlerErObligatorisk || formidlerSomMottaker?.kanSlettes === false
+  const måFylleUtFormidler = erObligatoriskMottaker && !formidlerSomMottaker && kanRedigere
   const innsender = sak?.data.innsender
   const digitalBehovsmelding = behovsmelding?.isDigitalBehovsmelding ?? false
   const formidlerNavn = digitalBehovsmelding && innsender ? formaterNavn(innsender.navn) : undefined
@@ -95,7 +102,7 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
           </Checkbox>
         </CheckboxGroup>
       )}
-      {(formidlerSomMottaker || visSkjema) && (
+      {(formidlerSomMottaker || visSkjema || måFylleUtFormidler) && (
         <Box borderWidth="1" padding="space-8" borderRadius="8" borderColor="neutral-subtleA">
           <VStack gap="space-4">
             <HStack gap="space-2">
@@ -134,8 +141,8 @@ export function DelKopiMedFormidler({ brevId, mottakere, kanRedigere }: DelKopiM
                 isLoading={leggTilBrevmottaker.isMutating || endreBrevmottaker.isMutating}
                 feilmelding={feilmelding}
                 onLagre={handleLagre}
-                onAvbryt={() => setVisSkjema(false)}
-                digitalBehovsmelding={digitalBehovsmelding}
+                onAvbryt={måFylleUtFormidler ? undefined : () => setVisSkjema(false)}
+                digitalBehovsmelding={digitalBehovsmelding && !!(formidlerSomMottaker?.navn ?? formidlerNavn)}
               />
             )}
           </VStack>

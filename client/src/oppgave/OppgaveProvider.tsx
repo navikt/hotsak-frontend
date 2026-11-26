@@ -1,13 +1,15 @@
 import { type ReactNode, useEffect, useReducer } from 'react'
 
+import { PersonProvider } from '../personoversikt/PersonProvider.tsx'
 import { type OppgaveAction, OppgaveContext, OppgaveDispatch, type OppgaveState } from './OppgaveContext.ts'
 
 export interface OppgaveProviderProps {
+  brukerFnr?: string
   sakId?: string
   children: ReactNode
 }
 
-export function OppgaveProvider({ sakId, children }: OppgaveProviderProps) {
+export function OppgaveProvider({ brukerFnr, sakId, children }: OppgaveProviderProps) {
   const [state, dispatch] = useReducer(reducer, {
     isOppgaveContext: true,
     sakId,
@@ -21,9 +23,11 @@ export function OppgaveProvider({ sakId, children }: OppgaveProviderProps) {
   }, [sakId])
 
   return (
-    <OppgaveContext value={state}>
-      <OppgaveDispatch value={dispatch}>{children}</OppgaveDispatch>
-    </OppgaveContext>
+    <PersonProvider initialFnr={brukerFnr}>
+      <OppgaveContext value={state}>
+        <OppgaveDispatch value={dispatch}>{children}</OppgaveDispatch>
+      </OppgaveContext>
+    </PersonProvider>
   )
 }
 

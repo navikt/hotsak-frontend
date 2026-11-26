@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Group, Panel } from 'react-resizable-panels'
 
 import { useDokumentContext } from '../dokument/DokumentContext.tsx'
@@ -11,12 +11,11 @@ import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { type Journalpost } from '../types/types.internal.ts'
-import { JournalføringLoader } from './JournalføringLoader.tsx'
 import classes from './Journalføring.module.css'
 import { JournalføringSkjema } from './JournalføringSkjema.tsx'
 import { hentJournalføringStandardverdier } from './journalføringStandardverdier.ts'
 
-interface JournalføringProps {
+export interface JournalføringProps {
   oppgave: Journalføringsoppgave
   journalpost: Journalpost
   erBarnebrilleSøknad: boolean
@@ -42,31 +41,13 @@ export function Journalføring({ oppgave, journalpost, mutateJournalpost, erBarn
   }
 
   return (
-    <AktivPersonBoundary key={journalpostId} fnr={journalpost.fnrBruker}>
-      <JournalføringInnhold
-        oppgave={oppgave}
-        journalpost={journalpost}
-        mutateJournalpost={mutateJournalpost}
-        erBarnebrilleSøknad={erBarnebrilleSøknad}
-      />
-    </AktivPersonBoundary>
+    <JournalføringInnhold
+      oppgave={oppgave}
+      journalpost={journalpost}
+      mutateJournalpost={mutateJournalpost}
+      erBarnebrilleSøknad={erBarnebrilleSøknad}
+    />
   )
-}
-
-function AktivPersonBoundary({ fnr, children }: { fnr: string; children: ReactNode }) {
-  const { setFodselsnummer } = usePersonContext()
-  const [initialisert, setInitialisert] = useState(false)
-
-  useEffect(() => {
-    setFodselsnummer(fnr)
-    setInitialisert(true)
-  }, [fnr, setFodselsnummer])
-
-  if (!initialisert) {
-    return <JournalføringLoader />
-  }
-
-  return children
 }
 
 function JournalføringInnhold({ oppgave, journalpost, mutateJournalpost, erBarnebrilleSøknad }: JournalføringProps) {

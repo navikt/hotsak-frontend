@@ -102,7 +102,7 @@ describe('PlanlagteJobber', () => {
     expect(await screen.findByText('Venter')).toBeVisible()
     expect(screen.getByText('Kjører')).toBeVisible()
     expect(screen.getByText('Ikke planlagt')).toBeVisible()
-    expect(screen.getByText('Ukjent')).toBeVisible()
+    expect(within(screen.getByRole('row', { name: /nightly job/ })).getByRole('cell', { name: 'Ukjent' })).toBeVisible()
     expect(screen.getByRole('button', { name: 'Kjør running job nå' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Kjør unscheduled job nå' })).toBeDisabled()
 

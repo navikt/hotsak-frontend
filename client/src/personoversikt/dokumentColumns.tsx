@@ -1,9 +1,11 @@
-import { Link, Tag } from '@navikt/ds-react'
+import { Link } from '@navikt/ds-react'
 import { Link as ReactRouterLink } from 'react-router'
 
-import { JournalposttypeTag } from '../dokument/DokumentTag'
+import { JournalposttypeTag, JournalstatusTag } from '../dokument/DokumentTag'
 import { DataGridColumn } from '../felleskomponenter/data/DataGrid'
+import { Fagsaksystem } from '../kodeverk/kodeverkTypes'
 import { Journalpost } from '../types/types.internal'
+import { isKeyOfObject } from '../utils/type'
 
 type DokumentColumns = {
   [K in string]: DataGridColumn<Journalpost> & { field: K }
@@ -14,6 +16,14 @@ export const dokumentColumns = {
     field: 'journalpostId',
     header: 'Journalpost-ID',
     width: 110,
+  },
+  journalstatus: {
+    field: 'journalstatus',
+    header: 'Status',
+    width: 100,
+    renderCell({ journalstatus }) {
+      return <JournalstatusTag journalstatus={journalstatus} />
+    },
   },
   journalposttype: {
     field: 'journalposttype',
@@ -46,6 +56,16 @@ export const dokumentColumns = {
       return null
     },
   },
+  fagsaksystem: {
+    field: 'fagsaksystem',
+    header: 'Fagsystem',
+    width: 100,
+    renderCell({ sak }) {
+      const fagsaksystem = sak?.fagsaksystem ?? ''
+      if (isKeyOfObject(fagsaksystem, Fagsaksystem)) return Fagsaksystem[fagsaksystem]
+      return null
+    },
+  },
   sakIdLink: {
     field: 'sakIdLink',
     width: 100,
@@ -66,20 +86,12 @@ export const dokumentColumns = {
     width: 180,
     renderCell(journalpost) {
       const førsteDokument = journalpost.dokumenter[0]
-      if (!førsteDokument) return null
+      if (!førsteDokument) return journalpost.tittel
       return (
         <Link href={`/api/journalpost/${førsteDokument.journalpostId}/${førsteDokument.dokumentId}`} target="_blank">
           {journalpost.tittel}
         </Link>
       )
-    },
-  },
-  journalstatus: {
-    field: 'journalstatus',
-    header: 'Status',
-    width: 100,
-    renderCell({ journalstatus }) {
-      return journalstatus ? <Tag size="small">{journalstatus}</Tag> : null
     },
   },
 } satisfies DokumentColumns

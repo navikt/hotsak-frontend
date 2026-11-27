@@ -16,7 +16,7 @@ export function OppgaveDetailsDokumenter({ sakId }: { sakId: string }) {
       {isLoading ? (
         <Loader />
       ) : (
-        <HGrid gap="space-12" columns="max-content min-content min-content" align="center">
+        <HGrid gap="space-8" columns="max-content min-content min-content" align="center">
           {dokumenter.map((dokument) => {
             const href = `/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`
             return (

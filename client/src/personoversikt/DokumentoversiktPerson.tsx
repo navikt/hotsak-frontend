@@ -1,11 +1,13 @@
 import { BodyShort, Box, HGrid } from '@navikt/ds-react'
-import { Fragment, useEffect, useMemo } from 'react'
+import { Fragment, useEffect } from 'react'
 
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { useDokumentsøk } from '../dokument/useDokumentsøk.ts'
 import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { DataGridToolbar } from '../felleskomponenter/data/DataGridToolbar.tsx'
 import { Details, DetailsItem } from '../felleskomponenter/Details.tsx'
+import { IconLink } from '../felleskomponenter/IconLink.tsx'
 import { usePageRequest } from '../felleskomponenter/Page.ts'
 import type { Journalpost } from '../types/types.internal.ts'
 import { dokumentColumns, journalpostKey, type DokumentColumnField } from './dokumentColumns.tsx'
@@ -72,31 +74,38 @@ export function DokumentoversiktPerson(props: DokumentoversiktPersonProps) {
 }
 
 function DokumentdetaljerPerson({ row: journalpost }: { row: Journalpost }) {
-  const vedlegg = useMemo(
-    () =>
-      journalpost.dokumenter
-        .flatMap((it) => it.logiskeVedlegg)
-        .map((it) => it.tittel)
-        .join(', ') ?? [],
-    [journalpost.dokumenter]
-  )
   return (
     <div>
       <Details>
         {journalpost.dokumenter.length > 0 && (
           <DetailsItem label="Dokumenter">
-            <HGrid columns="min-content">
-              {journalpost.dokumenter.map((dokument) => (
-                <Fragment key={dokument.dokumentId}>
-                  <BodyShort size="small" className={classes.text}>
-                    {dokument.tittel}
-                  </BodyShort>
-                </Fragment>
-              ))}
+            <HGrid gap="space-8" columns="min-content min-content">
+              {journalpost.dokumenter.map((dokument) => {
+                const href = `/api/journalpost/${dokument.journalpostId}/${dokument.dokumentId}`
+                const vedlegg = dokument.logiskeVedlegg.map((vedlegg) => vedlegg.tittel).join(', ')
+                return (
+                  <Fragment key={href}>
+                    <BodyShort
+                      as={IconLink}
+                      icon={<ExternalLinkIcon />}
+                      href={href}
+                      size="small"
+                      target="_blank"
+                      className={classes.text}
+                    >
+                      {dokument.tittel}
+                    </BodyShort>
+                    {vedlegg.length > 0 && (
+                      <BodyShort size="small" className={classes.text}>
+                        Vedlegg: {vedlegg}
+                      </BodyShort>
+                    )}
+                  </Fragment>
+                )
+              })}
             </HGrid>
           </DetailsItem>
         )}
-        {vedlegg && <DetailsItem label="Vedlegg">{vedlegg}</DetailsItem>}
         <DetailsItem label="Innsynsregel">{journalpost.innsynsregel.term}</DetailsItem>
       </Details>
     </div>
@@ -104,10 +113,12 @@ function DokumentdetaljerPerson({ row: journalpost }: { row: Journalpost }) {
 }
 
 const columns = [
-  dokumentColumns.tittel,
+  { ...dokumentColumns.tittel, width: 300 },
+  dokumentColumns.journalstatus,
   dokumentColumns.journalposttype,
   dokumentColumns.journalpostOpprettetTid,
   dokumentColumns.journalpostId,
   dokumentColumns.fagsakId,
+  dokumentColumns.fagsaksystem,
   dokumentColumns.sakIdLink,
 ]

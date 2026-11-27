@@ -14,6 +14,7 @@ import { OppgaveDetailsDokumenter } from './OppgaveDetailsDokumenter.tsx'
 import { OppgaveDetailsHjelpemidler } from './OppgaveDetailsHjelpemidler.tsx'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
+import { useLocation } from 'react-router'
 
 export interface OppgaveDetailsProps extends DataGridContentProps<Oppgave> {
   children?: ReactNode
@@ -25,7 +26,9 @@ export function OppgaveDetails(props: OppgaveDetailsProps) {
   const { kategorisering, bruker, sak, sakId } = oppgave
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
   const { id: saksbehandlerId } = useInnloggetAnsatt()
-  const visBruker = oppgave.tildeltSaksbehandler?.id === saksbehandlerId
+  const location = useLocation()
+  const visBruker =
+    oppgave.tildeltSaksbehandler?.id === saksbehandlerId && !location.pathname.includes('personoversikt')
 
   if (oppgave.sak?.saksstatus === Saksstatus.OVERFØRT_GOSYS) {
     return <OppgaveDetailsSakOverførtGosys sakId={oppgave.sakId} oppgaveUrl={oppgaveUrl} />

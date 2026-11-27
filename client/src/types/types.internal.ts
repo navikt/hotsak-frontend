@@ -1,4 +1,5 @@
 import type { Journalposttype, Journalstatus } from '../dokument/dokumentTypes.ts'
+import type { Fagsaksystem } from '../kodeverk/kodeverkTypes.ts'
 import { OppgaveKodeverk } from '../oppgave/oppgaveTypes.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
 import type { Bydel, Enhet, HarPersonnavn, Kilde, Kommune, Personnavn } from './hotlibs.ts'
@@ -403,7 +404,7 @@ export enum FritakFraBegrunnelseÅrsak {
 export interface JournalpostSak {
   datoOpprettet: string | null
   fagsakId: string | null
-  fagsaksystem: string | null
+  fagsaksystem: Fagsaksystem | string | null
 }
 
 export interface Journalpost {

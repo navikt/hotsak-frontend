@@ -35,7 +35,7 @@ export function Toppmeny() {
   const [darkMode, setDarkMode] = useDarkMode()
   const [julemodus, setJulemodus] = useJulemodus()
   const erOppgaveliste = useErOppgaveliste()
-  const { logTemaByttet } = useUmami()
+  const { logTemaByttet, logKnappKlikket } = useUmami()
   const { åpneModia } = useModia()
   const hurtigtaster = useHurtigtasterModal()
   const isLargeScreen = useIsLargeScreen(1280)
@@ -138,7 +138,13 @@ export function Toppmeny() {
                 {`Endre til ${darkModeLabel(!darkMode)}`}
               </ActionMenu.Item>
               {erPilot && (
-                <ActionMenu.Item icon={<SnowIcon />} onSelect={() => setJulemodus(!julemodus)}>
+                <ActionMenu.Item
+                  icon={<SnowIcon />}
+                  onSelect={() => {
+                    setJulemodus(!julemodus)
+                    logKnappKlikket({ tekst: 'toppmeny-julemodus-bytte', julemodus: !julemodus })
+                  }}
+                >
                   {julemodus ? 'Skru av julemodus' : 'Skru på julemodus'}
                 </ActionMenu.Item>
               )}

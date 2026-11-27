@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { render, screen } from '@testing-library/react'
-import { Fragment, type ReactNode, StrictMode, useState } from 'react'
+import { Fragment, type ReactNode, StrictMode } from 'react'
 import { MemoryRouter } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -9,10 +9,8 @@ import { HttpError } from '../io/HttpError.ts'
 import { lagPerson } from '../mocks/data/PersonStore.ts'
 import { lagJournalpost } from '../mocks/data/lagJournalpost.ts'
 import { lagJournalføringsoppgave } from '../mocks/data/lagOppgave.ts'
-import { OppgaveProvider } from '../oppgave/OppgaveProvider.tsx'
 import { type Journalføringsoppgave, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
-import { PersonProvider } from '../personoversikt/PersonProvider.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { type Journalpost } from '../types/types.internal.ts'
 import { Journalføring } from './Journalføring.tsx'
@@ -59,34 +57,28 @@ const journalpost: Journalpost = {
   ...lagJournalpost('9006', 'Søknad om hjelpemidler', { brukerFnr: journalpostensFnr }),
   dokumenter: [],
 }
-function lagOppgave(jp: Journalpost): Journalføringsoppgave {
-  const testOppgave = lagJournalføringsoppgave(jp)
+
+function lagOppgave(journalpost: Journalpost): Journalføringsoppgave {
+  const testOppgave = lagJournalføringsoppgave(journalpost)
   return {
     ...testOppgave,
     kategorisering: { ...testOppgave.kategorisering, oppgavetype: Oppgavetype.JOURNALFØRING },
-    journalpostId: jp.journalpostId,
+    journalpostId: journalpost.journalpostId,
   }
 }
+
 const oppgave = lagOppgave(journalpost)
 
-function MedGammeltFødselsnummerIContext({ children, strict = true }: { children: ReactNode; strict?: boolean }) {
-  const [fodselsnummer] = useState(fnrFraForrigeOppgave)
+function Container({ children, strict = true }: { children: ReactNode; strict?: boolean }) {
   const Modus = strict ? StrictMode : Fragment
   return (
     <Modus>
       <MemoryRouter>
-        <PersonProvider initialFnr={fodselsnummer}>
-          <span data-context-fnr={fodselsnummer} />
-          {children}
-        </PersonProvider>
+        <span data-context-fnr={''} />
+        {children}
       </MemoryRouter>
     </Modus>
   )
-}
-
-function ByttBruker({ fnr }: { fnr: string }) {
-  const { setFodselsnummer } = usePersonContext()
-  return <button onClick={() => setFodselsnummer(fnr)}>Velg bruker B</button>
 }
 
 const lastPersonAsynkront = vi.mocked(usePerson).getMockImplementation()!
@@ -96,26 +88,7 @@ describe('Journalføring', () => {
     vi.mocked(usePerson).mockImplementation(lastPersonAsynkront)
   })
 
-  it('viser oppgavens bruker og bruker aldri fødselsnummeret fra overordnet context', async () => {
-    render(
-      <MedGammeltFødselsnummerIContext>
-        <Journalføring
-          oppgave={oppgave}
-          journalpost={journalpost}
-          mutateJournalpost={vi.fn()}
-          erBarnebrilleSøknad={false}
-        />
-      </MedGammeltFødselsnummerIContext>
-    )
-
-    expect(await screen.findByText('Fnr: 010101 99999')).toBeInTheDocument()
-    expect(screen.getByText(`Skjema for ${journalpostensFnr}`)).toBeInTheDocument()
-    expect(usePerson).toHaveBeenCalledWith(journalpostensFnr)
-    expect(usePerson).not.toHaveBeenCalledWith(fnrFraForrigeOppgave)
-    expect(skjemaFnr).not.toContain(fnrFraForrigeOppgave)
-  })
-
-  it('bruker oppgavens bruker i personlinja når avsenderen har et annet fødselsnummer', async () => {
+  it('bruker journalpostens bruker i personlinja når avsenderen har et annet fødselsnummer', async () => {
     const jp = {
       ...lagJournalpost('9009', 'Søknad om hjelpemiddel', {
         brukerFnr: journalpostensFnr,
@@ -125,14 +98,14 @@ describe('Journalføring', () => {
       dokumenter: [],
     }
     render(
-      <MedGammeltFødselsnummerIContext>
+      <Container>
         <Journalføring
           oppgave={lagOppgave(jp)}
           journalpost={jp}
           mutateJournalpost={vi.fn()}
           erBarnebrilleSøknad={false}
         />
-      </MedGammeltFødselsnummerIContext>
+      </Container>
     )
 
     expect(await screen.findByText('Fnr: 010101 99999')).toBeInTheDocument()
@@ -147,14 +120,14 @@ describe('Journalføring', () => {
       fnrInnsender: '',
     }
     render(
-      <MedGammeltFødselsnummerIContext>
+      <Container>
         <Journalføring
           oppgave={lagOppgave(jp)}
           journalpost={jp}
           mutateJournalpost={vi.fn()}
           erBarnebrilleSøknad={false}
         />
-      </MedGammeltFødselsnummerIContext>
+      </Container>
     )
 
     expect(screen.getByText('Journalposten mangler avsender. Kan ikke journalføre uten fødselsnummer.')).toBeVisible()
@@ -164,14 +137,14 @@ describe('Journalføring', () => {
   it('stopper journalføring når fnrBruker mangler selv om nøstet bruker har fødselsnummer', () => {
     const jp = { ...journalpost, fnrBruker: '' }
     render(
-      <MedGammeltFødselsnummerIContext>
+      <Container>
         <Journalføring
           oppgave={lagOppgave(jp)}
           journalpost={jp}
           mutateJournalpost={vi.fn()}
           erBarnebrilleSøknad={false}
         />
-      </MedGammeltFødselsnummerIContext>
+      </Container>
     )
 
     expect(screen.getByText('Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.')).toBeVisible()
@@ -202,14 +175,14 @@ describe('Journalføring', () => {
     }
 
     render(
-      <MedGammeltFødselsnummerIContext>
+      <Container>
         <Journalføring
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
           erBarnebrilleSøknad={false}
         />
-      </MedGammeltFødselsnummerIContext>
+      </Container>
     )
 
     expect(await screen.findByText(`Skjema for ${journalpost.fnrBruker}`)).toBeInTheDocument()
@@ -243,14 +216,14 @@ describe('Journalføring', () => {
     }
 
     render(
-      <MedGammeltFødselsnummerIContext>
+      <Container>
         <Journalføring
           oppgave={lagOppgave(journalpostMedFlereDokumenter)}
           journalpost={journalpostMedFlereDokumenter}
           mutateJournalpost={vi.fn()}
           erBarnebrilleSøknad={false}
         />
-      </MedGammeltFødselsnummerIContext>
+      </Container>
     )
 
     expect(await screen.findByText(`Skjema for ${journalpostensFnr}`)).toBeInTheDocument()
@@ -274,14 +247,14 @@ describe('Journalføring', () => {
     skjemaFnr.length = 0
 
     render(
-      <MedGammeltFødselsnummerIContext>
+      <Container>
         <Journalføring
           oppgave={oppgave}
           journalpost={journalpost}
           mutateJournalpost={vi.fn()}
           erBarnebrilleSøknad={false}
         />
-      </MedGammeltFødselsnummerIContext>
+      </Container>
     )
 
     expect(await screen.findByText(melding)).toBeInTheDocument()

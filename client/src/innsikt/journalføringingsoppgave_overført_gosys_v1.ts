@@ -19,34 +19,6 @@ export const journalføringingsoppgave_overført_gosys_v1: ISpørreundersøkelse
       alternativer: [
         {
           type: 'oppfølgingsspørsmål',
-          tekst: 'Behov for å sende brev',
-          spørsmål: [
-            {
-              type: 'enkeltvalg',
-              tekst: 'Hva har du behov for å sende brev om?',
-              alternativer: [
-                'Innhente signatur eller nytt fullmaktsskjema',
-                'Innhente nødvendig dokumentasjon i saken',
-                'Varsel om svartid',
-                {
-                  type: 'oppfølgingsspørsmål',
-                  tekst: 'Annet',
-                  spørsmål: [
-                    {
-                      type: 'fritekst',
-                      tekst: 'Oppgi hva du har behov for å sende brev om.',
-                      beskrivelse: IKKE_PERSONOPPLYSNINGER,
-                      påkrevd: true,
-                    },
-                  ],
-                },
-              ],
-              påkrevd: true,
-            },
-          ],
-        },
-        {
-          type: 'oppfølgingsspørsmål',
           tekst: 'Saken skal ikke behandles i Hotsak pr. i dag',
           spørsmål: [
             {

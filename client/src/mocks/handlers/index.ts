@@ -21,6 +21,7 @@ import { problemsammendragHandlers } from './problemsammendrag.ts'
 import { saksbehandlingHandlers } from './saksbehandling.ts'
 import { saksoversiktHandlers } from './saksoversikt.ts'
 import { saksvarslerHandlers } from './saksvarsler.ts'
+import { schedulerHandlers } from './scheduler.ts'
 import { totrinnskontrollHandlers } from './totrinnskontroll.ts'
 import { utbetalingsmottakerHandlers } from './utbetalingsmottaker.ts'
 import { vilkårsvurderingHandlers } from './vilkårsvurdering.ts'
@@ -45,6 +46,7 @@ export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...saksbehandlingHandlers(store),
   ...saksoversiktHandlers(store),
   ...saksvarslerHandlers(store),
+  ...schedulerHandlers(),
   ...totrinnskontrollHandlers(store),
   ...utbetalingsmottakerHandlers(store),
   ...vilkårsvurderingHandlers(store),

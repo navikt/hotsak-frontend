@@ -15,6 +15,7 @@ const MedarbeidersOppgaver = lazy(() => import('./oppgaveliste/MedarbeidersOppga
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
+const PlanlagteJobber = lazy(() => import('./administrasjon/scheduler/PlanlagteJobber.tsx'))
 
 export function AppRoutes() {
   return (
@@ -39,6 +40,7 @@ export function AppRoutes() {
               </Route>
             </Route>
             <Route path="personoversikt/*" element={<Personoversikt />} />
+            <Route path="administrasjon/planlagte-jobber" element={<PlanlagteJobber />} />
           </Route>
         </Route>
 

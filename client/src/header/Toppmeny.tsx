@@ -110,8 +110,8 @@ export function Toppmeny() {
               <>
                 <ActionMenu.Divider />
                 <ActionMenu.Group label="Administrasjon">
-                  <ActionMenu.Item as="a" href="/db-scheduler" target="_blank" rel="noreferrer">
-                    DB Scheduler UI
+                  <ActionMenu.Item as={Link} to="/administrasjon/planlagte-jobber">
+                    Planlagte jobber
                   </ActionMenu.Item>
                 </ActionMenu.Group>
               </>

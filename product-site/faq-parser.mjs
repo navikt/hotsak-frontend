@@ -176,6 +176,9 @@ function renderInline(text) {
 }
 
 function checkInline(line) {
+  if (/\[[^\]]+\]\([^)]*\(/.test(line)) {
+    return 'Lenker kan ikke inneholde parenteser i adressen.'
+  }
   const withoutLinks = line.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '$1')
   if (/\[[^\]]*\]\s*\(|\]\(/.test(withoutLinks)) {
     return 'Lenken er ikke riktig skrevet. Bruk [tekst](adresse) uten mellomrom i adressen.'

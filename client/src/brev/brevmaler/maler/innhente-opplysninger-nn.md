@@ -1,6 +1,6 @@
-# Vi treng fleire opplysningar for å behandle hjelpemiddelsaka til \[auto_bruker_navn\]
+# Vi treng fleire opplysningar for å behandle \[auto_bruker_navn\] si hjelpemiddelsak
 
-Vi har fått søknaden om hjelpemiddel til \[auto_bruker_navn\]. Søknaden vart send inn \[auto_dato_soknad_innsendt\] av \[auto_formidler_navn\], som er \[auto_formidler_stilling\].
+Vi har fått søknaden om hjelpemiddel til \[auto_bruker_navn\]. Søknaden vart sendt inn \[auto_dato_soknad_innsendt\] av \[auto_formidler_navn\], som er \[auto_formidler_stilling\].
 
 Vi manglar opplysningar for å kunne behandle søknaden.
 
@@ -18,8 +18,8 @@ Send opplysningane saman med førstesida som følgjer med dette brevet. Det er v
 
 ## Fristen for å sende opplysningane
 
-Opplysningane må sendast til oss innan 3 veker frå brevet vart mottatt.
+Opplysningane må sendast til oss innan 3 veker frå brevet vart motteken.
 
-## Viss vi ikkje får opplysningane
+## Om vi ikkje får opplysningane
 
-Viss vi ikkje får opplysningane innan fristen på 3 veker, må vi vurdere søknaden ut frå opplysningane vi har. Det kan føre til at søknaden blir avslått. Dette går fram av folketrygdloven § 21-3.
+Om vi ikkje får opplysningane innan fristen på 3 veker, må vi vurdere søknaden ut frå opplysningane vi har. Det kan føre til at søknaden blir avslått. Dette går fram av folketrygdloven § 21-3.

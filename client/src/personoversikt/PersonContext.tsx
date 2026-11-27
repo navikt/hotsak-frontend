@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react'
 
-interface PersonContextType {
+export interface PersonContextType {
   fodselsnummer: string
-  setFodselsnummer: (fnr: string) => void
+  setFodselsnummer(fnr: string): void
 }
 
 export const PersonContext = createContext<PersonContextType | null>(null)

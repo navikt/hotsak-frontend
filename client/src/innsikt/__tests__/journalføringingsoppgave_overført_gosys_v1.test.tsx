@@ -57,7 +57,6 @@ describe('journalføringingsoppgave_overført_gosys_v1', () => {
     renderSkjema()
 
     expect(hentRadioAlternativerFraGruppe(new RegExp(HOVEDSPØRSMÅL))).toEqual([
-      'Behov for å sende brev',
       'Saken skal ikke behandles i Hotsak pr. i dag',
       'Saken skal ikke behandles av Nav hjelpemiddelsentral',
       'Saken er sendt inn på feil bruker eller inneholder dokumentasjon om flere brukere',

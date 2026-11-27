@@ -37,7 +37,7 @@ describe('JournalføringSvartidsbrev', () => {
     await user.click(screen.getByRole('checkbox', { name: 'Ja, opprett brev' }))
     await user.selectOptions(screen.getByLabelText('Forventet behandlingstid'), '12')
     await user.type(
-      screen.getByLabelText(/Forklar hvorfor saken ikke kan behandles i løpet av 1 måned/),
+      screen.getByRole('textbox', { name: /Forklar til bruker hvorfor saken ikke kan behandles i løpet av 1 måned/ }),
       'Vi mangler opplysninger fra kommunen.'
     )
     await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))
@@ -69,7 +69,9 @@ describe('JournalføringSvartidsbrev', () => {
     renderSkjema()
 
     await user.click(screen.getByRole('checkbox', { name: 'Ja, opprett brev' }))
-    expect(screen.queryByLabelText(/Forklar hvorfor saken ikke kan behandles i løpet/)).toBeNull()
+    expect(
+      screen.queryByRole('textbox', { name: /Forklar til bruker hvorfor saken ikke kan behandles i løpet/ })
+    ).toBeNull()
     await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))
 
     const ramme = (await screen.findByTitle('Forhåndsvisning av svartidsbrev')) as HTMLIFrameElement
@@ -103,7 +105,7 @@ describe('JournalføringSvartidsbrev', () => {
     await user.click(screen.getByRole('radio', { name: 'Nynorsk' }))
     await user.selectOptions(screen.getByLabelText('Forventet behandlingstid'), '8')
     await user.type(
-      screen.getByLabelText(/Forklar hvorfor saken ikke kan behandles i løpet/),
+      screen.getByRole('textbox', { name: /Forklar til bruker hvorfor saken ikke kan behandles i løpet/ }),
       'Vi ventar på svar frå kommunen.'
     )
     await user.click(screen.getByRole('button', { name: 'Forhåndsvis brev' }))

@@ -4,8 +4,11 @@ import {
   Checkbox,
   CheckboxGroup,
   Dialog,
+  HelpText,
+  HStack,
   InlineMessage,
   Label,
+  Link,
   Radio,
   RadioGroup,
   Select,
@@ -111,7 +114,24 @@ export function JournalføringSvartidsbrev({
             {kreverÅrsak && (
               <Textarea
                 size="small"
-                label="Forklar hvorfor saken ikke kan behandles i løpet av 1 måned"
+                label={
+                  <HStack wrap={false} gap="space-8" align="center">
+                    <span>Forklar til bruker hvorfor saken ikke kan behandles i løpet av 1 måned</span>
+                    <HelpText title="Forklaring for hvorfor årsak kreves">
+                      “I svaret til bruker må du forklare hvorfor det vil ta lengre tid enn 1 månedå behandle
+                      henvendelsen. Dette følger av{' '}
+                      <Link
+                        inlineText
+                        href="https://lovdata.no/dokument/NL/lov/1967-02-10/KAPITTEL_3#%C2%A711a"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        forvaltningsloven § 11 a
+                      </Link>
+                      .”
+                    </HelpText>
+                  </HStack>
+                }
                 description="Begrunnelsen blir en del av brevet."
                 maxLength={ÅRSAK_MAKSLENGDE}
                 value={årsak}

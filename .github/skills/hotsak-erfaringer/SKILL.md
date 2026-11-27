@@ -36,6 +36,8 @@ Kompakt erfaringslogg. Gjelder i tillegg til `AGENTS.md`. Ved konflikt vinner si
 - Test synlig oppførsel og meningsfull logikk. Ikke speil implementasjonen, og fjern utdaterte tester.
 - Playwright: bruk spesifikke tilgjengelige selektorer. Tekster som «Endre» og «Lagret» finnes mange steder og gir feil i strict mode.
 - Oppgavelisten viser ikke brukernavn. Finn rader med «gjelder»-teksten (`åpneSakSomMatcher` i `e2e/helpers.ts`).
+- Ikke vent på `networkidle` i Playwright: appen har SSE-tilkoblinger som aldri blir stille. Vent på elementer.
+- Produktsiden (`product-site/`, skjermbilder, FAQ): bruk skillen `hotsak-produktside`.
 
 ## Mock-data (MSW + Dexie)
 

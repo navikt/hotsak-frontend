@@ -6,20 +6,38 @@ on:
     paths:
       - 'product-site/**'
       - '.github/workflows/pages.yaml'
+  pull_request:
+    paths:
+      - 'product-site/**'
+      - '.github/workflows/pages.yaml'
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  valider:
+    name: Valider spørsmål og svar
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Sjekk at faq.md er gyldig
+        run: node product-site/scripts/valider-faq.mjs
+
   build:
     name: Bygg Pages-artefakt
+    needs: valider
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: read
+      pages: read
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -37,6 +55,10 @@ jobs:
   deploy:
     name: Publiser produktside
     needs: build
+    if: github.event_name != 'pull_request'
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment:

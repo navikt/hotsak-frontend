@@ -90,6 +90,7 @@
     "e2e": "playwright test",
     "e2e:copilot": "cross-env COPILOT_E2E=true VITE_API_PROXY=false VITE_GRUNNDATA_PROXY=false VITE_ALTERNATIVPRODUKTER_PROXY=false VITE_GOTENBERG=false VITE_API_URL=https://dummy API_TOKEN=dummy AZURE_TOKEN_GENERATOR_COOKIE=dummy playwright test",
     "e2e:ui": "playwright test --ui",
+    "produktside:skjermbilder": "cross-env COPILOT_E2E=true VITE_API_PROXY=false VITE_GRUNNDATA_PROXY=false VITE_ALTERNATIVPRODUKTER_PROXY=false VITE_GOTENBERG=false VITE_API_URL=https://dummy API_TOKEN=dummy AZURE_TOKEN_GENERATOR_COOKIE=dummy playwright test -c playwright.produktside.config.ts",
     "codegen:grunndata": "graphql-codegen --config grunndata-codegen.yaml",
     "codegen:alternativprodukter": "graphql-codegen --config alternativprodukter-codegen.yaml",
     "codegen:all": "pnpm run codegen:grunndata && pnpm run codegen:alternativprodukter",

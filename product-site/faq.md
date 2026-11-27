@@ -29,6 +29,21 @@ Alle oppgaver lagres i Gosys. Oppgaver som skal behandles i Hotsak, vises i begg
 
 Hotsak tar nå imot NAV 10-07.01, NAV 10-07.03, NAV 10-07.04, NAV 10-07.23, NAV 10-07.86 og NAV 10-07.87, og ettersendelser til disse skjemaene. [Se navnene på skjemaene](journalforing.html#dokumenter).
 
+Noen av søknadene kan likevel ikke behandles i Hotsak i dag, for eksempel saker om arbeidsliv eller utdanning. Da velger du **Overfør til Gosys**. [Se årsakene til overføring](journalforing.html#overforing).
+
+## Hvilke journalføringsoppgaver går til Gosys i stedet for Hotsak?
+
+Journalføringsoppgaven går rett til Gosys hvis
+
+- dokumentene er registrert på en organisasjon
+- bruker mangler, eller vi finner ikke fødselsnummer eller geografisk tilknytning
+- bruker bor i utlandet
+- bruker har adressebeskyttelse
+- bruker er skjermet
+- hoveddokumentet ikke er et skjema fra Nav
+
+Søknad om briller til barn går alltid til Hotsak.
+
 ## Hva er forskjellen på en Hotsak-sak og en fagsak?
 
 En Hotsak-sak behandles videre i Hotsak. En fagsak i et annet system, som Infotrygd, behandles videre i Gosys og det aktuelle fagsystemet. Du kan [journalføre dokumenter på begge typer saker](journalforing.html#flyter).
@@ -113,12 +128,13 @@ Når du sender et brev om å innhente opplysninger, kan du velge **Sett på vent
 Når du trykker **Endre** på et hjelpemiddel i saken, kan du se alternative produkter under **Alternativer på lager**. Antallet på lager gjelder lagrene til din hjelpemiddelsentral. **Fysisk** er antallet som står på lageret nå. Hotsak regner det ut slik:
 
 **Fysisk**\
-+ **Bestilt**\
-+ **Anmodet eksternt**\
-+ **Anmodet internt**\
-− **Behovsmeldt**\
-− **Reservert**\
-− **Restordre**\
-= **På lager**
+
+- **Bestilt**\
+- **Anmodet eksternt**\
+- **Anmodet internt**\
+  − **Behovsmeldt**\
+  − **Reservert**\
+  − **Restordre**\
+  = **På lager**
 
 Trykk på spørsmålstegnet ved lagerstatusen for å se tallene for hvert produkt. Øverst i vinduet ser du når lagerstatusen sist ble oppdatert.

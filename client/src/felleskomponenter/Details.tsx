@@ -7,7 +7,7 @@ export interface DetailsProps {
 
 export function Details({ children }: DetailsProps) {
   return (
-    <HGrid as="dl" gap="space-6" columns={1}>
+    <HGrid as="dl" gap="space-12" columns={1}>
       {children}
     </HGrid>
   )

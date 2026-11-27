@@ -1,6 +1,34 @@
 import { Tag, type TagProps } from '@navikt/ds-react'
 
-import { Journalposttype } from './dokumentTypes'
+import { Journalposttype, type Journalstatus } from './dokumentTypes'
+
+export interface JournalstatusTagProps extends Omit<TagProps, 'children'> {
+  journalstatus?: Journalstatus
+  short?: boolean
+}
+
+export function JournalstatusTag(props: JournalstatusTagProps) {
+  const { size = 'small', journalstatus, ...rest } = props
+  if (!journalstatus) return null
+  return <Tag size={size} variant="outline" {...journalstatusTagProps[journalstatus]} {...rest} />
+}
+
+const journalstatusTagProps = {
+  MOTTATT: { children: 'Mottatt' },
+  JOURNALFOERT: { children: 'Journalført' },
+  JOURNALFØRT: { children: 'Journalført' },
+  FERDIGSTILT: { children: 'Ferdigstilt' },
+  EKSPEDERT: { children: 'Ekspedert' },
+  UNDER_ARBEID: { children: 'Under arbeid' },
+  FEILREGISTRERT: { children: 'Feilregistrert' },
+  UTGAAR: { children: 'Utgår' },
+  UTGÅR: { children: 'Utgår' },
+  AVBRUTT: { children: 'Avbrutt' },
+  UKJENT_BRUKER: { children: 'Ukjent bruker' },
+  RESERVERT: { children: 'Reservert' },
+  OPPLASTING_DOKUMENT: { children: 'Opplasting dokument' },
+  UKJENT: { children: 'Ukjent' },
+} as const satisfies Record<Journalstatus, TagProps>
 
 export interface JournalposttypeTagProps extends Omit<TagProps, 'children'> {
   journalposttype?: Journalposttype
@@ -33,23 +61,3 @@ const journalposttypeShort: Record<string, string> = {
   Utgående: 'Utg.',
   Notat: 'Not.',
 }
-
-/*
-export function journalpoststatusTagKort(type: Journalpost['journalstatus']) {
-  const types: Record<typeof type, TagProps> = {
-    MOTTATT: { children: 'M', 'data-color': 'neutral', title: 'Mottatt' },
-    JOURNALFOERT: { children: 'JF', 'data-color': 'neutral', title: 'Journalført' },
-    FERDIGSTILT: { children: 'F', 'data-color': 'neutral', title: 'Ferdigstilt' },
-    EKSPEDERT: { children: 'E', 'data-color': 'neutral', title: 'Ekspedert' },
-    UNDER_ARBEID: { children: 'UA', 'data-color': 'neutral', title: 'Under arbeid' },
-    FEILREGISTRERT: { children: 'FR', 'data-color': 'neutral', title: 'Feilregistrert' },
-    UTGAAR: { children: 'U', 'data-color': 'neutral', title: 'Utgår' },
-    AVBRUTT: { children: 'A', 'data-color': 'neutral', title: 'Avbrutt' },
-    UKJENT_BRUKER: { children: 'UB', 'data-color': 'neutral', title: 'Ukjent bruker' },
-    RESERVERT: { children: 'R', 'data-color': 'neutral', title: 'Reservert' },
-    OPPLASTING_DOKUMENT: { children: 'OD', 'data-color': 'neutral', title: 'Opplasting dokument' },
-    UKJENT: { children: '?', 'data-color': 'neutral', title: 'Ukjent' },
-  }
-  return <Tag size="small" variant="outline" {...types[type]} />
-}
-  */

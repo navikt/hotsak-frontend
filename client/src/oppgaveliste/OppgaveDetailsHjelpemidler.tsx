@@ -21,7 +21,7 @@ export function OppgaveDetailsHjelpemidler(props: OppgaveDetailsHjelpemidlerProp
       {isLoading ? (
         <Loader />
       ) : (
-        <HGrid gap="space-12" columns="min-content min-content min-content max-content" align="start">
+        <HGrid gap="space-8" columns="min-content min-content min-content max-content" align="start">
           {artikler.length === 0 && (
             <BodyShort size="small" className={classes.text}>
               Ingen registrerte.

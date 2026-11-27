@@ -9,6 +9,7 @@ import { Personlinje } from '../felleskomponenter/personlinje/Personlinje.tsx'
 import { ResizeHandle } from '../felleskomponenter/resize/ResizeHandle.tsx'
 import { type Journalføringsoppgave } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
+import { PersonProvider } from '../personoversikt/PersonProvider.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { type Journalpost } from '../types/types.internal.ts'
 import classes from './Journalføring.module.css'
@@ -41,12 +42,14 @@ export function Journalføring({ oppgave, journalpost, mutateJournalpost, erBarn
   }
 
   return (
-    <JournalføringInnhold
-      oppgave={oppgave}
-      journalpost={journalpost}
-      mutateJournalpost={mutateJournalpost}
-      erBarnebrilleSøknad={erBarnebrilleSøknad}
-    />
+    <PersonProvider initialFnr={journalpost.fnrBruker}>
+      <JournalføringInnhold
+        oppgave={oppgave}
+        journalpost={journalpost}
+        mutateJournalpost={mutateJournalpost}
+        erBarnebrilleSøknad={erBarnebrilleSøknad}
+      />
+    </PersonProvider>
   )
 }
 

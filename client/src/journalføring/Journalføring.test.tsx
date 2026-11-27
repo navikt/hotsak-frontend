@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom'
 
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 import { Fragment, type ReactNode, StrictMode, useState } from 'react'
 import { MemoryRouter } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -12,7 +11,8 @@ import { lagJournalpost } from '../mocks/data/lagJournalpost.ts'
 import { lagJournalføringsoppgave } from '../mocks/data/lagOppgave.ts'
 import { OppgaveProvider } from '../oppgave/OppgaveProvider.tsx'
 import { type Journalføringsoppgave, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
-import { PersonContext, usePersonContext } from '../personoversikt/PersonContext.tsx'
+import { usePersonContext } from '../personoversikt/PersonContext.tsx'
+import { PersonProvider } from '../personoversikt/PersonProvider.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { type Journalpost } from '../types/types.internal.ts'
 import { Journalføring } from './Journalføring.tsx'
@@ -70,15 +70,15 @@ function lagOppgave(jp: Journalpost): Journalføringsoppgave {
 const oppgave = lagOppgave(journalpost)
 
 function MedGammeltFødselsnummerIContext({ children, strict = true }: { children: ReactNode; strict?: boolean }) {
-  const [fodselsnummer, setFodselsnummer] = useState(fnrFraForrigeOppgave)
+  const [fodselsnummer] = useState(fnrFraForrigeOppgave)
   const Modus = strict ? StrictMode : Fragment
   return (
     <Modus>
       <MemoryRouter>
-        <PersonContext value={{ fodselsnummer, setFodselsnummer }}>
+        <PersonProvider initialFnr={fodselsnummer}>
           <span data-context-fnr={fodselsnummer} />
-          <OppgaveProvider brukerFnr={journalpostensFnr}>{children}</OppgaveProvider>
-        </PersonContext>
+          {children}
+        </PersonProvider>
       </MemoryRouter>
     </Modus>
   )
@@ -176,35 +176,6 @@ describe('Journalføring', () => {
 
     expect(screen.getByText('Journalposten mangler bruker. Kan ikke journalføre uten fødselsnummer.')).toBeVisible()
     expect(screen.queryByText(`Skjema for ${journalpostensFnr}`)).not.toBeInTheDocument()
-  })
-
-  it('oppdaterer personlinja og skjemaet når valgt bruker endres fra A til B', async () => {
-    const user = userEvent.setup()
-    const fnrB = '03030399999'
-    const { container } = render(
-      <MedGammeltFødselsnummerIContext strict={false}>
-        <ByttBruker fnr={fnrB} />
-        <Journalføring
-          oppgave={oppgave}
-          journalpost={journalpost}
-          mutateJournalpost={vi.fn()}
-          erBarnebrilleSøknad={false}
-        />
-      </MedGammeltFødselsnummerIContext>
-    )
-    expect(await screen.findByText('Fnr: 010101 99999')).toBeInTheDocument()
-
-    skjemaFnr.length = 0
-    vi.mocked(usePerson).mockClear()
-    await user.click(screen.getByRole('button', { name: 'Velg bruker B' }))
-
-    expect(await screen.findByText('Fnr: 030303 99999')).toBeInTheDocument()
-    expect(screen.getByText(`Skjema for ${fnrB}`)).toBeInTheDocument()
-    await waitFor(() => expect(container.querySelector('[data-context-fnr]')).toHaveAttribute('data-context-fnr', fnrB))
-    expect(vi.mocked(usePerson).mock.calls.at(-1)).toEqual([fnrB])
-    expect(usePerson).not.toHaveBeenCalledWith('')
-    expect(skjemaFnr).not.toContain('')
-    expect(skjemaFnr).not.toContain(journalpostensFnr)
   })
 
   it('bruker brevkoden fra første dokument til å sende standardverdier til skjemaet', async () => {

@@ -116,7 +116,7 @@ export function JournalføringSvartidsbrev({
                 size="small"
                 label={
                   <HStack wrap={false} gap="space-8" align="center">
-                    <span>Forklar hvorfor saken ikke kan behandles i løpet av 1 måned</span>
+                    <span>Forklar til bruker hvorfor saken ikke kan behandles i løpet av 1 måned</span>
                     <HelpText title="Forklaring for hvorfor årsak kreves">
                       “I svaret til bruker må du forklare hvorfor det vil ta lengre tid enn 1 månedå behandle
                       henvendelsen. Dette følger av{' '}

@@ -4,6 +4,7 @@ SLIK LEGGER DU TIL ET SPØRSMÅL
 - ## Spørsmål? lager et nytt spørsmål. Svaret skriver du rett under.
 - La det være en tom linje mellom avsnitt.
 - **fet tekst**, *kursiv*, [lenketekst](adresse) og punktlister med "- " er lov.
+- Skriv \ til slutt i en linje for å få linjeskift i samme avsnitt.
 - Ikke skriv HTML.
 Mer hjelp: se FAQ-GUIDE.md i samme mappe.
 -->
@@ -62,7 +63,6 @@ Oppgaven forsvinner fra Hotsak. Årsaken du velger, blir synlig som en kommentar
 
 ## Hvilke årsaker kan jeg velge?
 
-- **Behov for å sende brev**, for eksempel for å innhente signatur, be om dokumentasjon eller varsle om svartid.
 - **Saken skal ikke behandles i Hotsak i dag**, for eksempel saker om arbeidsliv, utdanning, AKT26 eller tilskudd.
 - **Saken skal ikke behandles av Nav hjelpemiddelsentral**, når oppgaven hører hjemme et annet sted i Nav.
 - **Saken er sendt inn på feil bruker eller inneholder dokumentasjon om flere brukere**.
@@ -70,19 +70,55 @@ Oppgaven forsvinner fra Hotsak. Årsaken du velger, blir synlig som en kommentar
 
 [Les mer om hver årsak](journalforing.html#overforing).
 
+# Brev
+
+## Når blir brevet sendt?
+
+Når du trykker **Send brev**, legges brevet til utsending. Det sendes automatisk neste virkedag kl. 08. Det samme gjelder svartidsbrev som du lager når du journalfører.
+
+[Les mer om brev](brev.html#utsending).
+
+## Hvordan sender jeg kopi til formidler?
+
+Åpne **Innstillinger** øverst i brevet, og velg **Del kopi med formidler**. Du kan dele kopi av vedtaksbrev og svartidsbrev.
+
+Formidler får kopien som brev til arbeidsstedet sitt. Hvis søknaden var digital, ser formidler kopien også på sine innloggede sider. Fyll inn adressen kopien skal sendes til. Hvis søknaden var digital, har Hotsak fylt inn et forslag som du kan endre. Hvis søknaden var på papir, må du også fylle inn navnet til formidler.
+
+[Les mer om kopi til formidler](brev.html#kopi-til-formidler).
+
+## Hvem får brevet om å innhente opplysninger?
+
+Formidler får brevet. Hvis søknaden var digital, har Hotsak lagt inn formidler som mottaker. Hvis søknaden var på papir, må du fylle inn navn og adresse til formidler.
+
+Vil du at bruker også skal få brevet, åpner du **Innstillinger** og velger **Send også til bruker**. Eventuelle verger får da også brevet.
+
+[Les mer om å innhente opplysninger](brev.html#innhente-opplysninger).
+
+## Hva skjer med oppgaven når jeg setter den på vent?
+
+Når du sender et brev om å innhente opplysninger, kan du velge **Sett på vent** og hvor lenge oppgaven skal vente. Du kan også skrive en kommentar. Hvis det blir journalført et nytt dokument på saken mens den er på vent, blir oppgaven aktiv igjen.
+
+[Les mer om å sende brev](brev.html#send-brev).
+
+## Hvordan sletter jeg et brevutkast?
+
+Åpne **Innstillinger** øverst i brevet, og trykk **Slett utkast**.
+
+[Les mer om innstillinger for brevet](brev.html#innstillinger).
+
 # Ombruk
 
 ## Hvordan regnes lagerstatus ut når jeg endrer hjelpemiddel?
 
-Når du trykker **Endre** på et hjelpemiddel i saken, kan du se alternative produkter under **Alternativer på lager**. Antallet på lager gjelder lagrene til din hjelpemiddelsentral. Hotsak regner det ut slik:
+Når du trykker **Endre** på et hjelpemiddel i saken, kan du se alternative produkter under **Alternativer på lager**. Antallet på lager gjelder lagrene til din hjelpemiddelsentral. **Fysisk** er antallet som står på lageret nå. Hotsak regner det ut slik:
 
-- **Fysisk**: antallet som står på lageret nå
-- pluss **Bestilt**
-- pluss **Anmodet eksternt**
-- pluss **Anmodet internt**
-- minus **Behovsmeldt**
-- minus **Reservert**
-- minus **Restordre**
-- er lik **På lager**
+**Fysisk**\
++ **Bestilt**\
++ **Anmodet eksternt**\
++ **Anmodet internt**\
+− **Behovsmeldt**\
+− **Reservert**\
+− **Restordre**\
+= **På lager**
 
 Trykk på spørsmålstegnet ved lagerstatusen for å se tallene for hvert produkt. Øverst i vinduet ser du når lagerstatusen sist ble oppdatert.

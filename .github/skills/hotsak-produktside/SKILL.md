@@ -15,6 +15,7 @@ Produktsiden ligger i `product-site/` og publiseres til <https://navikt.github.i
 
 ## Målgrupper og tone
 
+- **Brev (`brev.html`)**: saksbehandlere, samme tone som journalføringssiden. Svartidsbrev fra journalføringen beskrives på journalføringssiden, og Brev-siden lenker dit.
 - **Forsiden (`index.html`)**: produktledere, designere, ledere og ansatte på hjelpemiddelsentralene. Kort overblikk over hva Hotsak kan gjøre. Ingen tekniske detaljer, bortsett fra avsnittet om teknologistacken.
 - **Journalføring (`journalforing.html`) og Spørsmål og svar (`faq.html` + `faq.md`)**: saksbehandlere. Konkret og handlingsrettet: hva du ser, hva du velger og hva som skjer.
 - **Kontakt oss (`kontakt.html`)**: Slack-kanalen #digihot og Teams-kanalen «DigiHoT - innspill, spørsmål og info» (bare navnet, ingen lenke). GitHub-lenken står nederst, liten og diskret.
@@ -22,11 +23,11 @@ Produktsiden ligger i `product-site/` og publiseres til <https://navikt.github.i
 
 ## Struktur
 
-- Alle sider har samme header (bare logo og navn) og venstremeny: Om Hotsak, Journalføring, Spørsmål og svar, Kontakt oss. Ny side = kopier en eksisterende underside og legg lenken inn i menyen på **alle** sidene, med `aria-current="page"` på den aktive.
+- Alle sider har samme header (bare logo og navn) og venstremeny: Om Hotsak, Journalføring, Brev, Spørsmål og svar, Kontakt oss. Ny side = kopier en eksisterende underside og legg lenken inn i menyen på **alle** sidene, med `aria-current="page"` på den aktive.
 - Forsiden bruker `.hero-grid` og `.showcase-grid` (to like kolonner, én kolonne under 1200 px). Smale, høye bilder får klassen `portrait`.
 - Skjermbilder ligger i `.browser-frame` med `figcaption`. På innholdssider brukes `browser-frame content-figure`.
 - Eksterne lenker: `target="_blank" rel="noreferrer"` og «(åpnes i ny fane)» i lenketeksten.
-- Journalføringssiden har ankre som FAQ lenker til: `#oppgaver`, `#dokumenter`, `#flyter`, `#gosys-generell`, `#innsyn`, `#overforing`. Ikke endre dem uten å oppdatere `faq.md`.
+- Journalføringssiden har ankre som FAQ lenker til: `#oppgaver`, `#dokumenter`, `#flyter`, `#gosys-generell`, `#innsyn`, `#overforing`, `#svartidsbrev`. Brev-siden (`brev.html`) har `#nytt-utkast`, `#svartidsbrev`, `#innhente-opplysninger`, `#send-brev`, `#innstillinger`, `#kopi-til-formidler`, `#slett-utkast` og `#utsending`. Ikke endre dem uten å oppdatere `faq.md`.
 
 ## Valg som ikke skal reverseres
 
@@ -42,7 +43,7 @@ Utvikleren har bedt om å fjerne disse. Ikke legg dem tilbake:
 ## Spørsmål og svar (FAQ)
 
 - Innholdet ligger i `product-site/faq.md`, slik at produktleder kan redigere uten HTML. `faq.js` henter fila og viser den med `faq-parser.mjs`.
-- `#` = gruppe, `##` = spørsmål, teksten under = svar. Tillatt: avsnitt, `**fet**`, `*kursiv*`, `[lenke](adresse)` og punktlister med `- `. Alt annet gir feil.
+- `#` = gruppe, `##` = spørsmål, teksten under = svar. Tillatt: avsnitt, `**fet**`, `*kursiv*`, `[lenke](adresse)`, punktlister med `- ` og linjeskift med `\` til slutt i linjen. Minus først i en linje skrives `−`, ellers blir linjen et punkt i en liste. Alt annet gir feil.
 - Hvert spørsmål får en id fra teksten, så `faq.html#<id>` åpner spørsmålet direkte.
 - Valider alltid: `node product-site/scripts/valider-faq.mjs`. Samme sjekk kjører i jobben «Valider spørsmål og svar» i `pages.yaml` på pull requests og før publisering. Den sjekker også at relative lenker og ankre finnes.
 - Utvider du Markdown-støtten, endre `faq-parser.mjs` (brukes både i nettleseren og i valideringen) og oppdater `product-site/FAQ-GUIDE.md`.
@@ -64,6 +65,7 @@ pnpm run produktside:skjermbilder -g briller   # bare testene som matcher navnet
 - Ikke vent på `networkidle` (SSE gjør at den aldri blir ferdig). Vent på et konkret element.
 - Chromium uten skjerm viser ikke PDF-er, så dokumentpaneler blir tomme. Beskjær dem bort.
 - Gode testdata: oppgaven «Terskeleliminator» (saksbilde), søk på `01010199999` (personoversikt), oppgaven «Briller til barn», journalføringsoppgave med «Journalføring» og «Hjelpemidler».
+- Brevpanelet: oppgaven «Terskeleliminator», velg «Innvilget» og «Opprett vedtaksbrev». Smale bilder av panelet får `content-figure portrait`.
 - Se på hvert bilde etterpå. Oppdater `width`/`height` på `<img>` når størrelsen endres, og skriv en `alt`-tekst som beskriver hva bildet viser.
 
 ## Sjekk før du er ferdig

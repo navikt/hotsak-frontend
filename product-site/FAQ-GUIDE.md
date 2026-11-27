@@ -40,7 +40,19 @@ Vil du legge til et spørsmål i en gruppe som finnes, skriver du det under de a
 | `[Les om journalføring](journalforing.html#innsyn)` | En lenke til et bestemt avsnitt |
 | `[Les rutinen](https://navno.sharepoint.com/...)` | En lenke til en ekstern side som åpnes i ny fane |
 | `- Første punkt` | En punktliste. Hver linje som starter med `- `, blir et nytt punkt |
+| `Første linje\` | Et linjeskift. Skriv `\` til slutt i linjen, så starter neste linje på en ny linje i samme avsnitt |
 | En tom linje | Et nytt avsnitt |
+
+Et linjeskift passer for regnestykker og andre korte linjer som hører sammen:
+
+```markdown
+**Fysisk**\
++ **Bestilt**\
+− **Reservert**\
+= **På lager**
+```
+
+Bruk minustegnet `−` i stedet for bindestrek (`-`) først i en linje. En linje som starter med `- `, blir et punkt i en liste.
 
 ## Dette kan du ikke bruke
 

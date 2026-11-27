@@ -73,3 +73,60 @@ test('journalføring', async ({ page }) => {
   await page.getByText(/Foreslått fordi du bekreftet at dokumentene gjelder overføring/).waitFor()
   await taBilde(page, 'journalforing-innsyn-overforing', { x: 0, y: dokumenter!.y - 16, width: 570, height: 490 })
 })
+
+async function utsnittMellom(page: Page, øverst: string | RegExp, nederst: string | RegExp, x = 0, width = 570) {
+  const topp = await page.getByText(øverst).first().boundingBox()
+  const bunn = await page.getByText(nederst).first().boundingBox()
+  const y = topp!.y - 16
+  return { x, y, width, height: bunn!.y + bunn!.height + 16 - y }
+}
+
+test('journalføring svartidsbrev', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1600 })
+  await åpneOppgaveSomMatcher(page, /Journalføring.*Hjelpemidler|Hjelpemidler.*Journalføring/)
+  await page.getByRole('heading', { level: 1, name: 'Journalføring' }).waitFor()
+  await page.getByRole('checkbox', { name: 'Ja, opprett brev' }).check()
+  await page.getByRole('combobox', { name: 'Forventet behandlingstid' }).selectOption({ label: '8 uker' })
+  await page
+    .getByRole('textbox', { name: /Forklar hvorfor saken ikke kan behandles/ })
+    .fill('Vi har mange saker til behandling, og det tar derfor lengre tid enn vanlig.')
+  await page.getByRole('checkbox', { name: 'Ja, opprett brev' }).scrollIntoViewIfNeeded()
+  const utsnitt = await utsnittMellom(
+    page,
+    'Vil du sende brev om forventet saksbehandlingstid til bruker?',
+    'Brevet legges til utsending når du journalfører saken.'
+  )
+  await taBilde(page, 'journalforing-svartidsbrev', utsnitt)
+})
+
+async function åpneVedtaksbrev(page: Page) {
+  await page.setViewportSize({ width: 1440, height: 1500 })
+  await åpneOppgaveSomMatcher(page, 'Terskeleliminator')
+  const resultat = page.getByRole('combobox', { name: /resultat/i })
+  await resultat.waitFor()
+  await resultat.selectOption('Innvilget')
+  await page.getByRole('button', { name: /Opprett vedtaksbrev/i }).click()
+  await page.getByRole('tab', { name: 'Vedtaksbrev', exact: true }).waitFor()
+}
+
+async function brevpanelUtsnitt(page: Page, nederstKnapp: string) {
+  const panel = await page.getByTestId('brevpanel').boundingBox()
+  const knapp = await page.getByRole('button', { name: nederstKnapp }).boundingBox()
+  return { x: panel!.x, y: panel!.y, width: panel!.width, height: knapp!.y + knapp!.height + 16 - panel!.y }
+}
+
+test('brev nytt utkast', async ({ page }) => {
+  await åpneVedtaksbrev(page)
+  await page.getByRole('tab', { name: 'Nytt utkast' }).click()
+  await page.getByRole('radio', { name: /Svartidsbrev/ }).check()
+  await page.getByRole('button', { name: 'Opprett utkast' }).waitFor()
+  await taBilde(page, 'brev-nytt-utkast', await brevpanelUtsnitt(page, 'Opprett utkast'))
+})
+
+test('brev innstillinger', async ({ page }) => {
+  await åpneVedtaksbrev(page)
+  await page.getByRole('button', { name: 'Innstillinger' }).click()
+  await page.getByRole('checkbox', { name: /Del kopi med formidler/ }).check()
+  await page.getByRole('textbox', { name: 'Adresselinje 1' }).waitFor()
+  await taBilde(page, 'brev-innstillinger', await brevpanelUtsnitt(page, 'Lagre mottaker'))
+})

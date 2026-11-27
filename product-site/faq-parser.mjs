@@ -1,5 +1,6 @@
 // Enkel Markdown-parser for faq.md. Brukes både i nettleseren (faq.js) og i valideringen (scripts/valider-faq.mjs).
-// Støtter: # gruppe, ## spørsmål, avsnitt, **fet**, *kursiv*, [lenke](adresse) og punktlister med "- ".
+// Støtter: # gruppe, ## spørsmål, avsnitt, linjeskift med \ til slutt i linjen, **fet**, *kursiv*,
+// [lenke](adresse) og punktlister med "- ".
 
 export function parseFaq(markdown) {
   const errors = []
@@ -98,6 +99,8 @@ export function parseFaq(markdown) {
     if (!paragraph) {
       paragraph = { type: 'paragraph', text: line, line: lineNumber }
       question.blocks.push(paragraph)
+    } else if (paragraph.text.endsWith('\\')) {
+      paragraph.text = `${paragraph.text.slice(0, -1).trimEnd()}\n${line}`
     } else {
       paragraph.text += ` ${line}`
     }
@@ -154,7 +157,7 @@ function renderQuestion(q) {
     .map((b) =>
       b.type === 'list'
         ? `<ul>${b.items.map((item) => `<li>${renderInline(item)}</li>`).join('')}</ul>`
-        : `<p>${renderInline(b.text)}</p>`
+        : `<p>${b.text.replace(/\\$/, '').split('\n').map(renderInline).join('<br />')}</p>`
     )
     .join('\n')
   return `<details id="${q.id}">

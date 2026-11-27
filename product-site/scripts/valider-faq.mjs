@@ -18,8 +18,11 @@ for (const { href, line } of links(faq)) {
     errors.push({ line, message: `Lenken peker til en side som ikke finnes: ${href}` })
     continue
   }
-  if (anchor && file && !readFileSync(target, 'utf8').includes(`id="${anchor}"`)) {
-    errors.push({ line, message: `Fant ikke avsnittet #${anchor} på ${file}.` })
+  const isFaqAnchor =
+    target === join(siteDir, 'faq.html') &&
+    faq.groups.some((group) => group.id === anchor || group.questions.some((question) => question.id === anchor))
+  if (anchor && !isFaqAnchor && !readFileSync(target, 'utf8').includes(`id="${anchor}"`)) {
+    errors.push({ line, message: `Fant ikke avsnittet #${anchor} på ${file || 'faq.html'}.` })
   }
 }
 
